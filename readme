@@ -9,3 +9,6 @@ Android set up:
 3. Create an environment variable that points to the previous location by adding this line to .profile
     `export ANDROID_HOME=$HOME/Documents/android` (need to re-login for it to take effect)
 4. Use sdkmanager located in $ANDROID_HOME/tools/bin to download the latest platform, platform-tools and build-tools
+
+Follow this guide for Intellij Idea to import and run the project:
+https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
