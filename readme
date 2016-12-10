@@ -12,3 +12,7 @@ Android set up:
 
 Follow this guide for Intellij Idea to import and run the project:
 https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
+
+Additional quirks:
+- Make sure "Android Support" plugin is enabled for Intellij Idea
+- Set the SDK for the android module to Android SDK in Project Structure...->Modules->android
