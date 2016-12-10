@@ -8,7 +8,7 @@ Android set up:
 2. Unpack it to somewhere like $HOME/Documents/android
 3. Create an environment variable that points to the previous location by adding this line to .profile
     `export ANDROID_HOME=$HOME/Documents/android` (need to re-login for it to take effect)
-4. Use sdkmanager located in $ANDROID_HOME/tools/bin to download the latest platform, platform-tools and build-tools
+4. Use $ANDROID_HOME/tools/android to download the latest platform, platform-tools, build-tools
 
 Follow this guide for Intellij Idea to import and run the project:
 https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
@@ -16,3 +16,4 @@ https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
 Additional quirks:
 - Make sure "Android Support" plugin is enabled for Intellij Idea
 - Set the SDK for the android module to Android SDK in Project Structure...->Modules->android
+- For your sanity don't use the Android emulator and run it on a real phone instead
