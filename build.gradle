@@ -21,9 +21,7 @@ allprojects {
         appName = "tactical-adventure"
         gdxVersion = '1.9.4'
         roboVMVersion = '2.2.0'
-        box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
+        guavaVersion = '20.0'
     }
 
     repositories {
@@ -94,6 +92,7 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.google.guava:guava:$guavaVersion"
     }
 }
 
