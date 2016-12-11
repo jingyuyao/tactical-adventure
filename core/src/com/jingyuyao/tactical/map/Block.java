@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.map;
 
 /**
- * Created by jingyu on 12/10/16.
+ * TODO: Make a factory that builds a block from a TiledMapTile
  */
 public class Block {
     private Type type;

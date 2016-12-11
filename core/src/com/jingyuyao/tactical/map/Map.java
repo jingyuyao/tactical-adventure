@@ -3,14 +3,14 @@ package com.jingyuyao.tactical.map;
 import com.google.common.base.Preconditions;
 
 /**
- * Created by jingyu on 12/10/16.
+ * TODO: Make a factory that builds a map from a TiledMap
  */
 public class Map {
     private Block[][] blocks;
     private int height;
     private int width;
 
-    public Map(int height, int width) {
+    public Map(int height, int width)    {
         Preconditions.checkArgument(height>0);
         Preconditions.checkArgument(width>0);
         blocks = new Block[height][width];
