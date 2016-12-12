@@ -17,7 +17,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(TacticalAdventure game) {
         this.game = game;
         final TiledMap tiledMap = game.getAssetManager().get(Assets.TEST_MAP);
-        map = new Map(tiledMap);
+        map = Map.MapFactory.create(tiledMap);
         mapRenderer = new MapRenderer(tiledMap);
     }
 

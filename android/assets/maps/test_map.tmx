@@ -4,7 +4,7 @@
   <image source="../tilesets/terrain_atlas.png" width="1024" height="1024"/>
   <tile id="737">
    <properties>
-    <property name="type" value="obstructed"/>
+    <property name="type" value="OBSTRUCTED"/>
    </properties>
   </tile>
  </tileset>

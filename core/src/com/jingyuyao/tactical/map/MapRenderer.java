@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 /**
  * Renders our tile map.
  * TODO: Add camera movement controls
+ * TODO: Create factory to extract start position
  */
 public class MapRenderer {
     private final float UNIT_SCALE = 1/32f;
