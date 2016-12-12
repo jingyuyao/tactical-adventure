@@ -10,9 +10,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 public class Terrain {
     private static final String TYPE_KEY = "type";
 
+    private final TiledMapTileLayer.Cell cell;
     private Type type;
 
-    Terrain(Type type) {
+    Terrain(final TiledMapTileLayer.Cell cell, Type type) {
+        this.cell = cell;
         this.type = type;
     }
 
@@ -35,7 +37,7 @@ public class Terrain {
                     Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
                 }
             }
-            return new Terrain(type);
+            return new Terrain(cell, type);
         }
     }
 }
