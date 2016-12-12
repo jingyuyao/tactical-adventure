@@ -39,11 +39,14 @@ public class RealMapFactory implements MapFactory {
     public Map create(TiledMap tiledMap) {
         Stage stage = createStage();
         OrthogonalTiledMapRenderer mapRenderer = createRenderer(tiledMap);
-        Terrain[][] terrainMap = createTerrain(tiledMap, stage);
+        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
+        Preconditions.checkNotNull(terrainLayer, "Map must contain a terrain layer.");
+        Terrain[][] terrainMap = createTerrain(terrainLayer);
+        Map map = new Map(tiledMap, stage, mapRenderer, terrainMap);
 
         // TODO: Add stage to a multiplexer
         Gdx.input.setInputProcessor(stage);
-        return new Map(tiledMap, stage, mapRenderer, terrainMap);
+        return map;
     }
 
     private Stage createStage() {
@@ -56,24 +59,23 @@ public class RealMapFactory implements MapFactory {
         return new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
     }
 
-    private Terrain[][] createTerrain(TiledMap tiledMap, Stage stage) {
-        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
-        Preconditions.checkNotNull(terrainLayer, "Map must contain a terrain layer.");
-
+    private Terrain[][] createTerrain(TiledMapTileLayer terrainLayer) {
         int height = terrainLayer.getHeight();
         int width = terrainLayer.getWidth();
         Preconditions.checkArgument(height>0, "Map height must be > 0");
         Preconditions.checkArgument(width>0, "Map width must be > 0");
 
-        Terrain[][] terrainMap = new Terrain[height][width];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        return new Terrain[height][width];
+    }
+
+    private void populateTerrain(TiledMapTileLayer terrainLayer, Terrain[][] terrainMap, Map map, Stage stage) {
+        for (int y = 0; y < terrainLayer.getHeight(); y++) {
+            for (int x = 0; x < terrainLayer.getWidth(); x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                Terrain terrain = terrainFactory.create(cell, x, y, TILE_SCALE, TILE_SCALE);
+                Terrain terrain = terrainFactory.create(map, cell, x, y, TILE_SCALE, TILE_SCALE);
                 terrainMap[y][x] = terrain;
                 stage.addActor(terrain);
             }
         }
-        return terrainMap;
     }
 }

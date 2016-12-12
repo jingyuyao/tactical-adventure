@@ -8,7 +8,7 @@ public class RealTerrainFactory implements TerrainFactory {
     private static final String TYPE_KEY = "type";
 
     @Override
-    public Terrain create(TiledMapTileLayer.Cell cell, float x, float y, float width, float height) {
+    public Terrain create(Map map, TiledMapTileLayer.Cell cell, float x, float y, float width, float height) {
         MapProperties tileProperties = cell.getTile().getProperties();
         Terrain.Type type = Terrain.Type.NORMAL;
         if (tileProperties.containsKey(TYPE_KEY)) {
@@ -19,6 +19,6 @@ public class RealTerrainFactory implements TerrainFactory {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return new Terrain(cell, type, x, y, width, height);
+        return new Terrain(map, cell, type, x, y, width, height);
     }
 }
