@@ -2,33 +2,41 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.jingyuyao.tactical.screen.GameScreen;
+import com.jingyuyao.tactical.screen.ScreenModule;
 
 public class TacticalAdventure extends Game {
-    private AssetManager assetManager;
-	private SpriteBatch batch;
+	private Injector injector;
 	
 	@Override
 	public void create () {
-        assetManager = Assets.load();
-		batch = new SpriteBatch();
+	    injector = Guice.createInjector(new AssetsModule(), new GameModule(this), new ScreenModule());
 
-		setScreen(new GameScreen(this));
+		setScreen(injector.getInstance(GameScreen.class));
 	}
 
 	@Override
 	public void dispose () {
 		super.dispose();
-        assetManager.dispose();
-		batch.dispose();
+		injector.getInstance(AssetManager.class).dispose();
 	}
 
-    public AssetManager getAssetManager() {
-        return assetManager;
+    /**
+     * Simple module to bind {@link TacticalAdventure}
+     */
+    private static class GameModule extends AbstractModule {
+        private final TacticalAdventure game;
+
+        private GameModule(TacticalAdventure game) {
+            this.game = game;
+        }
+
+        @Override
+        protected void configure() {
+            bind(TacticalAdventure.class).toInstance(game);
+        }
     }
-
-	public SpriteBatch getBatch() {
-		return batch;
-	}
 }
