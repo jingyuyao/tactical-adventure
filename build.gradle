@@ -22,6 +22,7 @@ allprojects {
         gdxVersion = '1.9.4'
         roboVMVersion = '2.2.0'
         guavaVersion = '20.0'
+        guiceVersion = '4.1.0'
     }
 
     repositories {
@@ -93,6 +94,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.google.guava:guava:$guavaVersion"
+        compile "com.google.inject:guice:$guiceVersion"
     }
 }
 
