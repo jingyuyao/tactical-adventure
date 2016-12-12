@@ -43,4 +43,8 @@ public class Map {
         mapRenderer.setView((OrthographicCamera) stage.getCamera());
         mapRenderer.render();
     }
+
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
+    }
 }

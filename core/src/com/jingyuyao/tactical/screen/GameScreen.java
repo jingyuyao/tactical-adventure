@@ -22,4 +22,10 @@ public class GameScreen extends ScreenAdapter {
 		map.act(delta);
 		map.draw();
     }
+
+    @Override
+    public void resize(int width, int height) {
+        // This is very important...
+        map.resize(width, height);
+    }
 }
