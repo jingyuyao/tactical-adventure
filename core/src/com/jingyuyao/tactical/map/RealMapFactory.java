@@ -17,12 +17,26 @@ public class RealMapFactory implements MapFactory {
     private static final int MAP_HEIGHT = 20;
     private static final String TERRAIN_LAYER = "terrain";
 
-    public Map create(final TiledMap tiledMap) {
+    @Override
+    public Map create(TiledMap tiledMap) {
+        Stage stage = createStage();
+        OrthogonalTiledMapRenderer mapRenderer = createRenderer(tiledMap);
+        Terrain[][] terrainMap = createTerrain(tiledMap, stage);
+
+        return new Map(tiledMap, stage, mapRenderer, terrainMap);
+    }
+
+    private Stage createStage() {
         OrthographicCamera camera = new OrthographicCamera();
         FitViewport viewport = new FitViewport(MAP_WIDTH, MAP_HEIGHT, camera);
-        Stage stage = new Stage(viewport);
-        OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, TILE_SCALE);
+        return new Stage(viewport);
+    }
 
+    private OrthogonalTiledMapRenderer createRenderer(TiledMap tiledMap) {
+        return new OrthogonalTiledMapRenderer(tiledMap, TILE_SCALE);
+    }
+
+    private Terrain[][] createTerrain(TiledMap tiledMap, Stage stage) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "Map must contain a terrain layer.");
 
@@ -39,7 +53,6 @@ public class RealMapFactory implements MapFactory {
                 // TODO: Add terrain to stage
             }
         }
-
-        return new Map(tiledMap, stage, mapRenderer, terrainMap);
+        return terrainMap;
     }
 }

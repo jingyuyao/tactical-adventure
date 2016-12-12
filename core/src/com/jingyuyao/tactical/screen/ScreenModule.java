@@ -5,6 +5,6 @@ import com.google.inject.AbstractModule;
 public class ScreenModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(GameScreen.class);
+        bind(GameScreenFactory.class).to(RealGameScreenFactory.class);
     }
 }
