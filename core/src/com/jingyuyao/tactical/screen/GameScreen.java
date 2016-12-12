@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.jingyuyao.tactical.AssetsModule;
 import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.map.Map;
+import com.jingyuyao.tactical.map.MapFactory;
 
 import javax.inject.Inject;
 
@@ -16,10 +17,10 @@ public class GameScreen extends ScreenAdapter {
     private final Map map;
 
     @Inject
-    public GameScreen(TacticalAdventure game, AssetManager assetManager) {
+    public GameScreen(TacticalAdventure game, AssetManager assetManager, MapFactory mapFactory) {
         this.game = game;
         final TiledMap tiledMap = assetManager.get(AssetsModule.TEST_MAP);
-        map = Map.MapFactory.create(tiledMap);
+        map = mapFactory.create(tiledMap);
     }
 
     @Override

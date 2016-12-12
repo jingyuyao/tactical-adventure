@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.jingyuyao.tactical.map.MapModule;
 import com.jingyuyao.tactical.screen.GameScreen;
 import com.jingyuyao.tactical.screen.ScreenModule;
 
@@ -13,7 +14,12 @@ public class TacticalAdventure extends Game {
 	
 	@Override
 	public void create () {
-	    injector = Guice.createInjector(new AssetsModule(), new GameModule(this), new ScreenModule());
+	    injector = Guice.createInjector(
+	            new AssetsModule(),
+                new GameModule(this),
+                new ScreenModule(),
+                new MapModule()
+        );
 
 		setScreen(injector.getInstance(GameScreen.class));
 	}

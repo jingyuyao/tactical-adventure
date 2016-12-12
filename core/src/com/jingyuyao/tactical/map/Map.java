@@ -25,7 +25,7 @@ public class Map {
     private final int height;
     private final int width;
 
-    Map(final Stage stage, final TiledMap tiledMap, final OrthogonalTiledMapRenderer mapRenderer,
+    Map(final TiledMap tiledMap, final Stage stage, final OrthogonalTiledMapRenderer mapRenderer,
             final Terrain[][] terrainMap) {
         this.stage = stage;
         this.tiledMap = tiledMap;
@@ -42,38 +42,5 @@ public class Map {
     public void draw() {
         mapRenderer.setView((OrthographicCamera) stage.getCamera());
         mapRenderer.render();
-    }
-
-    public static class MapFactory {
-        private static final float TILE_SCALE = 1/32f;
-        private static final int MAP_WIDTH = 25; // # tiles
-        private static final int MAP_HEIGHT = 20;
-        private static final String TERRAIN_LAYER = "terrain";
-
-        public static Map create(final TiledMap tiledMap) {
-            OrthographicCamera camera = new OrthographicCamera();
-            FitViewport viewport = new FitViewport(MAP_WIDTH, MAP_HEIGHT, camera);
-            Stage stage = new Stage(viewport);
-            OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, TILE_SCALE);
-
-            TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
-            Preconditions.checkNotNull(terrainLayer, "Map must contain a terrain layer.");
-
-            int height = terrainLayer.getHeight();
-            int width = terrainLayer.getWidth();
-            Preconditions.checkArgument(height>0, "Map height must be > 0");
-            Preconditions.checkArgument(width>0, "Map width must be > 0");
-
-            Terrain[][] terrainMap = new Terrain[height][width];
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                    terrainMap[y][x] = Terrain.TerrainFactory.create(cell);
-                    // TODO: Add terrain to stage
-                }
-            }
-
-            return new Map(stage, tiledMap, mapRenderer, terrainMap);
-        }
     }
 }
