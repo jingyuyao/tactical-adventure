@@ -6,10 +6,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 /**
  * A terrain tile.
+ * TODO: extend actor
  */
 public class Terrain {
-    private static final String TYPE_KEY = "type";
-
     private final TiledMapTileLayer.Cell cell;
     private Type type;
 
@@ -26,6 +25,8 @@ public class Terrain {
     }
 
     public static class TerrainFactory {
+        private static final String TYPE_KEY = "type";
+
         public static Terrain create(TiledMapTileLayer.Cell cell) {
             MapProperties tileProperties = cell.getTile().getProperties();
             Type type = Type.NORMAL;
