@@ -94,7 +94,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.google.guava:guava:$guavaVersion"
-        compile "com.google.inject:guice:$guiceVersion"
+        compile "com.google.inject:guice:$guiceVersion:no_aop"
     }
 }
 
