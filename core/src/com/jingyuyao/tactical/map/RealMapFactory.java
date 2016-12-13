@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -32,50 +31,33 @@ public class RealMapFactory implements MapFactory {
     /**
      * Creates a {@link Map} where (0,0) is on the bottom left. Each tile has a size of one.
      * Viewport's size is relative to tile size.
-     * @param tiledMap
-     * @return
      */
     @Override
     public Map create(TiledMap tiledMap) {
-        Stage stage = createStage();
-        OrthogonalTiledMapRenderer mapRenderer = createRenderer(tiledMap);
-        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
-        Preconditions.checkNotNull(terrainLayer, "Map must contain a terrain layer.");
-        Terrain[][] terrainMap = createTerrain(terrainLayer);
-        Map map = new Map(tiledMap, stage, mapRenderer, terrainMap);
-
-        // TODO: Add stage to a multiplexer
-        Gdx.input.setInputProcessor(stage);
-        return map;
-    }
-
-    private Stage createStage() {
         OrthographicCamera camera = new OrthographicCamera();
         FitViewport viewport = new FitViewport(MAP_WIDTH, MAP_HEIGHT, camera);
-        return new Stage(viewport);
-    }
+        Stage stage = new Stage(viewport);
+        OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
 
-    private OrthogonalTiledMapRenderer createRenderer(TiledMap tiledMap) {
-        return new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-    }
-
-    private Terrain[][] createTerrain(TiledMapTileLayer terrainLayer) {
+        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
+        Preconditions.checkNotNull(terrainLayer, "Map must contain a terrain layer.");
         int height = terrainLayer.getHeight();
         int width = terrainLayer.getWidth();
         Preconditions.checkArgument(height>0, "Map height must be > 0");
         Preconditions.checkArgument(width>0, "Map width must be > 0");
 
-        return new Terrain[height][width];
-    }
+        Terrain[][] terrainMap = new Terrain[height][width];
+        Map map = new Map(tiledMap, stage, mapRenderer, terrainMap);
 
-    private void populateTerrain(TiledMapTileLayer terrainLayer, Terrain[][] terrainMap, Map map, Stage stage) {
-        for (int y = 0; y < terrainLayer.getHeight(); y++) {
-            for (int x = 0; x < terrainLayer.getWidth(); x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
                 Terrain terrain = terrainFactory.create(map, cell, x, y, TILE_SCALE, TILE_SCALE);
                 terrainMap[y][x] = terrain;
                 stage.addActor(terrain);
             }
         }
+
+        return map;
     }
 }

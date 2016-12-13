@@ -31,8 +31,7 @@ public class Terrain extends Actor {
     private class TerrainListener extends InputListener {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            cell.setTile(null);
-            return false;
+            return super.touchDown(event, x, y, pointer, button);
         }
     }
 }
