@@ -10,9 +10,11 @@ public class GameScreen extends ScreenAdapter {
     private final TacticalAdventure game;
     private final Map map;
 
-    public GameScreen(TacticalAdventure game, Map map) {
+    GameScreen(TacticalAdventure game, Map map) {
         this.game = game;
         this.map = map;
+
+        Gdx.input.setInputProcessor(map.getInputProcessor());
     }
 
     @Override

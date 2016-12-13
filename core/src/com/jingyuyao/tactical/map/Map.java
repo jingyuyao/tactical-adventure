@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -17,6 +17,7 @@ public class Map {
     private final Stage stage;
     private final TiledMap tiledMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
+    private final InputMultiplexer inputMultiplexer;
 
     /**
      * (0,0) starts at bottom left just like {@link TiledMapTileLayer}.
@@ -33,10 +34,9 @@ public class Map {
         height = terrainMap.length;
         width = terrainMap[0].length;
 
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new MapMovementProcessor(stage));
-        multiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(multiplexer);
+        inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new MapMovementProcessor(stage));
+        inputMultiplexer.addProcessor(stage);
     }
 
     public void act(float delta) {
@@ -50,5 +50,9 @@ public class Map {
 
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
+    }
+
+    public InputProcessor getInputProcessor() {
+        return inputMultiplexer;
     }
 }
