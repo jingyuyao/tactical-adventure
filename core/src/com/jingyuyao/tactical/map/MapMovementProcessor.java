@@ -11,9 +11,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class MapMovementProcessor extends InputAdapter {
-    private static final float HORIZONTAL_EDGE = 0.12f;
-    private static final float VERTICAL_EDGE = 0.13f;
-    private static final float MOVEMENT_DELTA = 0.2f;
+    private static final float HORIZONTAL_EDGE = 0.12f; // percentage
+    private static final float VERTICAL_EDGE = 0.13f; // percentage
+    private static final float MOVEMENT_DELTA = 0.2f; // world unit
     private static final long STARTING_DELAY = 200L; // ms
     private static final long REPEAT_DELAY = 10L; // ms
 
@@ -26,12 +26,16 @@ public class MapMovementProcessor extends InputAdapter {
     };
     private ScheduledFuture<?> screenMoverHandle;
     private final Stage stage;
+    private final int worldWidth;
+    private final int worldHeight;
     // Raw mouse coordinate on screen (including gutters)
     private int currentX;
     private int currentY;
 
-    MapMovementProcessor(Stage stage) {
+    MapMovementProcessor(Stage stage, int worldWidth, int worldHeight) {
         this.stage = stage;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
     }
 
     @Override
@@ -91,6 +95,25 @@ public class MapMovementProcessor extends InputAdapter {
 
         Camera camera = stage.getCamera();
         camera.translate(xDelta, yDelta, 0);
+
+        // Need to prevent moving camera outside of world
+        float cameraX = camera.position.x;
+        float cameraY = camera.position.y;
+        float viewportHalfWorldWidth = viewport.getWorldWidth() / 2f;
+        float viewportHalfWorldHeight = viewport.getWorldHeight() / 2f;
+
+        if (cameraX + viewportHalfWorldWidth > worldWidth) {
+            camera.position.x = worldWidth - viewportHalfWorldWidth;
+        } else if (cameraX - viewportHalfWorldWidth < 0) {
+            camera.position.x = viewportHalfWorldWidth;
+        }
+
+        if (cameraY + viewportHalfWorldHeight > worldHeight) {
+            camera.position.y = worldHeight - viewportHalfWorldHeight;
+        } else if (cameraY - viewportHalfWorldHeight < 0) {
+            camera.position.y = viewportHalfWorldHeight;
+        }
+
         camera.update();
     }
 }

@@ -23,19 +23,19 @@ public class Map {
      * (0,0) starts at bottom left just like {@link TiledMapTileLayer}.
      */
     private final Terrain[][] terrainMap;
-    private final int height;
-    private final int width;
+    private final int worldWidth;
+    private final int worldHeight;
 
     Map(TiledMap tiledMap, Stage stage, OrthogonalTiledMapRenderer mapRenderer, Terrain[][] terrainMap) {
         this.stage = stage;
         this.tiledMap = tiledMap;
         this.terrainMap = terrainMap;
         this.mapRenderer = mapRenderer;
-        height = terrainMap.length;
-        width = terrainMap[0].length;
+        worldHeight = terrainMap.length;
+        worldWidth = terrainMap[0].length;
 
         inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new MapMovementProcessor(stage));
+        inputMultiplexer.addProcessor(new MapMovementProcessor(stage, worldWidth, worldHeight));
         inputMultiplexer.addProcessor(stage);
     }
 
