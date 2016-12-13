@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 public class MapModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(MapFactory.class).to(RealMapFactory.class);
-        bind(TerrainFactory.class).to(RealTerrainFactory.class);
+        bind(MapFactory.class);
+        bind(TerrainFactory.class);
     }
 }

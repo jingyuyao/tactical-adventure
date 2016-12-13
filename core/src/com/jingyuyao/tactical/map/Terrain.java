@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 /**
  * A terrain tile.
  */
-public class Terrain extends Actor {
+class Terrain extends Actor {
     private final Map map;
     private final TiledMapTileLayer.Cell cell;
     private Type type;
