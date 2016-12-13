@@ -8,8 +8,9 @@ import javax.inject.Singleton;
 public class MapModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(MapFactory.class);
-        bind(TerrainFactory.class);
+        bind(MapFactory.class).in(Singleton.class);
+        bind(TerrainFactory.class).in(Singleton.class);
         bind(ShapeRenderer.class).in(Singleton.class);
+        bind(HighlightRenderer.class).in(Singleton.class);
     }
 }

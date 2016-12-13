@@ -10,11 +10,11 @@ import javax.inject.Inject;
 class TerrainFactory {
     private static final String TYPE_KEY = "type";
 
-    private final ShapeRenderer shapeRenderer;
+    private final HighlightRenderer highlightRenderer;
 
     @Inject
-    TerrainFactory(ShapeRenderer shapeRenderer) {
-        this.shapeRenderer = shapeRenderer;
+    TerrainFactory(HighlightRenderer highlightRenderer) {
+        this.highlightRenderer = highlightRenderer;
     }
 
     Terrain create(Map map, TiledMapTileLayer.Cell cell, float x, float y, float width, float height) {
@@ -28,6 +28,6 @@ class TerrainFactory {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return new Terrain(map, cell, type, shapeRenderer, x, y, width, height);
+        return new Terrain(map, cell, type, highlightRenderer, new HighlightListener(), x, y, width, height);
     }
 }
