@@ -46,6 +46,7 @@ public class Map {
     public void draw() {
         mapRenderer.setView((OrthographicCamera) stage.getCamera());
         mapRenderer.render();
+        stage.draw();
     }
 
     public void resize(int width, int height) {
