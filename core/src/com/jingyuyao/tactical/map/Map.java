@@ -7,6 +7,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.common.base.Preconditions;
+
+import java.util.ArrayList;
 
 /**
  * Game representation of {@link TiledMap}.
@@ -19,12 +22,13 @@ public class Map {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final InputMultiplexer inputMultiplexer;
 
+    private final int worldWidth;
+    private final int worldHeight;
     /**
      * (0,0) starts at bottom left just like {@link TiledMapTileLayer}.
      */
     private final Terrain[][] terrainMap;
-    private final int worldWidth;
-    private final int worldHeight;
+    private final ArrayList<Character> characters = new ArrayList<Character>();
 
     Map(TiledMap tiledMap, Stage stage, OrthogonalTiledMapRenderer mapRenderer, Terrain[][] terrainMap) {
         this.stage = stage;
@@ -51,6 +55,22 @@ public class Map {
 
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
+    }
+
+    public Terrain getTerrain(float x, float y) {
+        Preconditions.checkArgument(x > 0 && x < worldWidth);
+        Preconditions.checkArgument(y > 0 && y < worldHeight);
+        return terrainMap[(int)y][(int)x];
+    }
+
+    public void addCharacter(Character character) {
+        characters.add(character);
+        stage.addActor(character);
+    }
+
+    public void removeCharacter(Character character) {
+        characters.remove(character);
+        character.remove();
     }
 
     public InputProcessor getInputProcessor() {

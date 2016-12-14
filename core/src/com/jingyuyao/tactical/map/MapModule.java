@@ -10,6 +10,7 @@ public class MapModule extends AbstractModule {
     protected void configure() {
         bind(MapFactory.class).in(Singleton.class);
         bind(TerrainFactory.class).in(Singleton.class);
+        bind(CharacterFactory.class).in(Singleton.class);
         bind(ShapeRenderer.class).in(Singleton.class);
         bind(HighlightRenderer.class).in(Singleton.class);
     }

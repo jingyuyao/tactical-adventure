@@ -17,15 +17,17 @@ public class MapFactory {
     private static final int TILE_SIZE = 32; // pixels
     private static final float RENDER_SCALE = 1f / TILE_SIZE;
     private static final float TILE_SCALE = 1f; // Relative to map size
-    private static final int MAP_WIDTH = 30; // # tiles
-    private static final int MAP_HEIGHT = 20;
+    private static final int MAP_WIDTH = 25; // # tiles
+    private static final int MAP_HEIGHT = 15;
     private static final String TERRAIN_LAYER = "terrain";
 
     private final TerrainFactory terrainFactory;
+    private final CharacterFactory characterFactory;
 
     @Inject
-    public MapFactory(TerrainFactory terrainFactory) {
+    public MapFactory(TerrainFactory terrainFactory, CharacterFactory characterFactory) {
         this.terrainFactory = terrainFactory;
+        this.characterFactory = characterFactory;
     }
 
     /**
@@ -56,6 +58,9 @@ public class MapFactory {
                 stage.addActor(terrain);
             }
         }
+
+        // testing
+        map.addCharacter(characterFactory.create(map, 1f, 1f, TILE_SCALE, TILE_SCALE));
 
         return map;
     }

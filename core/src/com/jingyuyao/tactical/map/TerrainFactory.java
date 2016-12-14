@@ -27,6 +27,6 @@ class TerrainFactory {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return new Terrain(map, cell, highlightRenderer, new HighlightListener(), x, y, width, height, type);
+        return new Terrain(map, highlightRenderer, new HighlightListener(), x, y, width, height, cell, type);
     }
 }
