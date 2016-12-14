@@ -2,35 +2,24 @@ package com.jingyuyao.tactical.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * A terrain tile.
  */
-class Terrain extends Actor {
-    private final Map map;
-    private final TiledMapTileLayer.Cell cell;
-    private final HighlightRenderer highlightRenderer;
-    private final HighlightListener highlightListener;
+class Terrain extends MapActor {
     private Type type;
 
-    Terrain(Map map, TiledMapTileLayer.Cell cell, Type type,
+    Terrain(Map map, TiledMapTileLayer.Cell cell,
             HighlightRenderer highlightRenderer, HighlightListener highlightListener,
-            float x, float y, float width, float height) {
-        this.map = map;
-        this.cell = cell;
+            float x, float y, float width, float height,
+            Type type) {
+        super(map, cell, highlightRenderer, highlightListener, x, y, width, height);
         this.type = type;
-        this.highlightRenderer = highlightRenderer;
-        this.highlightListener = highlightListener;
-        setBounds(x, y, width, height);
-        addListener(highlightListener);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (highlightListener.isHighlighted()) {
-            highlightRenderer.draw(this, batch);
-        }
+        super.draw(batch, parentAlpha);
     }
 
     public enum Type {

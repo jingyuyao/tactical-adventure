@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
@@ -28,6 +27,6 @@ class TerrainFactory {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return new Terrain(map, cell, type, highlightRenderer, new HighlightListener(), x, y, width, height);
+        return new Terrain(map, cell, highlightRenderer, new HighlightListener(), x, y, width, height, type);
     }
 }
