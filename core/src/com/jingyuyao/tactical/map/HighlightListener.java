@@ -20,6 +20,7 @@ class HighlightListener extends InputListener {
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         highlighted = true;
+        exitFromTouch = false;
     }
 
     @Override
@@ -33,7 +34,11 @@ class HighlightListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        return true;
+    }
+
+    @Override
+    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
         exitFromTouch = true;
-        return false;
     }
 }
