@@ -1,20 +1,19 @@
 package com.jingyuyao.tactical.map;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.jingyuyao.tactical.object.Character;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 class CharacterFactory {
-    private final HighlightRenderer highlightRenderer;
-    private final ShapeRenderer shapeRenderer;
+    private final Provider<Highlighter> highlighterProvider;
 
     @Inject
-    CharacterFactory(HighlightRenderer highlightRenderer, ShapeRenderer shapeRenderer) {
-        this.highlightRenderer = highlightRenderer;
-        this.shapeRenderer = shapeRenderer;
+    CharacterFactory(Provider<Highlighter> highlighterProvider) {
+        this.highlighterProvider = highlighterProvider;
     }
 
-    Character create(Map map, float x, float y, float width, float height) {
-        return new Character(map, highlightRenderer, new HighlightListener(), x, y, width, height, shapeRenderer);
+    MapActor<Character> create(int x, int y, float size) {
+        return new MapActor<Character>(new Character(x, y), size, highlighterProvider.get());
     }
 }
