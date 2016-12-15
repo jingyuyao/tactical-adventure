@@ -7,8 +7,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.object.Terrain;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 /**
  * Not the cleanest approach but at least {@link Map} can now receive injections via this class.
@@ -47,20 +49,22 @@ public class MapFactory {
         Preconditions.checkArgument(height>0, "Map height must be > 0");
         Preconditions.checkArgument(width>0, "Map width must be > 0");
 
-        Terrain[][] terrainMap = new Terrain[height][width];
-        Map map = new Map(tiledMap, stage, mapRenderer, terrainMap);
+        ArrayList<ArrayList<MapActor<Terrain>>> terrainMap = new ArrayList<ArrayList<MapActor<Terrain>>>();
+        Map map = new Map(tiledMap, stage, mapRenderer, terrainMap, width, height);
 
         for (int y = 0; y < height; y++) {
+            ArrayList<MapActor<Terrain>> row = new ArrayList<MapActor<Terrain>>();
+            terrainMap.add(row);
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                Terrain terrain = terrainFactory.create(map, cell, x, y, TILE_SCALE, TILE_SCALE);
-                terrainMap[y][x] = terrain;
+                MapActor<Terrain> terrain = terrainFactory.create(cell, x, y, TILE_SCALE);
+                row.add(terrain);
                 stage.addActor(terrain);
             }
         }
 
         // testing
-        map.addCharacter(characterFactory.create(map, 1f, 1f, TILE_SCALE, TILE_SCALE));
+        map.addCharacter(characterFactory.create(1, 1, TILE_SCALE));
 
         return map;
     }

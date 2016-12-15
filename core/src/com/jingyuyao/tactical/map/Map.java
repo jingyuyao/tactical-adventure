@@ -7,7 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.object.Character;
+import com.jingyuyao.tactical.object.Terrain;
 
 import java.util.ArrayList;
 
@@ -27,16 +28,17 @@ public class Map {
     /**
      * (0,0) starts at bottom left just like {@link TiledMapTileLayer}.
      */
-    private final Terrain[][] terrainMap;
-    private final ArrayList<Character> characters = new ArrayList<Character>();
+    private final ArrayList<ArrayList<MapActor<Terrain>>> terrainMap;
+    private final ArrayList<MapActor<Character>> characters = new ArrayList<MapActor<Character>>();
 
-    Map(TiledMap tiledMap, Stage stage, OrthogonalTiledMapRenderer mapRenderer, Terrain[][] terrainMap) {
+    Map(TiledMap tiledMap, Stage stage, OrthogonalTiledMapRenderer mapRenderer,
+        ArrayList<ArrayList<MapActor<Terrain>>> terrainMap, int worldWidth, int worldHeight) {
         this.stage = stage;
         this.tiledMap = tiledMap;
         this.terrainMap = terrainMap;
         this.mapRenderer = mapRenderer;
-        worldHeight = terrainMap.length;
-        worldWidth = terrainMap[0].length;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
 
         inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(new MapMovementProcessor(stage, worldWidth, worldHeight));
@@ -57,18 +59,16 @@ public class Map {
         stage.getViewport().update(width, height);
     }
 
-    public Terrain getTerrain(float x, float y) {
-        Preconditions.checkArgument(x > 0 && x < worldWidth);
-        Preconditions.checkArgument(y > 0 && y < worldHeight);
-        return terrainMap[(int)y][(int)x];
+    public MapActor<Terrain> getTerrain(int x, int y) {
+        return terrainMap.get(y).get(x);
     }
 
-    public void addCharacter(Character character) {
+    public void addCharacter(MapActor<Character> character) {
         characters.add(character);
         stage.addActor(character);
     }
 
-    public void removeCharacter(Character character) {
+    public void removeCharacter(MapActor<Character> character) {
         characters.remove(character);
         character.remove();
     }

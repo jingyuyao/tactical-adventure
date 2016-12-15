@@ -3,20 +3,22 @@ package com.jingyuyao.tactical.map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.jingyuyao.tactical.object.Terrain;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 class TerrainFactory {
     private static final String TYPE_KEY = "type";
 
-    private final HighlightRenderer highlightRenderer;
+    private final Provider<Highlighter> highlighterProvider;
 
     @Inject
-    TerrainFactory(HighlightRenderer highlightRenderer) {
-        this.highlightRenderer = highlightRenderer;
+    TerrainFactory(Provider<Highlighter> highlighterProvider) {
+        this.highlighterProvider = highlighterProvider;
     }
 
-    Terrain create(Map map, TiledMapTileLayer.Cell cell, float x, float y, float width, float height) {
+    MapActor<Terrain> create(TiledMapTileLayer.Cell cell, int x, int y, float size) {
         MapProperties tileProperties = cell.getTile().getProperties();
         Terrain.Type type = Terrain.Type.NORMAL;
         if (tileProperties.containsKey(TYPE_KEY)) {
@@ -27,6 +29,7 @@ class TerrainFactory {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return new Terrain(map, highlightRenderer, new HighlightListener(), x, y, width, height, cell, type);
+
+        return new MapActor<Terrain>(new Terrain(x, y, type), size, highlighterProvider.get());
     }
 }
