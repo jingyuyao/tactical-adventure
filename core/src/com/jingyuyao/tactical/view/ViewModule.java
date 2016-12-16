@@ -10,8 +10,6 @@ public class ViewModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(MapViewFactory.class).in(Singleton.class);
-        bind(TerrainFactory.class).in(Singleton.class);
-        bind(CharacterFactory.class).in(Singleton.class);
         bind(ShapeRenderer.class).in(Singleton.class);
         bind(Highlighter.class);
         bind(HighlightListener.class);
