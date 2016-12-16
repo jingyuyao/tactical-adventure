@@ -2,6 +2,7 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.google.inject.AbstractModule;
@@ -14,6 +15,8 @@ import javax.inject.Singleton;
  */
 public class AssetsModule extends AbstractModule {
     public static String TEST_MAP = "maps/test_map.tmx";
+    public static String JOHN = "sprites/john.png";
+    public static String BILLY = "sprites/billy.png";
 
     @Override
     protected void configure() {
@@ -29,6 +32,8 @@ public class AssetsModule extends AbstractModule {
 
         // Assets
         manager.load(TEST_MAP, TiledMap.class);
+        manager.load(JOHN, Texture.class);
+        manager.load(BILLY, Texture.class);
 
         manager.finishLoading();
         return manager;

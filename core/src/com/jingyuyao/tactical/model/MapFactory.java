@@ -35,6 +35,10 @@ public class MapFactory {
             }
         }
 
+        // Testing
+        map.addCharacter(new Character("john", 1, 1));
+        map.addCharacter(new Character("billy", 5, 5));
+
         return map;
     }
 }

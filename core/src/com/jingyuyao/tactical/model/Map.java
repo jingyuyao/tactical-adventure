@@ -1,13 +1,14 @@
 package com.jingyuyao.tactical.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
     /**
      * (0,0) starts at bottom left.
      */
     private final Terrain[][] terrains;
-    private final ArrayList<Character> characters;
+    private final List<Character> characters;
     private final int worldWidth;
     private final int worldHeight;
 
@@ -34,7 +35,7 @@ public class Map {
         return worldHeight;
     }
 
-    public ArrayList<Character> getCharacters() {
+    public List<Character> getCharacters() {
         return characters;
     }
 

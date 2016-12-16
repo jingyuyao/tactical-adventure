@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.Terrain;
 
@@ -40,6 +41,11 @@ public class MapViewFactory {
                 MapActor<Terrain> actor = mapActorFactory.createTerrain(terrain);
                 stage.addActor(actor);
             }
+        }
+
+        for (Character character : map.getCharacters()) {
+            MapActor<Character> actor = mapActorFactory.createCharacter(character);
+            stage.addActor(actor);
         }
 
         return new MapView(stage, new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE));
