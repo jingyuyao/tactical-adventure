@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.controller.HighlightListener;
-import com.jingyuyao.tactical.model.GridObject;
+import com.jingyuyao.tactical.model.MapObject;
 
 /**
  * An {@link Actor} on a {@link MapView}.
@@ -19,7 +19,7 @@ import com.jingyuyao.tactical.model.GridObject;
  *
  * @param <T> The game object contained in this actor
  */
-class MapActor<T extends GridObject> extends Actor {
+class MapActor<T extends MapObject> extends Actor {
     private static final float ACTOR_SIZE = 1f; // world units
 
     private final T object;

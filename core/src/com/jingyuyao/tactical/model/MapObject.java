@@ -3,11 +3,11 @@ package com.jingyuyao.tactical.model;
 /**
  * An object on the game grid.
  */
-public class GridObject {
+public class MapObject {
     private int x;
     private int y;
 
-    GridObject(int x, int y) {
+    MapObject(int x, int y) {
         this.x = x;
         this.y = y;
     }
