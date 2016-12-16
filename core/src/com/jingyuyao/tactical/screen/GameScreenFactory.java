@@ -20,8 +20,8 @@ public class GameScreenFactory {
     private final ControllerFactory controllerFactory;
 
     @Inject
-    public GameScreenFactory(TacticalAdventure game, AssetManager assetManager, MapFactory mapFactory, MapViewFactory mapViewFactory,
-                             ControllerFactory controllerFactory) {
+    public GameScreenFactory(TacticalAdventure game, AssetManager assetManager, MapFactory mapFactory,
+                             MapViewFactory mapViewFactory, ControllerFactory controllerFactory) {
         this.game = game;
         this.assetManager = assetManager;
         this.mapFactory = mapFactory;

@@ -10,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class MapMovementController extends InputAdapter {
+public class CameraController extends InputAdapter {
     private static final float HORIZONTAL_EDGE = 0.12f; // percentage
     private static final float VERTICAL_EDGE = 0.13f; // percentage
     private static final float MOVEMENT_DELTA = 0.2f; // world unit
@@ -32,7 +32,7 @@ public class MapMovementController extends InputAdapter {
     private int currentX;
     private int currentY;
 
-    MapMovementController(Stage stage, int worldWidth, int worldHeight) {
+    CameraController(Stage stage, int worldWidth, int worldHeight) {
         this.stage = stage;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
