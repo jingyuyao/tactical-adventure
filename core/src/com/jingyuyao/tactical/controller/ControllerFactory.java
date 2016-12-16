@@ -30,8 +30,8 @@ public class ControllerFactory {
         return inputMultiplexer;
     }
 
-    public HighlightController createHighlightController(MapObject mapObject) {
-        return new HighlightController(mapObject);
+    public HighlightController createHighlightController(Map map, MapObject mapObject) {
+        return new HighlightController(map, mapObject);
     }
 
     public CharacterController characterController(Map map, Character character) {

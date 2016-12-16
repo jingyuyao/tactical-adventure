@@ -47,6 +47,7 @@ public class MapViewFactory {
                 Terrain terrain = map.getTerrain(x, y);
                 MapActor actor = mapActorFactory.createTerrain(map, terrain);
                 stage.addActor(actor);
+                mapObjectActorMap.put(terrain, actor);
             }
         }
 

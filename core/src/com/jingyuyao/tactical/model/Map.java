@@ -11,6 +11,7 @@ public class Map {
     private final List<Character> characters;
     private final int worldWidth;
     private final int worldHeight;
+    private MapObject highlighted;
     private Character selected;
 
     Map(int worldWidth, int worldHeight) {
@@ -50,5 +51,13 @@ public class Map {
 
     public void setSelected(Character selected) {
         this.selected = selected;
+    }
+
+    public MapObject getHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(MapObject highlighted) {
+        this.highlighted = highlighted;
     }
 }

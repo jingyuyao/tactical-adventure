@@ -28,7 +28,7 @@ public class MapActorFactory {
     }
 
     MapActor createCharacter(Map map, Character character) {
-        MapActor actor = new MapActor(character, shapeRenderer, controllerFactory.createHighlightController(character));
+        MapActor actor = new MapActor(character, shapeRenderer, controllerFactory.createHighlightController(map, character));
         actor.addListener(controllerFactory.characterController(map, character));
 
         Texture texture = assetManager.get("sprites/" + character.getName() + ".png", Texture.class);
@@ -38,7 +38,7 @@ public class MapActorFactory {
     }
 
     MapActor createTerrain(Map map, Terrain terrain) {
-        MapActor actor = new MapActor(terrain, shapeRenderer, controllerFactory.createHighlightController(terrain));
+        MapActor actor = new MapActor(terrain, shapeRenderer, controllerFactory.createHighlightController(map, terrain));
         actor.addListener(controllerFactory.terrainController(map, terrain));
         return actor;
     }
