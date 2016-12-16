@@ -7,6 +7,8 @@ import com.jingyuyao.tactical.TacticalAdventure;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = 25 * 32;
+		config.height = 15 * 32;
 		new LwjglApplication(new TacticalAdventure(), config);
 	}
 }
