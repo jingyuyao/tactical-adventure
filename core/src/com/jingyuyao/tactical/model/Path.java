@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Path is an acyclic graph of terrain nodes

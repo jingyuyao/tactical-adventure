@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
-import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.view.MapActor;
 
-import java.util.*;
+import java.util.Set;
 
 public class CharacterController extends InputListener {
     private final Map map;
