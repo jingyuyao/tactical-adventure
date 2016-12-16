@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class ControllerFactory {
 
     public InputProcessor createMapController(Stage stage, int worldWidth, int worldHeight) {
-        MapMovementController mapMovementController = new MapMovementController(stage, worldWidth, worldHeight);
+        CameraController cameraController = new CameraController(stage, worldWidth, worldHeight);
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(mapMovementController);
+        inputMultiplexer.addProcessor(cameraController);
         inputMultiplexer.addProcessor(stage);
         return inputMultiplexer;
     }
