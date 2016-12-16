@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jingyuyao.tactical.model.Character;
@@ -24,19 +23,20 @@ public class MapViewFactory {
 
     private final MapActorFactory mapActorFactory;
     // TODO: Gotta test this is populated and cleared correctly
-    private final java.util.Map<MapObject, Actor> mapObjectActorMap;
+    private final java.util.Map<MapObject, MapActor> actorMap;
 
     @Inject
-    public MapViewFactory(MapActorFactory mapActorFactory, java.util.Map<MapObject, Actor> mapObjectActorMap) {
+    public MapViewFactory(MapActorFactory mapActorFactory, java.util.Map<MapObject, MapActor> actorMap) {
         this.mapActorFactory = mapActorFactory;
-        this.mapObjectActorMap = mapObjectActorMap;
+        this.actorMap = actorMap;
     }
 
     /**
      * Creates a {@link MapView} from the given map and adds all actors to the stage.
      */
     public MapView create(TiledMap tiledMap, Map map) {
-        mapObjectActorMap.clear(); // Gotta do it since its singleton
+        // Gotta do it since it is singleton
+        actorMap.clear();
 
         OrthographicCamera camera = new OrthographicCamera();
         FitViewport viewport = new FitViewport(MAP_WIDTH, MAP_HEIGHT, camera);
@@ -47,7 +47,7 @@ public class MapViewFactory {
                 Terrain terrain = map.getTerrain(x, y);
                 MapActor actor = mapActorFactory.createTerrain(map, terrain);
                 stage.addActor(actor);
-                mapObjectActorMap.put(terrain, actor);
+                actorMap.put(terrain, actor);
             }
         }
 
@@ -55,7 +55,7 @@ public class MapViewFactory {
         for (Character character : map.getCharacters()) {
             MapActor actor = mapActorFactory.createCharacter(map, character);
             stage.addActor(actor);
-            mapObjectActorMap.put(character, actor);
+            actorMap.put(character, actor);
         }
 
         return new MapView(stage, new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE));

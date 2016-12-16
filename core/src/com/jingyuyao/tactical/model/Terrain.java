@@ -2,10 +2,19 @@ package com.jingyuyao.tactical.model;
 
 public class Terrain extends MapObject {
     private Type type;
+    private PotentialTarget potentialTarget = PotentialTarget.NONE;
 
     Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
+    }
+
+    public PotentialTarget getPotentialTarget() {
+        return potentialTarget;
+    }
+
+    public void setPotentialTarget(PotentialTarget potentialTarget) {
+        this.potentialTarget = potentialTarget;
     }
 
     public enum Type {
@@ -15,10 +24,17 @@ public class Terrain extends MapObject {
         MOUNTAIN
     }
 
+    public enum PotentialTarget {
+        NONE,
+        MOVE,
+        ATTACK
+    }
+
     @Override
     public String toString() {
         return "Terrain{" +
                 "type=" + type +
+                ", potentialTarget=" + potentialTarget +
                 "} " + super.toString();
     }
 }

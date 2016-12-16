@@ -17,6 +17,8 @@ public class AssetsModule extends AbstractModule {
     public static String TEST_MAP = "maps/test_map.tmx";
     public static String JOHN = "sprites/john.png";
     public static String BILLY = "sprites/billy.png";
+    public static String HIGHLIGHT = "sprites/highlight.png";
+    public static String BLUE_OVERLAY = "sprites/blue_overlay.png";
 
     @Override
     protected void configure() {
@@ -34,6 +36,8 @@ public class AssetsModule extends AbstractModule {
         manager.load(TEST_MAP, TiledMap.class);
         manager.load(JOHN, Texture.class);
         manager.load(BILLY, Texture.class);
+        manager.load(HIGHLIGHT, Texture.class);
+        manager.load(BLUE_OVERLAY, Texture.class);
 
         manager.finishLoading();
         return manager;
