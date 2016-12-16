@@ -19,11 +19,11 @@ public class Map {
         this.characters = new ArrayList<Character>();
     }
 
-    public void setTerrain(Terrain terrain, int x, int y) {
+    void setTerrain(Terrain terrain, int x, int y) {
         terrains[y][x] = terrain;
     }
 
-    public void addCharacter(Character character) {
+    void addCharacter(Character character) {
         characters.add(character);
     }
 

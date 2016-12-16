@@ -38,13 +38,13 @@ public class MapViewFactory {
         for (int y = 0; y < map.getWorldHeight(); y++) {
             for (int x = 0; x < map.getWorldWidth(); x++) {
                 Terrain terrain = map.getTerrain(x, y);
-                MapActor<Terrain> actor = mapActorFactory.createTerrain(terrain);
+                MapActor actor = mapActorFactory.createTerrain(terrain);
                 stage.addActor(actor);
             }
         }
 
         for (Character character : map.getCharacters()) {
-            MapActor<Character> actor = mapActorFactory.createCharacter(character);
+            MapActor actor = mapActorFactory.createCharacter(character);
             stage.addActor(actor);
         }
 

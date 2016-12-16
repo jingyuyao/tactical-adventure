@@ -16,14 +16,11 @@ import com.jingyuyao.tactical.model.MapObject;
  *
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
- *
- * @param <T> The game mapObject contained in this actor
  */
-class MapActor<T extends MapObject> extends Actor {
+class MapActor extends Actor {
     private static final float ACTOR_SIZE = 1f; // world units
 
-    private final T mapObject;
-    private final HighlightController highlightController;
+    private final MapObject mapObject;
     private final ShapeRenderer shapeRenderer;
     private Sprite sprite;
 
@@ -33,8 +30,7 @@ class MapActor<T extends MapObject> extends Actor {
      * @param shapeRenderer Renderer used to draw highlights
      * @param highlightController The listener used to detect highlight changes
      */
-    MapActor(T mapObject, ShapeRenderer shapeRenderer, HighlightController highlightController) {
-        this.highlightController = highlightController;
+    MapActor(MapObject mapObject, ShapeRenderer shapeRenderer, HighlightController highlightController) {
         this.mapObject = mapObject;
         this.shapeRenderer = shapeRenderer;
         setBounds(mapObject.getX(), mapObject.getY(), ACTOR_SIZE, ACTOR_SIZE);
@@ -60,15 +56,7 @@ class MapActor<T extends MapObject> extends Actor {
         }
     }
 
-    public void setSprite(Sprite sprite) {
+    void setSprite(Sprite sprite) {
         this.sprite = sprite;
-    }
-
-    public Sprite getSprite() {
-        return sprite;
-    }
-
-    public T getMapObject() {
-        return mapObject;
     }
 }
