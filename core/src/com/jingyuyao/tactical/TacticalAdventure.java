@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.jingyuyao.tactical.controller.ControllerModule;
+import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.view.ViewModule;
 import com.jingyuyao.tactical.screen.GameScreenFactory;
 import com.jingyuyao.tactical.screen.ScreenModule;
@@ -20,7 +21,8 @@ public class TacticalAdventure extends Game {
                 new GameModule(this),
                 new ScreenModule(),
                 new ViewModule(),
-                new ControllerModule()
+                new ControllerModule(),
+                new ModelModule()
         );
         gameScreenFactory = injector.getInstance(GameScreenFactory.class);
 

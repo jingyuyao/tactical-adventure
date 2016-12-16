@@ -20,6 +20,8 @@ import com.jingyuyao.tactical.model.GridObject;
  * @param <T> The game object contained in this actor
  */
 class MapActor<T extends GridObject> extends Actor {
+    private static final float ACTOR_SIZE = 1f; // world units
+
     private final T object;
     private final HighlightListener highlightListener;
     private final ShapeRenderer shapeRenderer;
@@ -28,15 +30,14 @@ class MapActor<T extends GridObject> extends Actor {
     /**
      * Actor's initial position is set to the position of {@code object}.
      * @param object The game object contained by this actor
-     * @param size The size of this actor in world units
      * @param highlightListener The listener used to detect highlight changes
      * @param shapeRenderer Renderer used to draw highlights
      */
-    MapActor(T object, float size, HighlightListener highlightListener, ShapeRenderer shapeRenderer) {
+    MapActor(T object, HighlightListener highlightListener, ShapeRenderer shapeRenderer) {
         this.highlightListener = highlightListener;
         this.object = object;
         this.shapeRenderer = shapeRenderer;
-        setBounds(object.getX(), object.getY(), size, size);
+        setBounds(object.getX(), object.getY(), ACTOR_SIZE, ACTOR_SIZE);
         addListener(highlightListener);
     }
 
