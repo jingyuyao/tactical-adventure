@@ -1,19 +1,15 @@
 package com.jingyuyao.tactical.view;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Terrain;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import java.util.ArrayList;
 
 /**
@@ -26,13 +22,12 @@ public class MapViewFactory {
     private static final int MAP_WIDTH = 25; // # tiles
     private static final int MAP_HEIGHT = 15;
     private static final String TERRAIN_LAYER = "terrain";
-    private static final String TYPE_KEY = "type";
 
-    private final Provider<Highlighter> highlighterProvider;
+    private final MapActorFactory mapActorFactory;
 
     @Inject
-    public MapViewFactory(Provider<Highlighter> highlighterProvider) {
-        this.highlighterProvider = highlighterProvider;
+    public MapViewFactory(MapActorFactory mapActorFactory) {
+        this.mapActorFactory = mapActorFactory;
     }
 
     /**
@@ -60,35 +55,16 @@ public class MapViewFactory {
             terrainMap.add(row);
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                MapActor<Terrain> terrain = createTerrain(cell, x, y, TILE_SCALE);
+                MapActor<Terrain> terrain = mapActorFactory.createTerrain(cell, x, y, TILE_SCALE);
                 row.add(terrain);
                 stage.addActor(terrain);
             }
         }
 
         // testing
-        mapView.addCharacter(createCharacter(1, 1, TILE_SCALE));
-        mapView.addCharacter(createCharacter(3, 3, TILE_SCALE));
+        mapView.addCharacter(mapActorFactory.createCharacter(1, 1, TILE_SCALE));
+        mapView.addCharacter(mapActorFactory.createCharacter(3, 3, TILE_SCALE));
 
         return mapView;
-    }
-
-    private MapActor<Character> createCharacter(int x, int y, float size) {
-        return new MapActor<Character>(new Character(x, y), size, highlighterProvider.get());
-    }
-
-    private MapActor<Terrain> createTerrain(TiledMapTileLayer.Cell cell, int x, int y, float size) {
-        MapProperties tileProperties = cell.getTile().getProperties();
-        Terrain.Type type = Terrain.Type.NORMAL;
-        if (tileProperties.containsKey(TYPE_KEY)) {
-            String tileType = tileProperties.get(TYPE_KEY, String.class);
-            try {
-                type = Terrain.Type.valueOf(tileType);
-            } catch (IllegalArgumentException e) {
-                Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
-            }
-        }
-
-        return new MapActor<Terrain>(new Terrain(x, y, type), size, highlighterProvider.get());
     }
 }

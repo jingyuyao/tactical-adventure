@@ -6,5 +6,6 @@ public class ControllerModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(ControllerFactory.class);
+        bind(HighlightListener.class);
     }
 }
