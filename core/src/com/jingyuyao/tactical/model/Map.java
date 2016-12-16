@@ -11,6 +11,7 @@ public class Map {
     private final List<Character> characters;
     private final int worldWidth;
     private final int worldHeight;
+    private Character selected;
 
     Map(int worldWidth, int worldHeight) {
         this.worldWidth = worldWidth;
@@ -41,5 +42,13 @@ public class Map {
 
     public Terrain getTerrain(int x, int y) {
         return terrains[y][x];
+    }
+
+    public Character getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Character selected) {
+        this.selected = selected;
     }
 }

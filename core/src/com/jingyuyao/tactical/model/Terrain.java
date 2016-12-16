@@ -14,4 +14,11 @@ public class Terrain extends MapObject {
         WATER,
         MOUNTAIN
     }
+
+    @Override
+    public String toString() {
+        return "Terrain{" +
+                "type=" + type +
+                "} " + super.toString();
+    }
 }

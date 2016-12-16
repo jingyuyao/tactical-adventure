@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.Character;
+import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.Terrain;
 
 import javax.inject.Inject;
@@ -26,9 +27,9 @@ public class MapActorFactory {
         this.assetManager = assetManager;
     }
 
-    MapActor createCharacter(Character character) {
+    MapActor createCharacter(Map map, Character character) {
         MapActor actor = new MapActor(character, shapeRenderer, controllerFactory.createHighlightController(character));
-        actor.addListener(controllerFactory.characterController(character));
+        actor.addListener(controllerFactory.characterController(map, character));
 
         Texture texture = assetManager.get("sprites/" + character.getName() + ".png", Texture.class);
         Sprite sprite = new Sprite(texture);
@@ -36,7 +37,9 @@ public class MapActorFactory {
         return actor;
     }
 
-    MapActor createTerrain(Terrain terrain) {
-        return new MapActor(terrain, shapeRenderer, controllerFactory.createHighlightController(terrain));
+    MapActor createTerrain(Map map, Terrain terrain) {
+        MapActor actor = new MapActor(terrain, shapeRenderer, controllerFactory.createHighlightController(terrain));
+        actor.addListener(controllerFactory.terrainController(map, terrain));
+        return actor;
     }
 }
