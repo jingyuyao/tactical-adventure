@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model;
 
-public class Terrain extends GridObject {
+public class Terrain extends MapObject {
     private Type type;
 
     public Terrain(int x, int y, Type type) {
