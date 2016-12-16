@@ -4,30 +4,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.TacticalAdventure;
-import com.jingyuyao.tactical.map.Map;
+import com.jingyuyao.tactical.view.MapView;
 
 public class GameScreen extends ScreenAdapter {
     private final TacticalAdventure game;
-    private final Map map;
+    private final MapView mapView;
 
-    GameScreen(TacticalAdventure game, Map map) {
+    GameScreen(TacticalAdventure game, MapView mapView) {
         this.game = game;
-        this.map = map;
+        this.mapView = mapView;
 
-        Gdx.input.setInputProcessor(map.getInputProcessor());
+        Gdx.input.setInputProcessor(mapView.getInputProcessor());
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		map.act(delta);
-		map.draw();
+		mapView.act(delta);
+		mapView.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         // This is very important...
-        map.resize(width, height);
+        mapView.resize(width, height);
     }
 }

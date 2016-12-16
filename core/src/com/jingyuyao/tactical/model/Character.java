@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.object;
+package com.jingyuyao.tactical.model;
 
 public class Character extends GridObject {
 

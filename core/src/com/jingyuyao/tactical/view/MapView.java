@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -7,17 +7,18 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.object.Character;
-import com.jingyuyao.tactical.object.Terrain;
+import com.jingyuyao.tactical.controller.MapMovementProcessor;
+import com.jingyuyao.tactical.model.Character;
+import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.ArrayList;
 
 /**
  * Game representation of {@link TiledMap}.
- * Map has its own stage with actors receiving touch input.
+ * MapView has its own stage with actors receiving touch input.
  * It is rendered in a grid scale (i.e. showing a 30x20 grid).
  */
-public class Map {
+public class MapView {
     private final Stage stage;
     private final TiledMap tiledMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -31,8 +32,8 @@ public class Map {
     private final ArrayList<ArrayList<MapActor<Terrain>>> terrainMap;
     private final ArrayList<MapActor<Character>> characters = new ArrayList<MapActor<Character>>();
 
-    Map(TiledMap tiledMap, Stage stage, OrthogonalTiledMapRenderer mapRenderer,
-        ArrayList<ArrayList<MapActor<Terrain>>> terrainMap, int worldWidth, int worldHeight) {
+    MapView(TiledMap tiledMap, Stage stage, OrthogonalTiledMapRenderer mapRenderer,
+            ArrayList<ArrayList<MapActor<Terrain>>> terrainMap, int worldWidth, int worldHeight) {
         this.stage = stage;
         this.tiledMap = tiledMap;
         this.terrainMap = terrainMap;

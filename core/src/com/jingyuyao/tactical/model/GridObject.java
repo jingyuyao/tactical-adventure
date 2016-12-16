@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.object;
+package com.jingyuyao.tactical.model;
 
 /**
  * An object on the game grid.

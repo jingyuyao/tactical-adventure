@@ -4,24 +4,24 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.google.inject.Inject;
 import com.jingyuyao.tactical.TacticalAdventure;
-import com.jingyuyao.tactical.map.Map;
-import com.jingyuyao.tactical.map.MapFactory;
+import com.jingyuyao.tactical.view.MapView;
+import com.jingyuyao.tactical.view.MapViewFactory;
 
 public class GameScreenFactory {
     private final TacticalAdventure game;
     private final AssetManager assetManager;
-    private final MapFactory mapFactory;
+    private final MapViewFactory mapViewFactory;
 
     @Inject
-    public GameScreenFactory(TacticalAdventure game, AssetManager assetManager, MapFactory mapFactory) {
+    public GameScreenFactory(TacticalAdventure game, AssetManager assetManager, MapViewFactory mapViewFactory) {
         this.game = game;
         this.assetManager = assetManager;
-        this.mapFactory = mapFactory;
+        this.mapViewFactory = mapViewFactory;
     }
 
     public GameScreen create(String mapName) {
         TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
-        Map map = mapFactory.create(tiledMap);
-        return new GameScreen(game, map);
+        MapView mapView = mapViewFactory.create(tiledMap);
+        return new GameScreen(game, mapView);
     }
 }

@@ -1,9 +1,9 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.jingyuyao.tactical.object.Terrain;
+import com.jingyuyao.tactical.model.Terrain;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

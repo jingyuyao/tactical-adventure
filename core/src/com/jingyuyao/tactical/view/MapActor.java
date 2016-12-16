@@ -1,12 +1,12 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.jingyuyao.tactical.object.GridObject;
+import com.jingyuyao.tactical.model.GridObject;
 
 /**
- * An {@link Actor} on a {@link Map}.
+ * An {@link Actor} on a {@link MapView}.
  *
  * This is responsible for rendering the game object as well as relaying player actions
  * to the game object.

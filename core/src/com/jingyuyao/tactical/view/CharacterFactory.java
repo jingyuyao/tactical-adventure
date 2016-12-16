@@ -1,6 +1,6 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.view;
 
-import com.jingyuyao.tactical.object.Character;
+import com.jingyuyao.tactical.model.Character;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

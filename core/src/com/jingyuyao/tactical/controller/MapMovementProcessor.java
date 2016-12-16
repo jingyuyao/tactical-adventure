@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
@@ -32,7 +32,7 @@ public class MapMovementProcessor extends InputAdapter {
     private int currentX;
     private int currentY;
 
-    MapMovementProcessor(Stage stage, int worldWidth, int worldHeight) {
+    public MapMovementProcessor(Stage stage, int worldWidth, int worldHeight) {
         this.stage = stage;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;

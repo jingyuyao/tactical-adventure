@@ -1,11 +1,11 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.controller.HighlightListener;
 
 import javax.inject.Inject;
 

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.map;
+package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -8,12 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * Reports whether this actor is highlighted.
  * Highlighted = touched/hovered over.
  */
-class HighlightListener extends InputListener {
+public class HighlightListener extends InputListener {
     private boolean highlighted = false;
     // Prevents disabling highlight from clicking the actor
     private boolean exitFromTouch = false;
 
-    boolean isHighlighted() {
+    public boolean isHighlighted() {
         return highlighted;
     }
 
