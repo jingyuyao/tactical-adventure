@@ -1,28 +1,24 @@
 package com.jingyuyao.tactical.view;
 
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.controller.MapMovementProcessor;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.ArrayList;
 
 /**
- * Game representation of {@link TiledMap}.
- * MapView has its own stage with actors receiving touch input.
- * It is rendered in a grid scale (i.e. showing a 30x20 grid).
+ * Contains the stage and everything needed to render the stage.
+ * The stage is rendered in a grid scale (i.e. showing a 30x20 grid).
+ * Controllers (input listeners) are registered to various actors on the stage.
  */
 public class MapView {
     private final Stage stage;
     private final TiledMap tiledMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final InputMultiplexer inputMultiplexer;
 
     private final int worldWidth;
     private final int worldHeight;
@@ -40,10 +36,6 @@ public class MapView {
         this.mapRenderer = mapRenderer;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
-
-        inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new MapMovementProcessor(stage, worldWidth, worldHeight));
-        inputMultiplexer.addProcessor(stage);
     }
 
     public void act(float delta) {
@@ -74,7 +66,15 @@ public class MapView {
         character.remove();
     }
 
-    public InputProcessor getInputProcessor() {
-        return inputMultiplexer;
+    public int getWorldWidth() {
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

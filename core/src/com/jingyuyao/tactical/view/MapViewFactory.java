@@ -68,6 +68,7 @@ public class MapViewFactory {
 
         // testing
         mapView.addCharacter(createCharacter(1, 1, TILE_SCALE));
+        mapView.addCharacter(createCharacter(3, 3, TILE_SCALE));
 
         return mapView;
     }

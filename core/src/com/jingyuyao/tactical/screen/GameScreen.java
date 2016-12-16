@@ -1,20 +1,27 @@
 package com.jingyuyao.tactical.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.view.MapView;
 
+/**
+ * Glues together MVC components to create a screen.
+ */
 public class GameScreen extends ScreenAdapter {
     private final TacticalAdventure game;
     private final MapView mapView;
+    private final InputProcessor mapController;
 
-    GameScreen(TacticalAdventure game, MapView mapView) {
+    // TODO: Probably need to create a special "GameController" class when input handling gets complicated
+    GameScreen(TacticalAdventure game, MapView mapView, InputProcessor mapController) {
         this.game = game;
         this.mapView = mapView;
+        this.mapController = mapController;
 
-        Gdx.input.setInputProcessor(mapView.getInputProcessor());
+        Gdx.input.setInputProcessor(mapController);
     }
 
     @Override
