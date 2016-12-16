@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.google.inject.AbstractModule;
-import com.jingyuyao.tactical.controller.HighlightListener;
 
 import javax.inject.Singleton;
 

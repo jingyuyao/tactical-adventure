@@ -5,40 +5,40 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.jingyuyao.tactical.controller.HighlightListener;
+import com.jingyuyao.tactical.controller.HighlightController;
 import com.jingyuyao.tactical.model.MapObject;
 
 /**
  * An {@link Actor} on a {@link MapView}.
  *
- * This is responsible for rendering the game object as well as relaying player actions
- * to the game object.
+ * This is responsible for rendering the game's objects as well as relaying player actions
+ * to the them.
  *
  * Invariants:
- * - getX() and getY() should ultimately match {@code object.getX()} and {@code object.getY()} after animations
+ * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  *
- * @param <T> The game object contained in this actor
+ * @param <T> The game mapObject contained in this actor
  */
 class MapActor<T extends MapObject> extends Actor {
     private static final float ACTOR_SIZE = 1f; // world units
 
-    private final T object;
-    private final HighlightListener highlightListener;
+    private final T mapObject;
+    private final HighlightController highlightController;
     private final ShapeRenderer shapeRenderer;
     private Sprite sprite;
 
     /**
-     * Actor's initial position is set to the position of {@code object}.
-     * @param object The game object contained by this actor
-     * @param highlightListener The listener used to detect highlight changes
+     * Actor's initial position is set to the position of {@code mapObject}.
+     * @param mapObject The game mapObject contained by this actor
      * @param shapeRenderer Renderer used to draw highlights
+     * @param highlightController The listener used to detect highlight changes
      */
-    MapActor(T object, HighlightListener highlightListener, ShapeRenderer shapeRenderer) {
-        this.highlightListener = highlightListener;
-        this.object = object;
+    MapActor(T mapObject, ShapeRenderer shapeRenderer, HighlightController highlightController) {
+        this.highlightController = highlightController;
+        this.mapObject = mapObject;
         this.shapeRenderer = shapeRenderer;
-        setBounds(object.getX(), object.getY(), ACTOR_SIZE, ACTOR_SIZE);
-        addListener(highlightListener);
+        setBounds(mapObject.getX(), mapObject.getY(), ACTOR_SIZE, ACTOR_SIZE);
+        addListener(highlightController);
     }
 
     @Override
@@ -48,7 +48,7 @@ class MapActor<T extends MapObject> extends Actor {
             sprite.draw(batch);
         }
 
-        if (highlightListener.isHighlighted()) {
+        if (mapObject.isHighlighted()) {
             batch.end();
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
@@ -68,7 +68,7 @@ class MapActor<T extends MapObject> extends Actor {
         return sprite;
     }
 
-    public T getObject() {
-        return object;
+    public T getMapObject() {
+        return mapObject;
     }
 }

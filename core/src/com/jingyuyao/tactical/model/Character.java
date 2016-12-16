@@ -6,12 +6,19 @@ public class Character extends MapObject {
      */
     private final String name;
 
-    public Character(String name, int x, int y) {
+    Character(String name, int x, int y) {
         super(x, y);
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Character{" +
+                "name='" + name + '\'' +
+                "} " + super.toString();
     }
 }

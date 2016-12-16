@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model;
 public class Terrain extends MapObject {
     private Type type;
 
-    public Terrain(int x, int y, Type type) {
+    Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
     }

@@ -6,6 +6,7 @@ package com.jingyuyao.tactical.model;
 public class MapObject {
     private int x;
     private int y;
+    private boolean highlighted = false;
 
     MapObject(int x, int y) {
         this.x = x;
@@ -18,5 +19,22 @@ public class MapObject {
 
     public int getY() {
         return y;
+    }
+
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    @Override
+    public String toString() {
+        return "MapObject{" +
+                "x=" + x +
+                ", y=" + y +
+                ", highlighted=" + highlighted +
+                '}';
     }
 }
