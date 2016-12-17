@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.AssetsModule;
 import com.jingyuyao.tactical.controller.CharacterController;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.controller.HighlightController;
 import com.jingyuyao.tactical.controller.TerrainController;
 import com.jingyuyao.tactical.model.Character;

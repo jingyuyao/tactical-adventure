@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.TacticalAdventure;
+import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.view.MapView;
 
 /**
@@ -13,15 +14,15 @@ import com.jingyuyao.tactical.view.MapView;
 public class GameScreen extends ScreenAdapter {
     private final TacticalAdventure game;
     private final MapView mapView;
-    private final InputProcessor mapController;
+    private final MapController mapController;
 
     // TODO: Probably need to create a special "GameController" class when input handling gets complicated
-    GameScreen(TacticalAdventure game, MapView mapView, InputProcessor mapController) {
+    GameScreen(TacticalAdventure game, MapView mapView, MapController mapController) {
         this.game = game;
         this.mapView = mapView;
         this.mapController = mapController;
 
-        Gdx.input.setInputProcessor(mapController);
+        Gdx.input.setInputProcessor(mapController.getInputProcessor());
     }
 
     @Override

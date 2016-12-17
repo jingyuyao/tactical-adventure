@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.concurrent.Executors;
@@ -21,19 +20,21 @@ public class CameraController extends InputAdapter {
     private final Runnable screenMover = new Runnable() {
         @Override
         public void run() {
-            adjustViewPort();
+            adjustCamera();
         }
     };
     private ScheduledFuture<?> screenMoverHandle;
-    private final Stage stage;
+    private final Viewport viewport;
+    private final Camera camera;
     private final int worldWidth;
     private final int worldHeight;
     // Raw mouse coordinate on screen (including gutters)
     private int currentX;
     private int currentY;
 
-    CameraController(Stage stage, int worldWidth, int worldHeight) {
-        this.stage = stage;
+    CameraController(Viewport viewport, Camera camera, int worldWidth, int worldHeight) {
+        this.viewport = viewport;
+        this.camera = camera;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
     }
@@ -67,8 +68,7 @@ public class CameraController extends InputAdapter {
         return false;
     }
 
-    private void adjustViewPort() {
-        Viewport viewport = stage.getViewport();
+    private void adjustCamera() {
         // Height and width of the screen (excluding gutters)
         int screenWidth = viewport.getScreenWidth();
         int screenHeight = viewport.getScreenHeight();
@@ -93,7 +93,6 @@ public class CameraController extends InputAdapter {
             yDelta = -MOVEMENT_DELTA;
         }
 
-        Camera camera = stage.getCamera();
         camera.translate(xDelta, yDelta, 0);
 
         // Need to prevent moving camera outside of world
