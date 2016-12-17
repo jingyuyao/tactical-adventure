@@ -21,13 +21,6 @@ public class HighlightController extends InputListener {
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        MapObject lastHighlighted = map.getHighlighted();
-        if (lastHighlighted != mapObject) {
-            if (lastHighlighted != null) {
-                lastHighlighted.setHighlighted(false);
-            }
-            mapObject.setHighlighted(true);
-            map.setHighlighted(mapObject);
-        }
+        map.highlight(mapObject);
     }
 }

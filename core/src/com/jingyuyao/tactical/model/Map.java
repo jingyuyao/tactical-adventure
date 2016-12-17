@@ -1,10 +1,11 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.util.HasCalls;
 
 import java.util.*;
 
-public class Map {
+public class Map extends HasCalls<Map.Calls> {
     /**
      * (0,0) starts at bottom left.
      */
@@ -51,6 +52,10 @@ public class Map {
      */
     public void select(Character newSelected) {
         Preconditions.checkNotNull(newSelected, "Don't call select with null");
+        if (selected == newSelected) {
+            unselect();
+            return;
+        }
         if (selected != null) {
             unselect();
         }
@@ -65,12 +70,14 @@ public class Map {
         }
     }
 
-    public MapObject getHighlighted() {
-        return highlighted;
-    }
-
-    public void setHighlighted(MapObject highlighted) {
-        this.highlighted = highlighted;
+    public void highlight(MapObject newHighlight) {
+        if (highlighted != newHighlight) {
+            if (highlighted != null) {
+                highlighted.setHighlighted(false);
+            }
+            newHighlight.setHighlighted(true);
+            highlighted = newHighlight;
+        }
     }
 
     public void showReachableTerrains(Character character) {
@@ -80,6 +87,7 @@ public class Map {
         for (Terrain terrain : reachablePath.getReachableTerrains()) {
             terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
         }
+        call(Calls.TERRAINS_UPDATE);
     }
 
     public void hideReachableTerrain(Character character) {
@@ -88,12 +96,51 @@ public class Map {
         for (Terrain terrain : reachablePath.getReachableTerrains()) {
             terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
         }
+        call(Calls.TERRAINS_UPDATE);
     }
 
     public void moveSelectedTo(Terrain targetTerrain) {
         Character character = selected;
         unselect();
         character.setPosition(targetTerrain.getX(), targetTerrain.getY());
+        call(Calls.CHARACTERS_UPDATE);
+    }
+
+    /**
+     * Convenience method to get all the terrains.
+     */
+    public Iterable<Terrain> getTerrains() {
+        return new Iterable<Terrain>() {
+            @Override
+            public Iterator<Terrain> iterator() {
+                return new Iterator<Terrain>() {
+                    private int ix = 0;
+                    private int iy = 0;
+
+                    @Override
+                    public boolean hasNext() {
+                        return iy < worldHeight;
+                    }
+
+                    @Override
+                    public Terrain next() {
+                        Terrain terrain = getTerrain(ix, iy);
+
+                        if (++ix == worldWidth) {
+                            ix = 0;
+                            iy++;
+                        }
+
+                        return terrain;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("nah");
+                    }
+                };
+            }
+        };
     }
 
     /**
@@ -162,40 +209,8 @@ public class Map {
         return adjacentTerrain;
     }
 
-    /**
-     * Convenience method to get all the terrains.
-     */
-    public Iterable<Terrain> getTerrains() {
-        return new Iterable<Terrain>() {
-            @Override
-            public Iterator<Terrain> iterator() {
-                return new Iterator<Terrain>() {
-                    private int ix = 0;
-                    private int iy = 0;
-
-                    @Override
-                    public boolean hasNext() {
-                        return iy < worldHeight;
-                    }
-
-                    @Override
-                    public Terrain next() {
-                        Terrain terrain = getTerrain(ix, iy);
-
-                        if (++ix == worldWidth) {
-                            ix = 0;
-                            iy++;
-                        }
-
-                        return terrain;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("nah");
-                    }
-                };
-            }
-        };
+    public enum Calls {
+        CHARACTERS_UPDATE,
+        TERRAINS_UPDATE
     }
 }

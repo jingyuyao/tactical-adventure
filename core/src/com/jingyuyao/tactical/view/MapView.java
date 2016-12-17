@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
 import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.util.Callable;
 
 /**
  * Contains and renders the stage.
@@ -38,13 +39,22 @@ public class MapView {
         this.actorMap = actorMap;
         this.mapRenderer = mapRenderer;
         this.reachableSprite = reachableSprite;
+        map.addCall(Map.Calls.CHARACTERS_UPDATE, new Callable() {
+            @Override
+            public void call() {
+                updateCharacters();
+            }
+        });
+        map.addCall(Map.Calls.TERRAINS_UPDATE, new Callable() {
+            @Override
+            public void call() {
+                updateTerrains();
+            }
+        });
     }
 
     public void act(float delta) {
         stage.act(delta);
-        // TODO: Uses listeners to call these
-        updateTerrains();
-        updateCharacters();
     }
 
     public void draw() {
@@ -84,10 +94,7 @@ public class MapView {
                 MoveToAction moveAction = new MoveToAction();
                 moveAction.setPosition(character.getX(), character.getY());
                 moveAction.setDuration(0.5f);
-                // HACK HACK!
-                if (actor.getActions().size == 0) {
-                    actor.addAction(moveAction);
-                }
+                actor.addAction(moveAction);
             }
         }
     }
