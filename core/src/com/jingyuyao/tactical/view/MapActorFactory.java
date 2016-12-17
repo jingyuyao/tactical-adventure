@@ -11,17 +11,14 @@ import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.Terrain;
 
-import javax.inject.Inject;
-
 /**
  * Creates {@link MapActor} from models and adds the proper controllers.
  */
-public class MapActorFactory {
+class MapActorFactory {
     private final AssetManager assetManager;
     private final Sprite highlight;
 
-    @Inject
-    public MapActorFactory(AssetManager assetManager) {
+    MapActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
         highlight = new Sprite(assetManager.get(AssetsModule.HIGHLIGHT, Texture.class));
     }

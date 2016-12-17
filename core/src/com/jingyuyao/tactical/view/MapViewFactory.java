@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
 import com.jingyuyao.tactical.model.Terrain;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 
 /**
@@ -29,9 +28,8 @@ public class MapViewFactory {
     private final MapActorFactory mapActorFactory;
     private final Sprite reachableSprite;
 
-    @Inject
-    public MapViewFactory(MapActorFactory mapActorFactory, AssetManager assetManager) {
-        this.mapActorFactory = mapActorFactory;
+    public MapViewFactory(AssetManager assetManager) {
+        mapActorFactory = new MapActorFactory(assetManager);
         reachableSprite = new Sprite(assetManager.get(AssetsModule.BLUE_OVERLAY, Texture.class));
     }
 

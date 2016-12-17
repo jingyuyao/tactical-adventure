@@ -17,10 +17,10 @@ public class GameScreenFactory {
     private final MapViewFactory mapViewFactory;
 
     @Inject
-    public GameScreenFactory(TacticalAdventure game, AssetManager assetManager, MapViewFactory mapViewFactory) {
+    public GameScreenFactory(TacticalAdventure game, AssetManager assetManager) {
         this.game = game;
         this.assetManager = assetManager;
-        this.mapViewFactory = mapViewFactory;
+        mapViewFactory = new MapViewFactory(assetManager);
     }
 
     public GameScreen create(String mapName) {
