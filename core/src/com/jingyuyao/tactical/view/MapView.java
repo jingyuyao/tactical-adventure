@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
+import com.jingyuyao.tactical.model.graph.Path;
 import com.jingyuyao.tactical.util.Callable;
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class MapView {
         }
     }
 
-    private SequenceAction getMoveSequence(TerrainPath path) {
+    private SequenceAction getMoveSequence(Path<Terrain> path) {
         SequenceAction sequence = sequence();
         for (Terrain terrain : path.getRoute()) {
             sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));

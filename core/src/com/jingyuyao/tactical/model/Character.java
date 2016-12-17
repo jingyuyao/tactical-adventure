@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.graph.Path;
 
 public class Character extends MapObject {
     /**
@@ -8,7 +9,7 @@ public class Character extends MapObject {
      */
     private final String name;
     private int moveDistance = 5; // Hard code for now
-    private TerrainPath lastTerrainGraph;
+    private Path<Terrain> lastTerrainGraph;
 
     Character(String name, int x, int y) {
         super(x, y);
@@ -19,7 +20,7 @@ public class Character extends MapObject {
         return name;
     }
 
-    public TerrainPath getLastPath() {
+    public Path<Terrain> getLastPath() {
         return lastTerrainGraph;
     }
 
@@ -30,7 +31,7 @@ public class Character extends MapObject {
     /**
      * @param pathToCoordinate The single path to the new coordinate
      */
-    void moveTo(int x, int y, TerrainPath pathToCoordinate) {
+    void moveTo(int x, int y, Path<Terrain> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
         setX(x);
         setY(y);
