@@ -9,9 +9,6 @@ import com.jingyuyao.tactical.model.MapObject;
 /**
  * An {@link Actor} on a {@link MapView}.
  *
- * This is responsible for rendering the game's objects as well as relaying player actions
- * to the them.
- *
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
@@ -48,7 +45,11 @@ public class MapActor extends Actor {
         }
     }
 
-    public void setSprite(Sprite sprite) {
+    void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+    float getSize() {
+        return ACTOR_SIZE;
     }
 }

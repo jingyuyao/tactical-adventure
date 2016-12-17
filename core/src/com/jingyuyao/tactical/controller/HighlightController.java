@@ -14,7 +14,7 @@ public class HighlightController extends InputListener {
     private final Map map;
     private final MapObject mapObject;
 
-    HighlightController(Map map, MapObject mapObject) {
+    public HighlightController(Map map, MapObject mapObject) {
         this.map = map;
         this.mapObject = mapObject;
     }

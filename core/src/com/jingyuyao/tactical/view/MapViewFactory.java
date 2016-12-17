@@ -23,8 +23,8 @@ import java.util.HashMap;
 public class MapViewFactory {
     private static final int TILE_SIZE = 32; // pixels
     private static final float RENDER_SCALE = 1f / TILE_SIZE;
-    private static final int MAP_WIDTH = 25; // # tiles
-    private static final int MAP_HEIGHT = 15; // # tiles
+    private static final int VIEWPORT_WIDTH = 25; // # tiles
+    private static final int VIEWPORT_HEIGHT = 15; // # tiles
 
     private final MapActorFactory mapActorFactory;
     private final Sprite reachableSprite;
@@ -40,7 +40,7 @@ public class MapViewFactory {
      */
     public MapView create(TiledMap tiledMap, Map map) {
         OrthographicCamera camera = new OrthographicCamera();
-        FitViewport viewport = new FitViewport(MAP_WIDTH, MAP_HEIGHT, camera);
+        FitViewport viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
         Stage stage = new Stage(viewport);
         java.util.Map<MapObject, MapActor> actorMap = new HashMap<MapObject, MapActor>();
 

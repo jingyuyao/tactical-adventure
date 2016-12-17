@@ -2,25 +2,21 @@ package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.*;
 
-public class CharacterController extends InputListener {
-    private final Map map;
+public class CharacterController extends MapActorController {
     private final Character character;
 
-    CharacterController(Map map, Character character) {
-        this.map = map;
+    public CharacterController(Map map, Character character, float actorSize) {
+        super(map, actorSize);
         this.character = character;
     }
 
     @Override
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+    public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log("CharacterController", character.toString());
 
-        map.select(character);
-
-        return false;
+        getMap().select(character);
     }
 }
