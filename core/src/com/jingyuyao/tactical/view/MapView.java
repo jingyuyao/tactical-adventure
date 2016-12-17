@@ -3,13 +3,20 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
 import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.util.Callable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static java.lang.Math.*;
 
 /**
  * Contains and renders the stage.
@@ -17,6 +24,8 @@ import com.jingyuyao.tactical.util.Callable;
  * Controllers (input listeners) are registered to various actors on the stage.
  */
 public class MapView {
+    private static final float ACTOR_MOVE_SPEED = 5f; // world unit per sec
+
     private final Map map;
     private final Stage stage;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -87,15 +96,42 @@ public class MapView {
         }
     }
 
+    /**
+     * - Go through each character and inspect if coordinate has changed
+     * - If changed: remove controllers from actor, move actor then re-add controllers
+     */
     private void updateCharacters() {
         for (Character character : map.getCharacters()) {
-            MapActor actor = actorMap.get(character);
+            final MapActor actor = actorMap.get(character);
             if (actor.getX() != character.getX() || actor.getY() != character.getY()) {
-                MoveToAction moveAction = new MoveToAction();
-                moveAction.setPosition(character.getX(), character.getY());
-                moveAction.setDuration(0.5f);
-                actor.addAction(moveAction);
+                float distance = distance(character.getX(), character.getY(), actor.getX(), actor.getY());
+                float duration = distance / ACTOR_MOVE_SPEED;
+                final Collection<EventListener> actorListeners = popAllListeners(actor);
+                actor.addAction(sequence(
+                        moveTo(character.getX(), character.getY(), duration),
+                        run(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (EventListener listener : actorListeners) {
+                                    actor.addListener(listener);
+                                }
+                            }
+                        })
+                ));
             }
         }
+    }
+
+    private Collection<EventListener> popAllListeners(Actor actor) {
+        Collection<EventListener> listeners = new ArrayList<EventListener>();
+        for (EventListener listener : actor.getListeners()) {
+            listeners.add(listener);
+        }
+        actor.getListeners().clear();
+        return listeners;
+    }
+
+    private float distance(float x, float y, float newX, float newY) {
+        return (float) sqrt(pow(newX - x, 2) + pow(newY - y, 2));
     }
 }

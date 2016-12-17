@@ -17,7 +17,6 @@ public class TerrainController extends MapActorController {
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log("TerrainController", terrain.toString());
 
-        // TODO: Do we need to suspend input while moving? probably need to add to game controller
         switch (terrain.getPotentialTarget()) {
             case NONE:
                 getMap().deselect();
