@@ -22,7 +22,7 @@ public class TerrainController extends InputListener {
         // TODO: Do we need to suspend input while moving? probably need to add to game controller
         switch (terrain.getPotentialTarget()) {
             case NONE:
-                map.unselect();
+                map.deselect();
                 break;
             case REACHABLE:
                 map.moveSelectedTo(terrain);

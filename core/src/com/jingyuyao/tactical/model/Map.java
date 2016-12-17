@@ -53,17 +53,15 @@ public class Map extends HasCalls<Map.Calls> {
     public void select(Character newSelected) {
         Preconditions.checkNotNull(newSelected, "Don't call select with null");
         if (selected == newSelected) {
-            unselect();
+            deselect();
             return;
         }
-        if (selected != null) {
-            unselect();
-        }
+        deselect();
         showReachableTerrains(newSelected);
         selected = newSelected;
     }
 
-    public void unselect() {
+    public void deselect() {
         if (selected != null) {
             hideReachableTerrain(selected);
             selected = null;
@@ -80,28 +78,9 @@ public class Map extends HasCalls<Map.Calls> {
         }
     }
 
-    public void showReachableTerrains(Character character) {
-        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
-        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
-        // TODO: Set correct potential target depending on character type i.e. enemy vs player
-        for (Terrain terrain : reachablePath.getReachableTerrains()) {
-            terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
-        }
-        call(Calls.TERRAINS_UPDATE);
-    }
-
-    public void hideReachableTerrain(Character character) {
-        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
-        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
-        for (Terrain terrain : reachablePath.getReachableTerrains()) {
-            terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
-        }
-        call(Calls.TERRAINS_UPDATE);
-    }
-
     public void moveSelectedTo(Terrain targetTerrain) {
         Character character = selected;
-        unselect();
+        deselect();
         character.setPosition(targetTerrain.getX(), targetTerrain.getY());
         call(Calls.CHARACTERS_UPDATE);
     }
@@ -141,6 +120,25 @@ public class Map extends HasCalls<Map.Calls> {
                 };
             }
         };
+    }
+
+    private void showReachableTerrains(Character character) {
+        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
+        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
+        // TODO: Set correct potential target depending on character type i.e. enemy vs player
+        for (Terrain terrain : reachablePath.getReachableTerrains()) {
+            terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
+        }
+        call(Calls.TERRAINS_UPDATE);
+    }
+
+    private void hideReachableTerrain(Character character) {
+        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
+        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
+        for (Terrain terrain : reachablePath.getReachableTerrains()) {
+            terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
+        }
+        call(Calls.TERRAINS_UPDATE);
     }
 
     /**
