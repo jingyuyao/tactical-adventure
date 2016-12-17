@@ -4,19 +4,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
 
-import javax.inject.Inject;
-
 public class MapFactory {
     private static final String TERRAIN_LAYER = "terrain";
 
-    private final TerrainFactory terrainFactory;
-
-    @Inject
-    public MapFactory(TerrainFactory terrainFactory) {
-        this.terrainFactory = terrainFactory;
-    }
-
-    public Map create(TiledMap tiledMap) {
+    public static Map create(TiledMap tiledMap) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 
@@ -30,14 +21,14 @@ public class MapFactory {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                Terrain terrain = terrainFactory.create(x, y, cell);
+                Terrain terrain = TerrainFactory.create(x, y, cell);
                 map.setTerrain(terrain, x, y);
             }
         }
 
         // Testing
-        map.addCharacter(new Character("john", 1, 1));
-        map.addCharacter(new Character("billy", 5, 5));
+        map.addCharacter(new Character("john", 5, 5));
+        map.addCharacter(new Character("billy", 10, 10));
 
         return map;
     }
