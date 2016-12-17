@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.graph;
 
-import com.jingyuyao.tactical.model.MapObject;
+import com.jingyuyao.tactical.model.HasCoordinate;
 
-abstract class Node<T extends MapObject> implements Comparable<Node<T>> {
+abstract class Node<T extends HasCoordinate> implements Comparable<Node<T>> {
     private final T mapObject;
     private Node<T> parent;
     private int distance;
@@ -13,19 +13,20 @@ abstract class Node<T extends MapObject> implements Comparable<Node<T>> {
         this.distance = distance;
     }
 
-    public T getMapObject() {
+    @Override
+    public int compareTo(Node<T> node) {
+        return getDistance() - node.getDistance();
+    }
+
+    T getMapObject() {
         return mapObject;
     }
 
-    Node<T> getParent() {
-        return parent;
-    }
-
-    public int getDistance() {
+    int getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    void setDistance(int distance) {
         this.distance = distance;
     }
 
@@ -33,21 +34,28 @@ abstract class Node<T extends MapObject> implements Comparable<Node<T>> {
      * Changes the parent to {@code newParent}. Removes this node from the previous parent if it exists.
      * @param newParent The new parent of this node
      */
-    public void changeParent(Node<T> newParent) {
+    void changeParent(Node<T> newParent) {
         if (getParent() != null) {
             getParent().removeChild(this);
         }
         setParent(newParent);
     }
 
+    private Node<T> getParent() {
+        return parent;
+    }
+
     private void setParent(Node<T> parent) {
         this.parent = parent;
     }
 
-    @Override
-    public int compareTo(Node<T> node) {
-        return getDistance() - node.getDistance();
-    }
-
     protected abstract void removeChild(Node<T> child);
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "mapObject=" + mapObject +
+                ", distance=" + distance +
+                '}';
+    }
 }

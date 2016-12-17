@@ -24,7 +24,7 @@ public class GameScreenFactory {
         TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
         Map map = MapFactory.create(tiledMap);
         MapView mapView = mapViewFactory.create(tiledMap, map);
-        MapController mapController = new MapController(mapView.getStage(), map.getWorldWidth(), map.getWorldHeight());
+        MapController mapController = new MapController(mapView.getStage(), map.getWidth(), map.getHeight());
         return new GameScreen(game, mapView, mapController);
     }
 }

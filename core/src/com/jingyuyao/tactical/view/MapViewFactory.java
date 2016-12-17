@@ -42,9 +42,9 @@ public class MapViewFactory {
         Stage stage = new Stage(viewport);
         java.util.Map<MapObject, MapActor> actorMap = new HashMap<MapObject, MapActor>();
 
-        for (int x = 0; x < map.getWorldWidth(); x++) {
-            for (int y = 0; y < map.getWorldHeight(); y++) {
-                Terrain terrain = map.getTerrain(x, y);
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Terrain terrain = map.get(x, y);
                 MapActor actor = mapActorFactory.createTerrain(map, terrain);
                 stage.addActor(actor);
                 actorMap.put(terrain, actor);

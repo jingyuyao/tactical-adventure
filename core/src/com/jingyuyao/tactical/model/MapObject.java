@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model;
 /**
  * An object on the game grid.
  */
-public class MapObject {
+public class MapObject implements HasCoordinate {
     private int x;
     private int y;
     private boolean highlighted = false;
@@ -13,10 +13,12 @@ public class MapObject {
         this.y = y;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }

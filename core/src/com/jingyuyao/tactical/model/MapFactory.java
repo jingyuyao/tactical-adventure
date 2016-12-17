@@ -22,7 +22,7 @@ public class MapFactory {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
                 Terrain terrain = TerrainFactory.create(x, y, cell);
-                map.setTerrain(terrain, x, y);
+                map.set(terrain, x, y);
             }
         }
 

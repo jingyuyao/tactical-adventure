@@ -1,12 +1,20 @@
 package com.jingyuyao.tactical.model;
 
-public class Terrain extends MapObject {
+import com.jingyuyao.tactical.model.graph.HasWeight;
+
+public class Terrain extends MapObject implements HasWeight {
     private Type type;
     private PotentialTarget potentialTarget = PotentialTarget.NONE;
 
     Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
+    }
+
+    @Override
+    public int getWeight() {
+        // TODO: Implement this
+        return 1;
     }
 
     public PotentialTarget getPotentialTarget() {

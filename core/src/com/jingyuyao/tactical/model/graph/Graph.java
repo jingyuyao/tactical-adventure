@@ -1,25 +1,25 @@
 package com.jingyuyao.tactical.model.graph;
 
-import com.jingyuyao.tactical.model.MapObject;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.HasCoordinate;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Graph is an acyclic graph of terrain nodes.
+ * Graph is an acyclic graph of nodes.
  */
-public class Graph<T extends MapObject> extends Node<T> {
+public class Graph<T extends HasCoordinate> extends Node<T> {
     private final Set<Graph<T>> neighbors;
 
-    public Graph(T mapObject, Graph<T> parent, int distance) {
+    Graph(T mapObject, Graph<T> parent, int distance) {
         super(mapObject, parent, distance);
         neighbors = new HashSet<Graph<T>>();
     }
 
-    public void addNextPath(Graph<T> graph) {
-        neighbors.add(graph);
+    @Override
+    protected void removeChild(Node<T> child) {
+        getNeighbors().remove(child);
     }
 
     /**
@@ -36,7 +36,7 @@ public class Graph<T extends MapObject> extends Node<T> {
         if (x == getMapObject().getX() && y == getMapObject().getY()) {
             return path;
         }
-        for (Graph<T> graph : neighbors) {
+        for (Graph<T> graph : getNeighbors()) {
             Path<T> found = graph.getPathTo(x, y);
             if (found != null) {
                 found.changeParent(path);
@@ -49,35 +49,35 @@ public class Graph<T extends MapObject> extends Node<T> {
     }
 
     /**
-     * @return All {@link Terrain} contained in this path
+     * @return All objects contained in this graph
      */
     public Collection<T> getAllObjects() {
-        Set<T> terrains = new HashSet<T>();
-        getAllObjects(terrains);
-        return terrains;
+        Set<T> objects = new HashSet<T>();
+        getAllObjects(objects);
+        return objects;
+    }
+
+    void addNextPath(Graph<T> graph) {
+        getNeighbors().add(graph);
     }
 
     private void getAllObjects(Set<T> accumulator) {
         accumulator.add(getMapObject());
-        for (Graph<T> graph : neighbors) {
+        for (Graph<T> graph : getNeighbors()) {
             if (!accumulator.contains(graph.getMapObject())) {
                 graph.getAllObjects(accumulator);
             }
         }
     }
 
-    @Override
-    protected void removeChild(Node<T> child) {
-        neighbors.remove(child);
+    private Set<Graph<T>> getNeighbors() {
+        return neighbors;
     }
 
     @Override
     public String toString() {
         return "Graph{" +
-                "terrain=" + getMapObject() +
-                ", neighbors=" + neighbors +
-                ", parent.terrain=" + (getParent() != null ? getParent().getMapObject() : null) +
-                ", distance=" + getDistance() +
-                '}';
+                "neighbors.size()=" + getNeighbors().size() +
+                "} " + super.toString();
     }
 }
