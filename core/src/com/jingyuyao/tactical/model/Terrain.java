@@ -13,7 +13,7 @@ public class Terrain extends MapObject {
         return potentialTarget;
     }
 
-    public void setPotentialTarget(PotentialTarget potentialTarget) {
+    void setPotentialTarget(PotentialTarget potentialTarget) {
         this.potentialTarget = potentialTarget;
     }
 

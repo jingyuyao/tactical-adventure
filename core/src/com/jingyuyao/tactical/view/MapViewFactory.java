@@ -59,6 +59,6 @@ public class MapViewFactory {
         }
 
         return new MapView(
-                map, stage, actorMap, new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE),reachableSprite);
+                map, stage, actorMap, new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE), reachableSprite);
     }
 }

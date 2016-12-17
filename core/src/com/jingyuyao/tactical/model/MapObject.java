@@ -13,11 +13,6 @@ public class MapObject {
         this.y = y;
     }
 
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
     public int getX() {
         return x;
     }
@@ -30,8 +25,17 @@ public class MapObject {
         return highlighted;
     }
 
-    public void setHighlighted(boolean highlighted) {
+    void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
+    }
+
+    // Setters are protected so children can manage how they are updated
+    protected void setX(int x) {
+        this.x = x;
+    }
+
+    protected void setY(int y) {
+        this.y = y;
     }
 
     @Override

@@ -80,8 +80,9 @@ public class Map extends HasCalls<Map.Calls> {
 
     public void moveSelectedTo(Terrain targetTerrain) {
         Character character = selected;
+        // Needs to be called before character moves so reachable terrains can be hidden correctly
         deselect();
-        character.setPosition(targetTerrain.getX(), targetTerrain.getY());
+        moveCharacter(character, targetTerrain);
         call(Calls.CHARACTERS_UPDATE);
     }
 
@@ -122,20 +123,26 @@ public class Map extends HasCalls<Map.Calls> {
         };
     }
 
+    private void moveCharacter(Character character, Terrain terrain) {
+        int x = terrain.getX();
+        int y = terrain.getY();
+        Path reachablePath = getReachablePath(character);
+        Path pathToCoordinate = reachablePath.getPathTo(x, y);
+        if (pathToCoordinate != null) {
+            character.moveTo(x, y, pathToCoordinate);
+        }
+    }
+
     private void showReachableTerrains(Character character) {
-        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
-        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
         // TODO: Set correct potential target depending on character type i.e. enemy vs player
-        for (Terrain terrain : reachablePath.getReachableTerrains()) {
+        for (Terrain terrain : getReachablePath(character).getAllTerrains()) {
             terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
         }
         call(Calls.TERRAINS_UPDATE);
     }
 
     private void hideReachableTerrain(Character character) {
-        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
-        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
-        for (Terrain terrain : reachablePath.getReachableTerrains()) {
+        for (Terrain terrain : getReachablePath(character).getAllTerrains()) {
             terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
         }
         call(Calls.TERRAINS_UPDATE);
@@ -144,7 +151,8 @@ public class Map extends HasCalls<Map.Calls> {
     /**
      * Dijkstra's path finding up to {@code moveDistance} weight
      */
-    private Path getReachablePath(Terrain startingTerrain, int moveDistance) {
+    private Path getReachablePath(Character character) {
+        Terrain startingTerrain = getTerrain(character.getX(), character.getY());
         java.util.Map<Terrain, Path> pathMap = new HashMap<Terrain, Path>();
         PriorityQueue<Path> pathQueue = new PriorityQueue<Path>();
         Path startingPath = new Path(startingTerrain, null, 0);
@@ -162,7 +170,7 @@ public class Map extends HasCalls<Map.Calls> {
 
                 // TODO: Take terrain type into weight consideration
                 int distance = minPath.getDistance() + 1;
-                if (distance > moveDistance) {
+                if (distance > character.getMoveDistance()) {
                     continue;
                 }
 
@@ -171,7 +179,7 @@ public class Map extends HasCalls<Map.Calls> {
                     nextPath = pathMap.get(terrain);
                     pathQueue.remove(nextPath);
                     if (distance < nextPath.getDistance()) {
-                        nextPath.updateParent(minPath, distance);
+                        nextPath.changeParent(minPath, distance);
                         minPath.addNextPath(nextPath);
                     }
                 } else {

@@ -6,17 +6,16 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.MapObject;
-import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.util.Callable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-import static java.lang.Math.*;
 
 /**
  * Contains and renders the stage.
@@ -24,7 +23,7 @@ import static java.lang.Math.*;
  * Controllers (input listeners) are registered to various actors on the stage.
  */
 public class MapView {
-    private static final float ACTOR_MOVE_SPEED = 5f; // world unit per sec
+    private static final float TIME_PER_UNIT = 0.1f; // time to move across one world unit in seconds
 
     private final Map map;
     private final Stage stage;
@@ -51,13 +50,13 @@ public class MapView {
         map.addCall(Map.Calls.CHARACTERS_UPDATE, new Callable() {
             @Override
             public void call() {
-                updateCharacters();
+                updateCharacterPositions();
             }
         });
         map.addCall(Map.Calls.TERRAINS_UPDATE, new Callable() {
             @Override
             public void call() {
-                updateTerrains();
+                updateTerrainOverlays();
             }
         });
     }
@@ -80,7 +79,7 @@ public class MapView {
         return stage;
     }
 
-    private void updateTerrains() {
+    private void updateTerrainOverlays() {
         for (Terrain terrain : map.getTerrains()) {
             MapActor actor = actorMap.get(terrain);
             switch (terrain.getPotentialTarget()) {
@@ -100,26 +99,33 @@ public class MapView {
      * - Go through each character and inspect if coordinate has changed
      * - If changed: remove controllers from actor, move actor then re-add controllers
      */
-    private void updateCharacters() {
+    private void updateCharacterPositions() {
         for (Character character : map.getCharacters()) {
             final MapActor actor = actorMap.get(character);
             if (actor.getX() != character.getX() || actor.getY() != character.getY()) {
-                float distance = distance(character.getX(), character.getY(), actor.getX(), actor.getY());
-                float duration = distance / ACTOR_MOVE_SPEED;
                 final Collection<EventListener> actorListeners = popAllListeners(actor);
-                actor.addAction(sequence(
-                        moveTo(character.getX(), character.getY(), duration),
-                        run(new Runnable() {
-                            @Override
-                            public void run() {
-                                for (EventListener listener : actorListeners) {
-                                    actor.addListener(listener);
-                                }
-                            }
-                        })
-                ));
+                SequenceAction moveSequence = getMoveSequence(character.getLastPath());
+                moveSequence.addAction(run(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (EventListener listener : actorListeners) {
+                            actor.addListener(listener);
+                        }
+                    }
+                }));
+                actor.addAction(moveSequence);
             }
         }
+    }
+
+    private SequenceAction getMoveSequence(Path path) {
+        Preconditions.checkNotNull(path);
+
+        SequenceAction sequence = sequence();
+        for (Terrain terrain : path.getTerrainRoute()) {
+            sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
+        }
+        return sequence;
     }
 
     private Collection<EventListener> popAllListeners(Actor actor) {
@@ -129,9 +135,5 @@ public class MapView {
         }
         actor.getListeners().clear();
         return listeners;
-    }
-
-    private float distance(float x, float y, float newX, float newY) {
-        return (float) sqrt(pow(newX - x, 2) + pow(newY - y, 2));
     }
 }
