@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.TacticalAdventure;
