@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.util.Callable;
@@ -118,11 +117,9 @@ public class MapView {
         }
     }
 
-    private SequenceAction getMoveSequence(Path path) {
-        Preconditions.checkNotNull(path);
-
+    private SequenceAction getMoveSequence(TerrainPath path) {
         SequenceAction sequence = sequence();
-        for (Terrain terrain : path.getTerrainRoute()) {
+        for (Terrain terrain : path.getRoute()) {
             sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
         }
         return sequence;

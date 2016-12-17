@@ -8,7 +8,7 @@ public class Character extends MapObject {
      */
     private final String name;
     private int moveDistance = 5; // Hard code for now
-    private Path lastPath;
+    private TerrainPath lastTerrainGraph;
 
     Character(String name, int x, int y) {
         super(x, y);
@@ -19,8 +19,8 @@ public class Character extends MapObject {
         return name;
     }
 
-    public Path getLastPath() {
-        return lastPath;
+    public TerrainPath getLastPath() {
+        return lastTerrainGraph;
     }
 
     int getMoveDistance() {
@@ -30,11 +30,11 @@ public class Character extends MapObject {
     /**
      * @param pathToCoordinate The single path to the new coordinate
      */
-    void moveTo(int x, int y, Path pathToCoordinate) {
+    void moveTo(int x, int y, TerrainPath pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
         setX(x);
         setY(y);
-        lastPath = pathToCoordinate;
+        lastTerrainGraph = pathToCoordinate;
     }
 
     @Override

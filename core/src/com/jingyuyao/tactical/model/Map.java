@@ -126,8 +126,8 @@ public class Map extends HasCalls<Map.Calls> {
     private void moveCharacter(Character character, Terrain terrain) {
         int x = terrain.getX();
         int y = terrain.getY();
-        Path reachablePath = getReachablePath(character);
-        Path pathToCoordinate = reachablePath.getPathTo(x, y);
+        TerrainGraph reachableGraph = createReachableGraph(character);
+        TerrainPath pathToCoordinate = reachableGraph.getPathTo(x, y);
         if (pathToCoordinate != null) {
             character.moveTo(x, y, pathToCoordinate);
         }
@@ -135,14 +135,14 @@ public class Map extends HasCalls<Map.Calls> {
 
     private void showReachableTerrains(Character character) {
         // TODO: Set correct potential target depending on character type i.e. enemy vs player
-        for (Terrain terrain : getReachablePath(character).getAllTerrains()) {
+        for (Terrain terrain : createReachableGraph(character).getAllTerrains()) {
             terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
         }
         call(Calls.TERRAINS_UPDATE);
     }
 
     private void hideReachableTerrain(Character character) {
-        for (Terrain terrain : getReachablePath(character).getAllTerrains()) {
+        for (Terrain terrain : createReachableGraph(character).getAllTerrains()) {
             terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
         }
         call(Calls.TERRAINS_UPDATE);
@@ -151,47 +151,48 @@ public class Map extends HasCalls<Map.Calls> {
     /**
      * Dijkstra's path finding up to {@code moveDistance} weight
      */
-    private Path getReachablePath(Character character) {
+    private TerrainGraph createReachableGraph(Character character) {
         Terrain startingTerrain = getTerrain(character.getX(), character.getY());
-        java.util.Map<Terrain, Path> pathMap = new HashMap<Terrain, Path>();
-        PriorityQueue<Path> pathQueue = new PriorityQueue<Path>();
-        Path startingPath = new Path(startingTerrain, null, 0);
+        java.util.Map<Terrain, TerrainGraph> pathMap = new HashMap<Terrain, TerrainGraph>();
+        PriorityQueue<TerrainGraph> minNodeQueue = new PriorityQueue<TerrainGraph>();
+        TerrainGraph startingNode = new TerrainGraph(startingTerrain, null, 0);
         Set<Terrain> visitedTerrains = new HashSet<Terrain>();
 
-        pathQueue.add(startingPath);
-        while (!pathQueue.isEmpty()) {
-            Path minPath = pathQueue.poll();
-            visitedTerrains.add(minPath.getTerrain());
+        minNodeQueue.add(startingNode);
+        while (!minNodeQueue.isEmpty()) {
+            TerrainGraph minTerrainGraph = minNodeQueue.poll();
+            visitedTerrains.add(minTerrainGraph.getTerrain());
 
-            for (Terrain terrain : getAdjacentTerrain(minPath.getTerrain())) {
+            for (Terrain terrain : getAdjacentTerrain(minTerrainGraph.getTerrain())) {
                 if (visitedTerrains.contains(terrain)) {
                     continue;
                 }
 
                 // TODO: Take terrain type into weight consideration
-                int distance = minPath.getDistance() + 1;
+                int distance = minTerrainGraph.getDistance() + 1;
                 if (distance > character.getMoveDistance()) {
                     continue;
                 }
 
-                Path nextPath;
+                TerrainGraph nextTerrainGraph;
                 if (pathMap.containsKey(terrain)) {
-                    nextPath = pathMap.get(terrain);
-                    pathQueue.remove(nextPath);
-                    if (distance < nextPath.getDistance()) {
-                        nextPath.changeParent(minPath, distance);
-                        minPath.addNextPath(nextPath);
+                    nextTerrainGraph = pathMap.get(terrain);
+                    minNodeQueue.remove(nextTerrainGraph);
+                    if (distance < nextTerrainGraph.getDistance()) {
+                        nextTerrainGraph.changeParent(minTerrainGraph);
+                        nextTerrainGraph.setDistance(distance);
+                        minTerrainGraph.addNextPath(nextTerrainGraph);
                     }
                 } else {
-                    nextPath = new Path(terrain, minPath, distance);
-                    minPath.addNextPath(nextPath);
-                    pathMap.put(terrain, nextPath);
+                    nextTerrainGraph = new TerrainGraph(terrain, minTerrainGraph, distance);
+                    minTerrainGraph.addNextPath(nextTerrainGraph);
+                    pathMap.put(terrain, nextTerrainGraph);
                 }
-                pathQueue.add(nextPath);
+                minNodeQueue.add(nextTerrainGraph);
             }
         }
 
-        return startingPath;
+        return startingNode;
     }
 
     private List<Terrain> getAdjacentTerrain(Terrain terrain) {
