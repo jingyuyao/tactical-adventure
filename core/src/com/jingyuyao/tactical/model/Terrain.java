@@ -26,8 +26,8 @@ public class Terrain extends MapObject {
 
     public enum PotentialTarget {
         NONE,
-        MOVE,
-        ATTACK
+        REACHABLE,
+        ATTACKABLE
     }
 
     @Override

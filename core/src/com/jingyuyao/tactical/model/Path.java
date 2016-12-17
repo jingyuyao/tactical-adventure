@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class Path implements Comparable<Path> {
     /**
      * @return All {@link Terrain} reachable starting at this path
      */
-    public Set<Terrain> getReachableTerrains() {
+    public Collection<Terrain> getReachableTerrains() {
         Set<Terrain> terrains = new HashSet<Terrain>();
         getReachableTerrains(terrains);
         return terrains;

@@ -1,15 +1,17 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Preconditions;
+
 import java.util.*;
 
 public class Map {
     /**
      * (0,0) starts at bottom left.
      */
-    private final Terrain[][] terrains;
-    private final List<Character> characters;
     private final int worldWidth;
     private final int worldHeight;
+    private final Terrain[][] terrains;
+    private final Collection<Character> characters;
     private MapObject highlighted;
     private Character selected;
 
@@ -36,7 +38,7 @@ public class Map {
         return worldHeight;
     }
 
-    public List<Character> getCharacters() {
+    public Collection<Character> getCharacters() {
         return characters;
     }
 
@@ -44,12 +46,23 @@ public class Map {
         return terrains[y][x];
     }
 
-    public Character getSelected() {
-        return selected;
+    /**
+     * Selects a character and display its reachable terrains.
+     */
+    public void select(Character newSelected) {
+        Preconditions.checkNotNull(newSelected, "Don't call select with null");
+        if (selected != null) {
+            unselect();
+        }
+        showReachableTerrains(newSelected);
+        selected = newSelected;
     }
 
-    public void setSelected(Character selected) {
-        this.selected = selected;
+    public void unselect() {
+        if (selected != null) {
+            hideReachableTerrain(selected);
+            selected = null;
+        }
     }
 
     public MapObject getHighlighted() {
@@ -60,10 +73,33 @@ public class Map {
         this.highlighted = highlighted;
     }
 
+    public void showReachableTerrains(Character character) {
+        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
+        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
+        // TODO: Set correct potential target depending on character type i.e. enemy vs player
+        for (Terrain terrain : reachablePath.getReachableTerrains()) {
+            terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
+        }
+    }
+
+    public void hideReachableTerrain(Character character) {
+        Terrain characterTerrain = getTerrain(character.getX(), character.getY());
+        Path reachablePath = getReachablePath(characterTerrain, character.getMoveDistance());
+        for (Terrain terrain : reachablePath.getReachableTerrains()) {
+            terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
+        }
+    }
+
+    public void moveSelectedTo(Terrain targetTerrain) {
+        Character character = selected;
+        unselect();
+        character.setPosition(targetTerrain.getX(), targetTerrain.getY());
+    }
+
     /**
-     * Dijkstra's path finding up to {@code moveCount} weight
+     * Dijkstra's path finding up to {@code moveDistance} weight
      */
-    public Path getReachablePath(Terrain startingTerrain, int moveCount) {
+    private Path getReachablePath(Terrain startingTerrain, int moveDistance) {
         java.util.Map<Terrain, Path> pathMap = new HashMap<Terrain, Path>();
         PriorityQueue<Path> pathQueue = new PriorityQueue<Path>();
         Path startingPath = new Path(startingTerrain, null, 0);
@@ -81,7 +117,7 @@ public class Map {
 
                 // TODO: Take terrain type into weight consideration
                 int distance = minPath.getDistance() + 1;
-                if (distance > moveCount) {
+                if (distance > moveDistance) {
                     continue;
                 }
 
@@ -124,5 +160,42 @@ public class Map {
         }
 
         return adjacentTerrain;
+    }
+
+    /**
+     * Convenience method to get all the terrains.
+     */
+    public Iterable<Terrain> getTerrains() {
+        return new Iterable<Terrain>() {
+            @Override
+            public Iterator<Terrain> iterator() {
+                return new Iterator<Terrain>() {
+                    private int ix = 0;
+                    private int iy = 0;
+
+                    @Override
+                    public boolean hasNext() {
+                        return iy < worldHeight;
+                    }
+
+                    @Override
+                    public Terrain next() {
+                        Terrain terrain = getTerrain(ix, iy);
+
+                        if (++ix == worldWidth) {
+                            ix = 0;
+                            iy++;
+                        }
+
+                        return terrain;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("nah");
+                    }
+                };
+            }
+        };
     }
 }
