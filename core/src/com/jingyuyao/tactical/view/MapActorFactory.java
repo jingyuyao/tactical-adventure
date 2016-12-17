@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.jingyuyao.tactical.AssetsModule;
+import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.controller.CharacterController;
 import com.jingyuyao.tactical.controller.HighlightController;
 import com.jingyuyao.tactical.controller.TerrainController;
@@ -20,7 +20,7 @@ class MapActorFactory {
 
     MapActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
-        highlight = new Sprite(assetManager.get(AssetsModule.HIGHLIGHT, Texture.class));
+        highlight = new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class));
     }
 
     MapActor createCharacter(Map map, Character character) {

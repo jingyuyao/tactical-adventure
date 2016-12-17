@@ -13,20 +13,15 @@ import javax.inject.Singleton;
 /**
  * Contain all asset names and function to load them into an {@link AssetManager}
  */
-public class AssetsModule extends AbstractModule {
+public class Assets {
     public static String TEST_MAP = "maps/test_map.tmx";
     public static String JOHN = "sprites/john.png";
     public static String BILLY = "sprites/billy.png";
     public static String HIGHLIGHT = "sprites/highlight.png";
     public static String BLUE_OVERLAY = "sprites/blue_overlay.png";
 
-    @Override
-    protected void configure() {
-    }
 
-    @Provides
-    @Singleton
-    AssetManager provideAssetManager() {
+    static AssetManager createAssetManager() {
         AssetManager manager = new AssetManager();
 
         // Loaders

@@ -9,14 +9,11 @@ import com.jingyuyao.tactical.model.MapFactory;
 import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.MapViewFactory;
 
-import javax.inject.Inject;
-
 public class GameScreenFactory {
     private final TacticalAdventure game;
     private final AssetManager assetManager;
     private final MapViewFactory mapViewFactory;
 
-    @Inject
     public GameScreenFactory(TacticalAdventure game, AssetManager assetManager) {
         this.game = game;
         this.assetManager = assetManager;

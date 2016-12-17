@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.jingyuyao.tactical.AssetsModule;
+import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
@@ -30,7 +30,7 @@ public class MapViewFactory {
 
     public MapViewFactory(AssetManager assetManager) {
         mapActorFactory = new MapActorFactory(assetManager);
-        reachableSprite = new Sprite(assetManager.get(AssetsModule.BLUE_OVERLAY, Texture.class));
+        reachableSprite = new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class));
     }
 
     /**

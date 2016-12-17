@@ -2,31 +2,24 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.jingyuyao.tactical.screen.GameScreenFactory;
-import com.jingyuyao.tactical.screen.ScreenModule;
 
 public class TacticalAdventure extends Game {
-    private Injector injector;
+    private AssetManager assetManager;
     private GameScreenFactory gameScreenFactory;
 
     @Override
     public void create() {
-        injector = Guice.createInjector(
-                new AssetsModule(),
-                new GameModule(this),
-                new ScreenModule()
-        );
-        gameScreenFactory = injector.getInstance(GameScreenFactory.class);
+        assetManager = Assets.createAssetManager();
+        gameScreenFactory = new GameScreenFactory(this, assetManager);
 
-        setGameScreen(AssetsModule.TEST_MAP);
+        setGameScreen(Assets.TEST_MAP);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        injector.getInstance(AssetManager.class).dispose();
+        assetManager.dispose();
     }
 
     public void setGameScreen(String mapName) {
