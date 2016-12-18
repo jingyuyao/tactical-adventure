@@ -15,7 +15,7 @@ public class Character extends MapObject {
     private int totalMoveCost;
     private Path<Terrain> lastTerrainGraph;
 
-    Character(String name, int x, int y, int totalMoveCost) {
+    public Character(String name, int x, int y, int totalMoveCost) {
         super(x, y);
         this.name = name;
         this.totalMoveCost = totalMoveCost;

@@ -4,8 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.controller.MapController;
+import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.MapFactory;
 import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.MapViewFactory;
 
@@ -22,7 +22,7 @@ public class GameScreenFactory {
 
     public GameScreen create(String mapName) {
         TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
-        Map map = MapFactory.create(tiledMap);
+        Map map = MapLoader.create(tiledMap);
         MapView mapView = mapViewFactory.create(tiledMap, map);
         MapController mapController = new MapController(mapView.getStage(), map.getWidth(), map.getHeight());
         return new GameScreen(game, mapView, mapController);

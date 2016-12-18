@@ -6,7 +6,7 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
     private Type type;
     private SelectionMode selectionMode = SelectionMode.NONE;
 
-    Terrain(int x, int y, Type type) {
+    public Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
     }

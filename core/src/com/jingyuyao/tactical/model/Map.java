@@ -19,7 +19,7 @@ public class Map implements HasGrid<Terrain> {
     private SelectionState selectionState = SelectionState.NONE;
     private Character selectedCharacter;
 
-    Map(int width, int height) {
+    public Map(int width, int height) {
         this.width = width;
         this.height = height;
         this.terrains = new Terrain[height][width];
@@ -46,7 +46,7 @@ public class Map implements HasGrid<Terrain> {
         return height;
     }
 
-    void addCharacter(Character character) {
+    public void addCharacter(Character character) {
         characters.add(character);
     }
 
