@@ -17,15 +17,6 @@ public class TerrainController extends MapActorController {
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log("TerrainController", terrain.toString());
 
-        switch (terrain.getPotentialTarget()) {
-            case NONE:
-                getMap().deselect();
-                break;
-            case REACHABLE:
-                getMap().moveSelectedTo(terrain);
-                break;
-            case CAN_ATTACK:
-                break;
-        }
+        getMap().select(terrain);
     }
 }

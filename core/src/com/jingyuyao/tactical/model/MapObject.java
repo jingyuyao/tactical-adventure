@@ -6,7 +6,6 @@ package com.jingyuyao.tactical.model;
 public class MapObject implements HasCoordinate {
     private int x;
     private int y;
-    private boolean highlighted = false;
 
     MapObject(int x, int y) {
         this.x = x;
@@ -23,14 +22,6 @@ public class MapObject implements HasCoordinate {
         return y;
     }
 
-    public boolean isHighlighted() {
-        return highlighted;
-    }
-
-    void setHighlighted(boolean highlighted) {
-        this.highlighted = highlighted;
-    }
-
     // Setters are protected so children can manage how they are updated
     protected void setX(int x) {
         this.x = x;
@@ -45,7 +36,6 @@ public class MapObject implements HasCoordinate {
         return "MapObject{" +
                 "x=" + x +
                 ", y=" + y +
-                ", highlighted=" + highlighted +
                 '}';
     }
 }

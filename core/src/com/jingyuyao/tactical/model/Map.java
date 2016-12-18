@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.graph.Graph;
 import com.jingyuyao.tactical.model.graph.GraphFactory;
 import com.jingyuyao.tactical.model.graph.Path;
@@ -19,7 +18,8 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
     private final Terrain[][] terrains;
     private final Collection<Character> characters;
     private MapObject highlighted;
-    private Character selected;
+    private SelectionState selectionState = SelectionState.NONE;
+    private Character selectedCharacter;
 
     Map(int width, int height) {
         this.width = width;
@@ -60,80 +60,46 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         return highlighted;
     }
 
-    /**
-     * Selects a character and display its reachable terrains.
-     */
-    public void select(Character newSelected) {
-        Preconditions.checkNotNull(newSelected, "Don't call select with null");
-        if (selected == newSelected) {
-            deselect();
-            return;
-        }
-        deselect();
-        setReachableTerrains(newSelected, Terrain.PotentialTarget.REACHABLE);
-        selected = newSelected;
-    }
-
-    public void deselect() {
-        if (selected != null) {
-            setReachableTerrains(selected, Terrain.PotentialTarget.NONE);
-            selected = null;
+    public void select(Character character) {
+        switch (selectionState) {
+            case CHARACTER:
+                setReachableTerrains(selectedCharacter, Terrain.PotentialTarget.NONE);
+                if (character.equals(selectedCharacter)) {
+                    selectionState = SelectionState.NONE;
+                    return;
+                }
+            case NONE:
+            case TERRAIN:
+                setReachableTerrains(character, Terrain.PotentialTarget.REACHABLE);
+                selectedCharacter = character;
+                selectionState = SelectionState.CHARACTER;
+                break;
         }
     }
 
-    public void highlight(MapObject newHighlight) {
-        if (highlighted != newHighlight) {
-            if (highlighted != null) {
-                highlighted.setHighlighted(false);
-            }
-            newHighlight.setHighlighted(true);
-            highlighted = newHighlight;
+    public void select(Terrain terrain) {
+        switch (selectionState) {
+            case CHARACTER:
+                switch (terrain.getPotentialTarget()) {
+                    case NONE:
+                        setReachableTerrains(selectedCharacter, Terrain.PotentialTarget.NONE);
+                        break;
+                    case REACHABLE:
+                        setReachableTerrains(selectedCharacter, Terrain.PotentialTarget.NONE);
+                        moveCharacter(selectedCharacter, terrain);
+                        break;
+                    case CAN_ATTACK:
+                        break;
+                }
+            case NONE:
+            case TERRAIN:
+                selectionState = SelectionState.TERRAIN;
+                break;
         }
     }
 
-    public void moveSelectedTo(Terrain targetTerrain) {
-        Character character = selected;
-        // Needs to be called before character moves so reachable terrains can be hidden correctly
-        deselect();
-        moveCharacter(character, targetTerrain);
-        call(Calls.CHARACTERS_UPDATE);
-    }
-
-    /**
-     * Convenience method to get all the terrains.
-     */
-    public Iterable<Terrain> getTerrains() {
-        return new Iterable<Terrain>() {
-            @Override
-            public Iterator<Terrain> iterator() {
-                return new Iterator<Terrain>() {
-                    private int ix = 0;
-                    private int iy = 0;
-
-                    @Override
-                    public boolean hasNext() {
-                        return iy < height;
-                    }
-
-                    @Override
-                    public Terrain next() {
-                        Terrain terrain = get(ix, iy);
-
-                        if (++ix == width) {
-                            ix = 0;
-                            iy++;
-                        }
-
-                        return terrain;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("nah");
-                    }
-                };
-            }
-        };
+    public void setHighlighted(MapObject newHighlight) {
+        highlighted = newHighlight;
     }
 
     private void moveCharacter(Character character, Terrain terrain) {
@@ -143,6 +109,7 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         Path<Terrain> pathToCoordinate = reachableGraph.getPathTo(x, y);
         if (pathToCoordinate != null) {
             character.moveTo(x, y, pathToCoordinate);
+            call(Calls.CHARACTERS_UPDATE);
         }
     }
 
@@ -159,8 +126,48 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
                 this, character.getX(), character.getY(), character.getTotalMoveCost(), character);
     }
 
+    public enum SelectionState {
+        NONE, CHARACTER, TERRAIN
+    }
+
     public enum Calls {
-        CHARACTERS_UPDATE,
-        TERRAINS_UPDATE
+        CHARACTERS_UPDATE, TERRAINS_UPDATE
+    }
+
+    /**
+     * Convenience method to get all the terrains.
+     */
+    public Iterable<Terrain> getTerrains() {
+        return new Iterable<Terrain>() {
+            @Override
+            public Iterator<Terrain> iterator() {
+                return new Iterator<Terrain>() {
+                    private int ix = 0;
+                    private int iy = 0;
+
+                    @Override
+                    public boolean hasNext() {
+                        return iy < getHeight();
+                    }
+
+                    @Override
+                    public Terrain next() {
+                        Terrain terrain = get(ix, iy);
+
+                        if (++ix == getWidth()) {
+                            ix = 0;
+                            iy++;
+                        }
+
+                        return terrain;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("nah");
+                    }
+                };
+            }
+        };
     }
 }
