@@ -22,8 +22,8 @@ import java.util.HashMap;
 public class MapViewFactory {
     private static final int TILE_SIZE = 32; // pixels
     private static final float RENDER_SCALE = 1f / TILE_SIZE;
-    private static final int VIEWPORT_WIDTH = 25; // # tiles
-    private static final int VIEWPORT_HEIGHT = 15; // # tiles
+    private static final int VIEWPORT_WIDTH = 15; // # tiles
+    private static final int VIEWPORT_HEIGHT = 10; // # tiles
 
     private final MapActorFactory mapActorFactory;
     private final Sprite reachableSprite;
