@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 class TerrainFactory {
     private static final String TYPE_KEY = "type";
 
+    // TODO: Move this to a "loader" in its own package
     static Terrain create(int x, int y, TiledMapTileLayer.Cell cell) {
         MapProperties tileProperties = cell.getTile().getProperties();
         Terrain.Type type = Terrain.Type.NORMAL;

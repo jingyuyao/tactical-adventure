@@ -4,7 +4,7 @@ package com.jingyuyao.tactical.model;
  * Accepts an {@link UpdateListener} to be notified about changes to this object.
  * Children should manage when to call {@link #update()}.
  */
-public abstract class Updatable {
+abstract class Updatable {
     private UpdateListener updateListener;
 
     public void setUpdateListener(UpdateListener updateListener) {

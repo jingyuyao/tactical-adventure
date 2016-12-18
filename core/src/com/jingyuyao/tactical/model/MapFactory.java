@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 public class MapFactory {
     private static final String TERRAIN_LAYER = "terrain";
 
+    // TODO: Move this to a "loader" in its own package
     public static Map create(TiledMap tiledMap) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");

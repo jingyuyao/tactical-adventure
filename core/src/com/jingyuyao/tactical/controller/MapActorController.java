@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.Map;
 /**
  * Only dispatches clicked events if the click begins and ends over the actor.
  */
-class MapActorController extends ClickListener {
+abstract class MapActorController extends ClickListener {
     private final Map map;
 
     MapActorController(Map map, float actorSize) {
