@@ -27,10 +27,12 @@ public class MapViewFactory {
 
     private final MapActorFactory mapActorFactory;
     private final Sprite reachableSprite;
+    private final Sprite highlightSprite;
 
     public MapViewFactory(AssetManager assetManager) {
         mapActorFactory = new MapActorFactory(assetManager);
         reachableSprite = new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class));
+        highlightSprite = new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class));
     }
 
     /**
@@ -58,7 +60,7 @@ public class MapViewFactory {
             actorMap.put(character, actor);
         }
 
-        return new MapView(
-                map, stage, actorMap, new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE), reachableSprite);
+        OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
+        return new MapView(map, stage, actorMap, mapRenderer, reachableSprite, highlightSprite);
     }
 }

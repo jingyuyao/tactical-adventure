@@ -56,6 +56,10 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         return characters;
     }
 
+    public MapObject getHighlighted() {
+        return highlighted;
+    }
+
     /**
      * Selects a character and display its reachable terrains.
      */

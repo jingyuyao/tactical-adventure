@@ -9,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
+import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.graph.Path;
 import com.jingyuyao.tactical.util.Callable;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -27,9 +27,10 @@ public class MapView {
 
     private final Map map;
     private final Stage stage;
+    private final java.util.Map<MapObject, MapActor> actorMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final Sprite reachableSprite;
-    private final java.util.Map<MapObject, MapActor> actorMap;
+    private final Sprite highlightSprite;
 
     /**
      * A map view contains a stage with all the actors and a way to render them.
@@ -39,14 +40,16 @@ public class MapView {
      * @param actorMap Contains all the game object to actor mapping
      * @param mapRenderer The tiled map renderer
      * @param reachableSprite The sprite drawn for {@link Terrain.PotentialTarget#REACHABLE}
+     * @param highlightSprite The sprite drawn for highlights
      */
     MapView(Map map, Stage stage, java.util.Map<MapObject, MapActor> actorMap, OrthogonalTiledMapRenderer mapRenderer,
-            Sprite reachableSprite) {
+            Sprite reachableSprite, Sprite highlightSprite) {
         this.map = map;
         this.stage = stage;
         this.actorMap = actorMap;
         this.mapRenderer = mapRenderer;
         this.reachableSprite = reachableSprite;
+        this.highlightSprite = highlightSprite;
         map.addCall(Map.Calls.CHARACTERS_UPDATE, new Callable() {
             @Override
             public void call() {
@@ -61,14 +64,8 @@ public class MapView {
         });
     }
 
-    public void act(float delta) {
-        stage.act(delta);
-    }
-
-    public void draw() {
-        mapRenderer.setView((OrthographicCamera) stage.getCamera());
-        mapRenderer.render();
-        stage.draw();
+    public Stage getStage() {
+        return stage;
     }
 
     public void resize(int width, int height) {
@@ -79,8 +76,25 @@ public class MapView {
         stage.dispose();
     }
 
-    public Stage getStage() {
-        return stage;
+    public void act(float delta) {
+        stage.act(delta);
+    }
+
+    public void draw() {
+        mapRenderer.setView((OrthographicCamera) stage.getCamera());
+        mapRenderer.render();
+        stage.draw();
+
+        MapActor highlightedActor = actorMap.get(map.getHighlighted());
+        highlightSprite.setBounds(
+                highlightedActor.getX(),
+                highlightedActor.getY(),
+                highlightedActor.getWidth(),
+                highlightedActor.getHeight()
+        );
+        stage.getBatch().begin();
+        highlightSprite.draw(stage.getBatch());
+        stage.getBatch().end();
     }
 
     private void updateTerrainOverlays() {
