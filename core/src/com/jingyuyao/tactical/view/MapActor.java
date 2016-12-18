@@ -17,16 +17,16 @@ import com.jingyuyao.tactical.model.HasCoordinate;
 public class MapActor extends Actor {
     private Sprite sprite;
 
+    MapActor(HasCoordinate coordinate, float size, EventListener... listeners) {
+        this(coordinate, size, null, listeners);
+    }
+
     MapActor(HasCoordinate coordinate, float size, Sprite sprite, EventListener... listeners) {
         this.sprite = sprite;
         setBounds(coordinate.getX(), coordinate.getY(), size, size);
         for (EventListener listener : listeners) {
             addListener(listener);
         }
-    }
-
-    MapActor(HasCoordinate coordinate, float size, EventListener... listeners) {
-        this(coordinate, size, null, listeners);
     }
 
     @Override

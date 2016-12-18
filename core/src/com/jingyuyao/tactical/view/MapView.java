@@ -39,7 +39,7 @@ public class MapView {
      * @param stage Should already be set up with all the {@link MapActor}
      * @param actorMap Contains all the game object to actor mapping
      * @param mapRenderer The tiled map renderer
-     * @param reachableSprite The sprite drawn for {@link Terrain.PotentialTarget#REACHABLE}
+     * @param reachableSprite The sprite drawn for {@link Terrain.SelectionMode#MOVE}
      * @param highlightSprite The sprite drawn for highlights
      */
     MapView(Map map, Stage stage, java.util.Map<MapObject, MapActor> actorMap, OrthogonalTiledMapRenderer mapRenderer,
@@ -108,14 +108,14 @@ public class MapView {
     private void updateTerrainOverlays() {
         for (Terrain terrain : map.getTerrains()) {
             MapActor actor = actorMap.get(terrain);
-            switch (terrain.getPotentialTarget()) {
+            switch (terrain.getSelectionMode()) {
                 case NONE:
                     actor.setSprite(null);
                     break;
-                case REACHABLE:
+                case MOVE:
                     actor.setSprite(reachableSprite);
                     break;
-                case CAN_ATTACK:
+                case ATTACK:
                     break;
             }
         }

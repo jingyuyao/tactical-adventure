@@ -63,14 +63,14 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
     public void select(Character character) {
         switch (selectionState) {
             case CHARACTER:
-                setReachableTerrains(selectedCharacter, Terrain.PotentialTarget.NONE);
+                setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
                 if (character.equals(selectedCharacter)) {
                     selectionState = SelectionState.NONE;
                     return;
                 }
             case NONE:
             case TERRAIN:
-                setReachableTerrains(character, Terrain.PotentialTarget.REACHABLE);
+                setReachableTerrains(character, Terrain.SelectionMode.MOVE);
                 selectedCharacter = character;
                 selectionState = SelectionState.CHARACTER;
                 break;
@@ -80,15 +80,15 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
     public void select(Terrain terrain) {
         switch (selectionState) {
             case CHARACTER:
-                switch (terrain.getPotentialTarget()) {
+                switch (terrain.getSelectionMode()) {
                     case NONE:
-                        setReachableTerrains(selectedCharacter, Terrain.PotentialTarget.NONE);
+                        setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
                         break;
-                    case REACHABLE:
-                        setReachableTerrains(selectedCharacter, Terrain.PotentialTarget.NONE);
+                    case MOVE:
+                        setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
                         moveCharacter(selectedCharacter, terrain);
                         break;
-                    case CAN_ATTACK:
+                    case ATTACK:
                         break;
                 }
             case NONE:
@@ -113,10 +113,10 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         }
     }
 
-    private void setReachableTerrains(Character character, Terrain.PotentialTarget target) {
+    private void setReachableTerrains(Character character, Terrain.SelectionMode target) {
         // TODO: Set correct potential target depending on character type i.e. enemy vs player
         for (Terrain terrain : createReachableGraph(character).getAllObjects()) {
-            terrain.setPotentialTarget(target);
+            terrain.setSelectionMode(target);
         }
         call(Calls.TERRAINS_UPDATE);
     }

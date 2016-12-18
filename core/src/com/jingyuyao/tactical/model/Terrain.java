@@ -4,7 +4,7 @@ import com.jingyuyao.tactical.model.graph.HasEdgeCost;
 
 public class Terrain extends MapObject implements HasEdgeCost<Character> {
     private Type type;
-    private PotentialTarget potentialTarget = PotentialTarget.NONE;
+    private SelectionMode selectionMode = SelectionMode.NONE;
 
     Terrain(int x, int y, Type type) {
         super(x, y);
@@ -29,12 +29,12 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
         }
     }
 
-    public PotentialTarget getPotentialTarget() {
-        return potentialTarget;
+    public SelectionMode getSelectionMode() {
+        return selectionMode;
     }
 
-    void setPotentialTarget(PotentialTarget potentialTarget) {
-        this.potentialTarget = potentialTarget;
+    void setSelectionMode(SelectionMode selectionMode) {
+        this.selectionMode = selectionMode;
     }
 
     public enum Type {
@@ -44,17 +44,17 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
         MOUNTAIN
     }
 
-    public enum PotentialTarget {
+    public enum SelectionMode {
         NONE,
-        REACHABLE,
-        CAN_ATTACK
+        MOVE,
+        ATTACK
     }
 
     @Override
     public String toString() {
         return "Terrain{" +
                 "type=" + type +
-                ", potentialTarget=" + potentialTarget +
+                ", selectionMode=" + selectionMode +
                 "} " + super.toString();
     }
 }
