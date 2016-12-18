@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.Assets;
@@ -21,6 +22,7 @@ class MapActorFactory {
 
     private final AssetManager assetManager;
     private final java.util.Map<Terrain.SelectionMode, Sprite> selectionModeSpriteMap;
+    private final java.util.Map<Character.Type, Color> typeColorMap;
 
     MapActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -29,6 +31,10 @@ class MapActorFactory {
                 Terrain.SelectionMode.MOVE,
                 new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class))
         );
+        typeColorMap = new HashMap<Character.Type, Color>();
+        typeColorMap.put(Character.Type.PLAYER, Color.WHITE);
+        typeColorMap.put(Character.Type.ENEMY, Color.RED);
+        typeColorMap.put(Character.Type.NEUTRAL, Color.GREEN);
     }
 
     MapActor create(Map map, Character character) {
@@ -36,6 +42,7 @@ class MapActorFactory {
                 character,
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
+                typeColorMap,
                 new HighlightController(map, character),
                 new CharacterController(map, character, ACTOR_SIZE)
         );

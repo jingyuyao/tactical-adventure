@@ -43,6 +43,10 @@ public abstract class MapActor<T extends MapObject> extends Actor {
         this.sprite = sprite;
     }
 
+    Sprite getSprite() {
+        return sprite;
+    }
+
     protected T getObject() {
         return object;
     }

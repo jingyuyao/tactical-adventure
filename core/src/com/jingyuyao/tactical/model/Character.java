@@ -12,18 +12,29 @@ public class Character extends MapObject {
      */
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
+    private Character.Type type;
     private int totalMoveCost;
     private Path<Terrain> lastTerrainGraph;
 
-    public Character(String name, int x, int y, int totalMoveCost) {
+    public Character(int x, int y, String name, Type type, int totalMoveCost) {
         super(x, y);
         this.name = name;
+        this.type = type;
         this.totalMoveCost = totalMoveCost;
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
     }
 
     public String getName() {
         return name;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+        update();
     }
 
     public Path<Terrain> getLastPath() {
@@ -50,6 +61,10 @@ public class Character extends MapObject {
         standOnTerrainTypes.add(Terrain.Type.NORMAL);
         standOnTerrainTypes.add(Terrain.Type.OBSTRUCTED);
         return standOnTerrainTypes;
+    }
+
+    public enum Type {
+        PLAYER, ENEMY, NEUTRAL
     }
 
     @Override

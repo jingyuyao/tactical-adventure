@@ -33,8 +33,8 @@ public class MapLoader {
         }
 
         // Testing
-        map.addCharacter(new Character("john", 5, 5, 10));
-        map.addCharacter(new Character("billy", 10, 10, 5));
+        map.addCharacter(new Character(5, 5, "john", Character.Type.PLAYER, 10));
+        map.addCharacter(new Character(10, 10, "billy", Character.Type.ENEMY, 5));
 
         return map;
     }
