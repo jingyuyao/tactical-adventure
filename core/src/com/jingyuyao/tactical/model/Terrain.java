@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model;
 
-import com.jingyuyao.tactical.model.graph.HasWeight;
+import com.jingyuyao.tactical.model.graph.HasDistanceCost;
 
-public class Terrain extends MapObject implements HasWeight {
+public class Terrain extends MapObject implements HasDistanceCost {
     private Type type;
     private PotentialTarget potentialTarget = PotentialTarget.NONE;
 
@@ -12,7 +12,7 @@ public class Terrain extends MapObject implements HasWeight {
     }
 
     @Override
-    public int getWeight() {
+    public int getDistanceCost() {
         switch (type) {
             case OBSTRUCTED:
                 return 2;
