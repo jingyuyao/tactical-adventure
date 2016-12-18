@@ -8,8 +8,8 @@ import java.util.Collection;
 public class Path<T extends HasCoordinate> extends Node<T> {
     private Path<T> child;
 
-    Path(T mapObject, Node<T> parent, int distance) {
-        super(mapObject, parent, distance);
+    Path(T mapObject, Node<T> parent, int cumulativeEdgeCost) {
+        super(mapObject, parent, cumulativeEdgeCost);
     }
 
     @Override
@@ -19,10 +19,10 @@ public class Path<T extends HasCoordinate> extends Node<T> {
 
     public Collection<T> getRoute() {
         Collection<T> objects = new ArrayList<T>();
-        objects.add(getMapObject());
+        objects.add(getObject());
         Path<T> temp = child;
         while (temp != null) {
-            objects.add(temp.getMapObject());
+            objects.add(temp.getObject());
             temp = temp.getChild();
         }
         return objects;

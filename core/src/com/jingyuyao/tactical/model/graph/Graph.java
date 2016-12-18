@@ -7,13 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Graph is an acyclic graph of nodes.
+ * Graph is an acyclic graph of {@link Node} with multiple children.
  */
 public class Graph<T extends HasCoordinate> extends Node<T> {
     private final Set<Graph<T>> neighbors;
 
-    Graph(T mapObject, Graph<T> parent, int distance) {
-        super(mapObject, parent, distance);
+    Graph(T mapObject, Graph<T> parent, int cumulativeEdgeCost) {
+        super(mapObject, parent, cumulativeEdgeCost);
         neighbors = new HashSet<Graph<T>>();
     }
 
@@ -30,10 +30,10 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
      */
     public Path<T> getPathTo(int x, int y) {
         // Parent should be set by the parent
-        Path<T> path = new Path<T>(getMapObject(), null, getDistance());
+        Path<T> path = new Path<T>(getObject(), null, getCumulativeEdgeCost());
 
         // Very basic depth first search
-        if (x == getMapObject().getX() && y == getMapObject().getY()) {
+        if (x == getObject().getX() && y == getObject().getY()) {
             return path;
         }
         for (Graph<T> graph : getNeighbors()) {
@@ -62,9 +62,9 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
     }
 
     private void getAllObjects(Set<T> accumulator) {
-        accumulator.add(getMapObject());
+        accumulator.add(getObject());
         for (Graph<T> graph : getNeighbors()) {
-            if (!accumulator.contains(graph.getMapObject())) {
+            if (!accumulator.contains(graph.getObject())) {
                 graph.getAllObjects(accumulator);
             }
         }

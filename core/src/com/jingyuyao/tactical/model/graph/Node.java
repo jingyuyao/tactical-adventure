@@ -2,32 +2,37 @@ package com.jingyuyao.tactical.model.graph;
 
 import com.jingyuyao.tactical.model.HasCoordinate;
 
+/**
+ * A node in the graph that contains an {@code object}, a {@code parent} and a cumulative {@code cumulativeEdgeCost}
+ * in relation to somewhere.
+ * @param <T> The data type this node contains
+ */
 abstract class Node<T extends HasCoordinate> implements Comparable<Node<T>> {
-    private final T mapObject;
+    private final T object;
     private Node<T> parent;
-    private int distance;
+    private int cumulativeEdgeCost;
 
-    Node(T mapObject, Node<T> parent, int distance) {
-        this.mapObject = mapObject;
+    Node(T object, Node<T> parent, int cumulativeEdgeCost) {
+        this.object = object;
         this.parent = parent;
-        this.distance = distance;
+        this.cumulativeEdgeCost = cumulativeEdgeCost;
     }
 
     @Override
     public int compareTo(Node<T> node) {
-        return getDistance() - node.getDistance();
+        return getCumulativeEdgeCost() - node.getCumulativeEdgeCost();
     }
 
-    T getMapObject() {
-        return mapObject;
+    T getObject() {
+        return object;
     }
 
-    int getDistance() {
-        return distance;
+    int getCumulativeEdgeCost() {
+        return cumulativeEdgeCost;
     }
 
-    void setDistance(int distance) {
-        this.distance = distance;
+    void setCumulativeEdgeCost(int cumulativeEdgeCost) {
+        this.cumulativeEdgeCost = cumulativeEdgeCost;
     }
 
     /**
@@ -54,8 +59,8 @@ abstract class Node<T extends HasCoordinate> implements Comparable<Node<T>> {
     @Override
     public String toString() {
         return "Node{" +
-                "mapObject=" + mapObject +
-                ", distance=" + distance +
+                "object=" + object +
+                ", cumulativeEdgeCost=" + cumulativeEdgeCost +
                 '}';
     }
 }

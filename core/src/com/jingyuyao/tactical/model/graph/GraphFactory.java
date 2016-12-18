@@ -8,17 +8,17 @@ import java.util.*;
 public class GraphFactory {
     /**
      * Creates a graph that is reachable from {@code (startX, startY)} on {@code grid} with a max
-     * distance of {@code maxDistanceCost}. Distance cost of each location in the grid is calculated
+     * edge cost of of {@code maxCumulativeEdgeCost}. Edge cost for each location in the grid is calculated
      * in relation to {@code data}.
      *
      * @param grid The grid this graph is created on
      * @param startX Initial x coordinate on the grid
      * @param startY Initial y coordinate on the grid
-     * @param maxDistanceCost Maximum cost for the path between initial location to any reachable node
-     * @param data The data used to do distance cost comparison with
+     * @param maxCumulativeEdgeCost Maximum cost for the path between initial location to any reachable node
+     * @param data The data used to calculate edge cost
      */
-    public static <D, T extends HasCoordinate & HasDistanceCost<D>> Graph<T> createReachableGraph(
-            HasGrid<T> grid, int startX, int startY, int maxDistanceCost, D data) {
+    public static <D, T extends HasCoordinate & HasEdgeCost<D>> Graph<T> createReachableGraph(
+            HasGrid<T> grid, int startX, int startY, int maxCumulativeEdgeCost, D data) {
         T startingObj = grid.get(startX, startY);
         java.util.Map<T, Graph<T>> graphMap = new HashMap<T, Graph<T>>();
         PriorityQueue<Graph<T>> minNodeQueue = new PriorityQueue<Graph<T>>();
@@ -28,20 +28,20 @@ public class GraphFactory {
         minNodeQueue.add(startingNode);
         while (!minNodeQueue.isEmpty()) {
             Graph<T> minGraph = minNodeQueue.poll();
-            visited.add(minGraph.getMapObject());
+            visited.add(minGraph.getObject());
 
-            for (T neighbor : GraphFactory.getAdjacent(grid, minGraph.getMapObject())) {
+            for (T neighbor : GraphFactory.getAdjacent(grid, minGraph.getObject())) {
                 if (visited.contains(neighbor)) {
                     continue;
                 }
 
-                int distanceCost = neighbor.getDistanceCost(data);
-                if (distanceCost == HasDistanceCost.CANT_CROSS) {
+                int edgeCost = neighbor.getEdgeCost(data);
+                if (edgeCost == HasEdgeCost.NO_EDGE) {
                     continue;
                 }
 
-                int newDistance = minGraph.getDistance() + distanceCost;
-                if (newDistance > maxDistanceCost) {
+                int cumulativeEdgeCost = minGraph.getCumulativeEdgeCost() + edgeCost;
+                if (cumulativeEdgeCost > maxCumulativeEdgeCost) {
                     continue;
                 }
 
@@ -49,13 +49,13 @@ public class GraphFactory {
                 if (graphMap.containsKey(neighbor)) {
                     neighborGraph = graphMap.get(neighbor);
                     minNodeQueue.remove(neighborGraph);
-                    if (newDistance < neighborGraph.getDistance()) {
+                    if (cumulativeEdgeCost < neighborGraph.getCumulativeEdgeCost()) {
                         neighborGraph.changeParent(minGraph);
-                        neighborGraph.setDistance(newDistance);
+                        neighborGraph.setCumulativeEdgeCost(cumulativeEdgeCost);
                         minGraph.addNextPath(neighborGraph);
                     }
                 } else {
-                    neighborGraph = new Graph<T>(neighbor, minGraph, newDistance);
+                    neighborGraph = new Graph<T>(neighbor, minGraph, cumulativeEdgeCost);
                     minGraph.addNextPath(neighborGraph);
                     graphMap.put(neighbor, neighborGraph);
                 }
