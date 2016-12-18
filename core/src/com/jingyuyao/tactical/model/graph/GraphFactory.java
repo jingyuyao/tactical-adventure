@@ -10,7 +10,7 @@ public class GraphFactory {
      * Starting at {@code grid.get(startX, startY)}
      * Dijkstra's path finding up to {@code maxDistance} weight
      */
-    public static <T extends HasCoordinate & HasWeight> Graph<T> createReachableGraph(
+    public static <T extends HasCoordinate & HasDistanceCost> Graph<T> createReachableGraph(
             HasGrid<T> grid, int startX, int startY, int maxDistance) {
         T startingObj = grid.get(startX, startY);
         java.util.Map<T, Graph<T>> graphMap = new HashMap<T, Graph<T>>();
@@ -28,7 +28,7 @@ public class GraphFactory {
                     continue;
                 }
 
-                int distance = minGraph.getDistance() + neighbor.getWeight();
+                int distance = minGraph.getDistance() + neighbor.getDistanceCost();
                 if (distance > maxDistance) {
                     continue;
                 }
