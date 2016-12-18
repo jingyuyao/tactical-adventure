@@ -17,6 +17,7 @@ public class GraphFactory {
      * @param maxCumulativeEdgeCost Maximum cost for the path between initial location to any reachable node
      * @param data The data used to calculate edge cost
      */
+    // TODO: Need a way to avoid other characters
     public static <D, T extends HasCoordinate & HasEdgeCost<D>> Graph<T> createReachableGraph(
             HasGrid<T> grid, int startX, int startY, int maxCumulativeEdgeCost, D data) {
         T startingObj = grid.get(startX, startY);

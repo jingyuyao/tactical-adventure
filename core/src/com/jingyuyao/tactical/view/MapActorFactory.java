@@ -31,10 +31,13 @@ class MapActorFactory {
                 Terrain.SelectionMode.MOVE,
                 new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class))
         );
+        selectionModeSpriteMap.put(
+                Terrain.SelectionMode.DANGER,
+                new Sprite(assetManager.get(Assets.RED_OVERLAY, Texture.class))
+        );
         typeColorMap = new HashMap<Character.Type, Color>();
         typeColorMap.put(Character.Type.PLAYER, Color.WHITE);
         typeColorMap.put(Character.Type.ENEMY, Color.RED);
-        typeColorMap.put(Character.Type.NEUTRAL, Color.GREEN);
     }
 
     MapActor create(Map map, Character character) {

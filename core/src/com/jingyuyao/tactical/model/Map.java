@@ -59,6 +59,16 @@ public class Map implements HasGrid<Terrain> {
     }
 
     public void select(Character character) {
+        Terrain.SelectionMode selectionMode = Terrain.SelectionMode.NONE;
+        switch (character.getType()) {
+            case PLAYER:
+                selectionMode = Terrain.SelectionMode.MOVE;
+                break;
+            case ENEMY:
+                selectionMode = Terrain.SelectionMode.DANGER;
+                break;
+        }
+
         switch (selectionState) {
             case CHARACTER:
                 setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
@@ -68,7 +78,7 @@ public class Map implements HasGrid<Terrain> {
                 }
             case NONE:
             case TERRAIN:
-                setReachableTerrains(character, Terrain.SelectionMode.MOVE);
+                setReachableTerrains(character, selectionMode);
                 selectedCharacter = character;
                 selectionState = SelectionState.CHARACTER;
                 break;
@@ -79,12 +89,13 @@ public class Map implements HasGrid<Terrain> {
         switch (selectionState) {
             case CHARACTER:
                 switch (terrain.getSelectionMode()) {
-                    case NONE:
-                        setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
-                        break;
                     case MOVE:
                         setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
                         moveCharacter(selectedCharacter, terrain);
+                        break;
+                    case NONE:
+                    case DANGER:
+                        setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
                         break;
                     case ATTACK:
                         break;

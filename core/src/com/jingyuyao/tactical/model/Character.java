@@ -64,7 +64,7 @@ public class Character extends MapObject {
     }
 
     public enum Type {
-        PLAYER, ENEMY, NEUTRAL
+        PLAYER, ENEMY
     }
 
     @Override

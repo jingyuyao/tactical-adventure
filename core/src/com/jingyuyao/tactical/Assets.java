@@ -15,7 +15,7 @@ public class Assets {
     public static final String BILLY = "sprites/billy.png";
     public static final String HIGHLIGHT = "sprites/highlight.png";
     public static final String BLUE_OVERLAY = "sprites/blue_overlay.png";
-
+    public static final String RED_OVERLAY = "sprites/red_overlay.png";
 
     static AssetManager createAssetManager() {
         AssetManager manager = new AssetManager();
@@ -29,6 +29,7 @@ public class Assets {
         manager.load(BILLY, Texture.class);
         manager.load(HIGHLIGHT, Texture.class);
         manager.load(BLUE_OVERLAY, Texture.class);
+        manager.load(RED_OVERLAY, Texture.class);
 
         manager.finishLoading();
         return manager;

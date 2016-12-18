@@ -48,7 +48,8 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
     public enum SelectionMode {
         NONE,
         MOVE,
-        ATTACK
+        ATTACK,
+        DANGER,
     }
 
     @Override
