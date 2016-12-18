@@ -37,3 +37,18 @@ The game follows MVC and uses the command pattern to communicate between differe
 ## Controllers
 - Listen to user input
 - Issue commands to models
+
+# Development plan
+\* indicates current step
+- MVC
+- path finding + moving
+- creating enemy *
+- idea of player & enemy teams
+- targeting + stub fighting
+- idea of a turn
+- dumb AI
+- map UI overlay
+- simple character detail viewer
+- saving/loading map state
+- create a simple level
+- misc games stuff like start screen
