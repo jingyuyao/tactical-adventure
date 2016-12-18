@@ -75,6 +75,10 @@ public class MapView {
         stage.getViewport().update(width, height);
     }
 
+    public void dispose() {
+        stage.dispose();
+    }
+
     public Stage getStage() {
         return stage;
     }

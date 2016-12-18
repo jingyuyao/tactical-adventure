@@ -37,4 +37,9 @@ public class GameScreen extends ScreenAdapter {
         // This is very important...
         mapView.resize(width, height);
     }
+
+    @Override
+    public void dispose() {
+        mapView.dispose();
+    }
 }
