@@ -13,8 +13,17 @@ public class Terrain extends MapObject implements HasWeight {
 
     @Override
     public int getWeight() {
-        // TODO: Implement this
-        return 1;
+        switch (type) {
+            case OBSTRUCTED:
+                return 2;
+            case WATER:
+            case MOUNTAIN:
+                // TODO: Figure out how "blocking" terrains work
+                return 1000;
+            case NORMAL:
+            default:
+                return 1;
+        }
     }
 
     public PotentialTarget getPotentialTarget() {
