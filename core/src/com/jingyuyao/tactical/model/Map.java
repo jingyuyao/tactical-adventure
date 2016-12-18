@@ -70,13 +70,13 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
             return;
         }
         deselect();
-        showReachableTerrains(newSelected);
+        setReachableTerrains(newSelected, Terrain.PotentialTarget.REACHABLE);
         selected = newSelected;
     }
 
     public void deselect() {
         if (selected != null) {
-            hideReachableTerrain(selected);
+            setReachableTerrains(selected, Terrain.PotentialTarget.NONE);
             selected = null;
         }
     }
@@ -146,17 +146,10 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         }
     }
 
-    private void showReachableTerrains(Character character) {
+    private void setReachableTerrains(Character character, Terrain.PotentialTarget target) {
         // TODO: Set correct potential target depending on character type i.e. enemy vs player
         for (Terrain terrain : createReachableGraph(character).getAllObjects()) {
-            terrain.setPotentialTarget(Terrain.PotentialTarget.REACHABLE);
-        }
-        call(Calls.TERRAINS_UPDATE);
-    }
-
-    private void hideReachableTerrain(Character character) {
-        for (Terrain terrain : createReachableGraph(character).getAllObjects()) {
-            terrain.setPotentialTarget(Terrain.PotentialTarget.NONE);
+            terrain.setPotentialTarget(target);
         }
         call(Calls.TERRAINS_UPDATE);
     }

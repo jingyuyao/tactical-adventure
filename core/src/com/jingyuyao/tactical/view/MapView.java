@@ -84,8 +84,16 @@ public class MapView {
         mapRenderer.setView((OrthographicCamera) stage.getCamera());
         mapRenderer.render();
         stage.draw();
+        drawHighlight();
+    }
 
-        MapActor highlightedActor = actorMap.get(map.getHighlighted());
+    private void drawHighlight() {
+        MapObject highlighted = map.getHighlighted();
+        if (highlighted == null) {
+            return;
+        }
+
+        MapActor highlightedActor = actorMap.get(highlighted);
         highlightSprite.setBounds(
                 highlightedActor.getX(),
                 highlightedActor.getY(),
