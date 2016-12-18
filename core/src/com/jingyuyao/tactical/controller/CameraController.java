@@ -14,7 +14,9 @@ public class CameraController extends InputAdapter {
     private static final float VERTICAL_EDGE = 0.2f; // percentage
     private static final float MOVEMENT_DELTA = 0.1f; // world unit
     private static final long STARTING_DELAY = 200L; // ms
+    private static final long NO_DELAY = 0L; // ms
     private static final long REPEAT_DELAY = 10L; // ms
+    private static final int NO_POINTER = -1;
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final Runnable screenMover = new Runnable() {
@@ -28,6 +30,7 @@ public class CameraController extends InputAdapter {
     private final Camera camera;
     private final int worldWidth;
     private final int worldHeight;
+    private int currentPointer = NO_POINTER;
     // Raw mouse coordinate on screen (including gutters)
     private int currentX;
     private int currentY;
@@ -41,23 +44,23 @@ public class CameraController extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // Temp solution for preventing multi-touch for screwing things up
-        // TODO: find a better solution for multi-touch
-        if (screenMoverHandle == null) {
-            screenMoverHandle =
-                    scheduler.scheduleAtFixedRate(screenMover, STARTING_DELAY, REPEAT_DELAY, TimeUnit.MILLISECONDS);
-
-            currentX = screenX;
-            currentY = screenY;
-        }
-
+        if (screenMoverHandle != null) screenMoverHandle.cancel(false);
+        long delay = (currentPointer == NO_POINTER) ? STARTING_DELAY : NO_DELAY;
+        screenMoverHandle =
+                scheduler.scheduleAtFixedRate(screenMover, delay, REPEAT_DELAY, TimeUnit.MILLISECONDS);
+        currentPointer = pointer;
+        currentX = screenX;
+        currentY = screenY;
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (screenMoverHandle != null) screenMoverHandle.cancel(false);
-        screenMoverHandle = null;
+        if (currentPointer == pointer) {
+            if (screenMoverHandle != null) screenMoverHandle.cancel(false);
+            screenMoverHandle = null;
+            currentPointer = NO_POINTER;
+        }
         return false;
     }
 
