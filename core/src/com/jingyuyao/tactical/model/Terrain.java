@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model;
 
-import com.jingyuyao.tactical.model.graph.HasDistanceCost;
+import com.jingyuyao.tactical.model.graph.HasEdgeCost;
 
-public class Terrain extends MapObject implements HasDistanceCost<Character> {
+public class Terrain extends MapObject implements HasEdgeCost<Character> {
     private Type type;
     private PotentialTarget potentialTarget = PotentialTarget.NONE;
 
@@ -12,9 +12,9 @@ public class Terrain extends MapObject implements HasDistanceCost<Character> {
     }
 
     @Override
-    public int getDistanceCost(Character character) {
+    public int getEdgeCost(Character character) {
         if (!character.getCanCrossTerrainTypes().contains(type)) {
-            return HasDistanceCost.CANT_CROSS;
+            return HasEdgeCost.NO_EDGE;
         }
 
         switch (type) {
@@ -22,8 +22,7 @@ public class Terrain extends MapObject implements HasDistanceCost<Character> {
                 return 2;
             case WATER:
             case MOUNTAIN:
-                // TODO: Figure out how "blocking" terrains work
-                return 1000;
+                return 3;
             case NORMAL:
             default:
                 return 1;

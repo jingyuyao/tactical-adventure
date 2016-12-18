@@ -12,13 +12,13 @@ public class Character extends MapObject {
      */
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
-    private int moveDistance;
+    private int totalMoveCost;
     private Path<Terrain> lastTerrainGraph;
 
-    Character(String name, int x, int y, int moveDistance) {
+    Character(String name, int x, int y, int totalMoveCost) {
         super(x, y);
         this.name = name;
-        this.moveDistance = moveDistance;
+        this.totalMoveCost = totalMoveCost;
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
     }
 
@@ -34,13 +34,10 @@ public class Character extends MapObject {
         return canCrossTerrainTypes;
     }
 
-    int getMoveDistance() {
-        return moveDistance;
+    int getTotalMoveCost() {
+        return totalMoveCost;
     }
 
-    /**
-     * @param pathToCoordinate The single path to the new coordinate
-     */
     void moveTo(int x, int y, Path<Terrain> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
         setX(x);
