@@ -4,26 +4,28 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.jingyuyao.tactical.model.HasCoordinate;
+import com.jingyuyao.tactical.model.MapObject;
+import com.jingyuyao.tactical.model.UpdateListener;
 
 /**
  * An {@link Actor} on a {@link MapView}.
  *
- * Eh, this class turns out dumber than I expected :/
- *
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
-public class MapActor extends Actor {
+public abstract class MapActor<T extends MapObject> extends Actor {
+    private final T object;
     private Sprite sprite;
 
-    MapActor(HasCoordinate coordinate, float size, EventListener... listeners) {
-        this(coordinate, size, null, listeners);
+    MapActor(T object, float size, EventListener... listeners) {
+        this(object, size, null, listeners);
     }
 
-    MapActor(HasCoordinate coordinate, float size, Sprite sprite, EventListener... listeners) {
+    MapActor(T object, float size, Sprite sprite, EventListener... listeners) {
+        this.object = object;
         this.sprite = sprite;
-        setBounds(coordinate.getX(), coordinate.getY(), size, size);
+        setBounds(object.getX(), object.getY(), size, size);
+        object.setUpdateListener(getUpdateListener());
         for (EventListener listener : listeners) {
             addListener(listener);
         }
@@ -40,4 +42,10 @@ public class MapActor extends Actor {
     void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
+
+    protected T getObject() {
+        return object;
+    }
+
+    protected abstract UpdateListener getUpdateListener();
 }

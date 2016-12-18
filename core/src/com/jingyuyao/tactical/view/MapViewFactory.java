@@ -26,12 +26,10 @@ public class MapViewFactory {
     private static final int VIEWPORT_HEIGHT = 10; // # tiles
 
     private final MapActorFactory mapActorFactory;
-    private final Sprite reachableSprite;
     private final Sprite highlightSprite;
 
     public MapViewFactory(AssetManager assetManager) {
         mapActorFactory = new MapActorFactory(assetManager);
-        reachableSprite = new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class));
         highlightSprite = new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class));
     }
 
@@ -47,7 +45,7 @@ public class MapViewFactory {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Terrain terrain = map.get(x, y);
-                MapActor actor = mapActorFactory.createTerrain(map, terrain);
+                MapActor actor = mapActorFactory.create(map, terrain);
                 stage.addActor(actor);
                 actorMap.put(terrain, actor);
             }
@@ -55,12 +53,12 @@ public class MapViewFactory {
 
         // Characters must be added after terrain so they get hit by touch input
         for (Character character : map.getCharacters()) {
-            MapActor actor = mapActorFactory.createCharacter(map, character);
+            MapActor actor = mapActorFactory.create(map, character);
             stage.addActor(actor);
             actorMap.put(character, actor);
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(map, stage, actorMap, mapRenderer, reachableSprite, highlightSprite);
+        return new MapView(map, stage, actorMap, mapRenderer, highlightSprite);
     }
 }

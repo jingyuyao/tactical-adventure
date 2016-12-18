@@ -3,13 +3,11 @@ package com.jingyuyao.tactical.model;
 import com.jingyuyao.tactical.model.graph.Graph;
 import com.jingyuyao.tactical.model.graph.GraphFactory;
 import com.jingyuyao.tactical.model.graph.Path;
-import com.jingyuyao.tactical.util.HasCalls;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
-public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
+public class Map implements HasGrid<Terrain> {
     /**
      * (0,0) starts at bottom left.
      */
@@ -109,7 +107,6 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         Path<Terrain> pathToCoordinate = reachableGraph.getPathTo(x, y);
         if (pathToCoordinate != null) {
             character.moveTo(x, y, pathToCoordinate);
-            call(Calls.CHARACTERS_UPDATE);
         }
     }
 
@@ -118,7 +115,6 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
         for (Terrain terrain : createReachableGraph(character).getAllObjects()) {
             terrain.setSelectionMode(target);
         }
-        call(Calls.TERRAINS_UPDATE);
     }
 
     private Graph<Terrain> createReachableGraph(Character character) {
@@ -128,46 +124,5 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
 
     public enum SelectionState {
         NONE, CHARACTER, TERRAIN
-    }
-
-    public enum Calls {
-        CHARACTERS_UPDATE, TERRAINS_UPDATE
-    }
-
-    /**
-     * Convenience method to get all the terrains.
-     */
-    public Iterable<Terrain> getTerrains() {
-        return new Iterable<Terrain>() {
-            @Override
-            public Iterator<Terrain> iterator() {
-                return new Iterator<Terrain>() {
-                    private int ix = 0;
-                    private int iy = 0;
-
-                    @Override
-                    public boolean hasNext() {
-                        return iy < getHeight();
-                    }
-
-                    @Override
-                    public Terrain next() {
-                        Terrain terrain = get(ix, iy);
-
-                        if (++ix == getWidth()) {
-                            ix = 0;
-                            iy++;
-                        }
-
-                        return terrain;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("nah");
-                    }
-                };
-            }
-        };
     }
 }

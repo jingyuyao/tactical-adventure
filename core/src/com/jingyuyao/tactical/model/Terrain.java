@@ -35,6 +35,7 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
 
     void setSelectionMode(SelectionMode selectionMode) {
         this.selectionMode = selectionMode;
+        update();
     }
 
     public enum Type {

@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model;
 /**
  * An object on the game grid.
  */
-public class MapObject implements HasCoordinate {
+public abstract class MapObject extends Updatable implements HasCoordinate {
     private int x;
     private int y;
 
@@ -22,12 +22,11 @@ public class MapObject implements HasCoordinate {
         return y;
     }
 
-    // Setters are protected so children can manage how they are updated
-    protected void setX(int x) {
+    /**
+     * Call <b>{@link #update()}</b> yourself!
+     */
+    void setPosition(int x, int y) {
         this.x = x;
-    }
-
-    protected void setY(int y) {
         this.y = y;
     }
 

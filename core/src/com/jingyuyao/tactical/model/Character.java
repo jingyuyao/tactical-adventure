@@ -40,9 +40,9 @@ public class Character extends MapObject {
 
     void moveTo(int x, int y, Path<Terrain> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
-        setX(x);
-        setY(y);
+        setPosition(x, y);
         lastTerrainGraph = pathToCoordinate;
+        update();
     }
 
     private static Set<Terrain.Type> createDefaultCanCrossTerrainTypes() {
