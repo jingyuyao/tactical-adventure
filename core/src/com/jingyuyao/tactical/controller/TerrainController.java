@@ -24,7 +24,7 @@ public class TerrainController extends MapActorController {
             case REACHABLE:
                 getMap().moveSelectedTo(terrain);
                 break;
-            case ATTACKABLE:
+            case CAN_ATTACK:
                 break;
         }
     }

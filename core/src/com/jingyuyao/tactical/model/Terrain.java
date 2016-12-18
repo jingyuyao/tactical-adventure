@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.jingyuyao.tactical.model.graph.HasDistanceCost;
 
-public class Terrain extends MapObject implements HasDistanceCost {
+public class Terrain extends MapObject implements HasDistanceCost<Character> {
     private Type type;
     private PotentialTarget potentialTarget = PotentialTarget.NONE;
 
@@ -12,7 +12,11 @@ public class Terrain extends MapObject implements HasDistanceCost {
     }
 
     @Override
-    public int getDistanceCost() {
+    public int getDistanceCost(Character character) {
+        if (!character.getCanCrossTerrainTypes().contains(type)) {
+            return HasDistanceCost.CANT_CROSS;
+        }
+
         switch (type) {
             case OBSTRUCTED:
                 return 2;
@@ -44,7 +48,7 @@ public class Terrain extends MapObject implements HasDistanceCost {
     public enum PotentialTarget {
         NONE,
         REACHABLE,
-        ATTACKABLE
+        CAN_ATTACK
     }
 
     @Override

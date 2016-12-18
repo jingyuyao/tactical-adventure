@@ -7,11 +7,18 @@ import java.util.*;
 
 public class GraphFactory {
     /**
-     * Starting at {@code grid.get(startX, startY)}
-     * Dijkstra's path finding up to {@code maxDistance} weight
+     * Creates a graph that is reachable from {@code (startX, startY)} on {@code grid} with a max
+     * distance of {@code maxDistanceCost}. Distance cost of each location in the grid is calculated
+     * in relation to {@code data}.
+     *
+     * @param grid The grid this graph is created on
+     * @param startX Initial x coordinate on the grid
+     * @param startY Initial y coordinate on the grid
+     * @param maxDistanceCost Maximum cost for the path between initial location to any reachable node
+     * @param data The data used to do distance cost comparison with
      */
-    public static <T extends HasCoordinate & HasDistanceCost> Graph<T> createReachableGraph(
-            HasGrid<T> grid, int startX, int startY, int maxDistance) {
+    public static <D, T extends HasCoordinate & HasDistanceCost<D>> Graph<T> createReachableGraph(
+            HasGrid<T> grid, int startX, int startY, int maxDistanceCost, D data) {
         T startingObj = grid.get(startX, startY);
         java.util.Map<T, Graph<T>> graphMap = new HashMap<T, Graph<T>>();
         PriorityQueue<Graph<T>> minNodeQueue = new PriorityQueue<Graph<T>>();
@@ -28,8 +35,13 @@ public class GraphFactory {
                     continue;
                 }
 
-                int distance = minGraph.getDistance() + neighbor.getDistanceCost();
-                if (distance > maxDistance) {
+                int distanceCost = neighbor.getDistanceCost(data);
+                if (distanceCost == HasDistanceCost.CANT_CROSS) {
+                    continue;
+                }
+
+                int newDistance = minGraph.getDistance() + distanceCost;
+                if (newDistance > maxDistanceCost) {
                     continue;
                 }
 
@@ -37,13 +49,13 @@ public class GraphFactory {
                 if (graphMap.containsKey(neighbor)) {
                     neighborGraph = graphMap.get(neighbor);
                     minNodeQueue.remove(neighborGraph);
-                    if (distance < neighborGraph.getDistance()) {
+                    if (newDistance < neighborGraph.getDistance()) {
                         neighborGraph.changeParent(minGraph);
-                        neighborGraph.setDistance(distance);
+                        neighborGraph.setDistance(newDistance);
                         minGraph.addNextPath(neighborGraph);
                     }
                 } else {
-                    neighborGraph = new Graph<T>(neighbor, minGraph, distance);
+                    neighborGraph = new Graph<T>(neighbor, minGraph, newDistance);
                     minGraph.addNextPath(neighborGraph);
                     graphMap.put(neighbor, neighborGraph);
                 }

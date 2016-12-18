@@ -115,7 +115,7 @@ public class MapView {
                 case REACHABLE:
                     actor.setSprite(reachableSprite);
                     break;
-                case ATTACKABLE:
+                case CAN_ATTACK:
                     break;
             }
         }

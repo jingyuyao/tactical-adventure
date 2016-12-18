@@ -156,7 +156,7 @@ public class Map extends HasCalls<Map.Calls> implements HasGrid<Terrain> {
 
     private Graph<Terrain> createReachableGraph(Character character) {
         return GraphFactory.createReachableGraph(
-                this, character.getX(), character.getY(), character.getMoveDistance());
+                this, character.getX(), character.getY(), character.getMoveDistance(), character);
     }
 
     public enum Calls {

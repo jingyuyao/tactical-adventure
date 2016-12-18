@@ -27,8 +27,8 @@ public class MapFactory {
         }
 
         // Testing
-        map.addCharacter(new Character("john", 5, 5));
-        map.addCharacter(new Character("billy", 10, 10));
+        map.addCharacter(new Character("john", 5, 5, 10));
+        map.addCharacter(new Character("billy", 10, 10, 5));
 
         return map;
     }
