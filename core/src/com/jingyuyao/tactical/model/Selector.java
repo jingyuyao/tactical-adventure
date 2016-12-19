@@ -1,8 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.graph.GraphAlgorithms;
-import com.jingyuyao.tactical.model.graph.ValueNode;
+import com.google.common.graph.ValueGraph;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,17 +61,17 @@ public class Selector {
         map.clearAllMarkers();
         for (Character character : selectedEnemies) {
             // TODO: Find danger graph
-            Graph<ValueNode<Terrain>> dangerGraph = findMovePathsFor(character);
-            for (ValueNode<Terrain> terrainNode : dangerGraph.nodes()) {
-                terrainNode.getObject().addMarker(Terrain.Marker.DANGER);
+            Graph<Terrain> dangerGraph = findMovePathsFor(character);
+            for (Terrain terrain : dangerGraph.nodes()) {
+                terrain.addMarker(Terrain.Marker.DANGER);
             }
         }
 
         if (lastSelectedPlayer != null) {
             // TODO: Add attack graph?
-            Graph<ValueNode<Terrain>> moveGraph = findMovePathsFor(lastSelectedPlayer);
-            for (ValueNode<Terrain> terrainNode : moveGraph.nodes()) {
-                terrainNode.getObject().addMarker(Terrain.Marker.MOVE);
+            Graph<Terrain> moveGraph = findMovePathsFor(lastSelectedPlayer);
+            for (Terrain terrain : moveGraph.nodes()) {
+                terrain.addMarker(Terrain.Marker.MOVE);
             }
         }
     }
@@ -80,15 +79,15 @@ public class Selector {
     private void moveIfAble(Character character, Terrain terrain) {
         int x = terrain.getX();
         int y = terrain.getY();
-        Graph<ValueNode<Terrain>> pathGraph = findMovePathsFor(character);
-        Collection<ValueNode<Terrain>> pathToCoordinate = GraphAlgorithms.findPathTo(pathGraph, x, y);
+        Graph<Terrain> pathGraph = findMovePathsFor(character);
+        Collection<Terrain> pathToCoordinate = GraphAlgorithms.findPathTo(pathGraph, x, y);
         if (!pathToCoordinate.isEmpty()) {
             character.moveTo(x, y, pathToCoordinate);
         }
     }
 
 
-    private Graph<ValueNode<Terrain>> findMovePathsFor(Character character) {
+    private ValueGraph<Terrain, Integer> findMovePathsFor(Character character) {
         return GraphAlgorithms.createPathGraph(
                 map,
                 map.createEdgeCostGrid(character),

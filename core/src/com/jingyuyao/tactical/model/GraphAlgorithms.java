@@ -1,14 +1,12 @@
-package com.jingyuyao.tactical.model.graph;
+package com.jingyuyao.tactical.model;
 
 import com.google.common.graph.*;
-import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.Grid;
-import com.jingyuyao.tactical.model.HasCoordinate;
 
 import java.util.*;
+import java.util.Map;
 
-public class GraphAlgorithms {
-    public static final int NO_EDGE = -1;
+class GraphAlgorithms {
+    static final int NO_EDGE = -1;
 
     /**
      * Find all nodes from ({@code startX}, {@code startY}) with a total path cost (sum of all the edge weights)
@@ -19,15 +17,15 @@ public class GraphAlgorithms {
      * @param edgeCostGrid The grid to get edge cost for creating the graph
      * @param maxPathCost Maximum cost for the path between initial location to any other object
      */
-    public static <O extends HasCoordinate> Graph<ValueNode<O>> createPathGraph(
+    static <O extends HasCoordinate> ValueGraph<O, Integer> createPathGraph(
             Grid<O> dataGrid,
             Grid<Integer> edgeCostGrid,
             int startX,
             int startY,
             int maxPathCost
     ) {
-        MutableGraph<ValueNode<O>> graph =
-                GraphBuilder
+        MutableValueGraph<O, Integer> graph =
+                ValueGraphBuilder
                         .directed()
                         .allowsSelfLoops(false)
                         .nodeOrder(ElementOrder.insertion())
@@ -43,9 +41,10 @@ public class GraphAlgorithms {
         // Dijkstra's algorithm
         while (!minNodeQueue.isEmpty()) {
             ValueNode<O> minNode = minNodeQueue.poll();
-            processedObjects.add(minNode.getObject());
+            O minObject = minNode.getObject();
+            processedObjects.add(minObject);
 
-            for (O neighbor : dataGrid.getNeighbors(minNode.getObject().getX(), minNode.getObject().getY())) {
+            for (O neighbor : dataGrid.getNeighbors(minObject.getX(), minObject.getY())) {
                 if (processedObjects.contains(neighbor)) {
                     continue;
                 }
@@ -62,12 +61,12 @@ public class GraphAlgorithms {
 
                 ValueNode<O> neighborNode = new ValueNode<O>(neighbor, pathCost);
                 if (!pathCostMap.containsKey(neighbor)) {
-                    graph.putEdge(minNode, neighborNode);
+                    graph.putEdgeValue(minObject, neighbor, pathCost);
                     pathCostMap.put(neighbor, pathCost);
                 } else if (pathCost < pathCostMap.get(neighbor)) {
-                    // Re-insert neighbor into the graph with (minNode, neighbor) as the only edge
-                    graph.removeNode(neighborNode);
-                    graph.putEdge(minNode, neighborNode);
+                    // Remove neighbor from graph so that (minNode, neighbor) is the only edge
+                    graph.removeNode(neighbor);
+                    graph.putEdgeValue(minObject, neighbor, pathCost);
                     // Adjust path cost of the current neighbor
                     pathCostMap.put(neighbor, pathCost);
                     minNodeQueue.remove(neighborNode);
@@ -89,8 +88,8 @@ public class GraphAlgorithms {
      * @param targetY The target y coordinate
      * @return A path to the target coordinates, empty if no path
      */
-    public static <O extends HasCoordinate> Collection<ValueNode<O>> findPathTo(
-            Graph<ValueNode<O>> graph,
+    static <O extends HasCoordinate> Collection<O> findPathTo(
+            Graph<O> graph,
             int targetX,
             int targetY
     ) {
@@ -98,9 +97,9 @@ public class GraphAlgorithms {
             return Collections.emptyList();
         }
 
-        LinkedList<ValueNode<O>> accumulator = new LinkedList<ValueNode<O>>();
-        Set<ValueNode<O>> visited = new HashSet<ValueNode<O>>();
-        ValueNode<O> firstNode = graph.nodes().iterator().next();
+        LinkedList<O> accumulator = new LinkedList<O>();
+        Set<O> visited = new HashSet<O>();
+        O firstNode = graph.nodes().iterator().next();
         if (findPathTo(graph, targetX, targetY, firstNode, accumulator, visited)) {
             return accumulator;
         }
@@ -109,24 +108,24 @@ public class GraphAlgorithms {
     }
 
     private static <O extends HasCoordinate> boolean findPathTo(
-            Graph<ValueNode<O>> graph,
+            Graph<O> graph,
             int targetX,
             int targetY,
-            ValueNode<O> currentNode,
-            LinkedList<ValueNode<O>> accumulator,
-            Set<ValueNode<O>> visited
+            O currentNode,
+            LinkedList<O> accumulator,
+            Set<O> visited
     ) {
         if (visited.contains(currentNode)) {
             return false;
         }
         visited.add(currentNode);
 
-        if (targetX == currentNode.getObject().getX() && targetY == currentNode.getObject().getY()) {
+        if (targetX == currentNode.getX() && targetY == currentNode.getY()) {
             accumulator.addLast(currentNode);
             return true;
         }
 
-        for (ValueNode<O> neighbor : graph.adjacentNodes(currentNode)) {
+        for (O neighbor : graph.adjacentNodes(currentNode)) {
             if (findPathTo(graph, targetX, targetY, neighbor, accumulator, visited)) {
                 accumulator.addFirst(neighbor);
                 return true;
@@ -134,5 +133,45 @@ public class GraphAlgorithms {
         }
 
         return false;
+    }
+
+    /**
+     * Store an object with an integer value. Identity of this object is based off {@link #object}.
+     * {@link #value} is not part of the identity. Used for {@link PriorityQueue} sorting.
+     */
+    private static class ValueNode<N> implements Comparable<ValueNode<N>> {
+        private final N object;
+        private final int value;
+
+        ValueNode(N object, int value) {
+            this.object = object;
+            this.value = value;
+        }
+
+        N getObject() {
+            return object;
+        }
+
+        int getValue() {
+            return value;
+        }
+
+        @Override
+        public int compareTo(ValueNode<N> other) {
+            return value - other.value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ValueNode<?> valueNode = (ValueNode<?>) o;
+            return com.google.common.base.Objects.equal(object, valueNode.object);
+        }
+
+        @Override
+        public int hashCode() {
+            return com.google.common.base.Objects.hashCode(object);
+        }
     }
 }

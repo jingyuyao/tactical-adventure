@@ -8,15 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.model.UpdateListener;
-import com.jingyuyao.tactical.model.graph.ValueNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class CharacterActor extends MapActor<Character> {
     private static final float TIME_PER_UNIT = 0.1f; // time to move across one world unit in seconds
@@ -70,10 +67,10 @@ public class CharacterActor extends MapActor<Character> {
         }
     }
 
-    private SequenceAction getMoveSequence(Collection<ValueNode<Terrain>> path) {
+    private SequenceAction getMoveSequence(Collection<Terrain> path) {
         SequenceAction sequence = sequence();
-        for (ValueNode<Terrain> terrainNode : path) {
-            sequence.addAction(moveTo(terrainNode.getObject().getX(), terrainNode.getObject().getY(), TIME_PER_UNIT));
+        for (Terrain terrain : path) {
+            sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
         }
         return sequence;
     }

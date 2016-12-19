@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.graph.ValueNode;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,7 +14,7 @@ public class Character extends MapObject {
     private final Set<Terrain.Type> canCrossTerrainTypes;
     private Character.Type type;
     private int movementDistance;
-    private Collection<ValueNode<Terrain>> lastPath;
+    private Collection<Terrain> lastPath;
 
     public Character(int x, int y, String name, Type type, int movementDistance) {
         super(x, y);
@@ -38,7 +37,7 @@ public class Character extends MapObject {
         update();
     }
 
-    public Collection<ValueNode<Terrain>> getLastPath() {
+    public Collection<Terrain> getLastPath() {
         return lastPath;
     }
 
@@ -50,7 +49,7 @@ public class Character extends MapObject {
         return movementDistance;
     }
 
-    void moveTo(int x, int y, Collection<ValueNode<Terrain>> pathToCoordinate) {
+    void moveTo(int x, int y, Collection<Terrain> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
         setPosition(x, y);
         lastPath = pathToCoordinate;

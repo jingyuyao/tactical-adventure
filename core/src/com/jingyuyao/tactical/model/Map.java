@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.jingyuyao.tactical.model.graph.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
