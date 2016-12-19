@@ -37,7 +37,7 @@ public class Grid<T> {
         return rows.get(y).get(x);
     }
 
-    public void set(T data, int x, int y) {
+    public void set(int x, int y, T data) {
         rows.get(y).set(x, data);
     }
 

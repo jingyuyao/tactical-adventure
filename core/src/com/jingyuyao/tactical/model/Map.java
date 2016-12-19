@@ -114,12 +114,12 @@ public class Map extends Grid<Terrain> {
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
                 Terrain terrain = get(x, y);
-                edgeCostGrid.set(terrain.getMovementPenality(character), x, y);
+                edgeCostGrid.set(x, y, terrain.getMovementPenality(character));
             }
         }
 
         for (Character c : getCharacters()) {
-            edgeCostGrid.set(GraphAlgorithms.NO_EDGE, c.getX(), c.getY());
+            edgeCostGrid.set(c.getX(), c.getY(), GraphAlgorithms.NO_EDGE);
         }
 
         return edgeCostGrid;
