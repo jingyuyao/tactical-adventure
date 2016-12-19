@@ -13,14 +13,14 @@ public class Character extends MapObject {
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
     private Character.Type type;
-    private int totalMoveCost;
+    private int movementDistance;
     private Path<Terrain> lastTerrainGraph;
 
-    public Character(int x, int y, String name, Type type, int totalMoveCost) {
+    public Character(int x, int y, String name, Type type, int movementDistance) {
         super(x, y);
         this.name = name;
         this.type = type;
-        this.totalMoveCost = totalMoveCost;
+        this.movementDistance = movementDistance;
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
     }
 
@@ -45,8 +45,8 @@ public class Character extends MapObject {
         return canCrossTerrainTypes;
     }
 
-    int getTotalMoveCost() {
-        return totalMoveCost;
+    int getMovementDistance() {
+        return movementDistance;
     }
 
     void moveTo(int x, int y, Path<Terrain> pathToCoordinate) {

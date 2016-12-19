@@ -42,14 +42,14 @@ public class Map extends Grid<Terrain> {
 
         switch (selectionState) {
             case CHARACTER:
-                setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
+                setAllPathsTo(selectedCharacter, Terrain.SelectionMode.NONE);
                 if (character.equals(selectedCharacter)) {
                     selectionState = SelectionState.NONE;
                     return;
                 }
             case NONE:
             case TERRAIN:
-                setReachableTerrains(character, selectionMode);
+                setAllPathsTo(character, selectionMode);
                 selectedCharacter = character;
                 selectionState = SelectionState.CHARACTER;
                 break;
@@ -61,12 +61,12 @@ public class Map extends Grid<Terrain> {
             case CHARACTER:
                 switch (terrain.getSelectionMode()) {
                     case MOVE:
-                        setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
+                        setAllPathsTo(selectedCharacter, Terrain.SelectionMode.NONE);
                         moveCharacter(selectedCharacter, terrain);
                         break;
                     case NONE:
                     case DANGER:
-                        setReachableTerrains(selectedCharacter, Terrain.SelectionMode.NONE);
+                        setAllPathsTo(selectedCharacter, Terrain.SelectionMode.NONE);
                         break;
                     case ATTACK:
                         break;
@@ -85,27 +85,27 @@ public class Map extends Grid<Terrain> {
     private void moveCharacter(Character character, Terrain terrain) {
         int x = terrain.getX();
         int y = terrain.getY();
-        Graph<Terrain> reachableGraph = createReachableGraph(character);
-        Optional<Path<Terrain>> pathToCoordinate = reachableGraph.getPathTo(x, y);
+        Graph<Terrain> allPaths = findAllPathsFor(character);
+        Optional<Path<Terrain>> pathToCoordinate = allPaths.getPathTo(x, y);
         if (pathToCoordinate.isPresent()) {
             character.moveTo(x, y, pathToCoordinate.get());
         }
     }
 
-    private void setReachableTerrains(Character character, Terrain.SelectionMode target) {
-        // TODO: Set correct potential target depending on character type i.e. enemy vs player
-        for (Terrain terrain : createReachableGraph(character).getAllObjects()) {
-            terrain.setSelectionMode(target);
+    private void setAllPathsTo(Character character, Terrain.SelectionMode mode) {
+        // TODO: Set correct selection mode depending on character type i.e. enemy vs player
+        for (Terrain terrain : findAllPathsFor(character).getAllObjects()) {
+            terrain.setSelectionMode(mode);
         }
     }
 
-    private Graph<Terrain> createReachableGraph(Character character) {
+    private Graph<Terrain> findAllPathsFor(Character character) {
         return GraphAlgorithms.findAllPath(
                 this,
                 createEdgeCostGrid(character),
                 character.getX(),
                 character.getY(),
-                character.getTotalMoveCost());
+                character.getMovementDistance());
     }
 
     private Grid<Integer> createEdgeCostGrid(Character character) {

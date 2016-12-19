@@ -17,7 +17,7 @@ public class GraphAlgorithms {
      * @param edgeCostGrid The grid to get edge cost for creating the graph
      * @param startX Initial x coordinate on the edgeCostGrid
      * @param startY Initial y coordinate on the edgeCostGrid
-     * @param maxPathCost Maximum cost for the path between initial location to any reachable node
+     * @param maxPathCost Maximum cost for the path between initial location to any other node
      */
     public static <T extends HasCoordinate> Graph<T> findAllPath(
             Grid<T> dataGrid,
