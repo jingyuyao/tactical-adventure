@@ -71,6 +71,8 @@ public class Character extends MapObject {
     public String toString() {
         return "Character{" +
                 "name='" + name + '\'' +
+                ", type=" + type +
+                ", movementDistance=" + movementDistance +
                 "} " + super.toString();
     }
 }

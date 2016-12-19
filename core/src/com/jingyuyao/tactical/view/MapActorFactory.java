@@ -21,18 +21,18 @@ class MapActorFactory {
     private static final float ACTOR_SIZE = 1f; // world units
 
     private final AssetManager assetManager;
-    private final java.util.Map<Terrain.SelectionMode, Sprite> selectionModeSpriteMap;
+    private final java.util.Map<Terrain.Marker, Sprite> markerSpriteMap;
     private final java.util.Map<Character.Type, Color> typeColorMap;
 
     MapActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
-        selectionModeSpriteMap = new HashMap<Terrain.SelectionMode, Sprite>();
-        selectionModeSpriteMap.put(
-                Terrain.SelectionMode.MOVE,
+        markerSpriteMap = new HashMap<Terrain.Marker, Sprite>();
+        markerSpriteMap.put(
+                Terrain.Marker.MOVE,
                 new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class))
         );
-        selectionModeSpriteMap.put(
-                Terrain.SelectionMode.DANGER,
+        markerSpriteMap.put(
+                Terrain.Marker.DANGER,
                 new Sprite(assetManager.get(Assets.RED_OVERLAY, Texture.class))
         );
         typeColorMap = new HashMap<Character.Type, Color>();
@@ -47,7 +47,7 @@ class MapActorFactory {
                 new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
                 typeColorMap,
                 new HighlightController(map, character),
-                new CharacterController(map, character, ACTOR_SIZE)
+                new CharacterController(map.getLogic(), character, ACTOR_SIZE)
         );
     }
 
@@ -55,9 +55,9 @@ class MapActorFactory {
         return new TerrainActor(
                 terrain,
                 ACTOR_SIZE,
-                selectionModeSpriteMap,
+                markerSpriteMap,
                 new HighlightController(map, terrain),
-                new TerrainController(map, terrain, ACTOR_SIZE)
+                new TerrainController(map.getLogic(), terrain, ACTOR_SIZE)
         );
     }
 }

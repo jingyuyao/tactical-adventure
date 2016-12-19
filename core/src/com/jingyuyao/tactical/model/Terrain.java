@@ -2,20 +2,24 @@ package com.jingyuyao.tactical.model;
 
 import com.jingyuyao.tactical.model.graph.GraphAlgorithms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Terrain extends MapObject {
+    private final Set<Marker> markers;
     private Type type;
-    private SelectionMode selectionMode = SelectionMode.NONE;
 
     public Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
+        markers = new HashSet<Marker>();
     }
 
-    public SelectionMode getSelectionMode() {
-        return selectionMode;
+    public Set<Marker> getMarkers() {
+        return markers;
     }
 
-    int getMovementPenality(Character character) {
+    int getMovementPenalty(Character character) {
         if (!character.getCanCrossTerrainTypes().contains(type)) {
             return GraphAlgorithms.NO_EDGE;
         }
@@ -32,8 +36,13 @@ public class Terrain extends MapObject {
         }
     }
 
-    void setSelectionMode(SelectionMode selectionMode) {
-        this.selectionMode = selectionMode;
+    void addMarker(Marker marker) {
+        markers.add(marker);
+        update();
+    }
+
+    void clearMarkers() {
+        markers.clear();
         update();
     }
 
@@ -44,18 +53,19 @@ public class Terrain extends MapObject {
         MOUNTAIN
     }
 
-    public enum SelectionMode {
-        NONE,
+    /**
+     * Visual marker like for things like move target or danger area
+     */
+    public enum Marker {
         MOVE,
-        ATTACK,
         DANGER,
     }
 
     @Override
     public String toString() {
         return "Terrain{" +
-                "type=" + type +
-                ", selectionMode=" + selectionMode +
+                "markers=" + markers +
+                ", type=" + type +
                 "} " + super.toString();
     }
 }
