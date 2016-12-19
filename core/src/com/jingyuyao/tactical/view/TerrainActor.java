@@ -23,7 +23,6 @@ public class TerrainActor extends MapActor<Terrain> {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
         for (Sprite sprite : markerSprites) {
             sprite.setBounds(getX(), getY(), getWidth(), getHeight());
             sprite.draw(batch);

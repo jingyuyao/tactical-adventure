@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -21,12 +22,22 @@ public class CharacterActor extends MapActor<Character> {
     private static final float TIME_PER_UNIT = 0.1f; // time to move across one world unit in seconds
 
     private final java.util.Map<Character.Type, Color> typeColorMap;
+    private final Sprite sprite;
 
     CharacterActor(Character object, float size, Sprite sprite, Map<Character.Type, Color> typeColorMap,
                    EventListener... listeners) {
-        super(object, size, sprite, listeners);
+        super(object, size, listeners);
+        this.sprite = sprite;
         this.typeColorMap = typeColorMap;
         updateType();
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (sprite != null) {
+            sprite.setBounds(getX(), getY(), getWidth(), getHeight());
+            sprite.draw(batch);
+        }
     }
 
     @Override
@@ -40,7 +51,7 @@ public class CharacterActor extends MapActor<Character> {
     }
 
     private void updateType() {
-        getSprite().setColor(typeColorMap.get(getObject().getType()));
+        sprite.setColor(typeColorMap.get(getObject().getType()));
     }
 
     private void updatePosition() {
