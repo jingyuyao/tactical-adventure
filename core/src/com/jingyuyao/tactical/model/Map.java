@@ -1,49 +1,20 @@
 package com.jingyuyao.tactical.model;
 
-import com.jingyuyao.tactical.model.graph.Graph;
-import com.jingyuyao.tactical.model.graph.GraphFactory;
-import com.jingyuyao.tactical.model.graph.Path;
+import com.google.common.base.Optional;
+import com.jingyuyao.tactical.model.graph.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Map implements HasGrid<Terrain> {
-    /**
-     * (0,0) starts at bottom left.
-     */
-    private final int width;
-    private final int height;
-    private final Terrain[][] terrains;
+public class Map extends Grid<Terrain> {
     private final Collection<Character> characters;
     private MapObject highlighted;
     private SelectionState selectionState = SelectionState.NONE;
     private Character selectedCharacter;
 
     public Map(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.terrains = new Terrain[height][width];
+        super(width, height);
         this.characters = new ArrayList<Character>();
-    }
-
-    @Override
-    public void set(Terrain terrain, int x, int y) {
-        terrains[y][x] = terrain;
-    }
-
-    @Override
-    public Terrain get(int x, int y) {
-        return terrains[y][x];
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
     }
 
     public void addCharacter(Character character) {
@@ -115,9 +86,9 @@ public class Map implements HasGrid<Terrain> {
         int x = terrain.getX();
         int y = terrain.getY();
         Graph<Terrain> reachableGraph = createReachableGraph(character);
-        Path<Terrain> pathToCoordinate = reachableGraph.getPathTo(x, y);
-        if (pathToCoordinate != null) {
-            character.moveTo(x, y, pathToCoordinate);
+        Optional<Path<Terrain>> pathToCoordinate = reachableGraph.getPathTo(x, y);
+        if (pathToCoordinate.isPresent()) {
+            character.moveTo(x, y, pathToCoordinate.get());
         }
     }
 
@@ -129,8 +100,29 @@ public class Map implements HasGrid<Terrain> {
     }
 
     private Graph<Terrain> createReachableGraph(Character character) {
-        return GraphFactory.createReachableGraph(
-                this, character.getX(), character.getY(), character.getTotalMoveCost(), character);
+        return GraphAlgorithms.findAllPath(
+                this,
+                createEdgeCostGrid(character),
+                character.getX(),
+                character.getY(),
+                character.getTotalMoveCost());
+    }
+
+    private Grid<Integer> createEdgeCostGrid(Character character) {
+        Grid<Integer> edgeCostGrid = new Grid<Integer>(getWidth(), getHeight());
+
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                Terrain terrain = get(x, y);
+                edgeCostGrid.set(terrain.getMovementPenality(character), x, y);
+            }
+        }
+
+        for (Character c : getCharacters()) {
+            edgeCostGrid.set(GraphAlgorithms.NO_EDGE, c.getX(), c.getY());
+        }
+
+        return edgeCostGrid;
     }
 
     public enum SelectionState {

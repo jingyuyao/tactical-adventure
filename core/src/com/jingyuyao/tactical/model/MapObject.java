@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model;
 /**
  * An object on the game grid.
  */
-public abstract class MapObject extends Updatable implements HasCoordinate {
+public class MapObject extends Updatable implements HasCoordinate {
     private int x;
     private int y;
 

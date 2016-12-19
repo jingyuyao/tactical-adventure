@@ -5,11 +5,14 @@ import com.jingyuyao.tactical.model.HasCoordinate;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * A sequence of nodes.
+ */
 public class Path<T extends HasCoordinate> extends Node<T> {
     private Path<T> child;
 
-    Path(T mapObject, Node<T> parent, int cumulativeEdgeCost) {
-        super(mapObject, parent, cumulativeEdgeCost);
+    Path(T mapObject, Node<T> parent, int pathCost) {
+        super(mapObject, parent, pathCost);
     }
 
     @Override
@@ -17,6 +20,9 @@ public class Path<T extends HasCoordinate> extends Node<T> {
         setChild(null);
     }
 
+    /**
+     * Get all the objects from this path in sequence.
+     */
     public Collection<T> getRoute() {
         Collection<T> objects = new ArrayList<T>();
         objects.add(getObject());

@@ -3,36 +3,39 @@ package com.jingyuyao.tactical.model.graph;
 import com.jingyuyao.tactical.model.HasCoordinate;
 
 /**
- * A node in the graph that contains an {@code object}, a {@code parent} and a cumulative {@code cumulativeEdgeCost}
+ * A node in a graph that contains an {@code object}, a {@code parent} and a {@code pathCost}
  * in relation to somewhere.
  * @param <T> The data type this node contains
  */
 abstract class Node<T extends HasCoordinate> implements Comparable<Node<T>> {
     private final T object;
     private Node<T> parent;
-    private int cumulativeEdgeCost;
+    /**
+     * Path cost is the cumulative edge cost from some where to this node.
+     */
+    private int pathCost;
 
-    Node(T object, Node<T> parent, int cumulativeEdgeCost) {
+    Node(T object, Node<T> parent, int pathCost) {
         this.object = object;
         this.parent = parent;
-        this.cumulativeEdgeCost = cumulativeEdgeCost;
+        this.pathCost = pathCost;
     }
 
     @Override
     public int compareTo(Node<T> node) {
-        return getCumulativeEdgeCost() - node.getCumulativeEdgeCost();
+        return getPathCost() - node.getPathCost();
     }
 
     T getObject() {
         return object;
     }
 
-    int getCumulativeEdgeCost() {
-        return cumulativeEdgeCost;
+    int getPathCost() {
+        return pathCost;
     }
 
-    void setCumulativeEdgeCost(int cumulativeEdgeCost) {
-        this.cumulativeEdgeCost = cumulativeEdgeCost;
+    void setPathCost(int pathCost) {
+        this.pathCost = pathCost;
     }
 
     /**
@@ -60,7 +63,7 @@ abstract class Node<T extends HasCoordinate> implements Comparable<Node<T>> {
     public String toString() {
         return "Node{" +
                 "object=" + object +
-                ", cumulativeEdgeCost=" + cumulativeEdgeCost +
+                ", pathCost=" + pathCost +
                 '}';
     }
 }

@@ -1,19 +1,17 @@
 package com.jingyuyao.tactical.model.graph;
 
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.HasCoordinate;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Graph is an acyclic graph of {@link Node} with multiple children.
- */
 public class Graph<T extends HasCoordinate> extends Node<T> {
     private final Set<Graph<T>> neighbors;
 
-    Graph(T mapObject, Graph<T> parent, int cumulativeEdgeCost) {
-        super(mapObject, parent, cumulativeEdgeCost);
+    Graph(T mapObject, Graph<T> parent, int pathCost) {
+        super(mapObject, parent, pathCost);
         neighbors = new HashSet<Graph<T>>();
     }
 
@@ -28,24 +26,25 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
      * @param y The target y coordinate
      * @return A new single path to the coordinates, null if not possible
      */
-    public Path<T> getPathTo(int x, int y) {
+    public Optional<Path<T>> getPathTo(int x, int y) {
         // Parent should be set by the parent
-        Path<T> path = new Path<T>(getObject(), null, getCumulativeEdgeCost());
+        Path<T> path = new Path<T>(getObject(), null, getPathCost());
 
         // Very basic depth first search
         if (x == getObject().getX() && y == getObject().getY()) {
-            return path;
+            return Optional.of(path);
         }
-        for (Graph<T> graph : getNeighbors()) {
-            Path<T> found = graph.getPathTo(x, y);
-            if (found != null) {
-                found.changeParent(path);
-                path.setChild(found);
-                return path;
+        for (Graph<T> neighbor : getNeighbors()) {
+            Optional<Path<T>> neighborPath = neighbor.getPathTo(x, y);
+
+            if (neighborPath.isPresent()) {
+                neighborPath.get().changeParent(path);
+                path.setChild(neighborPath.get());
+                return Optional.of(path);
             }
         }
 
-        return null;
+        return Optional.absent();
     }
 
     /**
@@ -57,8 +56,8 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
         return objects;
     }
 
-    void addNextPath(Graph<T> graph) {
-        getNeighbors().add(graph);
+    void addNeighbor(Graph<T> neighbor) {
+        getNeighbors().add(neighbor);
     }
 
     private void getAllObjects(Set<T> accumulator) {

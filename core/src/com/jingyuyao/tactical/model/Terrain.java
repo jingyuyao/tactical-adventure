@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model;
 
-import com.jingyuyao.tactical.model.graph.HasEdgeCost;
+import com.jingyuyao.tactical.model.graph.GraphAlgorithms;
 
-public class Terrain extends MapObject implements HasEdgeCost<Character> {
+public class Terrain extends MapObject {
     private Type type;
     private SelectionMode selectionMode = SelectionMode.NONE;
 
@@ -11,10 +11,13 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
         this.type = type;
     }
 
-    @Override
-    public int getEdgeCost(Character character) {
+    public SelectionMode getSelectionMode() {
+        return selectionMode;
+    }
+
+    int getMovementPenality(Character character) {
         if (!character.getCanCrossTerrainTypes().contains(type)) {
-            return HasEdgeCost.NO_EDGE;
+            return GraphAlgorithms.NO_EDGE;
         }
 
         switch (type) {
@@ -27,10 +30,6 @@ public class Terrain extends MapObject implements HasEdgeCost<Character> {
             default:
                 return 1;
         }
-    }
-
-    public SelectionMode getSelectionMode() {
-        return selectionMode;
     }
 
     void setSelectionMode(SelectionMode selectionMode) {
