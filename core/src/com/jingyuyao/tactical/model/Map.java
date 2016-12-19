@@ -52,7 +52,7 @@ public class Map extends Grid<Terrain> {
         }
 
         for (Character c : getCharacters()) {
-            edgeCostGrid.set(c.getX(), c.getY(), GraphAlgorithms.NO_EDGE);
+            edgeCostGrid.set(c.getX(), c.getY(), GraphMaker.NO_EDGE);
         }
 
         return edgeCostGrid;

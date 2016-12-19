@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.graph.Graph;
-import com.jingyuyao.tactical.model.graph.GraphAlgorithms;
+import com.jingyuyao.tactical.model.graph.GraphMaker;
 import com.jingyuyao.tactical.model.graph.Path;
 
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class Selector {
 
 
     private Graph<Terrain> findMovePathsFor(Character character) {
-        return GraphAlgorithms.findAllPath(
+        return GraphMaker.createPathGraph(
                 map,
                 map.createEdgeCostGrid(character),
                 character.getX(),

@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.HasCoordinate;
 
 import java.util.*;
 
-public class GraphAlgorithms {
+public class GraphMaker {
     public static final int NO_EDGE = -1;
 
     /**
@@ -19,7 +19,7 @@ public class GraphAlgorithms {
      * @param startY Initial y coordinate on the edgeCostGrid
      * @param maxPathCost Maximum cost for the path between initial location to any other node
      */
-    public static <T extends HasCoordinate> Graph<T> findAllPath(
+    public static <T extends HasCoordinate> Graph<T> createPathGraph(
             Grid<T> dataGrid,
             Grid<Integer> edgeCostGrid,
             int startX,
