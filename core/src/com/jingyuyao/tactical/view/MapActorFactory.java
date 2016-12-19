@@ -46,8 +46,8 @@ class MapActorFactory {
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
                 typeColorMap,
-                new HighlightController(map, character),
-                new CharacterController(map.getLogic(), character, ACTOR_SIZE)
+                new HighlightController(map.getHighlighter(), character),
+                new CharacterController(map.getSelector(), character, ACTOR_SIZE)
         );
     }
 
@@ -56,8 +56,8 @@ class MapActorFactory {
                 terrain,
                 ACTOR_SIZE,
                 markerSpriteMap,
-                new HighlightController(map, terrain),
-                new TerrainController(map.getLogic(), terrain, ACTOR_SIZE)
+                new HighlightController(map.getHighlighter(), terrain),
+                new TerrainController(map.getSelector(), terrain, ACTOR_SIZE)
         );
     }
 }

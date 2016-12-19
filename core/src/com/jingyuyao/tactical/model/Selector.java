@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Contains methods to handle when user select an object on the map.
+ * Manages selection logic.
  */
 // TODO: Add the waiting to choose action phase
-public class MapLogic {
+public class Selector {
     private final Map map;
     /**
      * We will highlight all movement terrains as well as attack areas.
@@ -23,7 +23,7 @@ public class MapLogic {
      */
     private Collection<Character> selectedEnemies = new ArrayList<Character>();
 
-    MapLogic(Map map) {
+    Selector(Map map) {
         this.map = map;
     }
 

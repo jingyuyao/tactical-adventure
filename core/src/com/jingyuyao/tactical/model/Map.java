@@ -6,18 +6,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Map extends Grid<Terrain> {
-    private final MapLogic logic;
+    private final Selector selector;
+    private final Highlighter highlighter;
     private final Collection<Character> characters;
-    private MapObject highlighted;
 
     public Map(int width, int height) {
         super(width, height);
         characters = new ArrayList<Character>();
-        logic = new MapLogic(this);
+        selector = new Selector(this);
+        highlighter = new Highlighter();
     }
 
-    public MapLogic getLogic() {
-        return logic;
+    public Selector getSelector() {
+        return selector;
+    }
+
+    public Highlighter getHighlighter() {
+        return highlighter;
     }
 
     public void addCharacter(Character character) {
@@ -26,14 +31,6 @@ public class Map extends Grid<Terrain> {
 
     public Collection<Character> getCharacters() {
         return characters;
-    }
-
-    public MapObject getHighlighted() {
-        return highlighted;
-    }
-
-    public void setHighlighted(MapObject newHighlight) {
-        highlighted = newHighlight;
     }
 
     void clearAllMarkers() {

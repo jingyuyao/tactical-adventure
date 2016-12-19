@@ -8,8 +8,8 @@ import com.jingyuyao.tactical.model.*;
 public class CharacterController extends MapActorController {
     private final Character character;
 
-    public CharacterController(MapLogic map, Character character, float actorSize) {
-        super(map, actorSize);
+    public CharacterController(Selector selector, Character character, float actorSize) {
+        super(selector, actorSize);
         this.character = character;
     }
 
@@ -17,6 +17,6 @@ public class CharacterController extends MapActorController {
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log("CharacterController", character.toString());
 
-        getMapLogic().select(character);
+        getSelector().select(character);
     }
 }
