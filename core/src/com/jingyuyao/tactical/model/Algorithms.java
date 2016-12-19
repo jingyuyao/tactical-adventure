@@ -6,7 +6,7 @@ import com.google.common.graph.*;
 import java.util.*;
 import java.util.Map;
 
-class GraphAlgorithms {
+class Algorithms {
     static final int NO_EDGE = -1;
 
     /**
@@ -77,10 +77,7 @@ class GraphAlgorithms {
             }
         }
 
-        if (Graphs.hasCycle(graph)) {
-            throw new RuntimeException("Cycle in createPathGraph");
-        }
-
+        Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in createPathGraph");
         return graph;
     }
 
@@ -92,8 +89,7 @@ class GraphAlgorithms {
      * @return A path to {@code target} from the first node in the graph or an empty collection if target is
      * not in the graph
      */
-    static <O extends HasCoordinate>
-    Collection<O> findPathTo(Graph<O> graph, O target) {
+    static <O> Collection<O> findPathTo(Graph<O> graph, O target) {
         if (!graph.nodes().contains(target)) {
             return Collections.emptyList();
         }
@@ -115,6 +111,37 @@ class GraphAlgorithms {
         Collections.reverse(path);
 
         return path;
+    }
+
+    static <O extends HasCoordinate> Collection<O> findNDistanceAway(
+            Grid<O> grid,
+            int startX,
+            int startY,
+            int distance
+    ) {
+        Collection<O> nDistanceAway = new ArrayList<O>();
+        findNDistanceAway(grid, startX, startY, distance, nDistanceAway);
+        return  nDistanceAway;
+    }
+
+    private static <O extends HasCoordinate> void findNDistanceAway(
+        Grid<O> grid,
+        int currentX,
+        int currentY,
+        int distanceRemaining,
+        Collection<O> accumulator
+    ) {
+        O current = grid.get(currentX, currentY);
+
+        if (distanceRemaining == 0) {
+            accumulator.add(current);
+            return;
+        }
+
+        for (O neighbor : grid.getNeighbors(currentX, currentY)) {
+            findNDistanceAway(
+                    grid, neighbor.getX(), neighbor.getY(), distanceRemaining-1, accumulator);
+        }
     }
 
     /**

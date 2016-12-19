@@ -19,7 +19,7 @@ public class Terrain extends MapObject {
 
     int getMovementPenalty(Character character) {
         if (!character.getCanCrossTerrainTypes().contains(type)) {
-            return GraphAlgorithms.NO_EDGE;
+            return Algorithms.NO_EDGE;
         }
 
         switch (type) {
@@ -56,6 +56,7 @@ public class Terrain extends MapObject {
      */
     public enum Marker {
         MOVE,
+        ATTACK,
         DANGER,
     }
 

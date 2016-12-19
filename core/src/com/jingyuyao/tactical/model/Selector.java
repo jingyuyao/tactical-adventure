@@ -53,23 +53,29 @@ public class Selector {
         if (lastSelectedPlayer != null) {
             moveIfAble(lastSelectedPlayer, terrain);
             lastSelectedPlayer = null;
+            syncMarkers();
         }
-        syncMarkers();
     }
 
     private void syncMarkers() {
         map.clearAllMarkers();
         for (Character character : selectedEnemies) {
-            // TODO: Find danger graph
-            Graph<Terrain> dangerGraph = findMovePathsFor(character);
-            for (Terrain terrain : dangerGraph.nodes()) {
+            Collection<Terrain> dangerTerrains = findAttackTerrainsFor(character);
+            for (Terrain terrain : dangerTerrains) {
                 terrain.addMarker(Terrain.Marker.DANGER);
             }
         }
 
         if (lastSelectedPlayer != null) {
-            // TODO: Add attack graph?
             Graph<Terrain> moveGraph = findMovePathsFor(lastSelectedPlayer);
+            Collection<Terrain> attackTerrains = findAttackTerrainsFor(lastSelectedPlayer);
+
+            for (Terrain terrain : attackTerrains) {
+                if (!moveGraph.nodes().contains(terrain)) {
+                    terrain.addMarker(Terrain.Marker.ATTACK);
+                }
+            }
+
             for (Terrain terrain : moveGraph.nodes()) {
                 terrain.addMarker(Terrain.Marker.MOVE);
             }
@@ -78,7 +84,7 @@ public class Selector {
 
     private void moveIfAble(Character character, Terrain terrain) {
         Graph<Terrain> pathGraph = findMovePathsFor(character);
-        Collection<Terrain> pathToCoordinate = GraphAlgorithms.findPathTo(pathGraph, terrain);
+        Collection<Terrain> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
         if (!pathToCoordinate.isEmpty()) {
             character.moveTo(terrain.getX(), terrain.getY(), pathToCoordinate);
         }
@@ -86,11 +92,29 @@ public class Selector {
 
 
     private ValueGraph<Terrain, Integer> findMovePathsFor(Character character) {
-        return GraphAlgorithms.createPathGraph(
+        return Algorithms.createPathGraph(
                 map,
-                map.createEdgeCostGrid(character),
+                map.createMovementPenaltyGrid(character),
                 character.getX(),
                 character.getY(),
                 character.getMovementDistance());
+    }
+
+    private Collection<Terrain> findAttackTerrainsFor(Character character) {
+        Graph<Terrain> moveTerrains = findMovePathsFor(character);
+        Collection<Terrain> attackTerrains = new ArrayList<Terrain>();
+
+        // TODO: whoa... optimize?
+        for (Weapon weapon : character.getWeapons()) {
+            for (int distance : weapon.getAttackDistances()) {
+                for (Terrain terrain : moveTerrains.nodes()) {
+                    attackTerrains.addAll(
+                            Algorithms.findNDistanceAway(map, terrain.getX(), terrain.getY(), distance)
+                    );
+                }
+            }
+        }
+
+        return attackTerrains;
     }
 }

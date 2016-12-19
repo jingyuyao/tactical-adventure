@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +13,7 @@ public class Character extends MapObject {
      */
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
+    private final Collection<Weapon> weapons;
     private Character.Type type;
     private int movementDistance;
     private Collection<Terrain> lastPath;
@@ -22,6 +24,10 @@ public class Character extends MapObject {
         this.type = type;
         this.movementDistance = movementDistance;
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
+        // TODO: remove me
+        weapons = new ArrayList<Weapon>();
+//        weapons.add(Weapon.oneDistanceWeapon());
+        weapons.add(Weapon.threeDistanceRanged());
     }
 
     public String getName() {
@@ -35,6 +41,10 @@ public class Character extends MapObject {
     public void setType(Type type) {
         this.type = type;
         update();
+    }
+
+    public Collection<Weapon> getWeapons() {
+        return weapons;
     }
 
     public Collection<Terrain> getLastPath() {

@@ -29,11 +29,15 @@ class MapActorFactory {
         markerSpriteMap = new HashMap<Terrain.Marker, Sprite>();
         markerSpriteMap.put(
                 Terrain.Marker.MOVE,
-                new Sprite(assetManager.get(Assets.BLUE_OVERLAY, Texture.class))
+                new Sprite(assetManager.get(Assets.MOVE_OVERLAY, Texture.class))
         );
         markerSpriteMap.put(
                 Terrain.Marker.DANGER,
-                new Sprite(assetManager.get(Assets.RED_OVERLAY, Texture.class))
+                new Sprite(assetManager.get(Assets.DANGER_OVERLAY, Texture.class))
+        );
+        markerSpriteMap.put(
+                Terrain.Marker.ATTACK,
+                new Sprite(assetManager.get(Assets.ATTACK_OVERLAY, Texture.class))
         );
         typeColorMap = new HashMap<Character.Type, Color>();
         typeColorMap.put(Character.Type.PLAYER, Color.WHITE);

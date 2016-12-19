@@ -39,20 +39,20 @@ public class Map extends Grid<Terrain> {
         }
     }
 
-    Grid<Integer> createEdgeCostGrid(Character character) {
-        Grid<Integer> edgeCostGrid = new Grid<Integer>(getWidth(), getHeight());
+    Grid<Integer> createMovementPenaltyGrid(Character character) {
+        Grid<Integer> movementPenaltyGrid = new Grid<Integer>(getWidth(), getHeight());
 
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
                 Terrain terrain = get(x, y);
-                edgeCostGrid.set(x, y, terrain.getMovementPenalty(character));
+                movementPenaltyGrid.set(x, y, terrain.getMovementPenalty(character));
             }
         }
 
         for (Character c : getCharacters()) {
-            edgeCostGrid.set(c.getX(), c.getY(), GraphAlgorithms.NO_EDGE);
+            movementPenaltyGrid.set(c.getX(), c.getY(), Algorithms.NO_EDGE);
         }
 
-        return edgeCostGrid;
+        return movementPenaltyGrid;
     }
 }

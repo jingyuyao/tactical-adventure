@@ -54,7 +54,7 @@ public class Grid<T> {
      * Order of returned neighbors is randomized.
      * @return Randomized list of neighbors
      */
-    public List<T> getNeighbors(int x, int y) {
+    List<T> getNeighbors(int x, int y) {
         List<T> neighbors = new ArrayList<T>(4);
 
         if (x > 0) {
