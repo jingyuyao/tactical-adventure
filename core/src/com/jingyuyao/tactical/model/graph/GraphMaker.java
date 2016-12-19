@@ -26,7 +26,7 @@ public class GraphMaker {
             int startY,
             int maxPathCost) {
         java.util.Map<T, Graph<T>> graphMap = new HashMap<T, Graph<T>>();
-        PriorityQueue<Graph<T>> minGraphQueue = new PriorityQueue<Graph<T>>();
+        Queue<Graph<T>> minGraphQueue = new PriorityQueue<Graph<T>>();
         Graph<T> startingGraph = new Graph<T>(dataGrid.get(startX, startY), null, 0);
         Set<T> visited = new HashSet<T>();
         minGraphQueue.add(startingGraph);

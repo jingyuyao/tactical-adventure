@@ -3,9 +3,7 @@ package com.jingyuyao.tactical.model.graph;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.HasCoordinate;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Graph<T extends HasCoordinate> extends Node<T> {
     private final Set<Graph<T>> neighbors;
@@ -17,7 +15,7 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
 
     @Override
     protected void removeChild(Node<T> child) {
-        getNeighbors().remove(child);
+        neighbors.remove(child);
     }
 
     /**
@@ -34,7 +32,7 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
         if (x == getObject().getX() && y == getObject().getY()) {
             return Optional.of(path);
         }
-        for (Graph<T> neighbor : getNeighbors()) {
+        for (Graph<T> neighbor : neighbors) {
             Optional<Path<T>> neighborPath = neighbor.getPathTo(x, y);
 
             if (neighborPath.isPresent()) {
@@ -57,26 +55,22 @@ public class Graph<T extends HasCoordinate> extends Node<T> {
     }
 
     void addNeighbor(Graph<T> neighbor) {
-        getNeighbors().add(neighbor);
+        neighbors.add(neighbor);
     }
 
     private void getAllObjects(Set<T> accumulator) {
         accumulator.add(getObject());
-        for (Graph<T> graph : getNeighbors()) {
+        for (Graph<T> graph : neighbors) {
             if (!accumulator.contains(graph.getObject())) {
                 graph.getAllObjects(accumulator);
             }
         }
     }
 
-    private Set<Graph<T>> getNeighbors() {
-        return neighbors;
-    }
-
     @Override
     public String toString() {
         return "Graph{" +
-                "neighbors.size()=" + getNeighbors().size() +
+                "neighbors.size()=" + neighbors.size() +
                 "} " + super.toString();
     }
 }
