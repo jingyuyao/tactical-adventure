@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Preconditions;
 import com.google.common.graph.*;
 
 import java.util.*;
@@ -9,15 +10,16 @@ class GraphAlgorithms {
     static final int NO_EDGE = -1;
 
     /**
-     * Find all nodes from ({@code startX}, {@code startY}) with a total path cost (sum of all the edge weights)
-     * less or equal to {@code maxPathCost}. Resulting graph will contain data from {@code dataGrid}.
-     * Inbound edge costs are assume to be equal for all nodes. Inbound edge costs comes from {@code edgeCostGrid}.
+     * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code dataGrid} that contains
+     * all reachable nodes whose total path cost (sum of all edge weights from the start to the current node)
+     * is less or equal to {@code maxPathCost}. Inbound edge costs comes from {@code edgeCostGrid}.
      *
      * @param dataGrid The grid to get data objects to put in the resulting graph
      * @param edgeCostGrid The grid to get edge cost for creating the graph
      * @param maxPathCost Maximum cost for the path between initial location to any other object
      */
-    static <O extends HasCoordinate> ValueGraph<O, Integer> createPathGraph(
+    static <O extends HasCoordinate>
+    ValueGraph<O, Integer> createPathGraph(
             Grid<O> dataGrid,
             Grid<Integer> edgeCostGrid,
             int startX,
@@ -83,56 +85,36 @@ class GraphAlgorithms {
     }
 
     /**
-     * Attempts to find a path to the given coordinates from this path.
-     * @param targetX The target x coordinate
-     * @param targetY The target y coordinate
-     * @return A path to the target coordinates, empty if no path
+     * Attempts to find a path to {@code target}.
+     *
+     * @param graph An directed acyclic graph
+     * @param target The target node to find a path to
+     * @return A path to {@code target} from the first node in the graph or an empty collection if target is
+     * not in the graph
      */
-    static <O extends HasCoordinate> Collection<O> findPathTo(
-            Graph<O> graph,
-            int targetX,
-            int targetY
-    ) {
-        if (graph.nodes().isEmpty()) {
+    static <O extends HasCoordinate>
+    Collection<O> findPathTo(Graph<O> graph, O target) {
+        if (!graph.nodes().contains(target)) {
             return Collections.emptyList();
         }
 
-        LinkedList<O> accumulator = new LinkedList<O>();
-        Set<O> visited = new HashSet<O>();
-        O firstNode = graph.nodes().iterator().next();
-        if (findPathTo(graph, targetX, targetY, firstNode, accumulator, visited)) {
-            return accumulator;
+        List<O> path = new ArrayList<O>();
+        path.add(target);
+
+        Set<O> predecessors = graph.predecessors(target);
+        while (predecessors.size() != 0) {
+            Preconditions.checkState(
+                    predecessors.size() == 1,
+                    "findPathTo encountered a node with multiple predecessors"
+            );
+            O predecessor = predecessors.iterator().next();
+            path.add(predecessor);
+            predecessors = graph.predecessors(predecessor);
         }
 
-        return Collections.emptyList();
-    }
+        Collections.reverse(path);
 
-    private static <O extends HasCoordinate> boolean findPathTo(
-            Graph<O> graph,
-            int targetX,
-            int targetY,
-            O currentNode,
-            LinkedList<O> accumulator,
-            Set<O> visited
-    ) {
-        if (visited.contains(currentNode)) {
-            return false;
-        }
-        visited.add(currentNode);
-
-        if (targetX == currentNode.getX() && targetY == currentNode.getY()) {
-            accumulator.addLast(currentNode);
-            return true;
-        }
-
-        for (O neighbor : graph.adjacentNodes(currentNode)) {
-            if (findPathTo(graph, targetX, targetY, neighbor, accumulator, visited)) {
-                accumulator.addFirst(neighbor);
-                return true;
-            }
-        }
-
-        return false;
+        return path;
     }
 
     /**

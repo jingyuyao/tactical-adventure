@@ -77,12 +77,10 @@ public class Selector {
     }
 
     private void moveIfAble(Character character, Terrain terrain) {
-        int x = terrain.getX();
-        int y = terrain.getY();
         Graph<Terrain> pathGraph = findMovePathsFor(character);
-        Collection<Terrain> pathToCoordinate = GraphAlgorithms.findPathTo(pathGraph, x, y);
+        Collection<Terrain> pathToCoordinate = GraphAlgorithms.findPathTo(pathGraph, terrain);
         if (!pathToCoordinate.isEmpty()) {
-            character.moveTo(x, y, pathToCoordinate);
+            character.moveTo(terrain.getX(), terrain.getY(), pathToCoordinate);
         }
     }
 
