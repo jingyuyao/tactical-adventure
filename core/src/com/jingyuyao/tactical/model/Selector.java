@@ -1,9 +1,8 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.graph.Graph;
-import com.jingyuyao.tactical.model.graph.GraphMaker;
-import com.jingyuyao.tactical.model.graph.Path;
+import com.google.common.graph.Graph;
+import com.jingyuyao.tactical.model.graph.GraphAlgorithms;
+import com.jingyuyao.tactical.model.graph.ValueNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,10 +20,11 @@ public class Selector {
     /**
      * We will highlight all the danger areas of the selection enemies.
      */
-    private Collection<Character> selectedEnemies = new ArrayList<Character>();
+    private final Collection<Character> selectedEnemies;
 
     Selector(Map map) {
         this.map = map;
+        selectedEnemies = new ArrayList<Character>();
     }
 
     public void select(Character character) {
@@ -62,17 +62,17 @@ public class Selector {
         map.clearAllMarkers();
         for (Character character : selectedEnemies) {
             // TODO: Find danger graph
-            Graph<Terrain> dangerGraph = findMovePathsFor(character);
-            for (Terrain terrain : dangerGraph.getAllObjects()) {
-                terrain.addMarker(Terrain.Marker.DANGER);
+            Graph<ValueNode<Terrain>> dangerGraph = findMovePathsFor(character);
+            for (ValueNode<Terrain> terrainNode : dangerGraph.nodes()) {
+                terrainNode.getObject().addMarker(Terrain.Marker.DANGER);
             }
         }
 
         if (lastSelectedPlayer != null) {
             // TODO: Add attack graph?
-            Graph<Terrain> moveGraph = findMovePathsFor(lastSelectedPlayer);
-            for (Terrain terrain : moveGraph.getAllObjects()) {
-                terrain.addMarker(Terrain.Marker.MOVE);
+            Graph<ValueNode<Terrain>> moveGraph = findMovePathsFor(lastSelectedPlayer);
+            for (ValueNode<Terrain> terrainNode : moveGraph.nodes()) {
+                terrainNode.getObject().addMarker(Terrain.Marker.MOVE);
             }
         }
     }
@@ -80,16 +80,16 @@ public class Selector {
     private void moveIfAble(Character character, Terrain terrain) {
         int x = terrain.getX();
         int y = terrain.getY();
-        Graph<Terrain> allPaths = findMovePathsFor(character);
-        Optional<Path<Terrain>> pathToCoordinate = allPaths.getPathTo(x, y);
-        if (pathToCoordinate.isPresent()) {
-            character.moveTo(x, y, pathToCoordinate.get());
+        Graph<ValueNode<Terrain>> pathGraph = findMovePathsFor(character);
+        Collection<ValueNode<Terrain>> pathToCoordinate = GraphAlgorithms.findPathTo(pathGraph, x, y);
+        if (!pathToCoordinate.isEmpty()) {
+            character.moveTo(x, y, pathToCoordinate);
         }
     }
 
 
-    private Graph<Terrain> findMovePathsFor(Character character) {
-        return GraphMaker.createPathGraph(
+    private Graph<ValueNode<Terrain>> findMovePathsFor(Character character) {
+        return GraphAlgorithms.createPathGraph(
                 map,
                 map.createEdgeCostGrid(character),
                 character.getX(),

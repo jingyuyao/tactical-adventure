@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model;
 
-import com.jingyuyao.tactical.model.graph.GraphMaker;
+import com.jingyuyao.tactical.model.graph.GraphAlgorithms;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class Terrain extends MapObject {
 
     int getMovementPenalty(Character character) {
         if (!character.getCanCrossTerrainTypes().contains(type)) {
-            return GraphMaker.NO_EDGE;
+            return GraphAlgorithms.NO_EDGE;
         }
 
         switch (type) {

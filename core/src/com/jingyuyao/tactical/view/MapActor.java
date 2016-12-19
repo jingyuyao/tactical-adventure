@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.UpdateListener;
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
-public abstract class MapActor<T extends MapObject> extends Actor {
+abstract class MapActor<T extends MapObject> extends Actor {
     private final T object;
 
     MapActor(T object, float size, EventListener... listeners) {
@@ -23,7 +23,7 @@ public abstract class MapActor<T extends MapObject> extends Actor {
         }
     }
 
-    protected T getObject() {
+    T getObject() {
         return object;
     }
 

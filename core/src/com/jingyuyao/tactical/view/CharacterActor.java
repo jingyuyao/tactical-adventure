@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.model.UpdateListener;
-import com.jingyuyao.tactical.model.graph.Path;
+import com.jingyuyao.tactical.model.graph.ValueNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,10 +70,10 @@ public class CharacterActor extends MapActor<Character> {
         }
     }
 
-    private SequenceAction getMoveSequence(Path<Terrain> path) {
+    private SequenceAction getMoveSequence(Collection<ValueNode<Terrain>> path) {
         SequenceAction sequence = sequence();
-        for (Terrain terrain : path.getRoute()) {
-            sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
+        for (ValueNode<Terrain> terrainNode : path) {
+            sequence.addAction(moveTo(terrainNode.getObject().getX(), terrainNode.getObject().getY(), TIME_PER_UNIT));
         }
         return sequence;
     }
