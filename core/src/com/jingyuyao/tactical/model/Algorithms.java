@@ -19,7 +19,7 @@ class Algorithms {
      * @param maxPathCost Maximum cost for the path between initial location to any other object
      */
     static <O extends HasCoordinate>
-    ValueGraph<O, Integer> createPathGraph(
+    ValueGraph<O, Integer> minPathSearch(
             Grid<O> dataGrid,
             Grid<Integer> edgeCostGrid,
             int startX,
@@ -77,7 +77,7 @@ class Algorithms {
             }
         }
 
-        Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in createPathGraph");
+        Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in minPathSearch");
         return graph;
     }
 

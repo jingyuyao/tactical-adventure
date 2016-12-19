@@ -60,15 +60,15 @@ public class Selector {
     private void syncMarkers() {
         map.clearAllMarkers();
         for (Character character : selectedEnemies) {
-            Collection<Terrain> dangerTerrains = findAttackTerrainsFor(character);
+            Collection<Terrain> dangerTerrains = getAttackTerrains(character);
             for (Terrain terrain : dangerTerrains) {
                 terrain.addMarker(Terrain.Marker.DANGER);
             }
         }
 
         if (lastSelectedPlayer != null) {
-            Graph<Terrain> moveGraph = findMovePathsFor(lastSelectedPlayer);
-            Collection<Terrain> attackTerrains = findAttackTerrainsFor(lastSelectedPlayer);
+            Graph<Terrain> moveGraph = createMoveGraph(lastSelectedPlayer);
+            Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
 
             for (Terrain terrain : attackTerrains) {
                 if (!moveGraph.nodes().contains(terrain)) {
@@ -83,16 +83,15 @@ public class Selector {
     }
 
     private void moveIfAble(Character character, Terrain terrain) {
-        Graph<Terrain> pathGraph = findMovePathsFor(character);
+        Graph<Terrain> pathGraph = createMoveGraph(character);
         Collection<Terrain> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
         if (!pathToCoordinate.isEmpty()) {
             character.moveTo(terrain.getX(), terrain.getY(), pathToCoordinate);
         }
     }
 
-
-    private ValueGraph<Terrain, Integer> findMovePathsFor(Character character) {
-        return Algorithms.createPathGraph(
+    private ValueGraph<Terrain, Integer> createMoveGraph(Character character) {
+        return Algorithms.minPathSearch(
                 map,
                 map.createMovementPenaltyGrid(character),
                 character.getX(),
@@ -100,8 +99,8 @@ public class Selector {
                 character.getMovementDistance());
     }
 
-    private Collection<Terrain> findAttackTerrainsFor(Character character) {
-        Graph<Terrain> moveTerrains = findMovePathsFor(character);
+    private Collection<Terrain> getAttackTerrains(Character character) {
+        Graph<Terrain> moveTerrains = createMoveGraph(character);
         Collection<Terrain> attackTerrains = new ArrayList<Terrain>();
 
         // TODO: whoa... optimize?
