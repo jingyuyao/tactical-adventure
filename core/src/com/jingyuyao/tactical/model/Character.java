@@ -42,7 +42,8 @@ public class Character extends MapObject {
 
     public void setType(Type type) {
         this.type = type;
-        update();
+        setChanged();
+        notifyObservers();
     }
 
     public Collection<Weapon> getWeapons() {
@@ -65,13 +66,15 @@ public class Character extends MapObject {
         Preconditions.checkNotNull(pathToCoordinate);
         setPosition(x, y);
         lastPath = pathToCoordinate;
-        update();
+        setChanged();
+        notifyObservers();
     }
 
     void die() {
         // oh no
         dead = true;
-        update();
+        setChanged();
+        notifyObservers();
     }
 
     private static Set<Terrain.Type> createDefaultCanCrossTerrainTypes() {

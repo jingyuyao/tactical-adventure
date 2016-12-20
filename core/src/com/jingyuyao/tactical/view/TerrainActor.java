@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.jingyuyao.tactical.model.Terrain;
-import com.jingyuyao.tactical.model.UpdateListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Observable;
 
 public class TerrainActor extends MapActor<Terrain> {
     private final Map<Terrain.Marker, Sprite> markerSpriteMap;
@@ -30,13 +30,8 @@ public class TerrainActor extends MapActor<Terrain> {
     }
 
     @Override
-    protected UpdateListener getUpdateListener() {
-        return new UpdateListener() {
-            @Override
-            public void updated() {
-                updateMarkers();
-            }
-        };
+    public void update(Observable observable, Object o) {
+        updateMarkers();
     }
 
     private void updateMarkers() {

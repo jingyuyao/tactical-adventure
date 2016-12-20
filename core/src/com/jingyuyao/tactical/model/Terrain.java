@@ -36,12 +36,14 @@ public class Terrain extends MapObject {
 
     void addMarker(Marker marker) {
         markers.add(marker);
-        update();
+        setChanged();
+        notifyObservers();
     }
 
     void clearMarkers() {
         markers.clear();
-        update();
+        setChanged();
+        notifyObservers();
     }
 
     public enum Type {

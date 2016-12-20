@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Terrain;
-import com.jingyuyao.tactical.model.UpdateListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -38,15 +38,10 @@ public class CharacterActor extends MapActor<Character> {
     }
 
     @Override
-    protected UpdateListener getUpdateListener() {
-        return new UpdateListener() {
-            @Override
-            public void updated() {
-                updatePosition();
-                updateType();
-                updateDeath();
-            }
-        };
+    public void update(Observable observable, Object o) {
+        updatePosition();
+        updateType();
+        updateDeath();
     }
 
     private void updateDeath() {

@@ -6,13 +6,15 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.MapObject;
-import com.jingyuyao.tactical.model.UpdateListener;
+
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Contains and renders the stage.
  * The stage is rendered in a grid scale (i.e. showing a 30x20 grid).
  */
-public class MapView {
+public class MapView implements Observer {
     private final Highlighter highlighter;
     private final Stage stage;
     private final java.util.Map<MapObject, MapActor> actorMap;
@@ -35,12 +37,12 @@ public class MapView {
         this.actorMap = actorMap;
         this.highlighter = highlighter;
         this.highlightSprite = highlightSprite;
-        highlighter.setUpdateListener(new UpdateListener() {
-            @Override
-            public void updated() {
-                updateHighlight();
-            }
-        });
+        highlighter.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        updateHighlight();
     }
 
     public Stage getStage() {

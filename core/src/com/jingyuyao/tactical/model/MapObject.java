@@ -1,9 +1,11 @@
 package com.jingyuyao.tactical.model;
 
+import java.util.Observable;
+
 /**
  * An object on the game grid.
  */
-public class MapObject extends Updatable implements HasCoordinate {
+public class MapObject extends Observable implements HasCoordinate {
     private int x;
     private int y;
 
@@ -23,7 +25,7 @@ public class MapObject extends Updatable implements HasCoordinate {
     }
 
     /**
-     * Call <b>{@link #update()}</b> yourself!
+     * Call <b>{@link #notifyObservers()}</b> yourself!
      */
     void setPosition(int x, int y) {
         this.x = x;
