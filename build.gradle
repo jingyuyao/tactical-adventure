@@ -25,6 +25,7 @@ allprojects {
         guiceVersion = '4.1.0'
         junitVersion = '4.12'
         mockitoVersion = '2.3.7'
+        truthVersion = '0.31'
     }
 
     repositories {
@@ -98,6 +99,7 @@ project(":core") {
         compile "com.google.guava:guava:$guavaVersion"
         testCompile "junit:junit:$junitVersion"
         testCompile "org.mockito:mockito-core:$mockitoVersion"
+        testCompile "com.google.truth:truth:$truthVersion"
     }
 }
 
