@@ -1,9 +1,7 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.graph.Graph;
-import com.google.common.graph.ValueGraph;
+import com.google.common.base.Objects;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -12,23 +10,16 @@ import java.util.Collection;
 // TODO: This class needs to be thoroughly tested
 public class Selector {
     private final Map map;
-    /**
-     * We will highlight all the danger areas of the selection enemies.
-     */
-    private final Collection<Character> selectedEnemies;
-    /**
-     * Invariant: must not be null if {@link #state} == {@link State#MOVING}
-     */
-    private Character lastSelectedPlayer;
+    private final Selections selections;
     /**
      * State transition should be handled by methods like {@link #goToWaitingState()}
      */
     private State state;
 
-    Selector(Map map) {
+    Selector(Map map, Selections selections) {
         this.map = map;
-        selectedEnemies = new ArrayList<Character>();
-        goToWaitingState();
+        this.selections = selections;
+        state = State.WAITING;
     }
 
     public void select(Character character) {
@@ -44,7 +35,22 @@ public class Selector {
                 handleTargeting(character);
                 break;
         }
-        syncTerrainMarkers();
+    }
+
+    public void select(Terrain terrain) {
+        switch (state) {
+            case WAITING:
+                // Do nothing
+                break;
+            case MOVING:
+                map.moveIfAble(selections.getSelectedPlayer(), terrain);
+                // TODO: check to go to action state or targeting state
+                goToWaitingState();
+                break;
+            case TARGETING:
+                goToWaitingState();
+                break;
+        }
     }
 
     private void handleWaiting(Character character) {
@@ -53,11 +59,7 @@ public class Selector {
                 goToMovingState(character);
                 break;
             case ENEMY:
-                if (selectedEnemies.contains(character)) {
-                    selectedEnemies.remove(character);
-                } else {
-                    selectedEnemies.add(character);
-                }
+                selections.selectedEnemy(character);
                 goToWaitingState();
                 break;
         }
@@ -66,14 +68,14 @@ public class Selector {
     private void handleMoving(Character character) {
         switch (character.getType()) {
             case PLAYER:
-                if (lastSelectedPlayer.equals(character)) {
+                if (Objects.equal(selections.getSelectedPlayer(), character)) {
                     goToWaitingState();
                 } else {
                     goToMovingState(character);
                 }
                 break;
             case ENEMY:
-                Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
+                Collection<Terrain> attackTerrains = map.getAttackTerrains(selections.getSelectedPlayer());
                 Terrain enemyTerrain = map.get(character.getX(), character.getY());
                 if (attackTerrains.contains(enemyTerrain)) {
                     // TODO: Move character & enter battle prep
@@ -98,31 +100,13 @@ public class Selector {
         }
     }
 
-    public void select(Terrain terrain) {
-        switch (state) {
-            case WAITING:
-                // Do nothing
-                break;
-            case MOVING:
-                moveIfAble(lastSelectedPlayer, terrain);
-                // TODO: check to go to action state or targeting state
-                goToWaitingState();
-                syncTerrainMarkers();
-                break;
-            case TARGETING:
-                goToWaitingState();
-                syncTerrainMarkers();
-                break;
-        }
-    }
-
     private void goToMovingState(Character playerCharacter) {
-        lastSelectedPlayer = playerCharacter;
+        selections.selectedPlayer(playerCharacter);
         state = State.MOVING;
     }
 
     private void goToWaitingState() {
-        lastSelectedPlayer = null;
+        selections.selectedPlayer(null);
         state = State.WAITING;
     }
 
@@ -132,67 +116,8 @@ public class Selector {
     }
 
     private void goToBattlePrepState(Character target) {
+        // TODO: finish me
         state = State.BATTLE_PREP;
-    }
-
-    private void syncTerrainMarkers() {
-        map.clearAllMarkers();
-        for (Character character : selectedEnemies) {
-            Collection<Terrain> dangerTerrains = getAttackTerrains(character);
-            for (Terrain terrain : dangerTerrains) {
-                terrain.addMarker(Terrain.Marker.DANGER);
-            }
-        }
-
-        if (lastSelectedPlayer != null) {
-            Graph<Terrain> moveGraph = createMoveGraph(lastSelectedPlayer);
-            Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
-
-            for (Terrain terrain : attackTerrains) {
-                if (!moveGraph.nodes().contains(terrain)) {
-                    terrain.addMarker(Terrain.Marker.ATTACK);
-                }
-            }
-
-            for (Terrain terrain : moveGraph.nodes()) {
-                terrain.addMarker(Terrain.Marker.MOVE);
-            }
-        }
-    }
-
-    private void moveIfAble(Character character, Terrain terrain) {
-        Graph<Terrain> pathGraph = createMoveGraph(character);
-        Collection<Terrain> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
-        if (!pathToCoordinate.isEmpty()) {
-            character.moveTo(terrain.getX(), terrain.getY(), pathToCoordinate);
-        }
-    }
-
-    private ValueGraph<Terrain, Integer> createMoveGraph(Character character) {
-        return Algorithms.minPathSearch(
-                map,
-                map.createMovementPenaltyGrid(character),
-                character.getX(),
-                character.getY(),
-                character.getMovementDistance());
-    }
-
-    private Collection<Terrain> getAttackTerrains(Character character) {
-        Graph<Terrain> moveTerrains = createMoveGraph(character);
-        Collection<Terrain> attackTerrains = new ArrayList<Terrain>();
-
-        // TODO: whoa... optimize?
-        for (Weapon weapon : character.getWeapons()) {
-            for (int distance : weapon.getAttackDistances()) {
-                for (Terrain terrain : moveTerrains.nodes()) {
-                    attackTerrains.addAll(
-                            Algorithms.findNDistanceAway(map, terrain.getX(), terrain.getY(), distance)
-                    );
-                }
-            }
-        }
-
-        return attackTerrains;
     }
 
     private enum State {
