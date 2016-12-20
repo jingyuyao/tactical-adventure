@@ -113,6 +113,9 @@ class Algorithms {
         return path;
     }
 
+    /**
+     * Find all the objects on the grid that is {@code distance} away from the starting point.
+     */
     static <O extends HasCoordinate> Collection<O> findNDistanceAway(
             Grid<O> grid,
             int startX,
