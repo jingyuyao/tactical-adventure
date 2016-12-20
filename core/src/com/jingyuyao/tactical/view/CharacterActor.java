@@ -19,9 +19,8 @@ public class CharacterActor extends MapActor<Character> {
 
     private final Sprite sprite;
 
-    CharacterActor(Character object, float size, Sprite sprite, Color tint,
-                   EventListener... listeners) {
-        super(object, size, listeners);
+    CharacterActor(Character object, float size, Sprite sprite, Color tint, EventListener listener) {
+        super(object, size, listener);
         this.sprite = sprite;
         sprite.setColor(tint);
     }

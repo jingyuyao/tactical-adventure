@@ -14,9 +14,8 @@ public class TerrainActor extends MapActor<Terrain> {
     private final Map<Terrain.Marker, Sprite> markerSpriteMap;
     private final Collection<Sprite> markerSprites;
 
-    TerrainActor(Terrain object, float size, Map<Terrain.Marker, Sprite> markerSpriteMap,
-                 EventListener... listeners) {
-        super(object, size, listeners);
+    TerrainActor(Terrain object, float size, Map<Terrain.Marker, Sprite> markerSpriteMap, EventListener listener) {
+        super(object, size, listener);
         this.markerSpriteMap = markerSpriteMap;
         markerSprites = new ArrayList<Sprite>();
     }

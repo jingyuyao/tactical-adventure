@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.Assets;
-import com.jingyuyao.tactical.controller.HighlightController;
 import com.jingyuyao.tactical.controller.MapActorController;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.*;
@@ -48,8 +47,7 @@ class MapActorFactory {
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
                 typeColorMap.get(character.getClass()),
-                new HighlightController(map.getHighlighter(), character),
-                new MapActorController(character, map.getSelector(), ACTOR_SIZE)
+                new MapActorController(character, map.getSelector(), map.getHighlighter(), ACTOR_SIZE)
         );
     }
 
@@ -58,8 +56,7 @@ class MapActorFactory {
                 terrain,
                 ACTOR_SIZE,
                 markerSpriteMap,
-                new HighlightController(map.getHighlighter(), terrain),
-                new MapActorController(terrain, map.getSelector(), ACTOR_SIZE)
+                new MapActorController(terrain, map.getSelector(), map.getHighlighter(), ACTOR_SIZE)
         );
     }
 }

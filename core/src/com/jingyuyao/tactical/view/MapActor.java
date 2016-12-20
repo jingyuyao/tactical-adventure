@@ -15,13 +15,11 @@ import java.util.Observer;
 abstract class MapActor<T extends MapObject> extends Actor implements Observer {
     private final T object;
 
-    MapActor(T object, float size, EventListener... listeners) {
+    MapActor(T object, float size, EventListener listener) {
         this.object = object;
         setBounds(object.getX(), object.getY(), size, size);
         object.addObserver(this);
-        for (EventListener listener : listeners) {
-            addListener(listener);
-        }
+        addListener(listener);
     }
 
     T getObject() {
