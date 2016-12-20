@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Manages selection logic.
  */
-// TODO: Add the waiting to choose action phase
+// TODO: This class needs to be thoroughly tested
 public class Selector {
     private final Map map;
     /**
@@ -17,9 +17,10 @@ public class Selector {
      */
     private final Collection<Character> selectedEnemies;
     /**
-     * We will highlight all movement terrains as well as attack areas.
+     * Invariant: must not be null if {@link #state} == {@link State#MOVING}
      */
     private Character lastSelectedPlayer;
+    private State state = State.WAITING;
 
     Selector(Map map) {
         this.map = map;
@@ -27,41 +28,94 @@ public class Selector {
     }
 
     public void select(Character character) {
-        switch (character.getType()) {
-            case PLAYER:
-                if (lastSelectedPlayer == character) {
-                    lastSelectedPlayer = null;
-                } else {
-                    lastSelectedPlayer = character;
-                }
+        // By using return state, we can let IDE check if we are missing any branches ;)
+        switch (state) {
+            case WAITING:
+                state = handleWaiting(character);
                 break;
-            case ENEMY:
-                if (lastSelectedPlayer == null) {
-                    if (selectedEnemies.contains(character)) {
-                        selectedEnemies.remove(character);
-                    } else {
-                        selectedEnemies.add(character);
-                    }
-                } else {
-                    Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
-                    Terrain enemyTerrain = map.get(character.getX(), character.getY());
-                    if (attackTerrains.contains(enemyTerrain)) {
-                        // TODO: Move character & enter battle prep
-
-                    } else {
-                        lastSelectedPlayer = null;
-                    }
-                }
+            case MOVING:
+                state = handleMoving(character);
+                break;
+            case TARGETING:
+                state = handleTargeting(character);
                 break;
         }
         syncTerrainMarkers();
     }
 
+    private State handleWaiting(Character character) {
+        switch (character.getType()) {
+            case PLAYER:
+                lastSelectedPlayer = character;
+                return State.MOVING;
+            case ENEMY:
+                if (selectedEnemies.contains(character)) {
+                    selectedEnemies.remove(character);
+                } else {
+                    selectedEnemies.add(character);
+                }
+                return State.WAITING;
+            default:
+                return State.WAITING;
+        }
+    }
+
+    private State handleMoving(Character character) {
+        switch (character.getType()) {
+            case PLAYER:
+                if (lastSelectedPlayer.equals(character)) {
+                    lastSelectedPlayer = null;
+                    return State.WAITING;
+                } else {
+                    lastSelectedPlayer = character;
+                    return State.MOVING;
+                }
+            case ENEMY:
+                Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
+                Terrain enemyTerrain = map.get(character.getX(), character.getY());
+                if (attackTerrains.contains(enemyTerrain)) {
+                    // TODO: Move character & enter battle prep
+                    return State.MOVING;
+                } else {
+                    lastSelectedPlayer = null;
+                    return State.WAITING;
+                }
+            default:
+                return State.MOVING;
+        }
+    }
+
+    private State handleTargeting(Character character) {
+        switch (character.getType()) {
+            case PLAYER:
+                // TODO: cancel?
+                lastSelectedPlayer = null;
+                return State.WAITING;
+            case ENEMY:
+                // TODO: enter battle prep
+                return State.TARGETING;
+            default:
+                return State.TARGETING;
+        }
+    }
+
     public void select(Terrain terrain) {
-        if (lastSelectedPlayer != null) {
-            moveIfAble(lastSelectedPlayer, terrain);
-            lastSelectedPlayer = null;
-            syncTerrainMarkers();
+        switch (state) {
+            case WAITING:
+                // Do nothing
+                break;
+            case MOVING:
+                moveIfAble(lastSelectedPlayer, terrain);
+                lastSelectedPlayer = null;
+                // TODO: check to go into attacking state?
+                state = State.WAITING;
+                syncTerrainMarkers();
+                break;
+            case TARGETING:
+                lastSelectedPlayer = null;
+                state = State.WAITING;
+                syncTerrainMarkers();
+                break;
         }
     }
 
@@ -123,5 +177,11 @@ public class Selector {
         }
 
         return attackTerrains;
+    }
+
+    private enum State {
+        WAITING,
+        MOVING,
+        TARGETING,
     }
 }
