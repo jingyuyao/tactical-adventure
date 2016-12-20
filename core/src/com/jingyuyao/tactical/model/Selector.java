@@ -13,13 +13,13 @@ import java.util.Collection;
 public class Selector {
     private final Map map;
     /**
-     * We will highlight all movement terrains as well as attack areas.
-     */
-    private Character lastSelectedPlayer;
-    /**
      * We will highlight all the danger areas of the selection enemies.
      */
     private final Collection<Character> selectedEnemies;
+    /**
+     * We will highlight all movement terrains as well as attack areas.
+     */
+    private Character lastSelectedPlayer;
 
     Selector(Map map) {
         this.map = map;
@@ -42,22 +42,30 @@ public class Selector {
                     } else {
                         selectedEnemies.add(character);
                     }
+                } else {
+                    Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
+                    Terrain enemyTerrain = map.get(character.getX(), character.getY());
+                    if (attackTerrains.contains(enemyTerrain)) {
+                        // TODO: Move character & enter battle prep
+
+                    } else {
+                        lastSelectedPlayer = null;
+                    }
                 }
-                // TODO: Check if enemy is standing on an attack terrain
                 break;
         }
-        syncMarkers();
+        syncTerrainMarkers();
     }
 
     public void select(Terrain terrain) {
         if (lastSelectedPlayer != null) {
             moveIfAble(lastSelectedPlayer, terrain);
             lastSelectedPlayer = null;
-            syncMarkers();
+            syncTerrainMarkers();
         }
     }
 
-    private void syncMarkers() {
+    private void syncTerrainMarkers() {
         map.clearAllMarkers();
         for (Character character : selectedEnemies) {
             Collection<Terrain> dangerTerrains = getAttackTerrains(character);
