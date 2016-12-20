@@ -46,8 +46,8 @@ public class Map extends Grid<Terrain> {
 
     void kill(Character character) {
         characters.remove(character);
-        character.die();
         selections.removeEnemy(character);
+        character.die();
     }
 
     Collection<Terrain> getAllTargetTerrains(Character character) {

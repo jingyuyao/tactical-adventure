@@ -63,6 +63,7 @@ class Selections {
 
     private void syncTerrainMarkers() {
         clearAllMarkers();
+
         for (Character character : selectedEnemies) {
             Collection<Terrain> dangerTerrains = map.getAllTargetTerrains(character);
             for (Terrain terrain : dangerTerrains) {
@@ -71,23 +72,20 @@ class Selections {
         }
 
         if (selectedPlayer != null) {
+            Collection<Terrain> targetTerrains;
             if (showImmediateTargets) {
-                Collection<Terrain> targetTerrains =
+                targetTerrains =
                         map.getTargetTerrains(selectedPlayer, map.get(selectedPlayer.getX(), selectedPlayer.getY()));
-                for (Terrain terrain : targetTerrains) {
-                    terrain.addMarker(Terrain.Marker.ATTACK);
-                }
             } else {
                 Graph<Terrain> moveGraph = map.getMoveGraph(selectedPlayer);
                 for (Terrain terrain : moveGraph.nodes()) {
                     terrain.addMarker(Terrain.Marker.MOVE);
                 }
-                Collection<Terrain> targetTerrains = map.getAllTargetTerrains(selectedPlayer);
-                for (Terrain terrain : targetTerrains) {
-                    if (!moveGraph.nodes().contains(terrain)) {
-                        terrain.addMarker(Terrain.Marker.ATTACK);
-                    }
-                }
+                targetTerrains = map.getAllTargetTerrains(selectedPlayer);
+                targetTerrains.removeAll(moveGraph.nodes());
+            }
+            for (Terrain terrain : targetTerrains) {
+                terrain.addMarker(Terrain.Marker.ATTACK);
             }
         }
     }

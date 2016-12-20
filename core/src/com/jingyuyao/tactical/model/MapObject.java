@@ -25,7 +25,7 @@ public class MapObject extends Observable implements HasCoordinate {
     }
 
     /**
-     * Call <b>{@link #notifyObservers()}</b> yourself!
+     * Call <b>{@link #setChanged()} and {@link #notifyObservers()}</b> yourself!
      */
     void setPosition(int x, int y) {
         this.x = x;
