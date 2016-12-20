@@ -20,82 +20,81 @@ public class Selector {
      * Invariant: must not be null if {@link #state} == {@link State#MOVING}
      */
     private Character lastSelectedPlayer;
-    private State state = State.WAITING;
+    /**
+     * State transition should be handled by methods like {@link #goToWaitingState()}
+     */
+    private State state;
 
     Selector(Map map) {
         this.map = map;
         selectedEnemies = new ArrayList<Character>();
+        goToWaitingState();
     }
 
     public void select(Character character) {
         // By using return state, we can let IDE check if we are missing any branches ;)
         switch (state) {
             case WAITING:
-                state = handleWaiting(character);
+                handleWaiting(character);
                 break;
             case MOVING:
-                state = handleMoving(character);
+                handleMoving(character);
                 break;
             case TARGETING:
-                state = handleTargeting(character);
+                handleTargeting(character);
                 break;
         }
         syncTerrainMarkers();
     }
 
-    private State handleWaiting(Character character) {
+    private void handleWaiting(Character character) {
         switch (character.getType()) {
             case PLAYER:
-                lastSelectedPlayer = character;
-                return State.MOVING;
+                goToMovingState(character);
+                break;
             case ENEMY:
                 if (selectedEnemies.contains(character)) {
                     selectedEnemies.remove(character);
                 } else {
                     selectedEnemies.add(character);
                 }
-                return State.WAITING;
-            default:
-                return State.WAITING;
+                goToWaitingState();
+                break;
         }
     }
 
-    private State handleMoving(Character character) {
+    private void handleMoving(Character character) {
         switch (character.getType()) {
             case PLAYER:
                 if (lastSelectedPlayer.equals(character)) {
-                    lastSelectedPlayer = null;
-                    return State.WAITING;
+                    goToWaitingState();
                 } else {
-                    lastSelectedPlayer = character;
-                    return State.MOVING;
+                    goToMovingState(character);
                 }
+                break;
             case ENEMY:
                 Collection<Terrain> attackTerrains = getAttackTerrains(lastSelectedPlayer);
                 Terrain enemyTerrain = map.get(character.getX(), character.getY());
                 if (attackTerrains.contains(enemyTerrain)) {
                     // TODO: Move character & enter battle prep
-                    return State.MOVING;
+                    goToWaitingState();
                 } else {
-                    lastSelectedPlayer = null;
-                    return State.WAITING;
+                    goToWaitingState();
                 }
-            default:
-                return State.MOVING;
+                break;
         }
     }
 
-    private State handleTargeting(Character character) {
+    private void handleTargeting(Character character) {
         switch (character.getType()) {
             case PLAYER:
                 // TODO: cancel?
-                lastSelectedPlayer = null;
-                return State.WAITING;
+                goToWaitingState();
+                break;
             case ENEMY:
                 // TODO: enter battle prep
-                return State.TARGETING;
-            default:
-                return State.TARGETING;
+                goToBattlePrepState(character);
+                break;
         }
     }
 
@@ -106,17 +105,34 @@ public class Selector {
                 break;
             case MOVING:
                 moveIfAble(lastSelectedPlayer, terrain);
-                lastSelectedPlayer = null;
-                // TODO: check to go into attacking state?
-                state = State.WAITING;
+                // TODO: check to go to action state or targeting state
+                goToWaitingState();
                 syncTerrainMarkers();
                 break;
             case TARGETING:
-                lastSelectedPlayer = null;
-                state = State.WAITING;
+                goToWaitingState();
                 syncTerrainMarkers();
                 break;
         }
+    }
+
+    private void goToMovingState(Character playerCharacter) {
+        lastSelectedPlayer = playerCharacter;
+        state = State.MOVING;
+    }
+
+    private void goToWaitingState() {
+        lastSelectedPlayer = null;
+        state = State.WAITING;
+    }
+
+    private void goToTargetingState(Character playerCharacter) {
+        // TODO: finish me
+        state = State.TARGETING;
+    }
+
+    private void goToBattlePrepState(Character target) {
+        state = State.BATTLE_PREP;
     }
 
     private void syncTerrainMarkers() {
@@ -183,5 +199,6 @@ public class Selector {
         WAITING,
         MOVING,
         TARGETING,
+        BATTLE_PREP,
     }
 }
