@@ -13,6 +13,11 @@ public class Terrain extends MapObject {
         markers = new HashSet<Marker>();
     }
 
+    @Override
+    public void select(Selector selector) {
+        selector.select(this);
+    }
+
     public Set<Marker> getMarkers() {
         return markers;
     }

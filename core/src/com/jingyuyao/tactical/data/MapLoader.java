@@ -5,8 +5,9 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.Character;
+import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
 public class MapLoader {
@@ -33,10 +34,10 @@ public class MapLoader {
         }
 
         // Testing
-        map.addCharacter(new Character(5, 5, "john", Character.Type.PLAYER, 5));
-        map.addCharacter(new Character(5, 6, "john", Character.Type.PLAYER, 6));
-        map.addCharacter(new Character(10, 10, "billy", Character.Type.ENEMY, 3));
-        map.addCharacter(new Character(15, 10, "billy", Character.Type.ENEMY, 2));
+        map.addCharacter(new Player(5, 5, "john", 5));
+        map.addCharacter(new Player(5, 6, "john", 6));
+        map.addCharacter(new Enemy(10, 10, "billy", 3));
+        map.addCharacter(new Enemy(15, 10, "billy", 2));
 
         return map;
     }

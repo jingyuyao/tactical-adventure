@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Objects;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
@@ -74,15 +75,16 @@ public class Map extends Grid<Terrain> {
     }
 
     /**
-     * Return whether {@code character} has anything it can target from its current position.
+     * Return whether {@code source} has anything it can target from its current position.
      */
-    boolean hasAnyTarget(Character character) {
-        Collection<Terrain> targetTerrains = getTargetTerrains(character, get(character.getX(), character.getY()));
+    boolean hasAnyTarget(Character source) {
+        Collection<Terrain> targetTerrains = getTargetTerrains(source, get(source.getX(), source.getY()));
         // TODO: grid for terrain and grid for characters?
         for (Terrain terrain : targetTerrains) {
             for (Character c : characters) {
+                // TODO: Make a method like: character.canTarget(Character another)
                 if (c.getX() == terrain.getX() && c.getY() == terrain.getY()
-                        && !c.getType().equals(character.getType())) {
+                        && !Objects.equal(c.getClass(), source.getClass())) {
                     return true;
                 }
             }

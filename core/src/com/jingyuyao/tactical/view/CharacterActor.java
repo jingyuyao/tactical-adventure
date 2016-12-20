@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -18,15 +17,13 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class CharacterActor extends MapActor<Character> {
     private static final float TIME_PER_UNIT = 0.1f; // time to move across one world unit in seconds
 
-    private final java.util.Map<Character.Type, Color> typeColorMap;
     private final Sprite sprite;
 
-    CharacterActor(Character object, float size, Sprite sprite, Map<Character.Type, Color> typeColorMap,
+    CharacterActor(Character object, float size, Sprite sprite, Color tint,
                    EventListener... listeners) {
         super(object, size, listeners);
         this.sprite = sprite;
-        this.typeColorMap = typeColorMap;
-        updateType();
+        sprite.setColor(tint);
     }
 
     @Override
@@ -40,7 +37,6 @@ public class CharacterActor extends MapActor<Character> {
     @Override
     public void update(Observable observable, Object o) {
         updatePosition();
-        updateType();
         updateDeath();
     }
 
@@ -49,10 +45,6 @@ public class CharacterActor extends MapActor<Character> {
             // TODO: Do we have to deference to avoid memory leak?
             remove();
         }
-    }
-
-    private void updateType() {
-        sprite.setColor(typeColorMap.get(getObject().getType()));
     }
 
     private void updatePosition() {

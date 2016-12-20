@@ -5,12 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.Assets;
-import com.jingyuyao.tactical.controller.CharacterController;
 import com.jingyuyao.tactical.controller.HighlightController;
-import com.jingyuyao.tactical.controller.TerrainController;
+import com.jingyuyao.tactical.controller.MapActorController;
 import com.jingyuyao.tactical.model.Character;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.*;
 
 import java.util.HashMap;
 
@@ -22,7 +20,7 @@ class MapActorFactory {
 
     private final AssetManager assetManager;
     private final java.util.Map<Terrain.Marker, Sprite> markerSpriteMap;
-    private final java.util.Map<Character.Type, Color> typeColorMap;
+    private final java.util.Map<Class, Color> typeColorMap;
 
     MapActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -39,9 +37,9 @@ class MapActorFactory {
                 Terrain.Marker.ATTACK,
                 new Sprite(assetManager.get(Assets.ATTACK_OVERLAY, Texture.class))
         );
-        typeColorMap = new HashMap<Character.Type, Color>();
-        typeColorMap.put(Character.Type.PLAYER, Color.WHITE);
-        typeColorMap.put(Character.Type.ENEMY, Color.RED);
+        typeColorMap = new HashMap<Class, Color>();
+        typeColorMap.put(Player.class, Color.WHITE);
+        typeColorMap.put(Enemy.class, Color.RED);
     }
 
     MapActor create(Map map, Character character) {
@@ -49,9 +47,9 @@ class MapActorFactory {
                 character,
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
-                typeColorMap,
+                typeColorMap.get(character.getClass()),
                 new HighlightController(map.getHighlighter(), character),
-                new CharacterController(map.getSelector(), character, ACTOR_SIZE)
+                new MapActorController(character, map.getSelector(), ACTOR_SIZE)
         );
     }
 
@@ -61,7 +59,7 @@ class MapActorFactory {
                 ACTOR_SIZE,
                 markerSpriteMap,
                 new HighlightController(map.getHighlighter(), terrain),
-                new TerrainController(map.getSelector(), terrain, ACTOR_SIZE)
+                new MapActorController(terrain, map.getSelector(), ACTOR_SIZE)
         );
     }
 }

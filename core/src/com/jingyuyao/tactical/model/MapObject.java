@@ -5,7 +5,7 @@ import java.util.Observable;
 /**
  * An object on the game grid.
  */
-public class MapObject extends Observable implements HasCoordinate {
+public abstract class MapObject extends Observable implements HasCoordinate {
     private int x;
     private int y;
 
@@ -23,6 +23,13 @@ public class MapObject extends Observable implements HasCoordinate {
     public int getY() {
         return y;
     }
+
+    /**
+     * Enables the visitor pattern for selection.
+     *
+     * I can't believe OOD actually taught me something useful.
+     */
+    public abstract void select(Selector selector);
 
     /**
      * Call <b>{@link #setChanged()} and {@link #notifyObservers()}</b> yourself!

@@ -22,22 +22,35 @@ public class Selector {
         state = State.WAITING;
     }
 
-    public void select(Character character) {
-        // By using return state, we can let IDE check if we are missing any branches ;)
+    void select(Player player) {
         switch (state) {
             case WAITING:
-                handleWaiting(character);
+                handleWaiting(player);
                 break;
             case MOVING:
-                handleMoving(character);
+                handleMoving(player);
                 break;
             case TARGETING:
-                handleTargeting(character);
+                handleTargeting(player);
                 break;
         }
     }
 
-    public void select(Terrain terrain) {
+    void select(Enemy enemy) {
+        switch (state) {
+            case WAITING:
+                handleWaiting(enemy);
+                break;
+            case MOVING:
+                handleMoving(enemy);
+                break;
+            case TARGETING:
+                handleTargeting(enemy);
+                break;
+        }
+    }
+
+    void select(Terrain terrain) {
         switch (state) {
             case WAITING:
                 // Do nothing
@@ -57,50 +70,41 @@ public class Selector {
         }
     }
 
-    private void handleWaiting(Character character) {
-        switch (character.getType()) {
-            case PLAYER:
-                goToMovingState(character);
-                break;
-            case ENEMY:
-                selections.selectedEnemy(character);
-                goToWaitingState();
-                break;
+    private void handleWaiting(Player player) {
+        goToMovingState(player);
+    }
+
+    private void handleWaiting(Enemy enemy) {
+        selections.selectedEnemy(enemy);
+        goToWaitingState();
+    }
+
+    private void handleMoving(Player player) {
+        if (Objects.equal(selections.getSelectedPlayer(), player)) {
+            goToWaitingState();
+        } else {
+            goToMovingState(player);
         }
     }
 
-    private void handleMoving(Character character) {
-        switch (character.getType()) {
-            case PLAYER:
-                if (Objects.equal(selections.getSelectedPlayer(), character)) {
-                    goToWaitingState();
-                } else {
-                    goToMovingState(character);
-                }
-                break;
-            case ENEMY:
-                Collection<Terrain> targetTerrains = map.getAllTargetTerrains(selections.getSelectedPlayer());
-                Terrain enemyTerrain = map.get(character.getX(), character.getY());
-                if (targetTerrains.contains(enemyTerrain)) {
-                    // TODO: Move character & enter battle prep
-                    goToWaitingState();
-                } else {
-                    goToWaitingState();
-                }
-                break;
+    private void handleMoving(Enemy enemy) {
+        Collection<Terrain> targetTerrains = map.getAllTargetTerrains(selections.getSelectedPlayer());
+        Terrain enemyTerrain = map.get(enemy.getX(), enemy.getY());
+        if (targetTerrains.contains(enemyTerrain)) {
+            // TODO: Move character & enter battle prep
+            goToWaitingState();
+        } else {
+            goToWaitingState();
         }
     }
 
-    private void handleTargeting(Character character) {
-        switch (character.getType()) {
-            case PLAYER:
-                // TODO: cancel movement by retracing last path?
-                goToWaitingState();
-                break;
-            case ENEMY:
-                goToBattleState(character);
-                break;
-        }
+    private void handleTargeting(Player player) {
+        // TODO: cancel movement by retracing last path?
+        goToWaitingState();
+    }
+
+    private void handleTargeting(Enemy enemy) {
+        goToBattleState(enemy);
     }
 
     private void goToMovingState(Character playerCharacter) {
