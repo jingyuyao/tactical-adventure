@@ -17,6 +17,7 @@ public class Character extends MapObject {
     private Character.Type type;
     private int movementDistance;
     private Collection<Terrain> lastPath;
+    private boolean dead;
 
     public Character(int x, int y, String name, Type type, int movementDistance) {
         super(x, y);
@@ -24,9 +25,10 @@ public class Character extends MapObject {
         this.type = type;
         this.movementDistance = movementDistance;
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
+        dead = false;
         // TODO: remove me
         weapons = new ArrayList<Weapon>();
-//        weapons.add(Weapon.oneDistanceWeapon());
+        weapons.add(Weapon.oneDistanceWeapon());
         weapons.add(Weapon.threeDistanceRanged());
     }
 
@@ -66,11 +68,21 @@ public class Character extends MapObject {
         update();
     }
 
+    void die() {
+        // oh no
+        dead = true;
+        update();
+    }
+
     private static Set<Terrain.Type> createDefaultCanCrossTerrainTypes() {
         Set<Terrain.Type> standOnTerrainTypes = new HashSet<Terrain.Type>();
         standOnTerrainTypes.add(Terrain.Type.NORMAL);
         standOnTerrainTypes.add(Terrain.Type.OBSTRUCTED);
         return standOnTerrainTypes;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     public enum Type {

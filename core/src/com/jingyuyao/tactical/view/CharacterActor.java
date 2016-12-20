@@ -43,8 +43,17 @@ public class CharacterActor extends MapActor<Character> {
             @Override
             public void updated() {
                 updatePosition();
+                updateType();
+                updateDeath();
             }
         };
+    }
+
+    private void updateDeath() {
+        if (getObject().isDead()) {
+            // TODO: Do we have to deference to avoid memory leak?
+            remove();
+        }
     }
 
     private void updateType() {

@@ -44,8 +44,12 @@ public class Selector {
                 break;
             case MOVING:
                 map.moveIfAble(selections.getSelectedPlayer(), terrain);
-                // TODO: check to go to action state or targeting state
-                goToWaitingState();
+                if (map.hasAnyTarget(selections.getSelectedPlayer())) {
+                    goToTargetingState();
+                } else {
+                    // TODO: go to action state
+                    goToWaitingState();
+                }
                 break;
             case TARGETING:
                 goToWaitingState();
@@ -75,9 +79,9 @@ public class Selector {
                 }
                 break;
             case ENEMY:
-                Collection<Terrain> attackTerrains = map.getAttackTerrains(selections.getSelectedPlayer());
+                Collection<Terrain> targetTerrains = map.getAllTargetTerrains(selections.getSelectedPlayer());
                 Terrain enemyTerrain = map.get(character.getX(), character.getY());
-                if (attackTerrains.contains(enemyTerrain)) {
+                if (targetTerrains.contains(enemyTerrain)) {
                     // TODO: Move character & enter battle prep
                     goToWaitingState();
                 } else {
@@ -90,12 +94,11 @@ public class Selector {
     private void handleTargeting(Character character) {
         switch (character.getType()) {
             case PLAYER:
-                // TODO: cancel?
+                // TODO: cancel movement by retracing last path?
                 goToWaitingState();
                 break;
             case ENEMY:
-                // TODO: enter battle prep
-                goToBattlePrepState(character);
+                goToBattleState(character);
                 break;
         }
     }
@@ -110,20 +113,20 @@ public class Selector {
         state = State.WAITING;
     }
 
-    private void goToTargetingState(Character playerCharacter) {
-        // TODO: finish me
+    private void goToTargetingState() {
+        selections.showImmediateTargets();
         state = State.TARGETING;
     }
 
-    private void goToBattlePrepState(Character target) {
-        // TODO: finish me
-        state = State.BATTLE_PREP;
+    private void goToBattleState(Character target) {
+        // TODO: actually go to battle prep
+        map.kill(target);
+        goToWaitingState();
     }
 
     private enum State {
         WAITING,
         MOVING,
         TARGETING,
-        BATTLE_PREP,
     }
 }

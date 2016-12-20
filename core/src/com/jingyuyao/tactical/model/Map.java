@@ -44,22 +44,50 @@ public class Map extends Grid<Terrain> {
         }
     }
 
-    Collection<Terrain> getAttackTerrains(Character character) {
-        Graph<Terrain> moveTerrains = getMoveGraph(character);
-        Collection<Terrain> attackTerrains = new ArrayList<Terrain>();
+    void kill(Character character) {
+        characters.remove(character);
+        character.die();
+        selections.removeEnemy(character);
+    }
 
-        // TODO: whoa... optimize?
+    Collection<Terrain> getAllTargetTerrains(Character character) {
+        Graph<Terrain> moveTerrains = getMoveGraph(character);
+        Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
+
+        for (Terrain terrain : moveTerrains.nodes()) {
+            targetTerrains.addAll(getTargetTerrains(character, terrain));
+        }
+
+        return targetTerrains;
+    }
+
+    Collection<Terrain> getTargetTerrains(Character character, Terrain source) {
+        Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
         for (Weapon weapon : character.getWeapons()) {
             for (int distance : weapon.getAttackDistances()) {
-                for (Terrain terrain : moveTerrains.nodes()) {
-                    attackTerrains.addAll(
-                            Algorithms.findNDistanceAway(this, terrain.getX(), terrain.getY(), distance)
-                    );
+                targetTerrains.addAll(
+                        Algorithms.findNDistanceAway(this, source.getX(), source.getY(), distance)
+                );
+            }
+        }
+        return targetTerrains;
+    }
+
+    /**
+     * Return whether {@code character} has anything it can target from its current position.
+     */
+    boolean hasAnyTarget(Character character) {
+        Collection<Terrain> targetTerrains = getTargetTerrains(character, get(character.getX(), character.getY()));
+        // TODO: grid for terrain and grid for characters?
+        for (Terrain terrain : targetTerrains) {
+            for (Character c : characters) {
+                if (c.getX() == terrain.getX() && c.getY() == terrain.getY()
+                        && !c.getType().equals(character.getType())) {
+                    return true;
                 }
             }
         }
-
-        return attackTerrains;
+        return false;
     }
 
     ValueGraph<Terrain, Integer> getMoveGraph(Character character) {

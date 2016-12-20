@@ -20,10 +20,12 @@ class Selections {
      * Can be null.
      */
     private Character selectedPlayer;
+    private boolean showImmediateTargets;
 
     Selections(Map map) {
         this.map = map;
         selectedEnemies = new ArrayList<Character>();
+        showImmediateTargets = false;
     }
 
     Character getSelectedPlayer() {
@@ -36,6 +38,7 @@ class Selections {
         } else {
             selectedPlayer = player;
         }
+        showImmediateTargets = false;
         syncTerrainMarkers();
     }
 
@@ -48,27 +51,43 @@ class Selections {
         syncTerrainMarkers();
     }
 
+    void removeEnemy(Character enemy) {
+        selectedEnemies.remove(enemy);
+        syncTerrainMarkers();
+    }
+
+    void showImmediateTargets() {
+        showImmediateTargets = true;
+        syncTerrainMarkers();
+    }
+
     private void syncTerrainMarkers() {
         clearAllMarkers();
         for (Character character : selectedEnemies) {
-            Collection<Terrain> dangerTerrains = map.getAttackTerrains(character);
+            Collection<Terrain> dangerTerrains = map.getAllTargetTerrains(character);
             for (Terrain terrain : dangerTerrains) {
                 terrain.addMarker(Terrain.Marker.DANGER);
             }
         }
 
         if (selectedPlayer != null) {
-            Graph<Terrain> moveGraph = map.getMoveGraph(selectedPlayer);
-            Collection<Terrain> attackTerrains = map.getAttackTerrains(selectedPlayer);
-
-            for (Terrain terrain : attackTerrains) {
-                if (!moveGraph.nodes().contains(terrain)) {
+            if (showImmediateTargets) {
+                Collection<Terrain> targetTerrains =
+                        map.getTargetTerrains(selectedPlayer, map.get(selectedPlayer.getX(), selectedPlayer.getY()));
+                for (Terrain terrain : targetTerrains) {
                     terrain.addMarker(Terrain.Marker.ATTACK);
                 }
-            }
-
-            for (Terrain terrain : moveGraph.nodes()) {
-                terrain.addMarker(Terrain.Marker.MOVE);
+            } else {
+                Graph<Terrain> moveGraph = map.getMoveGraph(selectedPlayer);
+                for (Terrain terrain : moveGraph.nodes()) {
+                    terrain.addMarker(Terrain.Marker.MOVE);
+                }
+                Collection<Terrain> targetTerrains = map.getAllTargetTerrains(selectedPlayer);
+                for (Terrain terrain : targetTerrains) {
+                    if (!moveGraph.nodes().contains(terrain)) {
+                        terrain.addMarker(Terrain.Marker.ATTACK);
+                    }
+                }
             }
         }
     }
