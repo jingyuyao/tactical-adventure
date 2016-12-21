@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,20 +69,20 @@ public class Grid<T> {
      * Order of returned neighbors is randomized.
      * @return Randomized list of neighbors
      */
-    public List<T> getNeighbors(int x, int y) {
-        List<T> neighbors = new ArrayList<T>(4);
+    public Collection<Coordinate> getNeighbors(int x, int y) {
+        List<Coordinate> neighbors = new ArrayList<Coordinate>(4);
 
         if (x > 0) {
-            neighbors.add(get(x - 1, y));
+            neighbors.add(new Coordinate(x - 1, y));
         }
         if (x < getWidth() - 1) {
-            neighbors.add(get(x + 1, y));
+            neighbors.add(new Coordinate(x + 1, y));
         }
         if (y > 0) {
-            neighbors.add(get(x, y - 1));
+            neighbors.add(new Coordinate(x, y - 1));
         }
         if (y < getHeight() - 1) {
-            neighbors.add(get(x, y + 1));
+            neighbors.add(new Coordinate(x, y + 1));
         }
 
         Collections.shuffle(neighbors);
@@ -92,7 +93,7 @@ public class Grid<T> {
     /**
      * <see>{@link #getNeighbors(int, int)}</see>
      */
-    public List<T> getNeighbors(Coordinate coordinate) {
+    public Collection<Coordinate> getNeighbors(Coordinate coordinate) {
         return getNeighbors(coordinate.getX(), coordinate.getY());
     }
 }

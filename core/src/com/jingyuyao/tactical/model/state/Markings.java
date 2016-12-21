@@ -73,11 +73,11 @@ class Markings {
         if (markedPlayer != null) {
             Collection<Coordinate> targets;
             if (showImmediateTargets) {
-                targets = map.getTargets(markedPlayer, map.terrains().get(markedPlayer));
+                targets = map.getTargetsFrom(markedPlayer, markedPlayer.getCoordinate());
             } else {
-                Graph<Terrain> moveGraph = map.getMoveGraph(markedPlayer);
-                for (Terrain terrain : moveGraph.nodes()) {
-                    terrain.addMarker(Terrain.Marker.MOVE);
+                Graph<Coordinate> moveGraph = map.getMoveGraph(markedPlayer);
+                for (Coordinate coordinate : moveGraph.nodes()) {
+                    map.terrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
                 }
                 targets = map.getAllTargets(markedPlayer);
                 targets.removeAll(moveGraph.nodes());

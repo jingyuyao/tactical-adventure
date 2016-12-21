@@ -20,7 +20,7 @@ class Targeting extends AbstractState {
 
     @Override
     public State select(Enemy enemy) {
-        if (enemy.containedIn(getMap().getTargets(targetingPlayer, enemy))) {
+        if (getMap().canImmediateTarget(targetingPlayer, enemy)) {
             // TODO: enter battle prep
             getMarkings().removeEnemy(enemy);
             getMap().kill(enemy);

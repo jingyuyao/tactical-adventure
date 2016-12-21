@@ -1,16 +1,14 @@
 package com.jingyuyao.tactical.model;
 
-import java.util.Collection;
-import java.util.Observable;
+import com.google.common.base.Objects;
 
 /**
- * An object with a (x,y) coordinate that notify its observers when its position is changed.
- *
- * Always use {@link #containedIn(Collection)} when checking if this {@link Coordinate} belongs in a {@link Collection}.
+ * An object with a (x,y) coordinate.
+ * This class is the foundation for many of other classes and algorithms so be careful when making changes.
  */
-public class Coordinate extends Observable {
-    private int x;
-    private int y;
+public final class Coordinate {
+    private final int x;
+    private final int y;
 
     public Coordinate(int x, int y) {
         this.x = x;
@@ -25,27 +23,18 @@ public class Coordinate extends Observable {
         return y;
     }
 
-    /**
-     * Updates the position of this {@link Coordinate} and notify its observers.
-     */
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-        setChanged();
-        notifyObservers();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinate that = (Coordinate) o;
+        return getX() == that.getX() &&
+                getY() == that.getY();
     }
 
-    public boolean sameCoordinateAs(Coordinate other) {
-        return getX() == other.getX() && getY() == other.getY();
-    }
-
-    public boolean containedIn(Collection<Coordinate> coordinates) {
-        for (Coordinate c : coordinates) {
-            if (sameCoordinateAs(c)) {
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getX(), getY());
     }
 
     @Override

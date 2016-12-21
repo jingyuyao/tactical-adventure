@@ -48,9 +48,9 @@ public class Map extends Observable {
         notifyObservers();
     }
 
-    public void moveIfAble(Character character, Terrain terrain) {
-        Graph<Terrain> pathGraph = getMoveGraph(character);
-        Collection<Terrain> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
+    public void moveIfAble(Character character, Coordinate terrain) {
+        Graph<Coordinate> pathGraph = getMoveGraph(character);
+        Collection<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
         if (!pathToCoordinate.isEmpty()) {
             character.moveTo(terrain.getX(), terrain.getY(), pathToCoordinate);
         }
@@ -61,48 +61,46 @@ public class Map extends Observable {
         character.die();
     }
 
-    public ValueGraph<Terrain, Integer> getMoveGraph(Character character) {
+    public ValueGraph<Coordinate, Integer> getMoveGraph(Character character) {
         return Algorithms.minPathSearch(
-                terrains,
                 createMovementPenaltyGrid(character),
-                character,
+                character.getCoordinate(),
                 character.getMovementDistance());
     }
 
     public Collection<Coordinate> getAllTargets(Character character) {
-        Graph<Terrain> moveTerrains = getMoveGraph(character);
+        Graph<Coordinate> moveTerrains = getMoveGraph(character);
         Collection<Coordinate> targets = new ArrayList<Coordinate>();
-        for (Terrain terrain : moveTerrains.nodes()) {
-            targets.addAll(getTargets(character, terrain));
+        for (Coordinate terrain : moveTerrains.nodes()) {
+            targets.addAll(getTargetsFrom(character, terrain));
         }
         return targets;
     }
 
-    public Collection<Coordinate> getTargets(Character character, Coordinate source) {
+    public Collection<Coordinate> getTargetsFrom(Character character, Coordinate from) {
         Collection<Coordinate> targets = new ArrayList<Coordinate>();
         for (Weapon weapon : character.getWeapons()) {
-            targets.addAll(getTargetsForWeapon(weapon, source));
+            targets.addAll(getTargetsForWeapon(weapon, from));
         }
         return targets;
     }
 
-    public Collection<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate source) {
+    public Collection<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
         Collection<Coordinate> targets = new ArrayList<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
-            targets.addAll(Algorithms.findNDistanceAway(terrains, source, distance));
+            targets.addAll(Algorithms.findNDistanceAway(terrains, from, distance));
         }
         return targets;
     }
 
     /**
-     * Get the best terrain to move to for hitting {@code target}. Best terrain is defined as the
-     * terrain that can be hit with the most weapons.
+     * Return the coordinate with the greatest number of weapon choices for target.
      */
-    public Optional<Terrain> getMoveTerrainForTarget(Character character, Coordinate target) {
-        Graph<Terrain> moveGraph = getMoveGraph(character);
-        Terrain currentBestTerrain = null;
+    public Optional<Coordinate> getMoveForTarget(Character character, Coordinate target) {
+        Graph<Coordinate> moveGraph = getMoveGraph(character);
+        Coordinate currentBestTerrain = null;
         Collection<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
-        for (Terrain source : moveGraph.nodes()) {
+        for (Coordinate source : moveGraph.nodes()) {
             Collection<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
             if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
                 currentMaxWeapons = weaponsForThisTerrain;
@@ -112,10 +110,10 @@ public class Map extends Observable {
         return Optional.fromNullable(currentBestTerrain);
     }
 
-    public Collection<Weapon> getWeaponsForTarget(Character character, Coordinate source, Coordinate target) {
+    public Collection<Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
         Collection<Weapon> weaponsForThisTarget = new ArrayList<Weapon>();
         for (Weapon weapon : character.getWeapons()) {
-            if (target.containedIn(getTargetsForWeapon(weapon, source))) {
+            if (getTargetsForWeapon(weapon, from).contains(target)) {
                 weaponsForThisTarget.add(weapon);
             }
         }
@@ -123,13 +121,12 @@ public class Map extends Observable {
     }
 
     /**
-     * Return whether {@code source} has anything it can target from its current position.
+     * Return whether {@code from} has anything it can target from its current position.
      */
-    public boolean hasAnyTarget(Character source) {
-        Collection<Coordinate> targets = getTargets(source, terrains.get(source));
-        for (Coordinate target : targets) {
-            for (Character c : characters) {
-                if (target.sameCoordinateAs(c) && source.canTarget(c)) {
+    public boolean hasAnyTarget(Character from) {
+        for (Coordinate target : getTargetsFrom(from, from.getCoordinate())) {
+            for (Character to : characters()) {
+                if (to.getCoordinate().equals(target) && from.canTarget(to)) {
                     return true;
                 }
             }
@@ -137,18 +134,26 @@ public class Map extends Observable {
         return false;
     }
 
+    public boolean canTargetAfterMove(Character from, Character to) {
+        return from.canTarget(to) && getAllTargets(from).contains(to.getCoordinate());
+    }
+
+    public boolean canImmediateTarget(Character from, Character to) {
+        return from.canTarget(to) && getTargetsFrom(from, from.getCoordinate()).contains(to.getCoordinate());
+    }
+
     private Grid<Integer> createMovementPenaltyGrid(Character character) {
         Grid<Integer> movementPenaltyGrid = new Grid<Integer>(getWidth(), getHeight());
 
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Terrain terrain = terrains.get(x, y);
-                movementPenaltyGrid.set(x, y, terrain.getMovementPenalty(character));
+                Terrain terrain = terrains().get(x, y);
+                movementPenaltyGrid.set(terrain.getCoordinate(), terrain.getMovementPenalty(character));
             }
         }
 
-        for (Character c : characters) {
-            movementPenaltyGrid.set(c, Algorithms.NO_EDGE);
+        for (Character blocked : characters()) {
+            movementPenaltyGrid.set(blocked.getCoordinate(), Algorithms.NO_EDGE);
         }
 
         return movementPenaltyGrid;

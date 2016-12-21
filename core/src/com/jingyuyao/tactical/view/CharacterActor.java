@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.Character;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.Coordinate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public class CharacterActor extends MapActor<Character> {
     }
 
     private void updatePosition() {
-        if (getX() != getObject().getX() || getY() != getObject().getY()) {
+        if (getX() != getObject().getCoordinate().getX() || getY() != getObject().getCoordinate().getY()) {
             final Collection<EventListener> listeners = popAllListeners();
             SequenceAction moveSequence = getMoveSequence(getObject().getLastPath());
             moveSequence.addAction(run(new Runnable() {
@@ -68,9 +68,9 @@ public class CharacterActor extends MapActor<Character> {
         }
     }
 
-    private SequenceAction getMoveSequence(Collection<Terrain> path) {
+    private SequenceAction getMoveSequence(Collection<Coordinate> path) {
         SequenceAction sequence = sequence();
-        for (Terrain terrain : path) {
+        for (Coordinate terrain : path) {
             sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
         }
         return sequence;

@@ -16,7 +16,7 @@ public abstract class Character extends MapObject {
     private final Set<Terrain.Type> canCrossTerrainTypes;
     private final Collection<Weapon> weapons;
     private int movementDistance;
-    private Collection<Terrain> lastPath;
+    private Collection<Coordinate> lastPath;
     private boolean dead;
 
     public Character(int x, int y, String name, int movementDistance) {
@@ -39,7 +39,7 @@ public abstract class Character extends MapObject {
         return weapons;
     }
 
-    public Collection<Terrain> getLastPath() {
+    public Collection<Coordinate> getLastPath() {
         return lastPath;
     }
 
@@ -60,7 +60,7 @@ public abstract class Character extends MapObject {
         return movementDistance;
     }
 
-    void moveTo(int x, int y, Collection<Terrain> pathToCoordinate) {
+    void moveTo(int x, int y, Collection<Coordinate> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
         lastPath = pathToCoordinate;
         setPosition(x, y);

@@ -10,47 +10,43 @@ class Algorithms {
     static final int NO_EDGE = -1;
 
     /**
-     * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code dataGrid} that contains
+     * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code coordinateGrid} that contains
      * all reachable nodes whose total path cost (sum of all edge weights from the start to the current node)
      * is less or equal to {@code maxPathCost}. Inbound edge costs comes from {@code edgeCostGrid}.
      *
-     * @param dataGrid The grid to get data objects to put in the resulting graph
      * @param edgeCostGrid The grid to get edge cost for creating the graph
      * @param maxPathCost Maximum cost for the path between initial location to any other object
      */
-    static <O extends Coordinate>
-    ValueGraph<O, Integer> minPathSearch(
-            Grid<O> dataGrid,
+    static ValueGraph<Coordinate, Integer> minPathSearch(
             Grid<Integer> edgeCostGrid,
             Coordinate startingCoordinate,
             int maxPathCost
     ) {
-        MutableValueGraph<O, Integer> graph =
+        MutableValueGraph<Coordinate, Integer> graph =
                 ValueGraphBuilder
                         .directed()
                         .allowsSelfLoops(false)
                         .nodeOrder(ElementOrder.insertion())
                         .build();
-        Set<O> processedObjects = new HashSet<O>();
-        Map<O, Integer> pathCostMap = new HashMap<O, Integer>();
-        Queue<ValueNode<O>> minNodeQueue = new PriorityQueue<ValueNode<O>>();
+        Set<Coordinate> processedCoordinates = new HashSet<Coordinate>();
+        Map<Coordinate, Integer> pathCostMap = new HashMap<Coordinate, Integer>();
+        Queue<ValueNode<Coordinate>> minNodeQueue = new PriorityQueue<ValueNode<Coordinate>>();
 
-        O startingObject = dataGrid.get(startingCoordinate);
-        pathCostMap.put(startingObject, 0);
-        minNodeQueue.add(new ValueNode<O>(startingObject, 0));
+        pathCostMap.put(startingCoordinate, 0);
+        minNodeQueue.add(new ValueNode<Coordinate>(startingCoordinate, 0));
 
         // Dijkstra's algorithm
         while (!minNodeQueue.isEmpty()) {
-            ValueNode<O> minNode = minNodeQueue.poll();
-            O minObject = minNode.getObject();
-            processedObjects.add(minObject);
+            ValueNode<Coordinate> minNode = minNodeQueue.poll();
+            Coordinate minCoordinate = minNode.getObject();
+            processedCoordinates.add(minCoordinate);
 
-            for (O neighbor : dataGrid.getNeighbors(minObject)) {
-                if (processedObjects.contains(neighbor)) {
+            for (Coordinate neighbor : edgeCostGrid.getNeighbors(minCoordinate)) {
+                if (processedCoordinates.contains(neighbor)) {
                     continue;
                 }
 
-                int edgeCost = edgeCostGrid.get(neighbor.getX(), neighbor.getY());
+                int edgeCost = edgeCostGrid.get(neighbor);
                 if (edgeCost == NO_EDGE) {
                     continue;
                 }
@@ -60,14 +56,14 @@ class Algorithms {
                     continue;
                 }
 
-                ValueNode<O> neighborNode = new ValueNode<O>(neighbor, pathCost);
+                ValueNode<Coordinate> neighborNode = new ValueNode<Coordinate>(neighbor, pathCost);
                 if (!pathCostMap.containsKey(neighbor)) {
-                    graph.putEdgeValue(minObject, neighbor, pathCost);
+                    graph.putEdgeValue(minCoordinate, neighbor, pathCost);
                     pathCostMap.put(neighbor, pathCost);
                 } else if (pathCost < pathCostMap.get(neighbor)) {
                     // Remove neighbor from graph so that (minNode, neighbor) is the only edge
                     graph.removeNode(neighbor);
-                    graph.putEdgeValue(minObject, neighbor, pathCost);
+                    graph.putEdgeValue(minCoordinate, neighbor, pathCost);
                     // Adjust path cost of the current neighbor
                     pathCostMap.put(neighbor, pathCost);
                     minNodeQueue.remove(neighborNode);
@@ -88,57 +84,56 @@ class Algorithms {
      * @return A path to {@code target} from the first node in the graph or an empty collection if target is
      * not in the graph
      */
-    static <O> Collection<O> findPathTo(Graph<O> graph, O target) {
+    static Collection<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
         if (!graph.nodes().contains(target)) {
             return Collections.emptyList();
         }
 
-        List<O> path = new ArrayList<O>();
+        List<Coordinate> path = new ArrayList<Coordinate>();
         path.add(target);
 
-        Set<O> predecessors = graph.predecessors(target);
+        Set<Coordinate> predecessors = graph.predecessors(target);
         while (predecessors.size() != 0) {
             Preconditions.checkState(
                     predecessors.size() == 1,
                     "findPathTo encountered a node with multiple predecessors"
             );
-            O predecessor = predecessors.iterator().next();
+            Coordinate predecessor = predecessors.iterator().next();
             path.add(predecessor);
             predecessors = graph.predecessors(predecessor);
         }
 
         Collections.reverse(path);
-
         return path;
     }
 
     /**
      * Find all the objects on the grid that is {@code distance} away from the starting point.
+     *
+     * @param grid The grid the coordinate is contained in, used to find neighbors
      */
-    static <O extends Coordinate> Collection<O> findNDistanceAway(
-            Grid<O> grid,
+    static Collection<Coordinate> findNDistanceAway(
+            Grid<?> grid,
             Coordinate startingCoordinate,
             int distance
     ) {
-        Collection<O> nDistanceAway = new ArrayList<O>();
+        Collection<Coordinate> nDistanceAway = new ArrayList<Coordinate>();
         findNDistanceAway(grid, startingCoordinate, distance, nDistanceAway);
         return  nDistanceAway;
     }
 
-    private static <O extends Coordinate> void findNDistanceAway(
-        Grid<O> grid,
+    private static void findNDistanceAway(
+        Grid<?> grid,
         Coordinate currentCoordinate,
         int distanceRemaining,
-        Collection<O> accumulator
+        Collection<Coordinate> accumulator
     ) {
-        O current = grid.get(currentCoordinate);
-
         if (distanceRemaining == 0) {
-            accumulator.add(current);
+            accumulator.add(currentCoordinate);
             return;
         }
 
-        for (O neighbor : grid.getNeighbors(currentCoordinate)) {
+        for (Coordinate neighbor : grid.getNeighbors(currentCoordinate)) {
             findNDistanceAway(grid, neighbor, distanceRemaining-1, accumulator);
         }
     }

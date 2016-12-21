@@ -17,7 +17,7 @@ abstract class MapActor<T extends MapObject> extends Actor implements Observer {
 
     MapActor(T object, float size, EventListener listener) {
         this.object = object;
-        setBounds(object.getX(), object.getY(), size, size);
+        setBounds(object.getCoordinate().getX(), object.getCoordinate().getY(), size, size);
         object.addObserver(this);
         addListener(listener);
     }
