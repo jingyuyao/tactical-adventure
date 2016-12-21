@@ -29,15 +29,15 @@ public class MapLoader {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
                 Terrain terrain = createTerrain(x, y, cell);
-                map.setTerrain(x, y, terrain);
+                map.terrains().set(x, y, terrain);
             }
         }
 
         // Testing
-        map.addCharacter(new Player(5, 5, "john", 5));
-        map.addCharacter(new Player(5, 6, "john", 6));
-        map.addCharacter(new Enemy(10, 10, "billy", 3));
-        map.addCharacter(new Enemy(15, 10, "billy", 2));
+        map.characters().add(new Player(5, 5, "john", 5));
+        map.characters().add(new Player(5, 6, "john", 6));
+        map.characters().add(new Enemy(10, 10, "billy", 3));
+        map.characters().add(new Enemy(15, 10, "billy", 2));
 
         return map;
     }

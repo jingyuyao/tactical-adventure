@@ -29,7 +29,7 @@ class Moving extends AbstractState {
     @Override
     public State select(Enemy enemy) {
         Collection<Terrain> targetTerrains = getMap().getAllTargetTerrains(movingPlayer);
-        Terrain enemyTerrain = getMap().getTerrain(enemy.getX(), enemy.getY());
+        Terrain enemyTerrain = getMap().terrains().get(enemy);
         if (targetTerrains.contains(enemyTerrain)) {
             // TODO: enter battle prep
             Optional<Terrain> moveTarget = getMap().getMoveTerrainForTarget(movingPlayer, enemyTerrain);

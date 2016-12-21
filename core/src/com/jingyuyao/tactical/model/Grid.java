@@ -33,14 +33,6 @@ public class Grid<T> {
         }
     }
 
-    public T get(int x, int y) {
-        return rows.get(y).get(x);
-    }
-
-    public void set(int x, int y, T data) {
-        rows.get(y).set(x, data);
-    }
-
     public int getWidth() {
         return width;
     }
@@ -49,12 +41,34 @@ public class Grid<T> {
         return height;
     }
 
+    public T get(int x, int y) {
+        return rows.get(y).get(x);
+    }
+
+    /**
+     * <see>{@link #get(int, int)}</see>
+     */
+    public T get(HasCoordinate coordinate) {
+        return get(coordinate.getX(), coordinate.getY());
+    }
+
+    public void set(int x, int y, T data) {
+        rows.get(y).set(x, data);
+    }
+
+    /**
+     * <see>{@link #set(int, int, Object)}</see>
+     */
+    public void set(HasCoordinate coordinate, T data) {
+        set(coordinate.getX(), coordinate.getY(), data);
+    }
+
     /**
      * Returns the in-bound neighbors of ({@code x}, {@code y}).
      * Order of returned neighbors is randomized.
      * @return Randomized list of neighbors
      */
-    List<T> getNeighbors(int x, int y) {
+    public List<T> getNeighbors(int x, int y) {
         List<T> neighbors = new ArrayList<T>(4);
 
         if (x > 0) {
@@ -73,5 +87,12 @@ public class Grid<T> {
         Collections.shuffle(neighbors);
 
         return neighbors;
+    }
+
+    /**
+     * <see>{@link #getNeighbors(int, int)}</see>
+     */
+    public List<T> getNeighbors(HasCoordinate coordinate) {
+        return getNeighbors(coordinate.getX(), coordinate.getY());
     }
 }

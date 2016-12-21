@@ -22,8 +22,7 @@ class Algorithms {
     ValueGraph<O, Integer> minPathSearch(
             Grid<O> dataGrid,
             Grid<Integer> edgeCostGrid,
-            int startX,
-            int startY,
+            HasCoordinate startingCoordinate,
             int maxPathCost
     ) {
         MutableValueGraph<O, Integer> graph =
@@ -36,7 +35,7 @@ class Algorithms {
         Map<O, Integer> pathCostMap = new HashMap<O, Integer>();
         Queue<ValueNode<O>> minNodeQueue = new PriorityQueue<ValueNode<O>>();
 
-        O startingObject = dataGrid.get(startX, startY);
+        O startingObject = dataGrid.get(startingCoordinate);
         pathCostMap.put(startingObject, 0);
         minNodeQueue.add(new ValueNode<O>(startingObject, 0));
 
@@ -46,7 +45,7 @@ class Algorithms {
             O minObject = minNode.getObject();
             processedObjects.add(minObject);
 
-            for (O neighbor : dataGrid.getNeighbors(minObject.getX(), minObject.getY())) {
+            for (O neighbor : dataGrid.getNeighbors(minObject)) {
                 if (processedObjects.contains(neighbor)) {
                     continue;
                 }
@@ -118,32 +117,29 @@ class Algorithms {
      */
     static <O extends HasCoordinate> Collection<O> findNDistanceAway(
             Grid<O> grid,
-            int startX,
-            int startY,
+            HasCoordinate startingCoordinate,
             int distance
     ) {
         Collection<O> nDistanceAway = new ArrayList<O>();
-        findNDistanceAway(grid, startX, startY, distance, nDistanceAway);
+        findNDistanceAway(grid, startingCoordinate, distance, nDistanceAway);
         return  nDistanceAway;
     }
 
     private static <O extends HasCoordinate> void findNDistanceAway(
         Grid<O> grid,
-        int currentX,
-        int currentY,
+        HasCoordinate currentCoordinate,
         int distanceRemaining,
         Collection<O> accumulator
     ) {
-        O current = grid.get(currentX, currentY);
+        O current = grid.get(currentCoordinate);
 
         if (distanceRemaining == 0) {
             accumulator.add(current);
             return;
         }
 
-        for (O neighbor : grid.getNeighbors(currentX, currentY)) {
-            findNDistanceAway(
-                    grid, neighbor.getX(), neighbor.getY(), distanceRemaining-1, accumulator);
+        for (O neighbor : grid.getNeighbors(currentCoordinate)) {
+            findNDistanceAway(grid, neighbor, distanceRemaining-1, accumulator);
         }
     }
 

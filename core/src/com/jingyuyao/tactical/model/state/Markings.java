@@ -74,7 +74,7 @@ class Markings {
             Collection<Terrain> targetTerrains;
             if (showImmediateTargets) {
                 targetTerrains =
-                        map.getTargetTerrains(markedPlayer, map.getTerrain(markedPlayer.getX(), markedPlayer.getY()));
+                        map.getTargetTerrains(markedPlayer, map.terrains().get(markedPlayer));
             } else {
                 Graph<Terrain> moveGraph = map.getMoveGraph(markedPlayer);
                 for (Terrain terrain : moveGraph.nodes()) {
@@ -92,7 +92,7 @@ class Markings {
     private void clearAllMarkers() {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                map.getTerrain(x, y).clearMarkers();
+                map.terrains().get(x, y).clearMarkers();
             }
         }
     }

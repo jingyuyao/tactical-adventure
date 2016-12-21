@@ -22,9 +22,9 @@ class Targeting extends AbstractState {
 
     @Override
     public State select(Enemy enemy) {
-        Terrain source = getMap().getTerrain(targetingPlayer.getX(), targetingPlayer.getY());
+        Terrain source = getMap().terrains().get(targetingPlayer);
         Collection<Terrain> targetTerrains = getMap().getTargetTerrains(targetingPlayer, source);
-        Terrain target = getMap().getTerrain(enemy.getX(), enemy.getY());
+        Terrain target = getMap().terrains().get(enemy);
         if (targetTerrains.contains(target)) {
             // TODO: enter battle prep
             getMarkings().removeEnemy(enemy);

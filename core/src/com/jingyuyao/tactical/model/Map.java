@@ -30,19 +30,11 @@ public class Map extends Observable {
         return height;
     }
 
-    public Terrain getTerrain(int x, int y) {
-        return terrains.get(x, y);
+    public Grid<Terrain> terrains() {
+        return terrains;
     }
 
-    public void setTerrain(int x, int y, Terrain terrain) {
-        terrains.set(x, y ,terrain);
-    }
-
-    public void addCharacter(Character character) {
-        characters.add(character);
-    }
-
-    public Collection<Character> getCharacters() {
+    public Collection<Character> characters() {
         return characters;
     }
 
@@ -73,8 +65,7 @@ public class Map extends Observable {
         return Algorithms.minPathSearch(
                 terrains,
                 createMovementPenaltyGrid(character),
-                character.getX(),
-                character.getY(),
+                character,
                 character.getMovementDistance());
     }
 
@@ -100,9 +91,7 @@ public class Map extends Observable {
     public Collection<Terrain> getTargetsForWeapon(Weapon weapon, Terrain source) {
         Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
         for (int distance : weapon.getAttackDistances()) {
-            targetTerrains.addAll(
-                    Algorithms.findNDistanceAway(terrains, source.getX(), source.getY(), distance)
-            );
+            targetTerrains.addAll(Algorithms.findNDistanceAway(terrains, source, distance));
         }
         return targetTerrains;
     }
@@ -111,7 +100,7 @@ public class Map extends Observable {
      * Return whether {@code source} has anything it can target from its current position.
      */
     public boolean hasAnyTarget(Character source) {
-        Collection<Terrain> targetTerrains = getTargetTerrains(source, getTerrain(source.getX(), source.getY()));
+        Collection<Terrain> targetTerrains = getTargetTerrains(source, terrains.get(source));
         for (Terrain terrain : targetTerrains) {
             for (Character c : characters) {
                 if (c.getX() == terrain.getX() && c.getY() == terrain.getY() && source.canTarget(c)) {
@@ -156,13 +145,13 @@ public class Map extends Observable {
 
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Terrain terrain = getTerrain(x, y);
+                Terrain terrain = terrains.get(x, y);
                 movementPenaltyGrid.set(x, y, terrain.getMovementPenalty(character));
             }
         }
 
-        for (Character c : getCharacters()) {
-            movementPenaltyGrid.set(c.getX(), c.getY(), Algorithms.NO_EDGE);
+        for (Character c : characters) {
+            movementPenaltyGrid.set(c, Algorithms.NO_EDGE);
         }
 
         return movementPenaltyGrid;
