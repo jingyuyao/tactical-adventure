@@ -49,7 +49,7 @@ public abstract class Character extends MapObject {
 
     boolean canTarget(Character other) {
         // TODO: make me more specific later
-        return !Objects.equal(getClass(), other.getClass());
+        return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
     }
 
     Set<Terrain.Type> getCanCrossTerrainTypes() {

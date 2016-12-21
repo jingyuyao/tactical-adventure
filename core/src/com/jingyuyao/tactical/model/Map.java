@@ -4,9 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Observable;
+import java.util.*;
 
 public class Map extends Observable {
     private final int width;
@@ -48,6 +46,11 @@ public class Map extends Observable {
         notifyObservers();
     }
 
+    public void kill(Character character) {
+        characters.remove(character);
+        character.die();
+    }
+
     public void moveIfAble(Character character, Coordinate terrain) {
         Graph<Coordinate> pathGraph = getMoveGraph(character);
         Collection<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
@@ -56,9 +59,24 @@ public class Map extends Observable {
         }
     }
 
-    public void kill(Character character) {
-        characters.remove(character);
-        character.die();
+    /**
+     * Return whether {@code from} has anything it can target from its current position.
+     */
+    public boolean hasAnyImmediateTarget(Character from) {
+        for (Character to : characters()) {
+            if (canImmediateTarget(from, to)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canTargetAfterMove(Character from, Character to) {
+        return from.canTarget(to) && getAllTargets(from).contains(to.getCoordinate());
+    }
+
+    public boolean canImmediateTarget(Character from, Character to) {
+        return from.canTarget(to) && getTargetsFrom(from, from.getCoordinate()).contains(to.getCoordinate());
     }
 
     public ValueGraph<Coordinate, Integer> getMoveGraph(Character character) {
@@ -70,7 +88,7 @@ public class Map extends Observable {
 
     public Collection<Coordinate> getAllTargets(Character character) {
         Graph<Coordinate> moveTerrains = getMoveGraph(character);
-        Collection<Coordinate> targets = new ArrayList<Coordinate>();
+        Collection<Coordinate> targets = new HashSet<Coordinate>();
         for (Coordinate terrain : moveTerrains.nodes()) {
             targets.addAll(getTargetsFrom(character, terrain));
         }
@@ -78,7 +96,7 @@ public class Map extends Observable {
     }
 
     public Collection<Coordinate> getTargetsFrom(Character character, Coordinate from) {
-        Collection<Coordinate> targets = new ArrayList<Coordinate>();
+        Collection<Coordinate> targets = new HashSet<Coordinate>();
         for (Weapon weapon : character.getWeapons()) {
             targets.addAll(getTargetsForWeapon(weapon, from));
         }
@@ -86,8 +104,9 @@ public class Map extends Observable {
     }
 
     public Collection<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
-        Collection<Coordinate> targets = new ArrayList<Coordinate>();
+        Collection<Coordinate> targets = new HashSet<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
+            // TODO: modify algorithm so it doesn't "backtrack"
             targets.addAll(Algorithms.findNDistanceAway(terrains, from, distance));
         }
         return targets;
@@ -118,28 +137,6 @@ public class Map extends Observable {
             }
         }
         return weaponsForThisTarget;
-    }
-
-    /**
-     * Return whether {@code from} has anything it can target from its current position.
-     */
-    public boolean hasAnyTarget(Character from) {
-        for (Coordinate target : getTargetsFrom(from, from.getCoordinate())) {
-            for (Character to : characters()) {
-                if (to.getCoordinate().equals(target) && from.canTarget(to)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean canTargetAfterMove(Character from, Character to) {
-        return from.canTarget(to) && getAllTargets(from).contains(to.getCoordinate());
-    }
-
-    public boolean canImmediateTarget(Character from, Character to) {
-        return from.canTarget(to) && getTargetsFrom(from, from.getCoordinate()).contains(to.getCoordinate());
     }
 
     private Grid<Integer> createMovementPenaltyGrid(Character character) {

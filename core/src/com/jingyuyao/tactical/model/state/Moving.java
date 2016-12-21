@@ -28,10 +28,10 @@ class Moving extends AbstractState {
     @Override
     public State select(Enemy enemy) {
         if (getMap().canTargetAfterMove(movingPlayer, enemy)) {
-            // TODO: enter battle prep
             Optional<Coordinate> moveTarget = getMap().getMoveForTarget(movingPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
                 getMap().moveIfAble(movingPlayer, moveTarget.get());
+                // TODO: enter battle prep
                 getMarkings().removeEnemy(enemy);
                 getMap().kill(enemy);
             }
@@ -44,7 +44,7 @@ class Moving extends AbstractState {
     @Override
     public State select(Terrain terrain) {
         getMap().moveIfAble(movingPlayer, terrain.getCoordinate());
-        if (getMap().hasAnyTarget(movingPlayer)) {
+        if (getMap().hasAnyImmediateTarget(movingPlayer)) {
             return new Targeting(this, movingPlayer);
         } else {
             // TODO: go to action state
