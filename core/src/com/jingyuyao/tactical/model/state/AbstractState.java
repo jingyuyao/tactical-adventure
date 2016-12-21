@@ -4,22 +4,22 @@ import com.jingyuyao.tactical.model.Map;
 
 abstract class AbstractState implements State {
     private final Map map;
-    private final StateData stateData;
+    private final Markings markings;
 
     AbstractState(AbstractState prevState) {
-        this(prevState.getMap(), prevState.getStateData());
+        this(prevState.getMap(), prevState.getMarkings());
     }
 
-    AbstractState(Map map, StateData stateData) {
+    AbstractState(Map map, Markings markings) {
         this.map = map;
-        this.stateData = stateData;
+        this.markings = markings;
     }
 
     Map getMap() {
         return map;
     }
 
-    StateData getStateData() {
-        return stateData;
+    Markings getMarkings() {
+        return markings;
     }
 }

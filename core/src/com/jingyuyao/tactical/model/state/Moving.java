@@ -8,14 +8,17 @@ import com.jingyuyao.tactical.model.Terrain;
 import java.util.Collection;
 
 class Moving extends AbstractState {
+    private final Player selectedPlayer;
+
     Moving(AbstractState prevState, Player selectedPlayer) {
         super(prevState);
-        getStateData().selectedPlayer(selectedPlayer);
+        this.selectedPlayer = selectedPlayer;
+        getMarkings().markPlayer(selectedPlayer, false);
     }
 
     @Override
     public State select(Player player) {
-        if (Objects.equal(getStateData().getSelectedPlayer(), player)) {
+        if (Objects.equal(selectedPlayer, player)) {
             return new Waiting(this);
         } else {
             return new Moving(this, player);
@@ -24,7 +27,7 @@ class Moving extends AbstractState {
 
     @Override
     public State select(Enemy enemy) {
-        Collection<Terrain> targetTerrains = getMap().getAllTargetTerrains(getStateData().getSelectedPlayer());
+        Collection<Terrain> targetTerrains = getMap().getAllTargetTerrains(selectedPlayer);
         Terrain enemyTerrain = getMap().getTerrain(enemy.getX(), enemy.getY());
         if (targetTerrains.contains(enemyTerrain)) {
             // TODO: Move character & enter battle prep
@@ -36,9 +39,9 @@ class Moving extends AbstractState {
 
     @Override
     public State select(Terrain terrain) {
-        getMap().moveIfAble(getStateData().getSelectedPlayer(), terrain);
-        if (getMap().hasAnyTarget(getStateData().getSelectedPlayer())) {
-            return new Targeting(this);
+        getMap().moveIfAble(selectedPlayer, terrain);
+        if (getMap().hasAnyTarget(selectedPlayer)) {
+            return new Targeting(this, selectedPlayer);
         } else {
             // TODO: go to action state
             return new Waiting(this);

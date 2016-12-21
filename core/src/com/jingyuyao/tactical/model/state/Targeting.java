@@ -5,9 +5,9 @@ import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
 class Targeting extends AbstractState {
-    Targeting(AbstractState prevState) {
+    Targeting(AbstractState prevState, Player player) {
         super(prevState);
-        getStateData().showImmediateTargets();
+        getMarkings().markPlayer(player, true);
     }
 
     @Override
@@ -17,7 +17,7 @@ class Targeting extends AbstractState {
 
     @Override
     public State select(Enemy enemy) {
-        getStateData().removeEnemy(enemy);
+        getMarkings().removeEnemy(enemy);
         getMap().kill(enemy);
         return new Waiting(this);
     }

@@ -13,7 +13,7 @@ public class MapState {
     private State state;
 
     public MapState(Map map) {
-        state = new Waiting(map, new StateData(map));
+        state = new Waiting(map, new Markings(map));
     }
 
     public void select(Player player) {

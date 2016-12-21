@@ -1,90 +1,86 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Objects;
 import com.google.common.graph.Graph;
+import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Contains selected objects on the map and how to display map markers.
+ * Contains all the objects that requires markings.
  */
 // TODO: This class needs to be thoroughly tested
-class StateData {
+class Markings {
     private final Map map;
     /**
      * We will highlight all the danger areas of the selection enemies.
      */
-    private final Collection<Character> selectedEnemies;
+    private final Collection<Character> markedEnemies;
     /**
      * Can be null.
      */
-    private Character selectedPlayer;
+    private Player markedPlayer;
     private boolean showImmediateTargets;
 
-    StateData(Map map) {
+    Markings(Map map) {
         this.map = map;
-        selectedEnemies = new ArrayList<Character>();
+        markedEnemies = new ArrayList<Character>();
         showImmediateTargets = false;
     }
 
-    Character getSelectedPlayer() {
-        return selectedPlayer;
+    Collection<Character> getMarkedEnemies() {
+        return markedEnemies;
     }
 
-    void selectedPlayer(Character player) {
-        if (Objects.equal(selectedPlayer, player)) {
-            selectedPlayer = null;
-        } else {
-            selectedPlayer = player;
-        }
+    void markPlayer(Player player, boolean immediateTargets) {
+        markedPlayer = player;
+        showImmediateTargets = immediateTargets;
+        syncTerrainMarkers();
+    }
+
+    void unMarkPlayer() {
+        markedPlayer = null;
         showImmediateTargets = false;
         syncTerrainMarkers();
     }
 
-    void selectedEnemy(Character enemy) {
-        if (selectedEnemies.contains(enemy)) {
-            selectedEnemies.remove(enemy);
-        } else {
-            selectedEnemies.add(enemy);
-        }
+    void markEnemy(Enemy enemy) {
+        markedEnemies.add(enemy);
+        syncTerrainMarkers();
+    }
+
+    void unMarkEnemy(Enemy enemy) {
+        markedEnemies.remove(enemy);
         syncTerrainMarkers();
     }
 
     void removeEnemy(Character enemy) {
-        selectedEnemies.remove(enemy);
-        syncTerrainMarkers();
-    }
-
-    void showImmediateTargets() {
-        showImmediateTargets = true;
+        markedEnemies.remove(enemy);
         syncTerrainMarkers();
     }
 
     private void syncTerrainMarkers() {
         clearAllMarkers();
 
-        for (Character character : selectedEnemies) {
-            Collection<Terrain> dangerTerrains = map.getAllTargetTerrains(character);
+        for (Character enemy : markedEnemies) {
+            Collection<Terrain> dangerTerrains = map.getAllTargetTerrains(enemy);
             for (Terrain terrain : dangerTerrains) {
                 terrain.addMarker(Terrain.Marker.DANGER);
             }
         }
 
-        if (selectedPlayer != null) {
+        if (markedPlayer != null) {
             Collection<Terrain> targetTerrains;
             if (showImmediateTargets) {
                 targetTerrains =
-                        map.getTargetTerrains(selectedPlayer, map.getTerrain(selectedPlayer.getX(), selectedPlayer.getY()));
+                        map.getTargetTerrains(markedPlayer, map.getTerrain(markedPlayer.getX(), markedPlayer.getY()));
             } else {
-                Graph<Terrain> moveGraph = map.getMoveGraph(selectedPlayer);
+                Graph<Terrain> moveGraph = map.getMoveGraph(markedPlayer);
                 for (Terrain terrain : moveGraph.nodes()) {
                     terrain.addMarker(Terrain.Marker.MOVE);
                 }
-                targetTerrains = map.getAllTargetTerrains(selectedPlayer);
+                targetTerrains = map.getAllTargetTerrains(markedPlayer);
                 targetTerrains.removeAll(moveGraph.nodes());
             }
             for (Terrain terrain : targetTerrains) {
