@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.jingyuyao.tactical.model.state.MapState;
+
 import java.util.Observable;
 
 /**
@@ -29,7 +31,7 @@ public abstract class MapObject extends Observable implements HasCoordinate {
      *
      * I can't believe OOD actually taught me something useful.
      */
-    public abstract void select(Selector selector);
+    public abstract void select(MapState mapState);
 
     /**
      * Call <b>{@link #setChanged()} and {@link #notifyObservers()}</b> yourself!

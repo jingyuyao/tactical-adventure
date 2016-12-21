@@ -6,19 +6,19 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
-import com.jingyuyao.tactical.model.Selector;
+import com.jingyuyao.tactical.model.state.MapState;
 
 /**
  * Only dispatches clicked events if the click begins and ends over the actor.
  */
 public class MapActorController extends ClickListener {
     private final MapObject object;
-    private final Selector selector;
+    private final MapState mapState;
     private final Map map;
 
-    public MapActorController(MapObject object, Selector selector, Map map, float actorSize) {
+    public MapActorController(MapObject object, MapState mapState, Map map, float actorSize) {
         this.object = object;
-        this.selector = selector;
+        this.mapState = mapState;
         this.map = map;
         setTapSquareSize(actorSize / 2f);
     }
@@ -32,6 +32,6 @@ public class MapActorController extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log("MapActorController", object.toString());
-        object.select(selector);
+        object.select(mapState);
     }
 }

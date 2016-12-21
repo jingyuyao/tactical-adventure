@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.jingyuyao.tactical.model.state.MapState;
+
 /**
  * An enemy character
  */
@@ -9,7 +11,7 @@ public class Enemy extends Character {
     }
 
     @Override
-    public void select(Selector selector) {
-        selector.select(this);
+    public void select(MapState mapState) {
+        mapState.select(this);
     }
 }

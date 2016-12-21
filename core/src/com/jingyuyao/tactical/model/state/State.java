@@ -4,10 +4,10 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-public interface SelectionState {
-    SelectionState select(Player player);
+interface State {
+    State select(Player player);
 
-    SelectionState select(Enemy enemy);
+    State select(Enemy enemy);
 
-    SelectionState select(Terrain terrain);
+    State select(Terrain terrain);
 }

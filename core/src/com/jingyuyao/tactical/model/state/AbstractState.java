@@ -1,26 +1,25 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.Selections;
 
-abstract class AbstractState implements SelectionState {
+abstract class AbstractState implements State {
     private final Map map;
-    private final Selections selections;
+    private final StateData stateData;
 
     AbstractState(AbstractState prevState) {
-        this(prevState.getMap(), prevState.getSelections());
+        this(prevState.getMap(), prevState.getStateData());
     }
 
-    AbstractState(Map map, Selections selections) {
+    AbstractState(Map map, StateData stateData) {
         this.map = map;
-        this.selections = selections;
+        this.stateData = stateData;
     }
 
     Map getMap() {
         return map;
     }
 
-    Selections getSelections() {
-        return selections;
+    StateData getStateData() {
+        return stateData;
     }
 }

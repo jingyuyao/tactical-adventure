@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.controller.MapActorController;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.HashMap;
 
@@ -41,22 +42,22 @@ class MapActorFactory {
         typeColorMap.put(Enemy.class, Color.RED);
     }
 
-    MapActor create(Map map, Selector selector, Character character) {
+    MapActor create(Map map, MapState mapState, Character character) {
         return new CharacterActor(
                 character,
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
                 typeColorMap.get(character.getClass()),
-                new MapActorController(character, selector, map, ACTOR_SIZE)
+                new MapActorController(character, mapState, map, ACTOR_SIZE)
         );
     }
 
-    MapActor create(Map map, Selector selector, Terrain terrain) {
+    MapActor create(Map map, MapState mapState, Terrain terrain) {
         return new TerrainActor(
                 terrain,
                 ACTOR_SIZE,
                 markerSpriteMap,
-                new MapActorController(terrain, selector, map, ACTOR_SIZE)
+                new MapActorController(terrain, mapState, map, ACTOR_SIZE)
         );
     }
 }

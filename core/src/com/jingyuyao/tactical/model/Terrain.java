@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.jingyuyao.tactical.model.state.MapState;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,15 +16,15 @@ public class Terrain extends MapObject {
     }
 
     @Override
-    public void select(Selector selector) {
-        selector.select(this);
+    public void select(MapState mapState) {
+        mapState.select(this);
     }
 
     public Set<Marker> getMarkers() {
         return markers;
     }
 
-    int getMovementPenalty(Character character) {
+    public int getMovementPenalty(Character character) {
         if (!character.getCanCrossTerrainTypes().contains(type)) {
             return Algorithms.NO_EDGE;
         }
@@ -39,13 +41,13 @@ public class Terrain extends MapObject {
         }
     }
 
-    void addMarker(Marker marker) {
+    public void addMarker(Marker marker) {
         markers.add(marker);
         setChanged();
         notifyObservers();
     }
 
-    void clearMarkers() {
+    public void clearMarkers() {
         markers.clear();
         setChanged();
         notifyObservers();

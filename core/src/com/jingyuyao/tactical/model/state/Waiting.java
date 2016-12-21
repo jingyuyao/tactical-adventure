@@ -2,29 +2,29 @@ package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.*;
 
-public class Waiting extends AbstractState {
-    public Waiting(Map map, Selections selections) {
-        super(map, selections);
+class Waiting extends AbstractState {
+    Waiting(Map map, StateData stateData) {
+        super(map, stateData);
     }
 
     Waiting(AbstractState prevState) {
         super(prevState);
-        getSelections().selectedPlayer(null);
+        getStateData().selectedPlayer(null);
     }
 
     @Override
-    public SelectionState select(Player player) {
+    public State select(Player player) {
         return new Moving(this, player);
     }
 
     @Override
-    public SelectionState select(Enemy enemy) {
-        getSelections().selectedEnemy(enemy);
+    public State select(Enemy enemy) {
+        getStateData().selectedEnemy(enemy);
         return this;
     }
 
     @Override
-    public SelectionState select(Terrain terrain) {
+    public State select(Terrain terrain) {
         return this;
     }
 }
