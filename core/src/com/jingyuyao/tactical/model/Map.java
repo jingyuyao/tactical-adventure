@@ -37,7 +37,7 @@ public class Map extends Grid<Terrain> {
         return characters;
     }
 
-    void moveIfAble(Character character, Terrain terrain) {
+    public void moveIfAble(Character character, Terrain terrain) {
         Graph<Terrain> pathGraph = getMoveGraph(character);
         Collection<Terrain> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
         if (!pathToCoordinate.isEmpty()) {
@@ -45,13 +45,13 @@ public class Map extends Grid<Terrain> {
         }
     }
 
-    void kill(Character character) {
+    public void kill(Character character) {
         characters.remove(character);
         selections.removeEnemy(character);
         character.die();
     }
 
-    Collection<Terrain> getAllTargetTerrains(Character character) {
+    public Collection<Terrain> getAllTargetTerrains(Character character) {
         Graph<Terrain> moveTerrains = getMoveGraph(character);
         Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
 
@@ -62,7 +62,7 @@ public class Map extends Grid<Terrain> {
         return targetTerrains;
     }
 
-    Collection<Terrain> getTargetTerrains(Character character, Terrain source) {
+    public Collection<Terrain> getTargetTerrains(Character character, Terrain source) {
         Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
         for (Weapon weapon : character.getWeapons()) {
             for (int distance : weapon.getAttackDistances()) {
@@ -77,7 +77,7 @@ public class Map extends Grid<Terrain> {
     /**
      * Return whether {@code source} has anything it can target from its current position.
      */
-    boolean hasAnyTarget(Character source) {
+    public boolean hasAnyTarget(Character source) {
         Collection<Terrain> targetTerrains = getTargetTerrains(source, get(source.getX(), source.getY()));
         // TODO: grid for terrain and grid for characters?
         for (Terrain terrain : targetTerrains) {
@@ -92,7 +92,7 @@ public class Map extends Grid<Terrain> {
         return false;
     }
 
-    ValueGraph<Terrain, Integer> getMoveGraph(Character character) {
+    public ValueGraph<Terrain, Integer> getMoveGraph(Character character) {
         return Algorithms.minPathSearch(
                 this,
                 createMovementPenaltyGrid(character),

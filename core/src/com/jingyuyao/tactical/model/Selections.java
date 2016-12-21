@@ -10,7 +10,7 @@ import java.util.Collection;
  * Contains selected objects on the map and how to display map markers.
  */
 // TODO: This class needs to be thoroughly tested
-class Selections {
+public class Selections {
     private final Map map;
     /**
      * We will highlight all the danger areas of the selection enemies.
@@ -28,11 +28,11 @@ class Selections {
         showImmediateTargets = false;
     }
 
-    Character getSelectedPlayer() {
+    public Character getSelectedPlayer() {
         return selectedPlayer;
     }
 
-    void selectedPlayer(Character player) {
+    public void selectedPlayer(Character player) {
         if (Objects.equal(selectedPlayer, player)) {
             selectedPlayer = null;
         } else {
@@ -42,7 +42,7 @@ class Selections {
         syncTerrainMarkers();
     }
 
-    void selectedEnemy(Character enemy) {
+    public void selectedEnemy(Character enemy) {
         if (selectedEnemies.contains(enemy)) {
             selectedEnemies.remove(enemy);
         } else {
@@ -51,12 +51,12 @@ class Selections {
         syncTerrainMarkers();
     }
 
-    void removeEnemy(Character enemy) {
+    public void removeEnemy(Character enemy) {
         selectedEnemies.remove(enemy);
         syncTerrainMarkers();
     }
 
-    void showImmediateTargets() {
+    public void showImmediateTargets() {
         showImmediateTargets = true;
         syncTerrainMarkers();
     }
