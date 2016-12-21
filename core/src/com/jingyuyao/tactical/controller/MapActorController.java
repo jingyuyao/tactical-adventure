@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
 import com.jingyuyao.tactical.model.Selector;
 
@@ -14,19 +14,19 @@ import com.jingyuyao.tactical.model.Selector;
 public class MapActorController extends ClickListener {
     private final MapObject object;
     private final Selector selector;
-    private final Highlighter highlighter;
+    private final Map map;
 
-    public MapActorController(MapObject object, Selector selector, Highlighter highlighter, float actorSize) {
+    public MapActorController(MapObject object, Selector selector, Map map, float actorSize) {
         this.object = object;
         this.selector = selector;
-        this.highlighter = highlighter;
+        this.map = map;
         setTapSquareSize(actorSize / 2f);
     }
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         super.enter(event, x, y, pointer, fromActor);
-        highlighter.setHighlight(object);
+        map.setHighlight(object);
     }
 
     @Override

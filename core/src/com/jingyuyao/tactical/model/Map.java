@@ -6,28 +6,20 @@ import com.google.common.graph.ValueGraph;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observable;
 
-public class Map {
+public class Map extends Observable {
     private final int width;
     private final int height;
-    private final Highlighter highlighter;
     private final Collection<Character> characters;
     private final Grid<Terrain> terrains;
+    private MapObject highlight;
 
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
         terrains = new Grid<Terrain>(width, height);
         characters = new ArrayList<Character>();
-        highlighter = new Highlighter();
-    }
-
-    public Terrain getTerrain(int x, int y) {
-        return terrains.get(x, y);
-    }
-
-    public void setTerrain(int x, int y, Terrain terrain) {
-        terrains.set(x, y ,terrain);
     }
 
     public int getWidth() {
@@ -38,8 +30,12 @@ public class Map {
         return height;
     }
 
-    public Highlighter getHighlighter() {
-        return highlighter;
+    public Terrain getTerrain(int x, int y) {
+        return terrains.get(x, y);
+    }
+
+    public void setTerrain(int x, int y, Terrain terrain) {
+        terrains.set(x, y ,terrain);
     }
 
     public void addCharacter(Character character) {
@@ -48,6 +44,16 @@ public class Map {
 
     public Collection<Character> getCharacters() {
         return characters;
+    }
+
+    public MapObject getHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(MapObject highlight) {
+        this.highlight = highlight;
+        setChanged();
+        notifyObservers();
     }
 
     public void moveIfAble(Character character, Terrain terrain) {

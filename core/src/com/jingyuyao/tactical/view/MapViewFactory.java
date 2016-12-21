@@ -57,6 +57,6 @@ public class MapViewFactory {
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(stage, mapRenderer, actorMap, map.getHighlighter(), highlightSprite);
+        return new MapView(map, stage, mapRenderer, actorMap, highlightSprite);
     }
 }
