@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
@@ -44,6 +45,11 @@ public abstract class Character extends MapObject {
 
     public boolean isDead() {
         return dead;
+    }
+
+    boolean canTarget(Character other) {
+        // TODO: make me more specific later
+        return !Objects.equal(getClass(), other.getClass());
     }
 
     Set<Terrain.Type> getCanCrossTerrainTypes() {
