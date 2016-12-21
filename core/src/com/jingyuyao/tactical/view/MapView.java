@@ -30,8 +30,13 @@ public class MapView implements Observer {
      * @param actorMap Contains all the game object to actor mapping
      * @param highlightSprite The sprite drawn for highlights
      */
-    MapView(Map map, Stage stage, OrthogonalTiledMapRenderer mapRenderer, java.util.Map<MapObject, MapActor> actorMap,
-            Sprite highlightSprite) {
+    MapView(
+            Map map,
+            Stage stage,
+            OrthogonalTiledMapRenderer mapRenderer,
+            java.util.Map<MapObject, MapActor> actorMap,
+            Sprite highlightSprite
+    ) {
         this.stage = stage;
         this.mapRenderer = mapRenderer;
         this.actorMap = actorMap;

@@ -16,7 +16,7 @@ public class MapActorController extends ClickListener {
     private final MapState mapState;
     private final Map map;
 
-    public MapActorController(MapObject object, MapState mapState, Map map, float actorSize) {
+    public MapActorController(Map map, MapState mapState, MapObject object, float actorSize) {
         this.object = object;
         this.mapState = mapState;
         this.map = map;
