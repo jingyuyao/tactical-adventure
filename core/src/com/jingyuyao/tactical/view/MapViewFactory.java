@@ -42,7 +42,7 @@ public class MapViewFactory {
 
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                Terrain terrain = map.get(x, y);
+                Terrain terrain = map.getTerrain(x, y);
                 MapActor actor = mapActorFactory.create(map, selector, terrain);
                 stage.addActor(actor);
                 actorMap.put(terrain, actor);

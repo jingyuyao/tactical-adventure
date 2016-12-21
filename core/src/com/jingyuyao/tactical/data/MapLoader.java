@@ -29,7 +29,7 @@ public class MapLoader {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
                 Terrain terrain = createTerrain(x, y, cell);
-                map.set(x, y, terrain);
+                map.setTerrain(x, y, terrain);
             }
         }
 
