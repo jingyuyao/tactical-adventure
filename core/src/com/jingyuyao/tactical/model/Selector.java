@@ -10,8 +10,8 @@ import com.jingyuyao.tactical.model.state.Waiting;
 public class Selector {
     private SelectionState selectionState;
 
-    Selector(Map map, Selections selections) {
-        selectionState = new Waiting(map, selections);
+    public Selector(Map map) {
+        selectionState = new Waiting(map, new Selections(map));
     }
 
     void select(Player player) {

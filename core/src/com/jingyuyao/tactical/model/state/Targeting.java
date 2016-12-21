@@ -17,6 +17,7 @@ public class Targeting extends AbstractState {
 
     @Override
     public SelectionState select(Enemy enemy) {
+        getSelections().removeEnemy(enemy);
         getMap().kill(enemy);
         return new Waiting(this);
     }

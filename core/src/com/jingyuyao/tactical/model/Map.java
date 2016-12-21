@@ -8,21 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Map extends Grid<Terrain> {
-    private final Selector selector;
     private final Highlighter highlighter;
-    private final Selections selections;
     private final Collection<Character> characters;
 
     public Map(int width, int height) {
         super(width, height);
         characters = new ArrayList<Character>();
         highlighter = new Highlighter();
-        selections = new Selections(this);
-        selector = new Selector(this, selections);
-    }
-
-    public Selector getSelector() {
-        return selector;
     }
 
     public Highlighter getHighlighter() {
@@ -47,7 +39,6 @@ public class Map extends Grid<Terrain> {
 
     public void kill(Character character) {
         characters.remove(character);
-        selections.removeEnemy(character);
         character.die();
     }
 

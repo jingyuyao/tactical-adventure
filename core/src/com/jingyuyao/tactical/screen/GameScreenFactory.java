@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.Selector;
 import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.MapViewFactory;
 
@@ -23,7 +24,8 @@ public class GameScreenFactory {
     public GameScreen create(String mapName) {
         TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
         Map map = MapLoader.create(tiledMap);
-        MapView mapView = mapViewFactory.create(tiledMap, map);
+        Selector selector = new Selector(map);
+        MapView mapView = mapViewFactory.create(tiledMap, map, selector);
         MapController mapController = new MapController(mapView.getStage(), map.getWidth(), map.getHeight());
         return new GameScreen(game, mapView, mapController);
     }
