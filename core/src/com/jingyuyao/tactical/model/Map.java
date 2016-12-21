@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Optional;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
@@ -68,6 +69,15 @@ public class Map extends Observable {
         character.die();
     }
 
+    public ValueGraph<Terrain, Integer> getMoveGraph(Character character) {
+        return Algorithms.minPathSearch(
+                terrains,
+                createMovementPenaltyGrid(character),
+                character.getX(),
+                character.getY(),
+                character.getMovementDistance());
+    }
+
     public Collection<Terrain> getAllTargetTerrains(Character character) {
         Graph<Terrain> moveTerrains = getMoveGraph(character);
         Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
@@ -82,11 +92,17 @@ public class Map extends Observable {
     public Collection<Terrain> getTargetTerrains(Character character, Terrain source) {
         Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
         for (Weapon weapon : character.getWeapons()) {
-            for (int distance : weapon.getAttackDistances()) {
-                targetTerrains.addAll(
-                        Algorithms.findNDistanceAway(terrains, source.getX(), source.getY(), distance)
-                );
-            }
+            targetTerrains.addAll(getTargetsForWeapon(weapon, source));
+        }
+        return targetTerrains;
+    }
+
+    public Collection<Terrain> getTargetsForWeapon(Weapon weapon, Terrain source) {
+        Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
+        for (int distance : weapon.getAttackDistances()) {
+            targetTerrains.addAll(
+                    Algorithms.findNDistanceAway(terrains, source.getX(), source.getY(), distance)
+            );
         }
         return targetTerrains;
     }
@@ -106,13 +122,33 @@ public class Map extends Observable {
         return false;
     }
 
-    public ValueGraph<Terrain, Integer> getMoveGraph(Character character) {
-        return Algorithms.minPathSearch(
-                terrains,
-                createMovementPenaltyGrid(character),
-                character.getX(),
-                character.getY(),
-                character.getMovementDistance());
+    /**
+     * Get the best terrain to move to for hitting {@code target}. Best terrain is defined as the
+     * terrain that can be hit with the most weapons.
+     */
+    public Optional<Terrain> getMoveTerrainForTarget(Character character, Terrain target) {
+        Graph<Terrain> moveGraph = getMoveGraph(character);
+        Terrain currentBestTerrain = null;
+        Collection<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
+        for (Terrain source : moveGraph.nodes()) {
+            Collection<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
+            if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
+                currentMaxWeapons = weaponsForThisTerrain;
+                currentBestTerrain = source;
+            }
+        }
+        return Optional.fromNullable(currentBestTerrain);
+    }
+
+    public Collection<Weapon> getWeaponsForTarget(Character character, Terrain source, Terrain target) {
+        Collection<Weapon> weaponsForThisTerrain = new ArrayList<Weapon>();
+        for (Weapon weapon : character.getWeapons()) {
+            Collection<Terrain> targetTerrains = getTargetsForWeapon(weapon, source);
+            if (targetTerrains.contains(target)) {
+                weaponsForThisTerrain.add(weapon);
+            }
+        }
+        return weaponsForThisTerrain;
     }
 
     private Grid<Integer> createMovementPenaltyGrid(Character character) {

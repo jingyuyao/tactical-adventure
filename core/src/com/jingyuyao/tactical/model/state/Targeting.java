@@ -4,10 +4,15 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
+import java.util.Collection;
+
 class Targeting extends AbstractState {
-    Targeting(AbstractState prevState, Player player) {
+    private final Player targetingPlayer;
+
+    Targeting(AbstractState prevState, Player targetingPlayer) {
         super(prevState);
-        getMarkings().markPlayer(player, true);
+        this.targetingPlayer = targetingPlayer;
+        getMarkings().markPlayer(targetingPlayer, true);
     }
 
     @Override
@@ -17,8 +22,14 @@ class Targeting extends AbstractState {
 
     @Override
     public State select(Enemy enemy) {
-        getMarkings().removeEnemy(enemy);
-        getMap().kill(enemy);
+        Terrain source = getMap().getTerrain(targetingPlayer.getX(), targetingPlayer.getY());
+        Collection<Terrain> targetTerrains = getMap().getTargetTerrains(targetingPlayer, source);
+        Terrain target = getMap().getTerrain(enemy.getX(), enemy.getY());
+        if (targetTerrains.contains(target)) {
+            // TODO: enter battle prep
+            getMarkings().removeEnemy(enemy);
+            getMap().kill(enemy);
+        }
         return new Waiting(this);
     }
 
