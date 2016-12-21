@@ -69,53 +69,36 @@ public class Map extends Observable {
                 character.getMovementDistance());
     }
 
-    public Collection<Terrain> getAllTargetTerrains(Character character) {
+    public Collection<Coordinate> getAllTargets(Character character) {
         Graph<Terrain> moveTerrains = getMoveGraph(character);
-        Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
-
+        Collection<Coordinate> targets = new ArrayList<Coordinate>();
         for (Terrain terrain : moveTerrains.nodes()) {
-            targetTerrains.addAll(getTargetTerrains(character, terrain));
+            targets.addAll(getTargets(character, terrain));
         }
-
-        return targetTerrains;
+        return targets;
     }
 
-    public Collection<Terrain> getTargetTerrains(Character character, Terrain source) {
-        Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
+    public Collection<Coordinate> getTargets(Character character, Coordinate source) {
+        Collection<Coordinate> targets = new ArrayList<Coordinate>();
         for (Weapon weapon : character.getWeapons()) {
-            targetTerrains.addAll(getTargetsForWeapon(weapon, source));
+            targets.addAll(getTargetsForWeapon(weapon, source));
         }
-        return targetTerrains;
+        return targets;
     }
 
-    public Collection<Terrain> getTargetsForWeapon(Weapon weapon, Terrain source) {
-        Collection<Terrain> targetTerrains = new ArrayList<Terrain>();
+    public Collection<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate source) {
+        Collection<Coordinate> targets = new ArrayList<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
-            targetTerrains.addAll(Algorithms.findNDistanceAway(terrains, source, distance));
+            targets.addAll(Algorithms.findNDistanceAway(terrains, source, distance));
         }
-        return targetTerrains;
-    }
-
-    /**
-     * Return whether {@code source} has anything it can target from its current position.
-     */
-    public boolean hasAnyTarget(Character source) {
-        Collection<Terrain> targetTerrains = getTargetTerrains(source, terrains.get(source));
-        for (Terrain terrain : targetTerrains) {
-            for (Character c : characters) {
-                if (c.getX() == terrain.getX() && c.getY() == terrain.getY() && source.canTarget(c)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return targets;
     }
 
     /**
      * Get the best terrain to move to for hitting {@code target}. Best terrain is defined as the
      * terrain that can be hit with the most weapons.
      */
-    public Optional<Terrain> getMoveTerrainForTarget(Character character, Terrain target) {
+    public Optional<Terrain> getMoveTerrainForTarget(Character character, Coordinate target) {
         Graph<Terrain> moveGraph = getMoveGraph(character);
         Terrain currentBestTerrain = null;
         Collection<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
@@ -129,15 +112,29 @@ public class Map extends Observable {
         return Optional.fromNullable(currentBestTerrain);
     }
 
-    public Collection<Weapon> getWeaponsForTarget(Character character, Terrain source, Terrain target) {
-        Collection<Weapon> weaponsForThisTerrain = new ArrayList<Weapon>();
+    public Collection<Weapon> getWeaponsForTarget(Character character, Coordinate source, Coordinate target) {
+        Collection<Weapon> weaponsForThisTarget = new ArrayList<Weapon>();
         for (Weapon weapon : character.getWeapons()) {
-            Collection<Terrain> targetTerrains = getTargetsForWeapon(weapon, source);
-            if (targetTerrains.contains(target)) {
-                weaponsForThisTerrain.add(weapon);
+            if (target.containedIn(getTargetsForWeapon(weapon, source))) {
+                weaponsForThisTarget.add(weapon);
             }
         }
-        return weaponsForThisTerrain;
+        return weaponsForThisTarget;
+    }
+
+    /**
+     * Return whether {@code source} has anything it can target from its current position.
+     */
+    public boolean hasAnyTarget(Character source) {
+        Collection<Coordinate> targets = getTargets(source, terrains.get(source));
+        for (Coordinate target : targets) {
+            for (Character c : characters) {
+                if (target.sameCoordinateAs(c) && source.canTarget(c)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private Grid<Integer> createMovementPenaltyGrid(Character character) {

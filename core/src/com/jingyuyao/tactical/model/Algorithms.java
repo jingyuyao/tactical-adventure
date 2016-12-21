@@ -18,11 +18,11 @@ class Algorithms {
      * @param edgeCostGrid The grid to get edge cost for creating the graph
      * @param maxPathCost Maximum cost for the path between initial location to any other object
      */
-    static <O extends HasCoordinate>
+    static <O extends Coordinate>
     ValueGraph<O, Integer> minPathSearch(
             Grid<O> dataGrid,
             Grid<Integer> edgeCostGrid,
-            HasCoordinate startingCoordinate,
+            Coordinate startingCoordinate,
             int maxPathCost
     ) {
         MutableValueGraph<O, Integer> graph =
@@ -115,9 +115,9 @@ class Algorithms {
     /**
      * Find all the objects on the grid that is {@code distance} away from the starting point.
      */
-    static <O extends HasCoordinate> Collection<O> findNDistanceAway(
+    static <O extends Coordinate> Collection<O> findNDistanceAway(
             Grid<O> grid,
-            HasCoordinate startingCoordinate,
+            Coordinate startingCoordinate,
             int distance
     ) {
         Collection<O> nDistanceAway = new ArrayList<O>();
@@ -125,9 +125,9 @@ class Algorithms {
         return  nDistanceAway;
     }
 
-    private static <O extends HasCoordinate> void findNDistanceAway(
+    private static <O extends Coordinate> void findNDistanceAway(
         Grid<O> grid,
-        HasCoordinate currentCoordinate,
+        Coordinate currentCoordinate,
         int distanceRemaining,
         Collection<O> accumulator
     ) {

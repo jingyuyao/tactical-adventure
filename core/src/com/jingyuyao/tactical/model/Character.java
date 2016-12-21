@@ -62,10 +62,8 @@ public abstract class Character extends MapObject {
 
     void moveTo(int x, int y, Collection<Terrain> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
-        setPosition(x, y);
         lastPath = pathToCoordinate;
-        setChanged();
-        notifyObservers();
+        setPosition(x, y);
     }
 
     void die() {

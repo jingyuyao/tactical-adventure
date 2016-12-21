@@ -48,7 +48,7 @@ public class Grid<T> {
     /**
      * <see>{@link #get(int, int)}</see>
      */
-    public T get(HasCoordinate coordinate) {
+    public T get(Coordinate coordinate) {
         return get(coordinate.getX(), coordinate.getY());
     }
 
@@ -59,7 +59,7 @@ public class Grid<T> {
     /**
      * <see>{@link #set(int, int, Object)}</see>
      */
-    public void set(HasCoordinate coordinate, T data) {
+    public void set(Coordinate coordinate, T data) {
         set(coordinate.getX(), coordinate.getY(), data);
     }
 
@@ -92,7 +92,7 @@ public class Grid<T> {
     /**
      * <see>{@link #getNeighbors(int, int)}</see>
      */
-    public List<T> getNeighbors(HasCoordinate coordinate) {
+    public List<T> getNeighbors(Coordinate coordinate) {
         return getNeighbors(coordinate.getX(), coordinate.getY());
     }
 }

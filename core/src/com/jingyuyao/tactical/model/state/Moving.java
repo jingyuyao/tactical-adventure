@@ -6,8 +6,6 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-import java.util.Collection;
-
 class Moving extends AbstractState {
     private final Player movingPlayer;
 
@@ -28,11 +26,9 @@ class Moving extends AbstractState {
 
     @Override
     public State select(Enemy enemy) {
-        Collection<Terrain> targetTerrains = getMap().getAllTargetTerrains(movingPlayer);
-        Terrain enemyTerrain = getMap().terrains().get(enemy);
-        if (targetTerrains.contains(enemyTerrain)) {
+        if (enemy.containedIn(getMap().getAllTargets(movingPlayer))) {
             // TODO: enter battle prep
-            Optional<Terrain> moveTarget = getMap().getMoveTerrainForTarget(movingPlayer, enemyTerrain);
+            Optional<Terrain> moveTarget = getMap().getMoveTerrainForTarget(movingPlayer, enemy);
             if (moveTarget.isPresent()) {
                 getMap().moveIfAble(movingPlayer, moveTarget.get());
                 getMarkings().removeEnemy(enemy);

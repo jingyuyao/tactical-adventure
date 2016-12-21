@@ -64,27 +64,26 @@ class Markings {
         clearAllMarkers();
 
         for (Character enemy : markedEnemies) {
-            Collection<Terrain> dangerTerrains = map.getAllTargetTerrains(enemy);
-            for (Terrain terrain : dangerTerrains) {
-                terrain.addMarker(Terrain.Marker.DANGER);
+            Collection<Coordinate> dangerTargets = map.getAllTargets(enemy);
+            for (Coordinate target : dangerTargets) {
+                map.terrains().get(target).addMarker(Terrain.Marker.DANGER);
             }
         }
 
         if (markedPlayer != null) {
-            Collection<Terrain> targetTerrains;
+            Collection<Coordinate> targets;
             if (showImmediateTargets) {
-                targetTerrains =
-                        map.getTargetTerrains(markedPlayer, map.terrains().get(markedPlayer));
+                targets = map.getTargets(markedPlayer, map.terrains().get(markedPlayer));
             } else {
                 Graph<Terrain> moveGraph = map.getMoveGraph(markedPlayer);
                 for (Terrain terrain : moveGraph.nodes()) {
                     terrain.addMarker(Terrain.Marker.MOVE);
                 }
-                targetTerrains = map.getAllTargetTerrains(markedPlayer);
-                targetTerrains.removeAll(moveGraph.nodes());
+                targets = map.getAllTargets(markedPlayer);
+                targets.removeAll(moveGraph.nodes());
             }
-            for (Terrain terrain : targetTerrains) {
-                terrain.addMarker(Terrain.Marker.ATTACK);
+            for (Coordinate target : targets) {
+                map.terrains().get(target).addMarker(Terrain.Marker.ATTACK);
             }
         }
     }
