@@ -29,7 +29,7 @@ class Targeting extends AbstractState {
 
     @Override
     public void select(Player player) {
-        goToPrevState();
+        hardCancel();
     }
 
     @Override
@@ -38,17 +38,19 @@ class Targeting extends AbstractState {
             // TODO: enter battle prep
             getMarkings().removeEnemy(enemy);
             getMap().kill(enemy);
+            finish(currentPlayer);
+        } else {
+            hardCancel();
         }
-        goTo(new Waiting(this));
     }
 
     @Override
     public void select(Terrain terrain) {
-        goToPrevState();
+        hardCancel();
     }
 
     @Override
     ImmutableCollection<Action> getActions() {
-        return ImmutableList.<Action>of(new Cancel(this), new Finish(this, currentPlayer));
+        return ImmutableList.<Action>of(new Back(this), new Finish(this, currentPlayer));
     }
 }

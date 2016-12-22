@@ -55,9 +55,28 @@ abstract class AbstractState {
         mapState.changeStateTo(newState);
     }
 
-    void goToPrevState() {
+    /**
+     * Cancel then go to previous state.
+     */
+    void back() {
         canceled();
         goTo(prevState);
+    }
+
+    /**
+     * Cancel then go to a new waiting state.
+     */
+    void hardCancel() {
+        canceled();
+        goTo(new Waiting(this));
+    }
+
+    /**
+     * Finished acting on {@code player} and then go to a new waiting state.
+     */
+    void finish(Player player) {
+        getTurn().acted(player);
+        goTo(new Waiting(this));
     }
 
     /**

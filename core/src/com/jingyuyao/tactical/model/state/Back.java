@@ -1,17 +1,17 @@
 package com.jingyuyao.tactical.model.state;
 
-public class Cancel extends AbstractAction {
-    Cancel(AbstractState state) {
+public class Back extends AbstractAction {
+    Back(AbstractState state) {
         super(state);
     }
 
     @Override
     public String getName() {
-        return "Cancel";
+        return "Back";
     }
 
     @Override
     public void run() {
-        getState().goToPrevState();
+        getState().back();
     }
 }

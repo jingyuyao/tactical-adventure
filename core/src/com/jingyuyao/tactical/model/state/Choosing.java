@@ -38,36 +38,26 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Player player) {
-        goToPrevState();
+        hardCancel();
     }
 
     @Override
     void select(Enemy enemy) {
-        goToPrevState();
+        hardCancel();
     }
 
     @Override
     void select(Terrain terrain) {
-        goToPrevState();
+        hardCancel();
     }
 
     @Override
     ImmutableCollection<Action> getActions() {
         ImmutableList.Builder<Action> builder = ImmutableList.builder();
         if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            builder.add(new Action() {
-                @Override
-                public String getName() {
-                    return "Attack";
-                }
-
-                @Override
-                public void run() {
-                    goTo(new Targeting(Choosing.this, currentPlayer));
-                }
-            });
+            builder.add(new Attack(this, currentPlayer));
         }
-        builder.add(new Cancel(this));
+        builder.add(new Back(this));
         builder.add(new Finish(this, currentPlayer));
         // TODO: add use items action
         return builder.build();

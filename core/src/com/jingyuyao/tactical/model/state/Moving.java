@@ -35,7 +35,7 @@ class Moving extends AbstractState {
         if (Objects.equal(currentPlayer, player)) {
             goTo(new Choosing(this, currentPlayer));
         } else {
-            goTo(new Waiting(this));
+            hardCancel();
         }
     }
 
@@ -48,10 +48,12 @@ class Moving extends AbstractState {
                 // TODO: enter battle prep
                 getMarkings().removeEnemy(enemy);
                 getMap().kill(enemy);
+                finish(currentPlayer);
+            } else {
+                hardCancel();
             }
-            goTo(new Waiting(this));
         } else {
-            goTo(new Waiting(this));
+            hardCancel();
         }
     }
 
@@ -62,12 +64,12 @@ class Moving extends AbstractState {
         if (moved) {
             goTo(new Choosing(this, currentPlayer));
         } else {
-            goToPrevState();
+            hardCancel();
         }
     }
 
     @Override
     ImmutableCollection<Action> getActions() {
-        return ImmutableList.<Action>of(new Cancel(this));
+        return ImmutableList.<Action>of(new Back(this));
     }
 }
