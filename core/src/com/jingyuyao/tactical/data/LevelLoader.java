@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -12,7 +13,7 @@ public class LevelLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
-    public static Level createLevel(TiledMap tiledMap) {
+    public static Level loadLevel(TiledMap tiledMap) {
         Map map = createMap(tiledMap);
         MapState mapState = new MapState(map);
         Turn turn = new Turn();
