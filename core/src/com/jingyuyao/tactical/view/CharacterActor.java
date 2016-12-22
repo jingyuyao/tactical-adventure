@@ -14,13 +14,13 @@ import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class CharacterActor extends MapActor<Character> {
+public class CharacterActor<T extends Character> extends MapActor<T> {
     private static final float TIME_PER_UNIT = 0.1f; // time to move across one world unit in seconds
 
     private final Sprite sprite;
 
     CharacterActor(
-            Character object,
+            T object,
             float size,
             Sprite sprite,
             Color tint,

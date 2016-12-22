@@ -1,12 +1,10 @@
 package com.jingyuyao.tactical.view;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.*;
-import com.jingyuyao.tactical.model.Character;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -17,8 +15,6 @@ import java.util.Observer;
  */
 public class MapView {
     private final Stage world;
-    private final java.util.Map<Character, CharacterActor> characterActorMap;
-    private final java.util.Map<Terrain, TerrainActor> terrainActorMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final Sprite highlightSprite;
 
@@ -32,22 +28,16 @@ public class MapView {
      */
     MapView(
             Map map,
-            Turn turn,
             Stage world,
             OrthogonalTiledMapRenderer mapRenderer,
-            java.util.Map<Character, CharacterActor> characterActorMap,
-            java.util.Map<Terrain, TerrainActor> terrainActorMap,
             Sprite highlightSprite
     ) {
         this.world = world;
         this.mapRenderer = mapRenderer;
-        this.characterActorMap = characterActorMap;
-        this.terrainActorMap = terrainActorMap;
         this.highlightSprite = highlightSprite;
         highlightSprite.setBounds(0, 0, ActorFactory.ACTOR_SIZE, ActorFactory.ACTOR_SIZE);
 
         map.addObserver(this.new MapObserver(map));
-        turn.addObserver(this.new TurnObserver(map, turn));
     }
 
     public Stage getWorld() {
@@ -93,30 +83,6 @@ public class MapView {
                     highlighted.getCoordinate().getX(),
                     highlighted.getCoordinate().getY()
             );
-        }
-    }
-
-    private class TurnObserver implements Observer {
-        private final Map map;
-        private final Turn turn;
-
-        private TurnObserver(Map map, Turn turn) {
-            this.map = map;
-            this.turn = turn;
-        }
-
-        @Override
-        public void update(Observable observable, Object o) {
-            for (Player player : map.getPlayers()) {
-                CharacterActor actor = characterActorMap.get(player);
-                // TODO: Let actor update its color? then we need to give character its turn info
-                // but then we would be violating the single source of truth... hum...
-                if (!turn.canAct(player)) {
-                    actor.getSprite().setColor(Color.GRAY);
-                } else {
-                    actor.getSprite().setColor(Color.WHITE);
-                }
-            }
         }
     }
 }

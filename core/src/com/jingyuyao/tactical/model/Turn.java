@@ -2,9 +2,8 @@ package com.jingyuyao.tactical.model;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Observable;
 
-public class Turn extends Observable {
+public class Turn {
     private final Map map;
     private final Collection<Player> actionablePlayers;
     private int turnCount = 0;
@@ -23,9 +22,10 @@ public class Turn extends Observable {
         // TODO: this should somehow alert MapView/UI
         turnCount++;
         actionablePlayers.clear();
-        actionablePlayers.addAll(map.getPlayers());
-        setChanged();
-        notifyObservers();
+        for (Player player : map.getPlayers()) {
+            player.setActionable(true);
+            actionablePlayers.add(player);
+        }
     }
 
     public boolean canAct(Player player) {
@@ -34,7 +34,6 @@ public class Turn extends Observable {
 
     public void acted(Player player) {
         actionablePlayers.remove(player);
-        setChanged();
-        notifyObservers();
+        player.setActionable(false);
     }
 }

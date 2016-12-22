@@ -4,9 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.controller.MapActorController;
-import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.state.MapState;
 
@@ -42,17 +42,27 @@ class ActorFactory {
         typeColorMap.put(Enemy.class, Color.RED);
     }
 
-    CharacterActor create(Map map, MapState mapState, Character character) {
-        return new CharacterActor(
-                character,
+    Actor create(Map map, MapState mapState, Player player) {
+        return new PlayerActor(
+                player,
                 ACTOR_SIZE,
-                new Sprite(assetManager.get("sprites/" + character.getName() + ".png", Texture.class)),
-                typeColorMap.get(character.getClass()),
-                new MapActorController(map, mapState, character, ACTOR_SIZE)
+                new Sprite(assetManager.get("sprites/" + player.getName() + ".png", Texture.class)),
+                typeColorMap.get(player.getClass()),
+                new MapActorController(map, mapState, player, ACTOR_SIZE)
         );
     }
 
-    TerrainActor create(Map map, MapState mapState, Terrain terrain) {
+    Actor create(Map map, MapState mapState, Enemy enemy) {
+        return new CharacterActor<Enemy>(
+                enemy,
+                ACTOR_SIZE,
+                new Sprite(assetManager.get("sprites/" + enemy.getName() + ".png", Texture.class)),
+                typeColorMap.get(enemy.getClass()),
+                new MapActorController(map, mapState, enemy, ACTOR_SIZE)
+        );
+    }
+
+    Actor create(Map map, MapState mapState, Terrain terrain) {
         return new TerrainActor(
                 terrain,
                 ACTOR_SIZE,
