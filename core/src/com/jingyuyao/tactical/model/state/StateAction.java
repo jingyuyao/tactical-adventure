@@ -1,7 +1,17 @@
 package com.jingyuyao.tactical.model.state;
 
-public interface StateAction {
-    String getName();
+public abstract class StateAction {
+    private final State state;
 
-    void run();
+    StateAction(State state) {
+        this.state = state;
+    }
+
+    public abstract String getName();
+
+    public abstract void run();
+
+    public State getState() {
+        return state;
+    }
 }

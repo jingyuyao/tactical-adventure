@@ -11,7 +11,7 @@ class Targeting extends State {
         super(prevState);
         this.targetingPlayer = targetingPlayer;
         getMarkings().markPlayer(targetingPlayer, true);
-        getStateActions().add(this.new WaitAction());
+        getStateActions().add(new FinishAction(this));
     }
 
     @Override
@@ -32,17 +32,5 @@ class Targeting extends State {
     @Override
     public State select(Terrain terrain) {
         return new Waiting(this);
-    }
-
-    private class WaitAction implements StateAction {
-        @Override
-        public String getName() {
-            return "Wait";
-        }
-
-        @Override
-        public void run() {
-            transitionTo(new Waiting(Targeting.this));
-        }
     }
 }
