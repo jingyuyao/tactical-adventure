@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.MapObject;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Turn;
+import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.Character;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -19,7 +17,8 @@ import java.util.Observer;
  */
 public class MapView {
     private final Stage world;
-    private final java.util.Map<MapObject, MapActor> actorMap;
+    private final java.util.Map<Character, CharacterActor> characterActorMap;
+    private final java.util.Map<Terrain, TerrainActor> terrainActorMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final Sprite highlightSprite;
 
@@ -29,7 +28,6 @@ public class MapView {
      * @param map Highlighter used to draw the highlight
      * @param world Should already be set up with all the {@link MapActor}
      * @param mapRenderer The tiled map renderer
-     * @param actorMap Contains all the game object to actor mapping
      * @param highlightSprite The sprite drawn for highlights
      */
     MapView(
@@ -37,14 +35,16 @@ public class MapView {
             Turn turn,
             Stage world,
             OrthogonalTiledMapRenderer mapRenderer,
-            java.util.Map<MapObject, MapActor> actorMap,
+            java.util.Map<Character, CharacterActor> characterActorMap,
+            java.util.Map<Terrain, TerrainActor> terrainActorMap,
             Sprite highlightSprite
     ) {
         this.world = world;
         this.mapRenderer = mapRenderer;
-        this.actorMap = actorMap;
+        this.characterActorMap = characterActorMap;
+        this.terrainActorMap = terrainActorMap;
         this.highlightSprite = highlightSprite;
-        highlightSprite.setSize(0, 0);
+        highlightSprite.setBounds(0, 0, ActorFactory.ACTOR_SIZE, ActorFactory.ACTOR_SIZE);
 
         map.addObserver(this.new MapObserver(map));
         turn.addObserver(this.new TurnObserver(map, turn));
@@ -88,12 +88,10 @@ public class MapView {
             if (highlighted == null) {
                 return;
             }
-            MapActor highlightedActor = actorMap.get(highlighted);
-            highlightSprite.setBounds(
-                    highlightedActor.getX(),
-                    highlightedActor.getY(),
-                    highlightedActor.getWidth(),
-                    highlightedActor.getHeight()
+
+            highlightSprite.setPosition(
+                    highlighted.getCoordinate().getX(),
+                    highlighted.getCoordinate().getY()
             );
         }
     }
@@ -110,7 +108,7 @@ public class MapView {
         @Override
         public void update(Observable observable, Object o) {
             for (Player player : map.getPlayers()) {
-                CharacterActor actor = (CharacterActor) actorMap.get(player);
+                CharacterActor actor = characterActorMap.get(player);
                 // TODO: Let actor update its color? then we need to give character its turn info
                 // but then we would be violating the single source of truth... hum...
                 if (!turn.canAct(player)) {

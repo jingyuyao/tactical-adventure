@@ -15,14 +15,14 @@ import java.util.HashMap;
 /**
  * Creates {@link MapActor} from models and adds the proper controllers.
  */
-class MapActorFactory {
-    private static final float ACTOR_SIZE = 1f; // world units
+class ActorFactory {
+    static final float ACTOR_SIZE = 1f; // world units
 
     private final AssetManager assetManager;
     private final java.util.Map<Terrain.Marker, Sprite> markerSpriteMap;
     private final java.util.Map<Class, Color> typeColorMap;
 
-    MapActorFactory(AssetManager assetManager) {
+    ActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
         markerSpriteMap = new HashMap<Terrain.Marker, Sprite>();
         markerSpriteMap.put(
@@ -42,7 +42,7 @@ class MapActorFactory {
         typeColorMap.put(Enemy.class, Color.RED);
     }
 
-    MapActor create(Map map, MapState mapState, Character character) {
+    CharacterActor create(Map map, MapState mapState, Character character) {
         return new CharacterActor(
                 character,
                 ACTOR_SIZE,
@@ -52,7 +52,7 @@ class MapActorFactory {
         );
     }
 
-    MapActor create(Map map, MapState mapState, Terrain terrain) {
+    TerrainActor create(Map map, MapState mapState, Terrain terrain) {
         return new TerrainActor(
                 terrain,
                 ACTOR_SIZE,

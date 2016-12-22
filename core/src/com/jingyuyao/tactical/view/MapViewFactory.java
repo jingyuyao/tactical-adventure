@@ -24,11 +24,11 @@ class MapViewFactory {
     private static final int VIEWPORT_WIDTH = 15; // # tiles
     private static final int VIEWPORT_HEIGHT = 10; // # tiles
 
-    private final MapActorFactory mapActorFactory;
+    private final ActorFactory actorFactory;
     private final Sprite highlightSprite;
 
     MapViewFactory(AssetManager assetManager) {
-        mapActorFactory = new MapActorFactory(assetManager);
+        actorFactory = new ActorFactory(assetManager);
         highlightSprite = new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class));
     }
 
@@ -39,25 +39,26 @@ class MapViewFactory {
         OrthographicCamera camera = new OrthographicCamera();
         FitViewport viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
         Stage world = new Stage(viewport);
-        java.util.Map<MapObject, MapActor> actorMap = new HashMap<MapObject, MapActor>();
+        java.util.Map<Character, CharacterActor> characterActorMap = new HashMap<Character, CharacterActor>();
+        java.util.Map<Terrain, TerrainActor> terrainActorMap = new HashMap<Terrain, TerrainActor>();
 
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Terrain terrain = map.getTerrains().get(x, y);
-                MapActor actor = mapActorFactory.create(map, mapState, terrain);
-                world.addActor(actor);
-                actorMap.put(terrain, actor);
+                TerrainActor terrainActor = actorFactory.create(map, mapState, terrain);
+                world.addActor(terrainActor);
+                terrainActorMap.put(terrain, terrainActor);
             }
         }
 
         // Characters must be added after terrain so they get hit by touch input
         for (Character character : map.getCharacters()) {
-            MapActor actor = mapActorFactory.create(map, mapState, character);
+            CharacterActor actor = actorFactory.create(map, mapState, character);
             world.addActor(actor);
-            actorMap.put(character, actor);
+            characterActorMap.put(character, actor);
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(map, turn, world, mapRenderer, actorMap, highlightSprite);
+        return new MapView(map, turn, world, mapRenderer, characterActorMap, terrainActorMap, highlightSprite);
     }
 }
