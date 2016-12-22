@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.jingyuyao.tactical.TacticalAdventure;
-import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.LevelLoader;
 import com.jingyuyao.tactical.model.Level;
 
@@ -25,12 +24,6 @@ public class LevelScreenFactory {
         Level level = LevelLoader.createLevel(tiledMap);
         MapView mapView = mapViewFactory.create(tiledMap, level.getMap(), level.getMapState());
         MapUI mapUI = mapUIFactory.create(level.getMap(), level.getMapState());
-        MapController mapController = new MapController(
-                mapUI.getUi(),
-                mapView.getWorld(),
-                level.getMap().getWidth(),
-                level.getMap().getHeight()
-        );
-        return new LevelScreen(game, level, mapView, mapUI, mapController);
+        return new LevelScreen(game, level, mapView, mapUI);
     }
 }

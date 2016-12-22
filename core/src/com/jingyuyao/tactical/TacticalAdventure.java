@@ -2,6 +2,8 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.jingyuyao.tactical.controller.LevelController;
+import com.jingyuyao.tactical.view.LevelScreen;
 import com.jingyuyao.tactical.view.LevelScreenFactory;
 
 public class TacticalAdventure extends Game {
@@ -23,6 +25,8 @@ public class TacticalAdventure extends Game {
     }
 
     public void setLevelScreen(String mapName) {
-        setScreen(levelScreenFactory.create(mapName));
+        LevelScreen levelScreen = levelScreenFactory.create(mapName);
+        LevelController.initiateControl(levelScreen);
+        setScreen(levelScreen);
     }
 }
