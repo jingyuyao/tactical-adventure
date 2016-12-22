@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MapUI implements Observer {
+public class MapUI {
     private final Map map;
     private final MapState mapState;
     private final Skin skin;
@@ -21,7 +21,7 @@ public class MapUI implements Observer {
     private final Label state;
     private final VerticalGroup buttons;
 
-    public MapUI(Map map, MapState mapState, Skin skin) {
+    MapUI(Map map, MapState mapState, Skin skin) {
         this.map = map;
         this.mapState = mapState;
         this.skin = skin;
@@ -47,64 +47,59 @@ public class MapUI implements Observer {
         root.add(buttons).expandX().right();
 
         buttons.space(5);
-        buttons.addActor(new TextButton("Hello", skin));
-        buttons.addActor(new TextButton("World", skin));
 
         // TODO: different observers?
-        map.addObserver(this);
-        mapState.addObserver(this);
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        updateHighlight();
-        updateState();
-        updateActions();
+        map.addObserver(this.new MapObserver());
+        mapState.addObserver(this.new MapStateObserver());
     }
 
     public Stage getUi() {
         return ui;
     }
 
-    public void act(float delta) {
+    void act(float delta) {
         ui.act(delta);
     }
 
-    public void draw() {
+    void draw() {
         ui.draw();
     }
 
-    public void resize(int width, int height) {
+    void resize(int width, int height) {
         ui.getViewport().update(width, height);
     }
 
-    public void dispose() {
+    void dispose() {
         ui.dispose();
     }
 
-    private void updateHighlight() {
-        highlight.setText(map.getHighlight().toString());
-    }
-
-    private void updateState() {
-        state.setText(mapState.getStateName());
-    }
-
-    private void updateActions() {
-        buttons.clear();
-        for (Action action : mapState.getActions()) {
-            buttons.addActor(createActionButton(action));
+    private class MapObserver implements Observer {
+        @Override
+        public void update(Observable observable, Object o) {
+            highlight.setText(map.getHighlight().toString());
         }
     }
 
-    private TextButton createActionButton(final Action action) {
-        TextButton button = new TextButton(action.getName(), skin);
-        button.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                action.run();
+    private class MapStateObserver implements Observer {
+        @Override
+        public void update(Observable observable, Object o) {
+            state.setText(mapState.getStateName());
+
+            buttons.clear();
+            for (Action action : mapState.getActions()) {
+                buttons.addActor(createActionButton(action));
             }
-        });
-        return button;
+        }
+
+        private TextButton createActionButton(final Action action) {
+            TextButton button = new TextButton(action.getName(), skin);
+            button.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    action.run();
+                }
+            });
+            return button;
+        }
     }
 }

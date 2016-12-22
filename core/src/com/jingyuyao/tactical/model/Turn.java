@@ -2,8 +2,9 @@ package com.jingyuyao.tactical.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Observable;
 
-public class Turn {
+public class Turn extends Observable {
     private final Map map;
     private final Collection<Player> actionablePlayers;
     private int turnCount = 0;
@@ -23,6 +24,8 @@ public class Turn {
         turnCount++;
         actionablePlayers.clear();
         actionablePlayers.addAll(map.getPlayers());
+        setChanged();
+        notifyObservers();
     }
 
     public boolean canAct(Player player) {
@@ -31,5 +34,7 @@ public class Turn {
 
     public void acted(Player player) {
         actionablePlayers.remove(player);
+        setChanged();
+        notifyObservers();
     }
 }

@@ -14,7 +14,7 @@ import java.util.Observer;
  * Contains and renders the world.
  * The world is rendered in a grid scale (i.e. showing a 30x20 grid).
  */
-public class MapView implements Observer {
+public class MapView {
     private final Map map;
     private final Stage world;
     private final java.util.Map<MapObject, MapActor> actorMap;
@@ -42,31 +42,26 @@ public class MapView implements Observer {
         this.actorMap = actorMap;
         this.map = map;
         this.highlightSprite = highlightSprite;
-        map.addObserver(this);
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        updateHighlight();
+        map.addObserver(this.new MapObserver());
     }
 
     public Stage getWorld() {
         return world;
     }
 
-    public void resize(int width, int height) {
+    void resize(int width, int height) {
         world.getViewport().update(width, height);
     }
 
-    public void dispose() {
+    void dispose() {
         world.dispose();
     }
 
-    public void act(float delta) {
+    void act(float delta) {
         world.act(delta);
     }
 
-    public void draw() {
+    void draw() {
         mapRenderer.setView((OrthographicCamera) world.getCamera());
         mapRenderer.render();
         world.draw();
@@ -75,17 +70,20 @@ public class MapView implements Observer {
         world.getBatch().end();
     }
 
-    private void updateHighlight() {
-        MapObject highlighted = map.getHighlight();
-        if (highlighted == null) {
-            return;
+    private class MapObserver implements Observer {
+        @Override
+        public void update(Observable observable, Object o) {
+            MapObject highlighted = map.getHighlight();
+            if (highlighted == null) {
+                return;
+            }
+            MapActor highlightedActor = actorMap.get(highlighted);
+            highlightSprite.setBounds(
+                    highlightedActor.getX(),
+                    highlightedActor.getY(),
+                    highlightedActor.getWidth(),
+                    highlightedActor.getHeight()
+            );
         }
-        MapActor highlightedActor = actorMap.get(highlighted);
-        highlightSprite.setBounds(
-                highlightedActor.getX(),
-                highlightedActor.getY(),
-                highlightedActor.getWidth(),
-                highlightedActor.getHeight()
-        );
     }
 }
