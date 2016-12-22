@@ -2,18 +2,18 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.jingyuyao.tactical.screen.GameScreenFactory;
+import com.jingyuyao.tactical.view.LevelScreenFactory;
 
 public class TacticalAdventure extends Game {
     private AssetManager assetManager;
-    private GameScreenFactory gameScreenFactory;
+    private LevelScreenFactory levelScreenFactory;
 
     @Override
     public void create() {
         assetManager = Assets.createAssetManager();
-        gameScreenFactory = new GameScreenFactory(this, assetManager);
+        levelScreenFactory = new LevelScreenFactory(this, assetManager);
 
-        setGameScreen(Assets.TEST_MAP);
+        setLevelScreen(Assets.TEST_MAP);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class TacticalAdventure extends Game {
         assetManager.dispose();
     }
 
-    public void setGameScreen(String mapName) {
-        setScreen(gameScreenFactory.create(mapName));
+    public void setLevelScreen(String mapName) {
+        setScreen(levelScreenFactory.create(mapName));
     }
 }

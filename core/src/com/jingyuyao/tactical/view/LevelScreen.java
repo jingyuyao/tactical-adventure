@@ -1,25 +1,28 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.controller.MapController;
-import com.jingyuyao.tactical.view.MapUI;
-import com.jingyuyao.tactical.view.MapView;
+import com.jingyuyao.tactical.model.Level;
 
-/**
- * Glues together MVC components to create a screen.
- */
-public class GameScreen extends ScreenAdapter {
+public class LevelScreen extends ScreenAdapter {
     private final TacticalAdventure game;
+    private final Level level;
     private final MapView mapView;
     private final MapUI mapUI;
     private final MapController mapController;
 
-    // TODO: Probably need to create a special "GameController" class when input handling gets complicated
-    GameScreen(TacticalAdventure game, MapView mapView, MapUI mapUI, MapController mapController) {
+    LevelScreen(
+            TacticalAdventure game,
+            Level level,
+            MapView mapView,
+            MapUI mapUI,
+            MapController mapController
+    ) {
         this.game = game;
+        this.level = level;
         this.mapView = mapView;
         this.mapUI = mapUI;
         this.mapController = mapController;
@@ -30,11 +33,11 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		mapUI.act(delta);
-		mapView.act(delta);
-		mapView.draw();
-		mapUI.draw();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        mapUI.act(delta);
+        mapView.act(delta);
+        mapView.draw();
+        mapUI.draw();
     }
 
     @Override

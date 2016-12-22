@@ -5,16 +5,21 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.Enemy;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.state.MapState;
 
-public class MapLoader {
+public class LevelLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
-    public static Map create(TiledMap tiledMap) {
+    public static Level createLevel(TiledMap tiledMap) {
+        Map map = createMap(tiledMap);
+        MapState mapState = new MapState(map);
+        Turn turn = new Turn();
+        return new Level(map, mapState, turn);
+    }
+
+    private static Map createMap(TiledMap tiledMap) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 
