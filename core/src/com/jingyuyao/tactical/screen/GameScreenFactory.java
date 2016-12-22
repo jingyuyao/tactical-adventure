@@ -7,6 +7,8 @@ import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.view.MapUI;
+import com.jingyuyao.tactical.view.MapUIFactory;
 import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.MapViewFactory;
 
@@ -26,7 +28,9 @@ public class GameScreenFactory {
         Map map = MapLoader.create(tiledMap);
         MapState mapState = new MapState(map);
         MapView mapView = mapViewFactory.create(tiledMap, map, mapState);
-        MapController mapController = new MapController(mapView.getStage(), map.getWidth(), map.getHeight());
-        return new GameScreen(game, mapView, mapController);
+        MapUI mapUI = MapUIFactory.create(assetManager);
+        MapController mapController =
+                new MapController(mapUI.getUi(), mapView.getWorld(), map.getWidth(), map.getHeight());
+        return new GameScreen(game, mapView, mapUI, mapController);
     }
 }
