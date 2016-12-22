@@ -20,7 +20,7 @@ class Moving extends AbstractState {
     }
 
     @Override
-    public State select(Player player) {
+    public AbstractState select(Player player) {
         if (Objects.equal(movingPlayer, player)) {
             return new Waiting(this);
         } else {
@@ -29,7 +29,7 @@ class Moving extends AbstractState {
     }
 
     @Override
-    public State select(Enemy enemy) {
+    public AbstractState select(Enemy enemy) {
         if (getMap().canTargetAfterMove(movingPlayer, enemy)) {
             Optional<Coordinate> moveTarget = getMap().getMoveForTarget(movingPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
@@ -45,7 +45,7 @@ class Moving extends AbstractState {
     }
 
     @Override
-    public State select(Terrain terrain) {
+    public AbstractState select(Terrain terrain) {
         getMap().moveIfAble(movingPlayer, terrain.getCoordinate());
         if (getMap().hasAnyImmediateTarget(movingPlayer)) {
             return new Targeting(this, movingPlayer);
@@ -53,10 +53,5 @@ class Moving extends AbstractState {
             // TODO: go to action state
             return new Waiting(this);
         }
-    }
-
-    @Override
-    public Collection<Action> getActions() {
-        return new ArrayList<Action>();
     }
 }

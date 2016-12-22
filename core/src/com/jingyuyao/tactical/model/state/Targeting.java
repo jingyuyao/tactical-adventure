@@ -14,15 +14,16 @@ class Targeting extends AbstractState {
         super(prevState);
         this.targetingPlayer = targetingPlayer;
         getMarkings().markPlayer(targetingPlayer, true);
+        getActions().add(this.new TestAction());
     }
 
     @Override
-    public State select(Player player) {
+    public AbstractState select(Player player) {
         return new Waiting(this);
     }
 
     @Override
-    public State select(Enemy enemy) {
+    public AbstractState select(Enemy enemy) {
         if (getMap().canImmediateTarget(targetingPlayer, enemy)) {
             // TODO: enter battle prep
             getMarkings().removeEnemy(enemy);
@@ -32,29 +33,24 @@ class Targeting extends AbstractState {
     }
 
     @Override
-    public State select(Terrain terrain) {
+    public AbstractState select(Terrain terrain) {
         return new Waiting(this);
     }
 
-    @Override
-    public Collection<Action> getActions() {
-        Collection<Action> actions = new ArrayList<Action>();
-        actions.add(new Action() {
-            @Override
-            public String getName() {
-                return "Test123";
-            }
+    private class TestAction implements Action {
+        @Override
+        public String getName() {
+            return "Test123";
+        }
 
-            @Override
-            public Runnable getRunnable() {
-                return new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                    }
-                };
-            }
-        });
-        return actions;
+        @Override
+        public Runnable getRunnable() {
+            return new Runnable() {
+                @Override
+                public void run() {
+                    transitionTo(waiting());
+                }
+            };
+        }
     }
 }
