@@ -2,6 +2,9 @@ package com.jingyuyao.tactical.model;
 
 import com.jingyuyao.tactical.model.state.MapState;
 
+/**
+ * Bundles all objects for a level.
+ */
 public class Level {
     private final Map map;
     private final MapState mapState;

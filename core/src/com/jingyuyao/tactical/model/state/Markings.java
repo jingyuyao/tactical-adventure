@@ -66,7 +66,7 @@ class Markings {
         for (Character enemy : markedEnemies) {
             Collection<Coordinate> dangerTargets = map.getAllTargets(enemy);
             for (Coordinate target : dangerTargets) {
-                map.terrains().get(target).addMarker(Terrain.Marker.DANGER);
+                map.getTerrains().get(target).addMarker(Terrain.Marker.DANGER);
             }
         }
 
@@ -77,13 +77,13 @@ class Markings {
             } else {
                 Graph<Coordinate> moveGraph = map.getMoveGraph(markedPlayer);
                 for (Coordinate coordinate : moveGraph.nodes()) {
-                    map.terrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
+                    map.getTerrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
                 }
                 targets = map.getAllTargets(markedPlayer);
                 targets.removeAll(moveGraph.nodes());
             }
             for (Coordinate target : targets) {
-                map.terrains().get(target).addMarker(Terrain.Marker.ATTACK);
+                map.getTerrains().get(target).addMarker(Terrain.Marker.ATTACK);
             }
         }
     }
@@ -91,7 +91,7 @@ class Markings {
     private void clearAllMarkers() {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                map.terrains().get(x, y).clearMarkers();
+                map.getTerrains().get(x, y).clearMarkers();
             }
         }
     }

@@ -43,7 +43,7 @@ public class MapViewFactory {
 
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                Terrain terrain = map.terrains().get(x, y);
+                Terrain terrain = map.getTerrains().get(x, y);
                 MapActor actor = mapActorFactory.create(map, mapState, terrain);
                 world.addActor(actor);
                 actorMap.put(terrain, actor);
@@ -51,7 +51,7 @@ public class MapViewFactory {
         }
 
         // Characters must be added after terrain so they get hit by touch input
-        for (Character character : map.characters()) {
+        for (Character character : map.getCharacters()) {
             MapActor actor = mapActorFactory.create(map, mapState, character);
             world.addActor(actor);
             actorMap.put(character, actor);

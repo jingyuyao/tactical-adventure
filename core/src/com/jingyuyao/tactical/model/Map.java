@@ -1,6 +1,9 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
@@ -28,12 +31,20 @@ public class Map extends Observable {
         return height;
     }
 
-    public Grid<Terrain> terrains() {
+    public Grid<Terrain> getTerrains() {
         return terrains;
     }
 
-    public Collection<Character> characters() {
+    public Collection<Character> getCharacters() {
         return characters;
+    }
+
+    public ImmutableCollection<Player> getPlayers() {
+        return getSubtypeCharacters(Player.class);
+    }
+
+    public ImmutableCollection<Enemy> getEnemies() {
+        return getSubtypeCharacters(Enemy.class);
     }
 
     public MapObject getHighlight() {
@@ -47,7 +58,7 @@ public class Map extends Observable {
     }
 
     public void kill(Character character) {
-        characters.remove(character);
+        getCharacters().remove(character);
         character.die();
     }
 
@@ -63,7 +74,7 @@ public class Map extends Observable {
      * Return whether {@code from} has anything it can target from its current position.
      */
     public boolean hasAnyImmediateTarget(Character from) {
-        for (Character to : characters()) {
+        for (Character to : getCharacters()) {
             if (canImmediateTarget(from, to)) {
                 return true;
             }
@@ -107,7 +118,7 @@ public class Map extends Observable {
         Collection<Coordinate> targets = new HashSet<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
             // TODO: modify algorithm so it doesn't "backtrack"
-            targets.addAll(Algorithms.findNDistanceAway(terrains, from, distance));
+            targets.addAll(Algorithms.findNDistanceAway(getTerrains(), from, distance));
         }
         return targets;
     }
@@ -144,15 +155,26 @@ public class Map extends Observable {
 
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Terrain terrain = terrains().get(x, y);
+                Terrain terrain = getTerrains().get(x, y);
                 movementPenaltyGrid.set(terrain.getCoordinate(), terrain.getMovementPenalty(character));
             }
         }
 
-        for (Character blocked : characters()) {
+        for (Character blocked : getCharacters()) {
             movementPenaltyGrid.set(blocked.getCoordinate(), Algorithms.NO_EDGE);
         }
 
         return movementPenaltyGrid;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Character> ImmutableCollection<T> getSubtypeCharacters(Class<T> cls) {
+        ImmutableList.Builder<T> builder = new ImmutableList.Builder<T>();
+        for (Character character : getCharacters()) {
+            if (Objects.equal(character.getClass(), cls)) {
+                builder.add((T) character);
+            }
+        }
+        return builder.build();
     }
 }
