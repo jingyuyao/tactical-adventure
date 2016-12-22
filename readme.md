@@ -19,6 +19,7 @@ https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
 - Make sure "Android Support" plugin is enabled for Intellij Idea
 - Set the SDK for the android module to Android SDK in Project Structure...->Modules->android
 - For your sanity don't use the Android emulator and run it on a real phone instead
+- Make sure USB mode is set to file transfer when running on your android phone
 - Set Java language level to 6 in project settings since that is what libgdx likes
 
 # Project structure & guidelines
