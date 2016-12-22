@@ -12,8 +12,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MapUI {
-    private final Map map;
-    private final MapState mapState;
     private final Skin skin;
     private final Stage ui;
     private final Table root;
@@ -22,13 +20,11 @@ public class MapUI {
     private final VerticalGroup buttons;
 
     MapUI(Map map, MapState mapState, Skin skin) {
-        this.map = map;
-        this.mapState = mapState;
         this.skin = skin;
         ui = new Stage();
         root = new Table();
-        highlight = new Label("none", skin);
-        state = new Label("waiting", skin);
+        highlight = new Label("", skin);
+        state = new Label("", skin);
         buttons = new VerticalGroup();
 
         root.setFillParent(true);
@@ -49,8 +45,8 @@ public class MapUI {
         buttons.space(5);
 
         // TODO: different observers?
-        map.addObserver(this.new MapObserver());
-        mapState.addObserver(this.new MapStateObserver());
+        map.addObserver(this.new MapObserver(map));
+        mapState.addObserver(this.new MapStateObserver(mapState));
     }
 
     public Stage getUi() {
@@ -74,6 +70,12 @@ public class MapUI {
     }
 
     private class MapObserver implements Observer {
+        private final Map map;
+
+        private MapObserver(Map map) {
+            this.map = map;
+        }
+
         @Override
         public void update(Observable observable, Object o) {
             highlight.setText(map.getHighlight().toString());
@@ -81,6 +83,13 @@ public class MapUI {
     }
 
     private class MapStateObserver implements Observer {
+        private final MapState mapState;
+
+        private MapStateObserver(MapState mapState) {
+            this.mapState = mapState;
+            update(null, null);
+        }
+
         @Override
         public void update(Observable observable, Object o) {
             state.setText(mapState.getStateName());

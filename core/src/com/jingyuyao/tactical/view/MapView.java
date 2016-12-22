@@ -18,8 +18,6 @@ import java.util.Observer;
  * The world is rendered in a grid scale (i.e. showing a 30x20 grid).
  */
 public class MapView {
-    private final Map map;
-    private final Turn turn;
     private final Stage world;
     private final java.util.Map<MapObject, MapActor> actorMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -43,13 +41,13 @@ public class MapView {
             Sprite highlightSprite
     ) {
         this.world = world;
-        this.turn = turn;
         this.mapRenderer = mapRenderer;
         this.actorMap = actorMap;
-        this.map = map;
         this.highlightSprite = highlightSprite;
-        map.addObserver(this.new MapObserver());
-        turn.addObserver(this.new TurnObserver());
+        highlightSprite.setSize(0, 0);
+
+        map.addObserver(this.new MapObserver(map));
+        turn.addObserver(this.new TurnObserver(map, turn));
     }
 
     public Stage getWorld() {
@@ -78,6 +76,12 @@ public class MapView {
     }
 
     private class MapObserver implements Observer {
+        private final Map map;
+
+        private MapObserver(Map map) {
+            this.map = map;
+        }
+
         @Override
         public void update(Observable observable, Object o) {
             MapObject highlighted = map.getHighlight();
@@ -95,6 +99,14 @@ public class MapView {
     }
 
     private class TurnObserver implements Observer {
+        private final Map map;
+        private final Turn turn;
+
+        private TurnObserver(Map map, Turn turn) {
+            this.map = map;
+            this.turn = turn;
+        }
+
         @Override
         public void update(Observable observable, Object o) {
             for (Player player : map.getPlayers()) {
