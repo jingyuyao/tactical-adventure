@@ -6,14 +6,14 @@ import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.state.MapState;
 
-public class MapUIFactory {
+class MapUIFactory {
     private final AssetManager assetManager;
 
-    public MapUIFactory(AssetManager assetManager) {
+    MapUIFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
 
-    public MapUI create(Map map, MapState mapState) {
+    MapUI create(Map map, MapState mapState) {
         return new MapUI(map, mapState, assetManager.get(Assets.SKIN, Skin.class));
     }
 }

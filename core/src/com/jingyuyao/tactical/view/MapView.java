@@ -1,11 +1,14 @@
 package com.jingyuyao.tactical.view;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MapObject;
+import com.jingyuyao.tactical.model.Player;
+import com.jingyuyao.tactical.model.Turn;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +19,7 @@ import java.util.Observer;
  */
 public class MapView {
     private final Map map;
+    private final Turn turn;
     private final Stage world;
     private final java.util.Map<MapObject, MapActor> actorMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -32,17 +36,20 @@ public class MapView {
      */
     MapView(
             Map map,
+            Turn turn,
             Stage world,
             OrthogonalTiledMapRenderer mapRenderer,
             java.util.Map<MapObject, MapActor> actorMap,
             Sprite highlightSprite
     ) {
         this.world = world;
+        this.turn = turn;
         this.mapRenderer = mapRenderer;
         this.actorMap = actorMap;
         this.map = map;
         this.highlightSprite = highlightSprite;
         map.addObserver(this.new MapObserver());
+        turn.addObserver(this.new TurnObserver());
     }
 
     public Stage getWorld() {
@@ -84,6 +91,22 @@ public class MapView {
                     highlightedActor.getWidth(),
                     highlightedActor.getHeight()
             );
+        }
+    }
+
+    private class TurnObserver implements Observer {
+        @Override
+        public void update(Observable observable, Object o) {
+            for (Player player : map.getPlayers()) {
+                CharacterActor actor = (CharacterActor) actorMap.get(player);
+                // TODO: Let actor update its color? then we need to give character its turn info
+                // but then we would be violating the single source of truth... hum...
+                if (!turn.canAct(player)) {
+                    actor.getSprite().setColor(Color.GRAY);
+                } else {
+                    actor.getSprite().setColor(Color.WHITE);
+                }
+            }
         }
     }
 }

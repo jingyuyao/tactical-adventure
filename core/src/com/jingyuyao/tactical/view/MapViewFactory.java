@@ -18,7 +18,7 @@ import java.util.HashMap;
 /**
  * Not the cleanest approach but at least {@link MapView} can now receive injections via this class.
  */
-public class MapViewFactory {
+class MapViewFactory {
     private static final int TILE_SIZE = 32; // pixels
     private static final float RENDER_SCALE = 1f / TILE_SIZE;
     private static final int VIEWPORT_WIDTH = 15; // # tiles
@@ -27,7 +27,7 @@ public class MapViewFactory {
     private final MapActorFactory mapActorFactory;
     private final Sprite highlightSprite;
 
-    public MapViewFactory(AssetManager assetManager) {
+    MapViewFactory(AssetManager assetManager) {
         mapActorFactory = new MapActorFactory(assetManager);
         highlightSprite = new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class));
     }
@@ -35,7 +35,7 @@ public class MapViewFactory {
     /**
      * Creates a {@link MapView} from the given map and adds all actors to the stage.
      */
-    public MapView create(TiledMap tiledMap, Map map, MapState mapState) {
+    MapView create(TiledMap tiledMap, Map map, MapState mapState, Turn turn) {
         OrthographicCamera camera = new OrthographicCamera();
         FitViewport viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
         Stage world = new Stage(viewport);
@@ -58,6 +58,6 @@ public class MapViewFactory {
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(map, world, mapRenderer, actorMap, highlightSprite);
+        return new MapView(map, turn, world, mapRenderer, actorMap, highlightSprite);
     }
 }

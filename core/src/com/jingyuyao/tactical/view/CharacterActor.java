@@ -45,6 +45,10 @@ public class CharacterActor extends MapActor<Character> {
         updateDeath();
     }
 
+    Sprite getSprite() {
+        return sprite;
+    }
+
     private void updateDeath() {
         if (getObject().isDead()) {
             // TODO: Do we have to deference to avoid memory leak?
