@@ -2,53 +2,59 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-class Moving extends State {
-    private final Player movingPlayer;
+class Moving extends AbstractState {
+    private final Player currentPlayer;
 
-    Moving(State prevState, Player movingPlayer) {
+    Moving(AbstractState prevState, Player currentPlayer) {
         super(prevState);
-        this.movingPlayer = movingPlayer;
-        getMarkings().markPlayer(movingPlayer, false);
+        this.currentPlayer = currentPlayer;
     }
 
     @Override
-    public State select(Player player) {
-        if (Objects.equal(movingPlayer, player)) {
-            return new Waiting(this);
+    void enter() {
+        getMarkings().markPlayer(currentPlayer, false);
+    }
+
+    @Override
+    public void select(Player player) {
+        if (Objects.equal(currentPlayer, player)) {
+            goTo(new Choosing(this, currentPlayer));
         } else {
-            return new Moving(this, player);
+            goTo(new Waiting(this));
         }
     }
 
     @Override
-    public State select(Enemy enemy) {
-        if (getMap().canTargetAfterMove(movingPlayer, enemy)) {
-            Optional<Coordinate> moveTarget = getMap().getMoveForTarget(movingPlayer, enemy.getCoordinate());
+    public void select(Enemy enemy) {
+        if (getMap().canTargetAfterMove(currentPlayer, enemy)) {
+            Optional<Coordinate> moveTarget = getMap().getMoveForTarget(currentPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
-                getMap().moveIfAble(movingPlayer, moveTarget.get());
+                getMap().moveIfAble(currentPlayer, moveTarget.get());
                 // TODO: enter battle prep
                 getMarkings().removeEnemy(enemy);
                 getMap().kill(enemy);
             }
-            return new Waiting(this);
+            goTo(new Waiting(this));
         } else {
-            return new Waiting(this);
+            goTo(new Waiting(this));
         }
     }
 
     @Override
-    public State select(Terrain terrain) {
-        getMap().moveIfAble(movingPlayer, terrain.getCoordinate());
-        if (getMap().hasAnyImmediateTarget(movingPlayer)) {
-            return new Targeting(this, movingPlayer);
-        } else {
-            // TODO: go to action state
-            return new Waiting(this);
-        }
+    public void select(Terrain terrain) {
+        getMap().moveIfAble(currentPlayer, terrain.getCoordinate());
+        goTo(new Choosing(this, currentPlayer));
+    }
+
+    @Override
+    ImmutableCollection<Action> getActions() {
+        return ImmutableList.<Action>of(new Cancel(this));
     }
 }

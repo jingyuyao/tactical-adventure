@@ -1,34 +1,47 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 
-class Waiting extends State {
-    Waiting(Map map, MapState mapState, Markings markings) {
-        super(map, mapState, markings);
+class Waiting extends AbstractState {
+    /**
+     * Used to create the initial state.
+     */
+    Waiting(MapState mapState, Map map, Turn turn, Markings markings) {
+        super(mapState, map, turn, markings, null);
     }
 
-    Waiting(State prevState) {
+    Waiting(AbstractState prevState) {
         super(prevState);
+    }
+
+    @Override
+    void enter() {
         getMarkings().unMarkPlayer();
     }
 
     @Override
-    public State select(Player player) {
-        return new Moving(this, player);
+    public void select(Player player) {
+        if (getTurn().canAct(player)) {
+            goTo(new Moving(this, player));
+        }
     }
 
     @Override
-    public State select(Enemy enemy) {
+    public void select(Enemy enemy) {
         if (getMarkings().getMarkedEnemies().contains(enemy)) {
             getMarkings().unMarkEnemy(enemy);
         } else {
             getMarkings().markEnemy(enemy);
         }
-        return this;
     }
 
     @Override
-    public State select(Terrain terrain) {
-        return this;
+    public void select(Terrain terrain) {}
+
+    @Override
+    ImmutableCollection<Action> getActions() {
+        return ImmutableList.<Action>of(new EndTurn(this));
     }
 }

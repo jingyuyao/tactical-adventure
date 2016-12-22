@@ -1,36 +1,46 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-class Targeting extends State {
-    private final Player targetingPlayer;
+class Targeting extends AbstractState {
+    private final Player currentPlayer;
 
-    Targeting(State prevState, Player targetingPlayer) {
+    Targeting(AbstractState prevState, Player currentPlayer) {
         super(prevState);
-        this.targetingPlayer = targetingPlayer;
-        getMarkings().markPlayer(targetingPlayer, true);
-        getStateActions().add(new FinishAction(this));
+        this.currentPlayer = currentPlayer;
     }
 
     @Override
-    public State select(Player player) {
-        return new Waiting(this);
+    void enter() {
+        getMarkings().markPlayer(currentPlayer, true);
     }
 
     @Override
-    public State select(Enemy enemy) {
-        if (getMap().canImmediateTarget(targetingPlayer, enemy)) {
+    public void select(Player player) {
+        goTo(new Waiting(this));
+    }
+
+    @Override
+    public void select(Enemy enemy) {
+        if (getMap().canImmediateTarget(currentPlayer, enemy)) {
             // TODO: enter battle prep
             getMarkings().removeEnemy(enemy);
             getMap().kill(enemy);
         }
-        return new Waiting(this);
+        goTo(new Waiting(this));
     }
 
     @Override
-    public State select(Terrain terrain) {
-        return new Waiting(this);
+    public void select(Terrain terrain) {
+        goTo(new Waiting(this));
+    }
+
+    @Override
+    ImmutableCollection<Action> getActions() {
+        return ImmutableList.<Action>of(new Finish(this, currentPlayer));
     }
 }

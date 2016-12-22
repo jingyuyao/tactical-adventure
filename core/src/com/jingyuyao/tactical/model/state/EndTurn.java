@@ -1,17 +1,17 @@
 package com.jingyuyao.tactical.model.state;
 
-public class FinishAction extends StateAction {
-    FinishAction(State state) {
+public class EndTurn extends AbstractAction {
+    EndTurn(AbstractState state) {
         super(state);
     }
 
     @Override
     public String getName() {
-        return "Finish";
+        return "End Turn";
     }
 
     @Override
     public void run() {
-        getState().transitionTo(new Waiting(getState()));
+        getState().getTurn().nextTurn();
     }
 }

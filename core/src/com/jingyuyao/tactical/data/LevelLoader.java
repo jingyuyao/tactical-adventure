@@ -14,8 +14,8 @@ public class LevelLoader {
 
     public static Level loadLevel(TiledMap tiledMap) {
         Map map = createMap(tiledMap);
-        MapState mapState = new MapState(map);
         Turn turn = new Turn(map);
+        MapState mapState = new MapState(map, turn);
         return new Level(map, mapState, turn);
     }
 

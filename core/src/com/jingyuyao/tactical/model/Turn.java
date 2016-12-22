@@ -11,14 +11,15 @@ public class Turn {
     public Turn(Map map) {
         this.map = map;
         actionablePlayers = new HashSet<Player>();
-        newTurn();
+        nextTurn();
     }
 
     public int getTurnCount() {
         return turnCount;
     }
 
-    public void newTurn() {
+    public void nextTurn() {
+        // TODO: this should somehow alert MapView/UI
         turnCount++;
         actionablePlayers.clear();
         actionablePlayers.addAll(map.getPlayers());
