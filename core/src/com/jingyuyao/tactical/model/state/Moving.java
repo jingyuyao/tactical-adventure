@@ -7,20 +7,17 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-class Moving extends AbstractState {
+class Moving extends State {
     private final Player movingPlayer;
 
-    Moving(AbstractState prevState, Player movingPlayer) {
+    Moving(State prevState, Player movingPlayer) {
         super(prevState);
         this.movingPlayer = movingPlayer;
         getMarkings().markPlayer(movingPlayer, false);
     }
 
     @Override
-    public AbstractState select(Player player) {
+    public State select(Player player) {
         if (Objects.equal(movingPlayer, player)) {
             return new Waiting(this);
         } else {
@@ -29,7 +26,7 @@ class Moving extends AbstractState {
     }
 
     @Override
-    public AbstractState select(Enemy enemy) {
+    public State select(Enemy enemy) {
         if (getMap().canTargetAfterMove(movingPlayer, enemy)) {
             Optional<Coordinate> moveTarget = getMap().getMoveForTarget(movingPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
@@ -45,7 +42,7 @@ class Moving extends AbstractState {
     }
 
     @Override
-    public AbstractState select(Terrain terrain) {
+    public State select(Terrain terrain) {
         getMap().moveIfAble(movingPlayer, terrain.getCoordinate());
         if (getMap().hasAnyImmediateTarget(movingPlayer)) {
             return new Targeting(this, movingPlayer);

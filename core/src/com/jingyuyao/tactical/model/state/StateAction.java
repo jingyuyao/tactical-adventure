@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-public interface Action {
+public interface StateAction {
     String getName();
 
-    Runnable getRunnable();
+    void run();
 }

@@ -5,27 +5,22 @@ import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Manages selection logic.
  */
 // TODO: This class needs to be thoroughly tested
-public class MapState extends Observable implements Observer {
-    private final Collection<Action> actions;
-    private AbstractState state;
+public class MapState extends Observable {
+    private State state;
 
     public MapState(Map map) {
-        state = new Waiting(map, new Markings(map));
-        actions = new ArrayList<Action>();
-        state.addObserver(this);
+        state = new Waiting(map, this, new Markings(map));
     }
 
-    public Collection<Action> getActions() {
-        return actions;
+    public Collection<StateAction> getActions() {
+        return state.getStateActions();
     }
 
     public void select(Player player) {
@@ -40,17 +35,9 @@ public class MapState extends Observable implements Observer {
         changeState(state.select(terrain));
     }
 
-    private void changeState(AbstractState newState) {
-        actions.clear();
-        actions.addAll(newState.getActions());
-        newState.addObserver(this);
+    void changeState(State newState) {
         state = newState;
         setChanged();
         notifyObservers();
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        changeState(state.getTransitionTarget());
     }
 }

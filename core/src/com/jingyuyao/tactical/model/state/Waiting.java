@@ -2,23 +2,23 @@ package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.*;
 
-class Waiting extends AbstractState {
-    Waiting(Map map, Markings markings) {
-        super(map, markings);
+class Waiting extends State {
+    Waiting(Map map, MapState mapState, Markings markings) {
+        super(map, mapState, markings);
     }
 
-    Waiting(AbstractState prevState) {
+    Waiting(State prevState) {
         super(prevState);
         getMarkings().unMarkPlayer();
     }
 
     @Override
-    public AbstractState select(Player player) {
+    public State select(Player player) {
         return new Moving(this, player);
     }
 
     @Override
-    public AbstractState select(Enemy enemy) {
+    public State select(Enemy enemy) {
         if (getMarkings().getMarkedEnemies().contains(enemy)) {
             getMarkings().unMarkEnemy(enemy);
         } else {
@@ -28,7 +28,7 @@ class Waiting extends AbstractState {
     }
 
     @Override
-    public AbstractState select(Terrain terrain) {
+    public State select(Terrain terrain) {
         return this;
     }
 }

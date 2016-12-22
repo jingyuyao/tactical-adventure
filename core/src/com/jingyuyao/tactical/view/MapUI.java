@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.state.Action;
+import com.jingyuyao.tactical.model.state.StateAction;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.Observable;
@@ -83,15 +83,19 @@ public class MapUI implements Observer {
 
     private void updateActions() {
         buttons.clear();
-        for (final Action action : mapState.getActions()) {
-            TextButton button = new TextButton(action.getName(), skin);
-            button.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    action.getRunnable().run();
-                }
-            });
-            buttons.addActor(button);
+        for (StateAction stateAction : mapState.getActions()) {
+            buttons.addActor(createActionButton(stateAction));
         }
+    }
+
+    private TextButton createActionButton(final StateAction stateAction) {
+        TextButton button = new TextButton(stateAction.getName(), skin);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                stateAction.run();
+            }
+        });
+        return button;
     }
 }
