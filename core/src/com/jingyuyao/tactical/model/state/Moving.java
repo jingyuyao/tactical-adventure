@@ -7,6 +7,9 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 class Moving extends AbstractState {
     private final Player movingPlayer;
 
@@ -50,5 +53,10 @@ class Moving extends AbstractState {
             // TODO: go to action state
             return new Waiting(this);
         }
+    }
+
+    @Override
+    public Collection<Action> getActions() {
+        return new ArrayList<Action>();
     }
 }

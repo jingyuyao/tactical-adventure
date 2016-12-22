@@ -16,11 +16,13 @@ public class GameScreenFactory {
     private final TacticalAdventure game;
     private final AssetManager assetManager;
     private final MapViewFactory mapViewFactory;
+    private final MapUIFactory mapUIFactory;
 
     public GameScreenFactory(TacticalAdventure game, AssetManager assetManager) {
         this.game = game;
         this.assetManager = assetManager;
         mapViewFactory = new MapViewFactory(assetManager);
+        mapUIFactory = new MapUIFactory(assetManager);
     }
 
     public GameScreen create(String mapName) {
@@ -28,7 +30,7 @@ public class GameScreenFactory {
         Map map = MapLoader.create(tiledMap);
         MapState mapState = new MapState(map);
         MapView mapView = mapViewFactory.create(tiledMap, map, mapState);
-        MapUI mapUI = MapUIFactory.create(assetManager);
+        MapUI mapUI = mapUIFactory.create(map, mapState);
         MapController mapController =
                 new MapController(mapUI.getUi(), mapView.getWorld(), map.getWidth(), map.getHeight());
         return new GameScreen(game, mapView, mapUI, mapController);
