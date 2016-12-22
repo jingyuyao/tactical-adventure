@@ -32,13 +32,20 @@ public class MapState extends Observable {
         state.select(terrain);
     }
 
+    // Testing
+    public String getStateName() {
+        return state.getClass().getSimpleName();
+    }
+
     /**
      * Changes state to {@code newState} if it is not null.
      */
-    void changeState(AbstractState newState) {
+    void changeStateTo(AbstractState newState) {
         if (newState != null) {
+            state.exit();
+            newState.enter();
             state = newState;
-            state.enter();
+
             setChanged();
             notifyObservers();
         }

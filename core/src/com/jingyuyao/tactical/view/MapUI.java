@@ -18,6 +18,7 @@ public class MapUI implements Observer {
     private final Stage ui;
     private final Table root;
     private final Label highlight;
+    private final Label state;
     private final VerticalGroup buttons;
 
     public MapUI(Map map, MapState mapState, Skin skin) {
@@ -26,7 +27,8 @@ public class MapUI implements Observer {
         this.skin = skin;
         ui = new Stage();
         root = new Table();
-        highlight = new Label("test", skin);
+        highlight = new Label("none", skin);
+        state = new Label("waiting", skin);
         buttons = new VerticalGroup();
 
         root.setFillParent(true);
@@ -38,6 +40,8 @@ public class MapUI implements Observer {
 
         root.add(highlight).expandX().left();
         root.row(); // Careful to not chain anything here since it sets default for all rows
+        root.add(state).expandX().left();
+        root.row();
         root.add().expand(); // A filler cell that pushes the buttons to the bottom
         root.row();
         root.add(buttons).expandX().right();
@@ -54,6 +58,7 @@ public class MapUI implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         updateHighlight();
+        updateState();
         updateActions();
     }
 
@@ -78,7 +83,11 @@ public class MapUI implements Observer {
     }
 
     private void updateHighlight() {
-        highlight.setText(map.getHighlight().getCoordinate().toString());
+        highlight.setText(map.getHighlight().toString());
+    }
+
+    private void updateState() {
+        state.setText(mapState.getStateName());
     }
 
     private void updateActions() {

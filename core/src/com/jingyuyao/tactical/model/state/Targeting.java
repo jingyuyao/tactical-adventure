@@ -20,8 +20,16 @@ class Targeting extends AbstractState {
     }
 
     @Override
+    void canceled() {}
+
+    @Override
+    void exit() {
+        getMarkings().unMarkPlayer();
+    }
+
+    @Override
     public void select(Player player) {
-        goTo(new Waiting(this));
+        goToPrevState();
     }
 
     @Override
@@ -36,11 +44,11 @@ class Targeting extends AbstractState {
 
     @Override
     public void select(Terrain terrain) {
-        goTo(new Waiting(this));
+        goToPrevState();
     }
 
     @Override
     ImmutableCollection<Action> getActions() {
-        return ImmutableList.<Action>of(new Finish(this, currentPlayer));
+        return ImmutableList.<Action>of(new Cancel(this), new Finish(this, currentPlayer));
     }
 }

@@ -15,14 +15,16 @@ public abstract class Character extends MapObject {
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
     private final Collection<Weapon> weapons;
+    private final Collection<Coordinate> lastPath;
     private int movementDistance;
-    private Collection<Coordinate> lastPath;
+
     private boolean dead;
 
     public Character(int x, int y, String name, int movementDistance) {
         super(x, y);
         this.name = name;
         this.movementDistance = movementDistance;
+        lastPath = new ArrayList<Coordinate>();
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
         dead = false;
         // TODO: remove me
@@ -62,7 +64,8 @@ public abstract class Character extends MapObject {
 
     void moveTo(int x, int y, Collection<Coordinate> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
-        lastPath = pathToCoordinate;
+        lastPath.clear();
+        lastPath.addAll(pathToCoordinate);
         setPosition(x, y);
     }
 

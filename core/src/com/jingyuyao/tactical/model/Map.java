@@ -62,12 +62,19 @@ public class Map extends Observable {
         character.die();
     }
 
-    public void moveIfAble(Character character, Coordinate terrain) {
+    /**
+     * Move the {@code character} to {@code target} if possible.
+     *
+     * @return whether the {@code character} moved or not
+     */
+    public boolean moveIfAble(Character character, Coordinate target) {
         Graph<Coordinate> pathGraph = getMoveGraph(character);
-        Collection<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, terrain);
+        Collection<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, target);
         if (!pathToCoordinate.isEmpty()) {
-            character.moveTo(terrain.getX(), terrain.getY(), pathToCoordinate);
+            character.moveTo(target.getX(), target.getY(), pathToCoordinate);
+            return true;
         }
+        return false;
     }
 
     /**

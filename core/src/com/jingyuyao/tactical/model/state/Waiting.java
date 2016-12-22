@@ -9,7 +9,7 @@ class Waiting extends AbstractState {
      * Used to create the initial state.
      */
     Waiting(MapState mapState, Map map, Turn turn, Markings markings) {
-        super(mapState, map, turn, markings, null);
+        super(mapState, map, turn, markings);
     }
 
     Waiting(AbstractState prevState) {
@@ -17,9 +17,13 @@ class Waiting extends AbstractState {
     }
 
     @Override
-    void enter() {
-        getMarkings().unMarkPlayer();
-    }
+    void enter() {}
+
+    @Override
+    void canceled() {}
+
+    @Override
+    void exit() {}
 
     @Override
     public void select(Player player) {

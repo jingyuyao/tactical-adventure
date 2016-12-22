@@ -23,6 +23,14 @@ class Moving extends AbstractState {
     }
 
     @Override
+    void canceled() {}
+
+    @Override
+    void exit() {
+        getMarkings().unMarkPlayer();
+    }
+
+    @Override
     public void select(Player player) {
         if (Objects.equal(currentPlayer, player)) {
             goTo(new Choosing(this, currentPlayer));
@@ -49,8 +57,13 @@ class Moving extends AbstractState {
 
     @Override
     public void select(Terrain terrain) {
-        getMap().moveIfAble(currentPlayer, terrain.getCoordinate());
-        goTo(new Choosing(this, currentPlayer));
+        boolean moved = getMap().moveIfAble(currentPlayer, terrain.getCoordinate());
+        // we will consider clicking outside of movable area to be canceling
+        if (moved) {
+            goTo(new Choosing(this, currentPlayer));
+        } else {
+            goToPrevState();
+        }
     }
 
     @Override

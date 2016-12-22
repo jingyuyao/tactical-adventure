@@ -5,15 +5,32 @@ import com.jingyuyao.tactical.model.*;
 
 abstract class AbstractState {
     private final Map map;
+    /**
+     * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.
+     */
     private final MapState mapState;
     private final Turn turn;
     private final Markings markings;
     private final AbstractState prevState;
 
+    /**
+     * Creates a new state with all of previous state's data and set {@link #prevState} of the new state
+     * to the old state.
+     */
     AbstractState(AbstractState prevState) {
         this(prevState.mapState, prevState.map, prevState.turn, prevState.markings, prevState);
     }
 
+    /**
+     * Creates a new state with the given data and set {@link #prevState} to null.
+     */
+    AbstractState(MapState mapState, Map map, Turn turn, Markings markings) {
+        this(mapState, map, turn, markings, null);
+    }
+
+    /**
+     * Creates a new state with the given data.
+     */
     AbstractState(MapState mapState, Map map, Turn turn, Markings markings, AbstractState prevState) {
         this.map = map;
         this.mapState = mapState;
@@ -35,11 +52,11 @@ abstract class AbstractState {
     }
 
     void goTo(AbstractState newState) {
-        mapState.changeState(newState);
+        mapState.changeStateTo(newState);
     }
 
     void goToPrevState() {
-        // TODO: retrace path or let moving state handle it?
+        canceled();
         goTo(prevState);
     }
 
@@ -50,6 +67,17 @@ abstract class AbstractState {
      * which won't be re-instantiated.
      */
     abstract void enter();
+
+    /**
+     * Called when this state is canceled by going to previous state.
+     * Do NOT change state in this method.
+     */
+    abstract void canceled();
+
+    /**
+     * Called when this state exits.
+     */
+    abstract void exit();
 
     abstract void select(Player player);
 
