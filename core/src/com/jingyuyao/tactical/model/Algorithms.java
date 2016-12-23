@@ -1,13 +1,15 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.*;
 
 import java.util.*;
 import java.util.Map;
 
+/**
+ * Functions should return immutable objects.
+ */
 class Algorithms {
     static final int NO_EDGE = -1;
 
@@ -91,8 +93,8 @@ class Algorithms {
             return ImmutableList.of();
         }
 
-        List<Coordinate> path = new ArrayList<Coordinate>();
-        path.add(target);
+        ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
+        builder.add(target);
 
         Set<Coordinate> predecessors = graph.predecessors(target);
         while (predecessors.size() != 0) {
@@ -101,12 +103,11 @@ class Algorithms {
                     "findPathTo encountered a node with multiple predecessors"
             );
             Coordinate predecessor = predecessors.iterator().next();
-            path.add(predecessor);
+            builder.add(predecessor);
             predecessors = graph.predecessors(predecessor);
         }
 
-        Collections.reverse(path);
-        return ImmutableList.copyOf(path);
+        return builder.build().reverse();
     }
 
     /**
@@ -114,29 +115,29 @@ class Algorithms {
      *
      * @param grid The grid the coordinate is contained in, used to find neighbors
      */
-    static Collection<Coordinate> findNDistanceAway(
+    static ImmutableList<Coordinate> findNDistanceAway(
             Grid<?> grid,
             Coordinate startingCoordinate,
             int distance
     ) {
-        Collection<Coordinate> nDistanceAway = new ArrayList<Coordinate>();
-        findNDistanceAway(grid, startingCoordinate, distance, nDistanceAway);
-        return  nDistanceAway;
+        ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
+        findNDistanceAway(grid, startingCoordinate, distance, builder);
+        return builder.build();
     }
 
     private static void findNDistanceAway(
         Grid<?> grid,
         Coordinate currentCoordinate,
         int distanceRemaining,
-        Collection<Coordinate> accumulator
+        ImmutableList.Builder<Coordinate> builder
     ) {
         if (distanceRemaining == 0) {
-            accumulator.add(currentCoordinate);
+            builder.add(currentCoordinate);
             return;
         }
 
         for (Coordinate neighbor : grid.getNeighbors(currentCoordinate)) {
-            findNDistanceAway(grid, neighbor, distanceRemaining-1, accumulator);
+            findNDistanceAway(grid, neighbor, distanceRemaining-1, builder);
         }
     }
 

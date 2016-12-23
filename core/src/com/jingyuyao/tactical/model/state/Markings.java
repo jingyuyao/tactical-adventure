@@ -1,11 +1,14 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Character;
+import com.jingyuyao.tactical.model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Contains all the objects that requires markings.
@@ -29,8 +32,8 @@ class Markings {
         showImmediateTargets = false;
     }
 
-    Collection<Character> getMarkedEnemies() {
-        return markedEnemies;
+    ImmutableSet<Character> getMarkedEnemies() {
+        return ImmutableSet.copyOf(markedEnemies);
     }
 
     void markPlayer(Player player, boolean immediateTargets) {
@@ -71,7 +74,7 @@ class Markings {
         }
 
         if (markedPlayer != null) {
-            Collection<Coordinate> targets;
+            Set<Coordinate> targets;
             if (showImmediateTargets) {
                 targets = map.getTargetsFrom(markedPlayer, markedPlayer.getCoordinate());
             } else {
@@ -79,7 +82,7 @@ class Markings {
                 for (Coordinate coordinate : moveGraph.nodes()) {
                     map.getTerrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
                 }
-                targets = map.getAllTargets(markedPlayer);
+                targets = new HashSet<Coordinate>(map.getAllTargets(markedPlayer));
                 targets.removeAll(moveGraph.nodes());
             }
             for (Coordinate target : targets) {

@@ -4,10 +4,13 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Observable;
 
 public class Map extends Observable {
     private final int width;
@@ -35,6 +38,7 @@ public class Map extends Observable {
         return terrains;
     }
 
+    // TODO: make this immutable
     public Collection<Character> getCharacters() {
         return characters;
     }
@@ -104,30 +108,30 @@ public class Map extends Observable {
                 character.getMovementDistance());
     }
 
-    public Collection<Coordinate> getAllTargets(Character character) {
+    public ImmutableSet<Coordinate> getAllTargets(Character character) {
         Graph<Coordinate> moveTerrains = getMoveGraph(character);
-        Collection<Coordinate> targets = new HashSet<Coordinate>();
+        ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
         for (Coordinate terrain : moveTerrains.nodes()) {
-            targets.addAll(getTargetsFrom(character, terrain));
+            builder.addAll(getTargetsFrom(character, terrain));
         }
-        return targets;
+        return builder.build();
     }
 
-    public Collection<Coordinate> getTargetsFrom(Character character, Coordinate from) {
-        Collection<Coordinate> targets = new HashSet<Coordinate>();
+    public ImmutableSet<Coordinate> getTargetsFrom(Character character, Coordinate from) {
+        ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
         for (Weapon weapon : character.getWeapons()) {
-            targets.addAll(getTargetsForWeapon(weapon, from));
+            builder.addAll(getTargetsForWeapon(weapon, from));
         }
-        return targets;
+        return builder.build();
     }
 
-    public Collection<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
-        Collection<Coordinate> targets = new HashSet<Coordinate>();
+    public ImmutableSet<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
+        ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
             // TODO: modify algorithm so it doesn't "backtrack"
-            targets.addAll(Algorithms.findNDistanceAway(getTerrains(), from, distance));
+            builder.addAll(Algorithms.findNDistanceAway(getTerrains(), from, distance));
         }
-        return targets;
+        return builder.build();
     }
 
     /**
@@ -147,14 +151,14 @@ public class Map extends Observable {
         return Optional.fromNullable(currentBestTerrain);
     }
 
-    public Collection<Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
-        Collection<Weapon> weaponsForThisTarget = new ArrayList<Weapon>();
+    public ImmutableList<Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
+        ImmutableList.Builder<Weapon> builder = new ImmutableList.Builder<Weapon>();
         for (Weapon weapon : character.getWeapons()) {
             if (getTargetsForWeapon(weapon, from).contains(target)) {
-                weaponsForThisTarget.add(weapon);
+                builder.add(weapon);
             }
         }
-        return weaponsForThisTarget;
+        return builder.build();
     }
 
     private Grid<Integer> createMovementPenaltyGrid(Character character) {

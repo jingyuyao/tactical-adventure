@@ -25,6 +25,8 @@ public class Attack extends AbstractAction {
     public void run() {
         // TODO: actual calculation time
         getState().getMap().kill(targetEnemy);
+        // TODO: oh man, we shouldn't have to remove twice...
+        getState().getMarkings().removeEnemy(targetEnemy);
         getState().getTurn().acted(attackingPlayer);
         getState().goTo(new Waiting(getState()));
     }
