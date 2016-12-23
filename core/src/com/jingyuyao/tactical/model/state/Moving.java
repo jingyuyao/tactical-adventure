@@ -27,7 +27,7 @@ class Moving extends AbstractState {
 
     @Override
     void exit() {
-        getMarkings().unMarkPlayer();
+        getMarkings().unMarkLastPlayer();
     }
 
     @Override

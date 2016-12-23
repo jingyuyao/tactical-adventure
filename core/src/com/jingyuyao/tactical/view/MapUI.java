@@ -44,7 +44,6 @@ public class MapUI {
 
         buttons.space(5);
 
-        // TODO: different observers?
         map.addObserver(this.new MapObserver(map));
         mapState.addObserver(this.new MapStateObserver(mapState));
     }

@@ -39,7 +39,7 @@ class Markings {
         syncTerrainMarkers();
     }
 
-    void unMarkPlayer() {
+    void unMarkLastPlayer() {
         markedPlayer = null;
         showImmediateTargets = false;
         syncTerrainMarkers();

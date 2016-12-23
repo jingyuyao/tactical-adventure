@@ -18,7 +18,11 @@ class Choosing extends AbstractState {
     }
 
     @Override
-    void enter() {}
+    void enter() {
+        if (getMap().hasAnyImmediateTarget(currentPlayer)) {
+            getMarkings().markPlayer(currentPlayer, true);
+        }
+    }
 
     @Override
     void canceled() {
@@ -34,7 +38,9 @@ class Choosing extends AbstractState {
     }
 
     @Override
-    void exit() {}
+    void exit() {
+        getMarkings().unMarkLastPlayer();
+    }
 
     @Override
     void select(Player player) {
@@ -43,7 +49,14 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Enemy enemy) {
-        hardCancel();
+        if (getMap().canImmediateTarget(currentPlayer, enemy)) {
+            // TODO: enter battle prep
+            getMarkings().removeEnemy(enemy);
+            getMap().kill(enemy);
+            finish(currentPlayer);
+        } else {
+            hardCancel();
+        }
     }
 
     @Override
@@ -54,9 +67,6 @@ class Choosing extends AbstractState {
     @Override
     ImmutableCollection<Action> getActions() {
         ImmutableList.Builder<Action> builder = ImmutableList.builder();
-        if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            builder.add(new Attack(this, currentPlayer));
-        }
         builder.add(new Back(this));
         builder.add(new Finish(this, currentPlayer));
         // TODO: add use items action
