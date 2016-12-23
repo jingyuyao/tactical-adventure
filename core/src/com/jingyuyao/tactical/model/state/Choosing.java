@@ -8,6 +8,8 @@ import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 class Choosing extends AbstractState {
     private final Player currentPlayer;
@@ -19,8 +21,10 @@ class Choosing extends AbstractState {
 
     @Override
     void enter() {
-        if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            getMarkings().markPlayer(currentPlayer, true);
+        if (getAnimationCounter().isAnimating()) {
+            getAnimationCounter().addObserver(this.new WaitToMark());
+        } else {
+            markIfHasTarget();
         }
     }
 
@@ -71,5 +75,21 @@ class Choosing extends AbstractState {
         builder.add(new Finish(this, currentPlayer));
         // TODO: add use items action
         return builder.build();
+    }
+
+    private void markIfHasTarget() {
+        if (getMap().hasAnyImmediateTarget(currentPlayer)) {
+            getMarkings().markPlayer(currentPlayer, true);
+        }
+    }
+
+    private class WaitToMark implements Observer {
+        @Override
+        public void update(Observable observable, Object o) {
+            if (!getAnimationCounter().isAnimating()) {
+                markIfHasTarget();
+                getAnimationCounter().deleteObserver(this);
+            }
+        }
     }
 }

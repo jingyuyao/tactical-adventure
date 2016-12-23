@@ -29,7 +29,7 @@ abstract class MapActor<T extends MapObject> extends Actor implements Observer {
         return object;
     }
 
-    public AnimationCounter getAnimationCounter() {
+    AnimationCounter getAnimationCounter() {
         return animationCounter;
     }
 }

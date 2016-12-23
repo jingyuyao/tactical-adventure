@@ -4,12 +4,13 @@ import com.google.common.collect.ImmutableCollection;
 import com.jingyuyao.tactical.model.*;
 
 abstract class AbstractState {
-    private final Map map;
     /**
      * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.
      */
     private final MapState mapState;
+    private final Map map;
     private final Turn turn;
+    private final AnimationCounter animationCounter;
     private final Markings markings;
     private final AbstractState prevState;
 
@@ -18,23 +19,38 @@ abstract class AbstractState {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState.mapState, prevState.map, prevState.turn, prevState.markings, prevState);
+        this(
+                prevState.mapState,
+                prevState.map,
+                prevState.turn,
+                prevState.animationCounter,
+                prevState.markings,
+                prevState
+        );
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(MapState mapState, Map map, Turn turn, Markings markings) {
-        this(mapState, map, turn, markings, null);
+    AbstractState(MapState mapState, Map map, Turn turn, AnimationCounter animationCounter, Markings markings) {
+        this(mapState, map, turn, animationCounter, markings,  null);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    AbstractState(MapState mapState, Map map, Turn turn, Markings markings, AbstractState prevState) {
+    private AbstractState(
+            MapState mapState,
+            Map map,
+            Turn turn,
+            AnimationCounter animationCounter,
+            Markings markings,
+            AbstractState prevState
+    ) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
+        this.animationCounter = animationCounter;
         this.markings = markings;
         this.prevState = prevState;
     }
@@ -49,6 +65,10 @@ abstract class AbstractState {
 
     Turn getTurn() {
         return turn;
+    }
+
+    AnimationCounter getAnimationCounter() {
+        return animationCounter;
     }
 
     void goTo(AbstractState newState) {

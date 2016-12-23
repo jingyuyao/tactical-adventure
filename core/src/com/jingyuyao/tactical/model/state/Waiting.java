@@ -8,8 +8,8 @@ class Waiting extends AbstractState {
     /**
      * Used to create the initial state.
      */
-    Waiting(MapState mapState, Map map, Turn turn, Markings markings) {
-        super(mapState, map, turn, markings);
+    Waiting(MapState mapState, Map map, Turn turn, AnimationCounter animationCounter, Markings markings) {
+        super(mapState, map, turn, animationCounter, markings);
     }
 
     Waiting(AbstractState prevState) {
