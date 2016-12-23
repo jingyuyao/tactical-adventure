@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.controller.MapActorController;
-import com.jingyuyao.tactical.model.*;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.Enemy;
+import com.jingyuyao.tactical.model.Level;
+import com.jingyuyao.tactical.model.Player;
+import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.HashMap;
 
@@ -42,35 +44,35 @@ class ActorFactory {
         typeColorMap.put(Enemy.class, Color.RED);
     }
 
-    Actor create(Map map, MapState mapState, Player player) {
+    Actor create(Level level, Player player) {
         return new PlayerActor(
                 player,
-                mapState,
                 ACTOR_SIZE,
+                level.getAnimationCounter(),
                 new Sprite(assetManager.get("sprites/" + player.getName() + ".png", Texture.class)),
                 typeColorMap.get(player.getClass()),
-                new MapActorController(map, mapState, player, ACTOR_SIZE)
+                new MapActorController(level.getMap(), level.getMapState(), player, ACTOR_SIZE)
         );
     }
 
-    Actor create(Map map, MapState mapState, Enemy enemy) {
+    Actor create(Level level, Enemy enemy) {
         return new CharacterActor<Enemy>(
                 enemy,
-                mapState,
                 ACTOR_SIZE,
+                level.getAnimationCounter(),
                 new Sprite(assetManager.get("sprites/" + enemy.getName() + ".png", Texture.class)),
                 typeColorMap.get(enemy.getClass()),
-                new MapActorController(map, mapState, enemy, ACTOR_SIZE)
+                new MapActorController(level.getMap(), level.getMapState(), enemy, ACTOR_SIZE)
         );
     }
 
-    Actor create(Map map, MapState mapState, Terrain terrain) {
+    Actor create(Level level, Terrain terrain) {
         return new TerrainActor(
                 terrain,
-                mapState,
                 ACTOR_SIZE,
+                level.getAnimationCounter(),
                 markerSpriteMap,
-                new MapActorController(map, mapState, terrain, ACTOR_SIZE)
+                new MapActorController(level.getMap(), level.getMapState(), terrain, ACTOR_SIZE)
         );
     }
 }

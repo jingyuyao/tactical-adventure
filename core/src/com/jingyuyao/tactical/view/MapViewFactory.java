@@ -9,8 +9,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jingyuyao.tactical.Assets;
-import com.jingyuyao.tactical.model.*;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.Enemy;
+import com.jingyuyao.tactical.model.Level;
+import com.jingyuyao.tactical.model.Player;
+import com.jingyuyao.tactical.model.Terrain;
 
 /**
  * Not the cleanest approach but at least {@link MapView} can now receive injections via this class.
@@ -32,27 +34,27 @@ class MapViewFactory {
     /**
      * Creates a {@link MapView} from the given map and adds all actors to the stage.
      */
-    MapView create(TiledMap tiledMap, Map map, MapState mapState) {
+    MapView create(TiledMap tiledMap, Level level) {
         OrthographicCamera camera = new OrthographicCamera();
         FitViewport viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
         Stage world = new Stage(viewport);
 
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Terrain terrain = map.getTerrains().get(x, y);
-                world.addActor(actorFactory.create(map, mapState, terrain));
+        for (int x = 0; x < level.getMap().getWidth(); x++) {
+            for (int y = 0; y < level.getMap().getHeight(); y++) {
+                Terrain terrain = level.getMap().getTerrains().get(x, y);
+                world.addActor(actorFactory.create(level, terrain));
             }
         }
 
         // Characters must be added after terrain so they get hit by touch input
-        for (Player player : map.getPlayers()) {
-            world.addActor(actorFactory.create(map, mapState, player));
+        for (Player player : level.getMap().getPlayers()) {
+            world.addActor(actorFactory.create(level, player));
         }
-        for (Enemy enemy : map.getEnemies()) {
-            world.addActor(actorFactory.create(map, mapState, enemy));
+        for (Enemy enemy : level.getMap().getEnemies()) {
+            world.addActor(actorFactory.create(level, enemy));
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(map, world, mapRenderer, highlightSprite);
+        return new MapView(level.getMap(), world, mapRenderer, highlightSprite);
     }
 }

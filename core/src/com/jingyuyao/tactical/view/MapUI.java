@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -12,6 +13,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MapUI {
+    private final MapState mapState;
     private final Skin skin;
     private final Stage ui;
     private final Table root;
@@ -19,7 +21,8 @@ public class MapUI {
     private final Label state;
     private final VerticalGroup buttons;
 
-    MapUI(Map map, MapState mapState, Skin skin) {
+    MapUI(Map map, MapState mapState, AnimationCounter animationCounter, Skin skin) {
+        this.mapState = mapState;
         this.skin = skin;
         ui = new Stage();
         root = new Table();
@@ -45,7 +48,8 @@ public class MapUI {
         buttons.space(5);
 
         map.addObserver(this.new MapObserver(map));
-        mapState.addObserver(this.new MapStateObserver(mapState));
+        mapState.addObserver(this.new MapStateObserver());
+        animationCounter.addObserver(this.new AnimationCounterObserver(animationCounter));
     }
 
     public Stage getUi() {
@@ -68,6 +72,23 @@ public class MapUI {
         ui.dispose();
     }
 
+    private void populateButtons() {
+        for (Action action : mapState.getActions()) {
+            buttons.addActor(createActionButton(action));
+        }
+    }
+
+    private TextButton createActionButton(final Action action) {
+        TextButton button = new TextButton(action.getName(), skin);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                action.run();
+            }
+        });
+        return button;
+    }
+
     private class MapObserver implements Observer {
         private final Map map;
 
@@ -82,34 +103,28 @@ public class MapUI {
     }
 
     private class MapStateObserver implements Observer {
-        private final MapState mapState;
-
-        private MapStateObserver(MapState mapState) {
-            this.mapState = mapState;
-            update(null, null);
-        }
-
         @Override
         public void update(Observable observable, Object o) {
             state.setText(mapState.getStateName());
 
             buttons.clear();
-            if (!mapState.isAnimating()) {
-                for (Action action : mapState.getActions()) {
-                    buttons.addActor(createActionButton(action));
-                }
-            }
+            populateButtons();
+        }
+    }
+
+    private class AnimationCounterObserver implements Observer {
+        private final AnimationCounter animationCounter;
+
+        private AnimationCounterObserver(AnimationCounter animationCounter) {
+            this.animationCounter = animationCounter;
         }
 
-        private TextButton createActionButton(final Action action) {
-            TextButton button = new TextButton(action.getName(), skin);
-            button.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    action.run();
-                }
-            });
-            return button;
+        @Override
+        public void update(Observable observable, Object o) {
+            buttons.clear();
+            if (!animationCounter.isAnimating()) {
+                populateButtons();
+            }
         }
     }
 }

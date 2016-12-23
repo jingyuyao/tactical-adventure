@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.MapObject;
-import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.Observer;
 
@@ -15,11 +15,11 @@ import java.util.Observer;
  */
 abstract class MapActor<T extends MapObject> extends Actor implements Observer {
     private final T object;
-    private final MapState mapState;
+    private final AnimationCounter animationCounter;
 
-    MapActor(T object, MapState mapState, float size, EventListener listener) {
+    MapActor(T object, float size, AnimationCounter animationCounter, EventListener listener) {
         this.object = object;
-        this.mapState = mapState;
+        this.animationCounter = animationCounter;
         setBounds(object.getCoordinate().getX(), object.getCoordinate().getY(), size, size);
         object.addObserver(this);
         addListener(listener);
@@ -29,7 +29,7 @@ abstract class MapActor<T extends MapObject> extends Actor implements Observer {
         return object;
     }
 
-    MapState getMapState() {
-        return mapState;
+    public AnimationCounter getAnimationCounter() {
+        return animationCounter;
     }
 }

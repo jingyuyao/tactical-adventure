@@ -9,11 +9,13 @@ public class Level {
     private final Map map;
     private final MapState mapState;
     private final Turn turn;
+    private final AnimationCounter animationCounter;
 
-    public Level(Map map, MapState mapState, Turn turn) {
+    public Level(Map map, MapState mapState, Turn turn, AnimationCounter animationCounter) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
+        this.animationCounter = animationCounter;
     }
 
     public Map getMap() {
@@ -26,5 +28,9 @@ public class Level {
 
     public Turn getTurn() {
         return turn;
+    }
+
+    public AnimationCounter getAnimationCounter() {
+        return animationCounter;
     }
 }

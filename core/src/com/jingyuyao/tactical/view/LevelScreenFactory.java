@@ -17,8 +17,8 @@ public class LevelScreenFactory {
     }
 
     public LevelScreen createScreen(Level level, TiledMap tiledMap) {
-        MapView mapView = mapViewFactory.create(tiledMap, level.getMap(), level.getMapState());
-        MapUI mapUI = mapUIFactory.create(level.getMap(), level.getMapState());
+        MapView mapView = mapViewFactory.create(tiledMap, level);
+        MapUI mapUI = mapUIFactory.create(level);
         return new LevelScreen(game, level, mapView, mapUI);
     }
 }

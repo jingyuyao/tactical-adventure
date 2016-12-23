@@ -3,8 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.jingyuyao.tactical.Assets;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.Level;
 
 class MapUIFactory {
     private final AssetManager assetManager;
@@ -13,7 +12,12 @@ class MapUIFactory {
         this.assetManager = assetManager;
     }
 
-    MapUI create(Map map, MapState mapState) {
-        return new MapUI(map, mapState, assetManager.get(Assets.SKIN, Skin.class));
+    MapUI create(Level level) {
+        return new MapUI(
+                level.getMap(),
+                level.getMapState(),
+                level.getAnimationCounter(),
+                assetManager.get(Assets.SKIN, Skin.class)
+        );
     }
 }

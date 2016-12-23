@@ -11,43 +11,34 @@ import java.util.Observable;
  */
 // TODO: This class needs to be thoroughly tested
 public class MapState extends Observable {
+    private final AnimationCounter animationCounter;
     private AbstractState state;
-    private boolean animating = false;
 
-    public MapState(Map map, Turn turn) {
+    public MapState(Map map, Turn turn, AnimationCounter animationCounter) {
+        this.animationCounter = animationCounter;
         state = new Waiting(this, map, turn, new Markings(map));
-    }
-
-    public boolean isAnimating() {
-        return animating;
-    }
-
-    public void setAnimating(boolean animating) {
-        this.animating = animating;
-        setChanged();
-        notifyObservers();
     }
 
     public ImmutableCollection<Action> getActions() {
         // Don't expose actions since they can change state
-        if (animating) {
+        if (animationCounter.isAnimating()) {
             return ImmutableList.of();
         }
         return state.getActions();
     }
 
     public void select(Player player) {
-        if (animating) return;
+        if (animationCounter.isAnimating()) return;
         state.select(player);
     }
 
     public void select(Enemy enemy) {
-        if (animating) return;
+        if (animationCounter.isAnimating()) return;
         state.select(enemy);
     }
 
     public void select(Terrain terrain) {
-        if (animating) return;
+        if (animationCounter.isAnimating()) return;
         state.select(terrain);
     }
 
