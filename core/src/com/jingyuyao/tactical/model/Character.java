@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,8 +56,8 @@ public abstract class Character extends MapObject {
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
     }
 
-    Set<Terrain.Type> getCanCrossTerrainTypes() {
-        return canCrossTerrainTypes;
+    ImmutableSet<Terrain.Type> getCanCrossTerrainTypes() {
+        return ImmutableSet.copyOf(canCrossTerrainTypes);
     }
 
     int getMovementDistance() {

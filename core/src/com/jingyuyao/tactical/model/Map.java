@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
@@ -38,16 +37,15 @@ public class Map extends Observable {
         return terrains;
     }
 
-    // TODO: make this immutable
-    public List<Character> getCharacters() {
-        return characters;
+    public void addCharacter(Character character) {
+        characters.add(character);
     }
 
-    public ImmutableCollection<Player> getPlayers() {
+    public ImmutableList<Player> getPlayers() {
         return getSubtypeCharacters(Player.class);
     }
 
-    public ImmutableCollection<Enemy> getEnemies() {
+    public ImmutableList<Enemy> getEnemies() {
         return getSubtypeCharacters(Enemy.class);
     }
 
@@ -62,7 +60,7 @@ public class Map extends Observable {
     }
 
     public void kill(Character character) {
-        getCharacters().remove(character);
+        characters.remove(character);
         character.die();
     }
 
@@ -85,7 +83,7 @@ public class Map extends Observable {
      * Return whether {@code from} has anything it can target from its current position.
      */
     public boolean hasAnyImmediateTarget(Character from) {
-        for (Character to : getCharacters()) {
+        for (Character to : characters) {
             if (canImmediateTarget(from, to)) {
                 return true;
             }
@@ -171,7 +169,7 @@ public class Map extends Observable {
             }
         }
 
-        for (Character blocked : getCharacters()) {
+        for (Character blocked : characters) {
             movementPenaltyGrid.set(blocked.getCoordinate(), Algorithms.NO_EDGE);
         }
 
@@ -179,9 +177,9 @@ public class Map extends Observable {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Character> ImmutableCollection<T> getSubtypeCharacters(Class<T> cls) {
+    private <T extends Character> ImmutableList<T> getSubtypeCharacters(Class<T> cls) {
         ImmutableList.Builder<T> builder = new ImmutableList.Builder<T>();
-        for (Character character : getCharacters()) {
+        for (Character character : characters) {
             if (Objects.equal(character.getClass(), cls)) {
                 builder.add((T) character);
             }
