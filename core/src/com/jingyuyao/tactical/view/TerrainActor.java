@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,11 +17,12 @@ public class TerrainActor extends MapActor<Terrain> {
 
     TerrainActor(
             Terrain object,
+            MapState mapState,
             float size,
             Map<Terrain.Marker, Sprite> markerSpriteMap,
             EventListener listener
     ) {
-        super(object, size, listener);
+        super(object, mapState, size, listener);
         this.markerSpriteMap = markerSpriteMap;
         markerSprites = new ArrayList<Sprite>();
     }

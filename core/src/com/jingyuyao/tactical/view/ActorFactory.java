@@ -45,6 +45,7 @@ class ActorFactory {
     Actor create(Map map, MapState mapState, Player player) {
         return new PlayerActor(
                 player,
+                mapState,
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + player.getName() + ".png", Texture.class)),
                 typeColorMap.get(player.getClass()),
@@ -55,6 +56,7 @@ class ActorFactory {
     Actor create(Map map, MapState mapState, Enemy enemy) {
         return new CharacterActor<Enemy>(
                 enemy,
+                mapState,
                 ACTOR_SIZE,
                 new Sprite(assetManager.get("sprites/" + enemy.getName() + ".png", Texture.class)),
                 typeColorMap.get(enemy.getClass()),
@@ -65,6 +67,7 @@ class ActorFactory {
     Actor create(Map map, MapState mapState, Terrain terrain) {
         return new TerrainActor(
                 terrain,
+                mapState,
                 ACTOR_SIZE,
                 markerSpriteMap,
                 new MapActorController(map, mapState, terrain, ACTOR_SIZE)

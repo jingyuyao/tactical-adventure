@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,12 +22,13 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
     CharacterActor(
             T object,
+            MapState mapState,
             float size,
             Sprite sprite,
             Color tint,
             EventListener listener
     ) {
-        super(object, size, listener);
+        super(object, mapState, size, listener);
         this.sprite = sprite;
         sprite.setColor(tint);
     }
@@ -66,8 +68,10 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
                     for (EventListener listener : listeners) {
                         addListener(listener);
                     }
+                    getMapState().setAnimating(false);
                 }
             }));
+            getMapState().setAnimating(true);
             addAction(moveSequence);
         }
     }

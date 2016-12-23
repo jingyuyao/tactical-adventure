@@ -94,8 +94,10 @@ public class MapUI {
             state.setText(mapState.getStateName());
 
             buttons.clear();
-            for (Action action : mapState.getActions()) {
-                buttons.addActor(createActionButton(action));
+            if (!mapState.isAnimating()) {
+                for (Action action : mapState.getActions()) {
+                    buttons.addActor(createActionButton(action));
+                }
             }
         }
 
