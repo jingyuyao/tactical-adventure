@@ -9,6 +9,9 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
+import java.util.Observable;
+import java.util.Observer;
+
 class Moving extends AbstractState {
     private final Player currentPlayer;
 
@@ -40,16 +43,24 @@ class Moving extends AbstractState {
     }
 
     @Override
-    public void select(Enemy enemy) {
+    public void select(final Enemy enemy) {
         if (getMap().canTargetAfterMove(currentPlayer, enemy)) {
             Optional<Coordinate> moveTarget = getMap().getMoveForTarget(currentPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
                 // creates an intermediate choosing state so we can backtrack here if needed
-                Choosing choosing = new Choosing(this, currentPlayer);
+                final Choosing choosing = new Choosing(this, currentPlayer);
                 getMap().moveIfAble(currentPlayer, moveTarget.get());
                 goTo(choosing);
-                // TODO: Does this affect animation?
-                choosing.select(enemy);
+                // TODO: Clean me
+                getAnimationCounter().addObserver(new Observer() {
+                    @Override
+                    public void update(Observable observable, Object o) {
+                        if (!getAnimationCounter().isAnimating()) {
+                            choosing.select(enemy);
+                            getAnimationCounter().deleteObserver(this);
+                        }
+                    }
+                });
             } else {
                 hardCancel();
             }
