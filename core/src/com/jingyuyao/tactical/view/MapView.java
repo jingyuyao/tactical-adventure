@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.MapObject;
 
 import java.util.Observable;
 import java.util.Observer;

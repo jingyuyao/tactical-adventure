@@ -2,7 +2,10 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.Enemy;
+import com.jingyuyao.tactical.model.Player;
+import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.Weapon;
 
 import java.util.Collection;
 
