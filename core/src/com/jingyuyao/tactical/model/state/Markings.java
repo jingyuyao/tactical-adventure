@@ -6,8 +6,8 @@ import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,7 +19,7 @@ class Markings {
     /**
      * We will highlight all the danger areas of the selection enemies.
      */
-    private final Collection<Character> markedEnemies;
+    private final List<Character> markedEnemies;
     /**
      * Can be null.
      */
@@ -67,8 +67,7 @@ class Markings {
         clearAllMarkers();
 
         for (Character enemy : markedEnemies) {
-            Collection<Coordinate> dangerTargets = map.getAllTargets(enemy);
-            for (Coordinate target : dangerTargets) {
+            for (Coordinate target : map.getAllTargets(enemy)) {
                 map.getTerrains().get(target).addMarker(Terrain.Marker.DANGER);
             }
         }

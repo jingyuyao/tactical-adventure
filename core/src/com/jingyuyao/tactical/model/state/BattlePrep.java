@@ -7,8 +7,6 @@ import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.model.Weapon;
 
-import java.util.Collection;
-
 class BattlePrep extends AbstractState {
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
@@ -52,7 +50,7 @@ class BattlePrep extends AbstractState {
     @Override
     ImmutableCollection<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-        Collection<Weapon> availableWeapons =
+        ImmutableList<Weapon> availableWeapons =
                 getMap().getWeaponsForTarget(
                         attackingPlayer, attackingPlayer.getCoordinate(), targetEnemy.getCoordinate());
         for (Weapon weapon : availableWeapons) {

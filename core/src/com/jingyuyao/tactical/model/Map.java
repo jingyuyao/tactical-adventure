@@ -9,13 +9,13 @@ import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Observable;
 
 public class Map extends Observable {
     private final int width;
     private final int height;
-    private final Collection<Character> characters;
+    private final List<Character> characters;
     private final Grid<Terrain> terrains;
     private MapObject highlight;
 
@@ -39,7 +39,7 @@ public class Map extends Observable {
     }
 
     // TODO: make this immutable
-    public Collection<Character> getCharacters() {
+    public List<Character> getCharacters() {
         return characters;
     }
 
@@ -140,9 +140,9 @@ public class Map extends Observable {
     public Optional<Coordinate> getMoveForTarget(Character character, Coordinate target) {
         Graph<Coordinate> moveGraph = getMoveGraph(character);
         Coordinate currentBestTerrain = null;
-        Collection<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
+        List<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
         for (Coordinate source : moveGraph.nodes()) {
-            Collection<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
+            List<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
             if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
                 currentMaxWeapons = weaponsForThisTerrain;
                 currentBestTerrain = source;

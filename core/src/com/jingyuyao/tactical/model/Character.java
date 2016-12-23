@@ -5,8 +5,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Character extends MapObject {
@@ -15,7 +15,7 @@ public abstract class Character extends MapObject {
      */
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
-    private final Collection<Weapon> weapons;
+    private final List<Weapon> weapons;
     private ImmutableList<Coordinate> lastPath;
     private int movementDistance;
 
@@ -38,8 +38,8 @@ public abstract class Character extends MapObject {
         return name;
     }
 
-    public Collection<Weapon> getWeapons() {
-        return weapons;
+    public ImmutableList<Weapon> getWeapons() {
+        return ImmutableList.copyOf(weapons);
     }
 
     public ImmutableList<Coordinate> getLastPath() {

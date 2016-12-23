@@ -1,7 +1,8 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class Grid<T> {
      * Order of returned neighbors is randomized.
      * @return Randomized list of neighbors
      */
-    public Collection<Coordinate> getNeighbors(int x, int y) {
+    public ImmutableList<Coordinate> getNeighbors(int x, int y) {
         List<Coordinate> neighbors = new ArrayList<Coordinate>(4);
 
         if (x > 0) {
@@ -87,13 +88,13 @@ public class Grid<T> {
 
         Collections.shuffle(neighbors);
 
-        return neighbors;
+        return ImmutableList.copyOf(neighbors);
     }
 
     /**
      * <see>{@link #getNeighbors(int, int)}</see>
      */
-    public Collection<Coordinate> getNeighbors(Coordinate coordinate) {
+    public ImmutableList<Coordinate> getNeighbors(Coordinate coordinate) {
         return getNeighbors(coordinate.getX(), coordinate.getY());
     }
 }
