@@ -30,15 +30,7 @@ class Choosing extends AbstractState {
 
     @Override
     void canceled() {
-        // TODO: clean me up
-        Collection<Coordinate> lastPath = currentPlayer.getLastPath();
-        if (lastPath.size() > 1) {
-            Coordinate previousCoordinate = lastPath.iterator().next();
-            if (!previousCoordinate.equals(currentPlayer.getCoordinate())) {
-                getMap().moveIfAble(currentPlayer, previousCoordinate);
-                currentPlayer.getLastPath().clear();
-            }
-        }
+        currentPlayer.moveBack();
     }
 
     @Override
@@ -54,10 +46,7 @@ class Choosing extends AbstractState {
     @Override
     void select(Enemy enemy) {
         if (getMap().canImmediateTarget(currentPlayer, enemy)) {
-            // TODO: enter battle prep
-            getMarkings().removeEnemy(enemy);
-            getMap().kill(enemy);
-            finish(currentPlayer);
+            goTo(new BattlePrep(this, currentPlayer, enemy));
         } else {
             hardCancel();
         }

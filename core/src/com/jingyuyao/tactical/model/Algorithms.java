@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.graph.*;
 
 import java.util.*;
@@ -84,9 +86,9 @@ class Algorithms {
      * @return A path to {@code target} from the first node in the graph or an empty collection if target is
      * not in the graph
      */
-    static Collection<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
+    static ImmutableList<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
         if (!graph.nodes().contains(target)) {
-            return Collections.emptyList();
+            return ImmutableList.of();
         }
 
         List<Coordinate> path = new ArrayList<Coordinate>();
@@ -104,7 +106,7 @@ class Algorithms {
         }
 
         Collections.reverse(path);
-        return path;
+        return ImmutableList.copyOf(path);
     }
 
     /**

@@ -69,7 +69,7 @@ public class Map extends Observable {
      */
     public boolean moveIfAble(Character character, Coordinate target) {
         Graph<Coordinate> pathGraph = getMoveGraph(character);
-        Collection<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, target);
+        ImmutableList<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, target);
         if (!pathToCoordinate.isEmpty()) {
             character.moveTo(target.getX(), target.getY(), pathToCoordinate);
             return true;

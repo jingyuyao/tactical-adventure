@@ -2,6 +2,8 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +17,7 @@ public abstract class Character extends MapObject {
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
     private final Collection<Weapon> weapons;
-    private final Collection<Coordinate> lastPath;
+    private ImmutableList<Coordinate> lastPath;
     private int movementDistance;
 
     private boolean dead;
@@ -24,7 +26,7 @@ public abstract class Character extends MapObject {
         super(x, y);
         this.name = name;
         this.movementDistance = movementDistance;
-        lastPath = new ArrayList<Coordinate>();
+        lastPath = ImmutableList.of();
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
         dead = false;
         // TODO: remove me
@@ -41,7 +43,7 @@ public abstract class Character extends MapObject {
         return weapons;
     }
 
-    public Collection<Coordinate> getLastPath() {
+    public ImmutableList<Coordinate> getLastPath() {
         return lastPath;
     }
 
@@ -62,11 +64,22 @@ public abstract class Character extends MapObject {
         return movementDistance;
     }
 
-    void moveTo(int x, int y, Collection<Coordinate> pathToCoordinate) {
+    void moveTo(int x, int y, ImmutableList<Coordinate> pathToCoordinate) {
         Preconditions.checkNotNull(pathToCoordinate);
-        lastPath.clear();
-        lastPath.addAll(pathToCoordinate);
+        lastPath = pathToCoordinate;
         setPosition(x, y);
+    }
+
+    /**
+     * Moves the {@code character} back to its previous starting point.
+     */
+    public void moveBack() {
+        if (lastPath.size() > 1) {
+            Coordinate previousCoordinate = lastPath.iterator().next();
+            if (!previousCoordinate.equals(getCoordinate())) {
+                moveTo(previousCoordinate.getX(), previousCoordinate.getY(), lastPath.reverse());
+            }
+        }
     }
 
     void die() {

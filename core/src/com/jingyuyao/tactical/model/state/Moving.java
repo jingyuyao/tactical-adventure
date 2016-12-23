@@ -44,11 +44,12 @@ class Moving extends AbstractState {
         if (getMap().canTargetAfterMove(currentPlayer, enemy)) {
             Optional<Coordinate> moveTarget = getMap().getMoveForTarget(currentPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
+                // creates an intermediate choosing state so we can backtrack here if needed
+                Choosing choosing = new Choosing(this, currentPlayer);
                 getMap().moveIfAble(currentPlayer, moveTarget.get());
-                // TODO: enter battle prep
-                getMarkings().removeEnemy(enemy);
-                getMap().kill(enemy);
-                finish(currentPlayer);
+                goTo(choosing);
+                // TODO: Does this affect animation?
+                choosing.select(enemy);
             } else {
                 hardCancel();
             }
