@@ -16,6 +16,7 @@ import java.util.Set;
 // TODO: This class needs to be thoroughly tested
 class Markings {
     private final Map map;
+    private final AnimationCounter animationCounter;
     /**
      * We will highlight all the danger areas of the selection enemies.
      */
@@ -26,8 +27,9 @@ class Markings {
     private Player markedPlayer;
     private boolean showImmediateTargets;
 
-    Markings(Map map) {
+    Markings(Map map, AnimationCounter animationCounter) {
         this.map = map;
+        this.animationCounter = animationCounter;
         markedEnemies = new ArrayList<Character>();
         showImmediateTargets = false;
     }
@@ -39,31 +41,40 @@ class Markings {
     void markPlayer(Player player, boolean immediateTargets) {
         markedPlayer = player;
         showImmediateTargets = immediateTargets;
-        syncTerrainMarkers();
+        syncMarkersOnAnimationComplete();
     }
 
     void unMarkLastPlayer() {
         markedPlayer = null;
         showImmediateTargets = false;
-        syncTerrainMarkers();
+        syncMarkers();
     }
 
     void markEnemy(Enemy enemy) {
         markedEnemies.add(enemy);
-        syncTerrainMarkers();
+        syncMarkersOnAnimationComplete();
     }
 
     void unMarkEnemy(Enemy enemy) {
         markedEnemies.remove(enemy);
-        syncTerrainMarkers();
+        syncMarkers();
     }
 
     void removeEnemy(Character enemy) {
         markedEnemies.remove(enemy);
-        syncTerrainMarkers();
+        syncMarkers();
     }
 
-    private void syncTerrainMarkers() {
+    private void syncMarkersOnAnimationComplete() {
+        animationCounter.runOnceWhenNotAnimating(new Runnable() {
+            @Override
+            public void run() {
+                syncMarkers();
+            }
+        });
+    }
+
+    private void syncMarkers() {
         clearAllMarkers();
 
         for (Character enemy : markedEnemies) {

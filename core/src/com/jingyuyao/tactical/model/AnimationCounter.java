@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Preconditions;
 
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * An object that counts the current number of animations and alerts observers when total animation state changes.
@@ -32,6 +33,26 @@ public class AnimationCounter extends Observable {
         if (animations-- == 1) {
             setChanged();
             notifyObservers();
+        }
+    }
+
+    /**
+     * Run {@code runnable} immediately if there are no animation. If there are animations, wait until they
+     * finish then run {@code runnable} once.
+     */
+    public void runOnceWhenNotAnimating(final Runnable runnable) {
+        if (!isAnimating()) {
+            runnable.run();
+        } else {
+            addObserver(new Observer() {
+                @Override
+                public void update(Observable observable, Object o) {
+                    if (!isAnimating()) {
+                        runnable.run();
+                        deleteObserver(this);
+                    }
+                }
+            });
         }
     }
 }

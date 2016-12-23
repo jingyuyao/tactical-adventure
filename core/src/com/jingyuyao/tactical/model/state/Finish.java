@@ -17,7 +17,6 @@ public class Finish extends AbstractAction {
 
     @Override
     public void run() {
-        getState().getTurn().acted(currentPlayer);
-        getState().goTo(new Waiting(getState()));
+        getState().finish(currentPlayer);
     }
 }

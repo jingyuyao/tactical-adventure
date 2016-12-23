@@ -77,6 +77,7 @@ public abstract class Character extends MapObject {
         if (lastPath.size() > 1) {
             Coordinate previousCoordinate = lastPath.iterator().next();
             if (!previousCoordinate.equals(getCoordinate())) {
+                // TODO: need to empty last path after animation is complete somehow
                 moveTo(previousCoordinate.getX(), previousCoordinate.getY(), lastPath.reverse());
             }
         }

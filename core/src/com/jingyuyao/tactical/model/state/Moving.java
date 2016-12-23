@@ -9,9 +9,6 @@ import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 
-import java.util.Observable;
-import java.util.Observer;
-
 class Moving extends AbstractState {
     private final Player currentPlayer;
 
@@ -51,16 +48,7 @@ class Moving extends AbstractState {
                 final Choosing choosing = new Choosing(this, currentPlayer);
                 getMap().moveIfAble(currentPlayer, moveTarget.get());
                 goTo(choosing);
-                // TODO: Clean me
-                getAnimationCounter().addObserver(new Observer() {
-                    @Override
-                    public void update(Observable observable, Object o) {
-                        if (!getAnimationCounter().isAnimating()) {
-                            choosing.select(enemy);
-                            getAnimationCounter().deleteObserver(this);
-                        }
-                    }
-                });
+                choosing.select(enemy);
             } else {
                 hardCancel();
             }
