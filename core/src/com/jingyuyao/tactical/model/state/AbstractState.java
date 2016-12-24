@@ -88,7 +88,7 @@ abstract class AbstractState {
      */
     void hardCancel() {
         AbstractState currentState = this;
-        while (!(currentState instanceof Waiting)) {
+        while (!Waiting.class.isInstance(currentState)) {
             currentState.back();
             currentState = currentState.prevState;
         }

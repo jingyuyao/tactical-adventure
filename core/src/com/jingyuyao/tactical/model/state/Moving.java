@@ -60,9 +60,9 @@ class Moving extends AbstractState {
                     currentPlayer.moveTo(moveTarget.get(), path);
                     // creates an intermediate choosing state so we can backtrack here if needed
                     Choosing choosing = new Choosing(this, currentPlayer);
-                    BattlePrep battlePrep = new BattlePrep(choosing, currentPlayer, enemy);
+                    BattlePrepping battlePrepping = new BattlePrepping(choosing, currentPlayer, enemy);
                     goTo(choosing);
-                    goTo(battlePrep);
+                    goTo(battlePrepping);
                 }
             } else {
                 hardCancel();

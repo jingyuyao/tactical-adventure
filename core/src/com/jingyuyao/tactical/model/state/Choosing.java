@@ -37,7 +37,7 @@ class Choosing extends AbstractState {
     @Override
     void select(Enemy enemy) {
         if (getMap().canImmediateTarget(currentPlayer, enemy)) {
-            goTo(new BattlePrep(this, currentPlayer, enemy));
+            goTo(new BattlePrepping(this, currentPlayer, enemy));
         } else {
             hardCancel();
         }

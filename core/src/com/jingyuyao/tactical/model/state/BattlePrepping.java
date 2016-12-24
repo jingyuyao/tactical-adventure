@@ -7,11 +7,11 @@ import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.model.Weapon;
 
-class BattlePrep extends AbstractState {
+class BattlePrepping extends AbstractState {
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
 
-    BattlePrep(AbstractState prevState, Player attackingPlayer, Enemy targetEnemy) {
+    BattlePrepping(AbstractState prevState, Player attackingPlayer, Enemy targetEnemy) {
         super(prevState);
         this.attackingPlayer = attackingPlayer;
         this.targetEnemy = targetEnemy;
