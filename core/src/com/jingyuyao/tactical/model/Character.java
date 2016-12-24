@@ -26,6 +26,7 @@ public abstract class Character extends MapObject {
         // TODO: remove me
         weapons = new ArrayList<Weapon>();
         weapons.add(Weapon.oneDistanceWeapon());
+        weapons.add(Weapon.oneDistanceWeapon());
         weapons.add(Weapon.threeDistanceRanged());
     }
 

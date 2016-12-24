@@ -25,37 +25,50 @@ class Markings {
      * Can be null.
      */
     private Player markedPlayer;
-    private boolean showImmediateTargets;
+    private PlayerTargetMode playerTargetMode;
+    private Enemy targetEnemy;
 
     Markings(Map map, AnimationCounter animationCounter) {
         this.map = map;
         this.animationCounter = animationCounter;
         markedEnemies = new ArrayList<Character>();
-        showImmediateTargets = false;
+        playerTargetMode = PlayerTargetMode.MOVE_AND_TARGETS;
     }
 
     ImmutableSet<Character> getMarkedEnemies() {
         return ImmutableSet.copyOf(markedEnemies);
     }
 
-    void markPlayer(Player player, boolean immediateTargets) {
+    void markMoveAndTargets(Player player) {
         markedPlayer = player;
-        showImmediateTargets = immediateTargets;
+        playerTargetMode = PlayerTargetMode.MOVE_AND_TARGETS;
+        syncMarkersOnAnimationComplete();
+    }
+
+    void markImmediateTargets(Player player) {
+        markedPlayer = player;
+        playerTargetMode = PlayerTargetMode.IMMEDIATE_TARGETS;
+        syncMarkersOnAnimationComplete();
+    }
+
+    void markEnemyTarget(Player player, Enemy enemy) {
+        markedPlayer = player;
+        playerTargetMode = PlayerTargetMode.TARGET_ENEMY;
+        targetEnemy = enemy;
         syncMarkersOnAnimationComplete();
     }
 
     void unMarkLastPlayer() {
         markedPlayer = null;
-        showImmediateTargets = false;
         syncMarkers();
     }
 
-    void markEnemy(Enemy enemy) {
+    void markEnemyDangerArea(Enemy enemy) {
         markedEnemies.add(enemy);
         syncMarkersOnAnimationComplete();
     }
 
-    void unMarkEnemy(Enemy enemy) {
+    void unMarkEnemyDangerArea(Enemy enemy) {
         markedEnemies.remove(enemy);
         syncMarkers();
     }
@@ -84,16 +97,22 @@ class Markings {
         }
 
         if (markedPlayer != null) {
-            Set<Coordinate> targets;
-            if (showImmediateTargets) {
-                targets = map.getTargetsFrom(markedPlayer, markedPlayer.getCoordinate());
-            } else {
-                Graph<Coordinate> moveGraph = map.getMoveGraph(markedPlayer);
-                for (Coordinate coordinate : moveGraph.nodes()) {
-                    map.getTerrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
-                }
-                targets = new HashSet<Coordinate>(map.getAllTargets(markedPlayer));
-                targets.removeAll(moveGraph.nodes());
+            Set<Coordinate> targets = new HashSet<Coordinate>();
+            switch (playerTargetMode) {
+                case MOVE_AND_TARGETS:
+                    Graph<Coordinate> moveGraph = map.getMoveGraph(markedPlayer);
+                    for (Coordinate coordinate : moveGraph.nodes()) {
+                        map.getTerrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
+                    }
+                    targets.addAll(map.getAllTargets(markedPlayer));
+                    targets.removeAll(moveGraph.nodes());
+                    break;
+                case IMMEDIATE_TARGETS:
+                    targets = map.getTargetsFrom(markedPlayer, markedPlayer.getCoordinate());
+                    break;
+                case TARGET_ENEMY:
+                    targets.add(targetEnemy.getCoordinate());
+                    break;
             }
             for (Coordinate target : targets) {
                 map.getTerrains().get(target).addMarker(Terrain.Marker.ATTACK);
@@ -107,5 +126,11 @@ class Markings {
                 map.getTerrains().get(x, y).clearMarkers();
             }
         }
+    }
+
+    private enum PlayerTargetMode {
+        MOVE_AND_TARGETS,
+        IMMEDIATE_TARGETS,
+        TARGET_ENEMY
     }
 }

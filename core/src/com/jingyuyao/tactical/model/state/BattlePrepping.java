@@ -19,8 +19,7 @@ class BattlePrepping extends AbstractState {
 
     @Override
     void enter() {
-        // TODO: only show marking for weapons that can hit target
-        getMarkings().markPlayer(attackingPlayer, true);
+        getMarkings().markEnemyTarget(attackingPlayer, targetEnemy);
     }
 
     @Override
@@ -51,9 +50,8 @@ class BattlePrepping extends AbstractState {
     @Override
     ImmutableCollection<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-        ImmutableList<Weapon> availableWeapons =
-                getMap().getWeaponsForTarget(
-                        attackingPlayer, attackingPlayer.getCoordinate(), targetEnemy.getCoordinate());
+        ImmutableList<Weapon> availableWeapons = getMap()
+                .getWeaponsForTarget(attackingPlayer, attackingPlayer.getCoordinate(), targetEnemy.getCoordinate());
         for (Weapon weapon : availableWeapons) {
             builder.add(new Attack(this, attackingPlayer, targetEnemy, weapon));
         }

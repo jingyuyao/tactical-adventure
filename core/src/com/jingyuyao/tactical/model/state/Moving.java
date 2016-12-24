@@ -21,7 +21,7 @@ class Moving extends AbstractState {
 
     @Override
     void enter() {
-        getMarkings().markPlayer(currentPlayer, false);
+        getMarkings().markMoveAndTargets(currentPlayer);
     }
 
     @Override

@@ -35,9 +35,9 @@ class Waiting extends AbstractState {
     @Override
     public void select(Enemy enemy) {
         if (getMarkings().getMarkedEnemies().contains(enemy)) {
-            getMarkings().unMarkEnemy(enemy);
+            getMarkings().unMarkEnemyDangerArea(enemy);
         } else {
-            getMarkings().markEnemy(enemy);
+            getMarkings().markEnemyDangerArea(enemy);
         }
     }
 
