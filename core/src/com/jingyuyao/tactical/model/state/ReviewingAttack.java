@@ -7,19 +7,23 @@ import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
 import com.jingyuyao.tactical.model.Weapon;
 
-class BattlePrepping extends AbstractState {
+class ReviewingAttack extends AbstractState {
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
+    private final Weapon playerWeapon;
 
-    BattlePrepping(AbstractState prevState, Player attackingPlayer, Enemy targetEnemy) {
+    ReviewingAttack(AbstractState prevState, Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon) {
         super(prevState);
         this.attackingPlayer = attackingPlayer;
         this.targetEnemy = targetEnemy;
+        this.playerWeapon = playerWeapon;
     }
 
     @Override
     void enter() {
+        // TODO: use a different marker for each stage
         getMarkings().markEnemyTarget(attackingPlayer, targetEnemy);
+        // TODO: how do we sent info to ui?
     }
 
     @Override
@@ -49,13 +53,9 @@ class BattlePrepping extends AbstractState {
 
     @Override
     ImmutableCollection<Action> getActions() {
-        ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-        ImmutableList<Weapon> availableWeapons = getMap()
-                .getWeaponsForTarget(attackingPlayer, attackingPlayer.getCoordinate(), targetEnemy.getCoordinate());
-        for (Weapon weapon : availableWeapons) {
-            builder.add(new Attack(this, attackingPlayer, targetEnemy, weapon));
-        }
-        builder.add(new Back(this));
-        return builder.build();
+        return ImmutableList.<Action>of(
+                new Attack(this, attackingPlayer, targetEnemy, playerWeapon),
+                new Back(this)
+        );
     }
 }

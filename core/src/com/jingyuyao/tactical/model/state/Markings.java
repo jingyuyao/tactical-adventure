@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.Character;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,11 +69,6 @@ class Markings {
     }
 
     void unMarkEnemyDangerArea(Enemy enemy) {
-        markedEnemies.remove(enemy);
-        syncMarkers();
-    }
-
-    void removeEnemy(Character enemy) {
         markedEnemies.remove(enemy);
         syncMarkers();
     }
