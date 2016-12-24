@@ -18,14 +18,11 @@ public abstract class Character extends MapObject {
     private final List<Weapon> weapons;
     private int movementDistance;
 
-    private boolean dead;
-
     public Character(int x, int y, String name, int movementDistance) {
         super(x, y);
         this.name = name;
         this.movementDistance = movementDistance;
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
-        dead = false;
         // TODO: remove me
         weapons = new ArrayList<Weapon>();
         weapons.add(Weapon.oneDistanceWeapon());
@@ -38,10 +35,6 @@ public abstract class Character extends MapObject {
 
     public ImmutableList<Weapon> getWeapons() {
         return ImmutableList.copyOf(weapons);
-    }
-
-    public boolean isDead() {
-        return dead;
     }
 
     boolean canTarget(Character other) {
@@ -64,10 +57,8 @@ public abstract class Character extends MapObject {
     }
 
     void die() {
-        // oh no
-        dead = true;
         setChanged();
-        notifyObservers();
+        notifyObservers(new Dead());
         deleteObservers();
     }
 
@@ -97,4 +88,7 @@ public abstract class Character extends MapObject {
             return path;
         }
     }
+
+    // oh no
+    public static class Dead {}
 }

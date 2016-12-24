@@ -44,21 +44,15 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
     @Override
     public void update(Observable observable, Object o) {
         Character character = (Character) observable;
-        if (o != null && o instanceof Character.PositionUpdate) {
+        if (Character.PositionUpdate.class.isInstance(o)) {
             updatePosition(character, (Character.PositionUpdate) o);
+        } else if (Character.Dead.class.isInstance(o)) {
+            remove();
         }
-        updateDeath(character);
     }
 
     Sprite getSprite() {
         return sprite;
-    }
-
-    private void updateDeath(Character character) {
-        if (character.isDead()) {
-            // TODO: Do we have to deference to avoid memory leak?
-            remove();
-        }
     }
 
     private void updatePosition(Character character, Character.PositionUpdate positionUpdate) {

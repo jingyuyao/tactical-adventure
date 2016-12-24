@@ -38,7 +38,7 @@ public class MapView {
         this.highlightSprite = highlightSprite;
         highlightSprite.setBounds(0, 0, ActorFactory.ACTOR_SIZE, ActorFactory.ACTOR_SIZE);
 
-        map.addObserver(this.new MapObserver(map));
+        map.addObserver(this.new MapObserver());
     }
 
     public Stage getWorld() {
@@ -67,14 +67,9 @@ public class MapView {
     }
 
     private class MapObserver implements Observer {
-        private final Map map;
-
-        private MapObserver(Map map) {
-            this.map = map;
-        }
-
         @Override
         public void update(Observable observable, Object o) {
+            Map map = (Map) observable;
             MapObject highlighted = map.getHighlight();
             if (highlighted == null) {
                 return;
