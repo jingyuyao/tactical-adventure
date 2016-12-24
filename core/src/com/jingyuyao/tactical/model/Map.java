@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -64,19 +63,8 @@ public class Map extends Observable {
         character.die();
     }
 
-    /**
-     * Move the {@code character} to {@code target} if possible.
-     *
-     * @return whether the {@code character} moved or not
-     */
-    public boolean moveIfAble(Character character, Coordinate target) {
-        Graph<Coordinate> pathGraph = getMoveGraph(character);
-        ImmutableList<Coordinate> pathToCoordinate = Algorithms.findPathTo(pathGraph, target);
-        if (!pathToCoordinate.isEmpty()) {
-            character.moveTo(target.getX(), target.getY(), pathToCoordinate);
-            return true;
-        }
-        return false;
+    public ImmutableList<Coordinate> getPathToTarget(Character character, Coordinate target) {
+        return Algorithms.findPathTo(getMoveGraph(character), target);
     }
 
     /**
@@ -180,7 +168,7 @@ public class Map extends Observable {
     private <T extends Character> ImmutableList<T> getSubtypeCharacters(Class<T> cls) {
         ImmutableList.Builder<T> builder = new ImmutableList.Builder<T>();
         for (Character character : characters) {
-            if (Objects.equal(character.getClass(), cls)) {
+            if (cls.isInstance(character)) {
                 builder.add((T) character);
             }
         }

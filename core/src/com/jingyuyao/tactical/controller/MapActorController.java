@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.state.MapState;
  * Only dispatches clicked events if the click begins and ends over the actor.
  */
 public class MapActorController extends ClickListener {
+    // TODO: Is this GC'ed?
     private final MapObject object;
     private final MapState mapState;
     private final Map map;

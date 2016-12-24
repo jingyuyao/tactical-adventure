@@ -22,9 +22,7 @@ class Choosing extends AbstractState {
     }
 
     @Override
-    void canceled() {
-        currentPlayer.moveBack();
-    }
+    void canceled() {}
 
     @Override
     void exit() {

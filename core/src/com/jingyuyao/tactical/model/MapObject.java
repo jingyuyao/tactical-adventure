@@ -18,10 +18,13 @@ public abstract class MapObject extends Observable {
         return coordinate;
     }
 
-    public void setPosition(int x, int y) {
-        coordinate = new Coordinate(x, y);
-        setChanged();
-        notifyObservers();
+    /**
+     * Sets the coordinate of this object to the new coordinate
+     * Subclasses are responsible for notifying observers.
+     * This method is purposely set to protected to enforce the above rule.
+     */
+    protected void setCoordinate(Coordinate newCoordinate) {
+        coordinate = newCoordinate;
     }
 
     /**

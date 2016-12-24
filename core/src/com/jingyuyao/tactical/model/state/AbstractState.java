@@ -76,19 +76,22 @@ abstract class AbstractState {
     }
 
     /**
-     * Cancel then go to previous state.
+     * Cancel {@link #prevState} then {@link #goTo(AbstractState)} it
      */
     void back() {
-        canceled();
+        prevState.canceled();
         goTo(prevState);
     }
 
     /**
-     * Cancel then go to a new waiting state.
+     * Go {@link #back()} state by state until we reach a {@link Waiting} state.
      */
     void hardCancel() {
-        canceled();
-        goTo(new Waiting(this));
+        AbstractState currentState = this;
+        while (!(currentState instanceof Waiting)) {
+            currentState.back();
+            currentState = currentState.prevState;
+        }
     }
 
     /**

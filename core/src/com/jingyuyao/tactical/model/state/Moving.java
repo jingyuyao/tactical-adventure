@@ -11,10 +11,12 @@ import com.jingyuyao.tactical.model.Terrain;
 
 class Moving extends AbstractState {
     private final Player currentPlayer;
+    private ImmutableList<Coordinate> lastMovePath;
 
     Moving(AbstractState prevState, Player currentPlayer) {
         super(prevState);
         this.currentPlayer = currentPlayer;
+        lastMovePath = ImmutableList.of();
     }
 
     @Override
@@ -23,7 +25,15 @@ class Moving extends AbstractState {
     }
 
     @Override
-    void canceled() {}
+    void canceled() {
+        if (!lastMovePath.isEmpty()) {
+            Coordinate previousCoordinate = lastMovePath.iterator().next();
+            if (!previousCoordinate.equals(currentPlayer.getCoordinate())) {
+                currentPlayer.moveTo(previousCoordinate, lastMovePath.reverse());
+                lastMovePath = ImmutableList.of();
+            }
+        }
+    }
 
     @Override
     void exit() {
@@ -44,11 +54,16 @@ class Moving extends AbstractState {
         if (getMap().canTargetAfterMove(currentPlayer, enemy)) {
             Optional<Coordinate> moveTarget = getMap().getMoveForTarget(currentPlayer, enemy.getCoordinate());
             if (moveTarget.isPresent()) {
-                // creates an intermediate choosing state so we can backtrack here if needed
-                final Choosing choosing = new Choosing(this, currentPlayer);
-                getMap().moveIfAble(currentPlayer, moveTarget.get());
-                goTo(choosing);
-                choosing.select(enemy);
+                ImmutableList<Coordinate> path = getMap().getPathToTarget(currentPlayer, moveTarget.get());
+                if (!path.isEmpty()) {
+                    lastMovePath = path;
+                    currentPlayer.moveTo(moveTarget.get(), path);
+                    // creates an intermediate choosing state so we can backtrack here if needed
+                    Choosing choosing = new Choosing(this, currentPlayer);
+                    BattlePrep battlePrep = new BattlePrep(choosing, currentPlayer, enemy);
+                    goTo(choosing);
+                    goTo(battlePrep);
+                }
             } else {
                 hardCancel();
             }
@@ -59,11 +74,13 @@ class Moving extends AbstractState {
 
     @Override
     public void select(Terrain terrain) {
-        boolean moved = getMap().moveIfAble(currentPlayer, terrain.getCoordinate());
-        // we will consider clicking outside of movable area to be canceling
-        if (moved) {
+        ImmutableList<Coordinate> path = getMap().getPathToTarget(currentPlayer, terrain.getCoordinate());
+        if (!path.isEmpty()) {
+            lastMovePath = path;
+            currentPlayer.moveTo(terrain.getCoordinate(), path);
             goTo(new Choosing(this, currentPlayer));
         } else {
+            // we will consider clicking outside of movable area to be canceling
             hardCancel();
         }
     }

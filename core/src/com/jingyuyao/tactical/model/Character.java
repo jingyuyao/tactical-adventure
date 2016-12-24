@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -17,7 +16,6 @@ public abstract class Character extends MapObject {
     private final String name;
     private final Set<Terrain.Type> canCrossTerrainTypes;
     private final List<Weapon> weapons;
-    private ImmutableList<Coordinate> lastPath;
     private int movementDistance;
 
     private boolean dead;
@@ -26,7 +24,6 @@ public abstract class Character extends MapObject {
         super(x, y);
         this.name = name;
         this.movementDistance = movementDistance;
-        lastPath = ImmutableList.of();
         canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
         dead = false;
         // TODO: remove me
@@ -41,10 +38,6 @@ public abstract class Character extends MapObject {
 
     public ImmutableList<Weapon> getWeapons() {
         return ImmutableList.copyOf(weapons);
-    }
-
-    public ImmutableList<Coordinate> getLastPath() {
-        return lastPath;
     }
 
     public boolean isDead() {
@@ -64,23 +57,10 @@ public abstract class Character extends MapObject {
         return movementDistance;
     }
 
-    void moveTo(int x, int y, ImmutableList<Coordinate> pathToCoordinate) {
-        Preconditions.checkNotNull(pathToCoordinate);
-        lastPath = pathToCoordinate;
-        setPosition(x, y);
-    }
-
-    /**
-     * Moves the {@code character} back to its previous starting point.
-     */
-    public void moveBack() {
-        if (lastPath.size() > 1) {
-            Coordinate previousCoordinate = lastPath.iterator().next();
-            if (!previousCoordinate.equals(getCoordinate())) {
-                // TODO: need to empty last path after animation is complete somehow
-                moveTo(previousCoordinate.getX(), previousCoordinate.getY(), lastPath.reverse());
-            }
-        }
+    public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
+        setCoordinate(newCoordinate);
+        setChanged();
+        notifyObservers(new PositionUpdate(path));
     }
 
     void die() {
@@ -88,6 +68,7 @@ public abstract class Character extends MapObject {
         dead = true;
         setChanged();
         notifyObservers();
+        deleteObservers();
     }
 
     private static Set<Terrain.Type> createDefaultCanCrossTerrainTypes() {
@@ -103,5 +84,17 @@ public abstract class Character extends MapObject {
                 "name='" + name + '\'' +
                 ", movementDistance=" + movementDistance +
                 "} " + super.toString();
+    }
+
+    public static class PositionUpdate {
+        private final ImmutableList<Coordinate> path;
+
+        PositionUpdate(ImmutableList<Coordinate> path) {
+            this.path = path;
+        }
+
+        public ImmutableList<Coordinate> getPath() {
+            return path;
+        }
     }
 }

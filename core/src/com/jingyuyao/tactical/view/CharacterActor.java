@@ -44,7 +44,9 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
     @Override
     public void update(Observable observable, Object o) {
         Character character = (Character) observable;
-        updatePosition(character);
+        if (o != null && o instanceof Character.PositionUpdate) {
+            updatePosition(character, (Character.PositionUpdate) o);
+        }
         updateDeath(character);
     }
 
@@ -59,10 +61,10 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
         }
     }
 
-    private void updatePosition(Character character) {
+    private void updatePosition(Character character, Character.PositionUpdate positionUpdate) {
         if (getX() != character.getCoordinate().getX() || getY() != character.getCoordinate().getY()) {
             final Collection<EventListener> listeners = popAllListeners();
-            SequenceAction moveSequence = getMoveSequence(character.getLastPath());
+            SequenceAction moveSequence = getMoveSequence(positionUpdate.getPath());
             moveSequence.addAction(run(new Runnable() {
                 @Override
                 public void run() {
