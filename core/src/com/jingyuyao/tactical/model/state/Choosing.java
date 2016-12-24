@@ -31,7 +31,7 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Player player) {
-        backToWaiting();
+        goTo(new Moving(backToWaiting(), player));
     }
 
     @Override
@@ -52,7 +52,7 @@ class Choosing extends AbstractState {
     ImmutableCollection<Action> getActions() {
         ImmutableList.Builder<Action> builder = ImmutableList.builder();
         builder.add(new Back(this));
-        builder.add(new Finish(this, currentPlayer));
+        builder.add(new Done(this, currentPlayer));
         // TODO: add use items action
         return builder.build();
     }

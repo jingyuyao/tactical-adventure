@@ -97,7 +97,7 @@ abstract class AbstractState {
     /**
      * Finished acting on {@code player} and then go to a new waiting state.
      */
-    void finish(Player player) {
+    void done(Player player) {
         getTurn().acted(player);
         goTo(new Waiting(this));
     }

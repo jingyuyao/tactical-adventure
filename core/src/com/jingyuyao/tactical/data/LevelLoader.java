@@ -43,7 +43,7 @@ public class LevelLoader {
         map.addCharacter(new Player(5, 5, "john", 5));
         map.addCharacter(new Player(5, 6, "john", 6));
         map.addCharacter(new Enemy(10, 10, "billy", 3));
-        map.addCharacter(new Enemy(15, 10, "billy", 2));
+        map.addCharacter(new Enemy(11, 7, "billy", 2));
 
         return map;
     }
