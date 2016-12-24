@@ -44,7 +44,7 @@ public class TerrainActor extends MapActor<Terrain> {
 
     private void markerChange(Terrain.MarkerChange markerChange) {
         markerSprites.clear();
-        for (Terrain.Marker marker : markerChange.getNewMarkers()) {
+        for (Terrain.Marker marker : markerChange.getMarkers()) {
             markerSprites.add(markerSpriteMap.get(marker));
         }
     }

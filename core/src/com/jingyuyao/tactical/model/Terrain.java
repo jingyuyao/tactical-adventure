@@ -24,17 +24,17 @@ public class Terrain extends MapObject {
     public void addMarker(Marker marker) {
         markers.add(marker);
         setChanged();
-        notifyObservers(new MarkerChange(ImmutableSet.copyOf(markers)));
+        notifyObservers(new MarkerChange(markers));
     }
 
     public void clearMarkers() {
         markers.clear();
         setChanged();
-        notifyObservers(new MarkerChange(ImmutableSet.copyOf(markers)));
+        notifyObservers(new MarkerChange(markers));
     }
 
-    public int getMovementPenalty(Character character) {
-        if (!character.getCanCrossTerrainTypes().contains(type)) {
+    int getMovementPenalty(Character character) {
+        if (!character.canPassTerrainType(type)) {
             return Algorithms.NO_EDGE;
         }
 
@@ -75,14 +75,14 @@ public class Terrain extends MapObject {
     }
 
     public static class MarkerChange {
-        private final ImmutableSet<Marker> newMarkers;
+        private final ImmutableSet<Marker> markers;
 
-        MarkerChange(ImmutableSet<Marker> newMarkers) {
-            this.newMarkers = newMarkers;
+        MarkerChange(Set<Marker> markers) {
+            this.markers = ImmutableSet.copyOf(markers);
         }
 
-        public ImmutableSet<Marker> getNewMarkers() {
-            return newMarkers;
+        public ImmutableSet<Marker> getMarkers() {
+            return markers;
         }
     }
 }

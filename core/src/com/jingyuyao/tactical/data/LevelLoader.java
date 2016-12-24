@@ -5,8 +5,14 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.state.MapState;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class LevelLoader {
     private static final String TERRAIN_LAYER = "terrain";
@@ -40,10 +46,10 @@ public class LevelLoader {
         }
 
         // Testing
-        map.addCharacter(new Player(5, 5, "john", 5));
-        map.addCharacter(new Player(5, 6, "john", 6));
-        map.addCharacter(new Enemy(10, 10, "billy", 3));
-        map.addCharacter(new Enemy(11, 7, "billy", 2));
+        map.addCharacter(new Player(5, 5, "john", 5, normalAndObstructed(), createWeaponList1()));
+        map.addCharacter(new Player(5, 6, "john", 6, normalAndObstructed(), createWeaponList2()));
+        map.addCharacter(new Enemy(10, 10, "billy", 3, normalAndObstructed(), createWeaponList1()));
+        map.addCharacter(new Enemy(11, 7, "billy", 2, normalAndObstructed(), createWeaponList1()));
 
         return map;
     }
@@ -60,5 +66,27 @@ public class LevelLoader {
             }
         }
         return new Terrain(x, y, type);
+    }
+
+    // TODO: remove us
+    private static Set<Terrain.Type> normalAndObstructed() {
+        Set<Terrain.Type> standOnTerrainTypes = new HashSet<Terrain.Type>();
+        standOnTerrainTypes.add(Terrain.Type.NORMAL);
+        standOnTerrainTypes.add(Terrain.Type.OBSTRUCTED);
+        return standOnTerrainTypes;
+    }
+
+    private static List<Weapon> createWeaponList1() {
+        List<Weapon> weapons = new ArrayList<Weapon>();
+        weapons.add(new Weapon("Axe", ImmutableList.of(1)));
+        weapons.add(new Weapon("Sword", ImmutableList.of(1)));
+        weapons.add(new Weapon("Bow", ImmutableList.of(2)));
+        return weapons;
+    }
+
+    private static List<Weapon> createWeaponList2() {
+        List<Weapon> weapons = new ArrayList<Weapon>();
+        weapons.add(new Weapon("Bow", ImmutableList.of(2)));
+        return weapons;
     }
 }

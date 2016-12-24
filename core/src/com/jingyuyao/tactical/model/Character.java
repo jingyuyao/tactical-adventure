@@ -4,8 +4,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,20 +12,23 @@ public abstract class Character extends MapObject {
      * Used for sprites and as ID.
      */
     private final String name;
-    private final Set<Terrain.Type> canCrossTerrainTypes;
+    private final Set<Terrain.Type> passableTerrainTypes;
     private final List<Weapon> weapons;
     private int movementDistance;
 
-    public Character(int x, int y, String name, int movementDistance) {
+    Character(
+            int x,
+            int y,
+            String name,
+            int movementDistance,
+            Set<Terrain.Type> passableTerrainTypes,
+            List<Weapon> weapons
+    ) {
         super(x, y);
         this.name = name;
         this.movementDistance = movementDistance;
-        canCrossTerrainTypes = createDefaultCanCrossTerrainTypes();
-        // TODO: remove me
-        weapons = new ArrayList<Weapon>();
-        weapons.add(Weapon.oneDistanceWeapon());
-        weapons.add(Weapon.oneDistanceWeapon());
-        weapons.add(Weapon.threeDistanceRanged());
+        this.passableTerrainTypes = passableTerrainTypes;
+        this.weapons = weapons;
     }
 
     public String getName() {
@@ -43,8 +44,8 @@ public abstract class Character extends MapObject {
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
     }
 
-    ImmutableSet<Terrain.Type> getCanCrossTerrainTypes() {
-        return ImmutableSet.copyOf(canCrossTerrainTypes);
+    boolean canPassTerrainType(Terrain.Type terrainType) {
+        return passableTerrainTypes.contains(terrainType);
     }
 
     int getMovementDistance() {
@@ -67,13 +68,6 @@ public abstract class Character extends MapObject {
         setChanged();
         notifyObservers(new Dead());
         deleteObservers();
-    }
-
-    private static Set<Terrain.Type> createDefaultCanCrossTerrainTypes() {
-        Set<Terrain.Type> standOnTerrainTypes = new HashSet<Terrain.Type>();
-        standOnTerrainTypes.add(Terrain.Type.NORMAL);
-        standOnTerrainTypes.add(Terrain.Type.OBSTRUCTED);
-        return standOnTerrainTypes;
     }
 
     @Override
@@ -108,6 +102,5 @@ public abstract class Character extends MapObject {
         }
     }
 
-    // oh no
     public static class Dead {}
 }
