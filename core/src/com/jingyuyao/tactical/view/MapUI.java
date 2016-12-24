@@ -113,6 +113,7 @@ public class MapUI implements Observer {
         populateButtons();
     }
 
+    // TODO: create a nice looking widget to show this
     private void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
         attackPlan.setText(showAttackPlan.getAttackPlan().toString());
     }

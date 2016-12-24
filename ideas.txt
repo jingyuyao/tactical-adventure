@@ -1,0 +1,6 @@
+weapons
+- laser: fire a beam in a given direction, cannot move this turn when using this weapon
+- motor bomb: target an area (multiple squares), then bomb lands after X turns damage all inside, this is interesting because now we gotta bait enemies into it
+
+player state
+- instead of dying, characters go into "down" state that needed to be rescued by another character, then it can be "revived" by a medic
