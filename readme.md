@@ -25,25 +25,33 @@ https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
 # Project structure & guidelines
 The game follows MVC and uses the command pattern to communicate between different components.
 
+## Big picture
+Model is constructed by the data package.
+The model is then used to create the view which attaches observers to the model to listen for changes.
+Various controllers are also attached to the view during its creation.
+These controllers holds a reference to their model objects and relays user input to be processed by the model.
+The controllers are activated right before the screen is set to the view.
+
 ## Models
-- All model classes should not reference controllers or views.
-- All state change methods should be package private to consolidate logic within models package
+- Model classes should not reference controllers or views
 - Receive commands via method invocation from controllers
+- Notify state change to the view through the observable pattern
+  - Pass details regarding the exact change through the argument of notifyObservers()
+  - The argument should be concrete classes that the view can figure out
 
 ## Views
 - Only views should hold references to assets
-- Subscribe to commands from models
-- Set up controllers upon view creation (hum... maybe this needs to be factored out)
+- Add observers to models
+- Set up controllers upon view creation
 
 ## Controllers
 - Listen to user input
 - Issue commands to models
 
 # Development plan
-\* indicates current step
-- MVC
+- MVC 
 - path finding + moving
-- creating enemy *
+- creating enemy
 - idea of player & enemy teams
 - targeting + stub fighting
 - idea of a turn

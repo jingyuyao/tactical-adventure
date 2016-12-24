@@ -31,7 +31,7 @@ public class TacticalAdventure extends Game {
         TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
         Level level = LevelLoader.loadLevel(tiledMap);
         LevelScreen levelScreen = levelScreenFactory.createScreen(level, tiledMap);
-        LevelController.initiateControl(levelScreen);
+        LevelController.initiateControl(levelScreen, level);
         setScreen(levelScreen);
     }
 }

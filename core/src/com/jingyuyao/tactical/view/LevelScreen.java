@@ -47,10 +47,6 @@ public class LevelScreen extends ScreenAdapter {
         mapUI.dispose();
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
     public MapView getMapView() {
         return mapView;
     }
