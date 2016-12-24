@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 
 import java.util.Observable;
@@ -20,10 +19,6 @@ public class MapState extends Observable {
     }
 
     public ImmutableCollection<Action> getActions() {
-        // Don't expose actions since they can change state
-        if (animationCounter.isAnimating()) {
-            return ImmutableList.of();
-        }
         return state.getActions();
     }
 
@@ -42,11 +37,6 @@ public class MapState extends Observable {
         state.select(terrain);
     }
 
-    // Testing
-    public String getStateName() {
-        return state.getClass().getSimpleName();
-    }
-
     /**
      * Changes state to {@code newState} if it is not null.
      */
@@ -57,7 +47,25 @@ public class MapState extends Observable {
             state = newState;
 
             setChanged();
-            notifyObservers();
+            notifyObservers(new StateChange(state.getClass().getSimpleName(), state.getActions()));
+        }
+    }
+
+    public static class StateChange {
+        private final String stateName;
+        private final ImmutableCollection<Action> actions;
+
+        StateChange(String stateName, ImmutableCollection<Action> actions) {
+            this.stateName = stateName;
+            this.actions = actions;
+        }
+
+        public String getStateName() {
+            return stateName;
+        }
+
+        public ImmutableCollection<Action> getActions() {
+            return actions;
         }
     }
 }

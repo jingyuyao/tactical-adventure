@@ -9,20 +9,21 @@ import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
 
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MapUI {
-    private final MapState mapState;
+public class MapUI implements Observer {
     private final Skin skin;
     private final Stage ui;
     private final Table root;
     private final Label highlight;
     private final Label state;
     private final VerticalGroup buttons;
+    private Collection<Action> currentActions;
+    private boolean showButtons = true;
 
     MapUI(Map map, MapState mapState, AnimationCounter animationCounter, Skin skin) {
-        this.mapState = mapState;
         this.skin = skin;
         ui = new Stage();
         root = new Table();
@@ -47,12 +48,13 @@ public class MapUI {
 
         buttons.space(5);
 
-        map.addObserver(this.new MapObserver(map));
-        mapState.addObserver(this.new MapStateObserver());
-        animationCounter.addObserver(this.new AnimationCounterObserver(animationCounter));
+        map.addObserver(this);
+        mapState.addObserver(this);
+        animationCounter.addObserver(this);
 
         // TODO: clean me up
-        state.setText(mapState.getStateName());
+        state.setText("Waiting");
+        currentActions = mapState.getActions();
         populateButtons();
     }
 
@@ -76,9 +78,38 @@ public class MapUI {
         ui.dispose();
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        if (Map.HighlightChange.class.isInstance(o)) {
+            highlightChange((Map.HighlightChange) o);
+        } else if (MapState.StateChange.class.isInstance(o)) {
+            stateChange((MapState.StateChange) o);
+        } else if (AnimationCounter.AnimationChange.class.isInstance(o)) {
+            animationChange((AnimationCounter.AnimationChange) o);
+        }
+    }
+
+    private void highlightChange(Map.HighlightChange highlightChange) {
+        highlight.setText(highlightChange.getHighlight().toString());
+    }
+
+    private void stateChange(MapState.StateChange stateChange) {
+        state.setText(stateChange.getStateName());
+        currentActions = stateChange.getActions();
+        populateButtons();
+    }
+
+    private void animationChange(AnimationCounter.AnimationChange animationChange) {
+        showButtons = !animationChange.isAnimating();
+        populateButtons();
+    }
+
     private void populateButtons() {
-        for (Action action : mapState.getActions()) {
-            buttons.addActor(createActionButton(action));
+        buttons.clear();
+        if (showButtons) {
+            for (Action action : currentActions) {
+                buttons.addActor(createActionButton(action));
+            }
         }
     }
 
@@ -91,44 +122,5 @@ public class MapUI {
             }
         });
         return button;
-    }
-
-    private class MapObserver implements Observer {
-        private final Map map;
-
-        private MapObserver(Map map) {
-            this.map = map;
-        }
-
-        @Override
-        public void update(Observable observable, Object o) {
-            highlight.setText(map.getHighlight().toString());
-        }
-    }
-
-    private class MapStateObserver implements Observer {
-        @Override
-        public void update(Observable observable, Object o) {
-            state.setText(mapState.getStateName());
-
-            buttons.clear();
-            populateButtons();
-        }
-    }
-
-    private class AnimationCounterObserver implements Observer {
-        private final AnimationCounter animationCounter;
-
-        private AnimationCounterObserver(AnimationCounter animationCounter) {
-            this.animationCounter = animationCounter;
-        }
-
-        @Override
-        public void update(Observable observable, Object o) {
-            buttons.clear();
-            if (!animationCounter.isAnimating()) {
-                populateButtons();
-            }
-        }
     }
 }

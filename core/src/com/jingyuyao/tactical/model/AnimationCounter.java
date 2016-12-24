@@ -21,7 +21,7 @@ public class AnimationCounter extends Observable {
     public void startOneAnimation() {
         if (animations++ == 0) {
             setChanged();
-            notifyObservers();
+            notifyObservers(new AnimationChange(isAnimating()));
         }
     }
 
@@ -32,7 +32,7 @@ public class AnimationCounter extends Observable {
         Preconditions.checkState(animations > 0, "Oh boy, this bug is gonna be hard to fix");
         if (animations-- == 1) {
             setChanged();
-            notifyObservers();
+            notifyObservers(new AnimationChange(isAnimating()));
         }
     }
 
@@ -53,6 +53,18 @@ public class AnimationCounter extends Observable {
                     }
                 }
             });
+        }
+    }
+
+    public static class AnimationChange {
+        private final boolean animating;
+
+        AnimationChange(boolean animating) {
+            this.animating = animating;
+        }
+
+        public boolean isAnimating() {
+            return animating;
         }
     }
 }

@@ -55,7 +55,7 @@ public class Map extends Observable {
     public void setHighlight(MapObject highlight) {
         this.highlight = highlight;
         setChanged();
-        notifyObservers();
+        notifyObservers(new HighlightChange(highlight));
     }
 
     public void kill(Character character) {
@@ -172,5 +172,17 @@ public class Map extends Observable {
             }
         }
         return builder.build();
+    }
+
+    public static class HighlightChange {
+        private final MapObject highlight;
+
+        HighlightChange(MapObject highlight) {
+            this.highlight = highlight;
+        }
+
+        public MapObject getHighlight() {
+            return highlight;
+        }
     }
 }

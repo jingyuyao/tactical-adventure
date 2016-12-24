@@ -14,7 +14,7 @@ import java.util.Observer;
  * Contains and renders the world.
  * The world is rendered in a grid scale (i.e. showing a 30x20 grid).
  */
-public class MapView {
+public class MapView implements Observer {
     private final Stage world;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final Sprite highlightSprite;
@@ -38,7 +38,7 @@ public class MapView {
         this.highlightSprite = highlightSprite;
         highlightSprite.setBounds(0, 0, ActorFactory.ACTOR_SIZE, ActorFactory.ACTOR_SIZE);
 
-        map.addObserver(this.new MapObserver());
+        map.addObserver(this);
     }
 
     public Stage getWorld() {
@@ -66,19 +66,22 @@ public class MapView {
         world.getBatch().end();
     }
 
-    private class MapObserver implements Observer {
-        @Override
-        public void update(Observable observable, Object o) {
-            Map map = (Map) observable;
-            MapObject highlighted = map.getHighlight();
-            if (highlighted == null) {
-                return;
-            }
-
-            highlightSprite.setPosition(
-                    highlighted.getCoordinate().getX(),
-                    highlighted.getCoordinate().getY()
-            );
+    @Override
+    public void update(Observable observable, Object o) {
+        if (Map.HighlightChange.class.isInstance(o)) {
+            highlightChange((Map.HighlightChange) o);
         }
+    }
+
+    private void highlightChange(Map.HighlightChange highlightChange) {
+        MapObject highlighted = highlightChange.getHighlight();
+        if (highlighted == null) {
+            return;
+        }
+
+        highlightSprite.setPosition(
+                highlighted.getCoordinate().getX(),
+                highlighted.getCoordinate().getY()
+        );
     }
 }
