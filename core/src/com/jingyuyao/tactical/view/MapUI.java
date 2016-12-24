@@ -50,6 +50,10 @@ public class MapUI {
         map.addObserver(this.new MapObserver(map));
         mapState.addObserver(this.new MapStateObserver());
         animationCounter.addObserver(this.new AnimationCounterObserver(animationCounter));
+
+        // TODO: clean me up
+        state.setText(mapState.getStateName());
+        populateButtons();
     }
 
     public Stage getUi() {
