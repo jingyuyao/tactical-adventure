@@ -43,25 +43,26 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
     @Override
     public void update(Observable observable, Object o) {
-        updatePosition();
-        updateDeath();
+        Character character = (Character) observable;
+        updatePosition(character);
+        updateDeath(character);
     }
 
     Sprite getSprite() {
         return sprite;
     }
 
-    private void updateDeath() {
-        if (getObject().isDead()) {
+    private void updateDeath(Character character) {
+        if (character.isDead()) {
             // TODO: Do we have to deference to avoid memory leak?
             remove();
         }
     }
 
-    private void updatePosition() {
-        if (getX() != getObject().getCoordinate().getX() || getY() != getObject().getCoordinate().getY()) {
+    private void updatePosition(Character character) {
+        if (getX() != character.getCoordinate().getX() || getY() != character.getCoordinate().getY()) {
             final Collection<EventListener> listeners = popAllListeners();
-            SequenceAction moveSequence = getMoveSequence(getObject().getLastPath());
+            SequenceAction moveSequence = getMoveSequence(character.getLastPath());
             moveSequence.addAction(run(new Runnable() {
                 @Override
                 public void run() {

@@ -23,11 +23,11 @@ public class PlayerActor extends CharacterActor<Player> {
     @Override
     public void update(Observable observable, Object o) {
         super.update(observable, o);
-        updateActionable();
+        updateActionable((Player) observable);
     }
 
-    private void updateActionable() {
-        Color tint = getObject().isActionable() ? Color.WHITE : Color.GRAY;
+    private void updateActionable(Player player) {
+        Color tint = player.isActionable() ? Color.WHITE : Color.GRAY;
         getSprite().setColor(tint);
     }
 }
