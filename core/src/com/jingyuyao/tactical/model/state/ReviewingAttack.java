@@ -5,17 +5,17 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 
 class ReviewingAttack extends AbstractState {
-    private final AttackInfo attackInfo;
+    private final AttackPlan attackPlan;
 
-    ReviewingAttack(AbstractState prevState, AttackInfo attackInfo) {
+    ReviewingAttack(AbstractState prevState, AttackPlan attackPlan) {
         super(prevState);
-        this.attackInfo = attackInfo;
+        this.attackPlan = attackPlan;
     }
 
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        getMarkings().markEnemyTarget(attackInfo.getAttackPlayer(), attackInfo.getTargetEnemy());
+        getMarkings().markEnemyTarget(attackPlan.getAttackPlayer(), attackPlan.getTargetEnemy());
         // TODO: how do we sent info to ui?
     }
 
@@ -47,7 +47,7 @@ class ReviewingAttack extends AbstractState {
     @Override
     ImmutableCollection<Action> getActions() {
         return ImmutableList.<Action>of(
-                new Attack(this, attackInfo),
+                new Attack(this, attackPlan),
                 new Back(this)
         );
     }

@@ -21,6 +21,6 @@ public class SelectWeapon extends AbstractAction {
 
     @Override
     public void run() {
-        getState().goTo(new ReviewingAttack(getState(), new AttackInfo(attackingPlayer, targetEnemy, playerWeapon)));
+        getState().goTo(new ReviewingAttack(getState(), new AttackPlan(attackingPlayer, targetEnemy, playerWeapon)));
     }
 }
