@@ -15,7 +15,6 @@ public class Map extends Observable {
     private final int height;
     private final List<Character> characters;
     private final Grid<Terrain> terrains;
-    private MapObject highlight;
 
     public Map(int width, int height) {
         this.width = width;
@@ -48,12 +47,7 @@ public class Map extends Observable {
         return getSubtypeCharacters(Enemy.class);
     }
 
-    public MapObject getHighlight() {
-        return highlight;
-    }
-
     public void setHighlight(MapObject highlight) {
-        this.highlight = highlight;
         setChanged();
         notifyObservers(new HighlightChange(highlight));
     }
