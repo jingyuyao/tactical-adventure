@@ -19,6 +19,7 @@ class BattlePrepping extends AbstractState {
 
     @Override
     void enter() {
+        // TODO: only show marking for weapons that can hit target
         getMarkings().markPlayer(attackingPlayer, true);
     }
 

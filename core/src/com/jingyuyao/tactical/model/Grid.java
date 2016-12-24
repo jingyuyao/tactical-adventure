@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -66,11 +67,13 @@ public class Grid<T> {
     }
 
     /**
-     * Returns the in-bound neighbors of ({@code x}, {@code y}).
-     * Order of returned neighbors is randomized.
+     * Returns the in-bound neighbors of {@code from}.
      * @return Randomized list of neighbors
      */
-    public ImmutableList<Coordinate> getNeighbors(int x, int y) {
+    public ImmutableList<Coordinate> getNeighbors(Coordinate from) {
+        int x = from.getX();
+        int y = from.getY();
+
         List<Coordinate> neighbors = new ArrayList<Coordinate>(4);
 
         if (x > 0) {
@@ -87,14 +90,51 @@ public class Grid<T> {
         }
 
         Collections.shuffle(neighbors);
-
         return ImmutableList.copyOf(neighbors);
     }
 
     /**
-     * <see>{@link #getNeighbors(int, int)}</see>
+     * Get the coordinates that "look" like {@code distance} away. This method is the same as
+     * {@link #getNeighbors(Coordinate)} if {@code distance==1}. Otherwise it will return
+     * a max list of eight neighbors that looks like they are {@code distance} away.
+     *
+     * @param from starting coordinate
+     * @param distance
      */
-    public ImmutableList<Coordinate> getNeighbors(Coordinate coordinate) {
-        return getNeighbors(coordinate.getX(), coordinate.getY());
+    public ImmutableList<Coordinate> getNDistanceAway(Coordinate from, int distance) {
+        if (distance == 1) {
+            return getNeighbors(from);
+        }
+
+        int x = from.getX();
+        int y = from.getY();
+        ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
+
+        if (x - distance >= 0) {
+            builder.add(new Coordinate(x - distance, y)); // left
+        }
+        if (x + distance < getWidth()) {
+            builder.add(new Coordinate(x + distance, y)); // right
+        }
+        if (y - distance >= 0) {
+            builder.add(new Coordinate(x, y - distance)); // down
+        }
+        if (y + distance < getHeight()) {
+            builder.add(new Coordinate(x, y + distance)); // top
+        }
+        if (x - distance + 1 >= 0 && y - distance + 1 >= 0) {
+            builder.add(new Coordinate(x - distance + 1, y - distance + 1)); // left down
+        }
+        if (x + distance - 1 < getWidth() && y - distance + 1 >= 0) {
+            builder.add(new Coordinate(x + distance - 1, y - distance + 1)); // right down
+        }
+        if (x - distance + 1 >= 0 && y + distance - 1 < getHeight()) {
+            builder.add(new Coordinate(x - distance + 1, y + distance - 1)); // left top
+        }
+        if (x + distance - 1 < getWidth() && y + distance - 1 < getHeight()) {
+            builder.add(new Coordinate(x + distance - 1, y + distance - 1)); // right top
+        }
+
+        return builder.build();
     }
 }

@@ -114,8 +114,7 @@ public class Map extends Observable {
     public ImmutableSet<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
         ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
-            // TODO: modify algorithm so it doesn't "backtrack"
-            builder.addAll(Algorithms.findNDistanceAway(getTerrains(), from, distance));
+            builder.addAll(getTerrains().getNDistanceAway(from, distance));
         }
         return builder.build();
     }

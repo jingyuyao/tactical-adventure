@@ -111,37 +111,6 @@ class Algorithms {
     }
 
     /**
-     * Find all the objects on the grid that is {@code distance} away from the starting point.
-     *
-     * @param grid The grid the coordinate is contained in, used to find neighbors
-     */
-    static ImmutableList<Coordinate> findNDistanceAway(
-            Grid<?> grid,
-            Coordinate startingCoordinate,
-            int distance
-    ) {
-        ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
-        findNDistanceAway(grid, startingCoordinate, distance, builder);
-        return builder.build();
-    }
-
-    private static void findNDistanceAway(
-        Grid<?> grid,
-        Coordinate currentCoordinate,
-        int distanceRemaining,
-        ImmutableList.Builder<Coordinate> builder
-    ) {
-        if (distanceRemaining == 0) {
-            builder.add(currentCoordinate);
-            return;
-        }
-
-        for (Coordinate neighbor : grid.getNeighbors(currentCoordinate)) {
-            findNDistanceAway(grid, neighbor, distanceRemaining-1, builder);
-        }
-    }
-
-    /**
      * Store an object with an integer value. Identity of this object is based off {@link #object}.
      * {@link #value} is not part of the identity. Used for {@link PriorityQueue} sorting.
      */
