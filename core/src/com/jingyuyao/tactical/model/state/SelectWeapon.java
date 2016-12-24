@@ -1,9 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.BattleInfo;
-import com.jingyuyao.tactical.model.Enemy;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Weapon;
+import com.jingyuyao.tactical.model.*;
 
 public class SelectWeapon extends AbstractAction {
     private final Player attackingPlayer;
@@ -24,6 +21,6 @@ public class SelectWeapon extends AbstractAction {
 
     @Override
     public void run() {
-        getState().goTo(new ReviewingAttack(getState(), new BattleInfo(attackingPlayer, targetEnemy, playerWeapon)));
+        getState().goTo(new ReviewingAttack(getState(), new AttackInfo(attackingPlayer, targetEnemy, playerWeapon)));
     }
 }

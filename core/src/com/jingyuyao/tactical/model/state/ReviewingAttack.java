@@ -2,23 +2,20 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.BattleInfo;
-import com.jingyuyao.tactical.model.Enemy;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.*;
 
 class ReviewingAttack extends AbstractState {
-    private final BattleInfo battleInfo;
+    private final AttackInfo attackInfo;
 
-    ReviewingAttack(AbstractState prevState, BattleInfo battleInfo) {
+    ReviewingAttack(AbstractState prevState, AttackInfo attackInfo) {
         super(prevState);
-        this.battleInfo = battleInfo;
+        this.attackInfo = attackInfo;
     }
 
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        getMarkings().markEnemyTarget(battleInfo.getAttackPlayer(), battleInfo.getTargetEnemy());
+        getMarkings().markEnemyTarget(attackInfo.getAttackPlayer(), attackInfo.getTargetEnemy());
         // TODO: how do we sent info to ui?
     }
 
@@ -50,7 +47,7 @@ class ReviewingAttack extends AbstractState {
     @Override
     ImmutableCollection<Action> getActions() {
         return ImmutableList.<Action>of(
-                new Attack(this, battleInfo),
+                new Attack(this, attackInfo),
                 new Back(this)
         );
     }

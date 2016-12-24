@@ -1,13 +1,13 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.BattleInfo;
+import com.jingyuyao.tactical.model.AttackInfo;
 
 public class Attack extends AbstractAction {
-    private final BattleInfo battleInfo;
+    private final AttackInfo attackInfo;
 
-    Attack(AbstractState state, BattleInfo battleInfo) {
+    Attack(AbstractState state, AttackInfo attackInfo) {
         super(state);
-        this.battleInfo = battleInfo;
+        this.attackInfo = attackInfo;
     }
 
     @Override
@@ -19,8 +19,8 @@ public class Attack extends AbstractAction {
     public void run() {
         // TODO: kick off battle animation somewhere
         // TODO: actual calculation time
-        getState().getMarkings().unMarkEnemyDangerArea(battleInfo.getTargetEnemy());
-        getState().getMap().kill(battleInfo.getTargetEnemy());
-        getState().wait(battleInfo.getAttackPlayer());
+        getState().getMarkings().unMarkEnemyDangerArea(attackInfo.getTargetEnemy());
+        getState().getMap().kill(attackInfo.getTargetEnemy());
+        getState().wait(attackInfo.getAttackPlayer());
     }
 }

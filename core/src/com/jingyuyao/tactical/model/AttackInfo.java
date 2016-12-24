@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model;
 
-public class BattleInfo {
+public class AttackInfo {
     private final Player attackPlayer;
     private final Enemy targetEnemy;
     private final Weapon playerWeapon;
 
-    public BattleInfo(Player attackPlayer, Enemy targetEnemy, Weapon playerWeapon) {
+    public AttackInfo(Player attackPlayer, Enemy targetEnemy, Weapon playerWeapon) {
         this.attackPlayer = attackPlayer;
         this.targetEnemy = targetEnemy;
         this.playerWeapon = playerWeapon;
@@ -25,7 +25,7 @@ public class BattleInfo {
 
     @Override
     public String toString() {
-        return "BattleInfo{" +
+        return "AttackInfo{" +
                 "attackPlayer=" + attackPlayer +
                 ", targetEnemy=" + targetEnemy +
                 ", playerWeapon=" + playerWeapon +
