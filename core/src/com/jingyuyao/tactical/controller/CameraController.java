@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class CameraController extends InputAdapter {
     private static final float HORIZONTAL_EDGE = 0.2f; // percentage
     private static final float VERTICAL_EDGE = 0.2f; // percentage
-    private static final float MOVEMENT_DELTA = 0.1f; // world unit
+    private static final float MOVEMENT_DELTA = 0.15f; // world unit
     private static final long STARTING_DELAY = 200L; // ms
     private static final long NO_DELAY = 0L; // ms
     private static final long REPEAT_DELAY = 10L; // ms
