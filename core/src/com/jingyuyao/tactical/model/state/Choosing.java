@@ -50,10 +50,10 @@ class Choosing extends AbstractState {
 
     @Override
     ImmutableCollection<Action> getActions() {
-        ImmutableList.Builder<Action> builder = ImmutableList.builder();
-        builder.add(new Back(this));
-        builder.add(new Done(this, currentPlayer));
         // TODO: add use items action
-        return builder.build();
+        return ImmutableList.<Action>of(
+                new Wait(this, currentPlayer),
+                new Back(this)
+        );
     }
 }

@@ -27,6 +27,6 @@ public class Attack extends AbstractAction {
         getState().getMap().kill(targetEnemy);
         // TODO: oh man, we shouldn't have to remove twice...
         getState().getMarkings().removeEnemy(targetEnemy);
-        getState().done(attackingPlayer);
+        getState().wait(attackingPlayer);
     }
 }

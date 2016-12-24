@@ -13,7 +13,7 @@ class Waiting extends AbstractState {
     }
 
     /**
-     * Should only be used within {@link AbstractState#done(Player)}!
+     * Should only be used within {@link AbstractState#wait(Player)}!
      */
     Waiting(AbstractState prevState) {
         super(prevState);

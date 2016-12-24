@@ -7,7 +7,7 @@ public class Back extends AbstractAction {
 
     @Override
     public String getName() {
-        return "Back";
+        return "back";
     }
 
     @Override
