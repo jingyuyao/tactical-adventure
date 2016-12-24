@@ -54,7 +54,13 @@ public abstract class Character extends MapObject {
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
         setCoordinate(newCoordinate);
         setChanged();
-        notifyObservers(new PositionUpdate(path));
+        notifyObservers(new Move(path));
+    }
+
+    public void instantMoveTo(Coordinate newCoordinate) {
+        setCoordinate(newCoordinate);
+        setChanged();
+        notifyObservers(new InstantMove(newCoordinate));
     }
 
     void die() {
@@ -78,15 +84,27 @@ public abstract class Character extends MapObject {
                 "} " + super.toString();
     }
 
-    public static class PositionUpdate {
+    public static class Move {
         private final ImmutableList<Coordinate> path;
 
-        PositionUpdate(ImmutableList<Coordinate> path) {
+        Move(ImmutableList<Coordinate> path) {
             this.path = path;
         }
 
         public ImmutableList<Coordinate> getPath() {
             return path;
+        }
+    }
+
+    public static class InstantMove {
+        private final Coordinate destination;
+
+        InstantMove(Coordinate destination) {
+            this.destination = destination;
+        }
+
+        public Coordinate getDestination() {
+            return destination;
         }
     }
 

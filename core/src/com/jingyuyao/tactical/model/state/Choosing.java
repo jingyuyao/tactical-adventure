@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Enemy;
@@ -31,7 +32,11 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Player player) {
-        goTo(new Moving(backToWaiting(), player));
+        if (Objects.equal(currentPlayer, player)) {
+            back();
+        } else {
+            goTo(new Moving(backToWaiting(), player));
+        }
     }
 
     @Override
@@ -39,13 +44,13 @@ class Choosing extends AbstractState {
         if (getMap().canImmediateTarget(currentPlayer, enemy)) {
             goTo(new BattlePrepping(this, currentPlayer, enemy));
         } else {
-            backToWaiting();
+            back();
         }
     }
 
     @Override
     void select(Terrain terrain) {
-        backToWaiting();
+        back();
     }
 
     @Override

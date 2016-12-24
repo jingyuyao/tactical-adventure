@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Character;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observable;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class CharacterActor<T extends Character> extends MapActor<T> {
     private static final float TIME_PER_UNIT = 0.07f; // time to move across one world unit in seconds
@@ -43,9 +45,10 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
     @Override
     public void update(Observable observable, Object o) {
-        Character character = (Character) observable;
-        if (Character.PositionUpdate.class.isInstance(o)) {
-            updatePosition(character, (Character.PositionUpdate) o);
+        if (Character.Move.class.isInstance(o)) {
+            moveTo((Character.Move) o);
+        } else if (Character.InstantMove.class.isInstance(o)) {
+            instantMoveTo((Character.InstantMove) o);
         } else if (Character.Dead.class.isInstance(o)) {
             remove();
         }
@@ -55,28 +58,31 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
         return sprite;
     }
 
-    private void updatePosition(Character character, Character.PositionUpdate positionUpdate) {
-        if (getX() != character.getCoordinate().getX() || getY() != character.getCoordinate().getY()) {
-            final Collection<EventListener> listeners = popAllListeners();
-            SequenceAction moveSequence = getMoveSequence(positionUpdate.getPath());
-            moveSequence.addAction(run(new Runnable() {
-                @Override
-                public void run() {
-                    for (EventListener listener : listeners) {
-                        addListener(listener);
-                    }
-                    getAnimationCounter().finishOneAnimation();
+    private void instantMoveTo(Character.InstantMove instantMove) {
+        Coordinate destination = instantMove.getDestination();
+        setPosition(destination.getX(), destination.getY());
+    }
+
+    private void moveTo(Character.Move move) {
+        final Collection<EventListener> listeners = popAllListeners();
+        SequenceAction moveSequence = getMoveSequence(move.getPath());
+        moveSequence.addAction(run(new Runnable() {
+            @Override
+            public void run() {
+                for (EventListener listener : listeners) {
+                    addListener(listener);
                 }
-            }));
-            getAnimationCounter().startOneAnimation();
-            addAction(moveSequence);
-        }
+                getAnimationCounter().finishOneAnimation();
+            }
+        }));
+        getAnimationCounter().startOneAnimation();
+        addAction(moveSequence);
     }
 
     private SequenceAction getMoveSequence(Collection<Coordinate> path) {
         SequenceAction sequence = sequence();
         for (Coordinate terrain : path) {
-            sequence.addAction(moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
+            sequence.addAction(Actions.moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
         }
         return sequence;
     }
