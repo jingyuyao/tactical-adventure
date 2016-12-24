@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.HashSet;
@@ -20,8 +21,16 @@ public class Terrain extends MapObject {
         mapState.select(this);
     }
 
-    public Set<Marker> getMarkers() {
-        return markers;
+    public void addMarker(Marker marker) {
+        markers.add(marker);
+        setChanged();
+        notifyObservers(new MarkerChange(ImmutableSet.copyOf(markers)));
+    }
+
+    public void clearMarkers() {
+        markers.clear();
+        setChanged();
+        notifyObservers(new MarkerChange(ImmutableSet.copyOf(markers)));
     }
 
     public int getMovementPenalty(Character character) {
@@ -41,16 +50,12 @@ public class Terrain extends MapObject {
         }
     }
 
-    public void addMarker(Marker marker) {
-        markers.add(marker);
-        setChanged();
-        notifyObservers();
-    }
-
-    public void clearMarkers() {
-        markers.clear();
-        setChanged();
-        notifyObservers();
+    @Override
+    public String toString() {
+        return "Terrain{" +
+                "markers=" + markers +
+                ", type=" + type +
+                "} " + super.toString();
     }
 
     public enum Type {
@@ -69,11 +74,15 @@ public class Terrain extends MapObject {
         DANGER,
     }
 
-    @Override
-    public String toString() {
-        return "Terrain{" +
-                "markers=" + markers +
-                ", type=" + type +
-                "} " + super.toString();
+    public static class MarkerChange {
+        private final ImmutableSet<Marker> newMarkers;
+
+        MarkerChange(ImmutableSet<Marker> newMarkers) {
+            this.newMarkers = newMarkers;
+        }
+
+        public ImmutableSet<Marker> getNewMarkers() {
+            return newMarkers;
+        }
     }
 }

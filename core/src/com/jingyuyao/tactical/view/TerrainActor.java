@@ -37,12 +37,14 @@ public class TerrainActor extends MapActor<Terrain> {
 
     @Override
     public void update(Observable observable, Object o) {
-        updateMarkers((Terrain) observable);
+        if (Terrain.MarkerChange.class.isInstance(o)) {
+            markerChange((Terrain.MarkerChange) o);
+        }
     }
 
-    private void updateMarkers(Terrain terrain) {
+    private void markerChange(Terrain.MarkerChange markerChange) {
         markerSprites.clear();
-        for (Terrain.Marker marker : terrain.getMarkers()) {
+        for (Terrain.Marker marker : markerChange.getNewMarkers()) {
             markerSprites.add(markerSpriteMap.get(marker));
         }
     }
