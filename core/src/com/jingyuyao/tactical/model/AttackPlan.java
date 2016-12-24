@@ -26,9 +26,9 @@ public class AttackPlan {
     @Override
     public String toString() {
         return "AttackPlan{" +
-                "attackPlayer=" + attackPlayer +
-                ", targetEnemy=" + targetEnemy +
-                ", playerWeapon=" + playerWeapon +
+                "attackPlayer=" + attackPlayer.getName() +
+                ", targetEnemy=" + targetEnemy.getName() +
+                ", playerWeapon=" + playerWeapon.getName() +
                 '}';
     }
 }

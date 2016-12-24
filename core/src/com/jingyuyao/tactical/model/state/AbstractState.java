@@ -10,7 +10,6 @@ abstract class AbstractState {
     private final MapState mapState;
     private final Map map;
     private final Turn turn;
-    private final AnimationCounter animationCounter;
     private final Markings markings;
     private final AbstractState prevState;
 
@@ -23,7 +22,6 @@ abstract class AbstractState {
                 prevState.mapState,
                 prevState.map,
                 prevState.turn,
-                prevState.animationCounter,
                 prevState.markings,
                 prevState
         );
@@ -32,8 +30,8 @@ abstract class AbstractState {
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(MapState mapState, Map map, Turn turn, AnimationCounter animationCounter, Markings markings) {
-        this(mapState, map, turn, animationCounter, markings,  null);
+    AbstractState(MapState mapState, Map map, Turn turn, Markings markings) {
+        this(mapState, map, turn, markings,  null);
     }
 
     /**
@@ -43,14 +41,12 @@ abstract class AbstractState {
             MapState mapState,
             Map map,
             Turn turn,
-            AnimationCounter animationCounter,
             Markings markings,
             AbstractState prevState
     ) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
-        this.animationCounter = animationCounter;
         this.markings = markings;
         this.prevState = prevState;
     }
@@ -63,12 +59,20 @@ abstract class AbstractState {
         return markings;
     }
 
-    Turn getTurn() {
-        return turn;
+    boolean canAct(Player player) {
+        return turn.canAct(player);
     }
 
-    AnimationCounter getAnimationCounter() {
-        return animationCounter;
+    void nextTurn() {
+        turn.nextTurn();
+    }
+
+    void showAttackPlan(AttackPlan attackPlan) {
+        mapState.showAttackPlan(attackPlan);
+    }
+
+    void hideAttackPlan() {
+        mapState.hideAttackPlan();
     }
 
     void goTo(AbstractState newState) {
@@ -98,7 +102,7 @@ abstract class AbstractState {
      * Finished acting on {@code player} and then go to a new waiting state.
      */
     void wait(Player player) {
-        getTurn().acted(player);
+        turn.acted(player);
         goTo(new Waiting(this));
     }
 

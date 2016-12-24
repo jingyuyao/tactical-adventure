@@ -8,8 +8,8 @@ class Waiting extends AbstractState {
     /**
      * Used to create the initial state.
      */
-    Waiting(MapState mapState, Map map, Turn turn, AnimationCounter animationCounter, Markings markings) {
-        super(mapState, map, turn, animationCounter, markings);
+    Waiting(MapState mapState, Map map, Turn turn, Markings markings) {
+        super(mapState, map, turn, markings);
     }
 
     /**
@@ -44,7 +44,7 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Player player) {
-        if (getTurn().canAct(player)) {
+        if (canAct(player)) {
             goTo(new Moving(this, player));
         }
     }

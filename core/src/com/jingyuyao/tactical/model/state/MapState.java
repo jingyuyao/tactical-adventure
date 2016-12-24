@@ -15,7 +15,7 @@ public class MapState extends Observable {
 
     public MapState(Map map, Turn turn, AnimationCounter animationCounter) {
         this.animationCounter = animationCounter;
-        state = new Waiting(this, map, turn, animationCounter, new Markings(map, animationCounter));
+        state = new Waiting(this, map, turn, new Markings(map, animationCounter));
     }
 
     public ImmutableCollection<Action> getActions() {
@@ -51,6 +51,16 @@ public class MapState extends Observable {
         }
     }
 
+    void showAttackPlan(AttackPlan attackPlan) {
+        setChanged();
+        notifyObservers(new ShowAttackPlan(attackPlan));
+    }
+
+    void hideAttackPlan() {
+        setChanged();
+        notifyObservers(new HideAttackPlan());
+    }
+
     public static class StateChange {
         private final String stateName;
         private final ImmutableCollection<Action> actions;
@@ -67,5 +77,21 @@ public class MapState extends Observable {
         public ImmutableCollection<Action> getActions() {
             return actions;
         }
+    }
+
+    public static class ShowAttackPlan {
+        private final AttackPlan attackPlan;
+
+        ShowAttackPlan(AttackPlan attackPlan) {
+            this.attackPlan = attackPlan;
+        }
+
+        public AttackPlan getAttackPlan() {
+            return attackPlan;
+        }
+    }
+
+    public static class HideAttackPlan {
+        HideAttackPlan() {}
     }
 }

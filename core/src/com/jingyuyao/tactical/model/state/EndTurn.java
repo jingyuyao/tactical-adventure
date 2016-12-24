@@ -12,6 +12,6 @@ public class EndTurn extends AbstractAction {
 
     @Override
     public void run() {
-        getState().getTurn().nextTurn();
+        getState().nextTurn();
     }
 }

@@ -19,6 +19,7 @@ public class MapUI implements Observer {
     private final Table root;
     private final Label highlight;
     private final Label state;
+    private final Label attackPlan;
     private final VerticalGroup buttons;
     private Collection<Action> currentActions;
     private boolean showButtons = true;
@@ -29,6 +30,7 @@ public class MapUI implements Observer {
         root = new Table();
         highlight = new Label("", skin);
         state = new Label("", skin);
+        attackPlan = new Label("", skin);
         buttons = new VerticalGroup();
 
         root.setFillParent(true);
@@ -41,6 +43,8 @@ public class MapUI implements Observer {
         root.add(highlight).expandX().left();
         root.row(); // Careful to not chain anything here since it sets default for all rows
         root.add(state).expandX().left();
+        root.row();
+        root.add(attackPlan).expandX().left();
         root.row();
         root.add().expand(); // A filler cell that pushes the buttons to the bottom
         root.row();
@@ -80,12 +84,17 @@ public class MapUI implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+        // TODO: Hum... can we make this shorter? generics? visitor?
         if (Map.HighlightChange.class.isInstance(o)) {
             highlightChange((Map.HighlightChange) o);
         } else if (MapState.StateChange.class.isInstance(o)) {
             stateChange((MapState.StateChange) o);
         } else if (AnimationCounter.AnimationChange.class.isInstance(o)) {
             animationChange((AnimationCounter.AnimationChange) o);
+        } else if (MapState.ShowAttackPlan.class.isInstance(o)) {
+            showAttackPlan((MapState.ShowAttackPlan) o);
+        } else if (MapState.HideAttackPlan.class.isInstance(o)) {
+            hideAttackPlan((MapState.HideAttackPlan) o);
         }
     }
 
@@ -102,6 +111,14 @@ public class MapUI implements Observer {
     private void animationChange(AnimationCounter.AnimationChange animationChange) {
         showButtons = !animationChange.isAnimating();
         populateButtons();
+    }
+
+    private void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
+        attackPlan.setText(showAttackPlan.getAttackPlan().toString());
+    }
+
+    private void hideAttackPlan(MapState.HideAttackPlan hideAttackPlan) {
+        attackPlan.setText("");
     }
 
     private void populateButtons() {
