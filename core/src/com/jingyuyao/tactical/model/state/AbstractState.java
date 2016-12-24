@@ -85,13 +85,13 @@ abstract class AbstractState {
 
     /**
      * Go {@link #back()} state by state until we reach a {@link Waiting} state.
+     * The function of this method depends on {@link Waiting#backToWaiting()} returning itself.
+     * @return The {@link Waiting} we went back to, useful for "reset then go to a new state" scenario
      */
-    void hardCancel() {
-        AbstractState currentState = this;
-        while (!Waiting.class.isInstance(currentState)) {
-            currentState.back();
-            currentState = currentState.prevState;
-        }
+    Waiting backToWaiting() {
+        // Will recursively loop until we encounter a waiting state
+        back();
+        return prevState.backToWaiting();
     }
 
     /**

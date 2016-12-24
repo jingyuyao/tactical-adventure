@@ -12,6 +12,9 @@ class Waiting extends AbstractState {
         super(mapState, map, turn, animationCounter, markings);
     }
 
+    /**
+     * Should only be used within {@link AbstractState#finish(Player)}!
+     */
     Waiting(AbstractState prevState) {
         super(prevState);
     }
@@ -24,6 +27,20 @@ class Waiting extends AbstractState {
 
     @Override
     void exit() {}
+
+    /**
+     * Do nothing.
+     */
+    @Override
+    void back() {}
+
+    /**
+     * Returning itself as per {@link AbstractState#backToWaiting()} spec.
+     */
+    @Override
+    Waiting backToWaiting() {
+        return this;
+    }
 
     @Override
     public void select(Player player) {

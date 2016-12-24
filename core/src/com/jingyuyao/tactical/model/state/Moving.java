@@ -4,10 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Enemy;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.*;
 
 class Moving extends AbstractState {
     private final Player currentPlayer;
@@ -45,7 +42,7 @@ class Moving extends AbstractState {
         if (Objects.equal(currentPlayer, player)) {
             goTo(new Choosing(this, currentPlayer));
         } else {
-            hardCancel();
+            goTo(new Moving(backToWaiting(), player));
         }
     }
 
@@ -65,10 +62,10 @@ class Moving extends AbstractState {
                     goTo(battlePrepping);
                 }
             } else {
-                hardCancel();
+                backToWaiting();
             }
         } else {
-            hardCancel();
+            backToWaiting();
         }
     }
 
@@ -81,7 +78,7 @@ class Moving extends AbstractState {
             goTo(new Choosing(this, currentPlayer));
         } else {
             // we will consider clicking outside of movable area to be canceling
-            hardCancel();
+            backToWaiting();
         }
     }
 

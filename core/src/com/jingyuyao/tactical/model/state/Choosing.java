@@ -31,7 +31,7 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Player player) {
-        hardCancel();
+        backToWaiting();
     }
 
     @Override
@@ -39,13 +39,13 @@ class Choosing extends AbstractState {
         if (getMap().canImmediateTarget(currentPlayer, enemy)) {
             goTo(new BattlePrepping(this, currentPlayer, enemy));
         } else {
-            hardCancel();
+            backToWaiting();
         }
     }
 
     @Override
     void select(Terrain terrain) {
-        hardCancel();
+        backToWaiting();
     }
 
     @Override
