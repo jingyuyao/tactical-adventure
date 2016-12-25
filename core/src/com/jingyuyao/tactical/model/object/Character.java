@@ -13,13 +13,7 @@ public abstract class Character extends AbstractObject {
     private final Stats stats;
     private final Items items;
 
-    Character(
-            int x,
-            int y,
-            String name,
-            Stats stats,
-            Items items
-    ) {
+    Character(int x, int y, String name, Stats stats, Items items) {
         super(x, y);
         this.name = name;
         this.stats = stats;

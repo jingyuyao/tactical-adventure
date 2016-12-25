@@ -22,20 +22,20 @@ abstract class AbstractState {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState.mapState, prevState.map, prevState.turn, prevState);
+        this(prevState, prevState.map, prevState.mapState, prevState.turn);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(MapState mapState, Map map, Turn turn) {
-        this(mapState, map, turn, null);
+    AbstractState(Map map, MapState mapState, Turn turn) {
+        this(null, map, mapState, turn);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(MapState mapState, Map map, Turn turn, AbstractState prevState) {
+    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
