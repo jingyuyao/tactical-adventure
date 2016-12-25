@@ -1,19 +1,19 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Terrain extends MapObject {
-    private final Set<Marker> markers;
+    private final List<Marker> markers;
     private Type type;
 
     public Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
-        markers = new HashSet<Marker>();
+        markers = new ArrayList<Marker>();
     }
 
     @Override
@@ -75,13 +75,13 @@ public class Terrain extends MapObject {
     }
 
     public static class MarkerChange {
-        private final ImmutableSet<Marker> markers;
+        private final ImmutableList<Marker> markers;
 
-        MarkerChange(Set<Marker> markers) {
-            this.markers = ImmutableSet.copyOf(markers);
+        MarkerChange(List<Marker> markers) {
+            this.markers = ImmutableList.copyOf(markers);
         }
 
-        public ImmutableSet<Marker> getMarkers() {
+        public ImmutableList<Marker> getMarkers() {
             return markers;
         }
     }
