@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Terrain extends MapObject {
+public class Terrain extends AbstractObject {
     private final Set<Marker> markers;
     private Type type;
 

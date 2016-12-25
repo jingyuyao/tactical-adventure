@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.jingyuyao.tactical.model.AnimationCounter;
-import com.jingyuyao.tactical.model.object.MapObject;
+import com.jingyuyao.tactical.model.object.AbstractObject;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -14,7 +14,7 @@ import java.util.Observer;
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
-abstract class MapActor<T extends MapObject> extends Actor implements Observer {
+abstract class MapActor<T extends AbstractObject> extends Actor implements Observer {
     private final AnimationCounter animationCounter;
 
     /**

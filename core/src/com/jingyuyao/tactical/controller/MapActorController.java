@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.object.MapObject;
+import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**
@@ -12,11 +12,11 @@ import com.jingyuyao.tactical.model.state.MapState;
  */
 public class MapActorController extends ClickListener {
     // TODO: Is this GC'ed?
-    private final MapObject object;
+    private final AbstractObject object;
     private final MapState mapState;
     private final Map map;
 
-    public MapActorController(Map map, MapState mapState, MapObject object, float actorSize) {
+    public MapActorController(Map map, MapState mapState, AbstractObject object, float actorSize) {
         this.object = object;
         this.mapState = mapState;
         this.map = map;

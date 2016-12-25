@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.object.MapObject;
+import com.jingyuyao.tactical.model.object.AbstractObject;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -74,7 +74,7 @@ public class MapView implements Observer {
     }
 
     private void highlightChange(Map.HighlightChange highlightChange) {
-        MapObject highlighted = highlightChange.getHighlight();
+        AbstractObject highlighted = highlightChange.getHighlight();
         if (highlighted == null) {
             return;
         }

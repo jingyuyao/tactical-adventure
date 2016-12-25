@@ -8,10 +8,10 @@ import java.util.Observable;
 /**
  * An object on the game grid.
  */
-public abstract class MapObject extends Observable {
+public abstract class AbstractObject extends Observable {
     private Coordinate coordinate;
 
-    MapObject(int x, int y) {
+    AbstractObject(int x, int y) {
         coordinate = new Coordinate(x, y);
     }
 
@@ -37,7 +37,7 @@ public abstract class MapObject extends Observable {
 
     @Override
     public String toString() {
-        return "MapObject{" +
+        return "AbstractObject{" +
                 "coordinate=" + coordinate +
                 "}";
     }

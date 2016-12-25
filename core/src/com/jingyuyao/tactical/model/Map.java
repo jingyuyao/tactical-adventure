@@ -65,7 +65,7 @@ public class Map extends Observable implements Observer {
         return Iterables.unmodifiableIterable(Iterables.concat(players, enemies));
     }
 
-    public void setHighlight(MapObject highlight) {
+    public void setHighlight(AbstractObject highlight) {
         setChanged();
         notifyObservers(new HighlightChange(highlight));
     }
@@ -182,13 +182,13 @@ public class Map extends Observable implements Observer {
     }
 
     public static class HighlightChange {
-        private final MapObject highlight;
+        private final AbstractObject highlight;
 
-        HighlightChange(MapObject highlight) {
+        HighlightChange(AbstractObject highlight) {
             this.highlight = highlight;
         }
 
-        public MapObject getHighlight() {
+        public AbstractObject getHighlight() {
             return highlight;
         }
     }
