@@ -7,23 +7,21 @@ import com.google.common.collect.Iterables;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 public class Map extends Observable {
     private final int width;
     private final int height;
     private final Grid<Terrain> terrains;
-    private final List<Player> players;
-    private final List<Enemy> enemies;
+    private final Set<Player> players;
+    private final Set<Enemy> enemies;
 
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
         terrains = new Grid<Terrain>(width, height);
-        players = new ArrayList<Player>();
-        enemies = new ArrayList<Enemy>();
+        players = new HashSet<Player>();
+        enemies = new HashSet<Enemy>();
     }
 
     public int getWidth() {
@@ -46,15 +44,16 @@ public class Map extends Observable {
         enemies.add(enemy);
     }
 
-    public Iterable<Player> getPlayers() {
+    public Set<Player> getPlayers() {
         return players;
     }
 
-    public Iterable<Enemy> getEnemies() {
+    public Set<Enemy> getEnemies() {
         return enemies;
     }
 
     public Iterable<Character> getCharacters() {
+        // ImmutableSet.copyOf(Iterable.concat(...))) when necessary
         return Iterables.concat(players, enemies);
     }
 

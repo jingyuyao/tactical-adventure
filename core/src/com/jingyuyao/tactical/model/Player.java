@@ -9,6 +9,8 @@ import java.util.Set;
  * A player character
  */
 public class Player extends Character {
+    private boolean actionable = true;
+
     public Player(int x, int y, String name, int movementDistance, Set<Terrain.Type> canCrossTerrainTypes, List<Weapon> weapons) {
         super(x, y, name, movementDistance, canCrossTerrainTypes, weapons);
     }
@@ -18,7 +20,12 @@ public class Player extends Character {
         mapState.select(this);
     }
 
-    void setActionable(boolean actionable) {
+    public boolean isActionable() {
+        return actionable;
+    }
+
+    public void setActionable(boolean actionable) {
+        this.actionable = actionable;
         setChanged();
         notifyObservers(new ActionableChange(actionable));
     }

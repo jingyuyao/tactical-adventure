@@ -43,7 +43,7 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Player player) {
-        if (canAct(player)) {
+        if (player.isActionable()) {
             goTo(new Moving(this, player));
         }
     }

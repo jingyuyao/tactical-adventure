@@ -59,10 +59,6 @@ abstract class AbstractState {
         return markings;
     }
 
-    boolean canAct(Player player) {
-        return turn.canAct(player);
-    }
-
     void nextTurn() {
         turn.nextTurn();
     }
@@ -102,7 +98,7 @@ abstract class AbstractState {
      * Finished acting on {@code player} and then go to a new waiting state.
      */
     void wait(Player player) {
-        turn.acted(player);
+        player.setActionable(false);
         goTo(new Waiting(this));
     }
 
