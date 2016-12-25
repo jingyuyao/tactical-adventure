@@ -52,6 +52,12 @@ public abstract class Character extends MapObject {
         notifyObservers(new InstantMove(newCoordinate));
     }
 
+    public void die() {
+        setChanged();
+        notifyObservers(new Dead());
+        deleteObservers();
+    }
+
     boolean canTarget(Character other) {
         // TODO: make me more specific later
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
@@ -63,12 +69,6 @@ public abstract class Character extends MapObject {
 
     int getMovementDistance() {
         return movementDistance;
-    }
-
-    void die() {
-        setChanged();
-        notifyObservers(new Dead());
-        deleteObservers();
     }
 
     @Override
@@ -103,7 +103,6 @@ public abstract class Character extends MapObject {
         }
     }
 
-    // TODO: Map to listen to this
     public static class Dead {
         Dead() {}
     }

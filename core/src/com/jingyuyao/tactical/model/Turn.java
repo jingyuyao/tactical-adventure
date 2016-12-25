@@ -2,11 +2,10 @@ package com.jingyuyao.tactical.model;
 
 public class Turn {
     private final Map map;
-    private int turnCount = 0;
+    private int turnCount = 1;
 
     public Turn(Map map) {
         this.map = map;
-        nextTurn();
     }
 
     public int getTurnCount() {

@@ -9,7 +9,7 @@ import com.google.common.graph.ValueGraph;
 
 import java.util.*;
 
-public class Map extends Observable {
+public class Map extends Observable implements Observer {
     private final int width;
     private final int height;
     private final Grid<Terrain> terrains;
@@ -41,11 +41,13 @@ public class Map extends Observable {
     public void add(Player player) {
         players.add(player);
         player.addObserver(markerManager);
+        player.addObserver(this);
     }
 
     public void add(Enemy enemy) {
         enemies.add(enemy);
         enemy.addObserver(markerManager);
+        enemy.addObserver(this);
     }
 
     public ImmutableSet<Player> getPlayers() {
@@ -58,12 +60,6 @@ public class Map extends Observable {
 
     public Iterable<Character> getCharacters() {
         return Iterables.unmodifiableIterable(Iterables.concat(players, enemies));
-    }
-
-    // TODO: Kill this method and have map observe die()
-    public void kill(Enemy enemy) {
-        enemies.remove(enemy);
-        enemy.die();
     }
 
     public void setHighlight(MapObject highlight) {
@@ -169,6 +165,17 @@ public class Map extends Observable {
         }
 
         return movementPenaltyGrid;
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (Character.Dead.class.isInstance(o)) {
+            if (Player.class.isInstance(observable)) {
+                players.remove(Player.class.cast(observable));
+            } else if (Enemy.class.isInstance(observable)) {
+                enemies.remove(Enemy.class.cast(observable));
+            }
+        }
     }
 
     public static class HighlightChange {
