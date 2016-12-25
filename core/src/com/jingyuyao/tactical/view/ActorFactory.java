@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.model.object.Terrain;
 import java.util.HashMap;
 
 /**
- * Creates {@link MapActor} from models and adds the proper controllers.
+ * Creates {@link AbstractActor} from models and adds the proper controllers.
  */
 class ActorFactory {
     static final float ACTOR_SIZE = 1f; // world units

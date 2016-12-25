@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-public class TerrainActor extends MapActor<Terrain> {
+public class TerrainActor extends AbstractActor<Terrain> {
     private final Map<Terrain.Marker, Sprite> markerSpriteMap;
     private final List<Sprite> markerSprites;
 

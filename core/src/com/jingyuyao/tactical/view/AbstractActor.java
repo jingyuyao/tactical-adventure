@@ -14,13 +14,13 @@ import java.util.Observer;
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
-abstract class MapActor<T extends AbstractObject> extends Actor implements Observer {
+abstract class AbstractActor<T extends AbstractObject> extends Actor implements Observer {
     private final AnimationCounter animationCounter;
 
     /**
      * @param object This will be the first argument in {@link #update(Observable, Object)}
      */
-    MapActor(T object, float size, AnimationCounter animationCounter, EventListener listener) {
+    AbstractActor(T object, float size, AnimationCounter animationCounter, EventListener listener) {
         this.animationCounter = animationCounter;
         setBounds(object.getCoordinate().getX(), object.getCoordinate().getY(), size, size);
         addListener(listener);

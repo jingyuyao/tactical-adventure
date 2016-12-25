@@ -16,7 +16,7 @@ import java.util.Observable;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public class CharacterActor<T extends Character> extends MapActor<T> {
+public class CharacterActor<T extends Character> extends AbstractActor<T> {
     private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
     private final Sprite sprite;

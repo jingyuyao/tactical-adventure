@@ -23,7 +23,7 @@ public class MapView implements Observer {
      * A map view contains a world with all the actors and a way to render them.
      * The background map is backed by a {@link OrthogonalTiledMapRenderer}.
      * @param map Highlighter used to draw the highlight
-     * @param world Should already be set up with all the {@link MapActor}
+     * @param world Should already be set up with all the {@link AbstractActor}
      * @param mapRenderer The tiled map renderer
      * @param highlightSprite The sprite drawn for highlights
      */
