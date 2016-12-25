@@ -10,7 +10,6 @@ abstract class AbstractState {
     private final MapState mapState;
     private final Map map;
     private final Turn turn;
-    private final Markings markings;
     private final AbstractState prevState;
 
     /**
@@ -18,45 +17,28 @@ abstract class AbstractState {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(
-                prevState.mapState,
-                prevState.map,
-                prevState.turn,
-                prevState.markings,
-                prevState
-        );
+        this(prevState.mapState, prevState.map, prevState.turn, prevState);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(MapState mapState, Map map, Turn turn, Markings markings) {
-        this(mapState, map, turn, markings,  null);
+    AbstractState(MapState mapState, Map map, Turn turn) {
+        this(mapState, map, turn, null);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(
-            MapState mapState,
-            Map map,
-            Turn turn,
-            Markings markings,
-            AbstractState prevState
-    ) {
+    private AbstractState(MapState mapState, Map map, Turn turn, AbstractState prevState) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
-        this.markings = markings;
         this.prevState = prevState;
     }
 
     Map getMap() {
         return map;
-    }
-
-    Markings getMarkings() {
-        return markings;
     }
 
     void nextTurn() {

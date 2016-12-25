@@ -19,7 +19,8 @@ class SelectingWeapon extends AbstractState {
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        getMarkings().markEnemyTarget(attackingPlayer, targetEnemy);
+        // TODO: show equipped weapon targets only
+        attackingPlayer.setTargetMode(Player.TargetMode.IMMEDIATE_TARGETS);
     }
 
     @Override
@@ -29,7 +30,7 @@ class SelectingWeapon extends AbstractState {
 
     @Override
     void exit() {
-        getMarkings().unMarkLastPlayer();
+        attackingPlayer.setTargetMode(Player.TargetMode.NONE);
     }
 
     @Override

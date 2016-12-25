@@ -7,8 +7,8 @@ class Waiting extends AbstractState {
     /**
      * Used to create the initial state.
      */
-    Waiting(MapState mapState, Map map, Turn turn, Markings markings) {
-        super(mapState, map, turn, markings);
+    Waiting(MapState mapState, Map map, Turn turn) {
+        super(mapState, map, turn);
     }
 
     /**
@@ -50,11 +50,7 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Enemy enemy) {
-        if (getMarkings().getMarkedEnemies().contains(enemy)) {
-            getMarkings().unMarkEnemyDangerArea(enemy);
-        } else {
-            getMarkings().markEnemyDangerArea(enemy);
-        }
+        enemy.setShowDangerArea(!enemy.isShowDangerArea());
     }
 
     @Override

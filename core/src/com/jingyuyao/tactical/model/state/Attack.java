@@ -19,7 +19,7 @@ public class Attack extends AbstractAction {
     public void run() {
         // TODO: kick off battle animation somewhere
         // TODO: actual calculation time
-        getState().getMarkings().unMarkEnemyDangerArea(attackPlan.getTargetEnemy());
+        attackPlan.getTargetEnemy().setShowDangerArea(false);
         getState().getMap().kill(attackPlan.getTargetEnemy());
         getState().wait(attackPlan.getAttackPlayer());
     }

@@ -15,7 +15,7 @@ public class MapState extends Observable {
 
     public MapState(Map map, Turn turn, AnimationCounter animationCounter) {
         this.animationCounter = animationCounter;
-        state = new Waiting(this, map, turn, new Markings(map, animationCounter));
+        state = new Waiting(this, map, turn);
     }
 
     public ImmutableList<Action> getActions() {

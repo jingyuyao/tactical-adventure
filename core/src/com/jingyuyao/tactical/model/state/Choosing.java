@@ -17,7 +17,7 @@ class Choosing extends AbstractState {
     @Override
     void enter() {
         if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            getMarkings().markImmediateTargets(currentPlayer);
+            currentPlayer.setTargetMode(Player.TargetMode.IMMEDIATE_TARGETS);
         }
     }
 
@@ -26,7 +26,7 @@ class Choosing extends AbstractState {
 
     @Override
     void exit() {
-        getMarkings().unMarkLastPlayer();
+        currentPlayer.setTargetMode(Player.TargetMode.NONE);
     }
 
     @Override

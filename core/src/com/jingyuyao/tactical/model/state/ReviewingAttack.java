@@ -17,7 +17,8 @@ class ReviewingAttack extends AbstractState {
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        getMarkings().markEnemyTarget(attackPlan.getAttackPlayer(), attackPlan.getTargetEnemy());
+        // TODO: show equipped weapon targets only
+        attackPlan.getAttackPlayer().setTargetMode(Player.TargetMode.IMMEDIATE_TARGETS);
         showAttackPlan(attackPlan);
     }
 
@@ -28,7 +29,7 @@ class ReviewingAttack extends AbstractState {
 
     @Override
     void exit() {
-        getMarkings().unMarkLastPlayer();
+        attackPlan.getAttackPlayer().setTargetMode(Player.TargetMode.NONE);
         hideAttackPlan();
     }
 
