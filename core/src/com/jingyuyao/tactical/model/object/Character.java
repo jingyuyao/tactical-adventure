@@ -5,8 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.item.Items;
 
-import java.util.Set;
-
 public abstract class Character extends AbstractObject {
     /**
      * Used for sprites and as ID.

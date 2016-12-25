@@ -7,8 +7,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.*;
+import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.*;
 
