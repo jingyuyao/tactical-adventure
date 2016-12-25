@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;

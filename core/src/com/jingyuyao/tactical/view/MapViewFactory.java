@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.view.actor.ActorFactory;
 
 /**
  * Not the cleanest approach but at least {@link MapView} can now receive injections via this class.

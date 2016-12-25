@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -17,14 +17,14 @@ import java.util.HashMap;
 /**
  * Creates {@link AbstractActor} from models and adds the proper controllers.
  */
-class ActorFactory {
-    static final float ACTOR_SIZE = 1f; // world units
+public class ActorFactory {
+    public static final float ACTOR_SIZE = 1f; // world units
 
     private final AssetManager assetManager;
     private final java.util.Map<Terrain.Marker, Sprite> markerSpriteMap;
     private final java.util.Map<Class, Color> typeColorMap;
 
-    ActorFactory(AssetManager assetManager) {
+    public ActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
         markerSpriteMap = new HashMap<Terrain.Marker, Sprite>();
         markerSpriteMap.put(
@@ -44,7 +44,7 @@ class ActorFactory {
         typeColorMap.put(Enemy.class, Color.RED);
     }
 
-    Actor create(Level level, Player player) {
+    public Actor create(Level level, Player player) {
         return new PlayerActor(
                 player,
                 ACTOR_SIZE,
@@ -55,7 +55,7 @@ class ActorFactory {
         );
     }
 
-    Actor create(Level level, Enemy enemy) {
+    public Actor create(Level level, Enemy enemy) {
         return new CharacterActor<Enemy>(
                 enemy,
                 ACTOR_SIZE,
@@ -66,7 +66,7 @@ class ActorFactory {
         );
     }
 
-    Actor create(Level level, Terrain terrain) {
+    public Actor create(Level level, Terrain terrain) {
         return new TerrainActor(
                 terrain,
                 ACTOR_SIZE,

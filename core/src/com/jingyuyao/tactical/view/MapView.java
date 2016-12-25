@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.view.actor.AbstractActor;
+import com.jingyuyao.tactical.view.actor.ActorFactory;
 
 import java.util.Observable;
 import java.util.Observer;
