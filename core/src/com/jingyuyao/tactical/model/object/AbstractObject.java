@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Observable;
 
 /**
- * An object on the game grid.
+ * Super class of all the objects on the game grid.
  */
 public abstract class AbstractObject extends Observable {
     private Coordinate coordinate;

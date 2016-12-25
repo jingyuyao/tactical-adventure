@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.object;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.item.Items;
+import com.jingyuyao.tactical.model.item.Weapon;
 
 public abstract class Character extends AbstractObject {
     /**
@@ -44,15 +44,26 @@ public abstract class Character extends AbstractObject {
         notifyObservers(new InstantMove(newCoordinate));
     }
 
-    public void die() {
-        setChanged();
-        notifyObservers(new Dead());
-        deleteObservers();
-    }
-
     public boolean canTarget(Character other) {
         // TODO: make me more specific later
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        items.setEquippedWeapon(weapon);
+    }
+
+    public void damageBy(int delta) {
+        boolean dead = stats.damageBy(delta);
+        if (dead) {
+            die();
+        }
+    }
+
+    private void die() {
+        setChanged();
+        notifyObservers(new Dead());
+        deleteObservers();
     }
 
     @Override

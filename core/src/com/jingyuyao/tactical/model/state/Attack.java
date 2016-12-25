@@ -18,9 +18,8 @@ public class Attack extends AbstractAction {
     @Override
     public void run() {
         // TODO: kick off battle animation somewhere
-        // TODO: actual calculation time
         attackPlan.getTargetEnemy().setShowDangerArea(false);
-        attackPlan.getTargetEnemy().die();
-        getState().wait(attackPlan.getAttackPlayer());
+        attackPlan.execute();
+        getState().wait(attackPlan.getAttackingPlayer());
     }
 }

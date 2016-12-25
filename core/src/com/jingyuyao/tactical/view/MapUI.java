@@ -86,15 +86,15 @@ public class MapUI implements Observer {
     public void update(Observable observable, Object o) {
         // TODO: Hum... can we make this shorter? generics? visitor?
         if (Map.HighlightChange.class.isInstance(o)) {
-            highlightChange((Map.HighlightChange) o);
+            highlightChange(Map.HighlightChange.class.cast(o));
         } else if (MapState.StateChange.class.isInstance(o)) {
-            stateChange((MapState.StateChange) o);
+            stateChange(MapState.StateChange.class.cast(o));
         } else if (AnimationCounter.AnimationChange.class.isInstance(o)) {
-            animationChange((AnimationCounter.AnimationChange) o);
+            animationChange(AnimationCounter.AnimationChange.class.cast(o));
         } else if (MapState.ShowAttackPlan.class.isInstance(o)) {
-            showAttackPlan((MapState.ShowAttackPlan) o);
+            showAttackPlan(MapState.ShowAttackPlan.class.cast(o));
         } else if (MapState.HideAttackPlan.class.isInstance(o)) {
-            hideAttackPlan((MapState.HideAttackPlan) o);
+            hideAttackPlan(MapState.HideAttackPlan.class.cast(o));
         }
     }
 

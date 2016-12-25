@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.object;
 
-import com.jingyuyao.tactical.model.item.Items;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**

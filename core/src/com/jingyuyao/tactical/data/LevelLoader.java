@@ -10,13 +10,9 @@ import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.Turn;
-import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Items;
+import com.jingyuyao.tactical.model.item.Targetable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Stats;
-import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.*;
@@ -52,11 +48,7 @@ public class LevelLoader {
             }
         }
 
-        // Testing
-        map.add(new Player(5, 5, "john", new Stats(normalAndObstructed(), 5), createItems1()));
-        map.add(new Player(5, 6, "john", new Stats(normalAndObstructed(), 6), createItems2()));
-        map.add(new Enemy(10, 10, "billy", new Stats(normalAndObstructed(), 3), createItems1()));
-        map.add(new Enemy(11, 7, "billy", new Stats(normalAndObstructed(), 2), createItems1()));
+        addTestCharacters(map);
 
         return map;
     }
@@ -76,6 +68,15 @@ public class LevelLoader {
     }
 
     // TODO: remove us
+    private static void addTestCharacters(Map map) {
+        int hp = 20;
+
+        map.add(new Player(5, 5, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
+        map.add(new Player(5, 6, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
+        map.add(new Enemy(10, 10, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
+        map.add(new Enemy(11, 7, "billy", new Stats(hp, 2, normalAndObstructed()), createItems2()));
+    }
+
     private static Set<Terrain.Type> normalAndObstructed() {
         Set<Terrain.Type> standOnTerrainTypes = new HashSet<Terrain.Type>();
         standOnTerrainTypes.add(Terrain.Type.NORMAL);
@@ -84,16 +85,18 @@ public class LevelLoader {
     }
 
     private static Items createItems1() {
+        int attackPower = 5;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon("Axe", 3, ImmutableSet.of(1)));
-        weapons.add(new Weapon("Sword", 3, ImmutableSet.of(1)));
-        weapons.add(new Weapon("Bow", 3, ImmutableSet.of(2)));
-        return new Items(weapons, Collections.<Consumable>emptyList());
+        weapons.add(new Weapon(0, "Axe", 3, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(1, "Sword", 3, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
+        return new Items(weapons, Collections.<Targetable>emptyList());
     }
 
     private static Items createItems2() {
+        int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon("Bow", 3, ImmutableSet.of(2)));
-        return new Items(weapons, Collections.<Consumable>emptyList());
+        weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
+        return new Items(weapons, Collections.<Targetable>emptyList());
     }
 }
