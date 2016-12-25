@@ -1,7 +1,8 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.object;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.item.Items;
 
 import java.util.Set;
@@ -56,11 +57,11 @@ public abstract class Character extends MapObject {
         deleteObservers();
     }
 
-    int getMovementDistance() {
+    public int getMovementDistance() {
         return movementDistance;
     }
 
-    boolean canTarget(Character other) {
+    public boolean canTarget(Character other) {
         // TODO: make me more specific later
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
     }

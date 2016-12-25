@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.jingyuyao.tactical.model.AnimationCounter;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.ArrayList;
 import java.util.List;

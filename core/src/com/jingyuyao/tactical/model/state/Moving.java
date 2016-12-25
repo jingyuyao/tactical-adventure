@@ -4,9 +4,9 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Enemy;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 class Moving extends AbstractState {
     private final Player currentPlayer;

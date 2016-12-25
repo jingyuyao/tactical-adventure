@@ -1,7 +1,11 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.Turn;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 class Waiting extends AbstractState {
     /**

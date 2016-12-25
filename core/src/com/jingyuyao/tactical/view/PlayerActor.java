@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.jingyuyao.tactical.model.AnimationCounter;
-import com.jingyuyao.tactical.model.Player;
+import com.jingyuyao.tactical.model.object.Player;
 
 import java.util.Observable;
 

@@ -1,6 +1,7 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.object;
 
 import com.google.common.collect.ImmutableSet;
+import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.HashSet;
@@ -33,7 +34,7 @@ public class Terrain extends MapObject {
         notifyObservers(new MarkerChange(markers));
     }
 
-    int getMovementPenalty(Character character) {
+    public int getMovementPenalty(Character character) {
         if (!character.canPassTerrainType(type)) {
             return Algorithms.NO_EDGE;
         }

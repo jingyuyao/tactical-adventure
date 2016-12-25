@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.Player;
+import com.jingyuyao.tactical.model.object.Player;
 
 public class Wait extends AbstractAction {
     private final Player currentPlayer;

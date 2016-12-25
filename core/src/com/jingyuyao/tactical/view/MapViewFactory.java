@@ -9,10 +9,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jingyuyao.tactical.Assets;
-import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Level;
-import com.jingyuyao.tactical.model.Player;
-import com.jingyuyao.tactical.model.Terrain;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 /**
  * Not the cleanest approach but at least {@link MapView} can now receive injections via this class.

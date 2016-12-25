@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.*;
@@ -10,8 +11,8 @@ import java.util.Map;
 /**
  * Functions should return immutable objects.
  */
-class Algorithms {
-    static final int NO_EDGE = -1;
+public class Algorithms {
+    public static final int NO_EDGE = -1;
 
     /**
      * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code coordinateGrid} that contains
@@ -141,12 +142,12 @@ class Algorithms {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             ValueNode<?> valueNode = (ValueNode<?>) o;
-            return com.google.common.base.Objects.equal(object, valueNode.object);
+            return Objects.equal(object, valueNode.object);
         }
 
         @Override
         public int hashCode() {
-            return com.google.common.base.Objects.hashCode(object);
+            return Objects.hashCode(object);
         }
     }
 }

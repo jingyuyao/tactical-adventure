@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model;
 
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
 
 public class AttackPlan {
     private final Player attackPlayer;

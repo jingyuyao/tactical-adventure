@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.jingyuyao.tactical.model.object.Player;
+
 public class Turn {
     private final Map map;
     private int turnCount = 1;

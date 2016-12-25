@@ -1,6 +1,9 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.graph.Graph;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.HashSet;
 import java.util.Observable;

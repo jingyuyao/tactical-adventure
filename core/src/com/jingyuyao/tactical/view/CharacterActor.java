@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AnimationCounter;
-import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Observable;
 
