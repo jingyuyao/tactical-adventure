@@ -17,13 +17,13 @@ public class Map extends Observable {
     private final Set<Enemy> enemies;
     private final MarkerManager markerManager;
 
-    public Map(int width, int height) {
+    public Map(int width, int height, AnimationCounter animationCounter) {
         this.width = width;
         this.height = height;
         terrains = new Grid<Terrain>(width, height);
         players = new HashSet<Player>();
         enemies = new HashSet<Enemy>();
-        markerManager = new MarkerManager(this);
+        markerManager = new MarkerManager(this, animationCounter);
     }
 
     public int getWidth() {

@@ -9,15 +9,22 @@ import java.util.Set;
 
 public class MarkerManager implements Observer {
     private final Map map;
+    private final AnimationCounter animationCounter;
 
-    MarkerManager(Map map) {
+    MarkerManager(Map map, AnimationCounter animationCounter) {
         this.map = map;
+        this.animationCounter = animationCounter;
     }
 
     @Override
     public void update(Observable observable, Object o) {
         if (Player.TargetModeChange.class.isInstance(o) || Enemy.ShowDangerAreaChange.class.isInstance(o)) {
-            syncMarkers();
+            animationCounter.runOnceWhenNotAnimating(new Runnable() {
+                @Override
+                public void run() {
+                    syncMarkers();
+                }
+            });
         }
     }
 

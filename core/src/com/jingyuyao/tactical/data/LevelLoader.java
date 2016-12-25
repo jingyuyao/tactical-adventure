@@ -19,14 +19,14 @@ public class LevelLoader {
     private static final String TERRAIN_TYPE_KEY = "type";
 
     public static Level loadLevel(TiledMap tiledMap) {
-        Map map = createMap(tiledMap);
-        Turn turn = new Turn(map);
         AnimationCounter animationCounter = new AnimationCounter();
+        Map map = createMap(tiledMap, animationCounter);
+        Turn turn = new Turn(map);
         MapState mapState = new MapState(map, turn, animationCounter);
         return new Level(map, mapState, turn, animationCounter);
     }
 
-    private static Map createMap(TiledMap tiledMap) {
+    private static Map createMap(TiledMap tiledMap, AnimationCounter animationCounter) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 
@@ -35,7 +35,7 @@ public class LevelLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Map map = new Map(width, height);
+        Map map = new Map(width, height, animationCounter);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
