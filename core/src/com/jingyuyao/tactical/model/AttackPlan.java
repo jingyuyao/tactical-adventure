@@ -9,10 +9,14 @@ public class AttackPlan {
     // TODO: add the terrain they are standing on
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
+    private final Weapon playerWeapon;
+    private final Weapon enemyWeapon;
 
-    public AttackPlan(Player attackingPlayer, Enemy targetEnemy) {
+    public AttackPlan(Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon, Weapon enemyWeapon) {
         this.attackingPlayer = attackingPlayer;
         this.targetEnemy = targetEnemy;
+        this.playerWeapon = playerWeapon;
+        this.enemyWeapon = enemyWeapon;
         Preconditions.checkNotNull(attackingPlayer.getItems().getEquippedWeapon());
     }
 
@@ -29,9 +33,13 @@ public class AttackPlan {
      */
     public void execute() {
         // TODO: complete me
-        Weapon playerWeapon = attackingPlayer.getItems().getEquippedWeapon();
         targetEnemy.damageBy(playerWeapon.getAttackPower());
         playerWeapon.use();
+
+        if (enemyWeapon != null) {
+            attackingPlayer.damageBy(enemyWeapon.getAttackPower());
+            enemyWeapon.use();
+        }
     }
 
     @Override

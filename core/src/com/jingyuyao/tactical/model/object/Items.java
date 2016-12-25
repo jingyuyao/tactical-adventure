@@ -73,6 +73,10 @@ public class Items implements Observer {
                     iterator.remove();
                 }
             }
+            // TODO: find a better way
+            if (item.equals(equippedWeapon)) {
+               equippedWeapon = weapons.isEmpty() ? null : weapons.get(0);
+            }
         }
     }
 
