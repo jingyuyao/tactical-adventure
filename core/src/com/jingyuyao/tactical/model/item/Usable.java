@@ -22,15 +22,13 @@ public abstract class Usable extends Item {
     }
 
     /**
-     * Attempts to use this {@link Usable} if it has any {@link #usageLeft}.
+     * Signals this item has been used once.
      * Fires {@link Used} and {@link Broke} events appropriately.
      */
-    public void use() {
+    public void usedOnce() {
         if (usageLeft == 0) return;
 
-        // Decrements usageLeft immediately in case used() calls getUsageLeft()
         usageLeft--;
-        used();
         setChanged();
         notifyObservers(new Used());
         if (usageLeft == 0) {
@@ -40,11 +38,6 @@ public abstract class Usable extends Item {
             deleteObservers();
         }
     }
-
-    /**
-     * Called when this item is used.
-     */
-    protected abstract void used();
 
     @Override
     public String toString() {

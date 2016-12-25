@@ -74,7 +74,7 @@ public class LevelLoader {
         map.add(new Player(5, 5, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
         map.add(new Player(5, 6, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
         map.add(new Enemy(10, 10, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
-        map.add(new Enemy(11, 7, "billy", new Stats(hp, 2, normalAndObstructed()), createItems2()));
+        map.add(new Enemy(11, 7, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1()));
     }
 
     private static Set<Terrain.Type> normalAndObstructed() {
@@ -87,7 +87,7 @@ public class LevelLoader {
     private static Items createItems1() {
         int attackPower = 5;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon(0, "Axe", 2, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(0, "Axe", 10, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(1, "Sword", 3, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
         return new Items(weapons, Collections.<Targetable>emptyList());

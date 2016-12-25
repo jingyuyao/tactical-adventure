@@ -10,6 +10,9 @@ public class AttackPlan {
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
     private final Weapon playerWeapon;
+    /**
+     * Can be null.
+     */
     private final Weapon enemyWeapon;
 
     public AttackPlan(Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon, Weapon enemyWeapon) {
@@ -34,11 +37,11 @@ public class AttackPlan {
     public void execute() {
         // TODO: complete me
         targetEnemy.damageBy(playerWeapon.getAttackPower());
-        playerWeapon.use();
+        playerWeapon.usedOnce();
 
-        if (enemyWeapon != null) {
+        if (targetEnemy.isAlive() && enemyWeapon != null) {
             attackingPlayer.damageBy(enemyWeapon.getAttackPower());
-            enemyWeapon.use();
+            enemyWeapon.usedOnce();
         }
     }
 

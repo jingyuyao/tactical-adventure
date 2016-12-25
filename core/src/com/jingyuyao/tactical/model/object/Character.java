@@ -32,6 +32,10 @@ public abstract class Character extends AbstractObject {
         return stats;
     }
 
+    public boolean isAlive() {
+        return stats.getHp() > 0;
+    }
+
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
         setCoordinate(newCoordinate);
         setChanged();
@@ -60,7 +64,7 @@ public abstract class Character extends AbstractObject {
         }
     }
 
-    private void die() {
+    protected void die() {
         setChanged();
         notifyObservers(new Dead());
         deleteObservers();

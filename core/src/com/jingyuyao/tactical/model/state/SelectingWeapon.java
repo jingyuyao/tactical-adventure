@@ -19,7 +19,6 @@ class SelectingWeapon extends AbstractState {
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        // TODO: show equipped weapon targets only
         attackingPlayer.setTargetMode(Player.TargetMode.IMMEDIATE_TARGETS);
     }
 

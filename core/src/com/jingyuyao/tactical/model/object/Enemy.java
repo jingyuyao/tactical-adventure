@@ -27,6 +27,12 @@ public class Enemy extends Character {
         notifyObservers(new ShowDangerAreaChange());
     }
 
+    @Override
+    protected void die() {
+        setShowDangerArea(false);
+        super.die();
+    }
+
     public static class ShowDangerAreaChange {
         ShowDangerAreaChange() {}
     }

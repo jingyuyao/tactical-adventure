@@ -29,7 +29,7 @@ public class Items implements Observer {
      * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it has one.
      */
     public Items(List<Weapon> weapons, List<Targetable> targetables) {
-        this(weapons, targetables, weapons.isEmpty() ? null : weapons.get(0));
+        this(weapons, targetables, getDefaultWeapon(weapons));
     }
 
     public Items(List<Weapon> weapons, List<Targetable> targetables, Weapon equippedWeapon) {
@@ -73,11 +73,17 @@ public class Items implements Observer {
                     iterator.remove();
                 }
             }
-            // TODO: find a better way
             if (item.equals(equippedWeapon)) {
-               equippedWeapon = weapons.isEmpty() ? null : weapons.get(0);
+                setEquippedWeapon(getDefaultWeapon(weapons));
             }
         }
+    }
+
+    /**
+     * Return the first weapon if there is one, else null.
+     */
+    private static Weapon getDefaultWeapon(List<Weapon> weapons) {
+        return weapons.isEmpty() ? null : weapons.get(0);
     }
 
     @Override

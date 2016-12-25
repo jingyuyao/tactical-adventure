@@ -18,9 +18,6 @@ public class Weapon extends Usable {
         this.attackDistances = ImmutableSet.copyOf(attackDistances);
     }
 
-    @Override
-    protected void used() {}
-
     public ImmutableSet<Integer> getAttackDistances() {
         return attackDistances;
     }

@@ -18,7 +18,6 @@ public class Attack extends AbstractAction {
     @Override
     public void run() {
         // TODO: kick off battle animation somewhere
-        attackPlan.getTargetEnemy().setShowDangerArea(false);
         attackPlan.execute();
         getState().wait(attackPlan.getAttackingPlayer());
     }

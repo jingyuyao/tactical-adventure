@@ -38,6 +38,12 @@ public class Player extends Character {
         notifyObservers(new TargetModeChange());
     }
 
+    @Override
+    protected void die() {
+        setTargetMode(TargetMode.NONE);
+        super.die();
+    }
+
     public enum TargetMode {
         NONE,
         MOVE_AND_TARGETS,
