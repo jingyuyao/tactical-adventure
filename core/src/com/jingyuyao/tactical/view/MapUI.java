@@ -99,7 +99,7 @@ public class MapUI implements Observer {
     }
 
     private void highlightChange(Map.HighlightChange highlightChange) {
-        highlight.setText(highlightChange.getHighlight().toString());
+        highlight.setText(highlightChange.getHighlight().getCoordinate().toString());
     }
 
     private void stateChange(MapState.StateChange stateChange) {

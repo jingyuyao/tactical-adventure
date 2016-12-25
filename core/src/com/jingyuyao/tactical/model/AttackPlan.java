@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 
@@ -28,7 +29,9 @@ public class AttackPlan {
      */
     public void execute() {
         // TODO: complete me
-        targetEnemy.damageBy(attackingPlayer.getItems().getEquippedWeapon().getAttackPower());
+        Weapon playerWeapon = attackingPlayer.getItems().getEquippedWeapon();
+        targetEnemy.damageBy(playerWeapon.getAttackPower());
+        playerWeapon.use();
     }
 
     @Override

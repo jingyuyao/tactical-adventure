@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -31,6 +32,7 @@ public class MapActorController extends ClickListener {
 
     @Override
     public void clicked(InputEvent event, float x, float y) {
+        Gdx.app.log("MapActorController", object.toString());
         object.select(mapState);
     }
 }

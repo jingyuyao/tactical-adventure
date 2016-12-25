@@ -30,10 +30,11 @@ public abstract class Usable extends Item {
 
         // Decrements usageLeft immediately in case used() calls getUsageLeft()
         usageLeft--;
-        setChanged();
         used();
+        setChanged();
         notifyObservers(new Used());
         if (usageLeft == 0) {
+            setChanged();
             notifyObservers(new Broke());
             // TODO: we can get leave out this if usable can be refilled
             deleteObservers();

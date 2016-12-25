@@ -4,8 +4,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Targetable;
+import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -40,15 +42,15 @@ public class Items implements Observer {
     }
 
     public Iterable<Weapon> getWeapons() {
-        return Iterables.unmodifiableIterable(weapons);
+        return weapons;
     }
 
     public Iterable<Targetable> getTargetables() {
-        return Iterables.unmodifiableIterable(targetables);
+        return targetables;
     }
 
     public Iterable<Item> getItems() {
-        return Iterables.unmodifiableIterable(Iterables.<Item>concat(weapons, targetables));
+        return Iterables.<Item>concat(weapons, targetables);
     }
 
     public Weapon getEquippedWeapon() {
@@ -63,8 +65,15 @@ public class Items implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        // TODO: handle weapon used & broken
+    public void update(Observable item, Object param) {
+        if (Usable.Broke.class.isInstance(param)) {
+            Iterator<Item> iterator = getItems().iterator();
+            while (iterator.hasNext()) {
+                if (item.equals(iterator.next())) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     @Override
