@@ -3,8 +3,6 @@ package com.jingyuyao.tactical.model.object;
 import com.jingyuyao.tactical.model.item.Items;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.Set;
-
 /**
  * A player character
  */
@@ -12,8 +10,8 @@ public class Player extends Character {
     private boolean actionable = true;
     private TargetMode targetMode = TargetMode.NONE;
 
-    public Player(int x, int y, String name, int movementDistance, Set<Terrain.Type> canCrossTerrainTypes, Items items) {
-        super(x, y, name, movementDistance, canCrossTerrainTypes, items);
+    public Player(int x, int y, String name, Stats stats, Items items) {
+        super(x, y, name, stats, items);
     }
 
     @Override

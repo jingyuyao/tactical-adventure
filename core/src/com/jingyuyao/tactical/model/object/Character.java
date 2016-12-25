@@ -12,22 +12,19 @@ public abstract class Character extends AbstractObject {
      * Used for sprites and as ID.
      */
     private final String name;
-    private final Set<Terrain.Type> passableTerrainTypes;
+    private final Stats stats;
     private final Items items;
-    private int movementDistance;
 
     Character(
             int x,
             int y,
             String name,
-            int movementDistance,
-            Set<Terrain.Type> passableTerrainTypes,
+            Stats stats,
             Items items
     ) {
         super(x, y);
         this.name = name;
-        this.movementDistance = movementDistance;
-        this.passableTerrainTypes = passableTerrainTypes;
+        this.stats = stats;
         this.items = items;
     }
 
@@ -37,6 +34,10 @@ public abstract class Character extends AbstractObject {
 
     public Items getItems() {
         return items;
+    }
+
+    public Stats getStats() {
+        return stats;
     }
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
@@ -57,24 +58,17 @@ public abstract class Character extends AbstractObject {
         deleteObservers();
     }
 
-    public int getMovementDistance() {
-        return movementDistance;
-    }
-
     public boolean canTarget(Character other) {
         // TODO: make me more specific later
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
-    }
-
-    boolean canPassTerrainType(Terrain.Type terrainType) {
-        return passableTerrainTypes.contains(terrainType);
     }
 
     @Override
     public String toString() {
         return "Character{" +
                 "name='" + name + '\'' +
-                ", movementDistance=" + movementDistance +
+                ", stats=" + stats +
+                ", items=" + items +
                 "} " + super.toString();
     }
 

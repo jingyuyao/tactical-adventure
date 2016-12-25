@@ -16,4 +16,12 @@ public class Item {
     public int getUsageLeft() {
         return usageLeft;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                ", usageLeft=" + usageLeft +
+                '}';
+    }
 }

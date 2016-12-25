@@ -11,8 +11,8 @@ import java.util.Set;
 public class Enemy extends Character {
     private boolean showDangerArea;
 
-    public Enemy(int x, int y, String name, int movementDistance, Set<Terrain.Type> canCrossTerrainTypes, Items items) {
-        super(x, y, name, movementDistance, canCrossTerrainTypes, items);
+    public Enemy(int x, int y, String name, Stats stats, Items items) {
+        super(x, y, name, stats, items);
     }
 
     @Override

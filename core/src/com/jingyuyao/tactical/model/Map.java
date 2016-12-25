@@ -98,7 +98,7 @@ public class Map extends Observable implements Observer {
         return Algorithms.minPathSearch(
                 createMovementPenaltyGrid(character),
                 character.getCoordinate(),
-                character.getMovementDistance());
+                character.getStats().getMoveDistance());
     }
 
     public ImmutableSet<Coordinate> getAllTargets(Character character) {

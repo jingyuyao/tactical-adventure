@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.item.Items;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Stats;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.MapState;
 
@@ -52,10 +53,10 @@ public class LevelLoader {
         }
 
         // Testing
-        map.add(new Player(5, 5, "john", 5, normalAndObstructed(), createItems1()));
-        map.add(new Player(5, 6, "john", 6, normalAndObstructed(), createItems2()));
-        map.add(new Enemy(10, 10, "billy", 3, normalAndObstructed(), createItems1()));
-        map.add(new Enemy(11, 7, "billy", 2, normalAndObstructed(), createItems1()));
+        map.add(new Player(5, 5, "john", new Stats(normalAndObstructed(), 5), createItems1()));
+        map.add(new Player(5, 6, "john", new Stats(normalAndObstructed(), 6), createItems2()));
+        map.add(new Enemy(10, 10, "billy", new Stats(normalAndObstructed(), 3), createItems1()));
+        map.add(new Enemy(11, 7, "billy", new Stats(normalAndObstructed(), 2), createItems1()));
 
         return map;
     }
