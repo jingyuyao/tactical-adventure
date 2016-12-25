@@ -27,18 +27,10 @@ public class Enemy extends Character {
     public void setShowDangerArea(boolean showDangerArea) {
         this.showDangerArea = showDangerArea;
         setChanged();
-        notifyObservers(new ShowDangerAreaChange(showDangerArea));
+        notifyObservers(new ShowDangerAreaChange());
     }
 
     public static class ShowDangerAreaChange {
-        private final boolean showDangerArea;
-
-        ShowDangerAreaChange(boolean showDangerArea) {
-            this.showDangerArea = showDangerArea;
-        }
-
-        public boolean isShowDangerArea() {
-            return showDangerArea;
-        }
+        ShowDangerAreaChange() {}
     }
 }

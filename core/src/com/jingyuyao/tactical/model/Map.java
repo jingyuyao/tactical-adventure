@@ -15,6 +15,7 @@ public class Map extends Observable {
     private final Grid<Terrain> terrains;
     private final Set<Player> players;
     private final Set<Enemy> enemies;
+    private final MarkerManager markerManager;
 
     public Map(int width, int height) {
         this.width = width;
@@ -22,6 +23,7 @@ public class Map extends Observable {
         terrains = new Grid<Terrain>(width, height);
         players = new HashSet<Player>();
         enemies = new HashSet<Enemy>();
+        markerManager = new MarkerManager(this);
     }
 
     public int getWidth() {
@@ -38,23 +40,24 @@ public class Map extends Observable {
 
     public void add(Player player) {
         players.add(player);
+        player.addObserver(markerManager);
     }
 
     public void add(Enemy enemy) {
         enemies.add(enemy);
+        enemy.addObserver(markerManager);
     }
 
-    public Set<Player> getPlayers() {
-        return players;
+    public ImmutableSet<Player> getPlayers() {
+        return ImmutableSet.copyOf(players);
     }
 
-    public Set<Enemy> getEnemies() {
-        return enemies;
+    public ImmutableSet<Enemy> getEnemies() {
+        return ImmutableSet.copyOf(enemies);
     }
 
     public Iterable<Character> getCharacters() {
-        // ImmutableSet.copyOf(Iterable.concat(...))) when necessary
-        return Iterables.concat(players, enemies);
+        return Iterables.unmodifiableIterable(Iterables.concat(players, enemies));
     }
 
     // TODO: Kill this method and have map observe die()

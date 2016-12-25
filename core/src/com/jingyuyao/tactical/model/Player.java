@@ -38,10 +38,10 @@ public class Player extends Character {
     public void setTargetMode(TargetMode targetMode) {
         this.targetMode = targetMode;
         setChanged();
-        notifyObservers(new MarkerChange(targetMode));
+        notifyObservers(new TargetModeChange());
     }
 
-    private enum TargetMode {
+    public enum TargetMode {
         NONE,
         MOVE_AND_TARGETS,
         IMMEDIATE_TARGETS
@@ -59,15 +59,7 @@ public class Player extends Character {
         }
     }
 
-    public static class MarkerChange {
-        private final TargetMode targetMode;
-
-        MarkerChange(TargetMode targetMode) {
-            this.targetMode = targetMode;
-        }
-
-        public TargetMode getTargetMode() {
-            return targetMode;
-        }
+    public static class TargetModeChange {
+        TargetModeChange() {}
     }
 }
