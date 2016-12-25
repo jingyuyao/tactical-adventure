@@ -23,6 +23,13 @@ public class AttackPlan {
         return playerWeapon;
     }
 
+    /**
+     * Executes this attack plan, make HP reduction calculations, call die() if character dead.
+     */
+    public void execute() {
+        // TODO: implement me
+    }
+
     @Override
     public String toString() {
         return "AttackPlan{" +

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 
@@ -39,12 +40,13 @@ public class Map extends Observable {
         characters.add(character);
     }
 
-    public ImmutableList<Player> getPlayers() {
-        return getSubtypeCharacters(Player.class);
+    public Iterable<Player> getPlayers() {
+        // Note: returning an iterable so we won't mistaken the result as a backing data store.
+        return Iterables.filter(characters, Player.class);
     }
 
-    public ImmutableList<Enemy> getEnemies() {
-        return getSubtypeCharacters(Enemy.class);
+    public Iterable<Enemy> getEnemies() {
+        return Iterables.filter(characters, Enemy.class);
     }
 
     public void setHighlight(MapObject highlight) {
@@ -155,17 +157,6 @@ public class Map extends Observable {
         }
 
         return movementPenaltyGrid;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends Character> ImmutableList<T> getSubtypeCharacters(Class<T> cls) {
-        ImmutableList.Builder<T> builder = new ImmutableList.Builder<T>();
-        for (Character character : characters) {
-            if (cls.isInstance(character)) {
-                builder.add((T) character);
-            }
-        }
-        return builder.build();
     }
 
     public static class HighlightChange {

@@ -1,21 +1,16 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
-public class Weapon {
-    private final ImmutableList<Integer> attackDistances;
-    private final String name;
+public class Weapon extends Item {
+    private final ImmutableSet<Integer> attackDistances;
 
-    public Weapon(String name, ImmutableList<Integer> attackDistances) {
-        this.name = name;
+    public Weapon(String name, int usageLeft, ImmutableSet<Integer> attackDistances) {
+        super(name, usageLeft);
         this.attackDistances = attackDistances;
     }
 
-    public ImmutableList<Integer> getAttackDistances() {
+    public ImmutableSet<Integer> getAttackDistances() {
         return attackDistances;
-    }
-
-    public String getName() {
-        return name;
     }
 }

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 
 import java.util.List;
 import java.util.Set;
@@ -35,8 +36,8 @@ public abstract class Character extends MapObject {
         return name;
     }
 
-    public ImmutableList<Weapon> getWeapons() {
-        return ImmutableList.copyOf(weapons);
+    public Iterable<Weapon> getWeapons() {
+        return Iterables.unmodifiableIterable(weapons);
     }
 
     boolean canTarget(Character other) {
@@ -102,5 +103,6 @@ public abstract class Character extends MapObject {
         }
     }
 
+    // TODO: Map to listen to this
     public static class Dead {}
 }

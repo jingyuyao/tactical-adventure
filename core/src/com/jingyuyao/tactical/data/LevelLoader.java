@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.state.MapState;
 
@@ -78,15 +78,15 @@ public class LevelLoader {
 
     private static List<Weapon> createWeaponList1() {
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon("Axe", ImmutableList.of(1)));
-        weapons.add(new Weapon("Sword", ImmutableList.of(1)));
-        weapons.add(new Weapon("Bow", ImmutableList.of(2)));
+        weapons.add(new Weapon("Axe", 3, ImmutableSet.of(1)));
+        weapons.add(new Weapon("Sword", 3, ImmutableSet.of(1)));
+        weapons.add(new Weapon("Bow", 3, ImmutableSet.of(2)));
         return weapons;
     }
 
     private static List<Weapon> createWeaponList2() {
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon("Bow", ImmutableList.of(2)));
+        weapons.add(new Weapon("Bow", 3, ImmutableSet.of(2)));
         return weapons;
     }
 }
