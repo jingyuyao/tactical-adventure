@@ -14,6 +14,9 @@ import java.util.Observable;
 public class Map extends Observable {
     private final int width;
     private final int height;
+    /**
+     * Must be the single source of truth for all the characters on the map.
+     */
     private final List<Character> characters;
     private final Grid<Terrain> terrains;
 
@@ -59,10 +62,6 @@ public class Map extends Observable {
         character.die();
     }
 
-    public ImmutableList<Coordinate> getPathToTarget(Character character, Coordinate target) {
-        return Algorithms.findPathTo(getMoveGraph(character), target);
-    }
-
     /**
      * Return whether {@code from} has anything it can target from its current position.
      */
@@ -81,6 +80,10 @@ public class Map extends Observable {
 
     public boolean canImmediateTarget(Character from, Character to) {
         return from.canTarget(to) && getTargetsFrom(from, from.getCoordinate()).contains(to.getCoordinate());
+    }
+
+    public ImmutableList<Coordinate> getPathToTarget(Character character, Coordinate target) {
+        return Algorithms.findPathTo(getMoveGraph(character), target);
     }
 
     public ValueGraph<Coordinate, Integer> getMoveGraph(Character character) {

@@ -47,9 +47,6 @@ public class Grid<T> {
         return rows.get(y).get(x);
     }
 
-    /**
-     * <see>{@link #get(int, int)}</see>
-     */
     public T get(Coordinate coordinate) {
         return get(coordinate.getX(), coordinate.getY());
     }
@@ -58,9 +55,6 @@ public class Grid<T> {
         rows.get(y).set(x, data);
     }
 
-    /**
-     * <see>{@link #set(int, int, Object)}</see>
-     */
     public void set(Coordinate coordinate, T data) {
         set(coordinate.getX(), coordinate.getY(), data);
     }
@@ -69,7 +63,7 @@ public class Grid<T> {
      * Returns the in-bound neighbors of {@code from}.
      * @return Randomized list of neighbors
      */
-    public ImmutableList<Coordinate> getNeighbors(Coordinate from) {
+    ImmutableList<Coordinate> getNeighbors(Coordinate from) {
         int x = from.getX();
         int y = from.getY();
 
@@ -98,9 +92,8 @@ public class Grid<T> {
      * a max list of eight neighbors that looks like they are {@code distance} away.
      *
      * @param from starting coordinate
-     * @param distance
      */
-    public ImmutableList<Coordinate> getNDistanceAway(Coordinate from, int distance) {
+    ImmutableList<Coordinate> getNDistanceAway(Coordinate from, int distance) {
         if (distance == 1) {
             return getNeighbors(from);
         }

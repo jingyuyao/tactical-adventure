@@ -20,7 +20,7 @@ class Markings {
     /**
      * We will highlight all the danger areas of the selection enemies.
      */
-    private final List<Character> markedEnemies;
+    private final Set<Character> markedEnemies;
     /**
      * Can be null.
      */
@@ -31,7 +31,7 @@ class Markings {
     Markings(Map map, AnimationCounter animationCounter) {
         this.map = map;
         this.animationCounter = animationCounter;
-        markedEnemies = new ArrayList<Character>();
+        markedEnemies = new HashSet<Character>();
         playerTargetMode = PlayerTargetMode.MOVE_AND_TARGETS;
     }
 

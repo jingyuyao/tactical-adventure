@@ -40,6 +40,18 @@ public abstract class Character extends MapObject {
         return Iterables.unmodifiableIterable(weapons);
     }
 
+    public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
+        setCoordinate(newCoordinate);
+        setChanged();
+        notifyObservers(new Move(path));
+    }
+
+    public void instantMoveTo(Coordinate newCoordinate) {
+        setCoordinate(newCoordinate);
+        setChanged();
+        notifyObservers(new InstantMove(newCoordinate));
+    }
+
     boolean canTarget(Character other) {
         // TODO: make me more specific later
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
@@ -51,18 +63,6 @@ public abstract class Character extends MapObject {
 
     int getMovementDistance() {
         return movementDistance;
-    }
-
-    public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
-        setCoordinate(newCoordinate);
-        setChanged();
-        notifyObservers(new Move(path));
-    }
-
-    public void instantMoveTo(Coordinate newCoordinate) {
-        setCoordinate(newCoordinate);
-        setChanged();
-        notifyObservers(new InstantMove(newCoordinate));
     }
 
     void die() {
@@ -104,5 +104,7 @@ public abstract class Character extends MapObject {
     }
 
     // TODO: Map to listen to this
-    public static class Dead {}
+    public static class Dead {
+        Dead() {}
+    }
 }
