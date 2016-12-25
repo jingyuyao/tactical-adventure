@@ -14,17 +14,16 @@ import java.util.Observable;
 public class Map extends Observable {
     private final int width;
     private final int height;
-    /**
-     * Must be the single source of truth for all the characters on the map.
-     */
-    private final List<Character> characters;
     private final Grid<Terrain> terrains;
+    private final List<Player> players;
+    private final List<Enemy> enemies;
 
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
         terrains = new Grid<Terrain>(width, height);
-        characters = new ArrayList<Character>();
+        players = new ArrayList<Player>();
+        enemies = new ArrayList<Enemy>();
     }
 
     public int getWidth() {
@@ -39,17 +38,30 @@ public class Map extends Observable {
         return terrains;
     }
 
-    public void addCharacter(Character character) {
-        characters.add(character);
+    public void add(Player player) {
+        players.add(player);
+    }
+
+    public void add(Enemy enemy) {
+        enemies.add(enemy);
     }
 
     public Iterable<Player> getPlayers() {
-        // Note: returning an iterable so we won't mistaken the result as a backing data store.
-        return Iterables.filter(characters, Player.class);
+        return players;
     }
 
     public Iterable<Enemy> getEnemies() {
-        return Iterables.filter(characters, Enemy.class);
+        return enemies;
+    }
+
+    public Iterable<Character> getCharacters() {
+        return Iterables.concat(players, enemies);
+    }
+
+    // TODO: Kill this method and have map observe die()
+    public void kill(Enemy enemy) {
+        enemies.remove(enemy);
+        enemy.die();
     }
 
     public void setHighlight(MapObject highlight) {
@@ -57,16 +69,11 @@ public class Map extends Observable {
         notifyObservers(new HighlightChange(highlight));
     }
 
-    public void kill(Character character) {
-        characters.remove(character);
-        character.die();
-    }
-
     /**
      * Return whether {@code from} has anything it can target from its current position.
      */
     public boolean hasAnyImmediateTarget(Character from) {
-        for (Character to : characters) {
+        for (Character to : getCharacters()) {
             if (canImmediateTarget(from, to)) {
                 return true;
             }
@@ -155,7 +162,7 @@ public class Map extends Observable {
             }
         }
 
-        for (Character blocked : characters) {
+        for (Character blocked : getCharacters()) {
             movementPenaltyGrid.set(blocked.getCoordinate(), Algorithms.NO_EDGE);
         }
 

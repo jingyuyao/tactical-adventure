@@ -46,10 +46,10 @@ public class LevelLoader {
         }
 
         // Testing
-        map.addCharacter(new Player(5, 5, "john", 5, normalAndObstructed(), createWeaponList1()));
-        map.addCharacter(new Player(5, 6, "john", 6, normalAndObstructed(), createWeaponList2()));
-        map.addCharacter(new Enemy(10, 10, "billy", 3, normalAndObstructed(), createWeaponList1()));
-        map.addCharacter(new Enemy(11, 7, "billy", 2, normalAndObstructed(), createWeaponList1()));
+        map.add(new Player(5, 5, "john", 5, normalAndObstructed(), createWeaponList1()));
+        map.add(new Player(5, 6, "john", 6, normalAndObstructed(), createWeaponList2()));
+        map.add(new Enemy(10, 10, "billy", 3, normalAndObstructed(), createWeaponList1()));
+        map.add(new Enemy(11, 7, "billy", 2, normalAndObstructed(), createWeaponList1()));
 
         return map;
     }
