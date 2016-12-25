@@ -7,12 +7,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.*;
+import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Items;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class LevelLoader {
     private static final String TERRAIN_LAYER = "terrain";
@@ -46,10 +47,10 @@ public class LevelLoader {
         }
 
         // Testing
-        map.add(new Player(5, 5, "john", 5, normalAndObstructed(), createWeaponList1()));
-        map.add(new Player(5, 6, "john", 6, normalAndObstructed(), createWeaponList2()));
-        map.add(new Enemy(10, 10, "billy", 3, normalAndObstructed(), createWeaponList1()));
-        map.add(new Enemy(11, 7, "billy", 2, normalAndObstructed(), createWeaponList1()));
+        map.add(new Player(5, 5, "john", 5, normalAndObstructed(), createItems1()));
+        map.add(new Player(5, 6, "john", 6, normalAndObstructed(), createItems2()));
+        map.add(new Enemy(10, 10, "billy", 3, normalAndObstructed(), createItems1()));
+        map.add(new Enemy(11, 7, "billy", 2, normalAndObstructed(), createItems1()));
 
         return map;
     }
@@ -76,17 +77,17 @@ public class LevelLoader {
         return standOnTerrainTypes;
     }
 
-    private static List<Weapon> createWeaponList1() {
+    private static Items createItems1() {
         List<Weapon> weapons = new ArrayList<Weapon>();
         weapons.add(new Weapon("Axe", 3, ImmutableSet.of(1)));
         weapons.add(new Weapon("Sword", 3, ImmutableSet.of(1)));
         weapons.add(new Weapon("Bow", 3, ImmutableSet.of(2)));
-        return weapons;
+        return new Items(weapons, Collections.<Consumable>emptyList());
     }
 
-    private static List<Weapon> createWeaponList2() {
+    private static Items createItems2() {
         List<Weapon> weapons = new ArrayList<Weapon>();
         weapons.add(new Weapon("Bow", 3, ImmutableSet.of(2)));
-        return weapons;
+        return new Items(weapons, Collections.<Consumable>emptyList());
     }
 }

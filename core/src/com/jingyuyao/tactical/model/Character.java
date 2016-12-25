@@ -2,10 +2,8 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.item.Items;
 
-import java.util.List;
 import java.util.Set;
 
 public abstract class Character extends MapObject {
@@ -14,7 +12,7 @@ public abstract class Character extends MapObject {
      */
     private final String name;
     private final Set<Terrain.Type> passableTerrainTypes;
-    private final List<Weapon> weapons;
+    private final Items items;
     private int movementDistance;
 
     Character(
@@ -23,21 +21,21 @@ public abstract class Character extends MapObject {
             String name,
             int movementDistance,
             Set<Terrain.Type> passableTerrainTypes,
-            List<Weapon> weapons
+            Items items
     ) {
         super(x, y);
         this.name = name;
         this.movementDistance = movementDistance;
         this.passableTerrainTypes = passableTerrainTypes;
-        this.weapons = weapons;
+        this.items = items;
     }
 
     public String getName() {
         return name;
     }
 
-    public Iterable<Weapon> getWeapons() {
-        return Iterables.unmodifiableIterable(weapons);
+    public Items getItems() {
+        return items;
     }
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
@@ -58,6 +56,10 @@ public abstract class Character extends MapObject {
         deleteObservers();
     }
 
+    int getMovementDistance() {
+        return movementDistance;
+    }
+
     boolean canTarget(Character other) {
         // TODO: make me more specific later
         return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
@@ -65,10 +67,6 @@ public abstract class Character extends MapObject {
 
     boolean canPassTerrainType(Terrain.Type terrainType) {
         return passableTerrainTypes.contains(terrainType);
-    }
-
-    int getMovementDistance() {
-        return movementDistance;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model;
 
+import com.jingyuyao.tactical.model.item.Items;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,8 +12,8 @@ public class Player extends Character {
     private boolean actionable = true;
     private TargetMode targetMode = TargetMode.NONE;
 
-    public Player(int x, int y, String name, int movementDistance, Set<Terrain.Type> canCrossTerrainTypes, List<Weapon> weapons) {
-        super(x, y, name, movementDistance, canCrossTerrainTypes, weapons);
+    public Player(int x, int y, String name, int movementDistance, Set<Terrain.Type> canCrossTerrainTypes, Items items) {
+        super(x, y, name, movementDistance, canCrossTerrainTypes, items);
     }
 
     @Override

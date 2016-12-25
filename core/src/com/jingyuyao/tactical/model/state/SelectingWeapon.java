@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
 import com.jingyuyao.tactical.model.Terrain;
-import com.jingyuyao.tactical.model.Weapon;
+import com.jingyuyao.tactical.model.item.Weapon;
 
 class SelectingWeapon extends AbstractState {
     private final Player attackingPlayer;

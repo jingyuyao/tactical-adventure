@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.jingyuyao.tactical.model.item.Weapon;
+
 public class AttackPlan {
     private final Player attackPlayer;
     private final Enemy targetEnemy;
