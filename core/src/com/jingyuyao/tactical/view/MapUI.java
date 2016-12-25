@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,7 +21,7 @@ public class MapUI implements Observer {
     private final Label state;
     private final Label attackPlan;
     private final VerticalGroup buttons;
-    private Collection<Action> currentActions;
+    private List<Action> currentActions;
     private boolean showButtons = true;
 
     MapUI(Map map, MapState mapState, AnimationCounter animationCounter, Skin skin) {

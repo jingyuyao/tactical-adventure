@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
@@ -54,7 +53,7 @@ class Choosing extends AbstractState {
     }
 
     @Override
-    ImmutableCollection<Action> getActions() {
+    ImmutableList<Action> getActions() {
         // TODO: add use items action
         return ImmutableList.<Action>of(
                 new Wait(this, currentPlayer),

@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 
@@ -62,7 +61,7 @@ class Waiting extends AbstractState {
     public void select(Terrain terrain) {}
 
     @Override
-    ImmutableCollection<Action> getActions() {
+    ImmutableList<Action> getActions() {
         return ImmutableList.<Action>of(new EndTurn(this));
     }
 }

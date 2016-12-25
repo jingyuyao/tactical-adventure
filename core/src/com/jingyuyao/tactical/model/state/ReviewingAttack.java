@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.Enemy;
@@ -49,7 +48,7 @@ class ReviewingAttack extends AbstractState {
     }
 
     @Override
-    ImmutableCollection<Action> getActions() {
+    ImmutableList<Action> getActions() {
         return ImmutableList.<Action>of(
                 new Attack(this, attackPlan),
                 new Back(this)

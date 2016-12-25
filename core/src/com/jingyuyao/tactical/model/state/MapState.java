@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 
 import java.util.Observable;
@@ -18,7 +18,7 @@ public class MapState extends Observable {
         state = new Waiting(this, map, turn, new Markings(map, animationCounter));
     }
 
-    public ImmutableCollection<Action> getActions() {
+    public ImmutableList<Action> getActions() {
         return state.getActions();
     }
 
@@ -63,18 +63,18 @@ public class MapState extends Observable {
 
     public static class StateChange {
         private final String stateName;
-        private final ImmutableCollection<Action> actions;
+        private final ImmutableList<Action> actions;
 
-        StateChange(String stateName, ImmutableCollection<Action> actions) {
+        StateChange(String stateName, Iterable<Action> actions) {
             this.stateName = stateName;
-            this.actions = actions;
+            this.actions = ImmutableList.copyOf(actions);
         }
 
         public String getStateName() {
             return stateName;
         }
 
-        public ImmutableCollection<Action> getActions() {
+        public ImmutableList<Action> getActions() {
             return actions;
         }
     }

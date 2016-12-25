@@ -6,12 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Character;
 import com.jingyuyao.tactical.model.Coordinate;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
@@ -64,7 +63,7 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
     }
 
     private void moveTo(Character.Move move) {
-        final Collection<EventListener> listeners = popAllListeners();
+        final ImmutableList<EventListener> listeners = popAllListeners();
         SequenceAction moveSequence = getMoveSequence(move.getPath());
         moveSequence.addAction(run(new Runnable() {
             @Override
@@ -79,7 +78,7 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
         addAction(moveSequence);
     }
 
-    private SequenceAction getMoveSequence(Collection<Coordinate> path) {
+    private SequenceAction getMoveSequence(Iterable<Coordinate> path) {
         SequenceAction sequence = sequence();
         for (Coordinate terrain : path) {
             sequence.addAction(Actions.moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
@@ -87,12 +86,12 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
         return sequence;
     }
 
-    private Collection<EventListener> popAllListeners() {
-        Collection<EventListener> listeners = new ArrayList<EventListener>();
+    private ImmutableList<EventListener> popAllListeners() {
+        ImmutableList.Builder<EventListener> builder = new ImmutableList.Builder<EventListener>();
         for (EventListener listener : getListeners()) {
-            listeners.add(listener);
+            builder.add(listener);
         }
         getListeners().clear();
-        return listeners;
+        return builder.build();
     }
 }

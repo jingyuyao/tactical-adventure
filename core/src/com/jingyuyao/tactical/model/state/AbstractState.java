@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.*;
 
 abstract class AbstractState {
@@ -131,5 +131,5 @@ abstract class AbstractState {
 
     abstract void select(Terrain terrain);
 
-    abstract ImmutableCollection<Action> getActions();
+    abstract ImmutableList<Action> getActions();
 }

@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Enemy;
 import com.jingyuyao.tactical.model.Player;
@@ -49,7 +48,7 @@ class SelectingWeapon extends AbstractState {
     }
 
     @Override
-    ImmutableCollection<Action> getActions() {
+    ImmutableList<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
         ImmutableList<Weapon> availableWeapons = getMap()
                 .getWeaponsForTarget(attackingPlayer, attackingPlayer.getCoordinate(), targetEnemy.getCoordinate());

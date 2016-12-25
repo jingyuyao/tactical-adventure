@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Turn {
     private final Map map;
-    private final Collection<Player> actionablePlayers;
+    private final Set<Player> actionablePlayers;
     private int turnCount = 0;
 
     public Turn(Map map) {

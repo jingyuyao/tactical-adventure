@@ -7,13 +7,13 @@ import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Terrain;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
 public class TerrainActor extends MapActor<Terrain> {
     private final Map<Terrain.Marker, Sprite> markerSpriteMap;
-    private final Collection<Sprite> markerSprites;
+    private final List<Sprite> markerSprites;
 
     TerrainActor(
             Terrain object,

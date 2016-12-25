@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Enemy;
@@ -81,7 +80,7 @@ class Moving extends AbstractState {
     }
 
     @Override
-    ImmutableCollection<Action> getActions() {
+    ImmutableList<Action> getActions() {
         return ImmutableList.<Action>of(new Back(this));
     }
 

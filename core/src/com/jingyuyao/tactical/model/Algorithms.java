@@ -85,7 +85,7 @@ class Algorithms {
      *
      * @param graph An directed acyclic graph
      * @param target The target node to find a path to
-     * @return A path to {@code target} from the first node in the graph or an empty collection if target is
+     * @return A path to {@code target} from the first node in the graph or an empty list if target is
      * not in the graph
      */
     static ImmutableList<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
