@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
+import com.jingyuyao.tactical.model.item.Weapon;
 
 import java.util.*;
 
@@ -109,13 +110,13 @@ public class Map extends Observable implements Observer {
 
     public ImmutableSet<Coordinate> getTargetsFrom(Character character, Coordinate from) {
         ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
-        for (com.jingyuyao.tactical.model.item.Weapon weapon : character.getItems().getWeapons()) {
+        for (Weapon weapon : character.getItems().getWeapons()) {
             builder.addAll(getTargetsForWeapon(weapon, from));
         }
         return builder.build();
     }
 
-    public ImmutableSet<Coordinate> getTargetsForWeapon(com.jingyuyao.tactical.model.item.Weapon weapon, Coordinate from) {
+    public ImmutableSet<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
         ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
         for (int distance : weapon.getAttackDistances()) {
             builder.addAll(getTerrains().getNDistanceAway(from, distance));
@@ -129,9 +130,9 @@ public class Map extends Observable implements Observer {
     public Optional<Coordinate> getMoveForTarget(Character character, Coordinate target) {
         Graph<Coordinate> moveGraph = getMoveGraph(character);
         Coordinate currentBestTerrain = null;
-        List<com.jingyuyao.tactical.model.item.Weapon> currentMaxWeapons = new ArrayList<com.jingyuyao.tactical.model.item.Weapon>();
+        List<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
         for (Coordinate source : moveGraph.nodes()) {
-            List<com.jingyuyao.tactical.model.item.Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
+            List<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
             if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
                 currentMaxWeapons = weaponsForThisTerrain;
                 currentBestTerrain = source;
@@ -140,9 +141,9 @@ public class Map extends Observable implements Observer {
         return Optional.fromNullable(currentBestTerrain);
     }
 
-    public ImmutableList<com.jingyuyao.tactical.model.item.Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
-        ImmutableList.Builder<com.jingyuyao.tactical.model.item.Weapon> builder = new ImmutableList.Builder<com.jingyuyao.tactical.model.item.Weapon>();
-        for (com.jingyuyao.tactical.model.item.Weapon weapon : character.getItems().getWeapons()) {
+    public ImmutableList<Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
+        ImmutableList.Builder<Weapon> builder = new ImmutableList.Builder<Weapon>();
+        for (Weapon weapon : character.getItems().getWeapons()) {
             if (getTargetsForWeapon(weapon, from).contains(target)) {
                 builder.add(weapon);
             }
