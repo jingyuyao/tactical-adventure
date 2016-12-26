@@ -42,19 +42,19 @@ public class Items implements Observer {
         }
     }
 
-    public Iterable<Weapon> getWeapons() {
+    Iterable<Weapon> getWeapons() {
         return weapons;
     }
 
-    public Iterable<Targetable> getTargetables() {
+    Iterable<Targetable> getTargetables() {
         return targetables;
     }
 
-    public Iterable<Item> getItems() {
+    Iterable<Item> getItems() {
         return Iterables.<Item>concat(weapons, targetables);
     }
 
-    public Optional<Weapon> getEquippedWeapon() {
+    Optional<Weapon> getEquippedWeapon() {
         return Optional.fromNullable(equippedWeapon);
     }
 
@@ -78,8 +78,8 @@ public class Items implements Observer {
     /**
      * Return the first weapon if there is one, else null.
      */
-    private static Weapon getDefaultWeapon(List<Weapon> weapons) {
-        return weapons.isEmpty() ? null : weapons.get(0);
+    private static Weapon getDefaultWeapon(Iterable<Weapon> weapons) {
+        return Iterables.getFirst(weapons, null);
     }
 
     @Override

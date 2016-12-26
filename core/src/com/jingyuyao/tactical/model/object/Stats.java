@@ -22,11 +22,11 @@ public class Stats {
         this.moveDistance = moveDistance;
     }
 
-    public int getHp() {
+    int getHp() {
         return hp;
     }
 
-    public int getMoveDistance() {
+    int getMoveDistance() {
         return moveDistance;
     }
 

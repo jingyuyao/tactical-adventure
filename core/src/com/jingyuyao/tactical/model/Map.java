@@ -11,7 +11,10 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.model.object.Character;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
 
 public class Map extends Observable implements Observer {
     private final int width;
@@ -133,9 +136,9 @@ public class Map extends Observable implements Observer {
     public Optional<Coordinate> getMoveForTarget(Character character, Coordinate target) {
         Graph<Coordinate> moveGraph = getMoveGraph(character);
         Coordinate currentBestTerrain = null;
-        List<Weapon> currentMaxWeapons = new ArrayList<Weapon>();
+        ImmutableList<Weapon> currentMaxWeapons = ImmutableList.of();
         for (Coordinate source : moveGraph.nodes()) {
-            List<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
+            ImmutableList<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
             if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
                 currentMaxWeapons = weaponsForThisTerrain;
                 currentBestTerrain = source;

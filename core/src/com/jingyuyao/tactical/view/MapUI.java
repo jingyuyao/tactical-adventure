@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,7 +21,7 @@ public class MapUI implements Observer {
     private final Label state;
     private final Label attackPlan;
     private final VerticalGroup buttons;
-    private List<Action> currentActions;
+    private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
     MapUI(Map map, MapState mapState, AnimationCounter animationCounter, Skin skin) {
