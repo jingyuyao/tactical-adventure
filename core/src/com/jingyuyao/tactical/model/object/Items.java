@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,7 +20,11 @@ import java.util.Observer;
  * <br>
  * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
+// TODO: test the invariant
 public class Items implements Observer {
+    /**
+     * Invariant: weapons.indexOf(equippedWeapon) == 0
+     */
     private final List<Weapon> weapons;
     private final List<Consumable> consumables;
     /**
@@ -59,9 +64,17 @@ public class Items implements Observer {
         return Optional.fromNullable(equippedWeapon);
     }
 
+    /**
+     * Sets {@link #equippedWeapon} to {@code weapon}. Also swap {@code weapon} to the first
+     * item in {@link #weapons} as per invariant.
+     */
     void setEquippedWeapon(Weapon weapon) {
         if (weapon != null) {
-            Preconditions.checkArgument(weapons.contains(weapon));
+            int weaponIndex = weapons.indexOf(weapon);
+            Preconditions.checkArgument(weaponIndex != -1);
+            // Previous check also guarantees weapons is not empty
+            // Preserves the invariant
+            Collections.swap(weapons, 0, weaponIndex);
         }
         this.equippedWeapon = weapon;
     }
