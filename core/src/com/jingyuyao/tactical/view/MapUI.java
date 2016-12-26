@@ -50,7 +50,7 @@ public class MapUI implements Observer {
         root.row();
         root.add(buttons).expandX().right();
 
-        buttons.space(5);
+        buttons.space(7);
 
         highlighter.addObserver(this);
         mapState.addObserver(this);
@@ -139,6 +139,7 @@ public class MapUI implements Observer {
 
     private TextButton createActionButton(final Action action) {
         TextButton button = new TextButton(action.getName(), skin);
+        button.pad(7, 10, 7, 10);
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
