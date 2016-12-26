@@ -16,11 +16,11 @@ public class AttackPlan {
     private final Weapon enemyWeapon;
 
     public AttackPlan(Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon, Weapon enemyWeapon) {
+        Preconditions.checkNotNull(attackingPlayer.getEquippedWeapon());
         this.attackingPlayer = attackingPlayer;
         this.targetEnemy = targetEnemy;
         this.playerWeapon = playerWeapon;
         this.enemyWeapon = enemyWeapon;
-        Preconditions.checkNotNull(attackingPlayer.getItems().getEquippedWeapon());
     }
 
     public Player getAttackingPlayer() {

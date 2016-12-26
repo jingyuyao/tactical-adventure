@@ -28,9 +28,8 @@ public class Enemy extends Character {
     }
 
     @Override
-    protected void die() {
+    protected void died() {
         setShowDangerArea(false);
-        super.die();
     }
 
     public static class ShowDangerAreaChange {

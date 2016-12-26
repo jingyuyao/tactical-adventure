@@ -21,10 +21,10 @@ public class PlayerActor extends CharacterActor<Player> {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        super.update(observable, o);
-        if (Player.ActionableChange.class.isInstance(o)) {
-            updateActionable((Player.ActionableChange) o);
+    public void update(Observable observable, Object param) {
+        super.update(observable, param);
+        if (Player.ActionableChange.class.isInstance(param)) {
+            updateActionable(Player.ActionableChange.class.cast(param));
         }
     }
 

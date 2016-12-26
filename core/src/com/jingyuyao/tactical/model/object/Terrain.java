@@ -35,7 +35,7 @@ public class Terrain extends AbstractObject {
     }
 
     public int getMovementPenalty(Character character) {
-        if (!character.getStats().canPassTerrainType(type)) {
+        if (!character.canPassTerrainType(type)) {
             return Algorithms.NO_EDGE;
         }
 

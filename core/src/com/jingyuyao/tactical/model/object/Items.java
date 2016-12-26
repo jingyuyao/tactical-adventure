@@ -1,13 +1,14 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Targetable;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -53,8 +54,8 @@ public class Items implements Observer {
         return Iterables.<Item>concat(weapons, targetables);
     }
 
-    public Weapon getEquippedWeapon() {
-        return equippedWeapon;
+    public Optional<Weapon> getEquippedWeapon() {
+        return Optional.fromNullable(equippedWeapon);
     }
 
     void setEquippedWeapon(Weapon weapon) {
@@ -67,12 +68,7 @@ public class Items implements Observer {
     @Override
     public void update(Observable item, Object param) {
         if (Usable.Broke.class.isInstance(param)) {
-            Iterator<Item> iterator = getItems().iterator();
-            while (iterator.hasNext()) {
-                if (item.equals(iterator.next())) {
-                    iterator.remove();
-                }
-            }
+            Iterables.removeIf(getItems(), Predicates.equalTo(item));
             if (item.equals(equippedWeapon)) {
                 setEquippedWeapon(getDefaultWeapon(weapons));
             }

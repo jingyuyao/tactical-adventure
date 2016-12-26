@@ -43,12 +43,12 @@ public class CharacterActor<T extends Character> extends AbstractActor<T> {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        if (Character.Move.class.isInstance(o)) {
-            moveTo((Character.Move) o);
-        } else if (Character.InstantMove.class.isInstance(o)) {
-            instantMoveTo((Character.InstantMove) o);
-        } else if (Character.Dead.class.isInstance(o)) {
+    public void update(Observable observable, Object param) {
+        if (Character.Move.class.isInstance(param)) {
+            moveTo(Character.Move.class.cast(param));
+        } else if (Character.InstantMove.class.isInstance(param)) {
+            instantMoveTo(Character.InstantMove.class.cast(param));
+        } else if (Character.Died.class.isInstance(param)) {
             remove();
         }
     }

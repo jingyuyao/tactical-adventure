@@ -87,8 +87,8 @@ public class LevelLoader {
     private static Items createItems1() {
         int attackPower = 5;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon(0, "Axe", 10, attackPower, ImmutableSet.of(1)));
-        weapons.add(new Weapon(1, "Sword", 3, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
         return new Items(weapons, Collections.<Targetable>emptyList());
     }
@@ -96,7 +96,7 @@ public class LevelLoader {
     private static Items createItems2() {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon(2, "Bow", 1, attackPower, ImmutableSet.of(2)));
+        weapons.add(new Weapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
         return new Items(weapons, Collections.<Targetable>emptyList());
     }
 }

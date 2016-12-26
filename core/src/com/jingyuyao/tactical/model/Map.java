@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -53,16 +54,16 @@ public class Map extends Observable implements Observer {
         enemy.addObserver(this);
     }
 
-    public ImmutableSet<Player> getPlayers() {
-        return ImmutableSet.copyOf(players);
+    public Iterable<Player> getPlayers() {
+        return players;
     }
 
-    public ImmutableSet<Enemy> getEnemies() {
-        return ImmutableSet.copyOf(enemies);
+    public Iterable<Enemy> getEnemies() {
+        return enemies;
     }
 
     public Iterable<Character> getCharacters() {
-        return Iterables.unmodifiableIterable(Iterables.concat(players, enemies));
+        return Iterables.concat(players, enemies);
     }
 
     public void setHighlight(AbstractObject highlight) {
@@ -98,7 +99,7 @@ public class Map extends Observable implements Observer {
         return Algorithms.minPathSearch(
                 createMovementPenaltyGrid(character),
                 character.getCoordinate(),
-                character.getStats().getMoveDistance());
+                character.getMoveDistance());
     }
 
     public ImmutableSet<Coordinate> getAllTargets(Character character) {
@@ -112,7 +113,7 @@ public class Map extends Observable implements Observer {
 
     public ImmutableSet<Coordinate> getTargetsFrom(Character character, Coordinate from) {
         ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
-        for (Weapon weapon : character.getItems().getWeapons()) {
+        for (Weapon weapon : character.getWeapons()) {
             builder.addAll(getTargetsForWeapon(weapon, from));
         }
         return builder.build();
@@ -145,7 +146,7 @@ public class Map extends Observable implements Observer {
 
     public ImmutableList<Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
         ImmutableList.Builder<Weapon> builder = new ImmutableList.Builder<Weapon>();
-        for (Weapon weapon : character.getItems().getWeapons()) {
+        for (Weapon weapon : character.getWeapons()) {
             if (getTargetsForWeapon(weapon, from).contains(target)) {
                 builder.add(weapon);
             }
@@ -171,13 +172,9 @@ public class Map extends Observable implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        if (Character.Dead.class.isInstance(o)) {
-            if (Player.class.isInstance(observable)) {
-                players.remove(Player.class.cast(observable));
-            } else if (Enemy.class.isInstance(observable)) {
-                enemies.remove(Enemy.class.cast(observable));
-            }
+    public void update(Observable object, Object param) {
+        if (Character.Died.class.isInstance(param)) {
+            Iterables.removeIf(getCharacters(), Predicates.equalTo(object));
         }
     }
 

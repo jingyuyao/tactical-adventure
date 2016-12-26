@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -26,12 +27,16 @@ public class SelectWeapon extends AbstractAction {
     @Override
     public void run() {
         attackingPlayer.equipWeapon(playerWeapon);
-        Weapon enemyEquippedWeapon = targetEnemy.getItems().getEquippedWeapon();
-        ImmutableList<Weapon> availableWeaponsForHittingBack =
-                getState().getMap().getWeaponsForTarget(
-                        targetEnemy, targetEnemy.getCoordinate(), attackingPlayer.getCoordinate());
-        Weapon hitBackWeapon =
-                availableWeaponsForHittingBack.contains(enemyEquippedWeapon) ? enemyEquippedWeapon : null;
+        Weapon hitBackWeapon = null;
+        Optional<Weapon> enemyEquippedWeapon = targetEnemy.getEquippedWeapon();
+        if (enemyEquippedWeapon.isPresent()) {
+            ImmutableList<Weapon> availableWeaponsForHittingBack =
+                    getState().getMap().getWeaponsForTarget(
+                            targetEnemy, targetEnemy.getCoordinate(), attackingPlayer.getCoordinate());
+            if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
+                hitBackWeapon = enemyEquippedWeapon.get();
+            }
+        }
 
         getState().goTo(
                 new ReviewingAttack(

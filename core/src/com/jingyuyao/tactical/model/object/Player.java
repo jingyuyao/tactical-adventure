@@ -39,9 +39,8 @@ public class Player extends Character {
     }
 
     @Override
-    protected void die() {
+    protected void died() {
         setTargetMode(TargetMode.NONE);
-        super.die();
     }
 
     public enum TargetMode {

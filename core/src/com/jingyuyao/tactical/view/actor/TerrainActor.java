@@ -36,9 +36,9 @@ public class TerrainActor extends AbstractActor<Terrain> {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        if (Terrain.MarkerChange.class.isInstance(o)) {
-            markerChange((Terrain.MarkerChange) o);
+    public void update(Observable observable, Object param) {
+        if (Terrain.MarkerChange.class.isInstance(param)) {
+            markerChange(Terrain.MarkerChange.class.cast(param));
         }
     }
 
