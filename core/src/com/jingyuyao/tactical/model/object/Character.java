@@ -32,6 +32,10 @@ public abstract class Character extends AbstractObject {
         return name;
     }
 
+    public int getHp() {
+        return stats.getHp();
+    }
+
     public Iterable<Consumable> getConsumables() {
         return items.getConsumables();
     }

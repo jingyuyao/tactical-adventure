@@ -7,9 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
 
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -101,11 +104,15 @@ public class MapUI implements Observer {
     }
 
     private void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
-        highlight.setText(highlightCharacter.getCharacter().getCoordinate().toString());
+        Character character = highlightCharacter.getCharacter();
+        String text = String.format(Locale.US, "HP: %d", character.getHp());
+        highlight.setText(text);
     }
 
     private void highlightTerrain(Highlighter.HighlightTerrain highlightTerrain) {
-        highlight.setText(highlightTerrain.getTerrain().getCoordinate().toString());
+        Terrain terrain = highlightTerrain.getTerrain();
+        String text = String.format("Type: %s", terrain.getType().toString());
+        highlight.setText(text);
     }
 
     private void stateChange(MapState.StateChange stateChange) {

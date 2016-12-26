@@ -28,6 +28,10 @@ public class Terrain extends AbstractObject {
         highlighter.highlight(this);
     }
 
+    public Type getType() {
+        return type;
+    }
+
     public void addMarker(Marker marker) {
         markers.add(marker);
         setChanged();
