@@ -7,6 +7,11 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 
+import java.util.Locale;
+
+/**
+ * Equips {@link #playerWeapon} then go to {@link ReviewingAttack} state.
+ */
 public class SelectWeapon extends AbstractAction {
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
@@ -21,7 +26,7 @@ public class SelectWeapon extends AbstractAction {
 
     @Override
     public String getName() {
-        return playerWeapon.getName();
+        return String.format(Locale.US, "%s (%d)", playerWeapon.getName(), playerWeapon.getUsageLeft());
     }
 
     @Override

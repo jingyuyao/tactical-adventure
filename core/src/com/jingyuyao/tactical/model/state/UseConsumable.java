@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.model.state;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.object.Player;
 
+import java.util.Locale;
+
 public class UseConsumable extends AbstractAction {
     private final Consumable consumable;
     private final Player user;
@@ -15,7 +17,7 @@ public class UseConsumable extends AbstractAction {
 
     @Override
     public String getName() {
-        return consumable.getName();
+        return String.format(Locale.US, "%s (%d)", consumable.getName(), consumable.getUsageLeft());
     }
 
     @Override

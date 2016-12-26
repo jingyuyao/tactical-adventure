@@ -15,6 +15,7 @@ public class AttackPlan {
      */
     private final Weapon enemyWeapon;
 
+    // TODO: get rid of player and enemy weapon and just use their equipped weapon
     public AttackPlan(Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon, Weapon enemyWeapon) {
         Preconditions.checkNotNull(attackingPlayer.getEquippedWeapon());
         this.attackingPlayer = attackingPlayer;
