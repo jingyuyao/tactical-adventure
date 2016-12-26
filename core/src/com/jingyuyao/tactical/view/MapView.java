@@ -41,20 +41,11 @@ public class MapView implements Observer {
         return world;
     }
 
-    void resize(int width, int height) {
-        world.getViewport().update(width, height);
-    }
-
-    void dispose() {
-        world.dispose();
-    }
-
     void act(float delta) {
         world.act(delta);
     }
 
     void draw() {
-        // TODO: BUG! need to match viewport sizes between UI and map view, remove me after
         world.getViewport().apply();
         mapRenderer.setView((OrthographicCamera) world.getCamera());
         mapRenderer.render();
@@ -62,6 +53,15 @@ public class MapView implements Observer {
         world.getBatch().begin();
         highlightSprite.draw(world.getBatch());
         world.getBatch().end();
+    }
+
+    void resize(int width, int height) {
+        // TODO: update camera so we don't show black bars
+        world.getViewport().update(width, height);
+    }
+
+    void dispose() {
+        world.dispose();
     }
 
     @Override

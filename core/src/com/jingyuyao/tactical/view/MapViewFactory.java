@@ -1,13 +1,12 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.object.Enemy;
@@ -36,9 +35,7 @@ class MapViewFactory {
      * Creates a {@link MapView} from the given map and adds all actors to the stage.
      */
     MapView create(TiledMap tiledMap, Level level) {
-        OrthographicCamera camera = new OrthographicCamera();
-        FitViewport viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
-        Stage world = new Stage(viewport);
+        Stage world = new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
 
         for (int x = 0; x < level.getMap().getWidth(); x++) {
             for (int y = 0; y < level.getMap().getHeight(); y++) {

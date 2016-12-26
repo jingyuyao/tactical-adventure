@@ -74,7 +74,6 @@ public class MapUI implements Observer {
     }
 
     void draw() {
-        // TODO: BUG! need to match viewport sizes between UI and map view, remove me after
         ui.getViewport().apply();
         ui.draw();
     }
