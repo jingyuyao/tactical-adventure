@@ -6,9 +6,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class DragCameraController extends InputAdapter {
-    // TODO: should be dynamically calculated based on screen size and world size
-    private static final float DRAG_SCALE = 1f / 32;
-
     private final int worldWidth;
     private final int worldHeight;
     private final Viewport viewport;
@@ -33,11 +30,16 @@ public class DragCameraController extends InputAdapter {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (lastPointer == pointer) {
+            int screenWidth = viewport.getScreenWidth();
+            int screenHeight = viewport.getScreenHeight();
+            float horizontalDragScale = (float) worldWidth / screenWidth;
+            float verticalDragScale = (float) worldHeight / screenHeight;
+
+            float deltaX = (screenX - lastX) * horizontalDragScale;
+            float deltaY = (screenY - lastY) * verticalDragScale;
+
             Camera camera = viewport.getCamera();
             Vector3 cameraPosition = camera.position;
-
-            float deltaX = (screenX - lastX) * DRAG_SCALE;
-            float deltaY = (screenY - lastY) * DRAG_SCALE;
 
             // world is y-up, screen is y-down
             float rawNewX = cameraPosition.x - deltaX;
