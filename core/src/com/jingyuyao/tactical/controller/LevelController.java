@@ -13,11 +13,11 @@ public class LevelController {
         int worldWidth = level.getMap().getWidth();
         int worldHeight = level.getMap().getHeight();
 
-        CameraController cameraController =
-                new CameraController(world.getViewport(), world.getCamera(), worldWidth, worldHeight);
+        DragCameraController dragCameraController =
+                new DragCameraController(worldWidth, worldHeight, world.getViewport());
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(ui);
-        inputMultiplexer.addProcessor(cameraController);
+        inputMultiplexer.addProcessor(dragCameraController);
         inputMultiplexer.addProcessor(world);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
