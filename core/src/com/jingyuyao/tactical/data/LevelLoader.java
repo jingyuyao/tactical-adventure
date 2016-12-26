@@ -26,7 +26,7 @@ public class LevelLoader {
         Map map = createMap(tiledMap, animationCounter);
         Turn turn = new Turn(map);
         MapState mapState = new MapState(map, turn, animationCounter);
-        Highlighter highlighter = new Highlighter();
+        Highlighter highlighter = new Highlighter(map);
         return new Level(map, mapState, turn, highlighter, animationCounter);
     }
 

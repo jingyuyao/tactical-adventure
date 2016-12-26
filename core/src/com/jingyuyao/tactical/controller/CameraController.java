@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+// TODO: BUG! camera movement causes flickering
 public class CameraController extends InputAdapter {
     private static final float HORIZONTAL_EDGE = 0.2f; // percentage
     private static final float VERTICAL_EDGE = 0.2f; // percentage

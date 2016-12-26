@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -20,10 +19,10 @@ public class MapUI implements Observer {
     private final Skin skin;
     private final Stage ui;
     private final Table root;
-    private final Label highlight;
-    private final Label state;
-    private final Label attackPlan;
-    private final VerticalGroup buttons;
+    private final Label characterLabel;
+    private final Label terrainLabel;
+    private final Label stateLabel;
+    private final VerticalGroup actionButtons;
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
@@ -31,10 +30,10 @@ public class MapUI implements Observer {
         this.skin = skin;
         ui = new Stage();
         root = new Table();
-        highlight = new Label("", skin);
-        state = new Label("", skin);
-        attackPlan = new Label("", skin);
-        buttons = new VerticalGroup();
+        characterLabel = new Label(null, skin);
+        terrainLabel = new Label(null, skin);
+        stateLabel = new Label(null, skin);
+        actionButtons = new VerticalGroup().space(7);
 
         root.setFillParent(true);
         root.setDebug(true);
@@ -43,24 +42,25 @@ public class MapUI implements Observer {
         // Logical cell layout starts at top left corner
         root.top().left().pad(10);
 
-        root.add(highlight).expandX().left();
-        root.row(); // Careful to not chain anything here since it sets default for all rows
-        root.add(state).expandX().left();
-        root.row();
-        root.add(attackPlan).expandX().left();
-        root.row();
-        root.add().expand(); // A filler cell that pushes the buttons to the bottom
-        root.row();
-        root.add(buttons).expandX().right();
+        // row 1
+        root.add(characterLabel).left().top();
+        root.add(terrainLabel).right().top();
 
-        buttons.space(7);
+        // row 2
+        root.row(); // Careful to not chain anything here since it sets default for all rows
+        root.add().expand(); // A filler cell that pushes the buttons to the bottom
+
+        // row 3
+        root.row();
+        root.add(stateLabel).left().bottom();
+        root.add(actionButtons).right().bottom();
 
         highlighter.addObserver(this);
         mapState.addObserver(this);
         animationCounter.addObserver(this);
 
         // TODO: clean me up
-        state.setText("Waiting");
+        stateLabel.setText("Waiting");
         currentActions = mapState.getActions();
         populateButtons();
     }
@@ -74,6 +74,8 @@ public class MapUI implements Observer {
     }
 
     void draw() {
+        // TODO: BUG! need to match viewport sizes between UI and map view, remove me after
+        ui.getViewport().apply();
         ui.draw();
     }
 
@@ -104,19 +106,17 @@ public class MapUI implements Observer {
     }
 
     private void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
-        Character character = highlightCharacter.getCharacter();
-        String text = String.format(Locale.US, "HP: %d", character.getHp());
-        highlight.setText(text);
+        characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getCharacter().getHp()));
+        updateTerrainLabel(highlightCharacter.getTerrain());
     }
 
     private void highlightTerrain(Highlighter.HighlightTerrain highlightTerrain) {
-        Terrain terrain = highlightTerrain.getTerrain();
-        String text = String.format("Type: %s", terrain.getType().toString());
-        highlight.setText(text);
+        characterLabel.setText(null);
+        updateTerrainLabel(highlightTerrain.getTerrain());
     }
 
     private void stateChange(MapState.StateChange stateChange) {
-        state.setText(stateChange.getStateName());
+        stateLabel.setText(stateChange.getStateName());
         currentActions = stateChange.getActions();
         populateButtons();
     }
@@ -128,18 +128,22 @@ public class MapUI implements Observer {
 
     // TODO: create a nice looking widget to show this
     private void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
-        attackPlan.setText(showAttackPlan.getAttackPlan().toString());
+        stateLabel.setText(showAttackPlan.getAttackPlan().toString());
     }
 
     private void hideAttackPlan(MapState.HideAttackPlan hideAttackPlan) {
-        attackPlan.setText("");
+        stateLabel.setText(null);
+    }
+
+    private void updateTerrainLabel(Terrain terrain) {
+        terrainLabel.setText(String.format("Type: %s", terrain.getType().toString()));
     }
 
     private void populateButtons() {
-        buttons.clear();
+        actionButtons.clear();
         if (showButtons) {
             for (Action action : currentActions) {
-                buttons.addActor(createActionButton(action));
+                actionButtons.addActor(createActionButton(action));
             }
         }
     }

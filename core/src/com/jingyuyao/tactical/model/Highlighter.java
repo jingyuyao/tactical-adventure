@@ -6,9 +6,15 @@ import com.jingyuyao.tactical.model.object.Terrain;
 import java.util.Observable;
 
 public class Highlighter extends Observable {
+    private final Map map;
+
+    public Highlighter(Map map) {
+        this.map = map;
+    }
+
     public void highlight(Character character) {
         setChanged();
-        notifyObservers(new HighlightCharacter(character));
+        notifyObservers(new HighlightCharacter(character, map.getTerrains().get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {
@@ -18,13 +24,19 @@ public class Highlighter extends Observable {
 
     public static class HighlightCharacter {
         private final Character character;
+        private final Terrain terrain;
 
-        private HighlightCharacter(Character character) {
+        private HighlightCharacter(Character character, Terrain terrain) {
             this.character = character;
+            this.terrain = terrain;
         }
 
         public Character getCharacter() {
             return character;
+        }
+
+        public Terrain getTerrain() {
+            return terrain;
         }
     }
 

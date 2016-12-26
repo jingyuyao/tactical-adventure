@@ -54,6 +54,8 @@ public class MapView implements Observer {
     }
 
     void draw() {
+        // TODO: BUG! need to match viewport sizes between UI and map view, remove me after
+        world.getViewport().apply();
         mapRenderer.setView((OrthographicCamera) world.getCamera());
         mapRenderer.render();
         world.draw();
