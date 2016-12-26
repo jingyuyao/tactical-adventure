@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
+// TODO: make this an observable and have mapstate listen to it
 abstract class AbstractState {
     /**
      * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.

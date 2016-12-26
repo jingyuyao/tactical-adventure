@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 public abstract class Character extends AbstractObject {
@@ -29,6 +30,10 @@ public abstract class Character extends AbstractObject {
 
     public String getName() {
         return name;
+    }
+
+    public Iterable<Consumable> getConsumables() {
+        return items.getConsumables();
     }
 
     public Iterable<Weapon> getWeapons() {
@@ -77,6 +82,10 @@ public abstract class Character extends AbstractObject {
         if (dead) {
             die();
         }
+    }
+
+    public void healBy(int delta) {
+        stats.healBy(delta);
     }
 
     private void die() {

@@ -4,8 +4,8 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Targetable;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
@@ -21,7 +21,7 @@ import java.util.Observer;
  */
 public class Items implements Observer {
     private final List<Weapon> weapons;
-    private final List<Targetable> targetables;
+    private final List<Consumable> consumables;
     /**
      * If not null, {@code weapons.contains(equippedWeapon) == true}
      */
@@ -30,13 +30,13 @@ public class Items implements Observer {
     /**
      * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it has one.
      */
-    public Items(List<Weapon> weapons, List<Targetable> targetables) {
-        this(weapons, targetables, getDefaultWeapon(weapons));
+    public Items(List<Weapon> weapons, List<Consumable> consumables) {
+        this(weapons, consumables, getDefaultWeapon(weapons));
     }
 
-    public Items(List<Weapon> weapons, List<Targetable> targetables, Weapon equippedWeapon) {
+    public Items(List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
         this.weapons = weapons;
-        this.targetables = targetables;
+        this.consumables = consumables;
         setEquippedWeapon(equippedWeapon);
         for (Item item : getItems()) {
             item.addObserver(this);
@@ -47,12 +47,12 @@ public class Items implements Observer {
         return weapons;
     }
 
-    Iterable<Targetable> getTargetables() {
-        return targetables;
+    Iterable<Consumable> getConsumables() {
+        return consumables;
     }
 
     Iterable<Item> getItems() {
-        return Iterables.<Item>concat(weapons, targetables);
+        return Iterables.<Item>concat(weapons, consumables);
     }
 
     Optional<Weapon> getEquippedWeapon() {
@@ -87,7 +87,7 @@ public class Items implements Observer {
     public String toString() {
         return "Items{" +
                 "weapons=" + weapons +
-                ", targetables=" + targetables +
+                ", consumables=" + consumables +
                 ", equippedWeapon=" + equippedWeapon +
                 '}';
     }

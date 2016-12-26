@@ -6,9 +6,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.item.Targetable;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -89,13 +91,13 @@ public class LevelLoader {
         weapons.add(new Weapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
-        return new Items(weapons, Collections.<Targetable>emptyList());
+        return new Items(weapons, Lists.<Consumable>newArrayList(new Heal(0, "pot", 3)));
     }
 
     private static Items createItems2() {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
         weapons.add(new Weapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
-        return new Items(weapons, Collections.<Targetable>emptyList());
+        return new Items(weapons, Collections.<Consumable>emptyList());
     }
 }

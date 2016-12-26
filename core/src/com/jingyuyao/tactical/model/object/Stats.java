@@ -8,6 +8,9 @@ import java.util.Set;
  * Setters should be package private.
  */
 public class Stats {
+    // TODO: remove me
+    private static final int MAX_HP = 20;
+
     private final Set<Terrain.Type> passableTerrainTypes;
     /**
      * >= 0
@@ -35,11 +38,12 @@ public class Stats {
      * @return whether {@link #hp} <= 0
      */
     boolean damageBy(int delta) {
-        hp -= delta;
-        if (hp < 0) {
-            hp = 0;
-        }
+        hp = Math.max(hp - delta, 0);
         return hp == 0;
+    }
+
+    void healBy(int delta) {
+        hp = Math.min(hp + delta, MAX_HP);
     }
 
     boolean canPassTerrainType(Terrain.Type terrainType) {

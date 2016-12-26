@@ -11,7 +11,7 @@ public abstract class Usable extends Item {
      */
     private int usageLeft;
 
-    public Usable(int id, String name, int usageLeft) {
+    Usable(int id, String name, int usageLeft) {
         super(id, name);
         Preconditions.checkArgument(usageLeft > 0);
         this.usageLeft = usageLeft;

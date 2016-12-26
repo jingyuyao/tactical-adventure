@@ -5,9 +5,8 @@ import com.jingyuyao.tactical.model.object.Character;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status.
- * Not a {@link Targetable} since the effect of a {@link Weapon} depends on its user.
+ * Not a {@link Consumable} since the effect of a {@link Weapon} depends on its user.
  */
-// TODO: do we need to add a common class for usable/targetable that depends on its owner?
 public class Weapon extends Usable {
     private final int attackPower;
     private final ImmutableSet<Integer> attackDistances;
