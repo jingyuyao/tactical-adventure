@@ -84,7 +84,7 @@ public class Terrain extends AbstractObject {
     public static class MarkerChange {
         private final ImmutableSet<Marker> markers;
 
-        MarkerChange(Set<Marker> markers) {
+        private MarkerChange(Set<Marker> markers) {
             this.markers = ImmutableSet.copyOf(markers);
         }
 

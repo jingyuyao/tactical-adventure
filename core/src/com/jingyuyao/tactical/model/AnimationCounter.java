@@ -59,7 +59,7 @@ public class AnimationCounter extends Observable {
     public static class AnimationChange {
         private final boolean animating;
 
-        AnimationChange(boolean animating) {
+        private AnimationChange(boolean animating) {
             this.animating = animating;
         }
 

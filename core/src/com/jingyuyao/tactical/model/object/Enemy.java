@@ -33,6 +33,6 @@ public class Enemy extends Character {
     }
 
     public static class ShowDangerAreaChange {
-        ShowDangerAreaChange() {}
+        private ShowDangerAreaChange() {}
     }
 }

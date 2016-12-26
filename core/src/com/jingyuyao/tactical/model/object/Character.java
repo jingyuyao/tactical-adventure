@@ -103,7 +103,7 @@ public abstract class Character extends AbstractObject {
     public static class Move {
         private final ImmutableList<Coordinate> path;
 
-        Move(ImmutableList<Coordinate> path) {
+        private Move(ImmutableList<Coordinate> path) {
             this.path = path;
         }
 
@@ -115,7 +115,7 @@ public abstract class Character extends AbstractObject {
     public static class InstantMove {
         private final Coordinate destination;
 
-        InstantMove(Coordinate destination) {
+        private InstantMove(Coordinate destination) {
             this.destination = destination;
         }
 
@@ -125,6 +125,6 @@ public abstract class Character extends AbstractObject {
     }
 
     public static class Died {
-        Died() {}
+        private Died() {}
     }
 }

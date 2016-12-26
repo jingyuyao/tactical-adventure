@@ -71,7 +71,7 @@ public class MapState extends Observable {
         private final String stateName;
         private final ImmutableList<Action> actions;
 
-        StateChange(String stateName, Iterable<Action> actions) {
+        private StateChange(String stateName, Iterable<Action> actions) {
             this.stateName = stateName;
             this.actions = ImmutableList.copyOf(actions);
         }
@@ -88,7 +88,7 @@ public class MapState extends Observable {
     public static class ShowAttackPlan {
         private final AttackPlan attackPlan;
 
-        ShowAttackPlan(AttackPlan attackPlan) {
+        private ShowAttackPlan(AttackPlan attackPlan) {
             this.attackPlan = attackPlan;
         }
 
@@ -98,6 +98,6 @@ public class MapState extends Observable {
     }
 
     public static class HideAttackPlan {
-        HideAttackPlan() {}
+        private HideAttackPlan() {}
     }
 }

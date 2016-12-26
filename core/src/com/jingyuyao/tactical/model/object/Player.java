@@ -52,7 +52,7 @@ public class Player extends Character {
     public static class ActionableChange {
         private final boolean actionable;
 
-        ActionableChange(boolean actionable) {
+        private ActionableChange(boolean actionable) {
             this.actionable = actionable;
         }
 
@@ -62,6 +62,6 @@ public class Player extends Character {
     }
 
     public static class TargetModeChange {
-        TargetModeChange() {}
+        private TargetModeChange() {}
     }
 }
