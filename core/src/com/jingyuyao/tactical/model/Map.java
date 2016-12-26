@@ -8,15 +8,17 @@ import com.google.common.collect.Iterables;
 import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-public class Map extends Observable implements Observer {
+public class Map implements Observer {
     private final int width;
     private final int height;
     private final Grid<Terrain> terrains;
@@ -67,11 +69,6 @@ public class Map extends Observable implements Observer {
 
     public Iterable<Character> getCharacters() {
         return Iterables.concat(players, enemies);
-    }
-
-    public void setHighlight(AbstractObject highlight) {
-        setChanged();
-        notifyObservers(new HighlightChange(highlight));
     }
 
     /**
@@ -178,18 +175,6 @@ public class Map extends Observable implements Observer {
     public void update(Observable object, Object param) {
         if (Character.Died.class.isInstance(param)) {
             Iterables.removeIf(getCharacters(), Predicates.equalTo(object));
-        }
-    }
-
-    public static class HighlightChange {
-        private final AbstractObject highlight;
-
-        HighlightChange(AbstractObject highlight) {
-            this.highlight = highlight;
-        }
-
-        public AbstractObject getHighlight() {
-            return highlight;
         }
     }
 }

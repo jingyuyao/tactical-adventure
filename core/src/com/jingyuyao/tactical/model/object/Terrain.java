@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.object;
 
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.Algorithms;
+import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.HashSet;
@@ -20,6 +21,11 @@ public class Terrain extends AbstractObject {
     @Override
     public void select(MapState mapState) {
         mapState.select(this);
+    }
+
+    @Override
+    public void highlight(Highlighter highlighter) {
+        highlighter.highlight(this);
     }
 
     public void addMarker(Marker marker) {

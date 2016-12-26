@@ -6,10 +6,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.model.AnimationCounter;
-import com.jingyuyao.tactical.model.Level;
+import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.Turn;
 import com.jingyuyao.tactical.model.item.Targetable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.*;
@@ -26,7 +24,8 @@ public class LevelLoader {
         Map map = createMap(tiledMap, animationCounter);
         Turn turn = new Turn(map);
         MapState mapState = new MapState(map, turn, animationCounter);
-        return new Level(map, mapState, turn, animationCounter);
+        Highlighter highlighter = new Highlighter();
+        return new Level(map, mapState, turn, highlighter, animationCounter);
     }
 
     private static Map createMap(TiledMap tiledMap, AnimationCounter animationCounter) {

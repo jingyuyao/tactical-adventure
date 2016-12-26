@@ -9,12 +9,14 @@ public class Level {
     private final Map map;
     private final MapState mapState;
     private final Turn turn;
+    private final Highlighter highlighter;
     private final AnimationCounter animationCounter;
 
-    public Level(Map map, MapState mapState, Turn turn, AnimationCounter animationCounter) {
+    public Level(Map map, MapState mapState, Turn turn, Highlighter highlighter, AnimationCounter animationCounter) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
+        this.highlighter = highlighter;
         this.animationCounter = animationCounter;
     }
 
@@ -28,6 +30,10 @@ public class Level {
 
     public Turn getTurn() {
         return turn;
+    }
+
+    public Highlighter getHighlighter() {
+        return highlighter;
     }
 
     public AnimationCounter getAnimationCounter() {

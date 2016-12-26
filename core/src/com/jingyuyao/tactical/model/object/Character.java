@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 public abstract class Character extends AbstractObject {
@@ -19,6 +20,11 @@ public abstract class Character extends AbstractObject {
         this.name = name;
         this.stats = stats;
         this.items = items;
+    }
+
+    @Override
+    public void highlight(Highlighter highlighter) {
+        highlighter.highlight(this);
     }
 
     public String getName() {

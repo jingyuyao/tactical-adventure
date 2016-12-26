@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.object;
 
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.Observable;
@@ -34,6 +35,11 @@ public abstract class AbstractObject extends Observable {
      * I can't believe OOD actually taught me something useful.
      */
     public abstract void select(MapState mapState);
+
+    /**
+     * Enables the visitor pattern for highlight.
+     */
+    public abstract void highlight(Highlighter highlighter);
 
     @Override
     public String toString() {

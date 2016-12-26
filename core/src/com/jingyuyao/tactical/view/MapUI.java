@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AnimationCounter;
-import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
 
@@ -24,7 +24,7 @@ public class MapUI implements Observer {
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
-    MapUI(Map map, MapState mapState, AnimationCounter animationCounter, Skin skin) {
+    MapUI(MapState mapState, Highlighter highlighter, AnimationCounter animationCounter, Skin skin) {
         this.skin = skin;
         ui = new Stage();
         root = new Table();
@@ -52,7 +52,7 @@ public class MapUI implements Observer {
 
         buttons.space(5);
 
-        map.addObserver(this);
+        highlighter.addObserver(this);
         mapState.addObserver(this);
         animationCounter.addObserver(this);
 
@@ -83,23 +83,29 @@ public class MapUI implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable observable, Object param) {
         // TODO: Hum... can we make this shorter? generics? visitor?
-        if (Map.HighlightChange.class.isInstance(o)) {
-            highlightChange(Map.HighlightChange.class.cast(o));
-        } else if (MapState.StateChange.class.isInstance(o)) {
-            stateChange(MapState.StateChange.class.cast(o));
-        } else if (AnimationCounter.AnimationChange.class.isInstance(o)) {
-            animationChange(AnimationCounter.AnimationChange.class.cast(o));
-        } else if (MapState.ShowAttackPlan.class.isInstance(o)) {
-            showAttackPlan(MapState.ShowAttackPlan.class.cast(o));
-        } else if (MapState.HideAttackPlan.class.isInstance(o)) {
-            hideAttackPlan(MapState.HideAttackPlan.class.cast(o));
+        if (Highlighter.HighlightTerrain.class.isInstance(param)) {
+            highlightTerrain(Highlighter.HighlightTerrain.class.cast(param));
+        } else if (Highlighter.HighlightCharacter.class.isInstance(param)) {
+            highlightCharacter(Highlighter.HighlightCharacter.class.cast(param));
+        } else if (MapState.StateChange.class.isInstance(param)) {
+            stateChange(MapState.StateChange.class.cast(param));
+        } else if (AnimationCounter.AnimationChange.class.isInstance(param)) {
+            animationChange(AnimationCounter.AnimationChange.class.cast(param));
+        } else if (MapState.ShowAttackPlan.class.isInstance(param)) {
+            showAttackPlan(MapState.ShowAttackPlan.class.cast(param));
+        } else if (MapState.HideAttackPlan.class.isInstance(param)) {
+            hideAttackPlan(MapState.HideAttackPlan.class.cast(param));
         }
     }
 
-    private void highlightChange(Map.HighlightChange highlightChange) {
-        highlight.setText(highlightChange.getHighlight().getCoordinate().toString());
+    private void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
+        highlight.setText(highlightCharacter.getCharacter().getCoordinate().toString());
+    }
+
+    private void highlightTerrain(Highlighter.HighlightTerrain highlightTerrain) {
+        highlight.setText(highlightTerrain.getTerrain().getCoordinate().toString());
     }
 
     private void stateChange(MapState.StateChange stateChange) {
