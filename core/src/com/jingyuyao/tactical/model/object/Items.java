@@ -16,7 +16,8 @@ import java.util.Observer;
 /**
  * A container for character items.
  * Belongs in object package since it is technically part of {@link Character}.
- * Setters should be package private.
+ * <br>
+ * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
 public class Items implements Observer {
     private final List<Weapon> weapons;
