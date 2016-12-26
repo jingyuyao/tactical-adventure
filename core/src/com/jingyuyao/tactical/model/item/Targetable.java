@@ -14,7 +14,7 @@ public abstract class Targetable extends Usable {
 
     public void targetAndUse(Character from, Character target) {
         performAction(from, target);
-        usedOnce();
+        useOnce();
     }
 
     /**

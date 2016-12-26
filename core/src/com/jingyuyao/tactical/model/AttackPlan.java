@@ -37,11 +37,11 @@ public class AttackPlan {
     public void execute() {
         // TODO: complete me
         targetEnemy.damageBy(playerWeapon.getAttackPower());
-        playerWeapon.usedOnce();
+        playerWeapon.useOnce();
 
         if (targetEnemy.isAlive() && enemyWeapon != null) {
             attackingPlayer.damageBy(enemyWeapon.getAttackPower());
-            enemyWeapon.usedOnce();
+            enemyWeapon.useOnce();
         }
     }
 

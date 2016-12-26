@@ -22,15 +22,12 @@ public abstract class Usable extends Item {
     }
 
     /**
-     * Signals this item has been used once.
-     * Fires {@link Used} and {@link Broke} events appropriately.
+     * Signals this item has been used once. Fires {@link Broke} when {@link #getUsageLeft()} == 0
      */
-    public void usedOnce() {
-        if (usageLeft == 0) return;
+    public void useOnce() {
+        Preconditions.checkState(usageLeft > 0);
 
         usageLeft--;
-        setChanged();
-        notifyObservers(new Used());
         if (usageLeft == 0) {
             setChanged();
             notifyObservers(new Broke());
@@ -44,10 +41,6 @@ public abstract class Usable extends Item {
         return "Usable{" +
                 "usageLeft=" + usageLeft +
                 "} " + super.toString();
-    }
-
-    public static class Used {
-        private Used() {}
     }
 
     public static class Broke {
