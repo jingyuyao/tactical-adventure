@@ -72,10 +72,10 @@ public class LevelLoader {
     private static void addTestCharacters(Map map) {
         int hp = 20;
 
-        map.add(new Player(5, 5, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
-        map.add(new Player(5, 6, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
-        map.add(new Enemy(10, 10, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
-        map.add(new Enemy(11, 7, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1()));
+        map.add(new Player(2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
+        map.add(new Player(2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
+        map.add(new Enemy(8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
+        map.add(new Enemy(9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1()));
     }
 
     private static Set<Terrain.Type> normalAndObstructed() {
