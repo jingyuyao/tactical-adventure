@@ -23,7 +23,7 @@ public abstract class Character extends AbstractObject {
      * The map of markers create by/for this {@link Character}.
      */
     private final Map<Coordinate, Marker> terrainMarkers;
-    private TargetMode targetMode = TargetMode.NONE;
+    private MarkerMode markerMode = MarkerMode.NONE;
 
     Character(int x, int y, String name, Stats stats, Items items) {
         super(x, y);
@@ -62,8 +62,8 @@ public abstract class Character extends AbstractObject {
         return stats.getMoveDistance();
     }
 
-    public TargetMode getTargetMode() {
-        return targetMode;
+    public MarkerMode getMarkerMode() {
+        return markerMode;
     }
 
     public Map<Coordinate, Marker> getTerrainMarkers() {
@@ -83,10 +83,10 @@ public abstract class Character extends AbstractObject {
         return stats.canPassTerrainType(terrainType);
     }
 
-    public void setTargetMode(TargetMode newTargetMode) {
-        targetMode = newTargetMode;
+    public void setMarkerMode(MarkerMode newMarkerMode) {
+        markerMode = newMarkerMode;
         setChanged();
-        notifyObservers(new TargetModeChange());
+        notifyObservers(new MarkerModeChange());
     }
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
@@ -117,7 +117,7 @@ public abstract class Character extends AbstractObject {
     }
 
     private void die() {
-        setTargetMode(TargetMode.NONE);
+        setMarkerMode(MarkerMode.NONE);
         setChanged();
         notifyObservers(new Died());
         deleteObservers();
@@ -132,7 +132,7 @@ public abstract class Character extends AbstractObject {
                 "} " + super.toString();
     }
 
-    public enum TargetMode {
+    public enum MarkerMode {
         NONE,
         MOVE_AND_TARGETS,
         IMMEDIATE_TARGETS,
@@ -167,7 +167,7 @@ public abstract class Character extends AbstractObject {
         private Died() {}
     }
 
-    public static class TargetModeChange {
-        private TargetModeChange() {}
+    public static class MarkerModeChange {
+        private MarkerModeChange() {}
     }
 }

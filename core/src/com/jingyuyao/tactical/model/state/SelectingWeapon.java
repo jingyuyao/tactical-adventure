@@ -20,7 +20,7 @@ class SelectingWeapon extends AbstractState {
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        attackingPlayer.setTargetMode(Character.TargetMode.IMMEDIATE_TARGETS);
+        attackingPlayer.setMarkerMode(Character.MarkerMode.IMMEDIATE_TARGETS);
     }
 
     @Override
@@ -30,7 +30,7 @@ class SelectingWeapon extends AbstractState {
 
     @Override
     void exit() {
-        attackingPlayer.setTargetMode(Character.TargetMode.NONE);
+        attackingPlayer.setMarkerMode(Character.MarkerMode.NONE);
     }
 
     @Override

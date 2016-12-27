@@ -20,7 +20,7 @@ class Moving extends AbstractState {
 
     @Override
     void enter() {
-        currentPlayer.setTargetMode(Character.TargetMode.MOVE_AND_TARGETS);
+        currentPlayer.setMarkerMode(Character.MarkerMode.MOVE_AND_TARGETS);
     }
 
     @Override
@@ -32,7 +32,7 @@ class Moving extends AbstractState {
 
     @Override
     void exit() {
-        currentPlayer.setTargetMode(Character.TargetMode.NONE);
+        currentPlayer.setMarkerMode(Character.MarkerMode.NONE);
     }
 
     @Override

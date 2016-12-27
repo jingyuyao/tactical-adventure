@@ -22,7 +22,7 @@ public class MarkerManager implements Observer {
 
     @Override
     public void update(final Observable object, final Object param) {
-        if (Character.TargetModeChange.class.isInstance(param)) {
+        if (Character.MarkerModeChange.class.isInstance(param)) {
             waiter.runOnceWhenNotWaiting(new Runnable() {
                 @Override
                 public void run() {
@@ -37,7 +37,7 @@ public class MarkerManager implements Observer {
         java.util.Map<Coordinate, Marker> terrainMarkers = character.getTerrainMarkers();
         Set<Coordinate> attackTargets = Collections.emptySet();
 
-        switch (character.getTargetMode()) {
+        switch (character.getMarkerMode()) {
             case NONE:
                 for (java.util.Map.Entry<Coordinate, Marker> entry : terrainMarkers.entrySet()) {
                     Terrain terrain = terrains.get(entry.getKey());

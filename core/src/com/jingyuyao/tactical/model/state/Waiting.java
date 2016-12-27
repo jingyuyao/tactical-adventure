@@ -55,10 +55,10 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Enemy enemy) {
-        if (enemy.getTargetMode().equals(Character.TargetMode.DANGER)) {
-            enemy.setTargetMode(Character.TargetMode.NONE);
+        if (enemy.getMarkerMode().equals(Character.MarkerMode.DANGER)) {
+            enemy.setMarkerMode(Character.MarkerMode.NONE);
         } else {
-            enemy.setTargetMode(Character.TargetMode.DANGER);
+            enemy.setMarkerMode(Character.MarkerMode.DANGER);
         }
     }
 
