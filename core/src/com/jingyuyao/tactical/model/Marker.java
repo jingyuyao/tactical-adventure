@@ -8,4 +8,6 @@ public enum Marker {
     MOVE,
     ATTACK,
     DANGER,
+    POTENTIAL_TARGET,
+    CHOSEN_TARGET,
 }

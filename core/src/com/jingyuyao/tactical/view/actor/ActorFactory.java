@@ -34,15 +34,23 @@ public class ActorFactory {
         );
         markerSpriteMap.put(
                 Marker.MOVE,
-                new Sprite(assetManager.get(Assets.MOVE_OVERLAY, Texture.class))
+                new Sprite(assetManager.get(Assets.MOVE, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.DANGER,
-                new Sprite(assetManager.get(Assets.DANGER_OVERLAY, Texture.class))
+                new Sprite(assetManager.get(Assets.DANGER, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.ATTACK,
-                new Sprite(assetManager.get(Assets.ATTACK_OVERLAY, Texture.class))
+                new Sprite(assetManager.get(Assets.ATTACK, Texture.class))
+        );
+        markerSpriteMap.put(
+                Marker.POTENTIAL_TARGET,
+                new Sprite(assetManager.get(Assets.POTENTIAL_TARGET, Texture.class))
+        );
+        markerSpriteMap.put(
+                Marker.CHOSEN_TARGET,
+                new Sprite(assetManager.get(Assets.CHOSEN_TARGET, Texture.class))
         );
         typeColorMap = new HashMap<Class, Color>();
         typeColorMap.put(Player.class, Color.WHITE);
