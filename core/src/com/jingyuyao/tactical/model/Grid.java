@@ -1,16 +1,18 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * A grid with elements of type {@link T}.
  * @param <T> Type of the element
  */
-public class Grid<T> {
+public class Grid<T> implements Iterable<T> {
     /**
      * (0,0) starts at bottom left.
      */
@@ -128,5 +130,10 @@ public class Grid<T> {
         }
 
         return builder.build();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return Iterables.concat(rows).iterator();
     }
 }
