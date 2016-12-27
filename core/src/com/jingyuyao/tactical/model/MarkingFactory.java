@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.object.AbstractObject;
@@ -20,22 +21,28 @@ public class MarkingFactory {
 
     public Marking moveAndTargets(Character character) {
         Graph<Coordinate> moveGraph = map.getMoveGraph(character);
-        Iterable<Terrain> moveTerrains = map.getTerrains().getAll(moveGraph.nodes());
-        Iterable<Terrain> attackTargets =
+        Iterable<Terrain> canMoveToTerrains = map.getTerrains().getAll(moveGraph.nodes());
+        Iterable<Terrain> canAttackTerrains =
                 map.getTerrains().getAll(Sets.difference(map.getAllTargets(character), moveGraph.nodes()));
+        // TODO: bugged, currently it shows friendly as "target" because getTargetAfterMove doesn't account for
+        // canTarget()
+        Iterable<Character> potentialTargets = map.getTargetAfterMoveCharacters(character);
 
         return this.new Builder(character)
-                .add(moveTerrains, Marker.MOVE)
-                .add(attackTargets, Marker.ATTACK)
+                .add(canMoveToTerrains, Marker.CAN_MOVE_TO)
+                .add(canAttackTerrains, Marker.CAN_ATTACK)
+                .add(potentialTargets, Marker.POTENTIAL_TARGET)
                 .build();
     }
 
     public Marking immediateTargets(Character character) {
-        Iterable<Terrain> attackTargets =
-                map.getTerrains().getAll(map.getTargetsFrom(character, character.getCoordinate()));
+        ImmutableSet<Coordinate> targetCoordinates = map.getTargetsFrom(character, character.getCoordinate());
+        Iterable<Terrain> canAttackTerrains = map.getTerrains().getAll(targetCoordinates);
+        Iterable<Character> potentialTargets = map.getImmediateTargetCharacters(character);
 
         return this.new Builder(character)
-                .add(attackTargets, Marker.ATTACK)
+                .add(canAttackTerrains, Marker.CAN_ATTACK)
+                .add(potentialTargets, Marker.POTENTIAL_TARGET)
                 .build();
     }
 

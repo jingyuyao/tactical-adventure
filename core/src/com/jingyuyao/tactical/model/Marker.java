@@ -5,8 +5,8 @@ package com.jingyuyao.tactical.model;
  */
 public enum Marker {
     HIGHLIGHT,
-    MOVE,
-    ATTACK,
+    CAN_MOVE_TO,
+    CAN_ATTACK,
     DANGER,
     POTENTIAL_TARGET,
     CHOSEN_TARGET,

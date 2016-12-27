@@ -33,7 +33,7 @@ public class ActorFactory {
                 new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class))
         );
         markerSpriteMap.put(
-                Marker.MOVE,
+                Marker.CAN_MOVE_TO,
                 new Sprite(assetManager.get(Assets.MOVE, Texture.class))
         );
         markerSpriteMap.put(
@@ -41,7 +41,7 @@ public class ActorFactory {
                 new Sprite(assetManager.get(Assets.DANGER, Texture.class))
         );
         markerSpriteMap.put(
-                Marker.ATTACK,
+                Marker.CAN_ATTACK,
                 new Sprite(assetManager.get(Assets.ATTACK, Texture.class))
         );
         markerSpriteMap.put(

@@ -87,6 +87,29 @@ public class Map implements Observer {
         return from.canTarget(to) && getTargetsFrom(from, from.getCoordinate()).contains(to.getCoordinate());
     }
 
+    // TODO: Separate all of these function out into its own class
+    public ImmutableList<Character> getTargetAfterMoveCharacters(Character from) {
+        ImmutableSet<Coordinate> potentialCoordinates = getAllTargets(from);
+        ImmutableList.Builder<Character> builder = new ImmutableList.Builder<Character>();
+        for (Character character : getCharacters()) {
+            if (potentialCoordinates.contains(character.getCoordinate())) {
+                builder.add(character);
+            }
+        }
+        return builder.build();
+    }
+
+    public ImmutableList<Character> getImmediateTargetCharacters(Character from) {
+        ImmutableSet<Coordinate> potentialCoordinates = getTargetsFrom(from, from.getCoordinate());
+        ImmutableList.Builder<Character> builder = new ImmutableList.Builder<Character>();
+        for (Character character : getCharacters()) {
+            if (potentialCoordinates.contains(character.getCoordinate())) {
+                builder.add(character);
+            }
+        }
+        return builder.build();
+    }
+
     public ImmutableList<Coordinate> getPathToTarget(Character character, Coordinate target) {
         return Algorithms.findPathTo(getMoveGraph(character), target);
     }
@@ -98,11 +121,11 @@ public class Map implements Observer {
                 character.getMoveDistance());
     }
 
-    public ImmutableSet<Coordinate> getAllTargets(Character character) {
-        Graph<Coordinate> moveTerrains = getMoveGraph(character);
+    public ImmutableSet<Coordinate> getAllTargets(Character from) {
+        Graph<Coordinate> moveTerrains = getMoveGraph(from);
         ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
         for (Coordinate terrain : moveTerrains.nodes()) {
-            builder.addAll(getTargetsFrom(character, terrain));
+            builder.addAll(getTargetsFrom(from, terrain));
         }
         return builder.build();
     }
@@ -126,12 +149,12 @@ public class Map implements Observer {
     /**
      * Return the coordinate with the greatest number of weapon choices for target.
      */
-    public Optional<Coordinate> getMoveForTarget(Character character, Coordinate target) {
-        Graph<Coordinate> moveGraph = getMoveGraph(character);
+    public Optional<Coordinate> getMoveForTarget(Character from, Coordinate target) {
+        Graph<Coordinate> moveGraph = getMoveGraph(from);
         Coordinate currentBestTerrain = null;
         ImmutableList<Weapon> currentMaxWeapons = ImmutableList.of();
         for (Coordinate source : moveGraph.nodes()) {
-            ImmutableList<Weapon> weaponsForThisTerrain = getWeaponsForTarget(character, source, target);
+            ImmutableList<Weapon> weaponsForThisTerrain = getWeaponsForTarget(from, source, target);
             if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
                 currentMaxWeapons = weaponsForThisTerrain;
                 currentBestTerrain = source;

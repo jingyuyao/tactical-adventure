@@ -38,6 +38,8 @@ The controllers are activated right before the screen is set to the view.
 - Notify state change to the view through the observable pattern
   - Pass details regarding the exact change through the argument of notifyObservers()
   - The argument should be concrete classes that the view can figure out
+- "Live" collections should be returned as an iterable, this accidentally storing or changing the backing data
+- "Snapshots" should be returned as an immutable collection
 
 ## Views
 - Only views should hold references to assets
