@@ -152,11 +152,11 @@ public class Map implements Observer {
     public Optional<Coordinate> getMoveForTarget(Character from, Coordinate target) {
         Graph<Coordinate> moveGraph = getMoveGraph(from);
         Coordinate currentBestTerrain = null;
-        ImmutableList<Weapon> currentMaxWeapons = ImmutableList.of();
+        int currentMaxWeapons = 0;
         for (Coordinate source : moveGraph.nodes()) {
             ImmutableList<Weapon> weaponsForThisTerrain = getWeaponsForTarget(from, source, target);
-            if (weaponsForThisTerrain.size() > currentMaxWeapons.size()) {
-                currentMaxWeapons = weaponsForThisTerrain;
+            if (weaponsForThisTerrain.size() > currentMaxWeapons) {
+                currentMaxWeapons = weaponsForThisTerrain.size();
                 currentBestTerrain = source;
             }
         }
