@@ -24,7 +24,7 @@ public class Map implements Observer {
     private final Grid<Terrain> terrains;
     private final Set<Player> players;
     private final Set<Enemy> enemies;
-    private final MarkerManager markerManager;
+    private final Markings markings;
 
     public Map(int width, int height, Waiter waiter) {
         this.width = width;
@@ -32,7 +32,7 @@ public class Map implements Observer {
         terrains = new Grid<Terrain>(width, height);
         players = new HashSet<Player>();
         enemies = new HashSet<Enemy>();
-        markerManager = new MarkerManager(this, waiter);
+        markings = new Markings(this, waiter);
     }
 
     public int getWidth() {
@@ -49,13 +49,13 @@ public class Map implements Observer {
 
     public void add(Player player) {
         players.add(player);
-        player.addObserver(markerManager);
+        player.addObserver(markings);
         player.addObserver(this);
     }
 
     public void add(Enemy enemy) {
         enemies.add(enemy);
-        enemy.addObserver(markerManager);
+        enemy.addObserver(markings);
         enemy.addObserver(this);
     }
 

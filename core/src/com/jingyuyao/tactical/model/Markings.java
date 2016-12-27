@@ -11,11 +11,11 @@ import java.util.Observer;
 import java.util.Set;
 
 // TODO: change this to something like CharacterMarkers
-public class MarkerManager implements Observer {
+public class Markings implements Observer {
     private final Map map;
     private final Waiter waiter;
 
-    MarkerManager(Map map, Waiter waiter) {
+    Markings(Map map, Waiter waiter) {
         this.map = map;
         this.waiter = waiter;
     }
