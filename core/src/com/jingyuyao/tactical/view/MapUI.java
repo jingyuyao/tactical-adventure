@@ -87,32 +87,37 @@ public class MapUI implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object param) {
+    public void update(Observable object, Object param) {
         // TODO: Hum... can we make this shorter? generics? visitor?
-        if (Highlighter.HighlightTerrain.class.isInstance(param)) {
-            highlightTerrain(Highlighter.HighlightTerrain.class.cast(param));
-        } else if (Highlighter.HighlightCharacter.class.isInstance(param)) {
-            highlightCharacter(Highlighter.HighlightCharacter.class.cast(param));
-        } else if (MapState.StateChange.class.isInstance(param)) {
+        if (Highlighter.JustTerrain.class.isInstance(param)) {
+            highlightTerrain(Highlighter.JustTerrain.class.cast(param));
+        }
+        else if (Highlighter.CharacterAndTerrain.class.isInstance(param)) {
+            highlightCharacter(Highlighter.CharacterAndTerrain.class.cast(param));
+        }
+        else if (MapState.StateChange.class.isInstance(param)) {
             stateChange(MapState.StateChange.class.cast(param));
-        } else if (Waiter.Change.class.isInstance(param)) {
-            animationChange(Waiter.Change.class.cast(param));
-        } else if (MapState.ShowAttackPlan.class.isInstance(param)) {
+        }
+        else if (Waiter.class.isInstance(object)) {
+            animationChange(Waiter.class.cast(object));
+        }
+        else if (MapState.ShowAttackPlan.class.isInstance(param)) {
             showAttackPlan(MapState.ShowAttackPlan.class.cast(param));
-        } else if (MapState.HideAttackPlan.class.isInstance(param)) {
+        }
+        else if (MapState.HideAttackPlan.class.isInstance(param)) {
             hideAttackPlan(MapState.HideAttackPlan.class.cast(param));
         }
     }
 
     // TODO: need to refresh stats after attack
-    private void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
-        characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getCharacter().getHp()));
-        updateTerrainLabel(highlightCharacter.getTerrain());
+    private void highlightCharacter(Highlighter.CharacterAndTerrain characterAndTerrain) {
+        characterLabel.setText(String.format(Locale.US, "HP: %d", characterAndTerrain.getCharacter().getHp()));
+        updateTerrainLabel(characterAndTerrain.getTerrain());
     }
 
-    private void highlightTerrain(Highlighter.HighlightTerrain highlightTerrain) {
+    private void highlightTerrain(Highlighter.JustTerrain justTerrain) {
         characterLabel.setText(null);
-        updateTerrainLabel(highlightTerrain.getTerrain());
+        updateTerrainLabel(justTerrain.getTerrain());
     }
 
     private void stateChange(MapState.StateChange stateChange) {
@@ -121,8 +126,8 @@ public class MapUI implements Observer {
         populateButtons();
     }
 
-    private void animationChange(Waiter.Change change) {
-        showButtons = !change.isWaiting();
+    private void animationChange(Waiter waiter) {
+        showButtons = !waiter.isWaiting();
         populateButtons();
     }
 

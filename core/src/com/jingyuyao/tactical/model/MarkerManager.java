@@ -21,7 +21,7 @@ public class MarkerManager implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (Player.TargetModeChange.class.isInstance(o) || Enemy.ShowDangerAreaChange.class.isInstance(o)) {
+        if (Player.TargetModeChange.class.isInstance(o) || Enemy.DangerAreaChange.class.isInstance(o)) {
             waiter.runOnceWhenNotWaiting(new Runnable() {
                 @Override
                 public void run() {

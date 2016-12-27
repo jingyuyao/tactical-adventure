@@ -25,7 +25,7 @@ public class Player extends Character {
     public void setActionable(boolean actionable) {
         this.actionable = actionable;
         setChanged();
-        notifyObservers(new ActionableChange(actionable));
+        notifyObservers(new NewActionState(actionable));
     }
 
     public TargetMode getTargetMode() {
@@ -49,10 +49,10 @@ public class Player extends Character {
         IMMEDIATE_TARGETS
     }
 
-    public static class ActionableChange {
+    public static class NewActionState {
         private final boolean actionable;
 
-        private ActionableChange(boolean actionable) {
+        private NewActionState(boolean actionable) {
             this.actionable = actionable;
         }
 

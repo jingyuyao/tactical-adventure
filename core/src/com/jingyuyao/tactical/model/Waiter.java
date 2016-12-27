@@ -21,7 +21,7 @@ public class Waiter extends Observable {
     public void waitOne() {
         if (waits++ == 0) {
             setChanged();
-            notifyObservers(new Change(isWaiting()));
+            notifyObservers();
         }
     }
 
@@ -32,7 +32,7 @@ public class Waiter extends Observable {
         Preconditions.checkState(waits > 0, "Oh boy, this bug is gonna be hard to fix");
         if (waits-- == 1) {
             setChanged();
-            notifyObservers(new Change(isWaiting()));
+            notifyObservers();
         }
     }
 
@@ -53,18 +53,6 @@ public class Waiter extends Observable {
                     }
                 }
             });
-        }
-    }
-
-    public static class Change {
-        private final boolean waiting;
-
-        private Change(boolean waiting) {
-            this.waiting = waiting;
-        }
-
-        public boolean isWaiting() {
-            return waiting;
         }
     }
 }

@@ -66,10 +66,10 @@ public class MapView implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (Highlighter.HighlightCharacter.class.isInstance(o)) {
-            highlightChange(Highlighter.HighlightCharacter.class.cast(o).getCharacter());
-        } else if (Highlighter.HighlightTerrain.class.isInstance(o)) {
-            highlightChange(Highlighter.HighlightTerrain.class.cast(o).getTerrain());
+        if (Highlighter.CharacterAndTerrain.class.isInstance(o)) {
+            highlightChange(Highlighter.CharacterAndTerrain.class.cast(o).getCharacter());
+        } else if (Highlighter.JustTerrain.class.isInstance(o)) {
+            highlightChange(Highlighter.JustTerrain.class.cast(o).getTerrain());
         }
     }
 

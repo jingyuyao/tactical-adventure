@@ -14,19 +14,19 @@ public class Highlighter extends Observable {
 
     public void highlight(Character character) {
         setChanged();
-        notifyObservers(new HighlightCharacter(character, map.getTerrains().get(character.getCoordinate())));
+        notifyObservers(new CharacterAndTerrain(character, map.getTerrains().get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {
         setChanged();
-        notifyObservers(new HighlightTerrain(terrain));
+        notifyObservers(new JustTerrain(terrain));
     }
 
-    public static class HighlightCharacter {
+    public static class CharacterAndTerrain {
         private final Character character;
         private final Terrain terrain;
 
-        private HighlightCharacter(Character character, Terrain terrain) {
+        private CharacterAndTerrain(Character character, Terrain terrain) {
             this.character = character;
             this.terrain = terrain;
         }
@@ -40,10 +40,10 @@ public class Highlighter extends Observable {
         }
     }
 
-    public static class HighlightTerrain {
+    public static class JustTerrain {
         private final Terrain terrain;
 
-        private HighlightTerrain(Terrain terrain) {
+        private JustTerrain(Terrain terrain) {
             this.terrain = terrain;
         }
 

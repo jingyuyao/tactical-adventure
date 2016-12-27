@@ -24,7 +24,7 @@ public class Enemy extends Character {
     public void setShowDangerArea(boolean showDangerArea) {
         this.showDangerArea = showDangerArea;
         setChanged();
-        notifyObservers(new ShowDangerAreaChange());
+        notifyObservers(new DangerAreaChange());
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Enemy extends Character {
         setShowDangerArea(false);
     }
 
-    public static class ShowDangerAreaChange {
-        private ShowDangerAreaChange() {}
+    public static class DangerAreaChange {
+        private DangerAreaChange() {}
     }
 }
