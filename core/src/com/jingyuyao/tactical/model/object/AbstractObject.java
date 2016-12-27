@@ -1,25 +1,27 @@
 package com.jingyuyao.tactical.model.object;
 
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.state.MapState;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
-import java.util.Set;
 
 /**
  * Super class of all the objects on the game grid.
  */
 public abstract class AbstractObject extends Observable {
-    private final Set<Markers> markers;
+    /**
+     * List of marker drawn over this object.
+     */
+    private final List<Markers> markers;
     private Coordinate coordinate;
 
     AbstractObject(int x, int y) {
         coordinate = new Coordinate(x, y);
-        markers = new HashSet<Markers>();
+        markers = new ArrayList<Markers>();
     }
 
     public Coordinate getCoordinate() {
@@ -29,13 +31,13 @@ public abstract class AbstractObject extends Observable {
     public void addMarker(Markers marker) {
         markers.add(marker);
         setChanged();
-        notifyObservers(new MarkerChange(markers));
+        notifyObservers(new AddMarker(marker));
     }
 
-    public void clearMarkers() {
-        markers.clear();
+    public void removeMarker(Markers marker) {
+        markers.remove(marker);
         setChanged();
-        notifyObservers(new MarkerChange(markers));
+        notifyObservers(new RemoveMarker(marker));
     }
 
     /**
@@ -67,15 +69,27 @@ public abstract class AbstractObject extends Observable {
                 "}";
     }
 
-    public static class MarkerChange {
-        private final ImmutableSet<Markers> markers;
+    public static class AddMarker {
+        private final Markers marker;
 
-        protected MarkerChange(Set<Markers> markers) {
-            this.markers = ImmutableSet.copyOf(markers);
+        private AddMarker(Markers marker) {
+            this.marker = marker;
         }
 
-        public ImmutableSet<Markers> getMarkers() {
-            return markers;
+        public Markers getMarker() {
+            return marker;
+        }
+    }
+
+    public static class RemoveMarker {
+        private final Markers marker;
+
+        private RemoveMarker(Markers marker) {
+            this.marker = marker;
+        }
+
+        public Markers getMarker() {
+            return marker;
         }
     }
 }

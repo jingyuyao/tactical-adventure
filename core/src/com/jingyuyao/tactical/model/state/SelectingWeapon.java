@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -19,7 +20,7 @@ class SelectingWeapon extends AbstractState {
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        attackingPlayer.setTargetMode(Player.TargetMode.IMMEDIATE_TARGETS);
+        attackingPlayer.setTargetMode(Character.TargetMode.IMMEDIATE_TARGETS);
     }
 
     @Override
@@ -29,7 +30,7 @@ class SelectingWeapon extends AbstractState {
 
     @Override
     void exit() {
-        attackingPlayer.setTargetMode(Player.TargetMode.NONE);
+        attackingPlayer.setTargetMode(Character.TargetMode.NONE);
     }
 
     @Override

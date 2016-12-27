@@ -1,14 +1,16 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.Sets;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.object.Terrain;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+// TODO: change this to something like CharacterMarkers
 public class MarkerManager implements Observer {
     private final Map map;
     private final Waiter waiter;
@@ -19,54 +21,52 @@ public class MarkerManager implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        if (Player.TargetModeChange.class.isInstance(o) || Enemy.DangerAreaChange.class.isInstance(o)) {
+    public void update(final Observable object, final Object param) {
+        if (Character.TargetModeChange.class.isInstance(param)) {
             waiter.runOnceWhenNotWaiting(new Runnable() {
                 @Override
                 public void run() {
-                    syncMarkers();
+                    targetModeChange(Character.class.cast(object));
                 }
             });
         }
     }
 
-    private void syncMarkers() {
-        clearAllMarkers();
+    private void targetModeChange(Character character) {
+        Grid<Terrain> terrains = map.getTerrains();
+        java.util.Map<Coordinate, Markers> terrainMarkers = character.getTerrainMarkers();
+        Set<Coordinate> attackTargets = Collections.emptySet();
 
-        for (Enemy enemy : map.getEnemies()) {
-            if (enemy.isShowDangerArea()) {
-                for (Coordinate target : map.getAllTargets(enemy)) {
-                    map.getTerrains().get(target).addMarker(Markers.DANGER);
+        switch (character.getTargetMode()) {
+            case NONE:
+                for (java.util.Map.Entry<Coordinate, Markers> entry : terrainMarkers.entrySet()) {
+                    Terrain terrain = terrains.get(entry.getKey());
+                    terrain.removeMarker(entry.getValue());
                 }
-            }
+                terrainMarkers.clear();
+                break;
+            case MOVE_AND_TARGETS:
+                Graph<Coordinate> moveGraph = map.getMoveGraph(character);
+                for (Coordinate coordinate : moveGraph.nodes()) {
+                    terrains.get(coordinate).addMarker(Markers.MOVE);
+                    terrainMarkers.put(coordinate, Markers.MOVE);
+                }
+                attackTargets = Sets.difference(map.getAllTargets(character), moveGraph.nodes());
+                break;
+            case IMMEDIATE_TARGETS:
+                attackTargets = map.getTargetsFrom(character, character.getCoordinate());
+                break;
+            case DANGER:
+                for (Coordinate target : map.getAllTargets(character)) {
+                    terrains.get(target).addMarker(Markers.DANGER);
+                    terrainMarkers.put(target, Markers.DANGER);
+                }
+                break;
         }
 
-        for (Player player : map.getPlayers()) {
-            Set<Coordinate> targets = new HashSet<Coordinate>();
-            switch (player.getTargetMode()) {
-                case MOVE_AND_TARGETS:
-                    Graph<Coordinate> moveGraph = map.getMoveGraph(player);
-                    for (Coordinate coordinate : moveGraph.nodes()) {
-                        map.getTerrains().get(coordinate).addMarker(Markers.MOVE);
-                    }
-                    targets.addAll(map.getAllTargets(player));
-                    targets.removeAll(moveGraph.nodes());
-                    break;
-                case IMMEDIATE_TARGETS:
-                    targets = map.getTargetsFrom(player, player.getCoordinate());
-                    break;
-            }
-            for (Coordinate target : targets) {
-                map.getTerrains().get(target).addMarker(Markers.ATTACK);
-            }
-        }
-    }
-
-    private void clearAllMarkers() {
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                map.getTerrains().get(x, y).clearMarkers();
-            }
+        for (Coordinate target : attackTargets) {
+            terrains.get(target).addMarker(Markers.ATTACK);
+            terrainMarkers.put(target, Markers.ATTACK);
         }
     }
 }

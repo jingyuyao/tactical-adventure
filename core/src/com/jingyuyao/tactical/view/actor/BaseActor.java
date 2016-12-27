@@ -21,7 +21,7 @@ import java.util.*;
 public class BaseActor<T extends AbstractObject> extends Actor implements Observer {
     private final Waiter waiter;
     private final Map<Markers, Sprite> markerSpriteMap;
-    private final Set<Sprite> markerSprites;
+    private final List<Sprite> markerSprites;
 
     /**
      * @param object This will be the first argument in {@link #update(Observable, Object)}
@@ -29,7 +29,7 @@ public class BaseActor<T extends AbstractObject> extends Actor implements Observ
     BaseActor(T object, float size, Waiter waiter, Map<Markers, Sprite> markerSpriteMap, EventListener listener) {
         this.waiter = waiter;
         this.markerSpriteMap = markerSpriteMap;
-        markerSprites = new HashSet<Sprite>();
+        markerSprites = new ArrayList<Sprite>();
         setBounds(object.getCoordinate().getX(), object.getCoordinate().getY(), size, size);
         addListener(listener);
         object.addObserver(this);
@@ -49,15 +49,18 @@ public class BaseActor<T extends AbstractObject> extends Actor implements Observ
 
     @Override
     public void update(Observable observable, Object param) {
-        if (AbstractObject.MarkerChange.class.isInstance(param)) {
-            markerChange(AbstractObject.MarkerChange.class.cast(param));
+        if (AbstractObject.AddMarker.class.isInstance(param)) {
+            addMarker(AbstractObject.AddMarker.class.cast(param));
+        } else if (AbstractObject.RemoveMarker.class.isInstance(param)) {
+            removeMarker(AbstractObject.RemoveMarker.class.cast(param));
         }
     }
 
-    private void markerChange(AbstractObject.MarkerChange markerChange) {
-        markerSprites.clear();
-        for (Markers marker : markerChange.getMarkers()) {
-            markerSprites.add(markerSpriteMap.get(marker));
-        }
+    private void addMarker(AbstractObject.AddMarker addMarker) {
+        markerSprites.add(markerSpriteMap.get(addMarker.getMarker()));
+    }
+
+    private void removeMarker(AbstractObject.RemoveMarker removeMarker) {
+        markerSprites.remove(markerSpriteMap.get(removeMarker.getMarker()));
     }
 }

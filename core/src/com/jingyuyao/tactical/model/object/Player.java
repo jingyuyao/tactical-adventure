@@ -7,7 +7,6 @@ import com.jingyuyao.tactical.model.state.MapState;
  */
 public class Player extends Character {
     private boolean actionable = true;
-    private TargetMode targetMode = TargetMode.NONE;
 
     public Player(int x, int y, String name, Stats stats, Items items) {
         super(x, y, name, stats, items);
@@ -28,27 +27,6 @@ public class Player extends Character {
         notifyObservers(new NewActionState(actionable));
     }
 
-    public TargetMode getTargetMode() {
-        return targetMode;
-    }
-
-    public void setTargetMode(TargetMode targetMode) {
-        this.targetMode = targetMode;
-        setChanged();
-        notifyObservers(new TargetModeChange());
-    }
-
-    @Override
-    protected void died() {
-        setTargetMode(TargetMode.NONE);
-    }
-
-    public enum TargetMode {
-        NONE,
-        MOVE_AND_TARGETS,
-        IMMEDIATE_TARGETS
-    }
-
     public static class NewActionState {
         private final boolean actionable;
 
@@ -59,9 +37,5 @@ public class Player extends Character {
         public boolean isActionable() {
             return actionable;
         }
-    }
-
-    public static class TargetModeChange {
-        private TargetModeChange() {}
     }
 }

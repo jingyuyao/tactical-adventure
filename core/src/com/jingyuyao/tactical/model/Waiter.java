@@ -2,13 +2,17 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
 
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Queue;
 
 /**
  * A semaphore like object that notifies its observers change in its state.
  */
 public class Waiter extends Observable {
+    private final Queue<Runnable> runnables = new LinkedList<Runnable>();
+    private boolean hasObserver = false;
     private int waits = 0;
 
     public boolean isWaiting() {
@@ -44,15 +48,25 @@ public class Waiter extends Observable {
         if (!isWaiting()) {
             runnable.run();
         } else {
-            addObserver(new Observer() {
-                @Override
-                public void update(Observable observable, Object o) {
-                    if (!isWaiting()) {
-                        runnable.run();
-                        deleteObserver(this);
+            runnables.add(runnable);
+            // The order at which the observers are notified is unspecified which means we need to keep
+            // track of the order ourselves. This observer will run all queued up runnables when
+            // we are not waiting then remove itself. We limit the number of observers to one.
+            if (!hasObserver) {
+                hasObserver = true;
+                addObserver(new Observer() {
+                    @Override
+                    public void update(Observable observable, Object o) {
+                        if (!isWaiting()) {
+                            while (!runnables.isEmpty()) {
+                                runnables.poll().run();
+                            }
+                            deleteObserver(this);
+                            hasObserver = false;
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }

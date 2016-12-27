@@ -5,8 +5,12 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Character extends AbstractObject {
     /**
@@ -15,12 +19,18 @@ public abstract class Character extends AbstractObject {
     private final String name;
     private final Stats stats;
     private final Items items;
+    /**
+     * The map of markers create by/for this {@link Character}.
+     */
+    private final Map<Coordinate, Markers> terrainMarkers;
+    private TargetMode targetMode = TargetMode.NONE;
 
     Character(int x, int y, String name, Stats stats, Items items) {
         super(x, y);
         this.name = name;
         this.stats = stats;
         this.items = items;
+        terrainMarkers = new HashMap<Coordinate, Markers>();
     }
 
     @Override
@@ -52,6 +62,14 @@ public abstract class Character extends AbstractObject {
         return stats.getMoveDistance();
     }
 
+    public TargetMode getTargetMode() {
+        return targetMode;
+    }
+
+    public Map<Coordinate, Markers> getTerrainMarkers() {
+        return terrainMarkers;
+    }
+
     public boolean isAlive() {
         return stats.getHp() > 0;
     }
@@ -63,6 +81,12 @@ public abstract class Character extends AbstractObject {
 
     public boolean canPassTerrainType(Terrain.Type terrainType) {
         return stats.canPassTerrainType(terrainType);
+    }
+
+    public void setTargetMode(TargetMode newTargetMode) {
+        targetMode = newTargetMode;
+        setChanged();
+        notifyObservers(new TargetModeChange());
     }
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
@@ -93,16 +117,11 @@ public abstract class Character extends AbstractObject {
     }
 
     private void die() {
-        died();
+        setTargetMode(TargetMode.NONE);
         setChanged();
         notifyObservers(new Died());
         deleteObservers();
     }
-
-    /**
-     * Called when this {@link Character} dies.
-     */
-    protected abstract void died();
 
     @Override
     public String toString() {
@@ -111,6 +130,13 @@ public abstract class Character extends AbstractObject {
                 ", stats=" + stats +
                 ", items=" + items +
                 "} " + super.toString();
+    }
+
+    public enum TargetMode {
+        NONE,
+        MOVE_AND_TARGETS,
+        IMMEDIATE_TARGETS,
+        DANGER,
     }
 
     public static class Move {
@@ -139,5 +165,9 @@ public abstract class Character extends AbstractObject {
 
     public static class Died {
         private Died() {}
+    }
+
+    public static class TargetModeChange {
+        private TargetModeChange() {}
     }
 }

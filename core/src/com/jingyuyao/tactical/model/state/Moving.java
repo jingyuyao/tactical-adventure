@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -19,7 +20,7 @@ class Moving extends AbstractState {
 
     @Override
     void enter() {
-        currentPlayer.setTargetMode(Player.TargetMode.MOVE_AND_TARGETS);
+        currentPlayer.setTargetMode(Character.TargetMode.MOVE_AND_TARGETS);
     }
 
     @Override
@@ -31,7 +32,7 @@ class Moving extends AbstractState {
 
     @Override
     void exit() {
-        currentPlayer.setTargetMode(Player.TargetMode.NONE);
+        currentPlayer.setTargetMode(Character.TargetMode.NONE);
     }
 
     @Override

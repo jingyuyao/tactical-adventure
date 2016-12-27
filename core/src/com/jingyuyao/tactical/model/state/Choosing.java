@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -18,7 +19,7 @@ class Choosing extends AbstractState {
     @Override
     void enter() {
         if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            currentPlayer.setTargetMode(Player.TargetMode.IMMEDIATE_TARGETS);
+            currentPlayer.setTargetMode(Character.TargetMode.IMMEDIATE_TARGETS);
         }
     }
 
@@ -27,7 +28,7 @@ class Choosing extends AbstractState {
 
     @Override
     void exit() {
-        currentPlayer.setTargetMode(Player.TargetMode.NONE);
+        currentPlayer.setTargetMode(Character.TargetMode.NONE);
     }
 
     @Override
