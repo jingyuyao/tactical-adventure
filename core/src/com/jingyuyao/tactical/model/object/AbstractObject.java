@@ -1,23 +1,41 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.state.MapState;
 
+import java.util.HashSet;
 import java.util.Observable;
+import java.util.Set;
 
 /**
  * Super class of all the objects on the game grid.
  */
 public abstract class AbstractObject extends Observable {
+    private final Set<Markers> markers;
     private Coordinate coordinate;
 
     AbstractObject(int x, int y) {
         coordinate = new Coordinate(x, y);
+        markers = new HashSet<Markers>();
     }
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public void addMarker(Markers marker) {
+        markers.add(marker);
+        setChanged();
+        notifyObservers(new MarkerChange(markers));
+    }
+
+    public void clearMarkers() {
+        markers.clear();
+        setChanged();
+        notifyObservers(new MarkerChange(markers));
     }
 
     /**
@@ -44,7 +62,20 @@ public abstract class AbstractObject extends Observable {
     @Override
     public String toString() {
         return "AbstractObject{" +
-                "coordinate=" + coordinate +
+                "markers=" + markers +
+                ", coordinate=" + coordinate +
                 "}";
+    }
+
+    public static class MarkerChange {
+        private final ImmutableSet<Markers> markers;
+
+        protected MarkerChange(Set<Markers> markers) {
+            this.markers = ImmutableSet.copyOf(markers);
+        }
+
+        public ImmutableSet<Markers> getMarkers() {
+            return markers;
+        }
     }
 }
