@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -26,7 +26,7 @@ public class MapUI implements Observer {
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
-    MapUI(MapState mapState, Highlighter highlighter, AnimationCounter animationCounter, Skin skin) {
+    MapUI(MapState mapState, Highlighter highlighter, Waiter waiter, Skin skin) {
         this.skin = skin;
         ui = new Stage();
         root = new Table();
@@ -57,7 +57,7 @@ public class MapUI implements Observer {
 
         highlighter.addObserver(this);
         mapState.addObserver(this);
-        animationCounter.addObserver(this);
+        waiter.addObserver(this);
 
         // TODO: clean me up
         stateLabel.setText("Waiting");
@@ -95,8 +95,8 @@ public class MapUI implements Observer {
             highlightCharacter(Highlighter.HighlightCharacter.class.cast(param));
         } else if (MapState.StateChange.class.isInstance(param)) {
             stateChange(MapState.StateChange.class.cast(param));
-        } else if (AnimationCounter.AnimationChange.class.isInstance(param)) {
-            animationChange(AnimationCounter.AnimationChange.class.cast(param));
+        } else if (Waiter.Change.class.isInstance(param)) {
+            animationChange(Waiter.Change.class.cast(param));
         } else if (MapState.ShowAttackPlan.class.isInstance(param)) {
             showAttackPlan(MapState.ShowAttackPlan.class.cast(param));
         } else if (MapState.HideAttackPlan.class.isInstance(param)) {
@@ -104,6 +104,7 @@ public class MapUI implements Observer {
         }
     }
 
+    // TODO: need to refresh stats after attack
     private void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
         characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getCharacter().getHp()));
         updateTerrainLabel(highlightCharacter.getTerrain());
@@ -120,8 +121,8 @@ public class MapUI implements Observer {
         populateButtons();
     }
 
-    private void animationChange(AnimationCounter.AnimationChange animationChange) {
-        showButtons = !animationChange.isAnimating();
+    private void animationChange(Waiter.Change change) {
+        showButtons = !change.isWaiting();
         populateButtons();
     }
 

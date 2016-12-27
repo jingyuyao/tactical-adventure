@@ -10,14 +10,14 @@ public class Level {
     private final MapState mapState;
     private final Turn turn;
     private final Highlighter highlighter;
-    private final AnimationCounter animationCounter;
+    private final Waiter waiter;
 
-    public Level(Map map, MapState mapState, Turn turn, Highlighter highlighter, AnimationCounter animationCounter) {
+    public Level(Map map, MapState mapState, Turn turn, Highlighter highlighter, Waiter waiter) {
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
         this.highlighter = highlighter;
-        this.animationCounter = animationCounter;
+        this.waiter = waiter;
     }
 
     public Map getMap() {
@@ -36,7 +36,7 @@ public class Level {
         return highlighter;
     }
 
-    public AnimationCounter getAnimationCounter() {
-        return animationCounter;
+    public Waiter getWaiter() {
+        return waiter;
     }
 }

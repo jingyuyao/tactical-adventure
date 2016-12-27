@@ -12,17 +12,17 @@ import java.util.Set;
 
 public class MarkerManager implements Observer {
     private final Map map;
-    private final AnimationCounter animationCounter;
+    private final Waiter waiter;
 
-    MarkerManager(Map map, AnimationCounter animationCounter) {
+    MarkerManager(Map map, Waiter waiter) {
         this.map = map;
-        this.animationCounter = animationCounter;
+        this.waiter = waiter;
     }
 
     @Override
     public void update(Observable observable, Object o) {
         if (Player.TargetModeChange.class.isInstance(o) || Enemy.ShowDangerAreaChange.class.isInstance(o)) {
-            animationCounter.runOnceWhenNotAnimating(new Runnable() {
+            waiter.runOnceWhenNotWaiting(new Runnable() {
                 @Override
                 public void run() {
                     syncMarkers();

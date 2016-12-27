@@ -48,7 +48,7 @@ public class ActorFactory {
         return new PlayerActor(
                 player,
                 ACTOR_SIZE,
-                level.getAnimationCounter(),
+                level.getWaiter(),
                 new Sprite(assetManager.get("sprites/" + player.getName() + ".png", Texture.class)),
                 typeColorMap.get(player.getClass()),
                 new MapActorController(level.getMapState(), level.getHighlighter(), player, ACTOR_SIZE)
@@ -59,7 +59,7 @@ public class ActorFactory {
         return new CharacterActor<Enemy>(
                 enemy,
                 ACTOR_SIZE,
-                level.getAnimationCounter(),
+                level.getWaiter(),
                 new Sprite(assetManager.get("sprites/" + enemy.getName() + ".png", Texture.class)),
                 typeColorMap.get(enemy.getClass()),
                 new MapActorController(level.getMapState(), level.getHighlighter(), enemy, ACTOR_SIZE)
@@ -70,7 +70,7 @@ public class ActorFactory {
         return new TerrainActor(
                 terrain,
                 ACTOR_SIZE,
-                level.getAnimationCounter(),
+                level.getWaiter(),
                 markerSpriteMap,
                 new MapActorController(level.getMapState(), level.getHighlighter(), terrain, ACTOR_SIZE)
         );

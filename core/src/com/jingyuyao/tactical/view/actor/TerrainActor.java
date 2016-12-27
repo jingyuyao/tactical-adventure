@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.jingyuyao.tactical.model.AnimationCounter;
+import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ public class TerrainActor extends AbstractActor<Terrain> {
     TerrainActor(
             Terrain object,
             float size,
-            AnimationCounter animationCounter,
+            Waiter waiter,
             Map<Terrain.Marker, Sprite> markerSpriteMap,
             EventListener listener
     ) {
-        super(object, size, animationCounter, listener);
+        super(object, size, waiter, listener);
         this.markerSpriteMap = markerSpriteMap;
         markerSprites = new ArrayList<Sprite>();
     }

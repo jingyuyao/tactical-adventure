@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Observable;
@@ -24,12 +24,12 @@ public class CharacterActor<T extends Character> extends AbstractActor<T> {
     CharacterActor(
             T object,
             float size,
-            AnimationCounter animationCounter,
+            Waiter waiter,
             Sprite sprite,
             Color tint,
             EventListener listener
     ) {
-        super(object, size, animationCounter, listener);
+        super(object, size, waiter, listener);
         this.sprite = sprite;
         sprite.setColor(tint);
     }
@@ -71,10 +71,10 @@ public class CharacterActor<T extends Character> extends AbstractActor<T> {
                 for (EventListener listener : listeners) {
                     addListener(listener);
                 }
-                getAnimationCounter().finishOneAnimation();
+                getWaiter().finishOne();
             }
         }));
-        getAnimationCounter().startOneAnimation();
+        getWaiter().waitOne();
         addAction(moveSequence);
     }
 

@@ -26,13 +26,13 @@ public class Map implements Observer {
     private final Set<Enemy> enemies;
     private final MarkerManager markerManager;
 
-    public Map(int width, int height, AnimationCounter animationCounter) {
+    public Map(int width, int height, Waiter waiter) {
         this.width = width;
         this.height = height;
         terrains = new Grid<Terrain>(width, height);
         players = new HashSet<Player>();
         enemies = new HashSet<Enemy>();
-        markerManager = new MarkerManager(this, animationCounter);
+        markerManager = new MarkerManager(this, waiter);
     }
 
     public int getWidth() {

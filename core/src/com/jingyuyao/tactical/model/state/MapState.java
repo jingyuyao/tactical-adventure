@@ -1,10 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.AnimationCounter;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.Turn;
+import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -16,11 +16,11 @@ import java.util.Observable;
  */
 // TODO: This class needs to be thoroughly tested
 public class MapState extends Observable {
-    private final AnimationCounter animationCounter;
+    private final Waiter waiter;
     private AbstractState state;
 
-    public MapState(Map map, Turn turn, AnimationCounter animationCounter) {
-        this.animationCounter = animationCounter;
+    public MapState(Map map, Turn turn, Waiter waiter) {
+        this.waiter = waiter;
         state = new Waiting(this, map, turn);
     }
 
@@ -29,17 +29,17 @@ public class MapState extends Observable {
     }
 
     public void select(Player player) {
-        if (animationCounter.isAnimating()) return;
+        if (waiter.isWaiting()) return;
         state.select(player);
     }
 
     public void select(Enemy enemy) {
-        if (animationCounter.isAnimating()) return;
+        if (waiter.isWaiting()) return;
         state.select(enemy);
     }
 
     public void select(Terrain terrain) {
-        if (animationCounter.isAnimating()) return;
+        if (waiter.isWaiting()) return;
         state.select(terrain);
     }
 
