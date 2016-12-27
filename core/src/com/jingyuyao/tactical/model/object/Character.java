@@ -95,6 +95,7 @@ public abstract class Character extends AbstractObject {
     private void die() {
         setChanged();
         notifyObservers(new Died());
+        // Observers not always interested in observing death so we need to clean up just in case
         deleteObservers();
     }
 

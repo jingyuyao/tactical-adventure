@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -10,7 +9,6 @@ import com.jingyuyao.tactical.model.object.Terrain;
 class SelectingWeapon extends AbstractState {
     private final Player attackingPlayer;
     private final Enemy targetEnemy;
-    private Marking marking = Marking.EMPTY;
 
     SelectingWeapon(AbstractState prevState, Player attackingPlayer, Enemy targetEnemy) {
         super(prevState);
@@ -21,8 +19,7 @@ class SelectingWeapon extends AbstractState {
     @Override
     void enter() {
         // TODO: use a different marker for each stage
-        marking = getMarkingFactory().immediateTargets(attackingPlayer);
-        marking.apply();
+        getStateMarkings().showImmediateTargets(attackingPlayer);
     }
 
     @Override
@@ -32,7 +29,7 @@ class SelectingWeapon extends AbstractState {
 
     @Override
     void exit() {
-        marking.clear();
+        getStateMarkings().clearPlayerMarking();
     }
 
     @Override

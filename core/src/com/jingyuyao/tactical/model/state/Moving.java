@@ -4,7 +4,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -12,7 +11,6 @@ import com.jingyuyao.tactical.model.object.Terrain;
 class Moving extends AbstractState {
     private final Player currentPlayer;
     private Coordinate previousCoordinate;
-    private Marking marking = Marking.EMPTY;
 
     Moving(AbstractState prevState, Player currentPlayer) {
         super(prevState);
@@ -21,8 +19,7 @@ class Moving extends AbstractState {
 
     @Override
     void enter() {
-        marking = getMarkingFactory().moveAndTargets(currentPlayer);
-        marking.apply();
+        getStateMarkings().showMoveAndTargets(currentPlayer);
     }
 
     @Override
@@ -34,7 +31,7 @@ class Moving extends AbstractState {
 
     @Override
     void exit() {
-        marking.clear();
+        getStateMarkings().clearPlayerMarking();
     }
 
     @Override

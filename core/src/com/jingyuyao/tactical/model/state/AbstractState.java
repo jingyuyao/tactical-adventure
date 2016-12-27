@@ -3,54 +3,53 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.Turn;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 abstract class AbstractState {
+    private final AbstractState prevState;
     /**
      * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.
      */
     private final MapState mapState;
     private final Map map;
     private final Turn turn;
-    private final MarkingFactory markingFactory;
-    private final AbstractState prevState;
+    private final StateMarkings stateMarkings;
 
     /**
      * Creates a new state with all of previous state's data and set {@link #prevState} of the new state
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.markingFactory);
+        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.stateMarkings);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(Map map, MapState mapState, Turn turn, MarkingFactory markingFactory) {
-        this(null, map, mapState, turn, markingFactory);
+    AbstractState(Map map, MapState mapState, Turn turn, StateMarkings stateMarkings) {
+        this(null, map, mapState, turn, stateMarkings);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, MarkingFactory markingFactory) {
+    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, StateMarkings stateMarkings) {
+        this.prevState = prevState;
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
-        this.prevState = prevState;
-        this.markingFactory = markingFactory;
+        this.stateMarkings = stateMarkings;
     }
 
     Map getMap() {
         return map;
     }
 
-    MarkingFactory getMarkingFactory() {
-        return markingFactory;
+    StateMarkings getStateMarkings() {
+        return stateMarkings;
     }
 
     void nextTurn() {
