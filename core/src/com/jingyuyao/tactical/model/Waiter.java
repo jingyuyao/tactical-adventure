@@ -41,10 +41,10 @@ public class Waiter extends Observable {
     }
 
     /**
-     * Run {@code runnable} immediately if there are no animation. If there are waits, wait until they
-     * finish then run {@code runnable} once.
+     * Run {@code runnable} immediately if {@link #isWaiting()} is false else wait until {@link #isWaiting()}
+     * becomes true. The {@code runnable}s are executed in the order at which {@link #runOnce(Runnable)} is called.
      */
-    public void runOnceWhenNotWaiting(final Runnable runnable) {
+    public void runOnce(final Runnable runnable) {
         if (!isWaiting()) {
             runnable.run();
         } else {

@@ -39,7 +39,7 @@ public class Marking implements Observer {
      * Also observes {@link #owner}'s death to clear itself.
      */
     public void apply() {
-        waiter.runOnceWhenNotWaiting(new Runnable() {
+        waiter.runOnce(new Runnable() {
             @Override
             public void run() {
                 if (cleared || applied) return;
@@ -57,7 +57,7 @@ public class Marking implements Observer {
      * Clears the {@link #markers} held by this marking and prevent further {@link #apply()}.
      */
     public void clear() {
-        waiter.runOnceWhenNotWaiting(new Runnable() {
+        waiter.runOnce(new Runnable() {
             @Override
             public void run() {
                 if (cleared) return;
