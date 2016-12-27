@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -51,6 +52,15 @@ public class Grid<T> implements Iterable<T> {
 
     public T get(Coordinate coordinate) {
         return get(coordinate.getX(), coordinate.getY());
+    }
+
+    public Iterable<T> getAll(Iterable<Coordinate> coordinates) {
+        return Iterables.transform(coordinates, new Function<Coordinate, T>() {
+            @Override
+            public T apply(Coordinate input) {
+                return get(input);
+            }
+        });
     }
 
     public void set(int x, int y, T data) {

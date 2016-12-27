@@ -3,13 +3,14 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 class Choosing extends AbstractState {
     private final Player currentPlayer;
+    private Marking marking = Marking.EMPTY;
 
     Choosing(AbstractState prevState, Player currentPlayer) {
         super(prevState);
@@ -19,7 +20,8 @@ class Choosing extends AbstractState {
     @Override
     void enter() {
         if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            currentPlayer.setMarkerMode(Character.MarkerMode.IMMEDIATE_TARGETS);
+            marking = getMarkingFactory().immediateTargets(currentPlayer);
+            marking.apply();
         }
     }
 
@@ -28,7 +30,7 @@ class Choosing extends AbstractState {
 
     @Override
     void exit() {
-        currentPlayer.setMarkerMode(Character.MarkerMode.NONE);
+        marking.clear();
     }
 
     @Override

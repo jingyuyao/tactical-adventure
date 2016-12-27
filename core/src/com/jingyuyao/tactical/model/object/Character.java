@@ -5,12 +5,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Character extends AbstractObject {
     /**
@@ -19,17 +15,12 @@ public abstract class Character extends AbstractObject {
     private final String name;
     private final Stats stats;
     private final Items items;
-    /**
-     * The map of markers create by/for this {@link Character}.
-     */
-    private final Map<Coordinate, Marker> terrainMarkers;
 
     Character(int x, int y, String name, Stats stats, Items items) {
         super(x, y);
         this.name = name;
         this.stats = stats;
         this.items = items;
-        terrainMarkers = new HashMap<Coordinate, Marker>();
     }
 
     @Override
@@ -61,10 +52,6 @@ public abstract class Character extends AbstractObject {
         return stats.getMoveDistance();
     }
 
-    public Map<Coordinate, Marker> getTerrainMarkers() {
-        return terrainMarkers;
-    }
-
     public boolean isAlive() {
         return stats.getHp() > 0;
     }
@@ -76,11 +63,6 @@ public abstract class Character extends AbstractObject {
 
     public boolean canPassTerrainType(Terrain.Type terrainType) {
         return stats.canPassTerrainType(terrainType);
-    }
-
-    public void setMarkerMode(MarkerMode newMarkerMode) {
-        setChanged();
-        notifyObservers(new MarkerModeChange(newMarkerMode));
     }
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
@@ -111,7 +93,6 @@ public abstract class Character extends AbstractObject {
     }
 
     private void die() {
-        setMarkerMode(MarkerMode.NONE);
         setChanged();
         notifyObservers(new Died());
         deleteObservers();
@@ -124,13 +105,6 @@ public abstract class Character extends AbstractObject {
                 ", stats=" + stats +
                 ", items=" + items +
                 "} " + super.toString();
-    }
-
-    public enum MarkerMode {
-        NONE,
-        MOVE_AND_TARGETS,
-        IMMEDIATE_TARGETS,
-        DANGER,
     }
 
     public static class Move {
@@ -159,21 +133,5 @@ public abstract class Character extends AbstractObject {
 
     public static class Died {
         private Died() {}
-    }
-
-    public static class MarkerModeChange {
-        /**
-         * Need to store the new marker mode in the params object since we run these things in
-         * a runnable, which means we can fall to the good o js loop reference bug
-         */
-        private final MarkerMode newMarkerMode;
-
-        private MarkerModeChange(MarkerMode newMarkerMode) {
-            this.newMarkerMode = newMarkerMode;
-        }
-
-        public MarkerMode getNewMarkerMode() {
-            return newMarkerMode;
-        }
     }
 }

@@ -1,10 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.AttackPlan;
-import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.Turn;
-import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -19,9 +16,9 @@ public class MapState extends Observable {
     private final Waiter waiter;
     private AbstractState state;
 
-    public MapState(Map map, Turn turn, Waiter waiter) {
+    public MapState(Map map, Turn turn, Waiter waiter, MarkingFactory markingFactory) {
         this.waiter = waiter;
-        state = new Waiting(this, map, turn);
+        state = new Waiting(this, map, turn, markingFactory);
     }
 
     public ImmutableList<Action> getActions() {

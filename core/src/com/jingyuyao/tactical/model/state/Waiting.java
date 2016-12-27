@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.Turn;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -11,8 +12,8 @@ class Waiting extends AbstractState {
     /**
      * Used to create the initial state.
      */
-    Waiting(MapState mapState, Map map, Turn turn) {
-        super(map, mapState, turn);
+    Waiting(MapState mapState, Map map, Turn turn, MarkingFactory markingFactory) {
+        super(map, mapState, turn, markingFactory);
     }
 
     /**
@@ -54,7 +55,9 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Enemy enemy) {
-        enemy.toggleDangerArea();
+        // TODO: add something like a persistent markings list that gets passed between states
+        // markings should only belong in the states and not on individual objects,
+        enemy.toggleDangerMarking(getMarkingFactory().danger(enemy));
     }
 
     @Override

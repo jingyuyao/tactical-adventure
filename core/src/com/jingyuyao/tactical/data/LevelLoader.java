@@ -22,15 +22,16 @@ public class LevelLoader {
     private static final String TERRAIN_TYPE_KEY = "type";
 
     public static Level loadLevel(TiledMap tiledMap) {
-        Waiter waiter = new Waiter();
-        Map map = createMap(tiledMap, waiter);
+        Map map = createMap(tiledMap);
         Turn turn = new Turn(map);
-        MapState mapState = new MapState(map, turn, waiter);
+        Waiter waiter = new Waiter();
+        MarkingFactory markingFactory = new MarkingFactory(map, waiter);
+        MapState mapState = new MapState(map, turn, waiter, markingFactory);
         Highlighter highlighter = new Highlighter(map);
         return new Level(map, mapState, turn, highlighter, waiter);
     }
 
-    private static Map createMap(TiledMap tiledMap, Waiter waiter) {
+    private static Map createMap(TiledMap tiledMap) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 
@@ -39,7 +40,7 @@ public class LevelLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Map map = new Map(width, height, waiter);
+        Map map = new Map(width, height);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

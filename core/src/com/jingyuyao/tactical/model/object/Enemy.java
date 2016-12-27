@@ -1,12 +1,13 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**
  * An enemy character
  */
 public class Enemy extends Character {
-    private boolean showDangerArea = false;
+    private Marking dangerMarking;
 
     public Enemy(int x, int y, String name, Stats stats, Items items) {
         super(x, y, name, stats, items);
@@ -17,12 +18,13 @@ public class Enemy extends Character {
         mapState.select(this);
     }
 
-    public void toggleDangerArea() {
-        showDangerArea = !showDangerArea;
-        if (showDangerArea) {
-            setMarkerMode(MarkerMode.DANGER);
+    public void toggleDangerMarking(Marking marking) {
+        if (dangerMarking == null) {
+            dangerMarking = marking;
+            dangerMarking.apply();
         } else {
-            setMarkerMode(MarkerMode.NONE);
+            dangerMarking.clear();
+            dangerMarking = null;
         }
     }
 }
