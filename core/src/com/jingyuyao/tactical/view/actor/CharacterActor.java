@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Markers;
+import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Character;
 
@@ -27,7 +27,7 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
             T object,
             float size,
             Waiter waiter,
-            Map<Markers, Sprite> markerSpriteMap,
+            Map<Marker, Sprite> markerSpriteMap,
             Sprite sprite,
             Color tint,
             EventListener listener

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.jingyuyao.tactical.model.Markers;
+import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.view.MapView;
@@ -13,20 +13,20 @@ import java.util.*;
 
 /**
  * An {@link Actor} on a {@link MapView}.
- * Draws all {@link Markers} that belongs to {@link AbstractObject} in no particular order.
+ * Draws all {@link Marker} that belongs to {@link AbstractObject} in no particular order.
  *
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
 public class BaseActor<T extends AbstractObject> extends Actor implements Observer {
     private final Waiter waiter;
-    private final Map<Markers, Sprite> markerSpriteMap;
+    private final Map<Marker, Sprite> markerSpriteMap;
     private final List<Sprite> markerSprites;
 
     /**
      * @param object This will be the first argument in {@link #update(Observable, Object)}
      */
-    BaseActor(T object, float size, Waiter waiter, Map<Markers, Sprite> markerSpriteMap, EventListener listener) {
+    BaseActor(T object, float size, Waiter waiter, Map<Marker, Sprite> markerSpriteMap, EventListener listener) {
         this.waiter = waiter;
         this.markerSpriteMap = markerSpriteMap;
         markerSprites = new ArrayList<Sprite>();

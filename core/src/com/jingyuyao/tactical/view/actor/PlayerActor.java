@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.jingyuyao.tactical.model.Markers;
+import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Player;
 
@@ -15,7 +15,7 @@ public class PlayerActor extends CharacterActor<Player> {
             Player object,
             float size,
             Waiter waiter,
-            Map<Markers, Sprite> markerSpriteMap,
+            Map<Marker, Sprite> markerSpriteMap,
             Sprite sprite,
             Color tint,
             EventListener listener

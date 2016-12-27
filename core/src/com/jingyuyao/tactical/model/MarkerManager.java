@@ -34,12 +34,12 @@ public class MarkerManager implements Observer {
 
     private void targetModeChange(Character character) {
         Grid<Terrain> terrains = map.getTerrains();
-        java.util.Map<Coordinate, Markers> terrainMarkers = character.getTerrainMarkers();
+        java.util.Map<Coordinate, Marker> terrainMarkers = character.getTerrainMarkers();
         Set<Coordinate> attackTargets = Collections.emptySet();
 
         switch (character.getTargetMode()) {
             case NONE:
-                for (java.util.Map.Entry<Coordinate, Markers> entry : terrainMarkers.entrySet()) {
+                for (java.util.Map.Entry<Coordinate, Marker> entry : terrainMarkers.entrySet()) {
                     Terrain terrain = terrains.get(entry.getKey());
                     terrain.removeMarker(entry.getValue());
                 }
@@ -48,8 +48,8 @@ public class MarkerManager implements Observer {
             case MOVE_AND_TARGETS:
                 Graph<Coordinate> moveGraph = map.getMoveGraph(character);
                 for (Coordinate coordinate : moveGraph.nodes()) {
-                    terrains.get(coordinate).addMarker(Markers.MOVE);
-                    terrainMarkers.put(coordinate, Markers.MOVE);
+                    terrains.get(coordinate).addMarker(Marker.MOVE);
+                    terrainMarkers.put(coordinate, Marker.MOVE);
                 }
                 attackTargets = Sets.difference(map.getAllTargets(character), moveGraph.nodes());
                 break;
@@ -58,15 +58,15 @@ public class MarkerManager implements Observer {
                 break;
             case DANGER:
                 for (Coordinate target : map.getAllTargets(character)) {
-                    terrains.get(target).addMarker(Markers.DANGER);
-                    terrainMarkers.put(target, Markers.DANGER);
+                    terrains.get(target).addMarker(Marker.DANGER);
+                    terrainMarkers.put(target, Marker.DANGER);
                 }
                 break;
         }
 
         for (Coordinate target : attackTargets) {
-            terrains.get(target).addMarker(Markers.ATTACK);
-            terrainMarkers.put(target, Markers.ATTACK);
+            terrains.get(target).addMarker(Marker.ATTACK);
+            terrainMarkers.put(target, Marker.ATTACK);
         }
     }
 }

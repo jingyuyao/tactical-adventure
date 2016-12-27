@@ -5,7 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.Markers;
+import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
@@ -22,7 +22,7 @@ public abstract class Character extends AbstractObject {
     /**
      * The map of markers create by/for this {@link Character}.
      */
-    private final Map<Coordinate, Markers> terrainMarkers;
+    private final Map<Coordinate, Marker> terrainMarkers;
     private TargetMode targetMode = TargetMode.NONE;
 
     Character(int x, int y, String name, Stats stats, Items items) {
@@ -30,7 +30,7 @@ public abstract class Character extends AbstractObject {
         this.name = name;
         this.stats = stats;
         this.items = items;
-        terrainMarkers = new HashMap<Coordinate, Markers>();
+        terrainMarkers = new HashMap<Coordinate, Marker>();
     }
 
     @Override
@@ -66,7 +66,7 @@ public abstract class Character extends AbstractObject {
         return targetMode;
     }
 
-    public Map<Coordinate, Markers> getTerrainMarkers() {
+    public Map<Coordinate, Marker> getTerrainMarkers() {
         return terrainMarkers;
     }
 

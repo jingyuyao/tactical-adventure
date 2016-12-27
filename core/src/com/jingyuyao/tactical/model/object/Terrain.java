@@ -2,11 +2,7 @@ package com.jingyuyao.tactical.model.object;
 
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.state.MapState;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Terrain extends AbstractObject {
     private Type type;

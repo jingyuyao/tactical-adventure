@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.object;
 
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.Markers;
+import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.ArrayList;
@@ -16,25 +16,25 @@ public abstract class AbstractObject extends Observable {
     /**
      * List of marker drawn over this object.
      */
-    private final List<Markers> markers;
+    private final List<Marker> markers;
     private Coordinate coordinate;
 
     AbstractObject(int x, int y) {
         coordinate = new Coordinate(x, y);
-        markers = new ArrayList<Markers>();
+        markers = new ArrayList<Marker>();
     }
 
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public void addMarker(Markers marker) {
+    public void addMarker(Marker marker) {
         markers.add(marker);
         setChanged();
         notifyObservers(new AddMarker(marker));
     }
 
-    public void removeMarker(Markers marker) {
+    public void removeMarker(Marker marker) {
         markers.remove(marker);
         setChanged();
         notifyObservers(new RemoveMarker(marker));
@@ -70,25 +70,25 @@ public abstract class AbstractObject extends Observable {
     }
 
     public static class AddMarker {
-        private final Markers marker;
+        private final Marker marker;
 
-        private AddMarker(Markers marker) {
+        private AddMarker(Marker marker) {
             this.marker = marker;
         }
 
-        public Markers getMarker() {
+        public Marker getMarker() {
             return marker;
         }
     }
 
     public static class RemoveMarker {
-        private final Markers marker;
+        private final Marker marker;
 
-        private RemoveMarker(Markers marker) {
+        private RemoveMarker(Marker marker) {
             this.marker = marker;
         }
 
-        public Markers getMarker() {
+        public Marker getMarker() {
             return marker;
         }
     }
