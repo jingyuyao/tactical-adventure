@@ -26,18 +26,18 @@ public class MarkerManager implements Observer {
             waiter.runOnceWhenNotWaiting(new Runnable() {
                 @Override
                 public void run() {
-                    targetModeChange(Character.class.cast(object));
+                    targetModeChange(Character.class.cast(object), Character.MarkerModeChange.class.cast(param));
                 }
             });
         }
     }
 
-    private void targetModeChange(Character character) {
+    private void targetModeChange(Character character, Character.MarkerModeChange markerModeChange) {
         Grid<Terrain> terrains = map.getTerrains();
         java.util.Map<Coordinate, Marker> terrainMarkers = character.getTerrainMarkers();
         Set<Coordinate> attackTargets = Collections.emptySet();
 
-        switch (character.getMarkerMode()) {
+        switch (markerModeChange.getNewMarkerMode()) {
             case NONE:
                 for (java.util.Map.Entry<Coordinate, Marker> entry : terrainMarkers.entrySet()) {
                     Terrain terrain = terrains.get(entry.getKey());

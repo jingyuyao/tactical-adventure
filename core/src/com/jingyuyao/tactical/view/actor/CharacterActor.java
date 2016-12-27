@@ -48,6 +48,7 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
 
     @Override
     public void update(Observable observable, Object param) {
+        super.update(observable, param);
         if (Character.Move.class.isInstance(param)) {
             moveTo(Character.Move.class.cast(param));
         } else if (Character.InstantMove.class.isInstance(param)) {

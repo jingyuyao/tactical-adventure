@@ -1,13 +1,10 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -24,11 +21,9 @@ class MapViewFactory {
     private static final int VIEWPORT_HEIGHT = 10; // # tiles
 
     private final ActorFactory actorFactory;
-    private final Sprite highlightSprite;
 
     MapViewFactory(AssetManager assetManager) {
         actorFactory = new ActorFactory(assetManager);
-        highlightSprite = new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class));
     }
 
     /**
@@ -53,6 +48,6 @@ class MapViewFactory {
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(world, mapRenderer, level.getHighlighter(), highlightSprite);
+        return new MapView(world, mapRenderer);
     }
 }

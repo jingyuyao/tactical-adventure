@@ -23,7 +23,6 @@ public abstract class Character extends AbstractObject {
      * The map of markers create by/for this {@link Character}.
      */
     private final Map<Coordinate, Marker> terrainMarkers;
-    private MarkerMode markerMode = MarkerMode.NONE;
 
     Character(int x, int y, String name, Stats stats, Items items) {
         super(x, y);
@@ -62,10 +61,6 @@ public abstract class Character extends AbstractObject {
         return stats.getMoveDistance();
     }
 
-    public MarkerMode getMarkerMode() {
-        return markerMode;
-    }
-
     public Map<Coordinate, Marker> getTerrainMarkers() {
         return terrainMarkers;
     }
@@ -84,9 +79,8 @@ public abstract class Character extends AbstractObject {
     }
 
     public void setMarkerMode(MarkerMode newMarkerMode) {
-        markerMode = newMarkerMode;
         setChanged();
-        notifyObservers(new MarkerModeChange());
+        notifyObservers(new MarkerModeChange(newMarkerMode));
     }
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
@@ -168,6 +162,18 @@ public abstract class Character extends AbstractObject {
     }
 
     public static class MarkerModeChange {
-        private MarkerModeChange() {}
+        /**
+         * Need to store the new marker mode in the params object since we run these things in
+         * a runnable, which means we can fall to the good o js loop reference bug
+         */
+        private final MarkerMode newMarkerMode;
+
+        private MarkerModeChange(MarkerMode newMarkerMode) {
+            this.newMarkerMode = newMarkerMode;
+        }
+
+        public MarkerMode getNewMarkerMode() {
+            return newMarkerMode;
+        }
     }
 }
