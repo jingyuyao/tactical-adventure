@@ -3,9 +3,11 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Player;
 
+import java.util.Map;
 import java.util.Observable;
 
 public class PlayerActor extends CharacterActor<Player> {
@@ -13,11 +15,12 @@ public class PlayerActor extends CharacterActor<Player> {
             Player object,
             float size,
             Waiter waiter,
+            Map<Markers, Sprite> markerSpriteMap,
             Sprite sprite,
             Color tint,
             EventListener listener
     ) {
-        super(object, size, waiter, sprite, tint, listener);
+        super(object, size, waiter, markerSpriteMap, sprite, tint, listener);
     }
 
     @Override

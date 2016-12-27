@@ -6,8 +6,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.object.AbstractObject;
-import com.jingyuyao.tactical.view.actor.AbstractActor;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
+import com.jingyuyao.tactical.view.actor.BaseActor;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -24,7 +24,7 @@ public class MapView implements Observer {
     /**
      * A map view contains a world with all the actors and a way to render them.
      * The background map is backed by a {@link OrthogonalTiledMapRenderer}.
-     * @param world Should already be set up with all the {@link AbstractActor}
+     * @param world Should already be set up with all the {@link BaseActor}
      * @param mapRenderer The tiled map renderer
      * @param highlighter Highlighter used to draw the highlight
      * @param highlightSprite The sprite drawn for highlights

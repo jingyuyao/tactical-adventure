@@ -8,15 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Character;
 
+import java.util.Map;
 import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public class CharacterActor<T extends Character> extends AbstractActor<T> {
+public class CharacterActor<T extends Character> extends BaseActor<T> {
     private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
     private final Sprite sprite;
@@ -25,11 +27,12 @@ public class CharacterActor<T extends Character> extends AbstractActor<T> {
             T object,
             float size,
             Waiter waiter,
+            Map<Markers, Sprite> markerSpriteMap,
             Sprite sprite,
             Color tint,
             EventListener listener
     ) {
-        super(object, size, waiter, listener);
+        super(object, size, waiter, markerSpriteMap, listener);
         this.sprite = sprite;
         sprite.setColor(tint);
     }
@@ -40,6 +43,7 @@ public class CharacterActor<T extends Character> extends AbstractActor<T> {
             sprite.setBounds(getX(), getY(), getWidth(), getHeight());
             sprite.draw(batch);
         }
+        super.draw(batch, parentAlpha);
     }
 
     @Override

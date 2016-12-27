@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.object.Terrain;
 import java.util.HashMap;
 
 /**
- * Creates {@link AbstractActor} from models and adds the proper controllers.
+ * Creates {@link BaseActor} from models and adds the proper controllers.
  */
 public class ActorFactory {
     public static final float ACTOR_SIZE = 1f; // world units
@@ -28,6 +28,10 @@ public class ActorFactory {
     public ActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
         markerSpriteMap = new HashMap<Markers, Sprite>();
+        markerSpriteMap.put(
+                Markers.HIGHLIGHT,
+                new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class))
+        );
         markerSpriteMap.put(
                 Markers.MOVE,
                 new Sprite(assetManager.get(Assets.MOVE_OVERLAY, Texture.class))
@@ -50,6 +54,7 @@ public class ActorFactory {
                 player,
                 ACTOR_SIZE,
                 level.getWaiter(),
+                markerSpriteMap,
                 new Sprite(assetManager.get("sprites/" + player.getName() + ".png", Texture.class)),
                 typeColorMap.get(player.getClass()),
                 new MapActorController(level.getMapState(), level.getHighlighter(), player, ACTOR_SIZE)
@@ -61,6 +66,7 @@ public class ActorFactory {
                 enemy,
                 ACTOR_SIZE,
                 level.getWaiter(),
+                markerSpriteMap,
                 new Sprite(assetManager.get("sprites/" + enemy.getName() + ".png", Texture.class)),
                 typeColorMap.get(enemy.getClass()),
                 new MapActorController(level.getMapState(), level.getHighlighter(), enemy, ACTOR_SIZE)
@@ -68,7 +74,7 @@ public class ActorFactory {
     }
 
     public Actor create(Level level, Terrain terrain) {
-        return new TerrainActor(
+        return new BaseActor<Terrain>(
                 terrain,
                 ACTOR_SIZE,
                 level.getWaiter(),
