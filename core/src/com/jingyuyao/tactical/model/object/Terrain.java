@@ -3,19 +3,20 @@ package com.jingyuyao.tactical.model.object;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class Terrain extends AbstractObject {
-    private final Set<Marker> markers;
+    private final Set<Markers> markers;
     private Type type;
 
     public Terrain(int x, int y, Type type) {
         super(x, y);
         this.type = type;
-        markers = new HashSet<Marker>();
+        markers = new HashSet<Markers>();
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Terrain extends AbstractObject {
         return type;
     }
 
-    public void addMarker(Marker marker) {
+    public void addMarker(Markers marker) {
         markers.add(marker);
         setChanged();
         notifyObservers(new MarkerChange(markers));
@@ -76,23 +77,14 @@ public class Terrain extends AbstractObject {
         MOUNTAIN
     }
 
-    /**
-     * Visual marker like for things like move target or danger area
-     */
-    public enum Marker {
-        MOVE,
-        ATTACK,
-        DANGER,
-    }
-
     public static class MarkerChange {
-        private final ImmutableSet<Marker> markers;
+        private final ImmutableSet<Markers> markers;
 
-        private MarkerChange(Set<Marker> markers) {
+        private MarkerChange(Set<Markers> markers) {
             this.markers = ImmutableSet.copyOf(markers);
         }
 
-        public ImmutableSet<Marker> getMarkers() {
+        public ImmutableSet<Markers> getMarkers() {
             return markers;
         }
     }

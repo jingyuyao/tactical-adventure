@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.HashSet;
 import java.util.Observable;
@@ -37,7 +36,7 @@ public class MarkerManager implements Observer {
         for (Enemy enemy : map.getEnemies()) {
             if (enemy.isShowDangerArea()) {
                 for (Coordinate target : map.getAllTargets(enemy)) {
-                    map.getTerrains().get(target).addMarker(Terrain.Marker.DANGER);
+                    map.getTerrains().get(target).addMarker(Markers.DANGER);
                 }
             }
         }
@@ -48,7 +47,7 @@ public class MarkerManager implements Observer {
                 case MOVE_AND_TARGETS:
                     Graph<Coordinate> moveGraph = map.getMoveGraph(player);
                     for (Coordinate coordinate : moveGraph.nodes()) {
-                        map.getTerrains().get(coordinate).addMarker(Terrain.Marker.MOVE);
+                        map.getTerrains().get(coordinate).addMarker(Markers.MOVE);
                     }
                     targets.addAll(map.getAllTargets(player));
                     targets.removeAll(moveGraph.nodes());
@@ -58,7 +57,7 @@ public class MarkerManager implements Observer {
                     break;
             }
             for (Coordinate target : targets) {
-                map.getTerrains().get(target).addMarker(Terrain.Marker.ATTACK);
+                map.getTerrains().get(target).addMarker(Markers.ATTACK);
             }
         }
     }

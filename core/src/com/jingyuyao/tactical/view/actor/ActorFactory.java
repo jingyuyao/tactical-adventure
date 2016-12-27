@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.controller.MapActorController;
 import com.jingyuyao.tactical.model.Level;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -21,22 +22,22 @@ public class ActorFactory {
     public static final float ACTOR_SIZE = 1f; // world units
 
     private final AssetManager assetManager;
-    private final java.util.Map<Terrain.Marker, Sprite> markerSpriteMap;
+    private final java.util.Map<Markers, Sprite> markerSpriteMap;
     private final java.util.Map<Class, Color> typeColorMap;
 
     public ActorFactory(AssetManager assetManager) {
         this.assetManager = assetManager;
-        markerSpriteMap = new HashMap<Terrain.Marker, Sprite>();
+        markerSpriteMap = new HashMap<Markers, Sprite>();
         markerSpriteMap.put(
-                Terrain.Marker.MOVE,
+                Markers.MOVE,
                 new Sprite(assetManager.get(Assets.MOVE_OVERLAY, Texture.class))
         );
         markerSpriteMap.put(
-                Terrain.Marker.DANGER,
+                Markers.DANGER,
                 new Sprite(assetManager.get(Assets.DANGER_OVERLAY, Texture.class))
         );
         markerSpriteMap.put(
-                Terrain.Marker.ATTACK,
+                Markers.ATTACK,
                 new Sprite(assetManager.get(Assets.ATTACK_OVERLAY, Texture.class))
         );
         typeColorMap = new HashMap<Class, Color>();

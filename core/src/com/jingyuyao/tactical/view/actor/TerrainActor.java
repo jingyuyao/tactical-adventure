@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.jingyuyao.tactical.model.Markers;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
 
@@ -12,14 +13,14 @@ import java.util.Map;
 import java.util.Observable;
 
 public class TerrainActor extends AbstractActor<Terrain> {
-    private final Map<Terrain.Marker, Sprite> markerSpriteMap;
+    private final Map<Markers, Sprite> markerSpriteMap;
     private final List<Sprite> markerSprites;
 
     TerrainActor(
             Terrain object,
             float size,
             Waiter waiter,
-            Map<Terrain.Marker, Sprite> markerSpriteMap,
+            Map<Markers, Sprite> markerSpriteMap,
             EventListener listener
     ) {
         super(object, size, waiter, listener);
@@ -44,7 +45,7 @@ public class TerrainActor extends AbstractActor<Terrain> {
 
     private void markerChange(Terrain.MarkerChange markerChange) {
         markerSprites.clear();
-        for (Terrain.Marker marker : markerChange.getMarkers()) {
+        for (Markers marker : markerChange.getMarkers()) {
             markerSprites.add(markerSpriteMap.get(marker));
         }
     }
