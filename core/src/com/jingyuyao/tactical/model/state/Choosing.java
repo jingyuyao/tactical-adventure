@@ -15,7 +15,7 @@ class Choosing extends AbstractPlayerState {
     @Override
     void enter() {
         super.enter();
-        getStateMarkings().showImmediateTargets(getTargetInfo());
+        getMarkings().showImmediateTargets(getTargetInfo());
     }
 
     @Override

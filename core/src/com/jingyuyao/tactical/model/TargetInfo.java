@@ -15,6 +15,7 @@ import java.util.Set;
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
  */
+// TODO: needs to be thoroughly tested
 public class TargetInfo {
     private final Map map;
     private final Character character;

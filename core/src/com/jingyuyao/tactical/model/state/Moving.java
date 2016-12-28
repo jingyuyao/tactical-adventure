@@ -17,7 +17,7 @@ class Moving extends AbstractPlayerState {
     @Override
     void enter() {
         super.enter();
-        getStateMarkings().showMoveAndTargets(getTargetInfo());
+        getMarkings().showMoveAndTargets(getTargetInfo());
     }
 
     @Override

@@ -40,6 +40,6 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     void exit() {
-        getStateMarkings().clearPlayerMarking();
+        getMarkings().clearPlayerMarking();
     }
 }

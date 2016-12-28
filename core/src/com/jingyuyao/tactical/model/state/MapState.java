@@ -45,7 +45,6 @@ public class MapState extends Observable {
      */
     void changeStateTo(AbstractState newState) {
         if (newState != null) {
-            // TODO: add a test for the order of these events
             state.exit();
             state = newState;
             state.enter();

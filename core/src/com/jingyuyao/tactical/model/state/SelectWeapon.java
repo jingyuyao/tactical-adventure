@@ -32,6 +32,7 @@ public class SelectWeapon extends AbstractAction {
         attackingPlayer.equipWeapon(playerWeapon);
         getState().goTo(new ReviewingAttack(
                 getState(),
+                attackingPlayer,
                 AttackPlan.create(getState().getMap(), attackingPlayer, targetEnemy))
         );
     }

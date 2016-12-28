@@ -2,24 +2,24 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
-import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-class ReviewingAttack extends AbstractState {
+class ReviewingAttack extends AbstractPlayerState {
     private final AttackPlan attackPlan;
 
-    ReviewingAttack(AbstractState prevState, AttackPlan attackPlan) {
-        super(prevState);
+    ReviewingAttack(AbstractState prevState, Player currentPlayer, AttackPlan attackPlan) {
+        super(prevState, currentPlayer);
         this.attackPlan = attackPlan;
     }
 
     @Override
     void enter() {
+        super.enter();
         // TODO: use a different marker for each stage
         // TODO: show equipped weapon targets only
-        getStateMarkings().showImmediateTargets(TargetInfo.create(getMap(), attackPlan.getAttackingPlayer()));
+        getMarkings().showImmediateTargets(getTargetInfo());
         showAttackPlan(attackPlan);
     }
 
@@ -30,7 +30,7 @@ class ReviewingAttack extends AbstractState {
 
     @Override
     void exit() {
-        getStateMarkings().clearPlayerMarking();
+        getMarkings().clearPlayerMarking();
         hideAttackPlan();
     }
 

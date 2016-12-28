@@ -14,7 +14,7 @@ class Waiting extends AbstractState {
      * Used to create the initial state.
      */
     Waiting(MapState mapState, Map map, Turn turn, MarkingFactory markingFactory) {
-        super(map, mapState, turn, new StateMarkings(markingFactory));
+        super(map, mapState, turn, new Markings(markingFactory));
     }
 
     /**
@@ -56,7 +56,7 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Enemy enemy) {
-        getStateMarkings().toggleDangerArea(enemy, TargetInfo.create(getMap(), enemy));
+        getMarkings().toggleDangerArea(TargetInfo.create(getMap(), enemy));
     }
 
     @Override

@@ -22,6 +22,7 @@ public class MapUI implements Observer {
     private final Label characterLabel;
     private final Label terrainLabel;
     private final Label stateLabel;
+    private final Label attackPlan;
     private final VerticalGroup actionButtons;
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
@@ -33,6 +34,7 @@ public class MapUI implements Observer {
         characterLabel = new Label(null, skin);
         terrainLabel = new Label(null, skin);
         stateLabel = new Label(null, skin);
+        attackPlan = new Label(null, skin);
         actionButtons = new VerticalGroup().space(7);
 
         root.setFillParent(true);
@@ -44,6 +46,7 @@ public class MapUI implements Observer {
 
         // row 1
         root.add(characterLabel).left().top();
+        root.add(); // filler since we want 3x3 table
         root.add(terrainLabel).right().top();
 
         // row 2
@@ -53,6 +56,7 @@ public class MapUI implements Observer {
         // row 3
         root.row();
         root.add(stateLabel).left().bottom();
+        root.add(attackPlan).center().bottom();
         root.add(actionButtons).right().bottom();
 
         highlighter.addObserver(this);
@@ -133,11 +137,11 @@ public class MapUI implements Observer {
 
     // TODO: create a nice looking widget to show this
     private void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
-        stateLabel.setText(showAttackPlan.getAttackPlan().toString());
+        attackPlan.setText(showAttackPlan.getAttackPlan().toString());
     }
 
     private void hideAttackPlan(MapState.HideAttackPlan hideAttackPlan) {
-        stateLabel.setText(null);
+        attackPlan.setText(null);
     }
 
     private void updateTerrainLabel(Terrain terrain) {

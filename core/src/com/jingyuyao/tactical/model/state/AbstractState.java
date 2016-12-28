@@ -16,40 +16,40 @@ abstract class AbstractState {
     private final MapState mapState;
     private final Map map;
     private final Turn turn;
-    private final StateMarkings stateMarkings;
+    private final Markings markings;
 
     /**
      * Creates a new state with all of previous state's data and set {@link #prevState} of the new state
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.stateMarkings);
+        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.markings);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(Map map, MapState mapState, Turn turn, StateMarkings stateMarkings) {
-        this(null, map, mapState, turn, stateMarkings);
+    AbstractState(Map map, MapState mapState, Turn turn, Markings markings) {
+        this(null, map, mapState, turn, markings);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, StateMarkings stateMarkings) {
+    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, Markings markings) {
         this.prevState = prevState;
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
-        this.stateMarkings = stateMarkings;
+        this.markings = markings;
     }
 
     Map getMap() {
         return map;
     }
 
-    StateMarkings getStateMarkings() {
-        return stateMarkings;
+    Markings getMarkings() {
+        return markings;
     }
 
     void nextTurn() {

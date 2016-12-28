@@ -14,14 +14,14 @@ import java.util.Observer;
 /**
  * Contains all the markings in a state.
  */
-public class StateMarkings implements Observer {
+public class Markings implements Observer {
     private final MarkingFactory markingFactory;
-    private final Map<Enemy, Marking> dangerAreas;
+    private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking = Marking.EMPTY;
 
-    StateMarkings(MarkingFactory markingFactory) {
+    Markings(MarkingFactory markingFactory) {
         this.markingFactory = markingFactory;
-        dangerAreas = new HashMap<Enemy, Marking>();
+        dangerAreas = new HashMap<Character, Marking>();
     }
 
     void showMoveAndTargets(TargetInfo targetInfo) {
@@ -42,7 +42,8 @@ public class StateMarkings implements Observer {
     }
 
     // TODO: bugged, needs to be refreshed after every state
-    void toggleDangerArea(Enemy enemy, TargetInfo targetInfo) {
+    void toggleDangerArea(TargetInfo targetInfo) {
+        Character enemy = targetInfo.getCharacter();
         if (dangerAreas.containsKey(enemy)) {
             Marking marking = dangerAreas.remove(enemy);
             marking.clear();
