@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -33,7 +32,7 @@ public class SelectWeapon extends AbstractAction {
         getState().goTo(new ReviewingAttack(
                 getState(),
                 attackingPlayer,
-                AttackPlan.create(getState().getMap(), attackingPlayer, targetEnemy))
+                getState().getAttackPlanFactory().create(attackingPlayer, targetEnemy))
         );
     }
 }

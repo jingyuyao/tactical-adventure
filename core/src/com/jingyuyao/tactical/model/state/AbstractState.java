@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
-import com.jingyuyao.tactical.model.Map;
+import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.Turn;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -14,42 +14,48 @@ abstract class AbstractState {
      * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.
      */
     private final MapState mapState;
-    private final Map map;
     private final Turn turn;
     private final Markings markings;
+    private final TargetInfo.Factory targetInfoFactory;
+    private final AttackPlan.Factory attackPlanFactory;
 
     /**
      * Creates a new state with all of previous state's data and set {@link #prevState} of the new state
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.markings);
+        this(prevState, prevState.mapState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(Map map, MapState mapState, Turn turn, Markings markings) {
-        this(null, map, mapState, turn, markings);
+    AbstractState(MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+        this(null, mapState, turn, markings, targetInfoFactory, attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, Markings markings) {
+    private AbstractState(AbstractState prevState, MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
         this.prevState = prevState;
-        this.map = map;
         this.mapState = mapState;
         this.turn = turn;
         this.markings = markings;
-    }
-
-    Map getMap() {
-        return map;
+        this.targetInfoFactory = targetInfoFactory;
+        this.attackPlanFactory = attackPlanFactory;
     }
 
     Markings getMarkings() {
         return markings;
+    }
+
+    TargetInfo.Factory getTargetInfoFactory() {
+        return targetInfoFactory;
+    }
+
+    AttackPlan.Factory getAttackPlanFactory() {
+        return attackPlanFactory;
     }
 
     void nextTurn() {

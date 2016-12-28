@@ -57,30 +57,38 @@ public class AttackPlan {
                 '}';
     }
 
-    public static AttackPlan create(Map map, Player player, Enemy enemy) {
-        Optional<Weapon> playerWeapon = player.getEquippedWeapon();
-        if (!playerWeapon.isPresent()) {
-            throw new IllegalArgumentException();
+    public static class Factory {
+        private final TargetInfo.Factory targetInfoFactory;
+
+        public Factory(TargetInfo.Factory targetInfoFactory) {
+            this.targetInfoFactory = targetInfoFactory;
         }
 
-        TargetInfo playerInfo = TargetInfo.create(map, player);
-        Preconditions.checkArgument(playerInfo.canHitImmediately(enemy));
-
-        TargetInfo enemyInfo = TargetInfo.create(map, enemy);
-        Optional<Weapon> enemyWeapon = getHitBackWeapon(enemy, player, enemyInfo);
-
-        return new AttackPlan(player, enemy, playerWeapon.get(), enemyWeapon.orNull());
-    }
-
-    private static Optional<Weapon> getHitBackWeapon(Enemy enemy, Player player, TargetInfo enemyInfo) {
-        Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
-        if (enemyEquippedWeapon.isPresent()) {
-            ImmutableSet<Weapon> availableWeaponsForHittingBack =
-                    enemyInfo.weaponsFor(enemy.getCoordinate(), player.getCoordinate());
-            if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
-                return enemyEquippedWeapon;
+        public AttackPlan create(Player player, Enemy enemy) {
+            Optional<Weapon> playerWeapon = player.getEquippedWeapon();
+            if (!playerWeapon.isPresent()) {
+                throw new IllegalArgumentException();
             }
+
+            TargetInfo playerInfo = targetInfoFactory.create(player);
+            Preconditions.checkArgument(playerInfo.canHitImmediately(enemy));
+
+            TargetInfo enemyInfo = targetInfoFactory.create(enemy);
+            Optional<Weapon> enemyWeapon = getHitBackWeapon(player, enemy, enemyInfo);
+
+            return new AttackPlan(player, enemy, playerWeapon.get(), enemyWeapon.orNull());
         }
-        return Optional.absent();
+
+        private Optional<Weapon> getHitBackWeapon(Player player, Enemy enemy, TargetInfo enemyInfo) {
+            Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
+            if (enemyEquippedWeapon.isPresent()) {
+                ImmutableSet<Weapon> availableWeaponsForHittingBack =
+                        enemyInfo.weaponsFor(enemy.getCoordinate(), player.getCoordinate());
+                if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
+                    return enemyEquippedWeapon;
+                }
+            }
+            return Optional.absent();
+        }
     }
 }

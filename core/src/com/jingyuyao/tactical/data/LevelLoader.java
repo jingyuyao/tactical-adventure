@@ -26,7 +26,9 @@ public class LevelLoader {
         Turn turn = new Turn(map);
         Waiter waiter = new Waiter();
         MarkingFactory markingFactory = new MarkingFactory(map, waiter);
-        MapState mapState = new MapState(map, turn, waiter, markingFactory);
+        TargetInfo.Factory targetInfoFactory = new TargetInfo.Factory(map);
+        AttackPlan.Factory attackPlanFactory = new AttackPlan.Factory(targetInfoFactory);
+        MapState mapState = new MapState(waiter, turn, markingFactory, targetInfoFactory, attackPlanFactory);
         Highlighter highlighter = new Highlighter(map);
         return new Level(map, mapState, turn, highlighter, waiter);
     }

@@ -205,25 +205,33 @@ public class TargetInfo {
         }
     }
 
-    /**
-     * Magic.
-     */
-    public static TargetInfo create(Map map, Character character) {
-        Graph<Coordinate> moveGraph = map.getMoveGraph(character);
-        SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
-        for (Coordinate move : moveGraph.nodes()) {
-            SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
-            for (Weapon weapon : character.getWeapons()) {
-                // TODO: we need to be smarter if we want irregular weapon target areas
-                // we also needs a different class of target indicators for user targetable weapons
-                for (int distance : weapon.getAttackDistances()) {
-                    for (Coordinate target : map.getTerrains().getNDistanceAway(move, distance)) {
-                        targetWeaponMap.put(target, weapon);
+    public static class Factory {
+        private final Map map;
+
+        public Factory(Map map) {
+            this.map = map;
+        }
+
+        /**
+         * Magic.
+         */
+        public TargetInfo create(Character character) {
+            Graph<Coordinate> moveGraph = map.getMoveGraph(character);
+            SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
+            for (Coordinate move : moveGraph.nodes()) {
+                SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
+                for (Weapon weapon : character.getWeapons()) {
+                    // TODO: we need to be smarter if we want irregular weapon target areas
+                    // we also needs a different class of target indicators for user targetable weapons
+                    for (int distance : weapon.getAttackDistances()) {
+                        for (Coordinate target : map.getTerrains().getNDistanceAway(move, distance)) {
+                            targetWeaponMap.put(target, weapon);
+                        }
                     }
                 }
+                moveMap.put(move, targetWeaponMap);
             }
-            moveMap.put(move, targetWeaponMap);
+            return new TargetInfo(map, character, moveGraph, moveMap);
         }
-        return new TargetInfo(map, character, moveGraph, moveMap);
     }
 }
