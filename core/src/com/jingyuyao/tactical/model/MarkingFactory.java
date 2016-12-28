@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -20,25 +19,22 @@ public class MarkingFactory {
     public Marking moveAndTargets(TargetInfo targetInfo) {
         Iterable<Terrain> canMoveToTerrains = map.getTerrains().getAll(targetInfo.moves());
         Iterable<Terrain> canAttackTerrains = map.getTerrains().getAll(targetInfo.allTargetsMinusMove());
-        // TODO: bugged, currently it shows friendly as "target" because getTargetAfterMove doesn't account for
-        // canTarget()
-        Iterable<Character> potentialTargets = targetInfo.allTargetCharacters();
+        Iterable<Character> canTargetCharacters = targetInfo.allTargetCharacters();
 
         return this.new Builder(targetInfo.getCharacter())
                 .add(canMoveToTerrains, Marker.CAN_MOVE_TO)
                 .add(canAttackTerrains, Marker.CAN_ATTACK)
-                .add(potentialTargets, Marker.POTENTIAL_TARGET)
+                .add(canTargetCharacters, Marker.POTENTIAL_TARGET)
                 .build();
     }
 
     public Marking immediateTargets(TargetInfo targetInfo) {
-        ImmutableSet<Coordinate> targetCoordinates = targetInfo.immediateTargets();
-        Iterable<Terrain> canAttackTerrains = map.getTerrains().getAll(targetCoordinates);
-        Iterable<Character> potentialTargets = targetInfo.immediateTargetCharacters();
+        Iterable<Terrain> canAttackTerrains = map.getTerrains().getAll(targetInfo.immediateTargets());
+        Iterable<Character> canTargetCharacters = targetInfo.immediateTargetCharacters();
 
         return this.new Builder(targetInfo.getCharacter())
                 .add(canAttackTerrains, Marker.CAN_ATTACK)
-                .add(potentialTargets, Marker.POTENTIAL_TARGET)
+                .add(canTargetCharacters, Marker.POTENTIAL_TARGET)
                 .build();
     }
 

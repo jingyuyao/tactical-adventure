@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.MarkingFactory;
-import com.jingyuyao.tactical.model.TargetInfoFactory;
+import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.Turn;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -13,8 +13,8 @@ class Waiting extends AbstractState {
     /**
      * Used to create the initial state.
      */
-    Waiting(MapState mapState, Map map, Turn turn, TargetInfoFactory targetInfoFactory, MarkingFactory markingFactory) {
-        super(map, mapState, turn, targetInfoFactory, new StateMarkings(markingFactory));
+    Waiting(MapState mapState, Map map, Turn turn, MarkingFactory markingFactory) {
+        super(map, mapState, turn, new StateMarkings(markingFactory));
     }
 
     /**
@@ -56,7 +56,7 @@ class Waiting extends AbstractState {
 
     @Override
     public void select(Enemy enemy) {
-        getStateMarkings().toggleDangerArea(enemy, getTargetInfoFactory().createFor(enemy));
+        getStateMarkings().toggleDangerArea(enemy, TargetInfo.create(getMap(), enemy));
     }
 
     @Override

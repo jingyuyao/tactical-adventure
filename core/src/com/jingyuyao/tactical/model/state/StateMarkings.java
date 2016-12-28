@@ -41,8 +41,7 @@ public class StateMarkings implements Observer {
         playerMarking = Marking.EMPTY;
     }
 
-    // TODO: danger area needs to follow enemy as it moves around, maybe make an update method
-    // that is called after every state change?
+    // TODO: bugged, needs to be refreshed after every state
     void toggleDangerArea(Enemy enemy, TargetInfo targetInfo) {
         if (dangerAreas.containsKey(enemy)) {
             Marking marking = dangerAreas.remove(enemy);

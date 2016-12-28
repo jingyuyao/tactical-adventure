@@ -35,6 +35,6 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     void enter() {
-        targetInfo = getTargetInfoFactory().createFor(currentPlayer);
+        targetInfo = TargetInfo.create(getMap(), currentPlayer);
     }
 }

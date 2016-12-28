@@ -16,9 +16,9 @@ public class MapState extends Observable {
     private final Waiter waiter;
     private AbstractState state;
 
-    public MapState(Map map, Turn turn, Waiter waiter, TargetInfoFactory targetInfoFactory, MarkingFactory markingFactory) {
+    public MapState(Map map, Turn turn, Waiter waiter, MarkingFactory markingFactory) {
         this.waiter = waiter;
-        state = new Waiting(this, map, turn, targetInfoFactory, markingFactory);
+        state = new Waiting(this, map, turn, markingFactory);
     }
 
     public ImmutableList<Action> getActions() {

@@ -43,7 +43,7 @@ class Moving extends AbstractPlayerState {
 
     @Override
     public void select(final Enemy enemy) {
-        if (getTargetInfo().canTargetAfterMove(enemy)) {
+        if (getTargetInfo().canHitAfterMove(enemy)) {
             Coordinate moveCoordinate = getTargetInfo().moveForTarget(enemy.getCoordinate());
             ImmutableList<Coordinate> path = getTargetInfo().pathTo(moveCoordinate);
             if (path.isEmpty()) {

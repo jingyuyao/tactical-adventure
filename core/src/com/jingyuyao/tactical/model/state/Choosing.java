@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -38,7 +37,7 @@ class Choosing extends AbstractPlayerState {
 
     @Override
     void select(Enemy enemy) {
-        if (getTargetInfo().canImmediateTarget(enemy)) {
+        if (getTargetInfo().canHitImmediately(enemy)) {
             goTo(new SelectingWeapon(this, enemy));
         } else {
             back();

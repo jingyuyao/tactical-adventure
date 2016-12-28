@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.Map;
-import com.jingyuyao.tactical.model.TargetInfoFactory;
 import com.jingyuyao.tactical.model.Turn;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -17,7 +16,6 @@ abstract class AbstractState {
     private final MapState mapState;
     private final Map map;
     private final Turn turn;
-    private final TargetInfoFactory targetInfoFactory;
     private final StateMarkings stateMarkings;
 
     /**
@@ -25,34 +23,29 @@ abstract class AbstractState {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.targetInfoFactory, prevState.stateMarkings);
+        this(prevState, prevState.map, prevState.mapState, prevState.turn, prevState.stateMarkings);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(Map map, MapState mapState, Turn turn, TargetInfoFactory targetInfoFactory, StateMarkings stateMarkings) {
-        this(null, map, mapState, turn, targetInfoFactory, stateMarkings);
+    AbstractState(Map map, MapState mapState, Turn turn, StateMarkings stateMarkings) {
+        this(null, map, mapState, turn, stateMarkings);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, TargetInfoFactory targetInfoFactory, StateMarkings stateMarkings) {
+    private AbstractState(AbstractState prevState, Map map, MapState mapState, Turn turn, StateMarkings stateMarkings) {
         this.prevState = prevState;
         this.map = map;
         this.mapState = mapState;
         this.turn = turn;
-        this.targetInfoFactory = targetInfoFactory;
         this.stateMarkings = stateMarkings;
     }
 
     Map getMap() {
         return map;
-    }
-
-    TargetInfoFactory getTargetInfoFactory() {
-        return targetInfoFactory;
     }
 
     StateMarkings getStateMarkings() {

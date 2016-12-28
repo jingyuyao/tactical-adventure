@@ -1,16 +1,16 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import com.google.common.base.Predicates;
+import com.google.common.collect.*;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
+
+import java.util.Set;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
@@ -19,201 +19,206 @@ public class TargetInfo {
     private final Map map;
     private final Character character;
     private final Graph<Coordinate> moveGraph;
-    private final ImmutableSet<Move> moves;
+    /**
+     * Map of move coordinate to maps of target coordinates to weapons for that target.
+     * Like so:
+     *                                  move
+     *                              /    ...     \
+     *                          target          target
+     *                      /   ...   \       /  ...   \
+     *                   weapon     weapon  weapon    weapon
+     */
+    private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
-    TargetInfo(Map map, Character character, Graph<Coordinate> moveGraph, ImmutableSet<Move> moves) {
+    private TargetInfo(
+            Map map,
+            Character character,
+            Graph<Coordinate> moveGraph,
+            SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap) {
         this.map = map;
         this.character = character;
         this.moveGraph = moveGraph;
-        this.moves = moves;
+        this.moveMap = moveMap;
     }
 
     public Character getCharacter() {
         return character;
     }
 
-    public boolean canTargetAfterMove(Character target) {
-        return character.canTarget(target) && allTargets().contains(target.getCoordinate());
+    /**
+     * Can {@code target} be hit after moving?
+     */
+    public boolean canHitAfterMove(Character target) {
+        return allTargets().contains(target.getCoordinate());
     }
 
-    public boolean canImmediateTarget(Character target) {
-        return character.canTarget(target) && immediateTargets().contains(target.getCoordinate());
+    /**
+     * Can {@code target} be hit without moving?
+     */
+    public boolean canHitImmediately(Character target) {
+        return immediateTargets().contains(target.getCoordinate());
     }
 
+    /**
+     * All the move coordinates {@link #character}'s current location.
+     */
     public ImmutableSet<Coordinate> moves() {
-        return ImmutableSet.copyOf(Iterables.transform(moves, Move.COORDINATE_EXTRACTOR));
+        return ImmutableSet.copyOf(moveMap.keys());
     }
 
+    /**
+     * Get a path to a {@link Coordinate} from {@link #moves()}.
+     */
     public ImmutableList<Coordinate> pathTo(Coordinate to) {
+        Preconditions.checkArgument(moveMap.keys().contains(to));
         return Algorithms.findPathTo(moveGraph, to);
     }
 
     /**
-     * Return the coordinate with the greatest number of weapon choices for target.
+     * Return the {@link Coordinate} with the greatest number of {@link Weapon} choices for target.
      */
     public Coordinate moveForTarget(Coordinate target) {
+        Preconditions.checkArgument(allTargets().contains(target));
+
         Coordinate currentBestTerrain = null;
         int currentMaxWeapons = 0;
-        for (Coordinate source : Iterables.transform(moves, Move.COORDINATE_EXTRACTOR)) {
-            ImmutableSet<Weapon> weaponsForThisTerrain = weaponsFor(source, target);
-            if (weaponsForThisTerrain.size() > currentMaxWeapons) {
-                currentMaxWeapons = weaponsForThisTerrain.size();
-                currentBestTerrain = source;
+        for (Coordinate move : moveMap.keys()) {
+            ImmutableSet<Weapon> weaponsForMove = weaponsFor(move, target);
+            if (weaponsForMove.size() > currentMaxWeapons) {
+                currentMaxWeapons = weaponsForMove.size();
+                currentBestTerrain = move;
             }
         }
-        Preconditions.checkNotNull(currentBestTerrain);
         return currentBestTerrain;
     }
 
+    /**
+     * Return all the target coordinates from {@link #character}'s current position after moving.
+     */
     public ImmutableSet<Coordinate> allTargets() {
         return ImmutableSet.copyOf(
-                Iterables.transform(
-                        Iterables.concat(
-                                Iterables.transform(
-                                        moves,
-                                        Move.TARGETS_EXTRACTOR)),
-                        Target.COORDINATE_EXTRACTOR));
+                Iterables.concat(
+                        Iterables.transform(
+                                moveMap.values(),
+                                new MultiMapKeysExtractor())));
     }
 
+    /**
+     * Return all the target coordinates from {@link #character}'s current position without moving.
+     */
     public ImmutableSet<Coordinate> immediateTargets() {
         return ImmutableSet.copyOf(
-                Iterables.transform(
-                        originMove().getTargets(),
-                        Target.COORDINATE_EXTRACTOR));
+                Iterables.concat(
+                        Iterables.transform(
+                                moveMap.get(character.getCoordinate()),
+                                new MultiMapKeysExtractor())));
     }
 
+    /**
+     * Return all the target coordinates from {@link #character}'s current position after moving but
+     * excluding the move coordinates.
+     */
     public ImmutableSet<Coordinate> allTargetsMinusMove() {
         return ImmutableSet.copyOf(Sets.difference(allTargets(), moves()));
     }
 
+    /**
+     * Return all the weapons that can hit {@code to} if {@link #character} stand on {@code from}.
+     */
     public ImmutableSet<Weapon> weaponsFor(Coordinate from, Coordinate to) {
-        Move fromMove = Iterables.find(moves, new Move.CoordinatePredicate(from));
-        Preconditions.checkNotNull(fromMove);
-        Optional<Target> toTarget = Iterables.tryFind(fromMove.getTargets(), new Target.CoordinatePredicate(to));
-        if (toTarget.isPresent()) {
-            return toTarget.get().getWeapons();
-        } else {
-            return ImmutableSet.of();
+        Preconditions.checkArgument(moveMap.containsKey(from));
+
+        for (SetMultimap<Coordinate, Weapon> fromTargets : moveMap.get(from)) {
+            if (fromTargets.containsKey(to)) {
+                return ImmutableSet.copyOf(fromTargets.get(to));
+            }
         }
+        return ImmutableSet.of();
     }
 
+    /**
+     * Return all the {@link Character} that can be targeted by {@link #character} after moving.
+     */
     public ImmutableList<Character> allTargetCharacters() {
-        final ImmutableSet<Coordinate> allTargets = allTargets();
-        return ImmutableList.copyOf(Iterables.filter(map.getCharacters(), new Predicate<Character>() {
-            @Override
-            public boolean apply(Character input) {
-                return allTargets.contains(input.getCoordinate());
-            }
-        }));
+        return ImmutableList.copyOf(Iterables.filter(
+                map.getCharacters(),
+                Predicates.and(
+                        new ContainsCoordinatePredicate(allTargets()),
+                        new CanTargetPredicate(character))));
     }
 
+    /**
+     * Return all the {@link Character} that can be targeted by {@link #character} without moving.
+     */
     public ImmutableList<Character> immediateTargetCharacters() {
-        final ImmutableSet<Coordinate> immediateTargets = immediateTargets();
-        return ImmutableList.copyOf(Iterables.filter(map.getCharacters(), new Predicate<Character>() {
-            @Override
-            public boolean apply(Character input) {
-                return immediateTargets.contains(input.getCoordinate());
-            }
-        }));
+        return ImmutableList.copyOf(Iterables.filter(
+                map.getCharacters(),
+                Predicates.and(
+                        new ContainsCoordinatePredicate(immediateTargets()),
+                        new CanTargetPredicate(character))));
     }
 
-    private Move originMove() {
-        return Iterables.find(moves, new Move.CoordinatePredicate(character.getCoordinate()));
-    }
-
-    // TODO: get rid of these stupid classes and use map of map instead.
     /**
-     * A {@link Move} have a bunch of {@link Target} for that {@link Move}'s {@link #coordinate}.
+     * Returns {@link SetMultimap#keys()} from the inputs.
      */
-    static class Move {
-        private final Coordinate coordinate;
-        private final ImmutableSet<Target> targets;
-
-        Move(Coordinate coordinate, ImmutableSet<Target> targets) {
-            this.coordinate = coordinate;
-            this.targets = targets;
-        }
-
-        private Coordinate getCoordinate() {
-            return coordinate;
-        }
-
-        private ImmutableSet<Target> getTargets() {
-            return targets;
-        }
-
-        private static final Function<Move, Coordinate> COORDINATE_EXTRACTOR = new Function<Move, Coordinate>() {
-            @Override
-            public Coordinate apply(Move input) {
-                return input.getCoordinate();
-            }
-        };
-
-        private static final Function<Move, Iterable<Target>> TARGETS_EXTRACTOR =
-                new Function<Move, Iterable<Target>>() {
-            @Override
-            public Iterable<Target> apply(Move input) {
-                return input.getTargets();
-            }
-        };
-
-        private static class CoordinatePredicate implements Predicate<Move> {
-            private final Coordinate target;
-
-            private CoordinatePredicate(Coordinate target) {
-                this.target = target;
-            }
-
-            @Override
-            public boolean apply(Move input) {
-                return input.getCoordinate().equals(target);
-            }
+    private static class MultiMapKeysExtractor implements Function<SetMultimap<Coordinate, ?>, Iterable<Coordinate>> {
+        @Override
+        public Iterable<Coordinate> apply(SetMultimap<Coordinate, ?> map) {
+            return map.keys();
         }
     }
 
     /**
-     * A {@link Target} have a bunch of {@link Weapon} that can hit that {@link Target}'s {@link #coordinate}.
+     * Predicate for whether the input {@link Coordinate} belongs in a {@link Set}.
      */
-    static class Target implements Comparable<Target> {
-        private final Coordinate coordinate;
-        private final ImmutableSet<Weapon> weapons;
+    private static class ContainsCoordinatePredicate implements Predicate<AbstractObject> {
+        private final Set<Coordinate> coordinates;
 
-        Target(Coordinate coordinate, ImmutableSet<Weapon> weapons) {
-            this.coordinate = coordinate;
-            this.weapons = weapons;
-        }
-
-        private Coordinate getCoordinate() {
-            return coordinate;
-        }
-
-        private ImmutableSet<Weapon> getWeapons() {
-            return weapons;
+        private ContainsCoordinatePredicate(Set<Coordinate> coordinates) {
+            this.coordinates = coordinates;
         }
 
         @Override
-        public int compareTo(Target target) {
-            return weapons.size() - target.getWeapons().size();
+        public boolean apply(AbstractObject object) {
+            return coordinates.contains(object.getCoordinate());
+        }
+    }
+
+    /**
+     * Predicate for whether the input {@link Character} can be targeted by an attacking {@link Character}.
+     */
+    private static class CanTargetPredicate implements Predicate<Character> {
+        private final Character attackingCharacter;
+
+        private CanTargetPredicate(Character attackingCharacter) {
+            this.attackingCharacter = attackingCharacter;
         }
 
-        private static final Function<Target, Coordinate> COORDINATE_EXTRACTOR = new Function<Target, Coordinate>() {
-            @Override
-            public Coordinate apply(Target input) {
-                return input.getCoordinate();
-            }
-        };
-
-        private static class CoordinatePredicate implements Predicate<Target> {
-            private final Coordinate target;
-
-            private CoordinatePredicate(Coordinate target) {
-                this.target = target;
-            }
-
-            @Override
-            public boolean apply(Target input) {
-                return input.getCoordinate().equals(target);
-            }
+        @Override
+        public boolean apply(Character other) {
+            return attackingCharacter.canTarget(other);
         }
+    }
+
+    /**
+     * Magic.
+     */
+    public static TargetInfo create(Map map, Character character) {
+        Graph<Coordinate> moveGraph = map.getMoveGraph(character);
+        SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
+        for (Coordinate move : moveGraph.nodes()) {
+            SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
+            for (Weapon weapon : character.getWeapons()) {
+                // TODO: we need to be smarter if we want irregular weapon target areas
+                // we also needs a different class of target indicators for user targetable weapons
+                for (int distance : weapon.getAttackDistances()) {
+                    for (Coordinate target : map.getTerrains().getNDistanceAway(move, distance)) {
+                        targetWeaponMap.put(target, weapon);
+                    }
+                }
+            }
+            moveMap.put(move, targetWeaponMap);
+        }
+        return new TargetInfo(map, character, moveGraph, moveMap);
     }
 }
