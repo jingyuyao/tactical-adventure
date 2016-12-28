@@ -1,13 +1,8 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.google.common.graph.Graph;
 import com.google.common.graph.ValueGraph;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -67,110 +62,11 @@ public class Map implements Observer {
         return Iterables.concat(players, enemies);
     }
 
-    /**
-     * Return whether {@code from} has anything it can target from its current position.
-     */
-    public boolean hasAnyImmediateTarget(Character from) {
-        for (Character to : getCharacters()) {
-            if (canImmediateTarget(from, to)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean canTargetAfterMove(Character from, Character to) {
-        return from.canTarget(to) && getAllTargets(from).contains(to.getCoordinate());
-    }
-
-    public boolean canImmediateTarget(Character from, Character to) {
-        return from.canTarget(to) && getTargetsFrom(from, from.getCoordinate()).contains(to.getCoordinate());
-    }
-
-    // TODO: Separate all of these function out into its own class
-    public ImmutableList<Character> getTargetAfterMoveCharacters(Character from) {
-        ImmutableSet<Coordinate> potentialCoordinates = getAllTargets(from);
-        ImmutableList.Builder<Character> builder = new ImmutableList.Builder<Character>();
-        for (Character character : getCharacters()) {
-            if (potentialCoordinates.contains(character.getCoordinate())) {
-                builder.add(character);
-            }
-        }
-        return builder.build();
-    }
-
-    public ImmutableList<Character> getImmediateTargetCharacters(Character from) {
-        ImmutableSet<Coordinate> potentialCoordinates = getTargetsFrom(from, from.getCoordinate());
-        ImmutableList.Builder<Character> builder = new ImmutableList.Builder<Character>();
-        for (Character character : getCharacters()) {
-            if (potentialCoordinates.contains(character.getCoordinate())) {
-                builder.add(character);
-            }
-        }
-        return builder.build();
-    }
-
-    public ImmutableList<Coordinate> getPathToTarget(Character character, Coordinate target) {
-        return Algorithms.findPathTo(getMoveGraph(character), target);
-    }
-
     public ValueGraph<Coordinate, Integer> getMoveGraph(Character character) {
         return Algorithms.minPathSearch(
                 createMovementPenaltyGrid(character),
                 character.getCoordinate(),
                 character.getMoveDistance());
-    }
-
-    public ImmutableSet<Coordinate> getAllTargets(Character from) {
-        Graph<Coordinate> moveTerrains = getMoveGraph(from);
-        ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
-        for (Coordinate terrain : moveTerrains.nodes()) {
-            builder.addAll(getTargetsFrom(from, terrain));
-        }
-        return builder.build();
-    }
-
-    public ImmutableSet<Coordinate> getTargetsFrom(Character character, Coordinate from) {
-        ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
-        for (Weapon weapon : character.getWeapons()) {
-            builder.addAll(getTargetsForWeapon(weapon, from));
-        }
-        return builder.build();
-    }
-
-    public ImmutableSet<Coordinate> getTargetsForWeapon(Weapon weapon, Coordinate from) {
-        ImmutableSet.Builder<Coordinate> builder = new ImmutableSet.Builder<Coordinate>();
-        for (int distance : weapon.getAttackDistances()) {
-            builder.addAll(getTerrains().getNDistanceAway(from, distance));
-        }
-        return builder.build();
-    }
-
-    /**
-     * Return the coordinate with the greatest number of weapon choices for target.
-     */
-    public Optional<Coordinate> getMoveForTarget(Character from, Coordinate target) {
-        Graph<Coordinate> moveGraph = getMoveGraph(from);
-        Coordinate currentBestTerrain = null;
-        int currentMaxWeapons = 0;
-        for (Coordinate source : moveGraph.nodes()) {
-            ImmutableList<Weapon> weaponsForThisTerrain = getWeaponsForTarget(from, source, target);
-            if (weaponsForThisTerrain.size() > currentMaxWeapons) {
-                currentMaxWeapons = weaponsForThisTerrain.size();
-                currentBestTerrain = source;
-            }
-        }
-        return Optional.fromNullable(currentBestTerrain);
-    }
-
-    public ImmutableList<Weapon> getWeaponsForTarget(Character character, Coordinate from, Coordinate target) {
-        ImmutableList.Builder<Weapon> builder = new ImmutableList.Builder<Weapon>();
-        for (Weapon weapon : character.getWeapons()) {
-            if (getTargetsForWeapon(weapon, from).contains(target)) {
-                builder.add(weapon);
-            }
-        }
-        return builder.build();
     }
 
     private Grid<Integer> createMovementPenaltyGrid(Character character) {

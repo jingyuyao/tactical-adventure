@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.object.Terrain;
 public class AttackPlan {
     private final Map map;
     private final Player attackingPlayer;
+    private final TargetInfo attackingPlayerTargetInfo;
     private final Enemy targetEnemy;
     /**
      * Never null.
@@ -23,7 +24,7 @@ public class AttackPlan {
     private final Terrain enemyTerrain;
 
     // TODO: get rid of player and enemy weapon and just use their equipped weapon
-    public AttackPlan(Map map, Player attackingPlayer, Enemy targetEnemy) {
+    public AttackPlan(Map map, Player attackingPlayer, TargetInfo attackingPlayerTargetInfo, Enemy targetEnemy) {
         Optional<Weapon> playerEquippedWeapon = attackingPlayer.getEquippedWeapon();
         // Not using Preconditions because Intellij is dumb
         if (!playerEquippedWeapon.isPresent()) {
@@ -32,9 +33,10 @@ public class AttackPlan {
 
         this.map = map;
         this.attackingPlayer = attackingPlayer;
+        this.attackingPlayerTargetInfo = attackingPlayerTargetInfo;
         this.targetEnemy = targetEnemy;
         this.playerWeapon = playerEquippedWeapon.get();
-        this.enemyWeapon = getHitBackWeapon(map, attackingPlayer, targetEnemy).orNull();
+        this.enemyWeapon = getHitBackWeapon(attackingPlayerTargetInfo, attackingPlayer, targetEnemy).orNull();
         this.playerTerrain = map.getTerrains().get(attackingPlayer.getCoordinate());
         this.enemyTerrain = map.getTerrains().get(targetEnemy.getCoordinate());
     }
@@ -61,12 +63,11 @@ public class AttackPlan {
         }
     }
 
-    private static Optional<Weapon> getHitBackWeapon(Map map, Player player, Enemy enemy) {
+    private static Optional<Weapon> getHitBackWeapon(TargetInfo targetInfo, Player player, Enemy enemy) {
         Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
         if (enemyEquippedWeapon.isPresent()) {
-            ImmutableList<Weapon> availableWeaponsForHittingBack =
-                    map.getWeaponsForTarget(
-                            enemy, enemy.getCoordinate(), player.getCoordinate());
+            ImmutableSet<Weapon> availableWeaponsForHittingBack =
+                    targetInfo.weaponsFor(player.getCoordinate(), enemy.getCoordinate());
             if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
                 return enemyEquippedWeapon;
             }

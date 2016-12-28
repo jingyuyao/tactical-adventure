@@ -16,9 +16,9 @@ public class MapState extends Observable {
     private final Waiter waiter;
     private AbstractState state;
 
-    public MapState(Map map, Turn turn, Waiter waiter, MarkingFactory markingFactory) {
+    public MapState(Map map, Turn turn, Waiter waiter, TargetInfoFactory targetInfoFactory, MarkingFactory markingFactory) {
         this.waiter = waiter;
-        state = new Waiting(this, map, turn, markingFactory);
+        state = new Waiting(this, map, turn, targetInfoFactory, markingFactory);
     }
 
     public ImmutableList<Action> getActions() {
@@ -47,12 +47,11 @@ public class MapState extends Observable {
         if (newState != null) {
             // TODO: add a test for the order of these events
             state.exit();
-
             state = newState;
+            state.enter();
+
             setChanged();
             notifyObservers(new StateChange(state.getClass().getSimpleName(), state.getActions()));
-
-            newState.enter();
         }
     }
 

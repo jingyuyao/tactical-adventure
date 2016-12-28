@@ -18,7 +18,7 @@ class ReviewingAttack extends AbstractState {
     void enter() {
         // TODO: use a different marker for each stage
         // TODO: show equipped weapon targets only
-        getStateMarkings().showImmediateTargets(attackPlan.getAttackingPlayer());
+        getStateMarkings().showImmediateTargets(getTargetInfoFactory().createFor(attackPlan.getAttackingPlayer()));
         showAttackPlan(attackPlan);
     }
 

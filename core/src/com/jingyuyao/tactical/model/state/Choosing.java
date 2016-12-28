@@ -3,23 +3,20 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-class Choosing extends AbstractState {
-    private final Player currentPlayer;
-
-    Choosing(AbstractState prevState, Player currentPlayer) {
+class Choosing extends AbstractPlayerState {
+    Choosing(AbstractPlayerState prevState) {
         super(prevState);
-        this.currentPlayer = currentPlayer;
     }
 
     @Override
     void enter() {
-        if (getMap().hasAnyImmediateTarget(currentPlayer)) {
-            getStateMarkings().showImmediateTargets(currentPlayer);
-        }
+        super.enter();
+        getStateMarkings().showImmediateTargets(getTargetInfo());
     }
 
     @Override
@@ -32,7 +29,7 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Player player) {
-        if (Objects.equal(currentPlayer, player)) {
+        if (Objects.equal(getCurrentPlayer(), player)) {
             back();
         } else {
             goTo(new Moving(backToWaiting(), player));
@@ -41,8 +38,8 @@ class Choosing extends AbstractState {
 
     @Override
     void select(Enemy enemy) {
-        if (getMap().canImmediateTarget(currentPlayer, enemy)) {
-            goTo(new SelectingWeapon(this, currentPlayer, enemy));
+        if (getTargetInfo().canImmediateTarget(enemy)) {
+            goTo(new SelectingWeapon(this, enemy));
         } else {
             back();
         }
@@ -56,10 +53,10 @@ class Choosing extends AbstractState {
     @Override
     ImmutableList<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-        if (!Iterables.isEmpty(currentPlayer.getConsumables())) {
-            builder.add(new ChooseItemToUse(this, currentPlayer));
+        if (!Iterables.isEmpty(getCurrentPlayer().getConsumables())) {
+            builder.add(new ChooseItemToUse(this, getCurrentPlayer()));
         }
-        builder.add(new Wait(this, currentPlayer));
+        builder.add(new Wait(this, getCurrentPlayer()));
         builder.add(new Back(this));
         return builder.build();
     }

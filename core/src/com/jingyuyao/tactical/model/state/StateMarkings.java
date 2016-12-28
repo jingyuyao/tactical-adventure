@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.MarkingFactory;
+import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,15 +24,15 @@ public class StateMarkings implements Observer {
         dangerAreas = new HashMap<Enemy, Marking>();
     }
 
-    void showMoveAndTargets(Player player) {
+    void showMoveAndTargets(TargetInfo targetInfo) {
         playerMarking.clear();
-        playerMarking = markingFactory.moveAndTargets(player);
+        playerMarking = markingFactory.moveAndTargets(targetInfo);
         playerMarking.apply();
     }
 
-    void showImmediateTargets(Player player) {
+    void showImmediateTargets(TargetInfo targetInfo) {
         playerMarking.clear();
-        playerMarking = markingFactory.immediateTargets(player);
+        playerMarking = markingFactory.immediateTargets(targetInfo);
         playerMarking.apply();
     }
 
@@ -43,12 +43,12 @@ public class StateMarkings implements Observer {
 
     // TODO: danger area needs to follow enemy as it moves around, maybe make an update method
     // that is called after every state change?
-    void toggleDangerArea(Enemy enemy) {
+    void toggleDangerArea(Enemy enemy, TargetInfo targetInfo) {
         if (dangerAreas.containsKey(enemy)) {
             Marking marking = dangerAreas.remove(enemy);
             marking.clear();
         } else {
-            Marking dangerArea = markingFactory.danger(enemy);
+            Marking dangerArea = markingFactory.danger(targetInfo);
             dangerAreas.put(enemy, dangerArea);
             enemy.addObserver(this);
             dangerArea.apply();

@@ -1,31 +1,29 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-class Moving extends AbstractState {
-    private final Player currentPlayer;
+class Moving extends AbstractPlayerState {
     private Coordinate previousCoordinate;
 
     Moving(AbstractState prevState, Player currentPlayer) {
-        super(prevState);
-        this.currentPlayer = currentPlayer;
+        super(prevState, currentPlayer);
     }
 
     @Override
     void enter() {
-        getStateMarkings().showMoveAndTargets(currentPlayer);
+        super.enter();
+        getStateMarkings().showMoveAndTargets(getTargetInfo());
     }
 
     @Override
     void canceled() {
         if (previousCoordinate != null) {
-            currentPlayer.instantMoveTo(previousCoordinate);
+            getCurrentPlayer().instantMoveTo(previousCoordinate);
         }
     }
 
@@ -36,8 +34,8 @@ class Moving extends AbstractState {
 
     @Override
     public void select(Player player) {
-        if (Objects.equal(currentPlayer, player)) {
-            goTo(new Choosing(this, currentPlayer));
+        if (Objects.equal(getCurrentPlayer(), player)) {
+            goTo(new Choosing(this));
         } else {
             goTo(new Moving(backToWaiting(), player));
         }
@@ -45,21 +43,17 @@ class Moving extends AbstractState {
 
     @Override
     public void select(final Enemy enemy) {
-        if (getMap().canTargetAfterMove(currentPlayer, enemy)) {
-            Optional<Coordinate> moveTarget = getMap().getMoveForTarget(currentPlayer, enemy.getCoordinate());
-            if (!moveTarget.isPresent()) {
-                throw new RuntimeException("Shouldn't be possible");
-            }
-
-            ImmutableList<Coordinate> path = getMap().getPathToTarget(currentPlayer, moveTarget.get());
+        if (getTargetInfo().canTargetAfterMove(enemy)) {
+            Coordinate moveCoordinate = getTargetInfo().moveForTarget(enemy.getCoordinate());
+            ImmutableList<Coordinate> path = getTargetInfo().pathTo(moveCoordinate);
             if (path.isEmpty()) {
                 throw new RuntimeException("Shouldn't be possible");
             }
 
-            moveCurrentPlayer(moveTarget.get(), path);
+            moveCurrentPlayer(moveCoordinate, path);
             // creates an intermediate choosing state so we can backtrack here if needed
-            Choosing choosing = new Choosing(this, currentPlayer);
-            SelectingWeapon selectingWeapon = new SelectingWeapon(choosing, currentPlayer, enemy);
+            Choosing choosing = new Choosing(this);
+            SelectingWeapon selectingWeapon = new SelectingWeapon(choosing, enemy);
             goTo(choosing);
             goTo(selectingWeapon);
         } else {
@@ -69,10 +63,10 @@ class Moving extends AbstractState {
 
     @Override
     public void select(Terrain terrain) {
-        ImmutableList<Coordinate> path = getMap().getPathToTarget(currentPlayer, terrain.getCoordinate());
+        ImmutableList<Coordinate> path = getTargetInfo().pathTo(terrain.getCoordinate());
         if (!path.isEmpty()) {
             moveCurrentPlayer(terrain.getCoordinate(), path);
-            goTo(new Choosing(this, currentPlayer));
+            goTo(new Choosing(this));
         } else {
             // we will consider clicking outside of movable area to be canceling
             back();
@@ -85,7 +79,7 @@ class Moving extends AbstractState {
     }
 
     private void moveCurrentPlayer(Coordinate destination, ImmutableList<Coordinate> path) {
-        previousCoordinate = currentPlayer.getCoordinate();
-        currentPlayer.moveTo(destination, path);
+        previousCoordinate = getCurrentPlayer().getCoordinate();
+        getCurrentPlayer().moveTo(destination, path);
     }
 }

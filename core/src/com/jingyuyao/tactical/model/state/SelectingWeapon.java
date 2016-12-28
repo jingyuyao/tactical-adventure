@@ -1,25 +1,26 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-class SelectingWeapon extends AbstractState {
-    private final Player attackingPlayer;
+class SelectingWeapon extends AbstractPlayerState {
     private final Enemy targetEnemy;
 
-    SelectingWeapon(AbstractState prevState, Player attackingPlayer, Enemy targetEnemy) {
+    SelectingWeapon(AbstractPlayerState prevState, Enemy targetEnemy) {
         super(prevState);
-        this.attackingPlayer = attackingPlayer;
         this.targetEnemy = targetEnemy;
     }
 
     @Override
     void enter() {
+        super.enter();
         // TODO: use a different marker for each stage
-        getStateMarkings().showImmediateTargets(attackingPlayer);
+        getStateMarkings().showImmediateTargets(getTargetInfo());
     }
 
     @Override
@@ -50,10 +51,10 @@ class SelectingWeapon extends AbstractState {
     @Override
     ImmutableList<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-        ImmutableList<Weapon> availableWeapons = getMap()
-                .getWeaponsForTarget(attackingPlayer, attackingPlayer.getCoordinate(), targetEnemy.getCoordinate());
+        ImmutableSet<Weapon> availableWeapons = getTargetInfo()
+                .weaponsFor(getCurrentPlayer().getCoordinate(), targetEnemy.getCoordinate());
         for (Weapon weapon : availableWeapons) {
-            builder.add(new SelectWeapon(this, attackingPlayer, targetEnemy, weapon));
+            builder.add(new SelectWeapon(this, getCurrentPlayer(), getTargetInfo(), targetEnemy, weapon));
         }
         builder.add(new Back(this));
         return builder.build();
