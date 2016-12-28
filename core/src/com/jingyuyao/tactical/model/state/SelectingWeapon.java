@@ -28,11 +28,6 @@ class SelectingWeapon extends AbstractPlayerState {
     }
 
     @Override
-    void exit() {
-        getStateMarkings().clearPlayerMarking();
-    }
-
-    @Override
     void select(Player player) {
         back();
     }

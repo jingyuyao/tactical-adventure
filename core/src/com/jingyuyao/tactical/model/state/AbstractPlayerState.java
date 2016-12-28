@@ -37,4 +37,9 @@ abstract class AbstractPlayerState extends AbstractState {
     void enter() {
         targetInfo = TargetInfo.create(getMap(), currentPlayer);
     }
+
+    @Override
+    void exit() {
+        getStateMarkings().clearPlayerMarking();
+    }
 }

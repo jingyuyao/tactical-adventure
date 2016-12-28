@@ -22,11 +22,6 @@ class Choosing extends AbstractPlayerState {
     void canceled() {}
 
     @Override
-    void exit() {
-        getStateMarkings().clearPlayerMarking();
-    }
-
-    @Override
     void select(Player player) {
         if (Objects.equal(getCurrentPlayer(), player)) {
             back();

@@ -28,11 +28,6 @@ class Moving extends AbstractPlayerState {
     }
 
     @Override
-    void exit() {
-        getStateMarkings().clearPlayerMarking();
-    }
-
-    @Override
     public void select(Player player) {
         if (Objects.equal(getCurrentPlayer(), player)) {
             goTo(new Choosing(this));
