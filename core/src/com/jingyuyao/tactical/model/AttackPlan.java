@@ -1,16 +1,14 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 
 public class AttackPlan {
-    private final Map map;
     private final Player attackingPlayer;
-    private final TargetInfo attackingPlayerTargetInfo;
     private final Enemy targetEnemy;
     /**
      * Never null.
@@ -20,25 +18,13 @@ public class AttackPlan {
      * Can be null.
      */
     private final Weapon enemyWeapon;
-    private final Terrain playerTerrain;
-    private final Terrain enemyTerrain;
 
-    // TODO: get rid of player and enemy weapon and just use their equipped weapon
-    public AttackPlan(Map map, Player attackingPlayer, TargetInfo attackingPlayerTargetInfo, Enemy targetEnemy) {
-        Optional<Weapon> playerEquippedWeapon = attackingPlayer.getEquippedWeapon();
-        // Not using Preconditions because Intellij is dumb
-        if (!playerEquippedWeapon.isPresent()) {
-            throw new IllegalArgumentException();
-        }
-
-        this.map = map;
+    // TODO: add terrains
+    private AttackPlan(Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon, Weapon enemyWeapon) {
         this.attackingPlayer = attackingPlayer;
-        this.attackingPlayerTargetInfo = attackingPlayerTargetInfo;
         this.targetEnemy = targetEnemy;
-        this.playerWeapon = playerEquippedWeapon.get();
-        this.enemyWeapon = getHitBackWeapon(attackingPlayerTargetInfo, attackingPlayer, targetEnemy).orNull();
-        this.playerTerrain = map.getTerrains().get(attackingPlayer.getCoordinate());
-        this.enemyTerrain = map.getTerrains().get(targetEnemy.getCoordinate());
+        this.playerWeapon = playerWeapon;
+        this.enemyWeapon = enemyWeapon;
     }
 
     public Player getAttackingPlayer() {
@@ -63,23 +49,38 @@ public class AttackPlan {
         }
     }
 
-    private static Optional<Weapon> getHitBackWeapon(TargetInfo targetInfo, Player player, Enemy enemy) {
-        Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
-        if (enemyEquippedWeapon.isPresent()) {
-            ImmutableSet<Weapon> availableWeaponsForHittingBack =
-                    targetInfo.weaponsFor(player.getCoordinate(), enemy.getCoordinate());
-            if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
-                return enemyEquippedWeapon;
-            }
-        }
-        return Optional.absent();
-    }
-
     @Override
     public String toString() {
         return "AttackPlan{" +
                 "attackingPlayer=" + attackingPlayer.getName() +
                 ", targetEnemy=" + targetEnemy.getName() +
                 '}';
+    }
+
+    public static AttackPlan create(Map map, Player player, Enemy enemy) {
+        Optional<Weapon> playerWeapon = player.getEquippedWeapon();
+        if (!playerWeapon.isPresent()) {
+            throw new IllegalArgumentException();
+        }
+
+        TargetInfo playerInfo = TargetInfo.create(map, player);
+        Preconditions.checkArgument(playerInfo.canHitImmediately(enemy));
+
+        TargetInfo enemyInfo = TargetInfo.create(map, enemy);
+        Optional<Weapon> enemyWeapon = getHitBackWeapon(enemy, player, enemyInfo);
+
+        return new AttackPlan(player, enemy, playerWeapon.get(), enemyWeapon.orNull());
+    }
+
+    private static Optional<Weapon> getHitBackWeapon(Enemy enemy, Player player, TargetInfo enemyInfo) {
+        Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
+        if (enemyEquippedWeapon.isPresent()) {
+            ImmutableSet<Weapon> availableWeaponsForHittingBack =
+                    enemyInfo.weaponsFor(enemy.getCoordinate(), player.getCoordinate());
+            if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
+                return enemyEquippedWeapon;
+            }
+        }
+        return Optional.absent();
     }
 }

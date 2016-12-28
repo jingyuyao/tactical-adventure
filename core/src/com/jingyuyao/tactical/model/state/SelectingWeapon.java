@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -54,7 +53,7 @@ class SelectingWeapon extends AbstractPlayerState {
         ImmutableSet<Weapon> availableWeapons = getTargetInfo()
                 .weaponsFor(getCurrentPlayer().getCoordinate(), targetEnemy.getCoordinate());
         for (Weapon weapon : availableWeapons) {
-            builder.add(new SelectWeapon(this, getCurrentPlayer(), getTargetInfo(), targetEnemy, weapon));
+            builder.add(new SelectWeapon(this, getCurrentPlayer(), targetEnemy, weapon));
         }
         builder.add(new Back(this));
         return builder.build();

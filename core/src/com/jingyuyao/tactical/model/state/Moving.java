@@ -63,8 +63,8 @@ class Moving extends AbstractPlayerState {
 
     @Override
     public void select(Terrain terrain) {
-        ImmutableList<Coordinate> path = getTargetInfo().pathTo(terrain.getCoordinate());
-        if (!path.isEmpty()) {
+        if (getTargetInfo().canMoveTo(terrain.getCoordinate())) {
+            ImmutableList<Coordinate> path = getTargetInfo().pathTo(terrain.getCoordinate());
             moveCurrentPlayer(terrain.getCoordinate(), path);
             goTo(new Choosing(this));
         } else {

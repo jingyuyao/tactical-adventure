@@ -59,6 +59,10 @@ public class TargetInfo {
         return immediateTargets().contains(target.getCoordinate());
     }
 
+    public boolean canMoveTo(Coordinate to) {
+        return moves().contains(to);
+    }
+
     /**
      * All the move coordinates {@link #character}'s current location.
      */
