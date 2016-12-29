@@ -18,22 +18,22 @@ class ChoosingItem extends AbstractPlayerState {
     }
 
     @Override
-    void select(Player player) {
+    public void select(Player player) {
         back();
     }
 
     @Override
-    void select(Enemy enemy) {
+    public void select(Enemy enemy) {
         back();
     }
 
     @Override
-    void select(Terrain terrain) {
+    public void select(Terrain terrain) {
         back();
     }
 
     @Override
-    ImmutableList<Action> getActions() {
+    public ImmutableList<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
         for (Consumable consumable : getCurrentPlayer().getConsumables()) {
             builder.add(new UseConsumable(this, consumable, getCurrentPlayer()));

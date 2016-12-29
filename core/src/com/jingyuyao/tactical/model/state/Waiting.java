@@ -64,7 +64,7 @@ class Waiting extends AbstractState {
     public void select(Terrain terrain) {}
 
     @Override
-    ImmutableList<Action> getActions() {
+    public ImmutableList<Action> getActions() {
         return ImmutableList.<Action>of(new EndTurn(this));
     }
 }

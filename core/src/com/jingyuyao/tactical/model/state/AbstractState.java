@@ -1,15 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.Turn;
-import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 
-abstract class AbstractState {
+abstract class AbstractState implements State {
     private final EventBus eventBus;
     private final AbstractState prevState;
     /**
@@ -47,6 +44,11 @@ abstract class AbstractState {
         this.markings = markings;
         this.targetInfoFactory = targetInfoFactory;
         this.attackPlanFactory = attackPlanFactory;
+    }
+
+    @Override
+    public String getName() {
+        return getClass().getSimpleName();
     }
 
     EventBus getEventBus() {
@@ -118,12 +120,4 @@ abstract class AbstractState {
      * Called when this state exits.
      */
     abstract void exit();
-
-    abstract void select(Player player);
-
-    abstract void select(Enemy enemy);
-
-    abstract void select(Terrain terrain);
-
-    abstract ImmutableList<Action> getActions();
 }

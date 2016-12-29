@@ -69,7 +69,7 @@ class Moving extends AbstractPlayerState {
     }
 
     @Override
-    ImmutableList<Action> getActions() {
+    public ImmutableList<Action> getActions() {
         return ImmutableList.<Action>of(new Back(this));
     }
 

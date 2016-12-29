@@ -22,7 +22,7 @@ class Choosing extends AbstractPlayerState {
     void canceled() {}
 
     @Override
-    void select(Player player) {
+    public void select(Player player) {
         if (Objects.equal(getCurrentPlayer(), player)) {
             back();
         } else {
@@ -31,7 +31,7 @@ class Choosing extends AbstractPlayerState {
     }
 
     @Override
-    void select(Enemy enemy) {
+    public void select(Enemy enemy) {
         if (getTargetInfo().canHitImmediately(enemy)) {
             goTo(new SelectingWeapon(this, enemy));
         } else {
@@ -40,12 +40,12 @@ class Choosing extends AbstractPlayerState {
     }
 
     @Override
-    void select(Terrain terrain) {
+    public void select(Terrain terrain) {
         back();
     }
 
     @Override
-    ImmutableList<Action> getActions() {
+    public ImmutableList<Action> getActions() {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
         if (!Iterables.isEmpty(getCurrentPlayer().getConsumables())) {
             builder.add(new ChooseItemToUse(this, getCurrentPlayer()));
