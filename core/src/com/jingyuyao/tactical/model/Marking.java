@@ -79,7 +79,7 @@ public class Marking {
     }
 
     @Subscribe
-    public void characterDeath(Disposed disposed) {
+    public void characterDeath(Disposed<Character> disposed) {
         if (disposed.matches(owner)) {
             clear();
         }

@@ -57,9 +57,7 @@ public class Markings {
     }
 
     @Subscribe
-    public void characterDeath(Disposed disposed) {
-        if (disposed.isOfClass(Enemy.class)) {
-            dangerAreas.remove(disposed.getObjectAs(Enemy.class));
-        }
+    public void characterDeath(Disposed<Enemy> disposed) {
+        dangerAreas.remove(disposed.getObject());
     }
 }

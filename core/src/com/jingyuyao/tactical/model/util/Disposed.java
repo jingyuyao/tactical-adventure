@@ -1,37 +1,20 @@
 package com.jingyuyao.tactical.model.util;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 /**
  * Event fired when an object is disposed.
  */
-// TODO: are there any generic and type safe way of doing class checking
-public class Disposed {
-    private final Object object;
+public class Disposed<T> {
+    private final T object;
 
-    Disposed(Object object) {
+    private Disposed(T object) {
         this.object = object;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
-    }
-
-    /**
-     * @return whether the containing object is of a certain {@code clazz}.
-     */
-    public boolean isOfClass(Class clazz) {
-        return clazz.isInstance(object);
-    }
-
-    /**
-     * @return {@link #object} as a certain {@code clazz}
-     */
-    public <T> T getObjectAs(Class<T> clazz) {
-        Preconditions.checkArgument(isOfClass(clazz));
-        return clazz.cast(object);
     }
 
     /**
@@ -44,7 +27,14 @@ public class Disposed {
     /**
      * @return a {@link Predicate} that matches to the disposed {@link #object}
      */
-    public Predicate<Object> getMatchesPredicate() {
+    public Predicate<T> getMatchesPredicate() {
         return Predicates.equalTo(object);
+    }
+
+    /**
+     * Creates a {@link Disposed} with the given generic typed {@code object}.
+     */
+    public static <T> Disposed<T> create(T object) {
+        return new Disposed<T>(object);
     }
 }

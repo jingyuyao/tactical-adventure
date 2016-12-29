@@ -81,7 +81,7 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
     }
 
     @Subscribe
-    public void death(Disposed disposed) {
+    public void death(Disposed<Character> disposed) {
         if (disposed.matches(getObject())) {
             remove();
         }

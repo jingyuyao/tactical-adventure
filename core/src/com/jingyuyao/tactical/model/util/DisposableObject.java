@@ -13,7 +13,7 @@ public class DisposableObject extends EventObject implements Disposable {
     @Override
     public void dispose() {
         disposed();
-        getEventBus().post(new Disposed(this));
+        getEventBus().post(Disposed.create(this));
     }
 
     /**

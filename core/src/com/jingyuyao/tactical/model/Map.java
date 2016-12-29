@@ -84,7 +84,7 @@ public class Map {
     }
 
     @Subscribe
-    public void characterDeath(Disposed disposed) {
+    public void characterDeath(Disposed<Character> disposed) {
         Iterables.removeIf(getCharacters(), disposed.getMatchesPredicate());
     }
 }
