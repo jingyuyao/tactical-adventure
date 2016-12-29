@@ -8,7 +8,7 @@ public class Heal extends Consumable {
     private static final int AMOUNT = 10;
 
     public Heal(EventBus eventBus, int id, String name, int usageLeft) {
-        super(id, name, usageLeft);
+        super(eventBus, id, name, usageLeft);
     }
 
     @Override

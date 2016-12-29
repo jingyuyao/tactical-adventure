@@ -76,10 +76,10 @@ public class LevelLoader {
     private static void addTestCharacters(EventBus eventBus, Map map) {
         int hp = 20;
 
-        map.add(new Player(eventBus, 2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
-        map.add(new Player(eventBus, 2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
-        map.add(new Enemy(eventBus, 8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
-        map.add(new Enemy(eventBus, 9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1()));
+        map.add(new Player(eventBus, 2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1(eventBus)));
+        map.add(new Player(eventBus, 2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2(eventBus)));
+        map.add(new Enemy(eventBus, 8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1(eventBus)));
+        map.add(new Enemy(eventBus, 9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1(eventBus)));
     }
 
     private static Set<Terrain.Type> normalAndObstructed() {
@@ -89,19 +89,19 @@ public class LevelLoader {
         return standOnTerrainTypes;
     }
 
-    private static Items createItems1() {
+    private static Items createItems1(EventBus eventBus) {
         int attackPower = 5;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
-        weapons.add(new Weapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
-        weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
-        return new Items(eventBus, weapons, Lists.<Consumable>newArrayList(new Heal(0, "pot", 3)));
+        weapons.add(new Weapon(eventBus, 0, "Axe", 1, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(eventBus, 1, "Sword", 10, attackPower, ImmutableSet.of(1)));
+        weapons.add(new Weapon(eventBus, 2, "Bow", 3, attackPower, ImmutableSet.of(2)));
+        return new Items(eventBus, weapons, Lists.<Consumable>newArrayList(new Heal(eventBus, 0, "pot", 3)));
     }
 
-    private static Items createItems2() {
+    private static Items createItems2(EventBus eventBus) {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(new Weapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
+        weapons.add(new Weapon(eventBus, 2, "Bow", 5, attackPower, ImmutableSet.of(2)));
         return new Items(eventBus, weapons, Collections.<Consumable>emptyList());
     }
 }
