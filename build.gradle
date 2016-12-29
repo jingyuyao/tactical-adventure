@@ -97,6 +97,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.google.guava:guava:$guavaVersion"
+        compile "com.google.inject:guice:$guiceVersion:no_aop"
         testCompile "junit:junit:$junitVersion"
         testCompile "org.mockito:mockito-core:$mockitoVersion"
         testCompile "com.google.truth:truth:$truthVersion"
