@@ -12,7 +12,6 @@ import com.jingyuyao.tactical.view.LevelScreenFactory;
 
 public class TacticalAdventure extends Game {
     private AssetManager assetManager;
-    // TODO: create a new one per level
     private EventBus eventBus;
     private LevelScreenFactory levelScreenFactory;
 

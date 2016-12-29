@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Markings;
@@ -28,11 +29,11 @@ public class LevelLoader {
         // TODO: HOHOHO connect all of these to guice!
         Map map = createMap(eventBus, tiledMap);
         Turn turn = new Turn(eventBus, map);
-        Waiter waiter = new Waiter(eventBus);
+        Waiter waiter = new Waiter(eventBus, new LinkedList<Runnable>());
         MarkingFactory markingFactory = new MarkingFactory(eventBus, map, waiter);
         TargetInfoFactory targetInfoFactory = new TargetInfoFactory(map);
         AttackPlanFactory attackPlanFactory = new AttackPlanFactory(targetInfoFactory);
-        Markings markings = new Markings(eventBus, markingFactory);
+        Markings markings = new Markings(eventBus, markingFactory, new HashMap<Character, Marking>());
         Waiting initialState = new Waiting(eventBus, markings, targetInfoFactory, attackPlanFactory);
         MapState mapState = new MapState(eventBus, waiter, initialState);
         Highlighter highlighter = new Highlighter(eventBus, map);

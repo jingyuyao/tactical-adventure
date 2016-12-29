@@ -10,7 +10,6 @@ public class Map {
     private final CharacterContainer<Player> players;
     private final CharacterContainer<Enemy> enemies;
 
-    // TODO: these all should be assisted injected so we'll have a MapFactory that can be used by loader
     public Map(Grid<Terrain> terrains, CharacterContainer<Player> players, CharacterContainer<Enemy> enemies) {
         this.terrains = terrains;
         this.players = players;

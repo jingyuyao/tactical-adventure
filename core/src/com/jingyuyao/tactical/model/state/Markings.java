@@ -7,24 +7,36 @@ import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.Disposed;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Contains all the markings in a state.
  */
-public class Markings {
+public class Markings extends DisposableObject {
     private final MarkingFactory markingFactory;
     private final Map<Character, Marking> dangerAreas;
-    private Marking playerMarking = Marking.EMPTY;
+    private Marking playerMarking;
 
-    // TODO: inject initial danger area?
-    public Markings(EventBus eventBus, MarkingFactory markingFactory) {
+    public Markings(EventBus eventBus, MarkingFactory markingFactory, Map<Character, Marking> dangerAreas) {
+        super(eventBus);
         this.markingFactory = markingFactory;
-        dangerAreas = new HashMap<Character, Marking>();
-        eventBus.register(this);
+        this.dangerAreas = dangerAreas;
+        playerMarking = Marking.EMPTY;
+    }
+
+    @Override
+    protected void disposed() {
+        dangerAreas.clear();
+        playerMarking = Marking.EMPTY;
+        super.disposed();
+    }
+
+    @Subscribe
+    public void characterDeath(Disposed<Enemy> disposed) {
+        dangerAreas.remove(disposed.getObject());
     }
 
     void showMoveAndTargets(TargetInfo targetInfo) {
@@ -55,10 +67,5 @@ public class Markings {
             dangerAreas.put(enemy, dangerArea);
             dangerArea.apply();
         }
-    }
-
-    @Subscribe
-    public void characterDeath(Disposed<Enemy> disposed) {
-        dangerAreas.remove(disposed.getObject());
     }
 }

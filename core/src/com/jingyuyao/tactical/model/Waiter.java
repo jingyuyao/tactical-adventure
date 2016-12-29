@@ -3,25 +3,38 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
-import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * A semaphore like object that posts change in its state.
  */
-public class Waiter {
-    private final EventBus eventBus;
+public class Waiter extends DisposableObject {
     private final Queue<Runnable> runnables;
-    private int waits = 0;
+    private int waits;
 
-    // TODO: inject initial runnable queue?
-    public Waiter(EventBus eventBus) {
-        this.eventBus = eventBus;
-        runnables = new LinkedList<Runnable>();
-        // Waiter listens to its own event.
-        eventBus.register(this);
+    public Waiter(EventBus eventBus, Queue<Runnable> runnables) {
+        super(eventBus);
+        this.runnables = runnables;
+        this.waits = 0;
+    }
+
+    @Override
+    protected void disposed() {
+        runnables.clear();
+        waits = 0;
+        super.disposed();
+    }
+
+    @Subscribe
+    public void waitChange(WaitChange waitChange) {
+        if (!waitChange.isWaiting()) {
+            while (!runnables.isEmpty()) {
+                runnables.poll().run();
+            }
+        }
     }
 
     public boolean isWaiting() {
@@ -33,7 +46,7 @@ public class Waiter {
      */
     public void waitOne() {
         if (waits++ == 0) {
-            eventBus.post(new WaitChange(isWaiting()));
+            getEventBus().post(new WaitChange(isWaiting()));
         }
     }
 
@@ -43,7 +56,7 @@ public class Waiter {
     public void finishOne() {
         Preconditions.checkState(waits > 0, "Oh boy, this bug is gonna be hard to fix");
         if (waits-- == 1) {
-            eventBus.post(new WaitChange(isWaiting()));
+            getEventBus().post(new WaitChange(isWaiting()));
         }
     }
 
@@ -56,15 +69,6 @@ public class Waiter {
             runnable.run();
         } else {
             runnables.add(runnable);
-        }
-    }
-
-    @Subscribe
-    public void waitChange(WaitChange waitChange) {
-        if (!waitChange.isWaiting()) {
-            while (!runnables.isEmpty()) {
-                runnables.poll().run();
-            }
         }
     }
 
