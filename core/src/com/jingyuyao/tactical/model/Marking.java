@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.Disposed;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * A marking is a map of {@link AbstractObject} to {@link Marker}.
  * It is tied to a {@link Character} {@link #owner} and cleared upon death.
  */
-public class Marking extends EventObject {
+public class Marking extends DisposableObject {
     private final Character owner;
     private final Map<AbstractObject, Marker> markers;
     private final Waiter waiter;

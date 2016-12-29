@@ -20,6 +20,7 @@ public class DisposableObject extends EventObject implements Disposable {
     public void dispose() {
         disposed();
         getEventBus().post(Disposed.create(this));
+        getEventBus().unregister(this);
     }
 
     /**

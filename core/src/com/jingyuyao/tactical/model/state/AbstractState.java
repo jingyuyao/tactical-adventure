@@ -6,9 +6,9 @@ import com.jingyuyao.tactical.model.TargetInfoFactory;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 
-public abstract class AbstractState implements State {
-    private final EventBus eventBus;
+public abstract class AbstractState extends DisposableObject implements State {
     private final AbstractState prevState;
     private final Markings markings;
     private final TargetInfoFactory targetInfoFactory;
@@ -19,14 +19,14 @@ public abstract class AbstractState implements State {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState.eventBus, prevState, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
+        this(prevState.getEventBus(), prevState, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data.
      */
     AbstractState(EventBus eventBus, AbstractState prevState, Markings markings, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
-        this.eventBus = eventBus;
+        super(eventBus);
         this.prevState = prevState;
         this.markings = markings;
         this.targetInfoFactory = targetInfoFactory;
@@ -69,7 +69,7 @@ public abstract class AbstractState implements State {
     }
 
     public void goTo(AbstractState newState) {
-        eventBus.post(new StateChange(newState));
+        getEventBus().post(new StateChange(newState));
     }
 
     /**
@@ -87,11 +87,7 @@ public abstract class AbstractState implements State {
      */
     public void finish(Player player) {
         player.setActionable(false);
-        goTo(new Waiting(eventBus, markings, targetInfoFactory, attackPlanFactory));
-    }
-
-    EventBus getEventBus() {
-        return eventBus;
+        goTo(new Waiting(getEventBus(), markings, targetInfoFactory, attackPlanFactory));
     }
 
     Markings getMarkings() {
