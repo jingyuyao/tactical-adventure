@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.object;
 
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.util.DisposableObject;
@@ -19,10 +18,9 @@ import java.util.Set;
 public class CharacterContainer<T extends Character> extends DisposableObject implements Iterable<T> {
     private final Set<T> objects;
 
-    public CharacterContainer(EventBus eventBus, Iterable<T> objects) {
+    public CharacterContainer(EventBus eventBus, Set<T> objects) {
         super(eventBus);
-        // Defensive copy
-        this.objects = Sets.newHashSet(objects);
+        this.objects = objects;
     }
 
     public Set<T> getObjects() {

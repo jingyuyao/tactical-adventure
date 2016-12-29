@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Map;
@@ -79,17 +80,17 @@ public class LevelLoader {
     }
 
     // TODO: remove us
-    private static Iterable<Player> createTestPlayers(EventBus eventBus) {
+    private static Set<Player> createTestPlayers(EventBus eventBus) {
         int hp = 20;
-        return ImmutableSet.of(
+        return Sets.newHashSet(
                 new Player(eventBus, 2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1(eventBus)),
                 new Player(eventBus, 2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2(eventBus))
         );
     }
 
-    private static Iterable<Enemy> createTestEnemies(EventBus eventBus) {
+    private static Set<Enemy> createTestEnemies(EventBus eventBus) {
         int hp = 20;
-        return ImmutableSet.of(
+        return Sets.newHashSet(
                 new Enemy(eventBus, 8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1(eventBus)),
                 new Enemy(eventBus, 9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1(eventBus))
         );
