@@ -5,7 +5,6 @@ import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-// TODO: move this to abstract state after eventbus refactor
 public class Highlighter {
     private final EventBus eventBus;
     private final Map map;
@@ -18,12 +17,12 @@ public class Highlighter {
 
     public void highlight(Character character) {
         setNewHighlight(character);
-        eventBus.post(new CharacterAndTerrain(character, map.getTerrains().get(character.getCoordinate())));
+        eventBus.post(new HighlightCharacter(character, map.getTerrains().get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {
         setNewHighlight(terrain);
-        eventBus.post(new JustTerrain(terrain));
+        eventBus.post(new HighlightTerrain(terrain));
     }
 
     private void setNewHighlight(AbstractObject newHighlight) {
@@ -34,11 +33,11 @@ public class Highlighter {
         previousHighlight = newHighlight;
     }
 
-    public static class CharacterAndTerrain {
+    public static class HighlightCharacter {
         private final Character character;
         private final Terrain terrain;
 
-        private CharacterAndTerrain(Character character, Terrain terrain) {
+        private HighlightCharacter(Character character, Terrain terrain) {
             this.character = character;
             this.terrain = terrain;
         }
@@ -52,10 +51,10 @@ public class Highlighter {
         }
     }
 
-    public static class JustTerrain {
+    public static class HighlightTerrain {
         private final Terrain terrain;
 
-        private JustTerrain(Terrain terrain) {
+        private HighlightTerrain(Terrain terrain) {
             this.terrain = terrain;
         }
 

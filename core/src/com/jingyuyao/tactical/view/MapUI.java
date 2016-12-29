@@ -94,15 +94,15 @@ public class MapUI {
 
     // TODO: need to refresh stats after attack
     @Subscribe
-    public void highlightCharacter(Highlighter.CharacterAndTerrain characterAndTerrain) {
-        characterLabel.setText(String.format(Locale.US, "HP: %d", characterAndTerrain.getCharacter().getHp()));
-        updateTerrainLabel(characterAndTerrain.getTerrain());
+    public void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
+        characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getCharacter().getHp()));
+        updateTerrainLabel(highlightCharacter.getTerrain());
     }
 
     @Subscribe
-    public void highlightTerrain(Highlighter.JustTerrain justTerrain) {
+    public void highlightTerrain(Highlighter.HighlightTerrain highlightTerrain) {
         characterLabel.setText(null);
-        updateTerrainLabel(justTerrain.getTerrain());
+        updateTerrainLabel(highlightTerrain.getTerrain());
     }
 
     @Subscribe

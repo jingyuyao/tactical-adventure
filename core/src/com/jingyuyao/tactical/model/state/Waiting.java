@@ -14,7 +14,7 @@ class Waiting extends AbstractState {
      * Waiting states do NOT have a {@link AbstractState#prevState}.
      */
     Waiting(EventBus eventBus, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
-        super(eventBus, markings, targetInfoFactory, attackPlanFactory);
+        super(eventBus, null, markings, targetInfoFactory, attackPlanFactory);
     }
 
     @Override
