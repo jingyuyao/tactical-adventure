@@ -5,7 +5,7 @@ package com.jingyuyao.tactical.model.util;
  */
 public interface Disposable {
     /**
-     * Run any necessary clean up code to remove this object from the model.
+     * Run any necessary clean up code to remove this object from the model or reset it to a clean state.
      */
     void dispose();
 }

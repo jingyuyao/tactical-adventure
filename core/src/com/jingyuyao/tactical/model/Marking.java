@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.util.Disposed;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.util.Map;
 
@@ -12,14 +13,7 @@ import java.util.Map;
  * A marking is a map of {@link AbstractObject} to {@link Marker}.
  * It is tied to a {@link Character} {@link #owner} and cleared upon death.
  */
-public class Marking {
-    /**
-     * Used as a placeholder for a potential {@link Marking} object.
-     * This instance does nothing at all.
-     */
-    public static final Marking EMPTY = new EmptyMarking();
-
-    private final EventBus eventBus;
+public class Marking extends EventObject {
     private final Character owner;
     private final Map<AbstractObject, Marker> markers;
     private final Waiter waiter;
@@ -31,10 +25,17 @@ public class Marking {
      * when {@code waiter} is not waiting.
      */
     Marking(EventBus eventBus, Character owner, Map<AbstractObject, Marker> markers, Waiter waiter) {
-        this.eventBus = eventBus;
+        super(eventBus);
         this.owner = owner;
         this.markers = markers;
         this.waiter = waiter;
+    }
+
+    @Subscribe
+    public void characterDeath(Disposed<Character> disposed) {
+        if (disposed.matches(owner)) {
+            clear();
+        }
     }
 
     /**
@@ -51,7 +52,6 @@ public class Marking {
                     entry.getKey().addMarker(entry.getValue());
                 }
                 applied = true;
-                eventBus.register(Marking.this);
             }
         });
     }
@@ -73,30 +73,8 @@ public class Marking {
                 for (Map.Entry<AbstractObject, Marker> entry : markers.entrySet()) {
                     entry.getKey().removeMarker(entry.getValue());
                 }
-                eventBus.unregister(Marking.this);
+                getEventBus().unregister(Marking.this);
             }
         });
-    }
-
-    @Subscribe
-    public void characterDeath(Disposed<Character> disposed) {
-        if (disposed.matches(owner)) {
-            clear();
-        }
-    }
-
-    /**
-     * An empty {@link Marking} that does nothing.
-     */
-    private static class EmptyMarking extends Marking {
-        private EmptyMarking() {
-            super(null, null, null, null);
-        }
-
-        @Override
-        public void apply() {}
-
-        @Override
-        public void clear() {}
     }
 }

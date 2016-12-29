@@ -8,21 +8,30 @@ import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 
 /**
  * Manages selection logic.
  */
 // TODO: This class needs to be thoroughly tested
-public class MapState {
+public class MapState extends DisposableObject {
     private final Waiter waiter;
+    private final State initialState;
     private State state;
 
     // TODO: create an annotation for the initial state
     public MapState(EventBus eventBus, Waiter waiter, State state) {
-        eventBus.register(this);
+        super(eventBus);
         this.waiter = waiter;
         // TODO: add something like MapState.begin() so we can fire off a state change event to the view
+        this.initialState = state;
         this.state = state;
+    }
+
+    @Override
+    protected void disposed() {
+        state = initialState;
+        super.disposed();
     }
 
     public ImmutableList<Action> getActions() {

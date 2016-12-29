@@ -4,26 +4,32 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
-public class Highlighter {
-    private final EventBus eventBus;
+public class Highlighter extends DisposableObject {
     private final Map map;
     private AbstractObject previousHighlight;
 
     public Highlighter(EventBus eventBus, Map map) {
-        this.eventBus = eventBus;
+        super(eventBus);
         this.map = map;
+    }
+
+    @Override
+    protected void disposed() {
+        previousHighlight = null;
+        super.disposed();
     }
 
     public void highlight(Character character) {
         setNewHighlight(character);
-        eventBus.post(new HighlightCharacter(character, map.getTerrains().get(character.getCoordinate())));
+        getEventBus().post(new HighlightCharacter(character, map.getTerrains().get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {
         setNewHighlight(terrain);
-        eventBus.post(new HighlightTerrain(terrain));
+        getEventBus().post(new HighlightTerrain(terrain));
     }
 
     private void setNewHighlight(AbstractObject newHighlight) {

@@ -3,19 +3,23 @@ package com.jingyuyao.tactical.model;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
-public class Turn {
+public class Turn extends DisposableObject {
     private final Map map;
-    private int turnCount = 1;
+    private int turnCount;
 
     public Turn(EventBus eventBus, Map map) {
+        super(eventBus);
         this.map = map;
-        eventBus.register(this);
+        turnCount = 1;
     }
 
-    public int getTurnCount() {
-        return turnCount;
+    @Override
+    protected void disposed() {
+        turnCount = 1;
+        super.disposed();
     }
 
     @Subscribe
@@ -24,6 +28,10 @@ public class Turn {
         for (Player player : map.getPlayers()) {
             player.setActionable(true);
         }
+    }
+
+    public int getTurnCount() {
+        return turnCount;
     }
 
     public static class NewTurn implements ModelEvent {}

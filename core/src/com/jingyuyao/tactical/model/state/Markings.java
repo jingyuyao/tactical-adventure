@@ -24,13 +24,13 @@ public class Markings extends DisposableObject {
         super(eventBus);
         this.markingFactory = markingFactory;
         this.dangerAreas = dangerAreas;
-        playerMarking = Marking.EMPTY;
+        playerMarking = null;
     }
 
     @Override
     protected void disposed() {
         dangerAreas.clear();
-        playerMarking = Marking.EMPTY;
+        playerMarking = null;
         super.disposed();
     }
 
@@ -40,20 +40,22 @@ public class Markings extends DisposableObject {
     }
 
     void showMoveAndTargets(TargetInfo targetInfo) {
-        playerMarking.clear();
+        clearPlayerMarking();
         playerMarking = markingFactory.moveAndTargets(targetInfo);
         playerMarking.apply();
     }
 
     void showImmediateTargets(TargetInfo targetInfo) {
-        playerMarking.clear();
+        clearPlayerMarking();
         playerMarking = markingFactory.immediateTargets(targetInfo);
         playerMarking.apply();
     }
 
     void clearPlayerMarking() {
-        playerMarking.clear();
-        playerMarking = Marking.EMPTY;
+        if (playerMarking != null) {
+            playerMarking.clear();
+            playerMarking = null;
+        }
     }
 
     // TODO: bugged, needs to be refreshed after every state
