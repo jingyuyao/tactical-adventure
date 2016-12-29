@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.view.actor.BaseActor;
 
 /**
@@ -10,16 +11,19 @@ import com.jingyuyao.tactical.view.actor.BaseActor;
  * The world is rendered in a grid scale (i.e. showing a 30x20 grid).
  */
 public class MapView {
+    private final EventBus eventBus;
     private final Stage world;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
     /**
      * A map view contains a world with all the actors and a way to render them.
      * The background map is backed by a {@link OrthogonalTiledMapRenderer}.
+     * @param eventBus
      * @param world Should already be set up with all the {@link BaseActor}
      * @param mapRenderer The tiled map renderer
      */
-    MapView(Stage world, OrthogonalTiledMapRenderer mapRenderer) {
+    MapView(EventBus eventBus, Stage world, OrthogonalTiledMapRenderer mapRenderer) {
+        this.eventBus = eventBus;
         this.world = world;
         this.mapRenderer = mapRenderer;
     }

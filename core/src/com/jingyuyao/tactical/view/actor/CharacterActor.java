@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
@@ -24,6 +25,7 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
     private final Sprite sprite;
 
     CharacterActor(
+            EventBus eventBus,
             T object,
             float size,
             Waiter waiter,
@@ -32,7 +34,7 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
             Color tint,
             EventListener listener
     ) {
-        super(object, size, waiter, markerSpriteMap, listener);
+        super(eventBus, object, size, waiter, markerSpriteMap, listener);
         this.sprite = sprite;
         sprite.setColor(tint);
     }

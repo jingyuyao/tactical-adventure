@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.controller.MapActorController;
 import com.jingyuyao.tactical.model.Level;
@@ -21,11 +22,13 @@ import java.util.HashMap;
 public class ActorFactory {
     public static final float ACTOR_SIZE = 1f; // world units
 
+    private final EventBus eventBus;
     private final AssetManager assetManager;
     private final java.util.Map<Marker, Sprite> markerSpriteMap;
     private final java.util.Map<Class, Color> typeColorMap;
 
-    public ActorFactory(AssetManager assetManager) {
+    public ActorFactory(EventBus eventBus, AssetManager assetManager) {
+        this.eventBus = eventBus;
         this.assetManager = assetManager;
         markerSpriteMap = new HashMap<Marker, Sprite>();
         markerSpriteMap.put(
@@ -59,6 +62,7 @@ public class ActorFactory {
 
     public Actor create(Level level, Player player) {
         return new PlayerActor(
+                eventBus,
                 player,
                 ACTOR_SIZE,
                 level.getWaiter(),
@@ -71,6 +75,7 @@ public class ActorFactory {
 
     public Actor create(Level level, Enemy enemy) {
         return new CharacterActor<Enemy>(
+                eventBus,
                 enemy,
                 ACTOR_SIZE,
                 level.getWaiter(),
@@ -83,6 +88,7 @@ public class ActorFactory {
 
     public Actor create(Level level, Terrain terrain) {
         return new BaseActor<Terrain>(
+                eventBus,
                 terrain,
                 ACTOR_SIZE,
                 level.getWaiter(),

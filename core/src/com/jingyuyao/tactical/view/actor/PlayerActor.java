@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Player;
@@ -12,6 +13,7 @@ import java.util.Observable;
 
 public class PlayerActor extends CharacterActor<Player> {
     PlayerActor(
+            EventBus eventBus,
             Player object,
             float size,
             Waiter waiter,
@@ -20,7 +22,7 @@ public class PlayerActor extends CharacterActor<Player> {
             Color tint,
             EventListener listener
     ) {
-        super(object, size, waiter, markerSpriteMap, sprite, tint, listener);
+        super(eventBus, object, size, waiter, markerSpriteMap, sprite, tint, listener);
     }
 
     @Override

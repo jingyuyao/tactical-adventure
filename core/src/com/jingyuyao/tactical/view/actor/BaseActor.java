@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.AbstractObject;
@@ -19,14 +20,19 @@ import java.util.*;
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
 public class BaseActor<T extends AbstractObject> extends Actor implements Observer {
+    private final EventBus eventBus;
+    private final T object;
     private final Waiter waiter;
     private final Map<Marker, Sprite> markerSpriteMap;
     private final List<Sprite> markerSprites;
 
     /**
+     * @param eventBus
      * @param object This will be the first argument in {@link #update(Observable, Object)}
      */
-    BaseActor(T object, float size, Waiter waiter, Map<Marker, Sprite> markerSpriteMap, EventListener listener) {
+    BaseActor(EventBus eventBus, T object, float size, Waiter waiter, Map<Marker, Sprite> markerSpriteMap, EventListener listener) {
+        this.eventBus = eventBus;
+        this.object = object;
         this.waiter = waiter;
         this.markerSpriteMap = markerSpriteMap;
         markerSprites = new ArrayList<Sprite>();

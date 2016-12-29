@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -16,6 +17,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MapUI implements Observer {
+    private final EventBus eventBus;
     private final Skin skin;
     private final Stage ui;
     private final Table root;
@@ -27,7 +29,8 @@ public class MapUI implements Observer {
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
-    MapUI(MapState mapState, Highlighter highlighter, Waiter waiter, Skin skin) {
+    MapUI(EventBus eventBus, MapState mapState, Highlighter highlighter, Waiter waiter, Skin skin) {
+        this.eventBus = eventBus;
         this.skin = skin;
         ui = new Stage();
         root = new Table();

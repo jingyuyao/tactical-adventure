@@ -19,7 +19,7 @@ public class TacticalAdventure extends Game {
     public void create() {
         assetManager = Assets.createAssetManager();
         eventBus = new EventBus();
-        levelScreenFactory = new LevelScreenFactory(this, assetManager);
+        levelScreenFactory = new LevelScreenFactory(eventBus, assetManager);
 
         setLevel(Assets.TEST_MAP);
     }

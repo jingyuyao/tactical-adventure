@@ -7,18 +7,15 @@ import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.model.Level;
 
 public class LevelScreen extends ScreenAdapter {
-    private final TacticalAdventure game;
     private final Level level;
     private final MapView mapView;
     private final MapUI mapUI;
 
     LevelScreen(
-            TacticalAdventure game,
             Level level,
             MapView mapView,
             MapUI mapUI
     ) {
-        this.game = game;
         this.level = level;
         this.mapView = mapView;
         this.mapUI = mapUI;

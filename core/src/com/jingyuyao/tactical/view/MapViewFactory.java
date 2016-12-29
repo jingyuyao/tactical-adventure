@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -20,10 +21,12 @@ class MapViewFactory {
     private static final int VIEWPORT_WIDTH = 15; // # tiles
     private static final int VIEWPORT_HEIGHT = 10; // # tiles
 
+    private final EventBus eventBus;
     private final ActorFactory actorFactory;
 
-    MapViewFactory(AssetManager assetManager) {
-        actorFactory = new ActorFactory(assetManager);
+    MapViewFactory(EventBus eventBus, AssetManager assetManager) {
+        this.eventBus = eventBus;
+        actorFactory = new ActorFactory(eventBus, assetManager);
     }
 
     /**
@@ -48,6 +51,6 @@ class MapViewFactory {
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(world, mapRenderer);
+        return new MapView(eventBus, world, mapRenderer);
     }
 }
