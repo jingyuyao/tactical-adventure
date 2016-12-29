@@ -5,12 +5,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.view.MapView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An {@link Actor} on a {@link MapView}.
@@ -19,26 +22,24 @@ import java.util.*;
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
-public class BaseActor<T extends AbstractObject> extends Actor implements Observer {
-    private final EventBus eventBus;
+public class BaseActor<T extends AbstractObject> extends Actor {
     private final T object;
     private final Waiter waiter;
     private final Map<Marker, Sprite> markerSpriteMap;
     private final List<Sprite> markerSprites;
 
-    /**
-     * @param eventBus
-     * @param object This will be the first argument in {@link #update(Observable, Object)}
-     */
     BaseActor(EventBus eventBus, T object, float size, Waiter waiter, Map<Marker, Sprite> markerSpriteMap, EventListener listener) {
-        this.eventBus = eventBus;
         this.object = object;
         this.waiter = waiter;
         this.markerSpriteMap = markerSpriteMap;
         markerSprites = new ArrayList<Sprite>();
         setBounds(object.getCoordinate().getX(), object.getCoordinate().getY(), size, size);
         addListener(listener);
-        object.addObserver(this);
+        eventBus.register(this);
+    }
+
+    public T getObject() {
+        return object;
     }
 
     Waiter getWaiter() {
@@ -53,20 +54,17 @@ public class BaseActor<T extends AbstractObject> extends Actor implements Observ
         }
     }
 
-    @Override
-    public void update(Observable observable, Object param) {
-        if (AbstractObject.AddMarker.class.isInstance(param)) {
-            addMarker(AbstractObject.AddMarker.class.cast(param));
-        } else if (AbstractObject.RemoveMarker.class.isInstance(param)) {
-            removeMarker(AbstractObject.RemoveMarker.class.cast(param));
+    @Subscribe
+    public void addMarker(AbstractObject.AddMarker addMarker) {
+        if (object.equals(addMarker.getObject())) {
+            markerSprites.add(markerSpriteMap.get(addMarker.getMarker()));
         }
     }
 
-    private void addMarker(AbstractObject.AddMarker addMarker) {
-        markerSprites.add(markerSpriteMap.get(addMarker.getMarker()));
-    }
-
-    private void removeMarker(AbstractObject.RemoveMarker removeMarker) {
-        markerSprites.remove(markerSpriteMap.get(removeMarker.getMarker()));
+    @Subscribe
+    public void removeMarker(AbstractObject.RemoveMarker removeMarker) {
+        if (object.equals(removeMarker.getObject())) {
+            markerSprites.remove(markerSpriteMap.get(removeMarker.getMarker()));
+        }
     }
 }

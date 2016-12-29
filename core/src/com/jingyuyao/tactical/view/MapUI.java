@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -13,11 +14,8 @@ import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.Locale;
-import java.util.Observable;
-import java.util.Observer;
 
-public class MapUI implements Observer {
-    private final EventBus eventBus;
+public class MapUI {
     private final Skin skin;
     private final Stage ui;
     private final Table root;
@@ -29,8 +27,8 @@ public class MapUI implements Observer {
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
-    MapUI(EventBus eventBus, MapState mapState, Highlighter highlighter, Waiter waiter, Skin skin) {
-        this.eventBus = eventBus;
+    // TODO: get rid of map state as well...
+    MapUI(EventBus eventBus, MapState mapState, Skin skin) {
         this.skin = skin;
         ui = new Stage();
         root = new Table();
@@ -62,9 +60,7 @@ public class MapUI implements Observer {
         root.add(attackPlan).center().bottom();
         root.add(actionButtons).right().bottom();
 
-        highlighter.addObserver(this);
-        mapState.addObserver(this);
-        waiter.addObserver(this);
+        eventBus.register(this);
 
         // TODO: clean me up
         stateLabel.setText("Waiting");
@@ -93,57 +89,40 @@ public class MapUI implements Observer {
         ui.dispose();
     }
 
-    @Override
-    public void update(Observable object, Object param) {
-        // TODO: Hum... can we make this shorter? generics? visitor?
-        if (Highlighter.JustTerrain.class.isInstance(param)) {
-            highlightTerrain(Highlighter.JustTerrain.class.cast(param));
-        }
-        else if (Highlighter.CharacterAndTerrain.class.isInstance(param)) {
-            highlightCharacter(Highlighter.CharacterAndTerrain.class.cast(param));
-        }
-        else if (MapState.StateChange.class.isInstance(param)) {
-            stateChange(MapState.StateChange.class.cast(param));
-        }
-        else if (Waiter.class.isInstance(object)) {
-            animationChange(Waiter.class.cast(object));
-        }
-        else if (MapState.ShowAttackPlan.class.isInstance(param)) {
-            showAttackPlan(MapState.ShowAttackPlan.class.cast(param));
-        }
-        else if (MapState.HideAttackPlan.class.isInstance(param)) {
-            hideAttackPlan(MapState.HideAttackPlan.class.cast(param));
-        }
-    }
-
     // TODO: need to refresh stats after attack
-    private void highlightCharacter(Highlighter.CharacterAndTerrain characterAndTerrain) {
+    @Subscribe
+    public void highlightCharacter(Highlighter.CharacterAndTerrain characterAndTerrain) {
         characterLabel.setText(String.format(Locale.US, "HP: %d", characterAndTerrain.getCharacter().getHp()));
         updateTerrainLabel(characterAndTerrain.getTerrain());
     }
 
-    private void highlightTerrain(Highlighter.JustTerrain justTerrain) {
+    @Subscribe
+    public void highlightTerrain(Highlighter.JustTerrain justTerrain) {
         characterLabel.setText(null);
         updateTerrainLabel(justTerrain.getTerrain());
     }
 
-    private void stateChange(MapState.StateChange stateChange) {
+    @Subscribe
+    public void stateChange(MapState.StateChange stateChange) {
         stateLabel.setText(stateChange.getStateName());
         currentActions = stateChange.getActions();
         populateButtons();
     }
 
-    private void animationChange(Waiter waiter) {
-        showButtons = !waiter.isWaiting();
+    @Subscribe
+    public void waitChange(Waiter.WaitChange waitChange) {
+        showButtons = !waitChange.isWaiting();
         populateButtons();
     }
 
     // TODO: create a nice looking widget to show this
-    private void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
+    @Subscribe
+    public void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
         attackPlan.setText(showAttackPlan.getAttackPlan().toString());
     }
 
-    private void hideAttackPlan(MapState.HideAttackPlan hideAttackPlan) {
+    @Subscribe
+    public void hideAttackPlan(MapState.HideAttackPlan hideAttackPlan) {
         attackPlan.setText(null);
     }
 

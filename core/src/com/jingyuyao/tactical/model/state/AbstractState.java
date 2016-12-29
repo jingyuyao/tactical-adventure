@@ -26,7 +26,7 @@ abstract class AbstractState {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState.eventBus, prevState.mapState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
+        this(prevState.eventBus, prevState, prevState.mapState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
     }
 
     /**

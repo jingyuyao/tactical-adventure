@@ -17,8 +17,8 @@ class MapUIFactory {
 
     MapUI create(Level level) {
         return new MapUI(
-                eventBus, level.getMapState(), level.getHighlighter(),
-                level.getWaiter(),
+                eventBus,
+                level.getMapState(),
                 assetManager.get(Assets.SKIN, Skin.class)
         );
     }

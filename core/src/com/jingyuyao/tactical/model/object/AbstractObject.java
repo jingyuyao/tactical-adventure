@@ -8,12 +8,11 @@ import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Super class of all the objects on the game grid.
  */
-public abstract class AbstractObject extends Observable {
+public abstract class AbstractObject {
     private final EventBus eventBus;
     /**
      * List of marker drawn over this object.
@@ -27,25 +26,27 @@ public abstract class AbstractObject extends Observable {
         markers = new ArrayList<Marker>();
     }
 
+    protected EventBus getEventBus() {
+        return eventBus;
+    }
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
     public void addMarker(Marker marker) {
         markers.add(marker);
-        setChanged();
-        notifyObservers(new AddMarker(marker));
+        eventBus.post(new AddMarker(this, marker));
     }
 
     public void removeMarker(Marker marker) {
         markers.remove(marker);
-        setChanged();
-        notifyObservers(new RemoveMarker(marker));
+        eventBus.post(new RemoveMarker(this, marker));
     }
 
     /**
      * Sets the coordinate of this object to the new coordinate
-     * Subclasses are responsible for notifying observers.
+     * Subclasses are responsible for posting changes.
      * This method is purposely set to protected to enforce the above rule.
      */
     protected void setCoordinate(Coordinate newCoordinate) {
@@ -73,10 +74,16 @@ public abstract class AbstractObject extends Observable {
     }
 
     public static class AddMarker {
+        private final AbstractObject object;
         private final Marker marker;
 
-        private AddMarker(Marker marker) {
+        private AddMarker(AbstractObject object, Marker marker) {
+            this.object = object;
             this.marker = marker;
+        }
+
+        public AbstractObject getObject() {
+            return object;
         }
 
         public Marker getMarker() {
@@ -85,10 +92,16 @@ public abstract class AbstractObject extends Observable {
     }
 
     public static class RemoveMarker {
+        private final AbstractObject object;
         private final Marker marker;
 
-        private RemoveMarker(Marker marker) {
+        private RemoveMarker(AbstractObject object, Marker marker) {
+            this.object = object;
             this.marker = marker;
+        }
+
+        public AbstractObject getObject() {
+            return object;
         }
 
         public Marker getMarker() {

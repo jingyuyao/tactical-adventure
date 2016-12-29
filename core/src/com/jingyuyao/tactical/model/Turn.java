@@ -1,15 +1,12 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.object.Player;
 
 public class Turn {
-    private final EventBus eventBus;
     private final Map map;
     private int turnCount = 1;
 
-    public Turn(EventBus eventBus, Map map) {
-        this.eventBus = eventBus;
+    public Turn(Map map) {
         this.map = map;
     }
 

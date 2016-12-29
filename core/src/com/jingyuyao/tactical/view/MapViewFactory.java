@@ -21,11 +21,9 @@ class MapViewFactory {
     private static final int VIEWPORT_WIDTH = 15; // # tiles
     private static final int VIEWPORT_HEIGHT = 10; // # tiles
 
-    private final EventBus eventBus;
     private final ActorFactory actorFactory;
 
     MapViewFactory(EventBus eventBus, AssetManager assetManager) {
-        this.eventBus = eventBus;
         actorFactory = new ActorFactory(eventBus, assetManager);
     }
 
@@ -51,6 +49,6 @@ class MapViewFactory {
         }
 
         OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, RENDER_SCALE);
-        return new MapView(eventBus, world, mapRenderer);
+        return new MapView(world, mapRenderer);
     }
 }

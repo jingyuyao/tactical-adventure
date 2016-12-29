@@ -8,13 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Map;
-import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
@@ -48,41 +48,42 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
         super.draw(batch, parentAlpha);
     }
 
-    @Override
-    public void update(Observable observable, Object param) {
-        super.update(observable, param);
-        if (Character.Move.class.isInstance(param)) {
-            moveTo(Character.Move.class.cast(param));
-        } else if (Character.InstantMove.class.isInstance(param)) {
-            instantMoveTo(Character.InstantMove.class.cast(param));
-        } else if (Character.Died.class.isInstance(param)) {
-            remove();
-        }
-    }
-
     Sprite getSprite() {
         return sprite;
     }
 
-    private void instantMoveTo(Character.InstantMove instantMove) {
-        Coordinate destination = instantMove.getDestination();
-        setPosition(destination.getX(), destination.getY());
+    @Subscribe
+    public void instantMoveTo(Character.InstantMove instantMove) {
+        if (getObject().equals(instantMove.getCharacter())) {
+            Coordinate destination = instantMove.getDestination();
+            setPosition(destination.getX(), destination.getY());
+        }
     }
 
-    private void moveTo(Character.Move move) {
-        final ImmutableList<EventListener> listeners = popAllListeners();
-        SequenceAction moveSequence = getMoveSequence(move.getPath());
-        moveSequence.addAction(run(new Runnable() {
-            @Override
-            public void run() {
-                for (EventListener listener : listeners) {
-                    addListener(listener);
+    @Subscribe
+    public void moveTo(Character.Move move) {
+        if (getObject().equals(move.getCharacter())) {
+            final ImmutableList<EventListener> listeners = popAllListeners();
+            SequenceAction moveSequence = getMoveSequence(move.getPath());
+            moveSequence.addAction(run(new Runnable() {
+                @Override
+                public void run() {
+                    for (EventListener listener : listeners) {
+                        addListener(listener);
+                    }
+                    getWaiter().finishOne();
                 }
-                getWaiter().finishOne();
-            }
-        }));
-        getWaiter().waitOne();
-        addAction(moveSequence);
+            }));
+            getWaiter().waitOne();
+            addAction(moveSequence);
+        }
+    }
+
+    @Subscribe
+    public void death(Character.Died died) {
+        if (getObject().equals(died.getCharacter())) {
+            remove();
+        }
     }
 
     private SequenceAction getMoveSequence(Iterable<Coordinate> path) {

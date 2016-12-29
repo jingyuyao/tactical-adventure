@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
@@ -10,11 +11,9 @@ import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.HashSet;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 
-public class Map implements Observer {
+public class Map {
     private final int width;
     private final int height;
     private final Grid<Terrain> terrains;
@@ -44,12 +43,10 @@ public class Map implements Observer {
 
     public void add(Player player) {
         players.add(player);
-        player.addObserver(this);
     }
 
     public void add(Enemy enemy) {
         enemies.add(enemy);
-        enemy.addObserver(this);
     }
 
     public Iterable<Player> getPlayers() {
@@ -88,10 +85,8 @@ public class Map implements Observer {
         return movementPenaltyGrid;
     }
 
-    @Override
-    public void update(Observable object, Object param) {
-        if (Character.Died.class.isInstance(param)) {
-            Iterables.removeIf(getCharacters(), Predicates.equalTo(object));
-        }
+    @Subscribe
+    public void characterDeath(Character.Died died) {
+        Iterables.removeIf(getCharacters(), Predicates.equalTo(died.getCharacter()));
     }
 }

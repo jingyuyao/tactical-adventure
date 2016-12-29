@@ -24,9 +24,9 @@ public class LevelLoader {
 
     public static Level loadLevel(EventBus eventBus, TiledMap tiledMap) {
         Map map = createMap(eventBus, tiledMap);
-        Turn turn = new Turn(eventBus, map);
+        Turn turn = new Turn(map);
         Waiter waiter = new Waiter(eventBus);
-        MarkingFactory markingFactory = new MarkingFactory(map, waiter);
+        MarkingFactory markingFactory = new MarkingFactory(eventBus, map, waiter);
         TargetInfo.Factory targetInfoFactory = new TargetInfo.Factory(map);
         AttackPlan.Factory attackPlanFactory = new AttackPlan.Factory(targetInfoFactory);
         MapState mapState = new MapState(eventBus, waiter, turn, markingFactory, targetInfoFactory, attackPlanFactory);
@@ -72,7 +72,7 @@ public class LevelLoader {
         return new Terrain(eventBus, x, y, type);
     }
 
-    // TODO: remove useventBus,
+    // TODO: remove us
     private static void addTestCharacters(EventBus eventBus, Map map) {
         int hp = 20;
 

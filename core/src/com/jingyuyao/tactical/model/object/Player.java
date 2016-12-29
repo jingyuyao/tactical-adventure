@@ -24,15 +24,20 @@ public class Player extends Character {
 
     public void setActionable(boolean actionable) {
         this.actionable = actionable;
-        setChanged();
-        notifyObservers(new NewActionState(actionable));
+        getEventBus().post(new NewActionState(this, actionable));
     }
 
     public static class NewActionState {
+        private final Player player;
         private final boolean actionable;
 
-        private NewActionState(boolean actionable) {
+        private NewActionState(Player player, boolean actionable) {
+            this.player = player;
             this.actionable = actionable;
+        }
+
+        public Player getPlayer() {
+            return player;
         }
 
         public boolean isActionable() {

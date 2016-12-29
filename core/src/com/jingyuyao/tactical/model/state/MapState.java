@@ -7,13 +7,11 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-import java.util.Observable;
-
 /**
  * Manages selection logic.
  */
 // TODO: This class needs to be thoroughly tested
-public class MapState extends Observable {
+public class MapState {
     private final EventBus eventBus;
     private final Waiter waiter;
     private AbstractState state;
@@ -21,6 +19,7 @@ public class MapState extends Observable {
     public MapState(EventBus eventBus, Waiter waiter, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
         this.eventBus = eventBus;
         this.waiter = waiter;
+        // TODO: add something like MapState.begin() so we can fire off a state change event to the view
         state = new Waiting(eventBus, this, turn, markingFactory, targetInfoFactory, attackPlanFactory);
     }
 
@@ -52,19 +51,16 @@ public class MapState extends Observable {
             state = newState;
             state.enter();
 
-            setChanged();
-            notifyObservers(new StateChange(state.getClass().getSimpleName(), state.getActions()));
+            eventBus.post(new StateChange(state.getClass().getSimpleName(), state.getActions()));
         }
     }
 
     void showAttackPlan(AttackPlan attackPlan) {
-        setChanged();
-        notifyObservers(new ShowAttackPlan(attackPlan));
+        eventBus.post(new ShowAttackPlan(attackPlan));
     }
 
     void hideAttackPlan() {
-        setChanged();
-        notifyObservers(new HideAttackPlan());
+        eventBus.post(new HideAttackPlan());
     }
 
     public static class StateChange {

@@ -5,10 +5,8 @@ import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-import java.util.Observable;
-
 // TODO: move this to abstract state after eventbus refactor
-public class Highlighter extends Observable {
+public class Highlighter {
     private final EventBus eventBus;
     private final Map map;
     private AbstractObject previousHighlight;
@@ -20,14 +18,12 @@ public class Highlighter extends Observable {
 
     public void highlight(Character character) {
         setNewHighlight(character);
-        setChanged();
-        notifyObservers(new CharacterAndTerrain(character, map.getTerrains().get(character.getCoordinate())));
+        eventBus.post(new CharacterAndTerrain(character, map.getTerrains().get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {
         setNewHighlight(terrain);
-        setChanged();
-        notifyObservers(new JustTerrain(terrain));
+        eventBus.post(new JustTerrain(terrain));
     }
 
     private void setNewHighlight(AbstractObject newHighlight) {

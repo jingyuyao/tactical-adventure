@@ -30,10 +30,7 @@ public abstract class Usable extends Item {
 
         usageLeft--;
         if (usageLeft == 0) {
-            setChanged();
-            notifyObservers(new Broke());
-            // TODO: we can get leave out this if usable can be refilled
-            deleteObservers();
+            getEventBus().post(new Broke(this));
         }
     }
 
@@ -45,6 +42,14 @@ public abstract class Usable extends Item {
     }
 
     public static class Broke {
-        private Broke() {}
+        private final Usable usable;
+
+        private Broke(Usable usable) {
+            this.usable = usable;
+        }
+
+        public Usable getUsable() {
+            return usable;
+        }
     }
 }

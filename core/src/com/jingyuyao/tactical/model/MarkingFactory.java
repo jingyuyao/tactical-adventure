@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -8,10 +9,12 @@ import com.jingyuyao.tactical.model.object.Terrain;
  * Produces {@link Marking}s
  */
 public class MarkingFactory {
+    private final EventBus eventBus;
     private final Map map;
     private final Waiter waiter;
 
-    public MarkingFactory(Map map, Waiter waiter) {
+    public MarkingFactory(EventBus eventBus, Map map, Waiter waiter) {
+        this.eventBus = eventBus;
         this.map = map;
         this.waiter = waiter;
     }
@@ -63,7 +66,7 @@ public class MarkingFactory {
         }
 
         private Marking build() {
-            return new Marking(character, markerMap, waiter);
+            return new Marking(eventBus, character, markerMap, waiter);
         }
     }
 }

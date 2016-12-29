@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.state.MapState;
 
 public class Terrain extends AbstractObject {
-    private Type type;
+    private final Type type;
 
     public Terrain(EventBus eventBus, int x, int y, Type type) {
         super(eventBus, x, y);

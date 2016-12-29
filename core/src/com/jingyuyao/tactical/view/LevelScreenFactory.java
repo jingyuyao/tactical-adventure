@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TacticalAdventure;
 import com.jingyuyao.tactical.model.Level;
 
 public class LevelScreenFactory {

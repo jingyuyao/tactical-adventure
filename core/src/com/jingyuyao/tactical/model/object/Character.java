@@ -68,14 +68,12 @@ public abstract class Character extends AbstractObject {
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
         setCoordinate(newCoordinate);
-        setChanged();
-        notifyObservers(new Move(path));
+        getEventBus().post(new Move(this, path));
     }
 
     public void instantMoveTo(Coordinate newCoordinate) {
         setCoordinate(newCoordinate);
-        setChanged();
-        notifyObservers(new InstantMove(newCoordinate));
+        getEventBus().post(new InstantMove(this, newCoordinate));
     }
 
     public void equipWeapon(Weapon weapon) {
@@ -94,10 +92,7 @@ public abstract class Character extends AbstractObject {
     }
 
     private void die() {
-        setChanged();
-        notifyObservers(new Died());
-        // Observers not always interested in observing death so we need to clean up just in case
-        deleteObservers();
+        getEventBus().post(new Died(this));
     }
 
     @Override
@@ -110,10 +105,16 @@ public abstract class Character extends AbstractObject {
     }
 
     public static class Move {
+        private final Character character;
         private final ImmutableList<Coordinate> path;
 
-        private Move(ImmutableList<Coordinate> path) {
+        private Move(Character character, ImmutableList<Coordinate> path) {
+            this.character = character;
             this.path = path;
+        }
+
+        public Character getCharacter() {
+            return character;
         }
 
         public ImmutableList<Coordinate> getPath() {
@@ -122,10 +123,16 @@ public abstract class Character extends AbstractObject {
     }
 
     public static class InstantMove {
+        private final Character character;
         private final Coordinate destination;
 
-        private InstantMove(Coordinate destination) {
+        private InstantMove(Character character, Coordinate destination) {
+            this.character = character;
             this.destination = destination;
+        }
+
+        public Character getCharacter() {
+            return character;
         }
 
         public Coordinate getDestination() {
@@ -134,6 +141,14 @@ public abstract class Character extends AbstractObject {
     }
 
     public static class Died {
-        private Died() {}
+        private final Character character;
+
+        private Died(Character character) {
+            this.character = character;
+        }
+
+        public Character getCharacter() {
+            return character;
+        }
     }
 }

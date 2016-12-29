@@ -1,23 +1,24 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * A marking is a map of {@link AbstractObject} to {@link Marker}.
  * It is tied to a {@link Character} {@link #owner} and cleared upon death.
  */
-public class Marking implements Observer {
+public class Marking {
     /**
      * Used as a placeholder for a potential {@link Marking} object.
      * This instance does nothing at all.
      */
     public static final Marking EMPTY = new EmptyMarking();
 
+    private final EventBus eventBus;
     private final Character owner;
     private final Map<AbstractObject, Marker> markers;
     private final Waiter waiter;
@@ -28,7 +29,8 @@ public class Marking implements Observer {
      * Creates a marking with the given {@code markers} map and attempts to apply them immediately
      * when {@code waiter} is not waiting.
      */
-    Marking(Character owner, Map<AbstractObject, Marker> markers, Waiter waiter) {
+    Marking(EventBus eventBus, Character owner, Map<AbstractObject, Marker> markers, Waiter waiter) {
+        this.eventBus = eventBus;
         this.owner = owner;
         this.markers = markers;
         this.waiter = waiter;
@@ -48,7 +50,7 @@ public class Marking implements Observer {
                     entry.getKey().addMarker(entry.getValue());
                 }
                 applied = true;
-                owner.addObserver(Marking.this);
+                eventBus.register(Marking.this);
             }
         });
     }
@@ -70,14 +72,14 @@ public class Marking implements Observer {
                 for (Map.Entry<AbstractObject, Marker> entry : markers.entrySet()) {
                     entry.getKey().removeMarker(entry.getValue());
                 }
-                owner.deleteObserver(Marking.this);
+                eventBus.unregister(Marking.this);
             }
         });
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
-        if (Character.Died.class.isInstance(o)) {
+    @Subscribe
+    public void characterDeath(Character.Died died) {
+        if (owner.equals(died.getCharacter())) {
             clear();
         }
     }
@@ -87,7 +89,7 @@ public class Marking implements Observer {
      */
     private static class EmptyMarking extends Marking {
         private EmptyMarking() {
-            super(null, null, null);
+            super(null, null, null, null);
         }
 
         @Override

@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
@@ -12,8 +13,6 @@ import com.jingyuyao.tactical.model.item.Weapon;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * A container for character items.
@@ -22,8 +21,7 @@ import java.util.Observer;
  * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
 // TODO: test the invariant
-public class Items implements Observer {
-    private final EventBus eventBus;
+public class Items {
     /**
      * Invariant: weapons.indexOf(equippedWeapon) == 0
      */
@@ -42,13 +40,10 @@ public class Items implements Observer {
     }
 
     public Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
-        this.eventBus = eventBus;
         this.weapons = weapons;
         this.consumables = consumables;
         setEquippedWeapon(equippedWeapon);
-        for (Item item : getItems()) {
-            item.addObserver(this);
-        }
+        eventBus.register(this);
     }
 
     Iterable<Weapon> getWeapons() {
@@ -82,13 +77,12 @@ public class Items implements Observer {
         this.equippedWeapon = weapon;
     }
 
-    @Override
-    public void update(Observable item, Object param) {
-        if (Usable.Broke.class.isInstance(param)) {
-            Iterables.removeIf(getItems(), Predicates.equalTo(item));
-            if (item.equals(equippedWeapon)) {
-                setEquippedWeapon(getDefaultWeapon(weapons));
-            }
+    @Subscribe
+    public void itemBroke(Usable.Broke broke) {
+        Item item = broke.getUsable();
+        Iterables.removeIf(getItems(), Predicates.equalTo(item));
+        if (item.equals(equippedWeapon)) {
+            setEquippedWeapon(getDefaultWeapon(weapons));
         }
     }
 
