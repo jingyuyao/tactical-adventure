@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.Turn;
@@ -9,6 +10,7 @@ import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 abstract class AbstractState {
+    private final EventBus eventBus;
     private final AbstractState prevState;
     /**
      * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.
@@ -24,20 +26,21 @@ abstract class AbstractState {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState, prevState.mapState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
+        this(prevState.eventBus, prevState.mapState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
-        this(null, mapState, turn, markings, targetInfoFactory, attackPlanFactory);
+    AbstractState(EventBus eventBus, MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+        this(eventBus, null, mapState, turn, markings, targetInfoFactory, attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(AbstractState prevState, MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+    private AbstractState(EventBus eventBus, AbstractState prevState, MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+        this.eventBus = eventBus;
         this.prevState = prevState;
         this.mapState = mapState;
         this.turn = turn;

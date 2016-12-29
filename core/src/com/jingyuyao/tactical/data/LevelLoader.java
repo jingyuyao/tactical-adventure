@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.Map;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -21,19 +22,19 @@ public class LevelLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
-    public static Level loadLevel(TiledMap tiledMap) {
-        Map map = createMap(tiledMap);
-        Turn turn = new Turn(map);
-        Waiter waiter = new Waiter();
+    public static Level loadLevel(EventBus eventBus, TiledMap tiledMap) {
+        Map map = createMap(eventBus, tiledMap);
+        Turn turn = new Turn(eventBus, map);
+        Waiter waiter = new Waiter(eventBus);
         MarkingFactory markingFactory = new MarkingFactory(map, waiter);
         TargetInfo.Factory targetInfoFactory = new TargetInfo.Factory(map);
         AttackPlan.Factory attackPlanFactory = new AttackPlan.Factory(targetInfoFactory);
-        MapState mapState = new MapState(waiter, turn, markingFactory, targetInfoFactory, attackPlanFactory);
-        Highlighter highlighter = new Highlighter(map);
+        MapState mapState = new MapState(eventBus, waiter, turn, markingFactory, targetInfoFactory, attackPlanFactory);
+        Highlighter highlighter = new Highlighter(eventBus, map);
         return new Level(map, mapState, turn, highlighter, waiter);
     }
 
-    private static Map createMap(TiledMap tiledMap) {
+    private static Map createMap(EventBus eventBus, TiledMap tiledMap) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 
@@ -42,22 +43,22 @@ public class LevelLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Map map = new Map(width, height);
+        Map map = new Map(eventBus, width, height);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                Terrain terrain = createTerrain(x, y, cell);
+                Terrain terrain = createTerrain(eventBus, x, y, cell);
                 map.getTerrains().set(x, y, terrain);
             }
         }
 
-        addTestCharacters(map);
+        addTestCharacters(eventBus, map);
 
         return map;
     }
 
-    private static Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {
+    private static Terrain createTerrain(EventBus eventBus, int x, int y, TiledMapTileLayer.Cell cell) {
         MapProperties tileProperties = cell.getTile().getProperties();
         Terrain.Type type = Terrain.Type.NORMAL;
         if (tileProperties.containsKey(TERRAIN_TYPE_KEY)) {
@@ -68,17 +69,17 @@ public class LevelLoader {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return new Terrain(x, y, type);
+        return new Terrain(eventBus, x, y, type);
     }
 
-    // TODO: remove us
-    private static void addTestCharacters(Map map) {
+    // TODO: remove useventBus,
+    private static void addTestCharacters(EventBus eventBus, Map map) {
         int hp = 20;
 
-        map.add(new Player(2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
-        map.add(new Player(2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
-        map.add(new Enemy(8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
-        map.add(new Enemy(9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1()));
+        map.add(new Player(eventBus, 2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()));
+        map.add(new Player(eventBus, 2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
+        map.add(new Enemy(eventBus, 8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()));
+        map.add(new Enemy(eventBus, 9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1()));
     }
 
     private static Set<Terrain.Type> normalAndObstructed() {
@@ -94,13 +95,13 @@ public class LevelLoader {
         weapons.add(new Weapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
         weapons.add(new Weapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
-        return new Items(weapons, Lists.<Consumable>newArrayList(new Heal(0, "pot", 3)));
+        return new Items(eventBus, weapons, Lists.<Consumable>newArrayList(new Heal(0, "pot", 3)));
     }
 
     private static Items createItems2() {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
         weapons.add(new Weapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
-        return new Items(weapons, Collections.<Consumable>emptyList());
+        return new Items(eventBus, weapons, Collections.<Consumable>emptyList());
     }
 }

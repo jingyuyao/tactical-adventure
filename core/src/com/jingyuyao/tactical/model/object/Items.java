@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
@@ -22,6 +23,7 @@ import java.util.Observer;
  */
 // TODO: test the invariant
 public class Items implements Observer {
+    private final EventBus eventBus;
     /**
      * Invariant: weapons.indexOf(equippedWeapon) == 0
      */
@@ -35,11 +37,12 @@ public class Items implements Observer {
     /**
      * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it has one.
      */
-    public Items(List<Weapon> weapons, List<Consumable> consumables) {
-        this(weapons, consumables, getDefaultWeapon(weapons));
+    public Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables) {
+        this(eventBus, weapons, consumables, getDefaultWeapon(weapons));
     }
 
-    public Items(List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
+    public Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
+        this.eventBus = eventBus;
         this.weapons = weapons;
         this.consumables = consumables;
         setEquippedWeapon(equippedWeapon);

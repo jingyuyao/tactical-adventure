@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.TargetInfo;
@@ -13,8 +14,8 @@ class Waiting extends AbstractState {
     /**
      * Used to create the initial state.
      */
-    Waiting(MapState mapState, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
-        super(mapState, turn, new Markings(markingFactory), targetInfoFactory, attackPlanFactory);
+    Waiting(EventBus eventBus, MapState mapState, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+        super(eventBus, mapState, turn, new Markings(eventBus, markingFactory), targetInfoFactory, attackPlanFactory);
     }
 
     /**

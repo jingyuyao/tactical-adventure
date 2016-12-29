@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.eventbus.EventBus;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
@@ -20,12 +21,13 @@ public class Map implements Observer {
     private final Set<Player> players;
     private final Set<Enemy> enemies;
 
-    public Map(int width, int height) {
+    public Map(EventBus eventBus, int width, int height) {
         this.width = width;
         this.height = height;
         terrains = new Grid<Terrain>(width, height);
         players = new HashSet<Player>();
         enemies = new HashSet<Enemy>();
+        eventBus.register(this);
     }
 
     public int getWidth() {

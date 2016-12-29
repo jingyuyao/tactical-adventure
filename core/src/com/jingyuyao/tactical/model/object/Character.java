@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.object;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -16,8 +17,8 @@ public abstract class Character extends AbstractObject {
     private final Stats stats;
     private final Items items;
 
-    Character(int x, int y, String name, Stats stats, Items items) {
-        super(x, y);
+    Character(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
+        super(eventBus, x, y);
         this.name = name;
         this.stats = stats;
         this.items = items;

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Marker;
@@ -13,13 +14,15 @@ import java.util.Observable;
  * Super class of all the objects on the game grid.
  */
 public abstract class AbstractObject extends Observable {
+    private final EventBus eventBus;
     /**
      * List of marker drawn over this object.
      */
     private final List<Marker> markers;
     private Coordinate coordinate;
 
-    AbstractObject(int x, int y) {
+    AbstractObject(EventBus eventBus, int x, int y) {
+        this.eventBus = eventBus;
         coordinate = new Coordinate(x, y);
         markers = new ArrayList<Marker>();
     }

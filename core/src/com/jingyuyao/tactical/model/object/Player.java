@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**
@@ -8,8 +9,8 @@ import com.jingyuyao.tactical.model.state.MapState;
 public class Player extends Character {
     private boolean actionable = true;
 
-    public Player(int x, int y, String name, Stats stats, Items items) {
-        super(x, y, name, stats, items);
+    public Player(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
+        super(eventBus, x, y, name, stats, items);
     }
 
     @Override

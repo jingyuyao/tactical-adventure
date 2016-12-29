@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -7,8 +8,8 @@ import com.jingyuyao.tactical.model.state.MapState;
 public class Terrain extends AbstractObject {
     private Type type;
 
-    public Terrain(int x, int y, Type type) {
-        super(x, y);
+    public Terrain(EventBus eventBus, int x, int y, Type type) {
+        super(eventBus, x, y);
         this.type = type;
     }
 

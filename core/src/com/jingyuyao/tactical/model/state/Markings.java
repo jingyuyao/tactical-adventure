@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.TargetInfo;
@@ -15,11 +16,13 @@ import java.util.Observer;
  * Contains all the markings in a state.
  */
 public class Markings implements Observer {
+    private final EventBus eventBus;
     private final MarkingFactory markingFactory;
     private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking = Marking.EMPTY;
 
-    Markings(MarkingFactory markingFactory) {
+    Markings(EventBus eventBus, MarkingFactory markingFactory) {
+        this.eventBus = eventBus;
         this.markingFactory = markingFactory;
         dangerAreas = new HashMap<Character, Marking>();
     }

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
+import com.google.common.eventbus.EventBus;
 
 import java.util.LinkedList;
 import java.util.Observable;
@@ -11,9 +12,14 @@ import java.util.Queue;
  * A semaphore like object that notifies its observers change in its state.
  */
 public class Waiter extends Observable {
+    private final EventBus eventBus;
     private final Queue<Runnable> runnables = new LinkedList<Runnable>();
     private boolean hasObserver = false;
     private int waits = 0;
+
+    public Waiter(EventBus eventBus) {
+        this.eventBus = eventBus;
+    }
 
     public boolean isWaiting() {
         return waits != 0;

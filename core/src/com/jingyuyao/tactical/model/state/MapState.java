@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -13,12 +14,14 @@ import java.util.Observable;
  */
 // TODO: This class needs to be thoroughly tested
 public class MapState extends Observable {
+    private final EventBus eventBus;
     private final Waiter waiter;
     private AbstractState state;
 
-    public MapState(Waiter waiter, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+    public MapState(EventBus eventBus, Waiter waiter, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+        this.eventBus = eventBus;
         this.waiter = waiter;
-        state = new Waiting(this, turn, markingFactory, targetInfoFactory, attackPlanFactory);
+        state = new Waiting(eventBus, this, turn, markingFactory, targetInfoFactory, attackPlanFactory);
     }
 
     public ImmutableList<Action> getActions() {

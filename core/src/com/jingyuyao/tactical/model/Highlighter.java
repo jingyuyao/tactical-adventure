@@ -1,16 +1,20 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 import java.util.Observable;
 
+// TODO: move this to abstract state after eventbus refactor
 public class Highlighter extends Observable {
+    private final EventBus eventBus;
     private final Map map;
     private AbstractObject previousHighlight;
 
-    public Highlighter(Map map) {
+    public Highlighter(EventBus eventBus, Map map) {
+        this.eventBus = eventBus;
         this.map = map;
     }
 

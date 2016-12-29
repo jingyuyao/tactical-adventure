@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
+import com.google.common.eventbus.EventBus;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
@@ -11,8 +12,8 @@ public abstract class Usable extends Item {
      */
     private int usageLeft;
 
-    Usable(int id, String name, int usageLeft) {
-        super(id, name);
+    Usable(EventBus eventBus, int id, String name, int usageLeft) {
+        super(eventBus, id, name);
         Preconditions.checkArgument(usageLeft > 0);
         this.usageLeft = usageLeft;
     }
