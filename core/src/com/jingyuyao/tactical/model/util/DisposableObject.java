@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.util;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
 /**
  * A {@link Disposable} object that notifies an {@link EventBus} with a {@link Disposed} event.
@@ -8,6 +9,12 @@ import com.google.common.eventbus.EventBus;
 public class DisposableObject extends EventObject implements Disposable {
     public DisposableObject(EventBus eventBus) {
         super(eventBus);
+        getEventBus().register(this);
+    }
+
+    @Subscribe
+    public void resetModel(ResetModel resetModel) {
+        dispose();
     }
 
     @Override
