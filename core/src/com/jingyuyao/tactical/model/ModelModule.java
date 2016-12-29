@@ -17,8 +17,6 @@ import java.util.Queue;
 public class ModelModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(Map.class).in(Singleton.class);
-        bind(TerrainGrid.class).in(Singleton.class);
         bind(new Key<CharacterContainer<Player>>(){}.getClass()).in(Singleton.class);
         bind(new Key<CharacterContainer<Enemy>>(){}.getClass()).in(Singleton.class);
     }

@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Queue;
@@ -18,6 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * A semaphore like object that posts change in its state.
  */
+@Singleton
 public class Waiter extends DisposableObject {
     private final Queue<Runnable> runnables;
     private int waits;

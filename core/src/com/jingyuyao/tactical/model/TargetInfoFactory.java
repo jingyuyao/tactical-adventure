@@ -7,7 +7,9 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Character;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class TargetInfoFactory {
     private final Map map;
 

@@ -8,7 +8,9 @@ import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.*;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class Map {
     private final TerrainGrid terrains;
     private final CharacterContainer<Player> players;

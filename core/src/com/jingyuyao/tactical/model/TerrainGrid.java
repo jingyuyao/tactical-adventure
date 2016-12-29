@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Iterator;
@@ -21,7 +22,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Contents of the table is cleared when {@link #dispose()} is called.
  * Also contains convenience methods to work with our {@link Coordinate} system.
  */
-// TODO: make this a singleton injectable for terrain
+@Singleton
 public class TerrainGrid extends DisposableObject implements Iterable<Terrain> {
     /**
      * (0,0) starts at bottom left.

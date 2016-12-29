@@ -8,7 +8,9 @@ import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class Highlighter extends DisposableObject {
     private final Map map;
     private AbstractObject previousHighlight;

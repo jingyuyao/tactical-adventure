@@ -6,10 +6,12 @@ import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Produces {@link Marking}s
  */
+@Singleton
 public class MarkingFactory {
     private final EventBus eventBus;
     private final Map map;

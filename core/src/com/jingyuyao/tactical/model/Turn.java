@@ -7,6 +7,9 @@ import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class Turn extends DisposableObject {
     private final Map map;
     private int turnCount;

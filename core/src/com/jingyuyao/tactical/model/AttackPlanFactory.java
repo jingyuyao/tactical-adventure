@@ -9,7 +9,9 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class AttackPlanFactory {
     private final TargetInfoFactory targetInfoFactory;
 
