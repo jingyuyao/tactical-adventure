@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.object;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -10,6 +9,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.Collections;
 import java.util.List;
@@ -78,10 +78,9 @@ public class Items {
     }
 
     @Subscribe
-    public void itemBroke(Usable.Broke broke) {
-        Item item = broke.getUsable();
-        Iterables.removeIf(getItems(), Predicates.equalTo(item));
-        if (item.equals(equippedWeapon)) {
+    public void itemBroke(Disposed<Item> disposed) {
+        Iterables.removeIf(getItems(), disposed.getMatchesPredicate());
+        if (disposed.matches(equippedWeapon)) {
             setEquippedWeapon(getDefaultWeapon(weapons));
         }
     }

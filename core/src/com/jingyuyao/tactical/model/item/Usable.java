@@ -6,7 +6,7 @@ import com.google.common.eventbus.EventBus;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-public abstract class Usable extends Item {
+public class Usable extends Item {
     /**
      * Don't expose setter
      */
@@ -23,14 +23,14 @@ public abstract class Usable extends Item {
     }
 
     /**
-     * Signals this item has been used once. Fires {@link Broke} when {@link #getUsageLeft()} == 0
+     * Signals this item has been used once. Fires {@link #dispose()} when {@link #getUsageLeft()} == 0
      */
     public void useOnce() {
         Preconditions.checkState(usageLeft > 0);
 
         usageLeft--;
         if (usageLeft == 0) {
-            getEventBus().post(new Broke(this));
+            dispose();
         }
     }
 
@@ -39,17 +39,5 @@ public abstract class Usable extends Item {
         return "Usable{" +
                 "usageLeft=" + usageLeft +
                 "} " + super.toString();
-    }
-
-    public static class Broke {
-        private final Usable usable;
-
-        private Broke(Usable usable) {
-            this.usable = usable;
-        }
-
-        public Usable getUsable() {
-            return usable;
-        }
     }
 }
