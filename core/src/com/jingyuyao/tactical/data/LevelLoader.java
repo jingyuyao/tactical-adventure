@@ -43,19 +43,18 @@ public class LevelLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Map map = new Map(eventBus, width, height);
-
+        Grid<Terrain> terrains = new Grid<Terrain>(width, height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                Terrain terrain = createTerrain(eventBus, x, y, cell);
-                map.getTerrains().set(x, y, terrain);
+                terrains.set(x, y, createTerrain(eventBus, x, y, cell));
             }
         }
 
-        addTestCharacters(eventBus, map);
+        Iterable<Player> players = createTestPlayers(eventBus);
+        Iterable<Enemy> enemies = createTestEnemies(eventBus);
 
-        return map;
+        return new Map(eventBus, terrains, players, enemies);
     }
 
     private static Terrain createTerrain(EventBus eventBus, int x, int y, TiledMapTileLayer.Cell cell) {
@@ -73,13 +72,20 @@ public class LevelLoader {
     }
 
     // TODO: remove us
-    private static void addTestCharacters(EventBus eventBus, Map map) {
+    private static Iterable<Player> createTestPlayers(EventBus eventBus) {
         int hp = 20;
+        return ImmutableSet.of(
+                new Player(eventBus, 2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1(eventBus)),
+                new Player(eventBus, 2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2(eventBus))
+        );
+    }
 
-        map.add(new Player(eventBus, 2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1(eventBus)));
-        map.add(new Player(eventBus, 2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2(eventBus)));
-        map.add(new Enemy(eventBus, 8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1(eventBus)));
-        map.add(new Enemy(eventBus, 9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1(eventBus)));
+    private static Iterable<Enemy> createTestEnemies(EventBus eventBus) {
+        int hp = 20;
+        return ImmutableSet.of(
+                new Enemy(eventBus, 8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1(eventBus)),
+                new Enemy(eventBus, 9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1(eventBus))
+        );
     }
 
     private static Set<Terrain.Type> normalAndObstructed() {

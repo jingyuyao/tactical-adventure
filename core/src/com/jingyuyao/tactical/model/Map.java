@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.graph.ValueGraph;
@@ -10,31 +11,28 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class Map {
-    private final int width;
-    private final int height;
     private final Grid<Terrain> terrains;
     private final Set<Player> players;
     private final Set<Enemy> enemies;
 
-    public Map(EventBus eventBus, int width, int height) {
-        this.width = width;
-        this.height = height;
-        terrains = new Grid<Terrain>(width, height);
-        players = new HashSet<Player>();
-        enemies = new HashSet<Enemy>();
+    // TODO: these all should be assisted injected so we'll have a MapFactory that can be used by loader
+    public Map(EventBus eventBus, Grid<Terrain> terrains, Iterable<Player> players, Iterable<Enemy> enemies) {
         eventBus.register(this);
+        this.terrains = terrains;
+        // Defensive copy
+        this.players = Sets.newHashSet(players);
+        this.enemies = Sets.newHashSet(enemies);
     }
 
     public int getWidth() {
-        return width;
+        return terrains.getWidth();
     }
 
     public int getHeight() {
-        return height;
+        return terrains.getHeight();
     }
 
     public Grid<Terrain> getTerrains() {

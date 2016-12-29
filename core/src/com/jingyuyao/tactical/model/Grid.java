@@ -25,7 +25,7 @@ public class Grid<T> implements Iterable<T> {
      * Creates an empty grid with the given {@code width} and {@code height}.
      * Initial elements are set to null.
      */
-    Grid(int width, int height) {
+    public Grid(int width, int height) {
         this.width = width;
         this.height = height;
         rows = new ArrayList<List<T>>(height);
