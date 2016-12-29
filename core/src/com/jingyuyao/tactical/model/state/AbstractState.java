@@ -81,19 +81,24 @@ abstract class AbstractState implements State {
      * Cancel {@link #prevState} then {@link #goTo(AbstractState)} it
      */
     void back() {
-        prevState.canceled();
-        goTo(prevState);
+        if (prevState != null) {
+            prevState.canceled();
+            goTo(prevState);
+        }
     }
 
     /**
-     * Go {@link #back()} state by state until we reach a {@link Waiting} state.
-     * The function of this method depends on {@link Waiting#backToWaiting()} returning itself.
-     * @return The {@link Waiting} we went back to, useful for "reset then go to a new state" scenario
+     * Go {@link #back()} state by state until we reach a {@link AbstractState} without {@link #prevState}.
+     * @return The {@link AbstractState} we went back to, useful for "reset then go to a new state" scenario
      */
-    Waiting backToWaiting() {
-        // Will recursively loop until we encounter a waiting state
-        back();
-        return prevState.backToWaiting();
+    AbstractState backToOrigin() {
+        // Will recursively loop until we encounter a state without prevState
+        if (prevState != null) {
+            back();
+            return prevState.backToOrigin();
+        } else {
+            return this;
+        }
     }
 
     /**
@@ -101,7 +106,7 @@ abstract class AbstractState implements State {
      */
     void wait(Player player) {
         player.setActionable(false);
-        goTo(new Waiting(this));
+        goTo(new Waiting(eventBus, mapState, turn, markings, targetInfoFactory, attackPlanFactory));
     }
 
     @Override

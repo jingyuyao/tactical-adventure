@@ -20,7 +20,7 @@ public class MapState {
         this.eventBus = eventBus;
         this.waiter = waiter;
         // TODO: add something like MapState.begin() so we can fire off a state change event to the view
-        state = new Waiting(eventBus, this, turn, markingFactory, targetInfoFactory, attackPlanFactory);
+        state = new Waiting(eventBus, this, turn, new Markings(eventBus, markingFactory), targetInfoFactory, attackPlanFactory);
     }
 
     public ImmutableList<Action> getActions() {

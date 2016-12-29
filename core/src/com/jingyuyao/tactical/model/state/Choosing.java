@@ -22,7 +22,7 @@ class Choosing extends AbstractPlayerState {
         if (Objects.equal(getCurrentPlayer(), player)) {
             back();
         } else {
-            goTo(new Moving(backToWaiting(), player));
+            goTo(new Moving(backToOrigin(), player));
         }
     }
 

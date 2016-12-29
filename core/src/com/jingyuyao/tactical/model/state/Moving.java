@@ -32,7 +32,7 @@ class Moving extends AbstractPlayerState {
         if (Objects.equal(getCurrentPlayer(), player)) {
             goTo(new Choosing(this));
         } else {
-            goTo(new Moving(backToWaiting(), player));
+            goTo(new Moving(backToOrigin(), player));
         }
     }
 
