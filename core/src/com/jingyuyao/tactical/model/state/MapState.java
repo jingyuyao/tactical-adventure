@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.model.object.Terrain;
 public class MapState {
     private final EventBus eventBus;
     private final Waiter waiter;
-    private AbstractState state;
+    private State state;
 
     public MapState(EventBus eventBus, Waiter waiter, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
         this.eventBus = eventBus;

@@ -25,15 +25,6 @@ class Waiting extends AbstractState {
         super(prevState);
     }
 
-    @Override
-    void enter() {}
-
-    @Override
-    void canceled() {}
-
-    @Override
-    void exit() {}
-
     /**
      * Do nothing.
      */

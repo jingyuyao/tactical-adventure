@@ -15,13 +15,13 @@ class Moving extends AbstractPlayerState {
     }
 
     @Override
-    void enter() {
+    public void enter() {
         super.enter();
         getMarkings().showMoveAndTargets(getTargetInfo());
     }
 
     @Override
-    void canceled() {
+    public void canceled() {
         if (previousCoordinate != null) {
             getCurrentPlayer().instantMoveTo(previousCoordinate);
         }

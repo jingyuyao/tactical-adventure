@@ -4,7 +4,9 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.Turn;
+import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 abstract class AbstractState implements State {
     private final EventBus eventBus;
@@ -102,22 +104,33 @@ abstract class AbstractState implements State {
         goTo(new Waiting(this));
     }
 
-    /**
-     * Called when entering this state.
-     *
-     * Note: Constructor is unreliable for setting up new state data since we can go back to the previous state
-     * which won't be re-instantiated.
-     */
-    abstract void enter();
+    @Override
+    public void enter() {
 
-    /**
-     * Called when this state is canceled by going to previous state.
-     * Do NOT change state in this method.
-     */
-    abstract void canceled();
+    }
 
-    /**
-     * Called when this state exits.
-     */
-    abstract void exit();
+    @Override
+    public void canceled() {
+
+    }
+
+    @Override
+    public void exit() {
+
+    }
+
+    @Override
+    public void select(Player player) {
+        back();
+    }
+
+    @Override
+    public void select(Enemy enemy) {
+        back();
+    }
+
+    @Override
+    public void select(Terrain terrain) {
+        back();
+    }
 }

@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 
 class Choosing extends AbstractPlayerState {
     Choosing(AbstractPlayerState prevState) {
@@ -13,13 +12,10 @@ class Choosing extends AbstractPlayerState {
     }
 
     @Override
-    void enter() {
+    public void enter() {
         super.enter();
         getMarkings().showImmediateTargets(getTargetInfo());
     }
-
-    @Override
-    void canceled() {}
 
     @Override
     public void select(Player player) {
@@ -37,11 +33,6 @@ class Choosing extends AbstractPlayerState {
         } else {
             back();
         }
-    }
-
-    @Override
-    public void select(Terrain terrain) {
-        back();
     }
 
     @Override

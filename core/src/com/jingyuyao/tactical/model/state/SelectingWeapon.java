@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 
 class SelectingWeapon extends AbstractPlayerState {
     private final Enemy targetEnemy;
@@ -16,30 +14,10 @@ class SelectingWeapon extends AbstractPlayerState {
     }
 
     @Override
-    void enter() {
+    public void enter() {
         super.enter();
         // TODO: use a different marker for each stage
         getMarkings().showImmediateTargets(getTargetInfo());
-    }
-
-    @Override
-    void canceled() {
-
-    }
-
-    @Override
-    public void select(Player player) {
-        back();
-    }
-
-    @Override
-    public void select(Enemy enemy) {
-        back();
-    }
-
-    @Override
-    public void select(Terrain terrain) {
-        back();
     }
 
     @Override

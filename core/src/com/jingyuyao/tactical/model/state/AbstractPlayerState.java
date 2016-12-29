@@ -34,12 +34,12 @@ abstract class AbstractPlayerState extends AbstractState {
     }
 
     @Override
-    void enter() {
+    public void enter() {
         targetInfo = getTargetInfoFactory().create(currentPlayer);
     }
 
     @Override
-    void exit() {
+    public void exit() {
         getMarkings().clearPlayerMarking();
     }
 }
