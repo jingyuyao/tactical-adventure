@@ -10,9 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
-import com.jingyuyao.tactical.model.state.Action;
-import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.state.ReviewingAttack;
+import com.jingyuyao.tactical.model.state.*;
 
 import java.util.Locale;
 
@@ -104,9 +102,10 @@ public class MapUI {
     }
 
     @Subscribe
-    public void stateChange(MapState.StateChange stateChange) {
-        stateLabel.setText(stateChange.getStateName());
-        currentActions = stateChange.getActions();
+    public void stateChange(StateChange stateChange) {
+        State newState = stateChange.getNewState();
+        stateLabel.setText(newState.getName());
+        currentActions = newState.getActions();
         populateButtons();
     }
 

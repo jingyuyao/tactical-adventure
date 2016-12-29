@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.*;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -12,15 +13,14 @@ import com.jingyuyao.tactical.model.object.Terrain;
  */
 // TODO: This class needs to be thoroughly tested
 public class MapState {
-    private final EventBus eventBus;
     private final Waiter waiter;
     private State state;
 
     public MapState(EventBus eventBus, Waiter waiter, Turn turn, MarkingFactory markingFactory, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
-        this.eventBus = eventBus;
         this.waiter = waiter;
+        eventBus.register(this);
         // TODO: add something like MapState.begin() so we can fire off a state change event to the view
-        state = new Waiting(eventBus, this, turn, new Markings(eventBus, markingFactory), targetInfoFactory, attackPlanFactory);
+        state = new Waiting(eventBus, turn, new Markings(eventBus, markingFactory), targetInfoFactory, attackPlanFactory);
     }
 
     public ImmutableList<Action> getActions() {
@@ -42,34 +42,10 @@ public class MapState {
         state.select(terrain);
     }
 
-    /**
-     * Changes state to {@code newState} if it is not null.
-     */
-    void changeStateTo(AbstractState newState) {
-        if (newState != null) {
-            state.exit();
-            state = newState;
-            state.enter();
-
-            eventBus.post(new StateChange(state.getClass().getSimpleName(), state.getActions()));
-        }
-    }
-
-    public static class StateChange {
-        private final String stateName;
-        private final ImmutableList<Action> actions;
-
-        private StateChange(String stateName, Iterable<Action> actions) {
-            this.stateName = stateName;
-            this.actions = ImmutableList.copyOf(actions);
-        }
-
-        public String getStateName() {
-            return stateName;
-        }
-
-        public ImmutableList<Action> getActions() {
-            return actions;
-        }
+    @Subscribe
+    public void stateChange(StateChange stateChange) {
+        state.exit();
+        state = stateChange.getNewState();
+        state.enter();
     }
 }

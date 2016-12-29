@@ -11,10 +11,6 @@ import com.jingyuyao.tactical.model.object.Terrain;
 abstract class AbstractState implements State {
     private final EventBus eventBus;
     private final AbstractState prevState;
-    /**
-     * Lets not expose this to children so the only way to change state is via {@link #goTo(AbstractState)}.
-     */
-    private final MapState mapState;
     private final Turn turn;
     private final Markings markings;
     private final TargetInfo.Factory targetInfoFactory;
@@ -25,23 +21,22 @@ abstract class AbstractState implements State {
      * to the old state.
      */
     AbstractState(AbstractState prevState) {
-        this(prevState.eventBus, prevState, prevState.mapState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
+        this(prevState.eventBus, prevState, prevState.turn, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data and set {@link #prevState} to null.
      */
-    AbstractState(EventBus eventBus, MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
-        this(eventBus, null, mapState, turn, markings, targetInfoFactory, attackPlanFactory);
+    AbstractState(EventBus eventBus, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+        this(eventBus, null, turn, markings, targetInfoFactory, attackPlanFactory);
     }
 
     /**
      * Creates a new state with the given data.
      */
-    private AbstractState(EventBus eventBus, AbstractState prevState, MapState mapState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+    private AbstractState(EventBus eventBus, AbstractState prevState, Turn turn, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
         this.eventBus = eventBus;
         this.prevState = prevState;
-        this.mapState = mapState;
         this.turn = turn;
         this.markings = markings;
         this.targetInfoFactory = targetInfoFactory;
@@ -74,7 +69,7 @@ abstract class AbstractState implements State {
     }
 
     void goTo(AbstractState newState) {
-        mapState.changeStateTo(newState);
+        eventBus.post(new StateChange(newState));
     }
 
     /**
@@ -106,7 +101,7 @@ abstract class AbstractState implements State {
      */
     void wait(Player player) {
         player.setActionable(false);
-        goTo(new Waiting(eventBus, mapState, turn, markings, targetInfoFactory, attackPlanFactory));
+        goTo(new Waiting(eventBus, turn, markings, targetInfoFactory, attackPlanFactory));
     }
 
     @Override
