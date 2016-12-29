@@ -2,6 +2,9 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.jingyuyao.tactical.model.action.Action;
+import com.jingyuyao.tactical.model.action.Back;
+import com.jingyuyao.tactical.model.action.SelectWeapon;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 

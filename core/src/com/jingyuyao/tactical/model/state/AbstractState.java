@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-abstract class AbstractState implements State {
+public abstract class AbstractState implements State {
     private final EventBus eventBus;
     private final AbstractState prevState;
     private final Turn turn;
@@ -60,22 +60,22 @@ abstract class AbstractState implements State {
         return targetInfoFactory;
     }
 
-    AttackPlan.Factory getAttackPlanFactory() {
+    public AttackPlan.Factory getAttackPlanFactory() {
         return attackPlanFactory;
     }
 
-    void nextTurn() {
+    public void nextTurn() {
         turn.nextTurn();
     }
 
-    void goTo(AbstractState newState) {
+    public void goTo(AbstractState newState) {
         eventBus.post(new StateChange(newState));
     }
 
     /**
      * Cancel {@link #prevState} then {@link #goTo(AbstractState)} it
      */
-    void back() {
+    public void back() {
         if (prevState != null) {
             prevState.canceled();
             goTo(prevState);
@@ -99,7 +99,7 @@ abstract class AbstractState implements State {
     /**
      * Finished acting on {@code player} and then go to a new waiting state.
      */
-    void wait(Player player) {
+    public void finish(Player player) {
         player.setActionable(false);
         goTo(new Waiting(eventBus, turn, markings, targetInfoFactory, attackPlanFactory));
     }

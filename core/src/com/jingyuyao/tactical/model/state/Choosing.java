@@ -3,6 +3,10 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.action.Action;
+import com.jingyuyao.tactical.model.action.Back;
+import com.jingyuyao.tactical.model.action.ChooseItemToUse;
+import com.jingyuyao.tactical.model.action.Finish;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 
@@ -41,7 +45,7 @@ class Choosing extends AbstractPlayerState {
         if (!Iterables.isEmpty(getCurrentPlayer().getConsumables())) {
             builder.add(new ChooseItemToUse(this, getCurrentPlayer()));
         }
-        builder.add(new Wait(this, getCurrentPlayer()));
+        builder.add(new Finish(this, getCurrentPlayer()));
         builder.add(new Back(this));
         return builder.build();
     }

@@ -1,11 +1,12 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.action;
 
 import com.jingyuyao.tactical.model.AttackPlan;
+import com.jingyuyao.tactical.model.state.AbstractState;
 
 public class Attack extends AbstractAction {
     private final AttackPlan attackPlan;
 
-    Attack(AbstractState state, AttackPlan attackPlan) {
+    public Attack(AbstractState state, AttackPlan attackPlan) {
         super(state);
         this.attackPlan = attackPlan;
     }
@@ -19,6 +20,6 @@ public class Attack extends AbstractAction {
     public void run() {
         // TODO: kick off battle animation somewhere
         attackPlan.execute();
-        getState().wait(attackPlan.getAttackingPlayer());
+        getState().finish(attackPlan.getAttackingPlayer());
     }
 }

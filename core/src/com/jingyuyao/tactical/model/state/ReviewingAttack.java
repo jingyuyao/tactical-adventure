@@ -2,12 +2,15 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.AttackPlan;
+import com.jingyuyao.tactical.model.action.Action;
+import com.jingyuyao.tactical.model.action.Attack;
+import com.jingyuyao.tactical.model.action.Back;
 import com.jingyuyao.tactical.model.object.Player;
 
 public class ReviewingAttack extends AbstractPlayerState {
     private final AttackPlan attackPlan;
 
-    ReviewingAttack(AbstractState prevState, Player currentPlayer, AttackPlan attackPlan) {
+    public ReviewingAttack(AbstractState prevState, Player currentPlayer, AttackPlan attackPlan) {
         super(prevState, currentPlayer);
         this.attackPlan = attackPlan;
     }

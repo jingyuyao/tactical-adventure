@@ -1,7 +1,9 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.action;
+
+import com.jingyuyao.tactical.model.state.AbstractState;
 
 public class EndTurn extends AbstractAction {
-    EndTurn(AbstractState state) {
+    public EndTurn(AbstractState state) {
         super(state);
     }
 

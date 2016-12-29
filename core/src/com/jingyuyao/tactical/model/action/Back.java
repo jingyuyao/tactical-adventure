@@ -1,7 +1,9 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.action;
+
+import com.jingyuyao.tactical.model.state.AbstractState;
 
 public class Back extends AbstractAction {
-    Back(AbstractState state) {
+    public Back(AbstractState state) {
         super(state);
     }
 

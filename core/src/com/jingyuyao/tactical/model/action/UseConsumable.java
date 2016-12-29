@@ -1,7 +1,8 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.action;
 
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.state.AbstractState;
 
 import java.util.Locale;
 
@@ -9,7 +10,7 @@ public class UseConsumable extends AbstractAction {
     private final Consumable consumable;
     private final Player user;
 
-    UseConsumable(AbstractState state, Consumable consumable, Player user) {
+    public UseConsumable(AbstractState state, Consumable consumable, Player user) {
         super(state);
         this.consumable = consumable;
         this.user = user;
@@ -24,6 +25,6 @@ public class UseConsumable extends AbstractAction {
     public void run() {
         // TODO: kick off animation?
         consumable.consume(user);
-        getState().wait(user);
+        getState().finish(user);
     }
 }

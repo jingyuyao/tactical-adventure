@@ -1,4 +1,6 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.action;
+
+import com.jingyuyao.tactical.model.state.AbstractState;
 
 abstract class AbstractAction implements Action {
     private final AbstractState state;

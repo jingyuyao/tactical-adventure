@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.action;
 
 public interface Action {
     String getName();
