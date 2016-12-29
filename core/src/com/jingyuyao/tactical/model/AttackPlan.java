@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -64,11 +65,8 @@ public class AttackPlan {
             this.targetInfoFactory = targetInfoFactory;
         }
 
-        public AttackPlan create(Player player, Enemy enemy) {
-            Optional<Weapon> playerWeapon = player.getEquippedWeapon();
-            if (!playerWeapon.isPresent()) {
-                throw new IllegalArgumentException();
-            }
+        public AttackPlan create(Player player, Weapon playerWeapon, Enemy enemy) {
+            Preconditions.checkArgument(Iterables.contains(player.getWeapons(), playerWeapon));
 
             TargetInfo playerInfo = targetInfoFactory.create(player);
             Preconditions.checkArgument(playerInfo.canHitImmediately(enemy));
@@ -76,7 +74,7 @@ public class AttackPlan {
             TargetInfo enemyInfo = targetInfoFactory.create(enemy);
             Optional<Weapon> enemyWeapon = getHitBackWeapon(player, enemy, enemyInfo);
 
-            return new AttackPlan(player, enemy, playerWeapon.get(), enemyWeapon.orNull());
+            return new AttackPlan(player, enemy, playerWeapon, enemyWeapon.orNull());
         }
 
         private Optional<Weapon> getHitBackWeapon(Player player, Enemy enemy, TargetInfo enemyInfo) {

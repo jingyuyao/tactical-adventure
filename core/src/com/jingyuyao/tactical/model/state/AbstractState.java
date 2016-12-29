@@ -60,7 +60,7 @@ public abstract class AbstractState implements State {
         return targetInfoFactory;
     }
 
-    public AttackPlan.Factory getAttackPlanFactory() {
+    AttackPlan.Factory getAttackPlanFactory() {
         return attackPlanFactory;
     }
 

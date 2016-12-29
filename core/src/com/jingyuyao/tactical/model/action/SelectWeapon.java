@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.action;
 
+import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.state.AbstractState;
 import com.jingyuyao.tactical.model.state.ReviewingAttack;
@@ -13,14 +13,14 @@ import java.util.Locale;
  */
 public class SelectWeapon extends AbstractAction {
     private final Player attackingPlayer;
-    private final Enemy targetEnemy;
     private final Weapon playerWeapon;
+    private final AttackPlan attackPlan;
 
-    public SelectWeapon(AbstractState state, Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon) {
+    public SelectWeapon(AbstractState state, Player attackingPlayer, Weapon playerWeapon, AttackPlan attackPlan) {
         super(state);
         this.attackingPlayer = attackingPlayer;
-        this.targetEnemy = targetEnemy;
         this.playerWeapon = playerWeapon;
+        this.attackPlan = attackPlan;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SelectWeapon extends AbstractAction {
         getState().goTo(new ReviewingAttack(
                 getState(),
                 attackingPlayer,
-                getState().getAttackPlanFactory().create(attackingPlayer, targetEnemy))
-        );
+                attackPlan
+        ));
     }
 }
