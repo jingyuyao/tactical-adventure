@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
@@ -49,11 +50,12 @@ public class LevelLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Grid<Terrain> terrains = new Grid<Terrain>(width, height);
+        Grid<Terrain> terrains = new Grid<Terrain>(eventBus, HashBasedTable.<Integer, Integer, Terrain>create());
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                terrains.set(x, y, createTerrain(eventBus, x, y, cell));
+                terrains.put(x, y, createTerrain(eventBus, x, y, cell));
             }
         }
 

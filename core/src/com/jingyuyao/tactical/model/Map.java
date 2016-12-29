@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Table;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.*;
@@ -43,25 +45,24 @@ public class Map {
 
     public ValueGraph<Coordinate, Integer> getMoveGraph(Character character) {
         return Algorithms.minPathSearch(
-                createMovementPenaltyGrid(character),
+                createMovementPenaltyTable(character),
                 character.getCoordinate(),
                 character.getMoveDistance());
     }
 
-    private Grid<Integer> createMovementPenaltyGrid(Character character) {
-        Grid<Integer> movementPenaltyGrid = new Grid<Integer>(getWidth(), getHeight());
+    private Table<Integer, Integer, Integer> createMovementPenaltyTable(Character character) {
+        Table<Integer, Integer, Integer> movementPenaltyTable = HashBasedTable.create(getWidth(), getHeight());
 
-        for (int x = 0; x < getWidth(); x++) {
-            for (int y = 0; y < getHeight(); y++) {
-                Terrain terrain = getTerrains().get(x, y);
-                movementPenaltyGrid.set(terrain.getCoordinate(), terrain.getMovementPenalty(character));
-            }
+        for (Terrain terrain : terrains) {
+            Coordinate coordinate = terrain.getCoordinate();
+            movementPenaltyTable.put(coordinate.getX(), coordinate.getY(), terrain.getMovementPenalty(character));
         }
 
         for (Character blocked : getCharacters()) {
-            movementPenaltyGrid.set(blocked.getCoordinate(), Algorithms.NO_EDGE);
+            Coordinate coordinate = blocked.getCoordinate();
+            movementPenaltyTable.put(coordinate.getX(), coordinate.getY(), Algorithms.NO_EDGE);
         }
 
-        return movementPenaltyGrid;
+        return movementPenaltyTable;
     }
 }

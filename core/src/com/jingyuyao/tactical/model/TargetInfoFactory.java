@@ -25,7 +25,8 @@ public class TargetInfoFactory {
                 // TODO: we need to be smarter if we want irregular weapon target areas
                 // we also needs a different class of target indicators for user targetable weapons
                 for (int distance : weapon.getAttackDistances()) {
-                    for (Coordinate target : map.getTerrains().getNDistanceAway(move, distance)) {
+                    for (Coordinate target
+                            : Algorithms.getNDistanceAway(map.getWidth(), map.getHeight(), move, distance)) {
                         targetWeaponMap.put(target, weapon);
                     }
                 }

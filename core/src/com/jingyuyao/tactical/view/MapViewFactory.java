@@ -33,11 +33,8 @@ class MapViewFactory {
     MapView create(TiledMap tiledMap, Level level) {
         Stage world = new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
 
-        for (int x = 0; x < level.getMap().getWidth(); x++) {
-            for (int y = 0; y < level.getMap().getHeight(); y++) {
-                Terrain terrain = level.getMap().getTerrains().get(x, y);
-                world.addActor(actorFactory.create(level, terrain));
-            }
+        for (Terrain terrain : level.getMap().getTerrains()) {
+            world.addActor(actorFactory.create(level, terrain));
         }
 
         // Characters must be added after terrain so they get hit by touch input
