@@ -13,6 +13,7 @@ import java.util.List;
  * A grid with elements of type {@link T}.
  * @param <T> Type of the element
  */
+// TODO: make this a singleton injectable for terrain
 public class Grid<T> implements Iterable<T> {
     /**
      * (0,0) starts at bottom left.

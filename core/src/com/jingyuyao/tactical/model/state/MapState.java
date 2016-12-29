@@ -3,9 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.AttackPlanFactory;
-import com.jingyuyao.tactical.model.MarkingFactory;
-import com.jingyuyao.tactical.model.TargetInfoFactory;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.object.Enemy;
@@ -20,11 +17,12 @@ public class MapState {
     private final Waiter waiter;
     private State state;
 
-    public MapState(EventBus eventBus, Waiter waiter, MarkingFactory markingFactory, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
-        this.waiter = waiter;
+    // TODO: create an annotation for the initial state
+    public MapState(EventBus eventBus, Waiter waiter, State state) {
         eventBus.register(this);
+        this.waiter = waiter;
         // TODO: add something like MapState.begin() so we can fire off a state change event to the view
-        state = new Waiting(eventBus, new Markings(eventBus, markingFactory), targetInfoFactory, attackPlanFactory);
+        this.state = state;
     }
 
     public ImmutableList<Action> getActions() {

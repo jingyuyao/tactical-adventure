@@ -20,7 +20,7 @@ public class Markings {
     private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking = Marking.EMPTY;
 
-    Markings(EventBus eventBus, MarkingFactory markingFactory) {
+    public Markings(EventBus eventBus, MarkingFactory markingFactory) {
         this.markingFactory = markingFactory;
         dangerAreas = new HashMap<Character, Marking>();
         eventBus.register(this);

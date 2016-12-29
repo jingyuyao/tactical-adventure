@@ -14,6 +14,7 @@ import java.util.Set;
  * Listens for {@link #dispose()} in its contained {@link #objects} and remove them from the set.
  * This also implicitly listens for {@link com.jingyuyao.tactical.model.util.ResetModel} via its parent class.
  */
+// TODO: make this a singleton injectable for player and enemy
 // TODO: consider making this a Glazed List?
 public class CharacterContainer<T extends Character> extends DisposableObject implements Iterable<T> {
     private final Set<T> objects;

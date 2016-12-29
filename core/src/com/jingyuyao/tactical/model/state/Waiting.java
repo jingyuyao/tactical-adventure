@@ -9,11 +9,11 @@ import com.jingyuyao.tactical.model.action.EndTurn;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 
-class Waiting extends AbstractState {
+public class Waiting extends AbstractState {
     /**
      * Waiting states do NOT have a {@link AbstractState#prevState}.
      */
-    Waiting(EventBus eventBus, Markings markings, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
+    public Waiting(EventBus eventBus, Markings markings, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
         super(eventBus, null, markings, targetInfoFactory, attackPlanFactory);
     }
 

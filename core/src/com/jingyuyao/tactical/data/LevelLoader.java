@@ -15,6 +15,8 @@ import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.Markings;
+import com.jingyuyao.tactical.model.state.Waiting;
 
 import java.util.*;
 
@@ -23,13 +25,16 @@ public class LevelLoader {
     private static final String TERRAIN_TYPE_KEY = "type";
 
     public static Level loadLevel(EventBus eventBus, TiledMap tiledMap) {
+        // TODO: HOHOHO connect all of these to guice!
         Map map = createMap(eventBus, tiledMap);
         Turn turn = new Turn(eventBus, map);
         Waiter waiter = new Waiter(eventBus);
         MarkingFactory markingFactory = new MarkingFactory(eventBus, map, waiter);
         TargetInfoFactory targetInfoFactory = new TargetInfoFactory(map);
         AttackPlanFactory attackPlanFactory = new AttackPlanFactory(targetInfoFactory);
-        MapState mapState = new MapState(eventBus, waiter, markingFactory, targetInfoFactory, attackPlanFactory);
+        Markings markings = new Markings(eventBus, markingFactory);
+        Waiting initialState = new Waiting(eventBus, markings, targetInfoFactory, attackPlanFactory);
+        MapState mapState = new MapState(eventBus, waiter, initialState);
         Highlighter highlighter = new Highlighter(eventBus, map);
         return new Level(map, mapState, turn, highlighter, waiter);
     }

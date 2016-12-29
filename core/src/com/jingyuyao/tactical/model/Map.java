@@ -29,6 +29,7 @@ public class Map {
         return terrains;
     }
 
+    // TODO: the ultimate goal after guice is to get rid of these things and make them singleton
     public Iterable<Player> getPlayers() {
         return players;
     }
