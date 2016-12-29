@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.ReviewingAttack;
 
 import java.util.Locale;
 
@@ -117,12 +118,12 @@ public class MapUI {
 
     // TODO: create a nice looking widget to show this
     @Subscribe
-    public void showAttackPlan(MapState.ShowAttackPlan showAttackPlan) {
+    public void showAttackPlan(ReviewingAttack.ShowAttackPlan showAttackPlan) {
         attackPlan.setText(showAttackPlan.getAttackPlan().toString());
     }
 
     @Subscribe
-    public void hideAttackPlan(MapState.HideAttackPlan hideAttackPlan) {
+    public void hideAttackPlan(ReviewingAttack.HideAttackPlan hideAttackPlan) {
         attackPlan.setText(null);
     }
 

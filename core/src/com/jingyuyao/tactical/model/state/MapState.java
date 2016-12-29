@@ -55,14 +55,6 @@ public class MapState {
         }
     }
 
-    void showAttackPlan(AttackPlan attackPlan) {
-        eventBus.post(new ShowAttackPlan(attackPlan));
-    }
-
-    void hideAttackPlan() {
-        eventBus.post(new HideAttackPlan());
-    }
-
     public static class StateChange {
         private final String stateName;
         private final ImmutableList<Action> actions;
@@ -79,21 +71,5 @@ public class MapState {
         public ImmutableList<Action> getActions() {
             return actions;
         }
-    }
-
-    public static class ShowAttackPlan {
-        private final AttackPlan attackPlan;
-
-        private ShowAttackPlan(AttackPlan attackPlan) {
-            this.attackPlan = attackPlan;
-        }
-
-        public AttackPlan getAttackPlan() {
-            return attackPlan;
-        }
-    }
-
-    public static class HideAttackPlan {
-        private HideAttackPlan() {}
     }
 }

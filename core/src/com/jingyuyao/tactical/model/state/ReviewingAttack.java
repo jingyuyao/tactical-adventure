@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
-class ReviewingAttack extends AbstractPlayerState {
+public class ReviewingAttack extends AbstractPlayerState {
     private final AttackPlan attackPlan;
 
     ReviewingAttack(AbstractState prevState, Player currentPlayer, AttackPlan attackPlan) {
@@ -20,7 +20,7 @@ class ReviewingAttack extends AbstractPlayerState {
         // TODO: use a different marker for each stage
         // TODO: show equipped weapon targets only
         getMarkings().showImmediateTargets(getTargetInfo());
-        showAttackPlan(attackPlan);
+        getEventBus().post(new ShowAttackPlan(attackPlan));
     }
 
     @Override
@@ -31,7 +31,7 @@ class ReviewingAttack extends AbstractPlayerState {
     @Override
     void exit() {
         getMarkings().clearPlayerMarking();
-        hideAttackPlan();
+        getEventBus().post(new HideAttackPlan());
     }
 
     @Override
@@ -55,5 +55,21 @@ class ReviewingAttack extends AbstractPlayerState {
                 new Attack(this, attackPlan),
                 new Back(this)
         );
+    }
+
+    public static class ShowAttackPlan {
+        private final AttackPlan attackPlan;
+
+        private ShowAttackPlan(AttackPlan attackPlan) {
+            this.attackPlan = attackPlan;
+        }
+
+        public AttackPlan getAttackPlan() {
+            return attackPlan;
+        }
+    }
+
+    public static class HideAttackPlan {
+        private HideAttackPlan() {}
     }
 }

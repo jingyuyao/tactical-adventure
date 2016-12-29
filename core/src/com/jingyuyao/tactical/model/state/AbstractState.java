@@ -49,6 +49,10 @@ abstract class AbstractState {
         this.attackPlanFactory = attackPlanFactory;
     }
 
+    EventBus getEventBus() {
+        return eventBus;
+    }
+
     Markings getMarkings() {
         return markings;
     }
@@ -63,14 +67,6 @@ abstract class AbstractState {
 
     void nextTurn() {
         turn.nextTurn();
-    }
-
-    void showAttackPlan(AttackPlan attackPlan) {
-        mapState.showAttackPlan(attackPlan);
-    }
-
-    void hideAttackPlan() {
-        mapState.hideAttackPlan();
     }
 
     void goTo(AbstractState newState) {
