@@ -19,6 +19,16 @@ public class ModelModule extends AbstractModule {
         install(new StateModule());
         install(new ObjectModule());
         install(new ItemModule());
+
+        bind(Level.class);
+        bind(Map.class);
+        bind(AttackPlanFactory.class);
+        bind(Highlighter.class);
+        bind(MarkingFactory.class);
+        bind(TargetInfoFactory.class);
+        bind(TerrainGrid.class);
+        bind(Turn.class);
+        bind(Waiter.class);
     }
 
     @Provides
