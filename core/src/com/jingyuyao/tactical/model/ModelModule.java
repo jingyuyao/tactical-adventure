@@ -4,6 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.object.ObjectModule;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.StateModule;
@@ -17,6 +18,7 @@ public class ModelModule extends AbstractModule {
     protected void configure() {
         install(new StateModule());
         install(new ObjectModule());
+        install(new ItemModule());
     }
 
     @Provides
