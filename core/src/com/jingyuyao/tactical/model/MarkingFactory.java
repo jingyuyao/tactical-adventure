@@ -5,6 +5,8 @@ import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 
+import javax.inject.Inject;
+
 /**
  * Produces {@link Marking}s
  */
@@ -13,6 +15,7 @@ public class MarkingFactory {
     private final Map map;
     private final Waiter waiter;
 
+    @Inject
     public MarkingFactory(EventBus eventBus, Map map, Waiter waiter) {
         this.eventBus = eventBus;
         this.map = map;

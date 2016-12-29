@@ -50,7 +50,7 @@ public class LevelLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Grid<Terrain> terrains = new Grid<Terrain>(eventBus, HashBasedTable.<Integer, Integer, Terrain>create());
+        TerrainGrid terrains = new TerrainGrid(eventBus, HashBasedTable.<Integer, Integer, Terrain>create());
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

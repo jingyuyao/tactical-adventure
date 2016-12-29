@@ -3,10 +3,17 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
+import javax.inject.Inject;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.Queue;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * A semaphore like object that posts change in its state.
@@ -15,7 +22,8 @@ public class Waiter extends DisposableObject {
     private final Queue<Runnable> runnables;
     private int waits;
 
-    public Waiter(EventBus eventBus, Queue<Runnable> runnables) {
+    @Inject
+    public Waiter(EventBus eventBus, @InitialWaiterQueue Queue<Runnable> runnables) {
         super(eventBus);
         this.runnables = runnables;
         this.waits = 0;
@@ -83,4 +91,7 @@ public class Waiter extends DisposableObject {
             return waiting;
         }
     }
+
+    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
+    public @interface InitialWaiterQueue {}
 }

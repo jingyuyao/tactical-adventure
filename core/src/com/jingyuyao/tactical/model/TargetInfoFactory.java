@@ -6,9 +6,12 @@ import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Character;
 
+import javax.inject.Inject;
+
 public class TargetInfoFactory {
     private final Map map;
 
+    @Inject
     public TargetInfoFactory(Map map) {
         this.map = map;
     }

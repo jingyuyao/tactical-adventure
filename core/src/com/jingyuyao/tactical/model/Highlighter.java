@@ -7,10 +7,13 @@ import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
+import javax.inject.Inject;
+
 public class Highlighter extends DisposableObject {
     private final Map map;
     private AbstractObject previousHighlight;
 
+    @Inject
     public Highlighter(EventBus eventBus, Map map) {
         super(eventBus);
         this.map = map;

@@ -8,9 +8,12 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 
+import javax.inject.Inject;
+
 public class AttackPlanFactory {
     private final TargetInfoFactory targetInfoFactory;
 
+    @Inject
     public AttackPlanFactory(TargetInfoFactory targetInfoFactory) {
         this.targetInfoFactory = targetInfoFactory;
     }

@@ -7,12 +7,15 @@ import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.*;
 
+import javax.inject.Inject;
+
 public class Map {
-    private final Grid<Terrain> terrains;
+    private final TerrainGrid terrains;
     private final CharacterContainer<Player> players;
     private final CharacterContainer<Enemy> enemies;
 
-    public Map(Grid<Terrain> terrains, CharacterContainer<Player> players, CharacterContainer<Enemy> enemies) {
+    @Inject
+    public Map(TerrainGrid terrains, CharacterContainer<Player> players, CharacterContainer<Enemy> enemies) {
         this.terrains = terrains;
         this.players = players;
         this.enemies = enemies;
@@ -26,7 +29,7 @@ public class Map {
         return terrains.getHeight();
     }
 
-    public Grid<Terrain> getTerrains() {
+    public TerrainGrid getTerrains() {
         return terrains;
     }
 
