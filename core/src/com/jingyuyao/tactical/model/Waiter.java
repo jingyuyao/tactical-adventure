@@ -16,6 +16,7 @@ public class Waiter {
     private final Queue<Runnable> runnables;
     private int waits = 0;
 
+    // TODO: inject initial runnable queue?
     public Waiter(EventBus eventBus) {
         this.eventBus = eventBus;
         runnables = new LinkedList<Runnable>();

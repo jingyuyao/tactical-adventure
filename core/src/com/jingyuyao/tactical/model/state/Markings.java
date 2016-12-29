@@ -20,6 +20,7 @@ public class Markings {
     private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking = Marking.EMPTY;
 
+    // TODO: inject initial danger area?
     public Markings(EventBus eventBus, MarkingFactory markingFactory) {
         this.markingFactory = markingFactory;
         dangerAreas = new HashMap<Character, Marking>();

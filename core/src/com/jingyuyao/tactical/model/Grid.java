@@ -26,6 +26,7 @@ public class Grid<T> implements Iterable<T> {
      * Creates an empty grid with the given {@code width} and {@code height}.
      * Initial elements are set to null.
      */
+    // TODO: inject rows? or make grid resizable (dispose in the process)
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;

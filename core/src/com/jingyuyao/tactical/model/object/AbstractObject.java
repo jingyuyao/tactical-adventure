@@ -21,6 +21,7 @@ public abstract class AbstractObject extends DisposableObject {
     private final List<Marker> markers;
     private Coordinate coordinate;
 
+    // TODO: inject initial coordinate and markers?
     AbstractObject(EventBus eventBus, int x, int y) {
         super(eventBus);
         coordinate = new Coordinate(x, y);
