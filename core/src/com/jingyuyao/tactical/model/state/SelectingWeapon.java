@@ -28,13 +28,16 @@ class SelectingWeapon extends AbstractPlayerState {
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
         ImmutableSet<Weapon> availableWeapons = getTargetInfo()
                 .weaponsFor(getCurrentPlayer().getCoordinate(), targetEnemy.getCoordinate());
-        for (Weapon weapon : availableWeapons) {
-            builder.add(new SelectWeapon(
-                    this,
-                    getCurrentPlayer(),
-                    weapon,
-                    getAttackPlanFactory().create(getCurrentPlayer(), weapon, targetEnemy))
-            );
+        // Build action using player's weapon list to maintain equipped weapon order
+        for (Weapon weapon : getCurrentPlayer().getWeapons()) {
+            if (availableWeapons.contains(weapon)) {
+                builder.add(new SelectWeapon(
+                        this,
+                        getCurrentPlayer(),
+                        weapon,
+                        getAttackPlanFactory().create(getCurrentPlayer(), weapon, targetEnemy))
+                );
+            }
         }
         builder.add(new Back(this));
         return builder.build();
