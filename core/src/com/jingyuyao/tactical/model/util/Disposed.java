@@ -6,7 +6,7 @@ import com.google.common.base.Predicates;
 /**
  * Event fired when an object is disposed.
  */
-public class Disposed<T> {
+public class Disposed<T> implements ModelEvent {
     private final T object;
 
     private Disposed(T object) {

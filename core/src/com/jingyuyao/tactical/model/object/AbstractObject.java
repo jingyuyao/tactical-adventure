@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public abstract class AbstractObject extends DisposableObject {
                 "}";
     }
 
-    public static class AddMarker {
+    public static class AddMarker implements ModelEvent {
         private final AbstractObject object;
         private final Marker marker;
 
@@ -87,7 +88,7 @@ public abstract class AbstractObject extends DisposableObject {
         }
     }
 
-    public static class RemoveMarker {
+    public static class RemoveMarker implements ModelEvent {
         private final AbstractObject object;
         private final Marker marker;
 

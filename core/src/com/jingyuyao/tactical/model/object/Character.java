@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 public abstract class Character extends AbstractObject {
     /**
@@ -100,7 +101,7 @@ public abstract class Character extends AbstractObject {
                 "} " + super.toString();
     }
 
-    public static class Move {
+    public static class Move implements ModelEvent {
         private final Character character;
         private final ImmutableList<Coordinate> path;
 
@@ -118,7 +119,7 @@ public abstract class Character extends AbstractObject {
         }
     }
 
-    public static class InstantMove {
+    public static class InstantMove implements ModelEvent {
         private final Character character;
         private final Coordinate destination;
 

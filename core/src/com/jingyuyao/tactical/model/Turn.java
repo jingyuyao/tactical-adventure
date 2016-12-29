@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 public class Turn {
     private final Map map;
@@ -25,5 +26,5 @@ public class Turn {
         }
     }
 
-    public static class NewTurn {}
+    public static class NewTurn implements ModelEvent {}
 }

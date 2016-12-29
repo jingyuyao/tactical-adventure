@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.action.Attack;
 import com.jingyuyao.tactical.model.action.Back;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 public class ReviewingAttack extends AbstractPlayerState {
     private final AttackPlan attackPlan;
@@ -38,7 +39,7 @@ public class ReviewingAttack extends AbstractPlayerState {
         );
     }
 
-    public static class ShowAttackPlan {
+    public static class ShowAttackPlan implements ModelEvent {
         private final AttackPlan attackPlan;
 
         private ShowAttackPlan(AttackPlan attackPlan) {
@@ -50,7 +51,7 @@ public class ReviewingAttack extends AbstractPlayerState {
         }
     }
 
-    public static class HideAttackPlan {
+    public static class HideAttackPlan implements ModelEvent {
         private HideAttackPlan() {}
     }
 }

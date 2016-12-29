@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 public class Highlighter {
     private final EventBus eventBus;
@@ -33,7 +34,7 @@ public class Highlighter {
         previousHighlight = newHighlight;
     }
 
-    public static class HighlightCharacter {
+    public static class HighlightCharacter implements ModelEvent {
         private final Character character;
         private final Terrain terrain;
 
@@ -51,7 +52,7 @@ public class Highlighter {
         }
     }
 
-    public static class HighlightTerrain {
+    public static class HighlightTerrain implements ModelEvent {
         private final Terrain terrain;
 
         private HighlightTerrain(Terrain terrain) {

@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
-public class StateChange {
+import com.jingyuyao.tactical.model.util.ModelEvent;
+
+public class StateChange implements ModelEvent {
     private final State newState;
 
     StateChange(State newState) {

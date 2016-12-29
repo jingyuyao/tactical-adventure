@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -66,7 +67,7 @@ public class Waiter {
         }
     }
 
-    public static class WaitChange {
+    public static class WaitChange implements ModelEvent {
         private final boolean waiting;
 
         private WaitChange(boolean waiting) {

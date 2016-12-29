@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.object;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.util.ModelEvent;
 
 /**
  * A player character
@@ -27,7 +28,7 @@ public class Player extends Character {
         getEventBus().post(new NewActionState(this, actionable));
     }
 
-    public static class NewActionState {
+    public static class NewActionState implements ModelEvent {
         private final Player player;
         private final boolean actionable;
 
