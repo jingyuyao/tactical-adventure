@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.AttackPlan;
-import com.jingyuyao.tactical.model.TargetInfo;
+import com.jingyuyao.tactical.model.AttackPlanFactory;
+import com.jingyuyao.tactical.model.TargetInfoFactory;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -11,8 +11,8 @@ public abstract class AbstractState implements State {
     private final EventBus eventBus;
     private final AbstractState prevState;
     private final Markings markings;
-    private final TargetInfo.Factory targetInfoFactory;
-    private final AttackPlan.Factory attackPlanFactory;
+    private final TargetInfoFactory targetInfoFactory;
+    private final AttackPlanFactory attackPlanFactory;
 
     /**
      * Creates a new state with all of previous state's data and set {@link #prevState} of the new state
@@ -25,7 +25,7 @@ public abstract class AbstractState implements State {
     /**
      * Creates a new state with the given data.
      */
-    AbstractState(EventBus eventBus, AbstractState prevState, Markings markings, TargetInfo.Factory targetInfoFactory, AttackPlan.Factory attackPlanFactory) {
+    AbstractState(EventBus eventBus, AbstractState prevState, Markings markings, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
         this.eventBus = eventBus;
         this.prevState = prevState;
         this.markings = markings;
@@ -98,11 +98,11 @@ public abstract class AbstractState implements State {
         return markings;
     }
 
-    TargetInfo.Factory getTargetInfoFactory() {
+    TargetInfoFactory getTargetInfoFactory() {
         return targetInfoFactory;
     }
 
-    AttackPlan.Factory getAttackPlanFactory() {
+    AttackPlanFactory getAttackPlanFactory() {
         return attackPlanFactory;
     }
 

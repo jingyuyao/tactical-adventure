@@ -25,6 +25,9 @@ https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
 # Project structure & guidelines
 The game follows MVC and uses the command pattern to communicate between different components.
 
+## Dependency injection
+WHAT IF WE DONT CREATE NEW LEVELS?
+
 ## Big picture
 Model is constructed by the data package.
 The model is then used to create the view which attaches observers to the model to listen for changes.
