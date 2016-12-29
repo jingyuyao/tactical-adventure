@@ -1,30 +1,20 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.object.Character;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
-import com.jingyuyao.tactical.model.util.Disposed;
-
-import java.util.Set;
+import com.jingyuyao.tactical.model.object.*;
 
 public class Map {
     private final Grid<Terrain> terrains;
-    private final Set<Player> players;
-    private final Set<Enemy> enemies;
+    private final CharacterContainer<Player> players;
+    private final CharacterContainer<Enemy> enemies;
 
     // TODO: these all should be assisted injected so we'll have a MapFactory that can be used by loader
-    public Map(EventBus eventBus, Grid<Terrain> terrains, Iterable<Player> players, Iterable<Enemy> enemies) {
-        eventBus.register(this);
+    public Map(Grid<Terrain> terrains, CharacterContainer<Player> players, CharacterContainer<Enemy> enemies) {
         this.terrains = terrains;
-        // Defensive copy
-        this.players = Sets.newHashSet(players);
-        this.enemies = Sets.newHashSet(enemies);
+        this.players = players;
+        this.enemies = enemies;
     }
 
     public int getWidth() {
@@ -37,14 +27,6 @@ public class Map {
 
     public Grid<Terrain> getTerrains() {
         return terrains;
-    }
-
-    public void add(Player player) {
-        players.add(player);
-    }
-
-    public void add(Enemy enemy) {
-        enemies.add(enemy);
     }
 
     public Iterable<Player> getPlayers() {
@@ -81,10 +63,5 @@ public class Map {
         }
 
         return movementPenaltyGrid;
-    }
-
-    @Subscribe
-    public void characterDeath(Disposed<Character> disposed) {
-        Iterables.removeIf(getCharacters(), disposed.getMatchesPredicate());
     }
 }

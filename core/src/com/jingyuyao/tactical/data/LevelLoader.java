@@ -51,10 +51,9 @@ public class LevelLoader {
             }
         }
 
-        Iterable<Player> players = createTestPlayers(eventBus);
-        Iterable<Enemy> enemies = createTestEnemies(eventBus);
-
-        return new Map(eventBus, terrains, players, enemies);
+        CharacterContainer<Player> players = new CharacterContainer<Player>(eventBus, createTestPlayers(eventBus));
+        CharacterContainer<Enemy> enemies = new CharacterContainer<Enemy>(eventBus, createTestEnemies(eventBus));
+        return new Map(terrains, players, enemies);
     }
 
     private static Terrain createTerrain(EventBus eventBus, int x, int y, TiledMapTileLayer.Cell cell) {
