@@ -12,7 +12,8 @@ import com.jingyuyao.tactical.view.LevelScreenFactory;
 
 public class TacticalAdventure extends Game {
     private AssetManager assetManager;
-    private EventBus eventBus; // Lets only have one event bus
+    // TODO: create a new one per level
+    private EventBus eventBus;
     private LevelScreenFactory levelScreenFactory;
 
     @Override

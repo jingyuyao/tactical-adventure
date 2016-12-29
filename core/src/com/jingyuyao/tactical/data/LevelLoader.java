@@ -24,12 +24,12 @@ public class LevelLoader {
 
     public static Level loadLevel(EventBus eventBus, TiledMap tiledMap) {
         Map map = createMap(eventBus, tiledMap);
-        Turn turn = new Turn(map);
+        Turn turn = new Turn(eventBus, map);
         Waiter waiter = new Waiter(eventBus);
         MarkingFactory markingFactory = new MarkingFactory(eventBus, map, waiter);
         TargetInfo.Factory targetInfoFactory = new TargetInfo.Factory(map);
         AttackPlan.Factory attackPlanFactory = new AttackPlan.Factory(targetInfoFactory);
-        MapState mapState = new MapState(eventBus, waiter, turn, markingFactory, targetInfoFactory, attackPlanFactory);
+        MapState mapState = new MapState(eventBus, waiter, markingFactory, targetInfoFactory, attackPlanFactory);
         Highlighter highlighter = new Highlighter(eventBus, map);
         return new Level(map, mapState, turn, highlighter, waiter);
     }
