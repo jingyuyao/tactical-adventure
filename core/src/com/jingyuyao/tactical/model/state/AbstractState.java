@@ -64,6 +64,7 @@ public abstract class AbstractState implements State {
         return attackPlanFactory;
     }
 
+    // TODO: fire event instead
     public void nextTurn() {
         turn.nextTurn();
     }

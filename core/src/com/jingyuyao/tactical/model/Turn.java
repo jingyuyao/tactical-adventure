@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.jingyuyao.tactical.model.object.Player;
 
+// TODO: make a new turn event and listen to it
 public class Turn {
     private final Map map;
     private int turnCount = 1;
