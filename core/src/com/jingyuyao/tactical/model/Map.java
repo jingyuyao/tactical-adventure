@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
@@ -10,6 +9,7 @@ import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.Set;
 
@@ -84,7 +84,7 @@ public class Map {
     }
 
     @Subscribe
-    public void characterDeath(Character.Died died) {
-        Iterables.removeIf(getCharacters(), Predicates.equalTo(died.getCharacter()));
+    public void characterDeath(Disposed disposed) {
+        Iterables.removeIf(getCharacters(), disposed.getMatchesPredicate());
     }
 }

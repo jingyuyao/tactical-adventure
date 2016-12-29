@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.Map;
 
@@ -80,8 +81,8 @@ public class CharacterActor<T extends Character> extends BaseActor<T> {
     }
 
     @Subscribe
-    public void death(Character.Died died) {
-        if (getObject().equals(died.getCharacter())) {
+    public void death(Disposed disposed) {
+        if (disposed.matches(getObject())) {
             remove();
         }
     }

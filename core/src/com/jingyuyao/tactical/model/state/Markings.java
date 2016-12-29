@@ -6,6 +6,8 @@ import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +57,9 @@ public class Markings {
     }
 
     @Subscribe
-    public void characterDeath(Character.Died died) {
-        dangerAreas.remove(died.getCharacter());
+    public void characterDeath(Disposed disposed) {
+        if (disposed.isOfClass(Enemy.class)) {
+            dangerAreas.remove(disposed.getObjectAs(Enemy.class));
+        }
     }
 }

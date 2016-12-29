@@ -83,16 +83,12 @@ public abstract class Character extends AbstractObject {
     public void damageBy(int delta) {
         boolean dead = stats.damageBy(delta);
         if (dead) {
-            die();
+            dispose();
         }
     }
 
     public void healBy(int delta) {
         stats.healBy(delta);
-    }
-
-    private void die() {
-        getEventBus().post(new Died(this));
     }
 
     @Override
@@ -137,18 +133,6 @@ public abstract class Character extends AbstractObject {
 
         public Coordinate getDestination() {
             return destination;
-        }
-    }
-
-    public static class Died {
-        private final Character character;
-
-        private Died(Character character) {
-            this.character = character;
-        }
-
-        public Character getCharacter() {
-            return character;
         }
     }
 }

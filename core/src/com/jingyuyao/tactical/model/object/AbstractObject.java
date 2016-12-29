@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,7 @@ import java.util.List;
 /**
  * Super class of all the objects on the game grid.
  */
-public abstract class AbstractObject {
-    private final EventBus eventBus;
+public abstract class AbstractObject extends DisposableObject {
     /**
      * List of marker drawn over this object.
      */
@@ -21,13 +21,9 @@ public abstract class AbstractObject {
     private Coordinate coordinate;
 
     AbstractObject(EventBus eventBus, int x, int y) {
-        this.eventBus = eventBus;
+        super(eventBus);
         coordinate = new Coordinate(x, y);
         markers = new ArrayList<Marker>();
-    }
-
-    protected EventBus getEventBus() {
-        return eventBus;
     }
 
     public Coordinate getCoordinate() {
@@ -36,12 +32,12 @@ public abstract class AbstractObject {
 
     public void addMarker(Marker marker) {
         markers.add(marker);
-        eventBus.post(new AddMarker(this, marker));
+        getEventBus().post(new AddMarker(this, marker));
     }
 
     public void removeMarker(Marker marker) {
         markers.remove(marker);
-        eventBus.post(new RemoveMarker(this, marker));
+        getEventBus().post(new RemoveMarker(this, marker));
     }
 
     /**

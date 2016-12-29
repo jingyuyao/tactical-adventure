@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.Map;
 
@@ -78,8 +79,8 @@ public class Marking {
     }
 
     @Subscribe
-    public void characterDeath(Character.Died died) {
-        if (owner.equals(died.getCharacter())) {
+    public void characterDeath(Disposed disposed) {
+        if (disposed.matches(owner)) {
             clear();
         }
     }
