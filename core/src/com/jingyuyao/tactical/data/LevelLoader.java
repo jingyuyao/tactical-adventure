@@ -30,7 +30,12 @@ public class LevelLoader {
     private final TerrainGrid terrainGrid;
 
     @Inject
-    public LevelLoader(ObjectFactory objectFactory, ItemFactory itemFactory, CharacterContainer<Player> playerContainer, CharacterContainer<Enemy> enemyContainer, TerrainGrid terrainGrid) {
+    LevelLoader(
+            ObjectFactory objectFactory,
+            ItemFactory itemFactory,
+            CharacterContainer<Player> playerContainer,
+            CharacterContainer<Enemy> enemyContainer,
+            TerrainGrid terrainGrid) {
         this.objectFactory = objectFactory;
         this.itemFactory = itemFactory;
         this.playerContainer = playerContainer;

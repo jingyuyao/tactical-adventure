@@ -31,7 +31,7 @@ public class ActorFactory {
     private final java.util.Map<String, Sprite> characterSpriteMap;
 
     @Inject
-    public ActorFactory(
+    ActorFactory(
             EventBus eventBus,
             Waiter waiter,
             MapState mapState,

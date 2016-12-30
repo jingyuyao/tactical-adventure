@@ -11,7 +11,7 @@ public class LevelScreenFactory {
     private final MapUI mapUI;
 
     @Inject
-    public LevelScreenFactory(MapViewFactory mapViewFactory, MapUI mapUI) {
+    LevelScreenFactory(MapViewFactory mapViewFactory, MapUI mapUI) {
         this.mapViewFactory = mapViewFactory;
         this.mapUI = mapUI;
     }
