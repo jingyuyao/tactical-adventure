@@ -1,48 +1,70 @@
 package com.jingyuyao.tactical.model.object;
 
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.Disposed;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.Iterator;
 import java.util.Set;
 
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * A container for a set of {@link Character}s.
- * Listens for {@link #dispose()} in its contained {@link #objects} and remove them from the set.
+ * Listens for {@link #dispose()} in its contained {@link #characters} and remove them from the set.
  * This also implicitly listens for {@link com.jingyuyao.tactical.model.util.ResetModel} via its parent class.
  */
 // TODO: consider making this a Glazed List?
-class CharacterContainer<T extends Character> extends DisposableObject implements Iterable<T> {
-    private final Set<T> objects;
+@Singleton
+public class CharacterContainer extends DisposableObject implements Iterable<Character> {
+    private final Set<Character> characters;
 
-    CharacterContainer(EventBus eventBus, Set<T> objects) {
+    @Inject
+    CharacterContainer(EventBus eventBus, @InitialCharacterSet Set<Character> characters) {
         super(eventBus);
-        this.objects = objects;
+        this.characters = characters;
     }
 
-    public void add(T object) {
-        objects.add(object);
+    public void add(Character character) {
+        characters.add(character);
     }
 
-    public Set<T> getObjects() {
-        return objects;
+    public void addAll(Iterable<? extends Character> characters) {
+        Iterables.addAll(this.characters, characters);
+    }
+
+    public Iterable<Player> getPlayers() {
+        return Iterables.filter(characters, Player.class);
+    }
+
+    public Iterable<Enemy> getEnemies() {
+        return Iterables.filter(characters, Enemy.class);
     }
 
     @Subscribe
-    public void objectDispose(Disposed<T> disposed) {
-        objects.remove(disposed.getObject());
+    public void characterDisposed(Disposed<Character> disposed) {
+        characters.remove(disposed.getObject());
     }
 
     @Override
     protected void disposed() {
-        objects.clear();
+        characters.clear();
         super.disposed();
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return objects.iterator();
+    public Iterator<Character> iterator() {
+        return characters.iterator();
     }
+
+    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
+    @interface InitialCharacterSet {}
 }

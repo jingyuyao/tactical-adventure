@@ -20,7 +20,6 @@ public class ModelModule extends AbstractModule {
         install(new ObjectModule());
         install(new ItemModule());
 
-        bind(Map.class);
         bind(AttackPlanFactory.class);
         bind(Highlighter.class);
         bind(MarkingFactory.class);

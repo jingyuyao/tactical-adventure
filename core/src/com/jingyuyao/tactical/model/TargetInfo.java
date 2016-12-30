@@ -9,6 +9,7 @@ import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.object.CharacterContainer;
 
 import java.util.Set;
 
@@ -17,11 +18,11 @@ import java.util.Set;
  */
 // TODO: needs to be thoroughly tested
 public class TargetInfo {
-    private final Map map;
+    private final CharacterContainer characters;
     private final Character character;
     private final Graph<Coordinate> moveGraph;
     /**
-     * Map of move coordinate to maps of target coordinates to weapons for that target.
+     * Multi-map of move coordinate to maps of target coordinates to weapons for that target.
      * Like so:
      *                                  move
      *                              /    ...     \
@@ -32,11 +33,12 @@ public class TargetInfo {
     private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
     TargetInfo(
-            Map map,
+            CharacterContainer characters,
             Character character,
             Graph<Coordinate> moveGraph,
-            SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap) {
-        this.map = map;
+            SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap
+    ) {
+        this.characters = characters;
         this.character = character;
         this.moveGraph = moveGraph;
         this.moveMap = moveMap;
@@ -146,7 +148,7 @@ public class TargetInfo {
      */
     public ImmutableList<Character> allTargetCharacters() {
         return ImmutableList.copyOf(Iterables.filter(
-                map.getCharacters(),
+                characters,
                 Predicates.and(
                         new ContainsCoordinatePredicate(allTargets()),
                         new CanTargetPredicate(character))));
@@ -157,7 +159,7 @@ public class TargetInfo {
      */
     public ImmutableList<Character> immediateTargetCharacters() {
         return ImmutableList.copyOf(Iterables.filter(
-                map.getCharacters(),
+                characters,
                 Predicates.and(
                         new ContainsCoordinatePredicate(immediateTargets()),
                         new CanTargetPredicate(character))));

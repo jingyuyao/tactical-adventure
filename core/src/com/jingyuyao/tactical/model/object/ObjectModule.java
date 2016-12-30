@@ -11,21 +11,13 @@ public class ObjectModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(ObjectFactory.class);
-        bind(PlayerContainer.class);
-        bind(EnemyContainer.class);
+        bind(CharacterContainer.class);
     }
 
     @Provides
     @Singleton
-    @PlayerContainer.InitialPlayerSet
-    Set<Player> provideInitialPlayerSet() {
-        return new HashSet<Player>();
-    }
-
-    @Provides
-    @Singleton
-    @EnemyContainer.InitialEnemySet
-    Set<Enemy> provideInitialEnemySet() {
-        return new HashSet<Enemy>();
+    @CharacterContainer.InitialCharacterSet
+    Set<Character> provideInitialCharacterSet() {
+        return new HashSet<Character>();
     }
 }

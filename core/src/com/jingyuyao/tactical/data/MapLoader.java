@@ -26,8 +26,7 @@ public class MapLoader {
 
     private final ObjectFactory objectFactory;
     private final ItemFactory itemFactory;
-    private final PlayerContainer playerContainer;
-    private final EnemyContainer enemyContainer;
+    private final CharacterContainer characters;
     private final TerrainGrid terrainGrid;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
@@ -35,15 +34,13 @@ public class MapLoader {
     MapLoader(
             ObjectFactory objectFactory,
             ItemFactory itemFactory,
-            PlayerContainer playerContainer,
-            EnemyContainer enemyContainer,
+            CharacterContainer characters,
             TerrainGrid terrainGrid,
             OrthogonalTiledMapRenderer mapRenderer
     ) {
         this.objectFactory = objectFactory;
         this.itemFactory = itemFactory;
-        this.playerContainer = playerContainer;
-        this.enemyContainer = enemyContainer;
+        this.characters = characters;
         this.terrainGrid = terrainGrid;
         this.mapRenderer = mapRenderer;
     }
@@ -64,14 +61,8 @@ public class MapLoader {
             }
         }
 
-        for (Player player : createTestPlayers()) {
-            playerContainer.add(player);
-        }
-
-        for (Enemy enemy : createTestEnemies()) {
-            enemyContainer.add(enemy);
-        }
-
+        characters.addAll(createTestPlayers());
+        characters.addAll(createTestEnemies());
         mapRenderer.setMap(tiledMap);
     }
 
