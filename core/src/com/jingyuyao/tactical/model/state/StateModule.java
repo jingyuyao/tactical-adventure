@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.model.Marking;
+import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.object.Character;
 
 import javax.inject.Singleton;

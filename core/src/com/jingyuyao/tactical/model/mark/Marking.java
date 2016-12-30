@@ -1,7 +1,8 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.mark;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.util.DisposableObject;

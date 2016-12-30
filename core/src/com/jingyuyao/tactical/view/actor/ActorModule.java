@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.model.Marker;
+import com.jingyuyao.tactical.model.mark.Marker;
 
 import javax.inject.Singleton;
 import java.util.HashMap;

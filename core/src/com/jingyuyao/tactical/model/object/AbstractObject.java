@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.object;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.Marker;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;

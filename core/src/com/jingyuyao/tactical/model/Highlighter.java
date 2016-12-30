@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;

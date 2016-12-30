@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Marker;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.util.Disposed;

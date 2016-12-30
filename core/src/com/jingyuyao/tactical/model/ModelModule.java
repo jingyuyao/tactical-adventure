@@ -5,6 +5,7 @@ import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.ItemModule;
+import com.jingyuyao.tactical.model.mark.MarkModule;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.ObjectModule;
 import com.jingyuyao.tactical.model.object.Terrain;
@@ -22,6 +23,7 @@ public class ModelModule extends AbstractModule {
         install(new StateModule());
         install(new ObjectModule());
         install(new ItemModule());
+        install(new MarkModule());
 
         bind(CharacterContainer.class);
         bind(TerrainGrid.class);
@@ -29,7 +31,6 @@ public class ModelModule extends AbstractModule {
         bind(Waiter.class);
         bind(Highlighter.class);
         bind(AttackPlanFactory.class);
-        bind(MarkingFactory.class);
         bind(TargetInfoFactory.class);
     }
 
