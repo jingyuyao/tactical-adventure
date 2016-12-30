@@ -9,7 +9,6 @@ import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.model.object.Character;
-import com.jingyuyao.tactical.model.object.CharacterContainer;
 
 import java.util.Set;
 

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.jingyuyao.tactical.model.object.CharacterContainer;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;

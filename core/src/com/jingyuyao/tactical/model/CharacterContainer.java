@@ -1,9 +1,12 @@
-package com.jingyuyao.tactical.model.object;
+package com.jingyuyao.tactical.model;
 
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.object.Enemy;
+import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.Disposed;
 

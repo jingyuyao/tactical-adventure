@@ -7,7 +7,6 @@ import com.google.common.collect.Table;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.object.Character;
-import com.jingyuyao.tactical.model.object.CharacterContainer;
 import com.jingyuyao.tactical.model.object.Terrain;
 
 import javax.inject.Inject;

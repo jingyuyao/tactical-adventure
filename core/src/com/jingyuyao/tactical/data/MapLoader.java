@@ -26,7 +26,7 @@ public class MapLoader {
 
     private final ObjectFactory objectFactory;
     private final ItemFactory itemFactory;
-    private final CharacterContainer characters;
+    private final com.jingyuyao.tactical.model.CharacterContainer characters;
     private final TerrainGrid terrainGrid;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
@@ -34,7 +34,7 @@ public class MapLoader {
     MapLoader(
             ObjectFactory objectFactory,
             ItemFactory itemFactory,
-            CharacterContainer characters,
+            com.jingyuyao.tactical.model.CharacterContainer characters,
             TerrainGrid terrainGrid,
             OrthogonalTiledMapRenderer mapRenderer
     ) {
