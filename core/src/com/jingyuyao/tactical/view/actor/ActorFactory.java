@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.MapActorControllerFactory;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

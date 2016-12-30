@@ -6,10 +6,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.MarkModule;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.ObjectModule;
-import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.StateModule;
 
 import javax.inject.Singleton;

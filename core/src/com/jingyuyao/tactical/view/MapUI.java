@@ -10,7 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.event.*;
-import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
 

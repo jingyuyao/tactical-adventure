@@ -9,10 +9,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.jingyuyao.tactical.model.CharacterContainer;
 import com.jingyuyao.tactical.model.TerrainGrid;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.MapFactory;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.object.*;
 
 import javax.inject.Inject;
@@ -25,20 +28,22 @@ public class MapLoader {
     private static final String TERRAIN_TYPE_KEY = "type";
 
     private final ObjectFactory objectFactory;
+    private final MapFactory mapFactory;
     private final ItemFactory itemFactory;
-    private final com.jingyuyao.tactical.model.CharacterContainer characters;
+    private final CharacterContainer characters;
     private final TerrainGrid terrainGrid;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
     @Inject
     MapLoader(
             ObjectFactory objectFactory,
-            ItemFactory itemFactory,
-            com.jingyuyao.tactical.model.CharacterContainer characters,
+            MapFactory mapFactory, ItemFactory itemFactory,
+            CharacterContainer characters,
             TerrainGrid terrainGrid,
             OrthogonalTiledMapRenderer mapRenderer
     ) {
         this.objectFactory = objectFactory;
+        this.mapFactory = mapFactory;
         this.itemFactory = itemFactory;
         this.characters = characters;
         this.terrainGrid = terrainGrid;
@@ -77,7 +82,7 @@ public class MapLoader {
                 Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
             }
         }
-        return objectFactory.createTerrain(x, y, type);
+        return mapFactory.createTerrain(x, y, type);
     }
 
     // TODO: remove us

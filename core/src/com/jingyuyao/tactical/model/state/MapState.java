@@ -7,9 +7,9 @@ import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.event.StateChange;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import javax.inject.Inject;

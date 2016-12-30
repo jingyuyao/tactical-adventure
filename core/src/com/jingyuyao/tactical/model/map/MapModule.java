@@ -10,11 +10,11 @@ import java.util.List;
 public class MapModule extends AbstractModule {
     @Override
     protected void configure() {
-
+        bind(MapFactory.class);
     }
 
     @Provides
-    @com.jingyuyao.tactical.model.map.MapObject.InitialMarkers
+    @MapObject.InitialMarkers
     List<Marker> provideMarkers() {
         return new ArrayList<Marker>();
     }

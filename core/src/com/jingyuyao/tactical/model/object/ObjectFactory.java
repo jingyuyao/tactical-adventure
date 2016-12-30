@@ -31,10 +31,6 @@ public class ObjectFactory {
         return new Enemy(eventBus, new Coordinate(x, y), markersProvider.get(), name, stats, items);
     }
 
-    public Terrain createTerrain(int x, int y, Terrain.Type type) {
-        return new Terrain(eventBus, new Coordinate(x, y), markersProvider.get(), type);
-    }
-
     public Items createItems(List<Weapon> weapons, List<Consumable> consumables) {
         return new Items(eventBus, weapons, consumables);
     }

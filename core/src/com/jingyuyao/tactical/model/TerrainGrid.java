@@ -5,7 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import javax.inject.Inject;

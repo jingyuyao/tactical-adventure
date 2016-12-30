@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.map.Terrain;
 
 public class HighlightTerrain implements ModelEvent {
     private final Terrain terrain;
