@@ -38,10 +38,10 @@ public class Markings extends DisposableObject {
     }
 
     @Override
-    protected void disposed() {
+    public void dispose() {
         dangerAreas.clear();
         playerMarking = null;
-        super.disposed();
+        super.dispose();
     }
 
     @Subscribe

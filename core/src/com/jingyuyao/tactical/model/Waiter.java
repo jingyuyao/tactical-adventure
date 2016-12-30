@@ -32,10 +32,10 @@ public class Waiter extends DisposableObject {
     }
 
     @Override
-    protected void disposed() {
+    public void dispose() {
         runnables.clear();
         waits = 0;
-        super.disposed();
+        super.dispose();
     }
 
     @Subscribe

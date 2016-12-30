@@ -18,16 +18,13 @@ public class DisposableObject extends EventObject implements Disposable {
         dispose();
     }
 
+    /**
+     * Children should override this method to add more dispose functionality.
+     * Make sure super is called.
+     */
     @Override
     public void dispose() {
-        disposed();
         getEventBus().post(Disposed.create(this));
         getEventBus().unregister(this);
     }
-
-    /**
-     * Called before {@link Disposed} event is fired.
-     * Children should override this to add clean up code.
-     */
-    protected void disposed() {}
 }

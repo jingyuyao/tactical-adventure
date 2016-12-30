@@ -40,9 +40,9 @@ public class MapState extends DisposableObject {
     }
 
     @Override
-    protected void disposed() {
+    public void dispose() {
         state = initialState;
-        super.disposed();
+        super.dispose();
     }
 
     public ImmutableList<Action> getActions() {

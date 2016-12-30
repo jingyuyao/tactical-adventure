@@ -67,9 +67,9 @@ public class CharacterContainer extends DisposableObject implements Iterable<Cha
     }
 
     @Override
-    protected void disposed() {
+    public void dispose() {
         characters.clear();
-        super.disposed();
+        super.dispose();
     }
 
     @Override

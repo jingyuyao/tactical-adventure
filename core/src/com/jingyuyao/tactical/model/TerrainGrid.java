@@ -36,9 +36,9 @@ public class TerrainGrid extends DisposableObject implements Iterable<Terrain> {
     }
 
     @Override
-    protected void disposed() {
+    public void dispose() {
         table.clear();
-        super.disposed();
+        super.dispose();
     }
 
     public int getWidth() {

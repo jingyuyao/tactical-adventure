@@ -24,9 +24,9 @@ public class Highlighter extends DisposableObject {
     }
 
     @Override
-    protected void disposed() {
+    public void dispose() {
         previousHighlight = null;
-        super.disposed();
+        super.dispose();
     }
 
     public void highlight(Character character) {
