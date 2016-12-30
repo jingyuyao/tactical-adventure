@@ -33,7 +33,8 @@ public class ActorFactory {
     @Inject
     public ActorFactory(
             EventBus eventBus,
-            Waiter waiter, MapState mapState,
+            Waiter waiter,
+            MapState mapState,
             Highlighter highlighter,
             java.util.Map<Marker, Sprite> markerSpriteMap,
             java.util.Map<String, Sprite> characterSpriteMap) {

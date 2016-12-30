@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.jingyuyao.tactical.model.Level;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -9,17 +8,16 @@ import javax.inject.Singleton;
 @Singleton
 public class LevelScreenFactory {
     private final MapViewFactory mapViewFactory;
-    private final MapUIFactory mapUIFactory;
+    private final MapUI mapUI;
 
     @Inject
-    public LevelScreenFactory(MapViewFactory mapViewFactory, MapUIFactory mapUIFactory) {
+    public LevelScreenFactory(MapViewFactory mapViewFactory, MapUI mapUI) {
         this.mapViewFactory = mapViewFactory;
-        this.mapUIFactory = mapUIFactory;
+        this.mapUI = mapUI;
     }
 
-    public LevelScreen createScreen(Level level, TiledMap tiledMap) {
-        MapView mapView = mapViewFactory.create(tiledMap, level);
-        MapUI mapUI = mapUIFactory.create(level);
+    public LevelScreen createScreen(TiledMap tiledMap) {
+        MapView mapView = mapViewFactory.create(tiledMap);
         return new LevelScreen(mapView, mapUI);
     }
 }

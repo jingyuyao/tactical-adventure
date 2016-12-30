@@ -40,7 +40,7 @@ public class TacticalAdventure extends Game {
         LevelLoader levelLoader = injector.getInstance(LevelLoader.class);
         levelLoader.loadLevel(tiledMap);
         Level level = injector.getInstance(Level.class);
-        LevelScreen levelScreen = injector.getInstance(LevelScreenFactory.class).createScreen(level, tiledMap);
+        LevelScreen levelScreen = injector.getInstance(LevelScreenFactory.class).createScreen(tiledMap);
         LevelController.initiateControl(levelScreen, level);
         setScreen(levelScreen);
     }

@@ -16,8 +16,11 @@ import com.jingyuyao.tactical.model.state.ReviewingAttack;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.StateChange;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Locale;
 
+@Singleton
 public class MapUI {
     private final Skin skin;
     private final Stage ui;
@@ -31,6 +34,7 @@ public class MapUI {
     private boolean showButtons = true;
 
     // TODO: get rid of map state as well...
+    @Inject
     MapUI(EventBus eventBus, MapState mapState, Skin skin) {
         this.skin = skin;
         ui = new Stage();
