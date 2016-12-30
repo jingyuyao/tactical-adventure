@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 
 import javax.inject.Singleton;
 
-public class GameModule extends AbstractModule {
+class GameModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(EventBus.class).in(Singleton.class);

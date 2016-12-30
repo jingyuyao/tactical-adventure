@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.object.Player;
 
 import java.util.Map;
 
-public class PlayerActor extends CharacterActor<Player> {
+class PlayerActor extends CharacterActor<Player> {
     PlayerActor(
             EventBus eventBus,
             Player object,

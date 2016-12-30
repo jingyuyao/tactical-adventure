@@ -7,7 +7,7 @@ import com.google.common.eventbus.Subscribe;
  * A {@link Disposable} object that notifies an {@link EventBus} with a {@link Disposed} event.
  */
 public class DisposableObject extends EventObject implements Disposable {
-    public DisposableObject(EventBus eventBus) {
+    protected DisposableObject(EventBus eventBus) {
         super(eventBus);
     }
 

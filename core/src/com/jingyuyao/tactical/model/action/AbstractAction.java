@@ -9,7 +9,7 @@ abstract class AbstractAction implements Action {
         this.state = state;
     }
 
-    public AbstractState getState() {
+    AbstractState getState() {
         return state;
     }
 }

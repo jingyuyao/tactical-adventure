@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.view.actor.BaseActor;
 
 /**
  * Contains and renders the world.
@@ -16,7 +15,7 @@ public class MapView {
     /**
      * A map view contains a world with all the actors and a way to render them.
      * The background map is backed by a {@link OrthogonalTiledMapRenderer}.
-     * @param world Should already be set up with all the {@link BaseActor}
+     * @param world Should already be set up with all the {@link com.badlogic.gdx.scenes.scene2d.Actor}
      * @param mapRenderer The tiled map renderer
      */
     MapView(Stage world, OrthogonalTiledMapRenderer mapRenderer) {
