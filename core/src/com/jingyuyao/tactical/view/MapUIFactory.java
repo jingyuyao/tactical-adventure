@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.Assets;
+import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.Level;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ class MapUIFactory {
         return new MapUI(
                 eventBus,
                 level.getMapState(),
-                assetManager.get(Assets.SKIN, Skin.class)
+                assetManager.get(AssetModule.SKIN, Skin.class)
         );
     }
 }

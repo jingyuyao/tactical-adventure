@@ -20,13 +20,13 @@ public class TacticalAdventure extends Game {
     @Override
     public void create() {
         injector = Guice.createInjector(
-                new Assets(),
+                new AssetModule(),
                 new GameModule(),
                 new ModelModule(),
                 new DataModule(),
                 new ViewModule()
         );
-        setLevel(Assets.TEST_MAP);
+        setLevel(AssetModule.TEST_MAP);
     }
 
     @Override

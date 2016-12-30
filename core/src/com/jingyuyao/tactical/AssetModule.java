@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 /**
  * Contain all asset names and function to load them into an {@link AssetManager}
  */
-public class Assets extends AbstractModule {
+public class AssetModule extends AbstractModule {
     public static final String TEST_MAP = "maps/test_map.tmx";
     public static final String JOHN = "sprites/john.png";
     public static final String BILLY = "sprites/billy.png";

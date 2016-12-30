@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.Assets;
+import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.controller.MapActorController;
 import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.Marker;
@@ -39,27 +39,27 @@ public class ActorFactory {
         markerSpriteMap = new HashMap<Marker, Sprite>();
         markerSpriteMap.put(
                 Marker.HIGHLIGHT,
-                new Sprite(assetManager.get(Assets.HIGHLIGHT, Texture.class))
+                new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.CAN_MOVE_TO,
-                new Sprite(assetManager.get(Assets.MOVE, Texture.class))
+                new Sprite(assetManager.get(AssetModule.MOVE, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.DANGER,
-                new Sprite(assetManager.get(Assets.DANGER, Texture.class))
+                new Sprite(assetManager.get(AssetModule.DANGER, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.CAN_ATTACK,
-                new Sprite(assetManager.get(Assets.ATTACK, Texture.class))
+                new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.POTENTIAL_TARGET,
-                new Sprite(assetManager.get(Assets.POTENTIAL_TARGET, Texture.class))
+                new Sprite(assetManager.get(AssetModule.POTENTIAL_TARGET, Texture.class))
         );
         markerSpriteMap.put(
                 Marker.CHOSEN_TARGET,
-                new Sprite(assetManager.get(Assets.CHOSEN_TARGET, Texture.class))
+                new Sprite(assetManager.get(AssetModule.CHOSEN_TARGET, Texture.class))
         );
         typeColorMap = new HashMap<Class, Color>();
         typeColorMap.put(Player.class, Color.WHITE);
