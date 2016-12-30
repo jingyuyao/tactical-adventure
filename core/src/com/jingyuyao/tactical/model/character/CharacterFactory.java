@@ -13,12 +13,12 @@ import javax.inject.Singleton;
 import java.util.List;
 
 @Singleton
-public class ObjectFactory {
+public class CharacterFactory {
     private final EventBus eventBus;
     private final Provider<List<Marker>> markersProvider;
 
     @Inject
-    ObjectFactory(EventBus eventBus, @MapObject.InitialMarkers Provider<List<Marker>> markersProvider) {
+    CharacterFactory(EventBus eventBus, @MapObject.InitialMarkers Provider<List<Marker>> markersProvider) {
         this.eventBus = eventBus;
         this.markersProvider = markersProvider;
     }

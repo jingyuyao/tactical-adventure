@@ -27,7 +27,7 @@ public class MapLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
-    private final ObjectFactory objectFactory;
+    private final CharacterFactory characterFactory;
     private final MapFactory mapFactory;
     private final ItemFactory itemFactory;
     private final CharacterContainer characters;
@@ -36,13 +36,13 @@ public class MapLoader {
 
     @Inject
     MapLoader(
-            ObjectFactory objectFactory,
+            CharacterFactory characterFactory,
             MapFactory mapFactory, ItemFactory itemFactory,
             CharacterContainer characters,
             TerrainGrid terrainGrid,
             OrthogonalTiledMapRenderer mapRenderer
     ) {
-        this.objectFactory = objectFactory;
+        this.characterFactory = characterFactory;
         this.mapFactory = mapFactory;
         this.itemFactory = itemFactory;
         this.characters = characters;
@@ -89,16 +89,16 @@ public class MapLoader {
     private Iterable<Player> createTestPlayers() {
         int hp = 20;
         return ImmutableList.of(
-                objectFactory.createPlayer(2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()),
-                objectFactory.createPlayer(2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2())
+                characterFactory.createPlayer(2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()),
+                characterFactory.createPlayer(2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2())
         );
     }
 
     private Iterable<Enemy> createTestEnemies() {
         int hp = 20;
         return ImmutableList.of(
-                objectFactory.createEnemy(8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()),
-                objectFactory.createEnemy(9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1())
+                characterFactory.createEnemy(8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()),
+                characterFactory.createEnemy(9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1())
         );
     }
 
@@ -115,7 +115,7 @@ public class MapLoader {
         weapons.add(itemFactory.createWeapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
         weapons.add(itemFactory.createWeapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
         weapons.add(itemFactory.createWeapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
-        return objectFactory.createItems(
+        return characterFactory.createItems(
                 weapons,
                 Lists.<Consumable>newArrayList(itemFactory.createHeal(0, "pot", 3)));
     }
@@ -124,6 +124,6 @@ public class MapLoader {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
         weapons.add(itemFactory.createWeapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
-        return objectFactory.createItems(weapons, Collections.<Consumable>emptyList());
+        return characterFactory.createItems(weapons, Collections.<Consumable>emptyList());
     }
 }
