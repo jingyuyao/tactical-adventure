@@ -10,6 +10,9 @@ import com.jingyuyao.tactical.model.event.InstantMove;
 import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.mark.Marker;
+
+import java.util.List;
 
 public abstract class Character extends MapObject {
     /**
@@ -19,8 +22,8 @@ public abstract class Character extends MapObject {
     private final Stats stats;
     private final Items items;
 
-    Character(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
-        super(eventBus, x, y);
+    Character(EventBus eventBus, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items) {
+        super(eventBus, coordinate, markers);
         this.name = name;
         this.stats = stats;
         this.items = items;

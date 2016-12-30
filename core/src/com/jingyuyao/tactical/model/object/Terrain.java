@@ -2,14 +2,18 @@ package com.jingyuyao.tactical.model.object;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Algorithms;
+import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
+
+import java.util.List;
 
 public class Terrain extends MapObject {
     private final Type type;
 
-    Terrain(EventBus eventBus, int x, int y, Type type) {
-        super(eventBus, x, y);
+    Terrain(EventBus eventBus, Coordinate coordinate, List<Marker> markers, Type type) {
+        super(eventBus, coordinate, markers);
         this.type = type;
     }
 

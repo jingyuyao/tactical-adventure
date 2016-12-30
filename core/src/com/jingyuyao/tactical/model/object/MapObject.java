@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.object;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.event.AddMarker;
@@ -9,8 +10,14 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
-import java.util.ArrayList;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.List;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Super class of all the objects on the game grid.
@@ -22,11 +29,10 @@ public abstract class MapObject extends DisposableObject {
     private final List<Marker> markers;
     private Coordinate coordinate;
 
-    // TODO: inject initial coordinate and markers?
-    MapObject(EventBus eventBus, int x, int y) {
+    MapObject(EventBus eventBus, Coordinate coordinate, @InitialMarkers List<Marker> markers) {
         super(eventBus);
-        coordinate = new Coordinate(x, y);
-        markers = new ArrayList<Marker>();
+        this.markers = markers;
+        this.coordinate = coordinate;
     }
 
     public Coordinate getCoordinate() {
@@ -72,4 +78,6 @@ public abstract class MapObject extends DisposableObject {
                 "}";
     }
 
+    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
+    @interface InitialMarkers {}
 }

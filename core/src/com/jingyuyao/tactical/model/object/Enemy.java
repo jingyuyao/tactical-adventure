@@ -1,14 +1,18 @@
 package com.jingyuyao.tactical.model.object;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
+
+import java.util.List;
 
 /**
  * An enemy character
  */
 public class Enemy extends Character {
-    Enemy(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
-        super(eventBus, x, y, name, stats, items);
+    Enemy(EventBus eventBus, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items) {
+        super(eventBus, coordinate, markers, name, stats, items);
     }
 
     @Override
