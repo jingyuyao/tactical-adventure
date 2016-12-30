@@ -11,13 +11,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class LevelController {
+public class MapController {
     private final Stage mapViewStage;
     private final Stage mapUIStage;
     private final TerrainGrid terrainGrid;
 
     @Inject
-    LevelController(
+    MapController(
             @MapView.MapViewStage Stage mapViewStage,
             @MapUI.MapUiStage Stage mapUIStage,
             TerrainGrid terrainGrid) {
