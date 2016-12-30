@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.controller;
 
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ public class MapActorControllerFactory {
         this.highlighter = highlighter;
     }
 
-    public MapActorController create(AbstractObject object, float size) {
+    public MapActorController create(MapObject object, float size) {
         return new MapActorController(mapState, highlighter, object, size);
     }
 }

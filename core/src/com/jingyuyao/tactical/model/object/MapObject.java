@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Super class of all the objects on the game grid.
  */
-public abstract class AbstractObject extends DisposableObject {
+public abstract class MapObject extends DisposableObject {
     /**
      * List of marker drawn over this object.
      */
@@ -23,7 +23,7 @@ public abstract class AbstractObject extends DisposableObject {
     private Coordinate coordinate;
 
     // TODO: inject initial coordinate and markers?
-    AbstractObject(EventBus eventBus, int x, int y) {
+    MapObject(EventBus eventBus, int x, int y) {
         super(eventBus);
         coordinate = new Coordinate(x, y);
         markers = new ArrayList<Marker>();
@@ -66,7 +66,7 @@ public abstract class AbstractObject extends DisposableObject {
 
     @Override
     public String toString() {
-        return "AbstractObject{" +
+        return "MapObject{" +
                 "markers=" + markers +
                 ", coordinate=" + coordinate +
                 "}";

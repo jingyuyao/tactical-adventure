@@ -4,19 +4,19 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.event.Disposed;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import java.util.Map;
 
 /**
- * A marking is a map of {@link AbstractObject} to {@link Marker}.
+ * A marking is a map of {@link MapObject} to {@link Marker}.
  * It is tied to a {@link Character} {@link #owner} and cleared upon death.
  */
 public class Marking extends DisposableObject {
     private final Character owner;
-    private final Map<AbstractObject, Marker> markers;
+    private final Map<MapObject, Marker> markers;
     private final Waiter waiter;
     private boolean applied = false;
     private boolean cleared = false;
@@ -25,7 +25,7 @@ public class Marking extends DisposableObject {
      * Creates a marking with the given {@code markers} map and attempts to apply them immediately
      * when {@code waiter} is not waiting.
      */
-    Marking(EventBus eventBus, Character owner, Map<AbstractObject, Marker> markers, Waiter waiter) {
+    Marking(EventBus eventBus, Character owner, Map<MapObject, Marker> markers, Waiter waiter) {
         super(eventBus);
         this.owner = owner;
         this.markers = markers;
@@ -49,7 +49,7 @@ public class Marking extends DisposableObject {
             public void run() {
                 if (cleared || applied) return;
 
-                for (Map.Entry<AbstractObject, Marker> entry : markers.entrySet()) {
+                for (Map.Entry<MapObject, Marker> entry : markers.entrySet()) {
                     entry.getKey().addMarker(entry.getValue());
                 }
                 applied = true;
@@ -71,7 +71,7 @@ public class Marking extends DisposableObject {
 
                 if (!applied) return;
 
-                for (Map.Entry<AbstractObject, Marker> entry : markers.entrySet()) {
+                for (Map.Entry<MapObject, Marker> entry : markers.entrySet()) {
                     entry.getKey().removeMarker(entry.getValue());
                 }
                 getEventBus().unregister(Marking.this);

@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.event.AddMarker;
 import com.jingyuyao.tactical.model.event.RemoveMarker;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.view.MapView;
 
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ import java.util.Map;
 
 /**
  * An {@link Actor} on a {@link MapView}.
- * Draws all {@link Marker} that belongs to {@link AbstractObject} in no particular order.
+ * Draws all {@link Marker} that belongs to {@link MapObject} in no particular order.
  *
  * Invariants:
  * - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code mapObject.getY()} after animations
  */
-class BaseActor<T extends AbstractObject> extends Actor {
+class BaseActor<T extends MapObject> extends Actor {
     private final T object;
     private final Waiter waiter;
     private final Map<Marker, Sprite> markerSpriteMap;

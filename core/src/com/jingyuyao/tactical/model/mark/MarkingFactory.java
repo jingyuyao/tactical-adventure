@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.TerrainGrid;
 import com.jingyuyao.tactical.model.Waiter;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 
@@ -59,15 +59,15 @@ public class MarkingFactory {
 
     private class Builder {
         private final Character character;
-        private final java.util.Map<AbstractObject, Marker> markerMap;
+        private final java.util.Map<MapObject, Marker> markerMap;
 
         private Builder(Character character) {
             this.character = character;
-            markerMap = new java.util.HashMap<AbstractObject,Marker>();
+            markerMap = new java.util.HashMap<MapObject,Marker>();
         }
 
-        private Builder add(Iterable<? extends AbstractObject> objects, Marker marker) {
-            for (AbstractObject object : objects) {
+        private Builder add(Iterable<? extends MapObject> objects, Marker marker) {
+            for (MapObject object : objects) {
                 markerMap.put(object, marker);
             }
             return this;

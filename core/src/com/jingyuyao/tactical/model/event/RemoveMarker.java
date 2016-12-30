@@ -1,18 +1,18 @@
 package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 
 public class RemoveMarker implements ModelEvent {
-    private final AbstractObject object;
+    private final MapObject object;
     private final Marker marker;
 
-    public RemoveMarker(AbstractObject object, Marker marker) {
+    public RemoveMarker(MapObject object, Marker marker) {
         this.object = object;
         this.marker = marker;
     }
 
-    public AbstractObject getObject() {
+    public MapObject getObject() {
         return object;
     }
 

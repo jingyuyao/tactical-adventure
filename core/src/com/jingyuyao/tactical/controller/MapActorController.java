@@ -4,18 +4,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**
  * Only dispatches clicked events if the click begins and ends over the actor.
  */
 public class MapActorController extends ClickListener {
-    private final AbstractObject object;
+    private final MapObject object;
     private final MapState mapState;
     private final Highlighter highlighter;
 
-    public MapActorController(MapState mapState, Highlighter highlighter, AbstractObject object, float actorSize) {
+    public MapActorController(MapState mapState, Highlighter highlighter, MapObject object, float actorSize) {
         this.object = object;
         this.mapState = mapState;
         this.highlighter = highlighter;

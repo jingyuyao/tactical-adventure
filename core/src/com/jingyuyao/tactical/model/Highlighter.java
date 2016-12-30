@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.util.DisposableObject;
@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 @Singleton
 public class Highlighter extends DisposableObject {
     private final TerrainGrid terrainGrid;
-    private AbstractObject previousHighlight;
+    private MapObject previousHighlight;
 
     @Inject
     public Highlighter(EventBus eventBus, TerrainGrid terrainGrid) {
@@ -39,7 +39,7 @@ public class Highlighter extends DisposableObject {
         getEventBus().post(new HighlightTerrain(terrain));
     }
 
-    private void setNewHighlight(AbstractObject newHighlight) {
+    private void setNewHighlight(MapObject newHighlight) {
         if (previousHighlight != null) {
             previousHighlight.removeMarker(Marker.HIGHLIGHT);
         }

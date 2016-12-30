@@ -7,7 +7,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.*;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.AbstractObject;
+import com.jingyuyao.tactical.model.object.MapObject;
 import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Set;
@@ -177,7 +177,7 @@ public class TargetInfo {
     /**
      * Predicate for whether the input {@link Coordinate} belongs in a {@link Set}.
      */
-    private static class ContainsCoordinatePredicate implements Predicate<AbstractObject> {
+    private static class ContainsCoordinatePredicate implements Predicate<MapObject> {
         private final Set<Coordinate> coordinates;
 
         private ContainsCoordinatePredicate(Set<Coordinate> coordinates) {
@@ -185,7 +185,7 @@ public class TargetInfo {
         }
 
         @Override
-        public boolean apply(AbstractObject object) {
+        public boolean apply(MapObject object) {
             return coordinates.contains(object.getCoordinate());
         }
     }
