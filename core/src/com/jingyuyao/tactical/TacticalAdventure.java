@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.controller.LevelController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.LevelLoader;
@@ -24,7 +25,8 @@ public class TacticalAdventure extends Game {
                 new GameModule(),
                 new ModelModule(),
                 new DataModule(),
-                new ViewModule()
+                new ViewModule(),
+                new ControllerModule()
         );
         setLevel(AssetModule.TEST_MAP);
     }

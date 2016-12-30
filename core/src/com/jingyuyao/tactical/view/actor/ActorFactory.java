@@ -4,17 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.controller.MapActorController;
-import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.controller.MapActorControllerFactory;
 import com.jingyuyao.tactical.model.Marker;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
-import com.jingyuyao.tactical.model.state.MapState;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Map;
 
 /**
  * Creates {@link BaseActor} from models and adds the proper controllers.
@@ -25,8 +24,7 @@ public class ActorFactory {
 
     private final EventBus eventBus;
     private final Waiter waiter;
-    private final MapState mapState;
-    private final Highlighter highlighter;
+    private final MapActorControllerFactory mapActorControllerFactory;
     private final java.util.Map<Marker, Sprite> markerSpriteMap;
     private final java.util.Map<String, Sprite> characterSpriteMap;
 
@@ -34,14 +32,12 @@ public class ActorFactory {
     ActorFactory(
             EventBus eventBus,
             Waiter waiter,
-            MapState mapState,
-            Highlighter highlighter,
-            java.util.Map<Marker, Sprite> markerSpriteMap,
-            java.util.Map<String, Sprite> characterSpriteMap) {
+            MapActorControllerFactory mapActorControllerFactory,
+            Map<Marker, Sprite> markerSpriteMap,
+            Map<String, Sprite> characterSpriteMap) {
         this.eventBus = eventBus;
         this.waiter = waiter;
-        this.mapState = mapState;
-        this.highlighter = highlighter;
+        this.mapActorControllerFactory = mapActorControllerFactory;
         this.markerSpriteMap = markerSpriteMap;
         this.characterSpriteMap = characterSpriteMap;
     }
@@ -55,7 +51,7 @@ public class ActorFactory {
                 markerSpriteMap,
                 characterSpriteMap.get(player.getName()),
                 Color.WHITE,
-                new MapActorController(mapState, highlighter, player, ACTOR_SIZE)
+                mapActorControllerFactory.create(player, ACTOR_SIZE)
         );
     }
 
@@ -68,7 +64,7 @@ public class ActorFactory {
                 markerSpriteMap,
                 characterSpriteMap.get(enemy.getName()),
                 Color.RED,
-                new MapActorController(mapState, highlighter, enemy, ACTOR_SIZE)
+                mapActorControllerFactory.create(enemy, ACTOR_SIZE)
         );
     }
 
@@ -79,7 +75,7 @@ public class ActorFactory {
                 ACTOR_SIZE,
                 waiter,
                 markerSpriteMap,
-                new MapActorController(mapState, highlighter, terrain, ACTOR_SIZE)
+                mapActorControllerFactory.create(terrain, ACTOR_SIZE)
         );
     }
 }
