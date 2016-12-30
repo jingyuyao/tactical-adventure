@@ -6,11 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
+import javax.inject.Singleton;
 
 /**
  * Contain all asset names and function to load them into an {@link AssetManager}
  */
-public class Assets {
+public class Assets extends AbstractModule {
     public static final String TEST_MAP = "maps/test_map.tmx";
     public static final String JOHN = "sprites/john.png";
     public static final String BILLY = "sprites/billy.png";
@@ -22,7 +26,14 @@ public class Assets {
     public static final String POTENTIAL_TARGET = "sprites/potential_target.png";
     public static final String SKIN = "ui/uiskin.json";
 
-    static AssetManager createAssetManager() {
+    @Override
+    protected void configure() {
+
+    }
+
+    @Provides
+    @Singleton
+    AssetManager provideAssetManager() {
         AssetManager manager = new AssetManager();
 
         // Loaders

@@ -14,22 +14,28 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.HashMap;
 
 /**
  * Creates {@link BaseActor} from models and adds the proper controllers.
  */
+@Singleton
 public class ActorFactory {
     public static final float ACTOR_SIZE = 1f; // world units
 
     private final EventBus eventBus;
     private final AssetManager assetManager;
+    private final Level level;
     private final java.util.Map<Marker, Sprite> markerSpriteMap;
     private final java.util.Map<Class, Color> typeColorMap;
 
-    public ActorFactory(EventBus eventBus, AssetManager assetManager) {
+    @Inject
+    public ActorFactory(EventBus eventBus, AssetManager assetManager, Level level) {
         this.eventBus = eventBus;
         this.assetManager = assetManager;
+        this.level = level;
         markerSpriteMap = new HashMap<Marker, Sprite>();
         markerSpriteMap.put(
                 Marker.HIGHLIGHT,
@@ -60,7 +66,7 @@ public class ActorFactory {
         typeColorMap.put(Enemy.class, Color.RED);
     }
 
-    public Actor create(Level level, Player player) {
+    public Actor create(Player player) {
         return new PlayerActor(
                 eventBus,
                 player,
@@ -73,7 +79,7 @@ public class ActorFactory {
         );
     }
 
-    public Actor create(Level level, Enemy enemy) {
+    public Actor create(Enemy enemy) {
         return new CharacterActor<Enemy>(
                 eventBus,
                 enemy,
@@ -86,7 +92,7 @@ public class ActorFactory {
         );
     }
 
-    public Actor create(Level level, Terrain terrain) {
+    public Actor create(Terrain terrain) {
         return new BaseActor<Terrain>(
                 eventBus,
                 terrain,

@@ -6,10 +6,15 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.Assets;
 import com.jingyuyao.tactical.model.Level;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 class MapUIFactory {
     private final EventBus eventBus;
     private final AssetManager assetManager;
 
+    @Inject
     MapUIFactory(EventBus eventBus, AssetManager assetManager) {
         this.eventBus = eventBus;
         this.assetManager = assetManager;
