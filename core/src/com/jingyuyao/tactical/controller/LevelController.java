@@ -12,29 +12,30 @@ import javax.inject.Singleton;
 
 @Singleton
 public class LevelController {
-    private final MapView mapView;
-    private final MapUI mapUI;
+    private final Stage mapViewStage;
+    private final Stage mapUIStage;
     private final TerrainGrid terrainGrid;
 
     @Inject
-    LevelController(MapView mapView, MapUI mapUI, TerrainGrid terrainGrid) {
-        this.mapView = mapView;
-        this.mapUI = mapUI;
+    LevelController(
+            @MapView.MapViewStage Stage mapViewStage,
+            @MapUI.MapUiStage Stage mapUIStage,
+            TerrainGrid terrainGrid) {
+        this.mapViewStage = mapViewStage;
+        this.mapUIStage = mapUIStage;
         this.terrainGrid = terrainGrid;
     }
 
     public void initiateControl() {
-        Stage world = mapView.getStage();
-        Stage ui = mapUI.getStage();
         int worldWidth = terrainGrid.getWidth();
         int worldHeight = terrainGrid.getHeight();
 
         DragCameraController dragCameraController =
-                new DragCameraController(worldWidth, worldHeight, world.getViewport());
+                new DragCameraController(worldWidth, worldHeight, mapViewStage.getViewport());
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(ui);
+        inputMultiplexer.addProcessor(mapUIStage);
         inputMultiplexer.addProcessor(dragCameraController);
-        inputMultiplexer.addProcessor(world);
+        inputMultiplexer.addProcessor(mapViewStage);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 }

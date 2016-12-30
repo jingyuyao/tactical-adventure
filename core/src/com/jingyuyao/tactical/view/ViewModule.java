@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.view;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
@@ -76,5 +78,13 @@ public class ViewModule extends AbstractModule {
     @Singleton
     OrthogonalTiledMapRenderer provideTiledMapRenderer(Batch batch) {
         return new OrthogonalTiledMapRenderer(null, RENDER_SCALE, batch);
+    }
+
+    @Provides
+    @Singleton
+    @MapUI.MapUiStage
+    Stage provideMapUIStage(Batch batch) {
+        // why no constructor with only batch...
+        return new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
     }
 }

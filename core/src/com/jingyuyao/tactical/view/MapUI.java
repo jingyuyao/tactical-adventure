@@ -28,8 +28,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Singleton
 public class MapUI {
-    private final Skin skin;
     private final Stage stage;
+    private final Skin skin;
     private final Table root;
     private final Label characterLabel;
     private final Label terrainLabel;
@@ -41,9 +41,9 @@ public class MapUI {
 
     // TODO: get rid of map state as well...
     @Inject
-    MapUI(EventBus eventBus, MapState mapState, Skin skin) {
+    MapUI(EventBus eventBus, @MapUiStage Stage stage, MapState mapState, Skin skin) {
         this.skin = skin;
-        stage = new Stage();
+        this.stage = stage;
         root = new Table();
         characterLabel = new Label(null, skin);
         terrainLabel = new Label(null, skin);
@@ -79,10 +79,6 @@ public class MapUI {
         stateLabel.setText("Waiting");
         currentActions = mapState.getActions();
         populateButtons();
-    }
-
-    public Stage getStage() {
-        return stage;
     }
 
     void act(float delta) {
@@ -166,5 +162,5 @@ public class MapUI {
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface MapUiStage {}
+    public @interface MapUiStage {}
 }

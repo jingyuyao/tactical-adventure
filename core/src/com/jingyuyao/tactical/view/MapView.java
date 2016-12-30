@@ -34,10 +34,6 @@ public class MapView {
         this.mapRenderer = mapRenderer;
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
     void act(float delta) {
         stage.act(delta);
     }
@@ -59,5 +55,5 @@ public class MapView {
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface MapViewStage {}
+    public @interface MapViewStage {}
 }
