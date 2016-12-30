@@ -6,8 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.event.AddMarker;
+import com.jingyuyao.tactical.model.event.RemoveMarker;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.object.AbstractObject;
 import com.jingyuyao.tactical.view.MapView;
 
@@ -55,14 +57,14 @@ class BaseActor<T extends AbstractObject> extends Actor {
     }
 
     @Subscribe
-    public void addMarker(AbstractObject.AddMarker addMarker) {
+    public void addMarker(AddMarker addMarker) {
         if (object.equals(addMarker.getObject())) {
             markerSprites.add(markerSpriteMap.get(addMarker.getMarker()));
         }
     }
 
     @Subscribe
-    public void removeMarker(AbstractObject.RemoveMarker removeMarker) {
+    public void removeMarker(RemoveMarker removeMarker) {
         if (object.equals(removeMarker.getObject())) {
             markerSprites.remove(markerSpriteMap.get(removeMarker.getMarker()));
         }

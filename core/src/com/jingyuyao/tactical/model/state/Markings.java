@@ -3,13 +3,13 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.TargetInfo;
+import com.jingyuyao.tactical.model.event.Disposed;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
-import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.util.DisposableObject;
-import com.jingyuyao.tactical.model.util.Disposed;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

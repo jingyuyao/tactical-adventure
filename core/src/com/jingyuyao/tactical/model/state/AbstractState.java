@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.TargetInfoFactory;
+import com.jingyuyao.tactical.model.event.StateChange;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.object.Terrain;

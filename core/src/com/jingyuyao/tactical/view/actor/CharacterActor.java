@@ -10,10 +10,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.event.Disposed;
+import com.jingyuyao.tactical.model.event.InstantMove;
+import com.jingyuyao.tactical.model.event.Move;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.object.Character;
-import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.Map;
 
@@ -51,7 +53,7 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
     }
 
     @Subscribe
-    public void instantMoveTo(Character.InstantMove instantMove) {
+    public void instantMoveTo(InstantMove instantMove) {
         if (getObject().equals(instantMove.getCharacter())) {
             Coordinate destination = instantMove.getDestination();
             setPosition(destination.getX(), destination.getY());
@@ -59,7 +61,7 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
     }
 
     @Subscribe
-    public void moveTo(Character.Move move) {
+    public void moveTo(Move move) {
         if (getObject().equals(move.getCharacter())) {
             final ImmutableList<EventListener> listeners = popAllListeners();
             SequenceAction moveSequence = getMoveSequence(move.getPath());

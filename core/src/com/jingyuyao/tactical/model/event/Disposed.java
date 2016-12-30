@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.util;
+package com.jingyuyao.tactical.model.event;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;

@@ -5,11 +5,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.Disposed;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.util.Disposed;
 
 import java.util.Collections;
 import java.util.List;

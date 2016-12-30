@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.event.NewActionState;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.object.Player;
 
 import java.util.Map;
@@ -26,7 +27,7 @@ class PlayerActor extends CharacterActor<Player> {
     }
 
     @Subscribe
-    public void newActionState(Player.NewActionState newActionState) {
+    public void newActionState(NewActionState newActionState) {
         if (getObject().equals(newActionState.getPlayer())) {
             setColor(newActionState.isActionable() ? Color.WHITE : Color.GRAY);
         }

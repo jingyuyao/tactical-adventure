@@ -3,10 +3,11 @@ package com.jingyuyao.tactical.model.object;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.event.AddMarker;
+import com.jingyuyao.tactical.model.event.RemoveMarker;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.util.DisposableObject;
-import com.jingyuyao.tactical.model.util.ModelEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,39 +72,4 @@ public abstract class AbstractObject extends DisposableObject {
                 "}";
     }
 
-    public static class AddMarker implements ModelEvent {
-        private final AbstractObject object;
-        private final Marker marker;
-
-        private AddMarker(AbstractObject object, Marker marker) {
-            this.object = object;
-            this.marker = marker;
-        }
-
-        public AbstractObject getObject() {
-            return object;
-        }
-
-        public Marker getMarker() {
-            return marker;
-        }
-    }
-
-    public static class RemoveMarker implements ModelEvent {
-        private final AbstractObject object;
-        private final Marker marker;
-
-        private RemoveMarker(AbstractObject object, Marker marker) {
-            this.object = object;
-            this.marker = marker;
-        }
-
-        public AbstractObject getObject() {
-            return object;
-        }
-
-        public Marker getMarker() {
-            return marker;
-        }
-    }
 }

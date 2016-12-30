@@ -8,14 +8,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.action.Action;
+import com.jingyuyao.tactical.model.event.*;
 import com.jingyuyao.tactical.model.object.Terrain;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.state.ReviewingAttack;
 import com.jingyuyao.tactical.model.state.State;
-import com.jingyuyao.tactical.model.state.StateChange;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -100,13 +97,13 @@ public class MapUI {
 
     // TODO: need to refresh stats after attack
     @Subscribe
-    public void highlightCharacter(Highlighter.HighlightCharacter highlightCharacter) {
+    public void highlightCharacter(HighlightCharacter highlightCharacter) {
         characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getCharacter().getHp()));
         updateTerrainLabel(highlightCharacter.getTerrain());
     }
 
     @Subscribe
-    public void highlightTerrain(Highlighter.HighlightTerrain highlightTerrain) {
+    public void highlightTerrain(HighlightTerrain highlightTerrain) {
         characterLabel.setText(null);
         updateTerrainLabel(highlightTerrain.getTerrain());
     }
@@ -120,19 +117,19 @@ public class MapUI {
     }
 
     @Subscribe
-    public void waitChange(Waiter.WaitChange waitChange) {
+    public void waitChange(WaitChange waitChange) {
         showButtons = !waitChange.isWaiting();
         populateButtons();
     }
 
     // TODO: create a nice looking widget to show this
     @Subscribe
-    public void showAttackPlan(ReviewingAttack.ShowAttackPlan showAttackPlan) {
+    public void showAttackPlan(ShowAttackPlan showAttackPlan) {
         attackPlan.setText(showAttackPlan.getAttackPlan().toString());
     }
 
     @Subscribe
-    public void hideAttackPlan(ReviewingAttack.HideAttackPlan hideAttackPlan) {
+    public void hideAttackPlan(HideAttackPlan hideAttackPlan) {
         attackPlan.setText(null);
     }
 

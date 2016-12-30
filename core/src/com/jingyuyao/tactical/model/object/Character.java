@@ -6,9 +6,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.event.InstantMove;
+import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.util.ModelEvent;
 
 public abstract class Character extends AbstractObject {
     /**
@@ -101,39 +102,4 @@ public abstract class Character extends AbstractObject {
                 "} " + super.toString();
     }
 
-    public static class Move implements ModelEvent {
-        private final Character character;
-        private final ImmutableList<Coordinate> path;
-
-        private Move(Character character, ImmutableList<Coordinate> path) {
-            this.character = character;
-            this.path = path;
-        }
-
-        public Character getCharacter() {
-            return character;
-        }
-
-        public ImmutableList<Coordinate> getPath() {
-            return path;
-        }
-    }
-
-    public static class InstantMove implements ModelEvent {
-        private final Character character;
-        private final Coordinate destination;
-
-        private InstantMove(Character character, Coordinate destination) {
-            this.character = character;
-            this.destination = destination;
-        }
-
-        public Character getCharacter() {
-            return character;
-        }
-
-        public Coordinate getDestination() {
-            return destination;
-        }
-    }
 }

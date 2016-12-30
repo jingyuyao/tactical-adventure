@@ -4,12 +4,13 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.event.Disposed;
 import com.jingyuyao.tactical.model.event.NewTurn;
+import com.jingyuyao.tactical.model.event.ResetModel;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.util.DisposableObject;
-import com.jingyuyao.tactical.model.util.Disposed;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * A container for a set of {@link Character}s.
  * Listens for {@link #dispose()} in its contained {@link #characters} and remove them from the set.
- * This also implicitly listens for {@link com.jingyuyao.tactical.model.util.ResetModel} via its parent class.
+ * This also implicitly listens for {@link ResetModel} via its parent class.
  */
 // TODO: consider making this a Glazed List?
 @Singleton

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.util;
+package com.jingyuyao.tactical.model.event;
 
 /**
  * Event for COMPLETELY resetting the model.

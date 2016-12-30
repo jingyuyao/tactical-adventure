@@ -2,6 +2,8 @@ package com.jingyuyao.tactical.model.util;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.Disposed;
+import com.jingyuyao.tactical.model.event.ResetModel;
 
 /**
  * A {@link Disposable} object that notifies an {@link EventBus} with a {@link Disposed} event.

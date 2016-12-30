@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.event.WaitChange;
 import com.jingyuyao.tactical.model.util.DisposableObject;
-import com.jingyuyao.tactical.model.util.ModelEvent;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -79,18 +79,6 @@ public class Waiter extends DisposableObject {
             runnable.run();
         } else {
             runnables.add(runnable);
-        }
-    }
-
-    public static class WaitChange implements ModelEvent {
-        private final boolean waiting;
-
-        private WaitChange(boolean waiting) {
-            this.waiting = waiting;
-        }
-
-        public boolean isWaiting() {
-            return waiting;
         }
     }
 

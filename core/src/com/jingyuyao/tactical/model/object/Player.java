@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.object;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.event.NewActionState;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.util.ModelEvent;
 
 /**
  * A player character
@@ -28,21 +28,4 @@ public class Player extends Character {
         getEventBus().post(new NewActionState(this, actionable));
     }
 
-    public static class NewActionState implements ModelEvent {
-        private final Player player;
-        private final boolean actionable;
-
-        private NewActionState(Player player, boolean actionable) {
-            this.player = player;
-            this.actionable = actionable;
-        }
-
-        public Player getPlayer() {
-            return player;
-        }
-
-        public boolean isActionable() {
-            return actionable;
-        }
-    }
 }
