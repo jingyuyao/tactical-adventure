@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.object;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
@@ -29,7 +29,7 @@ public abstract class MapObject extends DisposableObject {
     private final List<Marker> markers;
     private Coordinate coordinate;
 
-    MapObject(EventBus eventBus, Coordinate coordinate, @InitialMarkers List<Marker> markers) {
+    public MapObject(EventBus eventBus, Coordinate coordinate, @InitialMarkers List<Marker> markers) {
         super(eventBus);
         this.markers = markers;
         this.coordinate = coordinate;
@@ -79,5 +79,5 @@ public abstract class MapObject extends DisposableObject {
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface InitialMarkers {}
+    public @interface InitialMarkers {}
 }

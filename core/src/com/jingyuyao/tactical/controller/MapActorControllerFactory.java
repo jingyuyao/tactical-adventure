@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.controller;
 
 import com.jingyuyao.tactical.model.Highlighter;
-import com.jingyuyao.tactical.model.object.MapObject;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import javax.inject.Inject;

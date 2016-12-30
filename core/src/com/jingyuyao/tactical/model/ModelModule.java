@@ -5,6 +5,7 @@ import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.ItemModule;
+import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.mark.MarkModule;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.ObjectModule;
@@ -20,10 +21,11 @@ import java.util.Set;
 public class ModelModule extends AbstractModule {
     @Override
     protected void configure() {
-        install(new StateModule());
+        install(new MapModule());
         install(new ObjectModule());
         install(new ItemModule());
         install(new MarkModule());
+        install(new StateModule());
 
         bind(CharacterContainer.class);
         bind(TerrainGrid.class);
