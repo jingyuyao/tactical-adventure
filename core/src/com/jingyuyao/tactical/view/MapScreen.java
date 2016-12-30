@@ -8,12 +8,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class LevelScreen extends ScreenAdapter {
+public class MapScreen extends ScreenAdapter {
     private final MapView mapView;
     private final MapUI mapUI;
 
     @Inject
-    LevelScreen(MapView mapView, MapUI mapUI) {
+    MapScreen(MapView mapView, MapUI mapUI) {
         this.mapView = mapView;
         this.mapUI = mapUI;
     }

@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.controller.LevelController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.LevelLoader;
 import com.jingyuyao.tactical.model.ModelModule;
-import com.jingyuyao.tactical.view.LevelScreen;
+import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
 
 public class TacticalAdventure extends Game {
@@ -33,7 +33,7 @@ public class TacticalAdventure extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        injector.getInstance(LevelScreen.class).dispose();
+        injector.getInstance(MapScreen.class).dispose();
         injector.getInstance(Batch.class).dispose();
         injector.getInstance(AssetManager.class).dispose();
     }
@@ -42,6 +42,6 @@ public class TacticalAdventure extends Game {
         TiledMap tiledMap = injector.getInstance(AssetManager.class).get(mapName, TiledMap.class);
         injector.getInstance(LevelLoader.class).loadLevel(tiledMap);
         injector.getInstance(LevelController.class).initiateControl();
-        setScreen(injector.getInstance(LevelScreen.class));
+        setScreen(injector.getInstance(MapScreen.class));
     }
 }
