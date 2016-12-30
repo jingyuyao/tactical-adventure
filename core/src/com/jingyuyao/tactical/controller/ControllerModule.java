@@ -6,6 +6,6 @@ public class ControllerModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(MapActorControllerFactory.class);
-        bind(LevelController.class);
+        bind(MapController.class);
     }
 }
