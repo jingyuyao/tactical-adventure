@@ -24,7 +24,6 @@ public class ModelModule extends AbstractModule {
         bind(Waiter.class);
         bind(Highlighter.class);
         bind(AttackPlanFactory.class);
-        bind(TargetInfoFactory.class);
     }
 
     @Provides

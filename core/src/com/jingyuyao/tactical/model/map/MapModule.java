@@ -19,6 +19,7 @@ public class MapModule extends AbstractModule {
         bind(CharacterContainer.class);
         bind(TerrainGrid.class);
         bind(MapFactory.class);
+        bind(TargetInfoFactory.class);
     }
 
     @Provides

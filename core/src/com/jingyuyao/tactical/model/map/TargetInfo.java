@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
@@ -6,10 +6,10 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.*;
 import com.google.common.graph.Graph;
+import com.jingyuyao.tactical.model.Algorithms;
+import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.CharacterContainer;
-import com.jingyuyao.tactical.model.map.MapObject;
 
 import java.util.Set;
 

@@ -22,7 +22,7 @@ public class Algorithms {
      * @param edgeCostTable The grid to get edge cost for creating the graph
      * @param maxPathCost Maximum cost for the path between initial location to any other object
      */
-    static ValueGraph<Coordinate, Integer> minPathSearch(
+    public static ValueGraph<Coordinate, Integer> minPathSearch(
             Table<Integer, Integer, Integer> edgeCostTable,
             Coordinate startingCoordinate,
             int maxPathCost
@@ -90,7 +90,7 @@ public class Algorithms {
      * @return A path to {@code target} from the first node in the graph or an empty list if target is
      * not in the graph
      */
-    static ImmutableList<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
+    public static ImmutableList<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
         if (!graph.nodes().contains(target)) {
             return ImmutableList.of();
         }
@@ -116,7 +116,7 @@ public class Algorithms {
      * Returns the in-bound neighbors of {@code from}.
      * @return Randomized list of neighbors
      */
-    static ImmutableList<Coordinate> getNeighbors(int gridWidth, int gridHeight, Coordinate from) {
+    public static ImmutableList<Coordinate> getNeighbors(int gridWidth, int gridHeight, Coordinate from) {
         int x = from.getX();
         int y = from.getY();
 
@@ -146,7 +146,7 @@ public class Algorithms {
      *
      * @param from starting coordinate
      */
-    static ImmutableList<Coordinate> getNDistanceAway(int gridWidth, int gridHeight, Coordinate from, int distance) {
+    public static ImmutableList<Coordinate> getNDistanceAway(int gridWidth, int gridHeight, Coordinate from, int distance) {
         if (distance == 1) {
             return getNeighbors(gridWidth, gridHeight, from);
         }
