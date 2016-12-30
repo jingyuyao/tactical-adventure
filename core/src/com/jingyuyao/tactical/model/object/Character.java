@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-public abstract class Character extends AbstractObject {
+public abstract class Character extends MapObject {
     /**
      * Used for sprites and as ID.
      */
