@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.character.Character;
 
 public class InstantMove implements ModelEvent {
     private final Character character;

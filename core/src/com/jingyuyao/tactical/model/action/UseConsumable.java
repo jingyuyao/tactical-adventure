@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.action;
 
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.state.AbstractState;
 
 import java.util.Locale;

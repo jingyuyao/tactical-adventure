@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.action.Back;
 import com.jingyuyao.tactical.model.action.UseConsumable;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.object.Player;
 
 // TODO: Fire off an event so the UI show a widget that manages items
 public class ChoosingItem extends AbstractPlayerState {

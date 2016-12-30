@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.event;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.character.Character;
 
 public class Move implements ModelEvent {
     private final Character character;

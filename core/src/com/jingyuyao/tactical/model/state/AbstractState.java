@@ -3,10 +3,10 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.TargetInfoFactory;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.StateChange;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
 public abstract class AbstractState extends DisposableObject implements State {

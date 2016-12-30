@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.List;

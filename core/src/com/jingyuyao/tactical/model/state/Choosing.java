@@ -7,8 +7,8 @@ import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.action.Back;
 import com.jingyuyao.tactical.model.action.ChooseItemToUse;
 import com.jingyuyao.tactical.model.action.Finish;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 
 class Choosing extends AbstractPlayerState {
     Choosing(AbstractPlayerState prevState) {

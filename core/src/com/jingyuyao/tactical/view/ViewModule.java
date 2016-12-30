@@ -14,9 +14,9 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.CharacterContainer;
 import com.jingyuyao.tactical.model.TerrainGrid;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 

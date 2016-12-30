@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.event;
 
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.object.Character;
 
 public class HighlightCharacter implements ModelEvent {
     private final Character character;

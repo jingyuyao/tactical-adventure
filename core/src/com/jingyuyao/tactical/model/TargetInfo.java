@@ -6,9 +6,9 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.*;
 import com.google.common.graph.Graph;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Set;
 

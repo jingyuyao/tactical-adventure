@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.object.Character;
+import com.jingyuyao.tactical.model.character.Character;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status.

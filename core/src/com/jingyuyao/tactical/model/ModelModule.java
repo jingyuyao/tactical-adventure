@@ -4,12 +4,12 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.ObjectModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.MarkModule;
-import com.jingyuyao.tactical.model.object.Character;
-import com.jingyuyao.tactical.model.object.ObjectModule;
 import com.jingyuyao.tactical.model.state.StateModule;
 
 import javax.inject.Singleton;
@@ -51,7 +51,7 @@ public class ModelModule extends AbstractModule {
 
     @Provides
     @Singleton
-    @com.jingyuyao.tactical.model.CharacterContainer.InitialCharacterSet
+    @CharacterContainer.InitialCharacterSet
     Set<Character> provideInitialCharacterSet() {
         return new HashSet<Character>();
     }

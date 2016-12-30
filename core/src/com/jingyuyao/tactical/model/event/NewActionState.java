@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.character.Player;
 
 public class NewActionState implements ModelEvent {
     private final Player player;

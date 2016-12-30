@@ -7,7 +7,6 @@ import com.google.common.collect.Table;
 import com.google.common.graph.*;
 
 import java.util.*;
-import java.util.Map;
 
 /**
  * Functions should return immutable objects.

@@ -4,9 +4,9 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.TargetInfo;
 import com.jingyuyao.tactical.model.TerrainGrid;
 import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.object.Character;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

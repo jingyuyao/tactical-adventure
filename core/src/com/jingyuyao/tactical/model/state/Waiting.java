@@ -6,8 +6,8 @@ import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.TargetInfoFactory;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.action.EndTurn;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 
 import javax.inject.Inject;
 

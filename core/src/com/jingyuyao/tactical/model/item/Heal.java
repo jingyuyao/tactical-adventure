@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.character.Player;
 
 public class Heal extends Consumable {
     // TODO: Remove me

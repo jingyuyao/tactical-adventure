@@ -5,9 +5,9 @@ import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.action.Attack;
 import com.jingyuyao.tactical.model.action.Back;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideAttackPlan;
 import com.jingyuyao.tactical.model.event.ShowAttackPlan;
-import com.jingyuyao.tactical.model.object.Player;
 
 public class ReviewingAttack extends AbstractPlayerState {
     private final AttackPlan attackPlan;

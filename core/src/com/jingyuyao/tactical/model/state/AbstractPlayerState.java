@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.TargetInfo;
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.character.Player;
 
 /**
  * A state with a selected player.

@@ -11,11 +11,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Disposed;
 import com.jingyuyao.tactical.model.event.InstantMove;
 import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.object.Character;
 
 import java.util.Map;
 

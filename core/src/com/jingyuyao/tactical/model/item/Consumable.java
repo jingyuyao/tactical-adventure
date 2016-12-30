@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.character.Player;
 
 /**
  * An {@link Item} that can be used by a {@link Player}.

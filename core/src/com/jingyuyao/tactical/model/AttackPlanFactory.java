@@ -4,9 +4,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

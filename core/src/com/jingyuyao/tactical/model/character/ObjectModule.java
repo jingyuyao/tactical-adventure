@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.object;
+package com.jingyuyao.tactical.model.character;
 
 import com.google.inject.AbstractModule;
 

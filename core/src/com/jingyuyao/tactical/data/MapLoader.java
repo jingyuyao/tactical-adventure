@@ -11,12 +11,16 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.CharacterContainer;
 import com.jingyuyao.tactical.model.TerrainGrid;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Items;
+import com.jingyuyao.tactical.model.character.ObjectFactory;
+import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.object.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

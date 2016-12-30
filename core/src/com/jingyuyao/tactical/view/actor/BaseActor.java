@@ -9,8 +9,8 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.event.AddMarker;
 import com.jingyuyao.tactical.model.event.RemoveMarker;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.MapView;
 
 import java.util.ArrayList;

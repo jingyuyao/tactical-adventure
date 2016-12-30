@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.action.Back;
 import com.jingyuyao.tactical.model.action.SelectWeapon;
+import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.object.Enemy;
 
 class SelectingWeapon extends AbstractPlayerState {
     private final Enemy targetEnemy;
