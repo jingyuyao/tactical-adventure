@@ -12,7 +12,7 @@ public class Weapon extends Usable {
     private final int attackPower;
     private final ImmutableSet<Integer> attackDistances;
 
-    public Weapon(EventBus eventBus, int id, String name, int usageLeft, int attackPower, Iterable<Integer> attackDistances) {
+    Weapon(EventBus eventBus, int id, String name, int usageLeft, int attackPower, Iterable<Integer> attackDistances) {
         super(eventBus, id, name, usageLeft);
         this.attackPower = attackPower;
         this.attackDistances = ImmutableSet.copyOf(attackDistances);

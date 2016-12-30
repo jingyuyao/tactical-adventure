@@ -7,7 +7,7 @@ public class Heal extends Consumable {
     // TODO: Remove me
     private static final int AMOUNT = 10;
 
-    public Heal(EventBus eventBus, int id, String name, int usageLeft) {
+    Heal(EventBus eventBus, int id, String name, int usageLeft) {
         super(eventBus, id, name, usageLeft);
     }
 
