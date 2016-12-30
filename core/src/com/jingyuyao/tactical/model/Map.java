@@ -5,7 +5,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.object.Character;
-import com.jingyuyao.tactical.model.object.*;
+import com.jingyuyao.tactical.model.object.EnemyContainer;
+import com.jingyuyao.tactical.model.object.PlayerContainer;
+import com.jingyuyao.tactical.model.object.Terrain;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,27 +25,6 @@ public class Map {
         this.enemies = enemies;
     }
 
-    public int getWidth() {
-        return terrains.getWidth();
-    }
-
-    public int getHeight() {
-        return terrains.getHeight();
-    }
-
-    public TerrainGrid getTerrains() {
-        return terrains;
-    }
-
-    // TODO: the ultimate goal after guice is to get rid of these things and make them singleton
-    public Iterable<Player> getPlayers() {
-        return players;
-    }
-
-    public Iterable<Enemy> getEnemies() {
-        return enemies;
-    }
-
     public Iterable<Character> getCharacters() {
         return Iterables.concat(players, enemies);
     }
@@ -56,7 +37,8 @@ public class Map {
     }
 
     private Table<Integer, Integer, Integer> createMovementPenaltyTable(Character character) {
-        Table<Integer, Integer, Integer> movementPenaltyTable = HashBasedTable.create(getWidth(), getHeight());
+        Table<Integer, Integer, Integer> movementPenaltyTable =
+                HashBasedTable.create(terrains.getWidth(), terrains.getHeight());
 
         for (Terrain terrain : terrains) {
             Coordinate coordinate = terrain.getCoordinate();

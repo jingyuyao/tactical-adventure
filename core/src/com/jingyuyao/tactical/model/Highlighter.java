@@ -12,13 +12,13 @@ import javax.inject.Singleton;
 
 @Singleton
 public class Highlighter extends DisposableObject {
-    private final Map map;
+    private final TerrainGrid terrainGrid;
     private AbstractObject previousHighlight;
 
     @Inject
-    public Highlighter(EventBus eventBus, Map map) {
+    public Highlighter(EventBus eventBus, TerrainGrid terrainGrid) {
         super(eventBus);
-        this.map = map;
+        this.terrainGrid = terrainGrid;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Highlighter extends DisposableObject {
 
     public void highlight(Character character) {
         setNewHighlight(character);
-        getEventBus().post(new HighlightCharacter(character, map.getTerrains().get(character.getCoordinate())));
+        getEventBus().post(new HighlightCharacter(character, terrainGrid.get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {

@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.jingyuyao.tactical.model.object.Player;
+import com.jingyuyao.tactical.model.object.PlayerContainer;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.ModelEvent;
 
@@ -11,13 +12,13 @@ import javax.inject.Singleton;
 
 @Singleton
 public class Turn extends DisposableObject {
-    private final Map map;
+    private final PlayerContainer players;
     private int turnCount;
 
     @Inject
-    public Turn(EventBus eventBus, Map map) {
+    public Turn(EventBus eventBus, PlayerContainer players) {
         super(eventBus);
-        this.map = map;
+        this.players = players;
         turnCount = 1;
     }
 
@@ -30,7 +31,7 @@ public class Turn extends DisposableObject {
     @Subscribe
     public void newTurn(NewTurn newTurn) {
         turnCount++;
-        for (Player player : map.getPlayers()) {
+        for (Player player : players) {
             player.setActionable(true);
         }
     }

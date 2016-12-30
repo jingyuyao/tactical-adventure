@@ -14,19 +14,19 @@ import javax.inject.Singleton;
 @Singleton
 public class MarkingFactory {
     private final EventBus eventBus;
-    private final Map map;
     private final Waiter waiter;
+    private final TerrainGrid terrainGrid;
 
     @Inject
-    public MarkingFactory(EventBus eventBus, Map map, Waiter waiter) {
+    public MarkingFactory(EventBus eventBus, Waiter waiter, TerrainGrid terrainGrid) {
         this.eventBus = eventBus;
-        this.map = map;
         this.waiter = waiter;
+        this.terrainGrid = terrainGrid;
     }
 
     public Marking moveAndTargets(TargetInfo targetInfo) {
-        Iterable<Terrain> canMoveToTerrains = map.getTerrains().getAll(targetInfo.moves());
-        Iterable<Terrain> canAttackTerrains = map.getTerrains().getAll(targetInfo.allTargetsMinusMove());
+        Iterable<Terrain> canMoveToTerrains = terrainGrid.getAll(targetInfo.moves());
+        Iterable<Terrain> canAttackTerrains = terrainGrid.getAll(targetInfo.allTargetsMinusMove());
         Iterable<Character> canTargetCharacters = targetInfo.allTargetCharacters();
 
         return this.new Builder(targetInfo.getCharacter())
@@ -37,7 +37,7 @@ public class MarkingFactory {
     }
 
     public Marking immediateTargets(TargetInfo targetInfo) {
-        Iterable<Terrain> canAttackTerrains = map.getTerrains().getAll(targetInfo.immediateTargets());
+        Iterable<Terrain> canAttackTerrains = terrainGrid.getAll(targetInfo.immediateTargets());
         Iterable<Character> canTargetCharacters = targetInfo.immediateTargetCharacters();
 
         return this.new Builder(targetInfo.getCharacter())
@@ -47,7 +47,7 @@ public class MarkingFactory {
     }
 
     public Marking danger(TargetInfo targetInfo) {
-        Iterable<Terrain> allTargets = map.getTerrains().getAll(targetInfo.allTargets());
+        Iterable<Terrain> allTargets = terrainGrid.getAll(targetInfo.allTargets());
 
         return this.new Builder(targetInfo.getCharacter())
                 .add(allTargets, Marker.DANGER)

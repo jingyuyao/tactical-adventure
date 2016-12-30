@@ -12,10 +12,12 @@ import javax.inject.Singleton;
 @Singleton
 public class TargetInfoFactory {
     private final Map map;
+    private final TerrainGrid terrainGrid;
 
     @Inject
-    public TargetInfoFactory(Map map) {
+    public TargetInfoFactory(Map map, TerrainGrid terrainGrid) {
         this.map = map;
+        this.terrainGrid = terrainGrid;
     }
 
     /**
@@ -30,8 +32,8 @@ public class TargetInfoFactory {
                 // TODO: we need to be smarter if we want irregular weapon target areas
                 // we also needs a different class of target indicators for user targetable weapons
                 for (int distance : weapon.getAttackDistances()) {
-                    for (Coordinate target
-                            : Algorithms.getNDistanceAway(map.getWidth(), map.getHeight(), move, distance)) {
+                    for (Coordinate target : Algorithms.getNDistanceAway(
+                            terrainGrid.getWidth(), terrainGrid.getHeight(), move, distance)) {
                         targetWeaponMap.put(target, weapon);
                     }
                 }
