@@ -20,7 +20,7 @@ import javax.inject.Singleton;
 import java.util.*;
 
 @Singleton
-public class LevelLoader {
+public class MapLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
@@ -32,7 +32,7 @@ public class LevelLoader {
     private final OrthogonalTiledMapRenderer mapRenderer;
 
     @Inject
-    LevelLoader(
+    MapLoader(
             ObjectFactory objectFactory,
             ItemFactory itemFactory,
             PlayerContainer playerContainer,
@@ -48,7 +48,7 @@ public class LevelLoader {
         this.mapRenderer = mapRenderer;
     }
 
-    public void loadLevel(TiledMap tiledMap) {
+    public void loadMap(TiledMap tiledMap) {
         TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
         Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 

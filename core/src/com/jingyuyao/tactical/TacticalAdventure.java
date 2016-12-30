@@ -9,7 +9,7 @@ import com.google.inject.Injector;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.DataModule;
-import com.jingyuyao.tactical.data.LevelLoader;
+import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
@@ -40,7 +40,7 @@ public class TacticalAdventure extends Game {
 
     public void setLevel(String mapName) {
         TiledMap tiledMap = injector.getInstance(AssetManager.class).get(mapName, TiledMap.class);
-        injector.getInstance(LevelLoader.class).loadLevel(tiledMap);
+        injector.getInstance(MapLoader.class).loadMap(tiledMap);
         injector.getInstance(MapController.class).initiateControl();
         setScreen(injector.getInstance(MapScreen.class));
     }
