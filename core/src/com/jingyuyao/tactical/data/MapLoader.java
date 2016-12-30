@@ -9,7 +9,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.jingyuyao.tactical.model.TerrainGrid;
 import com.jingyuyao.tactical.model.character.*;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
@@ -17,6 +16,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.CharacterContainer;
 import com.jingyuyao.tactical.model.map.MapFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.TerrainGrid;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

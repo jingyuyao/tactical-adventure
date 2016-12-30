@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.Character;
@@ -15,6 +17,7 @@ public class MapModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(CharacterContainer.class);
+        bind(TerrainGrid.class);
         bind(MapFactory.class);
     }
 
@@ -29,5 +32,12 @@ public class MapModule extends AbstractModule {
     @CharacterContainer.InitialCharacterSet
     Set<Character> provideInitialCharacterSet() {
         return new HashSet<Character>();
+    }
+
+    @Provides
+    @Singleton
+    @com.jingyuyao.tactical.model.map.TerrainGrid.BackingTable
+    Table<Integer, Integer, Terrain> providesBackingTable() {
+        return HashBasedTable.create();
     }
 }

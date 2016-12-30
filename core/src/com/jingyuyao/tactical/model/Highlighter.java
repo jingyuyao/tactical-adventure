@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.TerrainGrid;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 

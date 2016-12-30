@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.model.TerrainGrid;
+import com.jingyuyao.tactical.model.map.TerrainGrid;
 import com.jingyuyao.tactical.view.MapUI;
 import com.jingyuyao.tactical.view.MapView;
 

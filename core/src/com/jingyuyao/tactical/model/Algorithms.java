@@ -183,11 +183,11 @@ public class Algorithms {
         return builder.build();
     }
 
-    static int tableWidth(Table<?, ?, ?> table) {
+    public static int tableWidth(Table<?, ?, ?> table) {
         return table.columnKeySet().size();
     }
 
-    static int tableHeight(Table<?, ?, ?> table) {
+    public static int tableHeight(Table<?, ?, ?> table) {
         return table.rowKeySet().size();
     }
 
