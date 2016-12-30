@@ -13,11 +13,11 @@ import javax.inject.Singleton;
 @Singleton
 public class Map {
     private final TerrainGrid terrains;
-    private final CharacterContainer<Player> players;
-    private final CharacterContainer<Enemy> enemies;
+    private final PlayerContainer players;
+    private final EnemyContainer enemies;
 
     @Inject
-    public Map(TerrainGrid terrains, CharacterContainer<Player> players, CharacterContainer<Enemy> enemies) {
+    public Map(TerrainGrid terrains, PlayerContainer players, EnemyContainer enemies) {
         this.terrains = terrains;
         this.players = players;
         this.enemies = enemies;

@@ -1,27 +1,31 @@
 package com.jingyuyao.tactical.model.object;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 import javax.inject.Singleton;
 import java.util.HashSet;
+import java.util.Set;
 
 public class ObjectModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(ObjectFactory.class);
+        bind(PlayerContainer.class);
+        bind(EnemyContainer.class);
     }
 
     @Provides
     @Singleton
-    CharacterContainer<Player> providePlayerContainer(EventBus eventBus) {
-        return new CharacterContainer<Player>(eventBus, new HashSet<Player>());
+    @PlayerContainer.InitialPlayerSet
+    Set<Player> provideInitialPlayerSet() {
+        return new HashSet<Player>();
     }
 
     @Provides
     @Singleton
-    CharacterContainer<Enemy> provideEnemyContainer(EventBus eventBus) {
-        return new CharacterContainer<Enemy>(eventBus, new HashSet<Enemy>());
+    @EnemyContainer.InitialEnemySet
+    Set<Enemy> provideInitialEnemySet() {
+        return new HashSet<Enemy>();
     }
 }

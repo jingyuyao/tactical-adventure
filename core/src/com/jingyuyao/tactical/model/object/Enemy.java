@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.state.MapState;
  * An enemy character
  */
 public class Enemy extends Character {
-    public Enemy(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
+    Enemy(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
         super(eventBus, x, y, name, stats, items);
     }
 

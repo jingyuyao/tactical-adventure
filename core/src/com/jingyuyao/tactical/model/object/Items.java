@@ -35,11 +35,11 @@ public class Items {
     /**
      * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it has one.
      */
-    public Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables) {
+    Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables) {
         this(eventBus, weapons, consumables, getDefaultWeapon(weapons));
     }
 
-    public Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
+    Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
         this.weapons = weapons;
         this.consumables = consumables;
         setEquippedWeapon(equippedWeapon);

@@ -25,16 +25,16 @@ public class LevelLoader {
 
     private final ObjectFactory objectFactory;
     private final ItemFactory itemFactory;
-    private final CharacterContainer<Player> playerContainer;
-    private final CharacterContainer<Enemy> enemyContainer;
+    private final PlayerContainer playerContainer;
+    private final EnemyContainer enemyContainer;
     private final TerrainGrid terrainGrid;
 
     @Inject
     LevelLoader(
             ObjectFactory objectFactory,
             ItemFactory itemFactory,
-            CharacterContainer<Player> playerContainer,
-            CharacterContainer<Enemy> enemyContainer,
+            PlayerContainer playerContainer,
+            EnemyContainer enemyContainer,
             TerrainGrid terrainGrid) {
         this.objectFactory = objectFactory;
         this.itemFactory = itemFactory;
@@ -112,7 +112,7 @@ public class LevelLoader {
         weapons.add(itemFactory.createWeapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
         weapons.add(itemFactory.createWeapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
         weapons.add(itemFactory.createWeapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
-        return itemFactory.createItems(
+        return objectFactory.createItems(
                 weapons,
                 Lists.<Consumable>newArrayList(itemFactory.createHeal(0, "pot", 3)));
     }
@@ -121,6 +121,6 @@ public class LevelLoader {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
         weapons.add(itemFactory.createWeapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
-        return itemFactory.createItems(weapons, Collections.<Consumable>emptyList());
+        return objectFactory.createItems(weapons, Collections.<Consumable>emptyList());
     }
 }

@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.util.ModelEvent;
 public class Player extends Character {
     private boolean actionable = true;
 
-    public Player(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
+    Player(EventBus eventBus, int x, int y, String name, Stats stats, Items items) {
         super(eventBus, x, y, name, stats, items);
     }
 

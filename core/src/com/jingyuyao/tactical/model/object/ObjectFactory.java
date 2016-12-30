@@ -1,9 +1,12 @@
 package com.jingyuyao.tactical.model.object;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Weapon;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 
 @Singleton
 public class ObjectFactory {
@@ -24,5 +27,9 @@ public class ObjectFactory {
 
     public Terrain createTerrain(int x, int y, Terrain.Type type) {
         return new Terrain(eventBus, x, y, type);
+    }
+
+    public Items createItems(List<Weapon> weapons, List<Consumable> consumables) {
+        return new Items(eventBus, weapons, consumables);
     }
 }

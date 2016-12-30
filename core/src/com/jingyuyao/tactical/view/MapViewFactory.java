@@ -5,10 +5,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.jingyuyao.tactical.model.TerrainGrid;
-import com.jingyuyao.tactical.model.object.CharacterContainer;
-import com.jingyuyao.tactical.model.object.Enemy;
-import com.jingyuyao.tactical.model.object.Player;
-import com.jingyuyao.tactical.model.object.Terrain;
+import com.jingyuyao.tactical.model.object.*;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 
 import javax.inject.Inject;
@@ -26,15 +23,15 @@ class MapViewFactory {
 
     private final ActorFactory actorFactory;
     private final TerrainGrid terrainGrid;
-    private final CharacterContainer<Player> players;
-    private final CharacterContainer<Enemy> enemies;
+    private final PlayerContainer players;
+    private final EnemyContainer enemies;
 
     @Inject
     MapViewFactory(
             ActorFactory actorFactory,
             TerrainGrid terrainGrid,
-            CharacterContainer<Player> players,
-            CharacterContainer<Enemy> enemies) {
+            PlayerContainer players,
+            EnemyContainer enemies) {
         this.actorFactory = actorFactory;
         this.terrainGrid = terrainGrid;
         this.players = players;
