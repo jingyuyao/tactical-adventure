@@ -27,7 +27,6 @@ public class ModelModule extends AbstractModule {
 
         bind(CharacterContainer.class);
         bind(TerrainGrid.class);
-        bind(Turn.class).asEagerSingleton(); // force instantiation so it will listen to events
         bind(Waiter.class);
         bind(Highlighter.class);
         bind(AttackPlanFactory.class);

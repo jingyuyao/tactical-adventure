@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.action;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.Turn;
+import com.jingyuyao.tactical.model.event.NewTurn;
 import com.jingyuyao.tactical.model.state.AbstractState;
 
 public class EndTurn extends AbstractAction {
@@ -19,6 +19,6 @@ public class EndTurn extends AbstractAction {
 
     @Override
     public void run() {
-        eventBus.post(new Turn.NewTurn());
+        eventBus.post(new NewTurn());
     }
 }

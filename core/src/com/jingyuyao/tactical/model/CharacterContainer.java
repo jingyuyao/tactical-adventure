@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.event.NewTurn;
 import com.jingyuyao.tactical.model.object.Character;
 import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.object.Player;
@@ -55,6 +56,13 @@ public class CharacterContainer extends DisposableObject implements Iterable<Cha
     @Subscribe
     public void characterDisposed(Disposed<Character> disposed) {
         characters.remove(disposed.getObject());
+    }
+
+    @Subscribe
+    public void newTurn(NewTurn newTurn) {
+        for (Player player : getPlayers()) {
+            player.setActionable(true);
+        }
     }
 
     @Override
