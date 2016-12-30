@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;

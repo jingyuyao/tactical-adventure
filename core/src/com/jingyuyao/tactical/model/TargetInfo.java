@@ -8,6 +8,7 @@ import com.google.common.collect.*;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.CharacterContainer;
 import com.jingyuyao.tactical.model.map.MapObject;
 
 import java.util.Set;
