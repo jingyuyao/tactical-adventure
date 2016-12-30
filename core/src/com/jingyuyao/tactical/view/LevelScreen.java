@@ -4,10 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class LevelScreen extends ScreenAdapter {
     private final MapView mapView;
     private final MapUI mapUI;
 
+    @Inject
     LevelScreen(MapView mapView, MapUI mapUI) {
         this.mapView = mapView;
         this.mapUI = mapUI;

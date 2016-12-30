@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.action.Action;
@@ -18,12 +19,17 @@ import com.jingyuyao.tactical.model.state.StateChange;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.Locale;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Singleton
 public class MapUI {
     private final Skin skin;
-    private final Stage ui;
+    private final Stage stage;
     private final Table root;
     private final Label characterLabel;
     private final Label terrainLabel;
@@ -37,7 +43,7 @@ public class MapUI {
     @Inject
     MapUI(EventBus eventBus, MapState mapState, Skin skin) {
         this.skin = skin;
-        ui = new Stage();
+        stage = new Stage();
         root = new Table();
         characterLabel = new Label(null, skin);
         terrainLabel = new Label(null, skin);
@@ -47,7 +53,7 @@ public class MapUI {
 
         root.setFillParent(true);
         root.setDebug(true);
-        ui.addActor(root);
+        stage.addActor(root);
 
         // Logical cell layout starts at top left corner
         root.top().left().pad(10);
@@ -75,25 +81,25 @@ public class MapUI {
         populateButtons();
     }
 
-    public Stage getUi() {
-        return ui;
+    public Stage getStage() {
+        return stage;
     }
 
     void act(float delta) {
-        ui.act(delta);
+        stage.act(delta);
     }
 
     void draw() {
-        ui.getViewport().apply();
-        ui.draw();
+        stage.getViewport().apply();
+        stage.draw();
     }
 
     void resize(int width, int height) {
-        ui.getViewport().update(width, height);
+        stage.getViewport().update(width, height);
     }
 
     void dispose() {
-        ui.dispose();
+        stage.dispose();
     }
 
     // TODO: need to refresh stats after attack
@@ -158,4 +164,7 @@ public class MapUI {
         });
         return button;
     }
+
+    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
+    @interface MapUiStage {}
 }

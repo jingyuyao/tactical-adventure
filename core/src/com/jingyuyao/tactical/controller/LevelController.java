@@ -12,18 +12,20 @@ import javax.inject.Singleton;
 
 @Singleton
 public class LevelController {
+    private final MapView mapView;
     private final MapUI mapUI;
     private final TerrainGrid terrainGrid;
 
     @Inject
-    LevelController(MapUI mapUI, TerrainGrid terrainGrid) {
+    LevelController(MapView mapView, MapUI mapUI, TerrainGrid terrainGrid) {
+        this.mapView = mapView;
         this.mapUI = mapUI;
         this.terrainGrid = terrainGrid;
     }
 
-    public void initiateControl(MapView mapView) {
-        Stage world = mapView.getWorld();
-        Stage ui = mapUI.getUi();
+    public void initiateControl() {
+        Stage world = mapView.getStage();
+        Stage ui = mapUI.getStage();
         int worldWidth = terrainGrid.getWidth();
         int worldHeight = terrainGrid.getHeight();
 

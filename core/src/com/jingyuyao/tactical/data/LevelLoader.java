@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -28,6 +29,7 @@ public class LevelLoader {
     private final PlayerContainer playerContainer;
     private final EnemyContainer enemyContainer;
     private final TerrainGrid terrainGrid;
+    private final OrthogonalTiledMapRenderer mapRenderer;
 
     @Inject
     LevelLoader(
@@ -35,12 +37,15 @@ public class LevelLoader {
             ItemFactory itemFactory,
             PlayerContainer playerContainer,
             EnemyContainer enemyContainer,
-            TerrainGrid terrainGrid) {
+            TerrainGrid terrainGrid,
+            OrthogonalTiledMapRenderer mapRenderer
+    ) {
         this.objectFactory = objectFactory;
         this.itemFactory = itemFactory;
         this.playerContainer = playerContainer;
         this.enemyContainer = enemyContainer;
         this.terrainGrid = terrainGrid;
+        this.mapRenderer = mapRenderer;
     }
 
     public void loadLevel(TiledMap tiledMap) {
@@ -66,6 +71,8 @@ public class LevelLoader {
         for (Enemy enemy : createTestEnemies()) {
             enemyContainer.add(enemy);
         }
+
+        mapRenderer.setMap(tiledMap);
     }
 
     private Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {
