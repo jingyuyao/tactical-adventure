@@ -23,6 +23,10 @@ public class CharacterContainer<T extends Character> extends DisposableObject im
         this.objects = objects;
     }
 
+    public void add(T object) {
+        objects.add(object);
+    }
+
     public Set<T> getObjects() {
         return objects;
     }

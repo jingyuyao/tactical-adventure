@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Marking;
 import com.jingyuyao.tactical.model.MarkingFactory;
 import com.jingyuyao.tactical.model.TargetInfo;
@@ -10,17 +11,26 @@ import com.jingyuyao.tactical.model.object.Enemy;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 import com.jingyuyao.tactical.model.util.Disposed;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.Map;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Contains all the markings in a state.
  */
+@Singleton
 public class Markings extends DisposableObject {
     private final MarkingFactory markingFactory;
     private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking;
 
-    public Markings(EventBus eventBus, MarkingFactory markingFactory, Map<Character, Marking> dangerAreas) {
+    @Inject
+    public Markings(EventBus eventBus, MarkingFactory markingFactory, @InitialDangerAreas Map<Character, Marking> dangerAreas) {
         super(eventBus);
         this.markingFactory = markingFactory;
         this.dangerAreas = dangerAreas;
@@ -70,4 +80,7 @@ public class Markings extends DisposableObject {
             dangerArea.apply();
         }
     }
+
+    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
+    @interface InitialDangerAreas {}
 }
