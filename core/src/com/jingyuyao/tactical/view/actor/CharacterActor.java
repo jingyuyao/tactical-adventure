@@ -37,20 +37,17 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
     ) {
         super(eventBus, object, size, waiter, markerSpriteMap, listener);
         this.sprite = sprite;
-        sprite.setColor(tint);
+        setColor(tint);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (sprite != null) {
+            sprite.setColor(getColor());
             sprite.setBounds(getX(), getY(), getWidth(), getHeight());
             sprite.draw(batch);
         }
         super.draw(batch, parentAlpha);
-    }
-
-    Sprite getSprite() {
-        return sprite;
     }
 
     @Subscribe
@@ -85,6 +82,10 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
         if (disposed.matches(getObject())) {
             remove();
         }
+    }
+
+    Sprite getSprite() {
+        return sprite;
     }
 
     private SequenceAction getMoveSequence(Iterable<Coordinate> path) {

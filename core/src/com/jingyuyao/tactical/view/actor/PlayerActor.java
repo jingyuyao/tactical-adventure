@@ -28,8 +28,7 @@ class PlayerActor extends CharacterActor<Player> {
     @Subscribe
     public void newActionState(Player.NewActionState newActionState) {
         if (getObject().equals(newActionState.getPlayer())) {
-            Color tint = newActionState.isActionable() ? Color.WHITE : Color.GRAY;
-            getSprite().setColor(tint);
+            setColor(newActionState.isActionable() ? Color.WHITE : Color.GRAY);
         }
     }
 }
