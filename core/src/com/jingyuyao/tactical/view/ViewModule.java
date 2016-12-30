@@ -29,7 +29,7 @@ public class ViewModule extends AbstractModule {
     protected void configure() {
         install(new ActorModule());
 
-        bind(LevelScreen.class);
+        bind(MapScreen.class);
         bind(MapView.class);
         bind(MapUI.class);
     }
