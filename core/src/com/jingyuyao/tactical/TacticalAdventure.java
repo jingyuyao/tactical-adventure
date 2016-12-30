@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.controller.LevelController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.LevelLoader;
-import com.jingyuyao.tactical.model.Level;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.view.LevelScreen;
 import com.jingyuyao.tactical.view.LevelScreenFactory;
