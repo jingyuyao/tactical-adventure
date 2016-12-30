@@ -25,7 +25,7 @@ public class ModelModule extends AbstractModule {
         bind(MarkingFactory.class);
         bind(TargetInfoFactory.class);
         bind(TerrainGrid.class);
-        bind(Turn.class);
+        bind(Turn.class).asEagerSingleton(); // force instantiation so it will listen to events
         bind(Waiter.class);
     }
 
