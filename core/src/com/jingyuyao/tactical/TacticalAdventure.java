@@ -39,11 +39,9 @@ public class TacticalAdventure extends Game {
 
     public void setLevel(String mapName) {
         TiledMap tiledMap = injector.getInstance(AssetManager.class).get(mapName, TiledMap.class);
-        LevelLoader levelLoader = injector.getInstance(LevelLoader.class);
-        levelLoader.loadLevel(tiledMap);
-        Level level = injector.getInstance(Level.class);
+        injector.getInstance(LevelLoader.class).loadLevel(tiledMap);
         LevelScreen levelScreen = injector.getInstance(LevelScreenFactory.class).createScreen(tiledMap);
-        LevelController.initiateControl(levelScreen, level);
+        injector.getInstance(LevelController.class).initiateControl(levelScreen.getMapView());
         setScreen(levelScreen);
     }
 }

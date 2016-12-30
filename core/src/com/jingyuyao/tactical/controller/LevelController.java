@@ -3,15 +3,29 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.model.Level;
-import com.jingyuyao.tactical.view.LevelScreen;
+import com.jingyuyao.tactical.model.TerrainGrid;
+import com.jingyuyao.tactical.view.MapUI;
+import com.jingyuyao.tactical.view.MapView;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class LevelController {
-    public static void initiateControl(LevelScreen levelScreen, Level level) {
-        Stage world = levelScreen.getMapView().getWorld();
-        Stage ui = levelScreen.getMapUI().getUi();
-        int worldWidth = level.getMap().getWidth();
-        int worldHeight = level.getMap().getHeight();
+    private final MapUI mapUI;
+    private final TerrainGrid terrainGrid;
+
+    @Inject
+    LevelController(MapUI mapUI, TerrainGrid terrainGrid) {
+        this.mapUI = mapUI;
+        this.terrainGrid = terrainGrid;
+    }
+
+    public void initiateControl(MapView mapView) {
+        Stage world = mapView.getWorld();
+        Stage ui = mapUI.getUi();
+        int worldWidth = terrainGrid.getWidth();
+        int worldHeight = terrainGrid.getHeight();
 
         DragCameraController dragCameraController =
                 new DragCameraController(worldWidth, worldHeight, world.getViewport());
