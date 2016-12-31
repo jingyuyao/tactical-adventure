@@ -70,7 +70,7 @@ public abstract class AbstractState extends DisposableObject implements State {
     }
 
     public void goTo(AbstractState newState) {
-        getEventBus().post(new StateChange(newState));
+        post(new StateChange(newState));
     }
 
     /**

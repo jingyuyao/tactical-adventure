@@ -74,7 +74,7 @@ public class Marking extends DisposableObject {
                 for (Map.Entry<MapObject, Marker> entry : markers.entrySet()) {
                     entry.getKey().removeMarker(entry.getValue());
                 }
-                getEventBus().unregister(Marking.this);
+                unregister();
             }
         });
     }

@@ -39,12 +39,12 @@ public abstract class MapObject extends DisposableObject {
 
     public void addMarker(Marker marker) {
         markers.add(marker);
-        getEventBus().post(new AddMarker(this, marker));
+        post(new AddMarker(this, marker));
     }
 
     public void removeMarker(Marker marker) {
         markers.remove(marker);
-        getEventBus().post(new RemoveMarker(this, marker));
+        post(new RemoveMarker(this, marker));
     }
 
     /**

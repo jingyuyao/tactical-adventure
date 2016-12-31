@@ -75,12 +75,12 @@ public abstract class Character extends MapObject {
 
     public void moveTo(Coordinate newCoordinate, ImmutableList<Coordinate> path) {
         setCoordinate(newCoordinate);
-        getEventBus().post(new Move(this, path));
+        post(new Move(this, path));
     }
 
     public void instantMoveTo(Coordinate newCoordinate) {
         setCoordinate(newCoordinate);
-        getEventBus().post(new InstantMove(this, newCoordinate));
+        post(new InstantMove(this, newCoordinate));
     }
 
     public void equipWeapon(Weapon weapon) {

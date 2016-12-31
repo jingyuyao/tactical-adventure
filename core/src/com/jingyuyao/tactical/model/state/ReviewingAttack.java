@@ -23,13 +23,13 @@ public class ReviewingAttack extends AbstractPlayerState {
         // TODO: use a different marker for each stage
         // TODO: show equipped weapon targets only
         getMarkings().showImmediateTargets(getTargetInfo());
-        getEventBus().post(new ShowAttackPlan(attackPlan));
+        post(new ShowAttackPlan(attackPlan));
     }
 
     @Override
     public void exit() {
         getMarkings().clearPlayerMarking();
-        getEventBus().post(new HideAttackPlan());
+        post(new HideAttackPlan());
     }
 
     @Override

@@ -32,12 +32,12 @@ public class Highlighter extends DisposableObject {
 
     public void highlight(Character character) {
         setNewHighlight(character);
-        getEventBus().post(new HighlightCharacter(character, terrainGrid.get(character.getCoordinate())));
+        post(new HighlightCharacter(character, terrainGrid.get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {
         setNewHighlight(terrain);
-        getEventBus().post(new HighlightTerrain(terrain));
+        post(new HighlightTerrain(terrain));
     }
 
     private void setNewHighlight(MapObject newHighlight) {

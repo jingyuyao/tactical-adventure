@@ -56,7 +56,7 @@ public class Waiter extends DisposableObject {
      */
     public void waitOne() {
         if (waits++ == 0) {
-            getEventBus().post(new WaitChange(isWaiting()));
+            post(new WaitChange(isWaiting()));
         }
     }
 
@@ -66,7 +66,7 @@ public class Waiter extends DisposableObject {
     public void finishOne() {
         Preconditions.checkState(waits > 0, "Oh boy, this bug is gonna be hard to fix");
         if (waits-- == 1) {
-            getEventBus().post(new WaitChange(isWaiting()));
+            post(new WaitChange(isWaiting()));
         }
     }
 
