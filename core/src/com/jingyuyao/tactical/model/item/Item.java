@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 /**
  * Super class of all the items in the game.
  */
-public class Item extends DisposableObject {
+public class Item extends EventObject {
     private final int id;
     private final String name;
 

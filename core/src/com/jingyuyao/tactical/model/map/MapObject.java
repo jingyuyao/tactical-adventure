@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.event.AddMarker;
 import com.jingyuyao.tactical.model.event.RemoveMarker;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -20,7 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Super class of all the objects on the game grid.
  */
-public abstract class MapObject extends DisposableObject {
+public abstract class MapObject extends EventObject {
     /**
      * List of marker drawn over this object.
      */

@@ -7,9 +7,9 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.StateChange;
 import com.jingyuyao.tactical.model.map.TargetInfoFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
-public abstract class AbstractState extends DisposableObject implements State {
+public abstract class AbstractState extends EventObject implements State {
     private final AbstractState prevState;
     private final Markings markings;
     private final TargetInfoFactory targetInfoFactory;

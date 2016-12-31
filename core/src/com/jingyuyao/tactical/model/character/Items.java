@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
 // TODO: test the invariant
-public class Items extends DisposableObject {
+public class Items extends EventObject {
     /**
      * Invariant: weapons.indexOf(equippedWeapon) == 0
      */

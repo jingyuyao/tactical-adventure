@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Also contains convenience methods to work with our {@link Coordinate} system.
  */
 @Singleton
-public class TerrainGrid extends DisposableObject implements Iterable<Terrain> {
+public class TerrainGrid extends EventObject implements Iterable<Terrain> {
     /**
      * (0,0) starts at bottom left.
      */

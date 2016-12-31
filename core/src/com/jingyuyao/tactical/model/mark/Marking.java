@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * A marking is a map of {@link MapObject} to {@link Marker}.
  * It is tied to a {@link Character} {@link #owner} and cleared upon death.
  */
-public class Marking extends DisposableObject {
+public class Marking extends EventObject {
     private final Character owner;
     private final Map<MapObject, Marker> markers;
     private final Waiter waiter;

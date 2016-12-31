@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.event.NewTurn;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 // TODO: consider making this a Glazed List?
 @Singleton
-public class CharacterContainer extends DisposableObject implements Iterable<Character> {
+public class CharacterContainer extends EventObject implements Iterable<Character> {
     private final Set<Character> characters;
 
     @Inject

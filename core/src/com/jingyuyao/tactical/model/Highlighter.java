@@ -8,13 +8,13 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGrid;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.util.DisposableObject;
+import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Highlighter extends DisposableObject {
+public class Highlighter extends EventObject {
     private final TerrainGrid terrainGrid;
     private MapObject previousHighlight;
 

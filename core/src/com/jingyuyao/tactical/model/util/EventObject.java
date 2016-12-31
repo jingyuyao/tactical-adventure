@@ -4,15 +4,22 @@ import com.google.common.eventbus.EventBus;
 
 /**
  * An object that has an {@link EventBus} and contains convenience methods for interacting with it.
- * Use {@link DisposableObject} instead of directly subclassing this since {@link DisposableObject}
- * remove itself from {@link EventBus} after it is disposed.
  */
-public class EventObject {
+public class EventObject implements Disposable {
     private final EventBus eventBus;
     private boolean registered = false;
 
-    EventObject(EventBus eventBus) {
+    protected EventObject(EventBus eventBus) {
         this.eventBus = eventBus;
+    }
+
+    /**
+     * Children should override this method to add more dispose functionality.
+     * Make sure super is called.
+     */
+    @Override
+    public void dispose() {
+        unregister();
     }
 
     /**
