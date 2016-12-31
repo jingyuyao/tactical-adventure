@@ -41,6 +41,7 @@ public class EventObject implements Disposable {
     protected void unregister() {
         if (registered) {
             eventBus.unregister(this);
+            registered = false;
         }
     }
 
