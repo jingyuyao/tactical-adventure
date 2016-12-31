@@ -49,7 +49,7 @@ public class MapState extends DisposableObject {
     @Subscribe
     public void stateChange(StateChange stateChange) {
         state.exit();
-        state = stateChange.getNewState();
+        state = stateChange.getObject();
         state.enter();
     }
 

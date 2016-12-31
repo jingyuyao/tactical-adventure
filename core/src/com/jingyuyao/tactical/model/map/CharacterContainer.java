@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.event.NewTurn;
-import com.jingyuyao.tactical.model.event.ResetModel;
 import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import javax.inject.Inject;
@@ -25,7 +24,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * A container for a set of {@link Character}s.
  * Listens for {@link #dispose()} in its contained {@link #characters} and remove them from the set.
- * This also implicitly listens for {@link ResetModel} via its parent class.
  */
 // TODO: consider making this a Glazed List?
 @Singleton

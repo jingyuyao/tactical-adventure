@@ -98,19 +98,19 @@ public class MapUI {
     // TODO: need to refresh stats after attack
     @Subscribe
     public void highlightCharacter(HighlightCharacter highlightCharacter) {
-        characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getCharacter().getHp()));
+        characterLabel.setText(String.format(Locale.US, "HP: %d", highlightCharacter.getObject().getHp()));
         updateTerrainLabel(highlightCharacter.getTerrain());
     }
 
     @Subscribe
     public void highlightTerrain(HighlightTerrain highlightTerrain) {
         characterLabel.setText(null);
-        updateTerrainLabel(highlightTerrain.getTerrain());
+        updateTerrainLabel(highlightTerrain.getObject());
     }
 
     @Subscribe
     public void stateChange(StateChange stateChange) {
-        State newState = stateChange.getNewState();
+        State newState = stateChange.getObject();
         stateLabel.setText(newState.getName());
         currentActions = newState.getActions();
         populateButtons();
@@ -125,7 +125,7 @@ public class MapUI {
     // TODO: create a nice looking widget to show this
     @Subscribe
     public void showAttackPlan(ShowAttackPlan showAttackPlan) {
-        attackPlan.setText(showAttackPlan.getAttackPlan().toString());
+        attackPlan.setText(showAttackPlan.getObject().toString());
     }
 
     @Subscribe

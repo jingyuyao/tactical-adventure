@@ -2,17 +2,12 @@ package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.character.Player;
 
-public class NewActionState implements ModelEvent {
-    private final Player player;
+public class NewActionState extends ObjectEvent<Player> {
     private final boolean actionable;
 
     public NewActionState(Player player, boolean actionable) {
-        this.player = player;
+        super(player);
         this.actionable = actionable;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     public boolean isActionable() {

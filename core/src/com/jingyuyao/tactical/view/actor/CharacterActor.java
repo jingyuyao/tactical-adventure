@@ -54,7 +54,7 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
 
     @Subscribe
     public void instantMoveTo(InstantMove instantMove) {
-        if (getObject().equals(instantMove.getCharacter())) {
+        if (instantMove.matches(getObject())) {
             Coordinate destination = instantMove.getDestination();
             setPosition(destination.getX(), destination.getY());
         }
@@ -62,7 +62,7 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
 
     @Subscribe
     public void moveTo(Move move) {
-        if (getObject().equals(move.getCharacter())) {
+        if (move.matches(getObject())) {
             final ImmutableList<EventListener> listeners = popAllListeners();
             SequenceAction moveSequence = getMoveSequence(move.getPath());
             moveSequence.addAction(run(new Runnable() {

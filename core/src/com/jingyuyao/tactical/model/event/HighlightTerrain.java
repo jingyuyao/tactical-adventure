@@ -2,14 +2,8 @@ package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.map.Terrain;
 
-public class HighlightTerrain implements ModelEvent {
-    private final Terrain terrain;
-
+public class HighlightTerrain extends ObjectEvent<Terrain> {
     public HighlightTerrain(Terrain terrain) {
-        this.terrain = terrain;
-    }
-
-    public Terrain getTerrain() {
-        return terrain;
+        super(terrain);
     }
 }

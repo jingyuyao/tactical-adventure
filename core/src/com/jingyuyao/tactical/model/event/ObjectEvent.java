@@ -9,10 +9,10 @@ import com.google.common.base.Predicates;
  * will not respect type parameter when delivering events.
  * @param <T> the type of contained object.
  */
-class BaseEvent<T> implements ModelEvent {
+class ObjectEvent<T> implements ModelEvent {
     private final T object;
 
-    BaseEvent(T object) {
+    ObjectEvent(T object) {
         this.object = object;
     }
 

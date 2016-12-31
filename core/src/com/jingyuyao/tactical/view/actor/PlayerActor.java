@@ -28,7 +28,7 @@ class PlayerActor extends CharacterActor<Player> {
 
     @Subscribe
     public void newActionState(NewActionState newActionState) {
-        if (getObject().equals(newActionState.getPlayer())) {
+        if (newActionState.matches(getObject())) {
             setColor(newActionState.isActionable() ? Color.WHITE : Color.GRAY);
         }
     }

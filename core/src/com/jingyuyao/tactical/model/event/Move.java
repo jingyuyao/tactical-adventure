@@ -4,17 +4,12 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
 
-public class Move implements ModelEvent {
-    private final Character character;
+public class Move extends ObjectEvent<Character> {
     private final ImmutableList<Coordinate> path;
 
     public Move(Character character, ImmutableList<Coordinate> path) {
-        this.character = character;
+        super(character);
         this.path = path;
-    }
-
-    public Character getCharacter() {
-        return character;
     }
 
     public ImmutableList<Coordinate> getPath() {

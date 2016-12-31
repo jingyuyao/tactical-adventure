@@ -3,17 +3,12 @@ package com.jingyuyao.tactical.model.event;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
 
-public class InstantMove implements ModelEvent {
-    private final Character character;
+public class InstantMove extends ObjectEvent<Character> {
     private final Coordinate destination;
 
     public InstantMove(Character character, Coordinate destination) {
-        this.character = character;
+        super(character);
         this.destination = destination;
-    }
-
-    public Character getCharacter() {
-        return character;
     }
 
     public Coordinate getDestination() {
