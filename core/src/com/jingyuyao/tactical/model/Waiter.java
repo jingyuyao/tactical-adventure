@@ -29,6 +29,7 @@ public class Waiter extends DisposableObject {
         super(eventBus);
         this.runnables = runnables;
         this.waits = 0;
+        register();
     }
 
     @Override

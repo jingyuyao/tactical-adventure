@@ -13,11 +13,13 @@ public class EventObject {
 
     EventObject(EventBus eventBus) {
         this.eventBus = eventBus;
-        register();
     }
 
     /**
-     * Register this object to {@link #eventBus} if it has not been registered
+     * Register this object to {@link #eventBus} if it has not been registered.
+     * Safe to be called multiple times without any performance hit. Each class
+     * with {@link com.google.common.eventbus.Subscribe} annotation should call
+     * this just in case the parent class doesn't call it.
      */
     protected void register() {
         if (!registered) {
@@ -27,7 +29,7 @@ public class EventObject {
     }
 
     /**
-     * Unregister this object from {@link #eventBus} if it has been registered
+     * Unregister this object from {@link #eventBus} if it has been registered.
      */
     protected void unregister() {
         if (registered) {

@@ -37,12 +37,20 @@ public class MapState extends DisposableObject {
         // TODO: add something like MapState.begin() so we can fire off a state change event to the view
         this.initialState = state;
         this.state = state;
+        register();
     }
 
     @Override
     public void dispose() {
         state = initialState;
         super.dispose();
+    }
+
+    @Subscribe
+    public void stateChange(StateChange stateChange) {
+        state.exit();
+        state = stateChange.getNewState();
+        state.enter();
     }
 
     public ImmutableList<Action> getActions() {
@@ -62,13 +70,6 @@ public class MapState extends DisposableObject {
     public void select(Terrain terrain) {
         if (waiter.isWaiting()) return;
         state.select(terrain);
-    }
-
-    @Subscribe
-    public void stateChange(StateChange stateChange) {
-        state.exit();
-        state = stateChange.getNewState();
-        state.enter();
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)

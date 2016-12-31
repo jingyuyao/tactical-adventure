@@ -36,6 +36,25 @@ public class CharacterContainer extends DisposableObject implements Iterable<Cha
     CharacterContainer(EventBus eventBus, @InitialCharacterSet Set<Character> characters) {
         super(eventBus);
         this.characters = characters;
+        register();
+    }
+
+    @Override
+    public void dispose() {
+        characters.clear();
+        super.dispose();
+    }
+
+    @Subscribe
+    public void characterDisposed(Disposed<Character> disposed) {
+        characters.remove(disposed.getObject());
+    }
+
+    @Subscribe
+    public void newTurn(NewTurn newTurn) {
+        for (Player player : getPlayers()) {
+            player.setActionable(true);
+        }
     }
 
     public void add(Character character) {
@@ -52,24 +71,6 @@ public class CharacterContainer extends DisposableObject implements Iterable<Cha
 
     public Iterable<Enemy> getEnemies() {
         return Iterables.filter(characters, Enemy.class);
-    }
-
-    @Subscribe
-    public void characterDisposed(Disposed<Character> disposed) {
-        characters.remove(disposed.getObject());
-    }
-
-    @Subscribe
-    public void newTurn(NewTurn newTurn) {
-        for (Player player : getPlayers()) {
-            player.setActionable(true);
-        }
-    }
-
-    @Override
-    public void dispose() {
-        characters.clear();
-        super.dispose();
     }
 
     @Override

@@ -30,6 +30,7 @@ public class Marking extends DisposableObject {
         this.owner = owner;
         this.markers = markers;
         this.waiter = waiter;
+        register();
     }
 
     @Subscribe

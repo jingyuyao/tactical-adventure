@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.util.DisposableObject;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
 // TODO: test the invariant
-public class Items {
+public class Items extends DisposableObject {
     /**
      * Invariant: weapons.indexOf(equippedWeapon) == 0
      */
@@ -40,10 +41,19 @@ public class Items {
     }
 
     Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
+        super(eventBus);
         this.weapons = weapons;
         this.consumables = consumables;
         setEquippedWeapon(equippedWeapon);
-        eventBus.register(this);
+        register();
+    }
+
+    @Subscribe
+    public void itemBroke(Disposed<Item> disposed) {
+        Iterables.removeIf(getItems(), disposed.getMatchesPredicate());
+        if (disposed.matches(equippedWeapon)) {
+            setEquippedWeapon(getDefaultWeapon(weapons));
+        }
     }
 
     Iterable<Weapon> getWeapons() {
@@ -75,14 +85,6 @@ public class Items {
             Collections.swap(weapons, 0, weaponIndex);
         }
         this.equippedWeapon = weapon;
-    }
-
-    @Subscribe
-    public void itemBroke(Disposed<Item> disposed) {
-        Iterables.removeIf(getItems(), disposed.getMatchesPredicate());
-        if (disposed.matches(equippedWeapon)) {
-            setEquippedWeapon(getDefaultWeapon(weapons));
-        }
     }
 
     /**

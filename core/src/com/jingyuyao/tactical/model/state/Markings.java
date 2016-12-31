@@ -35,6 +35,7 @@ public class Markings extends DisposableObject {
         this.markingFactory = markingFactory;
         this.dangerAreas = dangerAreas;
         playerMarking = null;
+        register();
     }
 
     @Override
