@@ -1,9 +1,13 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.google.common.eventbus.DeadEvent;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.jingyuyao.tactical.controller.ControllerModule;
@@ -27,7 +31,13 @@ public class TacticalAdventure extends Game {
                 new ViewModule(),
                 new ControllerModule()
         );
+        injector.getInstance(EventBus.class).register(this);
         setLevel(AssetModule.TEST_MAP);
+    }
+
+    @Subscribe
+    public void logDeadEvent(DeadEvent deadEvent) {
+        Gdx.app.log("DeadEvent", deadEvent.getEvent().toString());
     }
 
     @Override
