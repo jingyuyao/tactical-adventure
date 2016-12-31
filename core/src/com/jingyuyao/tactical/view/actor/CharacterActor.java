@@ -12,7 +12,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.Disposed;
+import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.event.InstantMove;
 import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.mark.Marker;
@@ -80,8 +80,8 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
     }
 
     @Subscribe
-    public void death(Disposed<Character> disposed) {
-        if (disposed.matches(getObject())) {
+    public void characterDied(CharacterDied characterDied) {
+        if (characterDied.matches(getObject())) {
             remove();
         }
     }

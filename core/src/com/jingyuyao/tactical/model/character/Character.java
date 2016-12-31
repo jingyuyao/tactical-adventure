@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.event.InstantMove;
 import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -90,6 +91,7 @@ public abstract class Character extends MapObject {
     public void damageBy(int delta) {
         boolean dead = stats.damageBy(delta);
         if (dead) {
+            post(new CharacterDied(this));
             dispose();
         }
     }

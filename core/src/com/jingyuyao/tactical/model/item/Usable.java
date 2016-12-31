@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.event.ItemBroke;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
@@ -30,6 +31,7 @@ public class Usable extends Item {
 
         usageLeft--;
         if (usageLeft == 0) {
+            post(new ItemBroke(this));
             dispose();
         }
     }

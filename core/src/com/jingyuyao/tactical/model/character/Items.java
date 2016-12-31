@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.event.Disposed;
+import com.jingyuyao.tactical.model.event.ItemBroke;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
@@ -49,9 +49,9 @@ public class Items extends DisposableObject {
     }
 
     @Subscribe
-    public void itemBroke(Disposed<Item> disposed) {
-        Iterables.removeIf(getItems(), disposed.getMatchesPredicate());
-        if (disposed.matches(equippedWeapon)) {
+    public void itemBroke(ItemBroke itemBroke) {
+        Iterables.removeIf(getItems(), itemBroke.getMatchesPredicate());
+        if (itemBroke.matches(equippedWeapon)) {
             setEquippedWeapon(getDefaultWeapon(weapons));
         }
     }

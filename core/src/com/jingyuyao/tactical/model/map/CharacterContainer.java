@@ -7,7 +7,7 @@ import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.Disposed;
+import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.event.NewTurn;
 import com.jingyuyao.tactical.model.event.ResetModel;
 import com.jingyuyao.tactical.model.util.DisposableObject;
@@ -46,8 +46,8 @@ public class CharacterContainer extends DisposableObject implements Iterable<Cha
     }
 
     @Subscribe
-    public void characterDisposed(Disposed<Character> disposed) {
-        characters.remove(disposed.getObject());
+    public void characterDied(CharacterDied characterDied) {
+        characters.remove(characterDied.getObject());
     }
 
     @Subscribe
