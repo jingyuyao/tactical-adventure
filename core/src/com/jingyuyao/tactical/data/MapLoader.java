@@ -114,18 +114,18 @@ public class MapLoader {
     private Items createItems1() {
         int attackPower = 5;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(itemFactory.createWeapon(0, "Axe", 1, attackPower, ImmutableSet.of(1)));
-        weapons.add(itemFactory.createWeapon(1, "Sword", 10, attackPower, ImmutableSet.of(1)));
-        weapons.add(itemFactory.createWeapon(2, "Bow", 3, attackPower, ImmutableSet.of(2)));
+        weapons.add(itemFactory.createWeapon("Axe", 1, attackPower, ImmutableSet.of(1)));
+        weapons.add(itemFactory.createWeapon("Sword", 10, attackPower, ImmutableSet.of(1)));
+        weapons.add(itemFactory.createWeapon("Bow", 3, attackPower, ImmutableSet.of(2)));
         return characterFactory.createItems(
                 weapons,
-                Lists.<Consumable>newArrayList(itemFactory.createHeal(0, "pot", 3)));
+                Lists.<Consumable>newArrayList(itemFactory.createHeal("pot", 3)));
     }
 
     private Items createItems2() {
         int attackPower = 3;
         List<Weapon> weapons = new ArrayList<Weapon>();
-        weapons.add(itemFactory.createWeapon(2, "Bow", 5, attackPower, ImmutableSet.of(2)));
+        weapons.add(itemFactory.createWeapon("Bow", 5, attackPower, ImmutableSet.of(2)));
         return characterFactory.createItems(weapons, Collections.<Consumable>emptyList());
     }
 }

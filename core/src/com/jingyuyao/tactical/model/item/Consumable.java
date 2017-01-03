@@ -7,8 +7,8 @@ import com.jingyuyao.tactical.model.character.Player;
  * An {@link Item} that can be used by a {@link Player}.
  */
 public abstract class Consumable extends Usable {
-    Consumable(EventBus eventBus, int id, String name, int usageLeft) {
-        super(eventBus, id, name, usageLeft);
+    Consumable(EventBus eventBus, String name, int usageLeft) {
+        super(eventBus, name, usageLeft);
     }
 
     public void consume(Player user) {

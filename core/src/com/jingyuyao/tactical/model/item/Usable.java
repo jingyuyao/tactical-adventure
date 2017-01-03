@@ -13,8 +13,8 @@ public class Usable extends Item {
      */
     private int usageLeft;
 
-    Usable(EventBus eventBus, int id, String name, int usageLeft) {
-        super(eventBus, id, name);
+    Usable(EventBus eventBus, String name, int usageLeft) {
+        super(eventBus, name);
         Preconditions.checkArgument(usageLeft > 0);
         this.usageLeft = usageLeft;
     }

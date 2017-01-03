@@ -2,7 +2,10 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
+
+import javax.inject.Inject;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status.
@@ -12,8 +15,15 @@ public class Weapon extends Usable {
     private final int attackPower;
     private final ImmutableSet<Integer> attackDistances;
 
-    Weapon(EventBus eventBus, int id, String name, int usageLeft, int attackPower, Iterable<Integer> attackDistances) {
-        super(eventBus, id, name, usageLeft);
+    @Inject
+    Weapon(
+            EventBus eventBus,
+            @Assisted String name,
+            @Assisted("usageLeft") int usageLeft,
+            @Assisted("attackPower") int attackPower,
+            @Assisted Iterable<Integer> attackDistances
+    ) {
+        super(eventBus, name, usageLeft);
         this.attackPower = attackPower;
         this.attackDistances = ImmutableSet.copyOf(attackDistances);
     }
