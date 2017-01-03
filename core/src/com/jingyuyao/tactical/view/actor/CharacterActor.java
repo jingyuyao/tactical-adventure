@@ -12,9 +12,9 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.CharacterDied;
-import com.jingyuyao.tactical.model.event.InstantMove;
-import com.jingyuyao.tactical.model.event.Move;
+import com.jingyuyao.tactical.model.character.event.CharacterDied;
+import com.jingyuyao.tactical.model.character.event.InstantMove;
+import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.mark.Marker;
 
 import java.util.Map;

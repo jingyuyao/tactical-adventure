@@ -1,5 +1,6 @@
-package com.jingyuyao.tactical.model.event;
+package com.jingyuyao.tactical.model.character.event;
 
+import com.jingyuyao.tactical.model.event.ObjectEvent;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 

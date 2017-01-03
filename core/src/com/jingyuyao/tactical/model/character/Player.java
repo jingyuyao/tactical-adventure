@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.character;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.event.NewActionState;
+import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;

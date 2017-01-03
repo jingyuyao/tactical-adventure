@@ -1,7 +1,8 @@
-package com.jingyuyao.tactical.model.event;
+package com.jingyuyao.tactical.model.character.event;
 
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.event.ObjectEvent;
 
 public class InstantMove extends ObjectEvent<Character> {
     private final Coordinate destination;

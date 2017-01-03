@@ -10,10 +10,10 @@ import com.jingyuyao.tactical.model.common.ModelEvent;
  * will not respect type parameter when delivering events.
  * @param <T> the type of contained object.
  */
-class ObjectEvent<T> implements ModelEvent {
+public class ObjectEvent<T> implements ModelEvent {
     private final T object;
 
-    ObjectEvent(T object) {
+    public ObjectEvent(T object) {
         this.object = object;
     }
 

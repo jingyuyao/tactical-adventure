@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.NewActionState;
+import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.mark.Marker;
 
 import java.util.Map;
