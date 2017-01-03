@@ -42,9 +42,4 @@ public class EventObject {
     protected void post(Object event) {
         eventBus.post(event);
     }
-
-    // TODO: get rid of me
-    protected EventBus getEventBus() {
-        return eventBus;
-    }
 }
