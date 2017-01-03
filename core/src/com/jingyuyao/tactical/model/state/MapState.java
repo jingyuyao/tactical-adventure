@@ -103,7 +103,12 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
 
     void rollback() {
         while (stateStack.size() > 1) {
-            pop();
+            State currentState = stateStack.pop();
+            currentState.exit();
+            State lastState = stateStack.peek();
+            lastState.canceled();
+            lastState.enter();
+            post(new StateChanged(lastState));
         }
     }
 
