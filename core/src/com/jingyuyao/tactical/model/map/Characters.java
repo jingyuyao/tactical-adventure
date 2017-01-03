@@ -66,17 +66,17 @@ public class Characters extends EventBusObject implements ManagedBy<NewMap, Clea
         }
     }
 
+    @Override
+    public Iterator<Character> iterator() {
+        return characters.iterator();
+    }
+
     public Iterable<Player> getPlayers() {
         return Iterables.filter(characters, Player.class);
     }
 
     public Iterable<Enemy> getEnemies() {
         return Iterables.filter(characters, Enemy.class);
-    }
-
-    @Override
-    public Iterator<Character> iterator() {
-        return characters.iterator();
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.EventBus;
@@ -47,12 +48,18 @@ public class Terrains extends EventBusObject implements ManagedBy<NewMap, ClearM
             Coordinate c = terrain.getCoordinate();
             table.put(c.getX(), c.getY(), terrain);
         }
+        checkRectangular();
     }
 
     @Subscribe
     @Override
     public void dispose(ClearMap clearMap) {
         table.clear();
+    }
+
+    @Override
+    public Iterator<Terrain> iterator() {
+        return table.values().iterator();
     }
 
     public int getWidth() {
@@ -76,9 +83,12 @@ public class Terrains extends EventBusObject implements ManagedBy<NewMap, ClearM
         });
     }
 
-    @Override
-    public Iterator<Terrain> iterator() {
-        return table.values().iterator();
+    private void checkRectangular() {
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                Preconditions.checkNotNull(get(new Coordinate(x, y)), "Terrain grid must be rectangular");
+            }
+        }
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
