@@ -2,14 +2,14 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.common.Disposable;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGrid;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.util.Disposable;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

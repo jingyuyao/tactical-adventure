@@ -4,11 +4,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.AddMarker;
 import com.jingyuyao.tactical.model.event.RemoveMarker;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

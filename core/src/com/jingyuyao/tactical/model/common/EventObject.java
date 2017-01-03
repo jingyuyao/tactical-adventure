@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.util;
+package com.jingyuyao.tactical.model.common;
 
 import com.google.common.eventbus.EventBus;
 

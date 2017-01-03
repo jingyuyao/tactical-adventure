@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 abstract class AbstractState extends EventObject implements State {
     private final MapState mapState;

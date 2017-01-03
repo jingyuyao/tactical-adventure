@@ -7,8 +7,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.util.Disposable;
-import com.jingyuyao.tactical.model.util.EventObject;
+import com.jingyuyao.tactical.model.common.Disposable;
+import com.jingyuyao.tactical.model.common.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

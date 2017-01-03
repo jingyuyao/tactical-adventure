@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.util.EventObject;
+import com.jingyuyao.tactical.model.common.EventObject;
 
 /**
  * Super class of all the items in the game.

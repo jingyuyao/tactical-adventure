@@ -4,9 +4,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.common.Disposable;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.WaitChange;
-import com.jingyuyao.tactical.model.util.Disposable;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

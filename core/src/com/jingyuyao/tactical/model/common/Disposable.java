@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.util;
+package com.jingyuyao.tactical.model.common;
 
 /**
  * For objects that can be removed from the model (e.g. characters & items).

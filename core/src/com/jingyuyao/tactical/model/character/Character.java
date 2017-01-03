@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Highlighter;
+import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.event.InstantMove;
 import com.jingyuyao.tactical.model.event.Move;
@@ -16,7 +17,6 @@ import com.jingyuyao.tactical.model.map.TargetInfo;
 import com.jingyuyao.tactical.model.map.TargetInfoFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.util.Disposable;
 
 import java.util.List;
 

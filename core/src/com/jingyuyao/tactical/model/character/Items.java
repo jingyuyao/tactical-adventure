@@ -6,13 +6,13 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.common.Disposable;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.ItemBroke;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.util.Disposable;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import java.util.Collections;

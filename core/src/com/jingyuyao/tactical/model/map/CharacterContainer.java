@@ -7,10 +7,10 @@ import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.common.Disposable;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.state.Waiting;
-import com.jingyuyao.tactical.model.util.Disposable;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

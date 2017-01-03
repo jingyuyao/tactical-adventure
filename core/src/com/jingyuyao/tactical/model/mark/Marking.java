@@ -4,9 +4,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.CharacterDied;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.util.EventObject;
 
 import java.util.Map;
 
