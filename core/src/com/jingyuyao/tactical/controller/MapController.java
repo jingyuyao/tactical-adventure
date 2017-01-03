@@ -27,6 +27,7 @@ public class MapController {
     }
 
     public void initiateControl() {
+        // TODO: provide me
         int worldWidth = terrainGrid.getWidth();
         int worldHeight = terrainGrid.getHeight();
 
