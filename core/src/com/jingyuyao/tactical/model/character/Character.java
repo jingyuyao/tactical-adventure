@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
@@ -17,6 +16,7 @@ import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.state.MapState;
 
 import java.util.List;
 
@@ -40,8 +40,8 @@ public abstract class Character extends MapObject implements Disposable {
     }
 
     @Override
-    public void highlight(Highlighter highlighter) {
-        highlighter.highlight(this);
+    public void highlight(MapState mapState) {
+        mapState.highlight(this);
     }
 
     /**

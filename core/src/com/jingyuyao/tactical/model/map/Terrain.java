@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -24,8 +23,8 @@ public class Terrain extends MapObject {
     }
 
     @Override
-    public void highlight(Highlighter highlighter) {
-        highlighter.highlight(this);
+    public void highlight(MapState mapState) {
+        mapState.highlight(this);
     }
 
     public Type getType() {

@@ -14,6 +14,9 @@ import com.jingyuyao.tactical.model.event.WaitChange;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
+import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
+import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
+import com.jingyuyao.tactical.model.state.event.StateChanged;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -104,7 +107,7 @@ public class MapUI {
     }
 
     @Subscribe
-    public void stateChange(com.jingyuyao.tactical.model.state.event.StateChanged stateChanged) {
+    public void stateChange(StateChanged stateChanged) {
         State newState = stateChanged.getObject();
         stateLabel.setText(newState.getName());
         currentActions = newState.getActions();
@@ -119,12 +122,12 @@ public class MapUI {
 
     // TODO: create a nice looking widget to show this
     @Subscribe
-    public void showAttackPlan(com.jingyuyao.tactical.model.state.event.ShowAttackPlan showAttackPlan) {
+    public void showAttackPlan(ShowAttackPlan showAttackPlan) {
         attackPlan.setText(showAttackPlan.getObject().toString());
     }
 
     @Subscribe
-    public void hideAttackPlan(com.jingyuyao.tactical.model.state.event.HideAttackPlan hideAttackPlan) {
+    public void hideAttackPlan(HideAttackPlan hideAttackPlan) {
         attackPlan.setText(null);
     }
 

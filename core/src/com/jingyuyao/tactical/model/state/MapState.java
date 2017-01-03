@@ -3,13 +3,19 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
+import com.jingyuyao.tactical.model.event.HighlightCharacter;
+import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.TerrainGrid;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
 
 import javax.inject.Inject;
@@ -28,11 +34,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Singleton
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
     private final Deque<State> stateStack;
+    private final TerrainGrid terrainGrid;
+    private MapObject previousHighlight;
 
     @Inject
-    public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
+    public MapState(EventBus eventBus, TerrainGrid terrainGrid, @BackingStateStack Deque<State> stateStack) {
         super(eventBus);
         this.stateStack = stateStack;
+        this.terrainGrid = terrainGrid;
         register();
     }
 
@@ -49,6 +58,29 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
     @Override
     public void dispose(ClearMap clearMap) {
         stateStack.clear();
+        previousHighlight = null;
+    }
+
+    public void select(Player player) {
+        stateStack.peek().select(player);
+    }
+
+    public void select(Enemy enemy) {
+        stateStack.peek().select(enemy);
+    }
+
+    public void select(Terrain terrain) {
+        stateStack.peek().select(terrain);
+    }
+
+    public void highlight(Character character) {
+        switchHighlightTo(character);
+        post(new HighlightCharacter(character, terrainGrid.get(character.getCoordinate())));
+    }
+
+    public void highlight(Terrain terrain) {
+        switchHighlightTo(terrain);
+        post(new HighlightTerrain(terrain));
     }
 
     void push(State newState) {
@@ -83,16 +115,12 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
         post(new StateChanged(startingState));
     }
 
-    public void select(Player player) {
-        stateStack.peek().select(player);
-    }
-
-    public void select(Enemy enemy) {
-        stateStack.peek().select(enemy);
-    }
-
-    public void select(Terrain terrain) {
-        stateStack.peek().select(terrain);
+    private void switchHighlightTo(MapObject newHighlight) {
+        if (previousHighlight != null) {
+            previousHighlight.removeMarker(Marker.HIGHLIGHT);
+        }
+        newHighlight.addMarker(Marker.HIGHLIGHT);
+        previousHighlight = newHighlight;
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)

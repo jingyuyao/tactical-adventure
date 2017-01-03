@@ -22,7 +22,6 @@ public class ModelModule extends AbstractModule {
         install(new StateModule());
 
         bind(Waiter.class);
-        bind(Highlighter.class);
         bind(AttackPlanFactory.class);
     }
 

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Highlighter;
 import com.jingyuyao.tactical.model.character.event.AddMarker;
 import com.jingyuyao.tactical.model.character.event.RemoveMarker;
 import com.jingyuyao.tactical.model.common.EventBusObject;
@@ -66,7 +65,7 @@ public abstract class MapObject extends EventBusObject {
     /**
      * Enables the visitor pattern for highlight.
      */
-    public abstract void highlight(Highlighter highlighter);
+    public abstract void highlight(MapState mapState);
 
     @Override
     public String toString() {
