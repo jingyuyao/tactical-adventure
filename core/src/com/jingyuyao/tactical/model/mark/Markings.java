@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.common.Disposable;
-import com.jingyuyao.tactical.model.common.EventObject;
+import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Contains all the markings in a state.
  */
 @Singleton
-public class Markings extends EventObject implements Disposable {
+public class Markings extends EventBusObject implements Disposable {
     private final MarkingFactory markingFactory;
     private final TargetsFactory targetsFactory;
     private final Map<Character, Marking> dangerAreas;

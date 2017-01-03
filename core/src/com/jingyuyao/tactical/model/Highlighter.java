@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Disposable;
-import com.jingyuyao.tactical.model.common.EventObject;
+import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Highlighter extends EventObject implements Disposable {
+public class Highlighter extends EventBusObject implements Disposable {
     private final TerrainGrid terrainGrid;
     private MapObject previousHighlight;
 

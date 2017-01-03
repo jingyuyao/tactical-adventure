@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Disposable;
-import com.jingyuyao.tactical.model.common.EventObject;
+import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
 
@@ -24,7 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 // TODO: This class needs to be thoroughly tested
 @Singleton
-public class MapState extends EventObject implements Disposable {
+public class MapState extends EventBusObject implements Disposable {
     private final Waiter waiter;
     private final Deque<State> stateStack;
 

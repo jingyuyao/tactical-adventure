@@ -5,11 +5,11 @@ import com.google.common.eventbus.EventBus;
 /**
  * An object that has an {@link EventBus} and contains convenience methods for interacting with it.
  */
-public class EventObject {
+public class EventBusObject {
     private final EventBus eventBus;
     private boolean registered = false;
 
-    protected EventObject(EventBus eventBus) {
+    protected EventBusObject(EventBus eventBus) {
         this.eventBus = eventBus;
     }
 

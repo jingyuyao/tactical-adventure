@@ -3,11 +3,11 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.common.EventObject;
+import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Markings;
 
-abstract class AbstractState extends EventObject implements State {
+abstract class AbstractState extends EventBusObject implements State {
     private final MapState mapState;
     private final Markings markings;
     private final StateFactory stateFactory;

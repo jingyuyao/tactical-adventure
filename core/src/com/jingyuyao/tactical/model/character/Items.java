@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.common.Disposable;
-import com.jingyuyao.tactical.model.common.EventObject;
+import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
@@ -25,7 +25,7 @@ import java.util.List;
  * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
 // TODO: test the invariant
-public class Items extends EventObject implements Disposable {
+public class Items extends EventBusObject implements Disposable {
     /**
      * Invariant: weapons.indexOf(equippedWeapon) == 0
      */
