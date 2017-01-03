@@ -4,9 +4,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
+import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.ModelEvent;
+import com.jingyuyao.tactical.model.event.NewMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,20 +23,26 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * A semaphore like object that posts change in its state.
  */
 @Singleton
-public class Waiter extends EventBusObject implements Disposable {
+public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
     private final Queue<Runnable> runnables;
-    private int waits;
+    private int waits = 0;
 
     @Inject
     public Waiter(EventBus eventBus, @InitialWaiterQueue Queue<Runnable> runnables) {
         super(eventBus);
         this.runnables = runnables;
-        this.waits = 0;
         register();
     }
 
+    @Subscribe
     @Override
-    public void dispose() {
+    public void initialize(NewMap data) {
+        // does nothing
+    }
+
+    @Subscribe
+    @Override
+    public void dispose(ClearMap clearMap) {
         runnables.clear();
         waits = 0;
     }
