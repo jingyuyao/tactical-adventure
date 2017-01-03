@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.event;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.jingyuyao.tactical.model.common.ModelEvent;
 
 /**
  * An {@link ModelEvent} that contains an {@link #object} and some basic utilities.
