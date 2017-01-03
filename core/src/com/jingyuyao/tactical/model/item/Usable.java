@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.event.ItemBroke;
+import com.jingyuyao.tactical.model.item.event.ItemBroke;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
