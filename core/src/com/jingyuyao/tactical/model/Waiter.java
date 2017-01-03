@@ -6,7 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
-import com.jingyuyao.tactical.model.event.WaitChange;
+import com.jingyuyao.tactical.model.event.ModelEvent;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,8 +40,8 @@ public class Waiter extends EventBusObject implements Disposable {
     }
 
     @Subscribe
-    public void waitChange(WaitChange waitChange) {
-        if (!waitChange.isWaiting()) {
+    public void changed(Changed changed) {
+        if (!changed.isWaiting()) {
             while (!runnables.isEmpty()) {
                 runnables.poll().run();
             }
@@ -57,7 +57,7 @@ public class Waiter extends EventBusObject implements Disposable {
      */
     public void waitOne() {
         if (waits++ == 0) {
-            post(new WaitChange(isWaiting()));
+            post(new Changed(isWaiting()));
         }
     }
 
@@ -67,7 +67,7 @@ public class Waiter extends EventBusObject implements Disposable {
     public void finishOne() {
         Preconditions.checkState(waits > 0, "Oh boy, this bug is gonna be hard to fix");
         if (waits-- == 1) {
-            post(new WaitChange(isWaiting()));
+            post(new Changed(isWaiting()));
         }
     }
 
@@ -84,5 +84,17 @@ public class Waiter extends EventBusObject implements Disposable {
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    public @interface InitialWaiterQueue {}
+    @interface InitialWaiterQueue {}
+
+    public static class Changed implements ModelEvent {
+        private final boolean waiting;
+
+        private Changed(boolean waiting) {
+            this.waiting = waiting;
+        }
+
+        public boolean isWaiting() {
+            return waiting;
+        }
+    }
 }

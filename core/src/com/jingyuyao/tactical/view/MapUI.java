@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.event.WaitChange;
+import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
@@ -111,8 +111,8 @@ public class MapUI {
     }
 
     @Subscribe
-    public void waitChange(WaitChange waitChange) {
-        showButtons = !waitChange.isWaiting();
+    public void waitChange(Waiter.Changed changed) {
+        showButtons = !changed.isWaiting();
         populateButtons();
     }
 
