@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.mark.Markings;
 
 import javax.inject.Inject;
 import java.util.Locale;

@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.mark.Markings;
 
 abstract class AbstractPlayerState extends AbstractState {
     private final Player player;

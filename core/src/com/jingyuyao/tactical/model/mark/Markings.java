@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.mark;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -61,19 +61,19 @@ public class Markings extends EventObject implements Disposable {
         dangerAreas.remove(characterDied.getObject());
     }
 
-    void showMoveAndTargets(Player player) {
+    public void showMoveAndTargets(Player player) {
         clearPlayerMarking();
         playerMarking = markingFactory.moveAndTargets(player.createTargetInfo());
         playerMarking.apply();
     }
 
-    void showImmediateTargets(Player player) {
+    public void showImmediateTargets(Player player) {
         clearPlayerMarking();
         playerMarking = markingFactory.immediateTargets(player.createTargetInfo());
         playerMarking.apply();
     }
 
-    void clearPlayerMarking() {
+    public void clearPlayerMarking() {
         if (playerMarking != null) {
             playerMarking.clear();
             playerMarking = null;
@@ -81,7 +81,7 @@ public class Markings extends EventObject implements Disposable {
     }
 
     // TODO: bugged, needs to be refreshed after every state
-    void toggleDangerArea(Enemy enemy) {
+    public void toggleDangerArea(Enemy enemy) {
         if (dangerAreas.containsKey(enemy)) {
             Marking marking = dangerAreas.remove(enemy);
             marking.clear();

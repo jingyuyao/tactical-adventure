@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.map.CharacterContainer;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGrid;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.state.Markings;
+import com.jingyuyao.tactical.model.mark.Markings;
 import com.jingyuyao.tactical.model.state.Waiting;
 
 import javax.inject.Inject;

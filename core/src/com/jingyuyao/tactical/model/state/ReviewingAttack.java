@@ -7,6 +7,7 @@ import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideAttackPlan;
 import com.jingyuyao.tactical.model.event.ShowAttackPlan;
+import com.jingyuyao.tactical.model.mark.Markings;
 
 import javax.inject.Inject;
 
