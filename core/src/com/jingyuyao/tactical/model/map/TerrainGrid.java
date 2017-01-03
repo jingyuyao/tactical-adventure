@@ -4,11 +4,14 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
+import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.event.ClearMap;
+import com.jingyuyao.tactical.model.event.NewMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Also contains convenience methods to work with our {@link Coordinate} system.
  */
 @Singleton
-public class TerrainGrid extends EventBusObject implements Iterable<Terrain>, Disposable {
+public class TerrainGrid extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
     /**
      * (0,0) starts at bottom left.
      */
@@ -34,10 +37,21 @@ public class TerrainGrid extends EventBusObject implements Iterable<Terrain>, Di
     public TerrainGrid(EventBus eventBus, @BackingTable Table<Integer, Integer, Terrain> table) {
         super(eventBus);
         this.table = table;
+        register();
     }
 
+    @Subscribe
     @Override
-    public void dispose() {
+    public void initialize(NewMap data) {
+        for (Terrain terrain : data.getTerrains()) {
+            Coordinate c = terrain.getCoordinate();
+            table.put(c.getX(), c.getY(), terrain);
+        }
+    }
+
+    @Subscribe
+    @Override
+    public void dispose(ClearMap clearMap) {
         table.clear();
     }
 
@@ -47,17 +61,6 @@ public class TerrainGrid extends EventBusObject implements Iterable<Terrain>, Di
 
     public int getHeight() {
         return Algorithms.tableHeight(table);
-    }
-
-    public void add(Terrain terrain) {
-        Coordinate c = terrain.getCoordinate();
-        table.put(c.getX(), c.getY(), terrain);
-    }
-
-    public void addAll(Iterable<Terrain> terrains) {
-        for (Terrain terrain : terrains) {
-            add(terrain);
-        }
     }
 
     public Terrain get(Coordinate coordinate) {
@@ -79,5 +82,5 @@ public class TerrainGrid extends EventBusObject implements Iterable<Terrain>, Di
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    public @interface BackingTable {}
+    @interface BackingTable {}
 }

@@ -10,17 +10,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.ModelManager;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.*;
+import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.state.Waiting;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.*;
 
@@ -29,7 +32,8 @@ public class MapLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
-    private final ModelManager modelManager;
+    private final EventBus eventBus;
+    private final Provider<Waiting> waitingProvider;
     private final CharacterFactory characterFactory;
     private final MapFactory mapFactory;
     private final ItemFactory itemFactory;
@@ -37,13 +41,15 @@ public class MapLoader {
 
     @Inject
     MapLoader(
-            ModelManager modelManager,
+            EventBus eventBus,
+            Provider<Waiting> waitingProvider,
             CharacterFactory characterFactory,
             MapFactory mapFactory,
             ItemFactory itemFactory,
             OrthogonalTiledMapRenderer mapRenderer
     ) {
-        this.modelManager = modelManager;
+        this.eventBus = eventBus;
+        this.waitingProvider = waitingProvider;
         this.characterFactory = characterFactory;
         this.mapFactory = mapFactory;
         this.itemFactory = itemFactory;
@@ -59,6 +65,7 @@ public class MapLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
+        Iterable<Character> characters = Iterables.concat(createTestPlayers(), createTestEnemies());
         List<Terrain> terrains = new ArrayList<Terrain>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -67,9 +74,7 @@ public class MapLoader {
             }
         }
 
-        Iterable<Character> characters = Iterables.concat(createTestPlayers(), createTestEnemies());
-
-        modelManager.initializeMap(characters, terrains);
+        eventBus.post(new NewMap(characters, terrains, waitingProvider.get()));
         mapRenderer.setMap(tiledMap);
     }
 

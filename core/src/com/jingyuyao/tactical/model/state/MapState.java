@@ -1,12 +1,15 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
+import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.event.ClearMap;
+import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
 
@@ -24,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 // TODO: This class needs to be thoroughly tested
 @Singleton
-public class MapState extends EventBusObject implements Disposable {
+public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
     private final Waiter waiter;
     private final Deque<State> stateStack;
 
@@ -33,17 +36,22 @@ public class MapState extends EventBusObject implements Disposable {
         super(eventBus);
         this.waiter = waiter;
         this.stateStack = stateStack;
+        register();
     }
 
+    @Subscribe
     @Override
-    public void dispose() {
-        stateStack.clear();
+    public void initialize(NewMap data) {
+        State initialState = data.getInitialState();
+        stateStack.push(initialState);
+        initialState.enter();
+        post(new StateChanged(initialState));
     }
 
-    public void initialize(State startingState) {
-        stateStack.push(startingState);
-        startingState.enter();
-        post(new StateChanged(startingState));
+    @Subscribe
+    @Override
+    public void dispose(ClearMap clearMap) {
+        stateStack.clear();
     }
 
     void push(State newState) {

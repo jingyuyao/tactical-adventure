@@ -1,7 +1,8 @@
 package com.jingyuyao.tactical.model.common;
 
 /**
- * For objects that can be removed from the model (e.g. characters & items).
+ * For objects that needs to be cleaned up when being removed from the model. e.g. anything that registers itself
+ * to the {@link com.google.common.eventbus.EventBus}.
  */
 public interface Disposable {
     /**

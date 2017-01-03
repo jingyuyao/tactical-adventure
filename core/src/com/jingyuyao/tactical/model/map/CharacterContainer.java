@@ -8,8 +8,10 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.CharacterDied;
-import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
+import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.event.ClearMap;
+import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.state.Waiting;
 
 import javax.inject.Inject;
@@ -27,7 +29,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 // TODO: consider making this a Glazed List?
 @Singleton
-public class CharacterContainer extends EventBusObject implements Iterable<Character>, Disposable {
+public class CharacterContainer extends EventBusObject implements ManagedBy<NewMap, ClearMap>,Iterable<Character> {
     private final Set<Character> characters;
 
     @Inject
@@ -37,8 +39,15 @@ public class CharacterContainer extends EventBusObject implements Iterable<Chara
         register();
     }
 
+    @Subscribe
     @Override
-    public void dispose() {
+    public void initialize(NewMap data) {
+        Iterables.addAll(characters, data.getCharacters());
+    }
+
+    @Subscribe
+    @Override
+    public void dispose(ClearMap clearMap) {
         for (Character character : characters) {
             character.dispose();
         }
@@ -55,14 +64,6 @@ public class CharacterContainer extends EventBusObject implements Iterable<Chara
         for (Player player : getPlayers()) {
             player.setActionable(true);
         }
-    }
-
-    public void add(Character character) {
-        characters.add(character);
-    }
-
-    public void addAll(Iterable<? extends Character> characters) {
-        Iterables.addAll(this.characters, characters);
     }
 
     public Iterable<Player> getPlayers() {
