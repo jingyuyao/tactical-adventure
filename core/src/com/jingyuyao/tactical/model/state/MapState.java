@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.EventBusObject;
@@ -28,13 +27,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 // TODO: This class needs to be thoroughly tested
 @Singleton
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
-    private final Waiter waiter;
     private final Deque<State> stateStack;
 
     @Inject
-    public MapState(EventBus eventBus, Waiter waiter, @BackingStateStack Deque<State> stateStack) {
+    public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
         super(eventBus);
-        this.waiter = waiter;
         this.stateStack = stateStack;
         register();
     }
@@ -87,17 +84,14 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
     }
 
     public void select(Player player) {
-        if (waiter.isWaiting()) return;
         stateStack.peek().select(player);
     }
 
     public void select(Enemy enemy) {
-        if (waiter.isWaiting()) return;
         stateStack.peek().select(enemy);
     }
 
     public void select(Terrain terrain) {
-        if (waiter.isWaiting()) return;
         stateStack.peek().select(terrain);
     }
 
