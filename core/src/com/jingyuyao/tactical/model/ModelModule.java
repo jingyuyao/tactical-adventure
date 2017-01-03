@@ -27,7 +27,7 @@ public class ModelModule extends AbstractModule {
 
     @Provides
     @Singleton
-    @Waiter.InitialWaiterQueue
+    @Waiter.BackingWaiterQueue
     Queue<Runnable> provideRunnableQueue() {
         return new LinkedList<Runnable>();
     }

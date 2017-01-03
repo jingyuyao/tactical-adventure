@@ -24,13 +24,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Singleton
 public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
-    private final Queue<Runnable> runnables;
+    private final Queue<Runnable> runnableQueue;
     private int waits = 0;
 
     @Inject
-    public Waiter(EventBus eventBus, @InitialWaiterQueue Queue<Runnable> runnables) {
+    public Waiter(EventBus eventBus, @BackingWaiterQueue Queue<Runnable> runnableQueue) {
         super(eventBus);
-        this.runnables = runnables;
+        this.runnableQueue = runnableQueue;
         register();
     }
 
@@ -43,15 +43,15 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
     @Subscribe
     @Override
     public void dispose(ClearMap clearMap) {
-        runnables.clear();
+        runnableQueue.clear();
         waits = 0;
     }
 
     @Subscribe
     public void changed(Changed changed) {
         if (!changed.isWaiting()) {
-            while (!runnables.isEmpty()) {
-                runnables.poll().run();
+            while (!runnableQueue.isEmpty()) {
+                runnableQueue.poll().run();
             }
         }
     }
@@ -87,12 +87,12 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
         if (!isWaiting()) {
             runnable.run();
         } else {
-            runnables.add(runnable);
+            runnableQueue.add(runnable);
         }
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface InitialWaiterQueue {}
+    @interface BackingWaiterQueue {}
 
     public static class Changed implements ModelEvent {
         private final boolean waiting;
