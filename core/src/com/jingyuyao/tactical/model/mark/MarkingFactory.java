@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.TargetInfo;
+import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGrid;
 
@@ -27,32 +27,32 @@ public class MarkingFactory {
         this.terrainGrid = terrainGrid;
     }
 
-    public Marking moveAndTargets(TargetInfo targetInfo) {
-        Iterable<Terrain> canMoveToTerrains = terrainGrid.getAll(targetInfo.moves());
-        Iterable<Terrain> canAttackTerrains = terrainGrid.getAll(targetInfo.allTargetsMinusMove());
-        Iterable<Character> canTargetCharacters = targetInfo.allTargetCharacters();
+    public Marking moveAndTargets(Targets targets) {
+        Iterable<Terrain> canMoveToTerrains = terrainGrid.getAll(targets.moves());
+        Iterable<Terrain> canAttackTerrains = terrainGrid.getAll(targets.allTargetsMinusMove());
+        Iterable<Character> canTargetCharacters = targets.allTargetCharacters();
 
-        return this.new Builder(targetInfo.getCharacter())
+        return this.new Builder(targets.getCharacter())
                 .add(canMoveToTerrains, Marker.CAN_MOVE_TO)
                 .add(canAttackTerrains, Marker.CAN_ATTACK)
                 .add(canTargetCharacters, Marker.POTENTIAL_TARGET)
                 .build();
     }
 
-    public Marking immediateTargets(TargetInfo targetInfo) {
-        Iterable<Terrain> canAttackTerrains = terrainGrid.getAll(targetInfo.immediateTargets());
-        Iterable<Character> canTargetCharacters = targetInfo.immediateTargetCharacters();
+    public Marking immediateTargets(Targets targets) {
+        Iterable<Terrain> canAttackTerrains = terrainGrid.getAll(targets.immediateTargets());
+        Iterable<Character> canTargetCharacters = targets.immediateTargetCharacters();
 
-        return this.new Builder(targetInfo.getCharacter())
+        return this.new Builder(targets.getCharacter())
                 .add(canAttackTerrains, Marker.CAN_ATTACK)
                 .add(canTargetCharacters, Marker.POTENTIAL_TARGET)
                 .build();
     }
 
-    public Marking danger(TargetInfo targetInfo) {
-        Iterable<Terrain> allTargets = terrainGrid.getAll(targetInfo.allTargets());
+    public Marking danger(Targets targets) {
+        Iterable<Terrain> allTargets = terrainGrid.getAll(targets.allTargets());
 
-        return this.new Builder(targetInfo.getCharacter())
+        return this.new Builder(targets.getCharacter())
                 .add(allTargets, Marker.DANGER)
                 .build();
     }

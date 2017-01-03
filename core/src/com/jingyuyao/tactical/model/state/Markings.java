@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventObject;
 import com.jingyuyao.tactical.model.event.CharacterDied;
-import com.jingyuyao.tactical.model.map.TargetInfoFactory;
+import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
 
@@ -28,7 +28,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Singleton
 public class Markings extends EventObject implements Disposable {
     private final MarkingFactory markingFactory;
-    private final TargetInfoFactory targetInfoFactory;
+    private final TargetsFactory targetsFactory;
     private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking;
 
@@ -36,12 +36,12 @@ public class Markings extends EventObject implements Disposable {
     public Markings(
             EventBus eventBus,
             MarkingFactory markingFactory,
-            TargetInfoFactory targetInfoFactory,
+            TargetsFactory targetsFactory,
             @InitialDangerAreas Map<Character, Marking> dangerAreas
     ) {
         super(eventBus);
         this.markingFactory = markingFactory;
-        this.targetInfoFactory = targetInfoFactory;
+        this.targetsFactory = targetsFactory;
         this.dangerAreas = dangerAreas;
         playerMarking = null;
         register();
@@ -86,7 +86,7 @@ public class Markings extends EventObject implements Disposable {
             Marking marking = dangerAreas.remove(enemy);
             marking.clear();
         } else {
-            Marking dangerArea = markingFactory.danger(targetInfoFactory.create(enemy));
+            Marking dangerArea = markingFactory.danger(targetsFactory.create(enemy));
             dangerAreas.put(enemy, dangerArea);
             dangerArea.apply();
         }

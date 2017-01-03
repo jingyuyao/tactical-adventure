@@ -17,7 +17,7 @@ import java.util.Set;
  * A snapshot of all the things a character currently can target or move to on the map.
  */
 // TODO: needs to be thoroughly tested
-public class TargetInfo {
+public class Targets {
     private final CharacterContainer characters;
     private final Character character;
     private final Graph<Coordinate> moveGraph;
@@ -32,7 +32,7 @@ public class TargetInfo {
      */
     private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
-    TargetInfo(
+    Targets(
             CharacterContainer characters,
             Character character,
             Graph<Coordinate> moveGraph,

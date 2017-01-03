@@ -14,12 +14,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class TargetInfoFactory {
+public class TargetsFactory {
     private final CharacterContainer characters;
     private final TerrainGrid terrainGrid;
 
     @Inject
-    public TargetInfoFactory(CharacterContainer characters, TerrainGrid terrainGrid) {
+    public TargetsFactory(CharacterContainer characters, TerrainGrid terrainGrid) {
         this.characters = characters;
         this.terrainGrid = terrainGrid;
     }
@@ -27,7 +27,7 @@ public class TargetInfoFactory {
     /**
      * Magic.
      */
-    public TargetInfo create(Character character) {
+    public Targets create(Character character) {
         Graph<Coordinate> moveGraph = getMoveGraph(character);
         SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
         for (Coordinate move : moveGraph.nodes()) {
@@ -44,7 +44,7 @@ public class TargetInfoFactory {
             }
             moveMap.put(move, targetWeaponMap);
         }
-        return new TargetInfo(characters, character, moveGraph, moveMap);
+        return new Targets(characters, character, moveGraph, moveMap);
     }
 
     private Graph<Coordinate> getMoveGraph(Character character) {

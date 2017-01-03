@@ -13,22 +13,22 @@ import com.jingyuyao.tactical.model.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.TargetInfo;
-import com.jingyuyao.tactical.model.map.TargetInfoFactory;
+import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 
 import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {
-    private final TargetInfoFactory targetInfoFactory;
+    private final TargetsFactory targetsFactory;
     private final String name;
     private final Stats stats;
     private final Items items;
 
-    Character(EventBus eventBus, TargetInfoFactory targetInfoFactory, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items) {
+    Character(EventBus eventBus, TargetsFactory targetsFactory, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items) {
         super(eventBus, coordinate, markers);
-        this.targetInfoFactory = targetInfoFactory;
+        this.targetsFactory = targetsFactory;
         this.name = name;
         this.stats = stats;
         this.items = items;
@@ -47,8 +47,8 @@ public abstract class Character extends MapObject implements Disposable {
     /**
      * Return the current target info for this {@link Character}.
      */
-    public TargetInfo createTargetInfo() {
-        return targetInfoFactory.create(this);
+    public Targets createTargetInfo() {
+        return targetsFactory.create(this);
     }
 
     public String getName() {

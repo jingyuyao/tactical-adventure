@@ -7,7 +7,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.TargetInfo;
+import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 
 import javax.inject.Inject;
@@ -45,7 +45,7 @@ class Moving extends AbstractPlayerState {
 
     @Override
     public void select(final Enemy enemy) {
-        TargetInfo playerInfo = getPlayer().createTargetInfo();
+        Targets playerInfo = getPlayer().createTargetInfo();
         if (playerInfo.canHitAfterMove(enemy)) {
             Coordinate moveCoordinate = playerInfo.moveForTarget(enemy.getCoordinate());
             ImmutableList<Coordinate> path = playerInfo.pathTo(moveCoordinate);
@@ -64,7 +64,7 @@ class Moving extends AbstractPlayerState {
 
     @Override
     public void select(Terrain terrain) {
-        TargetInfo playerInfo = getPlayer().createTargetInfo();
+        Targets playerInfo = getPlayer().createTargetInfo();
         if (playerInfo.canMoveTo(terrain.getCoordinate())) {
             ImmutableList<Coordinate> path = playerInfo.pathTo(terrain.getCoordinate());
             moveCurrentPlayer(terrain.getCoordinate(), path);

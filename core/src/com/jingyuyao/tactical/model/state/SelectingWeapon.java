@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.TargetInfo;
+import com.jingyuyao.tactical.model.map.Targets;
 
 import javax.inject.Inject;
 import java.util.Locale;
@@ -34,7 +34,7 @@ class SelectingWeapon extends AbstractPlayerState {
     @Override
     public ImmutableList<Action> getActions() {
         Player player = getPlayer();
-        TargetInfo playerInfo = player.createTargetInfo();
+        Targets playerInfo = player.createTargetInfo();
 
         ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
         ImmutableSet<Weapon> availableWeapons = playerInfo.weaponsFor(player.getCoordinate(), enemy.getCoordinate());

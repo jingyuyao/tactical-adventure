@@ -6,35 +6,35 @@ import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.TargetInfo;
-import com.jingyuyao.tactical.model.map.TargetInfoFactory;
+import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.TargetsFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class AttackPlanFactory {
-    private final TargetInfoFactory targetInfoFactory;
+    private final TargetsFactory targetsFactory;
 
     @Inject
-    public AttackPlanFactory(TargetInfoFactory targetInfoFactory) {
-        this.targetInfoFactory = targetInfoFactory;
+    public AttackPlanFactory(TargetsFactory targetsFactory) {
+        this.targetsFactory = targetsFactory;
     }
 
     public AttackPlan create(Player player, Enemy enemy) {
         Optional<Weapon> playerWeapon = player.getEquippedWeapon();
         Preconditions.checkArgument(playerWeapon.isPresent());
 
-        TargetInfo playerInfo = targetInfoFactory.create(player);
+        Targets playerInfo = targetsFactory.create(player);
         Preconditions.checkArgument(playerInfo.canHitImmediately(enemy));
 
-        TargetInfo enemyInfo = targetInfoFactory.create(enemy);
+        Targets enemyInfo = targetsFactory.create(enemy);
         Optional<Weapon> enemyWeapon = getHitBackWeapon(player, enemy, enemyInfo);
 
         return new AttackPlan(player, enemy, playerWeapon.get(), enemyWeapon.orNull());
     }
 
-    private Optional<Weapon> getHitBackWeapon(Player player, Enemy enemy, TargetInfo enemyInfo) {
+    private Optional<Weapon> getHitBackWeapon(Player player, Enemy enemy, Targets enemyInfo) {
         Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
         if (enemyEquippedWeapon.isPresent()) {
             ImmutableSet<Weapon> availableWeaponsForHittingBack =
