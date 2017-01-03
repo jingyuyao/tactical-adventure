@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "com.jingyuyao.tactical"
-        minSdkVersion 8
+        minSdkVersion 10
         targetSdkVersion 25
     }
 }
