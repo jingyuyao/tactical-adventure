@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.TerrainGrid;
+import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
@@ -34,14 +34,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Singleton
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
     private final Deque<State> stateStack;
-    private final TerrainGrid terrainGrid;
+    private final Terrains terrains;
     private MapObject previousHighlight;
 
     @Inject
-    public MapState(EventBus eventBus, TerrainGrid terrainGrid, @BackingStateStack Deque<State> stateStack) {
+    public MapState(EventBus eventBus, Terrains terrains, @BackingStateStack Deque<State> stateStack) {
         super(eventBus);
         this.stateStack = stateStack;
-        this.terrainGrid = terrainGrid;
+        this.terrains = terrains;
         register();
     }
 
@@ -75,7 +75,7 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
 
     public void highlight(Character character) {
         switchHighlightTo(character);
-        post(new HighlightCharacter(character, terrainGrid.get(character.getCoordinate())));
+        post(new HighlightCharacter(character, terrains.get(character.getCoordinate())));
     }
 
     public void highlight(Terrain terrain) {

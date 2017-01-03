@@ -15,13 +15,13 @@ import javax.inject.Singleton;
 
 @Singleton
 public class TargetsFactory {
-    private final CharacterContainer characters;
-    private final TerrainGrid terrainGrid;
+    private final Characters characters;
+    private final Terrains terrains;
 
     @Inject
-    public TargetsFactory(CharacterContainer characters, TerrainGrid terrainGrid) {
+    public TargetsFactory(Characters characters, Terrains terrains) {
         this.characters = characters;
-        this.terrainGrid = terrainGrid;
+        this.terrains = terrains;
     }
 
     /**
@@ -37,7 +37,7 @@ public class TargetsFactory {
                 // we also needs a different class of target indicators for user targetable weapons
                 for (int distance : weapon.getAttackDistances()) {
                     for (Coordinate target : Algorithms.getNDistanceAway(
-                            terrainGrid.getWidth(), terrainGrid.getHeight(), move, distance)) {
+                            terrains.getWidth(), terrains.getHeight(), move, distance)) {
                         targetWeaponMap.put(target, weapon);
                     }
                 }
@@ -56,9 +56,9 @@ public class TargetsFactory {
 
     private Table<Integer, Integer, Integer> createMovementPenaltyTable(Character character) {
         Table<Integer, Integer, Integer> movementPenaltyTable =
-                HashBasedTable.create(terrainGrid.getWidth(), terrainGrid.getHeight());
+                HashBasedTable.create(terrains.getWidth(), terrains.getHeight());
 
-        for (Terrain terrain : terrainGrid) {
+        for (Terrain terrain : terrains) {
             Coordinate coordinate = terrain.getCoordinate();
             movementPenaltyTable.put(coordinate.getX(), coordinate.getY(), terrain.getMovementPenalty(character));
         }

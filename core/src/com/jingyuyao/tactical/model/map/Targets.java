@@ -18,7 +18,7 @@ import java.util.Set;
  */
 // TODO: needs to be thoroughly tested
 public class Targets {
-    private final CharacterContainer characters;
+    private final Characters characters;
     private final Character character;
     private final Graph<Coordinate> moveGraph;
     /**
@@ -33,7 +33,7 @@ public class Targets {
     private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
     Targets(
-            CharacterContainer characters,
+            Characters characters,
             Character character,
             Graph<Coordinate> moveGraph,
             SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap

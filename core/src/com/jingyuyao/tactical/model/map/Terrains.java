@@ -27,14 +27,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Also contains convenience methods to work with our {@link Coordinate} system.
  */
 @Singleton
-public class TerrainGrid extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
+public class Terrains extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
     /**
      * (0,0) starts at bottom left.
      */
     private final Table<Integer, Integer, Terrain> table;
 
     @Inject
-    public TerrainGrid(EventBus eventBus, @BackingTable Table<Integer, Integer, Terrain> table) {
+    public Terrains(EventBus eventBus, @BackingTerrainTable Table<Integer, Integer, Terrain> table) {
         super(eventBus);
         this.table = table;
         register();
@@ -82,5 +82,5 @@ public class TerrainGrid extends EventBusObject implements ManagedBy<NewMap, Cle
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface BackingTable {}
+    @interface BackingTerrainTable {}
 }

@@ -16,29 +16,29 @@ import java.util.Set;
 public class MapModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(CharacterContainer.class);
-        bind(TerrainGrid.class);
+        bind(Characters.class);
+        bind(Terrains.class);
         bind(MapFactory.class);
         bind(TargetsFactory.class);
     }
 
     @Provides
     @MapObject.InitialMarkers
-    List<Marker> provideMarkers() {
+    List<Marker> provideInitialMarkers() {
         return new ArrayList<Marker>();
     }
 
     @Provides
     @Singleton
-    @CharacterContainer.InitialCharacterSet
-    Set<Character> provideInitialCharacterSet() {
+    @Characters.BackingCharacterSet
+    Set<Character> provideBackingCharacterSet() {
         return new HashSet<Character>();
     }
 
     @Provides
     @Singleton
-    @com.jingyuyao.tactical.model.map.TerrainGrid.BackingTable
-    Table<Integer, Integer, Terrain> providesBackingTable() {
+    @Terrains.BackingTerrainTable
+    Table<Integer, Integer, Terrain> provideBackingTerrainTable() {
         return HashBasedTable.create();
     }
 }

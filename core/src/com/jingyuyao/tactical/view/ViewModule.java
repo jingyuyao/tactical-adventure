@@ -14,9 +14,9 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.CharacterContainer;
+import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.TerrainGrid;
+import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 
@@ -54,13 +54,13 @@ public class ViewModule extends AbstractModule {
     @MapView.MapViewStage
     Stage provideMapViewStage(
             Batch batch,
-            CharacterContainer characters,
-            TerrainGrid terrainGrid,
+            Characters characters,
+            Terrains terrains,
             ActorFactory actorFactory
     ) {
         Stage stage = new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT), batch);
 
-        for (Terrain terrain : terrainGrid) {
+        for (Terrain terrain : terrains) {
             stage.addActor(actorFactory.create(terrain));
         }
         // Characters must be added after terrain so they get hit by touch input

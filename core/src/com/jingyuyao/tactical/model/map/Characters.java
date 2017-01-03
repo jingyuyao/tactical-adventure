@@ -29,11 +29,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 // TODO: consider making this a Glazed List?
 @Singleton
-public class CharacterContainer extends EventBusObject implements ManagedBy<NewMap, ClearMap>,Iterable<Character> {
+public class Characters extends EventBusObject implements ManagedBy<NewMap, ClearMap>,Iterable<Character> {
     private final Set<Character> characters;
 
     @Inject
-    CharacterContainer(EventBus eventBus, @InitialCharacterSet Set<Character> characters) {
+    Characters(EventBus eventBus, @BackingCharacterSet Set<Character> characters) {
         super(eventBus);
         this.characters = characters;
         register();
@@ -80,5 +80,5 @@ public class CharacterContainer extends EventBusObject implements ManagedBy<NewM
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface InitialCharacterSet {}
+    @interface BackingCharacterSet {}
 }
