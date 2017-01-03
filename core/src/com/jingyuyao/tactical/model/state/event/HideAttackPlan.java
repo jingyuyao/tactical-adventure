@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.event;
+package com.jingyuyao.tactical.model.state.event;
 
 import com.jingyuyao.tactical.model.common.ModelEvent;
 

@@ -8,7 +8,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.event.*;
+import com.jingyuyao.tactical.model.event.HighlightCharacter;
+import com.jingyuyao.tactical.model.event.HighlightTerrain;
+import com.jingyuyao.tactical.model.event.WaitChange;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
@@ -102,7 +104,7 @@ public class MapUI {
     }
 
     @Subscribe
-    public void stateChange(StateChanged stateChanged) {
+    public void stateChange(com.jingyuyao.tactical.model.state.event.StateChanged stateChanged) {
         State newState = stateChanged.getObject();
         stateLabel.setText(newState.getName());
         currentActions = newState.getActions();
@@ -117,12 +119,12 @@ public class MapUI {
 
     // TODO: create a nice looking widget to show this
     @Subscribe
-    public void showAttackPlan(ShowAttackPlan showAttackPlan) {
+    public void showAttackPlan(com.jingyuyao.tactical.model.state.event.ShowAttackPlan showAttackPlan) {
         attackPlan.setText(showAttackPlan.getObject().toString());
     }
 
     @Subscribe
-    public void hideAttackPlan(HideAttackPlan hideAttackPlan) {
+    public void hideAttackPlan(com.jingyuyao.tactical.model.state.event.HideAttackPlan hideAttackPlan) {
         attackPlan.setText(null);
     }
 
