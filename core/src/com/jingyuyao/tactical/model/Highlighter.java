@@ -8,13 +8,14 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGrid;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Highlighter extends EventObject {
+public class Highlighter extends EventObject implements Disposable {
     private final TerrainGrid terrainGrid;
     private MapObject previousHighlight;
 
@@ -27,7 +28,6 @@ public class Highlighter extends EventObject {
     @Override
     public void dispose() {
         previousHighlight = null;
-        super.dispose();
     }
 
     public void highlight(Character character) {

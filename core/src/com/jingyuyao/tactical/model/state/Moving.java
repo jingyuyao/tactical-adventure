@@ -2,57 +2,61 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.action.Action;
-import com.jingyuyao.tactical.model.action.Back;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.TargetInfo;
 import com.jingyuyao.tactical.model.map.Terrain;
+
+import javax.inject.Inject;
 
 class Moving extends AbstractPlayerState {
     private Coordinate previousCoordinate;
 
-    Moving(AbstractState prevState, Player currentPlayer) {
-        super(prevState, currentPlayer);
+    @Inject
+    Moving(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory, @Assisted Player player) {
+        super(eventBus, mapState, markings, stateFactory, player);
     }
 
     @Override
     public void enter() {
         super.enter();
-        getMarkings().showMoveAndTargets(getTargetInfo());
+        getMarkings().showMoveAndTargets(getPlayer());
     }
 
     @Override
     public void canceled() {
         if (previousCoordinate != null) {
-            getCurrentPlayer().instantMoveTo(previousCoordinate);
+            getPlayer().instantMoveTo(previousCoordinate);
         }
     }
 
     @Override
     public void select(Player player) {
-        if (Objects.equal(getCurrentPlayer(), player)) {
-            goTo(new Choosing(this));
+        if (Objects.equal(getPlayer(), player)) {
+            goTo(getStateFactory().createChoosing(getPlayer()));
         } else {
-            goTo(new Moving(backToOrigin(), player));
+            rollback();
+            goTo(getStateFactory().createMoving(player));
         }
     }
 
     @Override
     public void select(final Enemy enemy) {
-        if (getTargetInfo().canHitAfterMove(enemy)) {
-            Coordinate moveCoordinate = getTargetInfo().moveForTarget(enemy.getCoordinate());
-            ImmutableList<Coordinate> path = getTargetInfo().pathTo(moveCoordinate);
+        TargetInfo playerInfo = getPlayer().createTargetInfo();
+        if (playerInfo.canHitAfterMove(enemy)) {
+            Coordinate moveCoordinate = playerInfo.moveForTarget(enemy.getCoordinate());
+            ImmutableList<Coordinate> path = playerInfo.pathTo(moveCoordinate);
             if (path.isEmpty()) {
                 throw new RuntimeException("Shouldn't be possible");
             }
 
             moveCurrentPlayer(moveCoordinate, path);
             // creates an intermediate choosing state so we can backtrack here if needed
-            Choosing choosing = new Choosing(this);
-            SelectingWeapon selectingWeapon = new SelectingWeapon(choosing, enemy);
-            goTo(choosing);
-            goTo(selectingWeapon);
+            goTo(getStateFactory().createChoosing(getPlayer()));
+            goTo(getStateFactory().createSelectingWeapon(getPlayer(), enemy));
         } else {
             back();
         }
@@ -60,10 +64,11 @@ class Moving extends AbstractPlayerState {
 
     @Override
     public void select(Terrain terrain) {
-        if (getTargetInfo().canMoveTo(terrain.getCoordinate())) {
-            ImmutableList<Coordinate> path = getTargetInfo().pathTo(terrain.getCoordinate());
+        TargetInfo playerInfo = getPlayer().createTargetInfo();
+        if (playerInfo.canMoveTo(terrain.getCoordinate())) {
+            ImmutableList<Coordinate> path = playerInfo.pathTo(terrain.getCoordinate());
             moveCurrentPlayer(terrain.getCoordinate(), path);
-            goTo(new Choosing(this));
+            goTo(getStateFactory().createChoosing(getPlayer()));
         } else {
             // we will consider clicking outside of movable area to be canceling
             back();
@@ -72,11 +77,12 @@ class Moving extends AbstractPlayerState {
 
     @Override
     public ImmutableList<Action> getActions() {
-        return ImmutableList.<Action>of(new Back(this));
+        return ImmutableList.<Action>of(this.new Back());
     }
 
     private void moveCurrentPlayer(Coordinate destination, ImmutableList<Coordinate> path) {
-        previousCoordinate = getCurrentPlayer().getCoordinate();
-        getCurrentPlayer().moveTo(destination, path);
+        Player player = getPlayer();
+        previousCoordinate = player.getCoordinate();
+        player.moveTo(destination, path);
     }
 }

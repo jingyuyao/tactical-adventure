@@ -1,37 +1,21 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.StateChange;
-import com.jingyuyao.tactical.model.map.TargetInfoFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.util.EventObject;
 
-public abstract class AbstractState extends EventObject implements State {
-    private final AbstractState prevState;
+abstract class AbstractState extends EventObject implements State {
+    private final MapState mapState;
     private final Markings markings;
-    private final TargetInfoFactory targetInfoFactory;
-    private final AttackPlanFactory attackPlanFactory;
+    private final StateFactory stateFactory;
 
-    /**
-     * Creates a new state with all of previous state's data and set {@link #prevState} of the new state
-     * to the old state.
-     */
-    AbstractState(AbstractState prevState) {
-        this(prevState.getEventBus(), prevState, prevState.markings, prevState.targetInfoFactory, prevState.attackPlanFactory);
-    }
-
-    /**
-     * Creates a new state with the given data.
-     */
-    AbstractState(EventBus eventBus, AbstractState prevState, Markings markings, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
+    AbstractState(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
         super(eventBus);
-        this.prevState = prevState;
+        this.mapState = mapState;
         this.markings = markings;
-        this.targetInfoFactory = targetInfoFactory;
-        this.attackPlanFactory = attackPlanFactory;
+        this.stateFactory = stateFactory;
     }
 
     @Override
@@ -41,7 +25,7 @@ public abstract class AbstractState extends EventObject implements State {
 
     @Override
     public void enter() {
-
+        register();
     }
 
     @Override
@@ -51,7 +35,7 @@ public abstract class AbstractState extends EventObject implements State {
 
     @Override
     public void exit() {
-
+        unregister();
     }
 
     @Override
@@ -69,51 +53,40 @@ public abstract class AbstractState extends EventObject implements State {
         back();
     }
 
-    public void goTo(AbstractState newState) {
-        post(new StateChange(newState));
-    }
-
-    /**
-     * Cancel {@link #prevState} then {@link #goTo(AbstractState)} it
-     */
-    public void back() {
-        if (prevState != null) {
-            prevState.canceled();
-            goTo(prevState);
-        }
-    }
-
-    /**
-     * Finished acting on {@code player} and then go to a new waiting state.
-     */
-    public void finish(Player player) {
-        player.setActionable(false);
-        goTo(new Waiting(getEventBus(), markings, targetInfoFactory, attackPlanFactory));
+    StateFactory getStateFactory() {
+        return stateFactory;
     }
 
     Markings getMarkings() {
         return markings;
     }
 
-    TargetInfoFactory getTargetInfoFactory() {
-        return targetInfoFactory;
+    void goTo(State newState) {
+        mapState.push(newState);
     }
 
-    AttackPlanFactory getAttackPlanFactory() {
-        return attackPlanFactory;
+    void back() {
+        mapState.pop();
     }
 
-    /**
-     * Go {@link #back()} state by state until we reach a {@link AbstractState} without {@link #prevState}.
-     * @return The {@link AbstractState} we went back to, useful for "reset then go to a new state" scenario
-     */
-    AbstractState backToOrigin() {
-        // Will recursively loop until we encounter a state without prevState
-        if (prevState != null) {
+    void rollback() {
+        mapState.rollback();
+    }
+
+    void finish(Player player) {
+        player.setActionable(false);
+        mapState.newStack(stateFactory.createWaiting());
+    }
+
+    class Back implements Action {
+        @Override
+        public String getName() {
+            return "back";
+        }
+
+        @Override
+        public void run() {
             back();
-            return prevState.backToOrigin();
-        } else {
-            return this;
         }
     }
 }

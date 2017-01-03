@@ -34,7 +34,7 @@ public class ViewModule extends AbstractModule {
 
         bind(MapScreen.class);
         bind(MapView.class);
-        bind(MapUI.class);
+        bind(MapUI.class).asEagerSingleton(); // To receive initial state change event
     }
 
     @Provides

@@ -24,7 +24,7 @@ public class Usable extends Item {
     }
 
     /**
-     * Signals this item has been used once. Fires {@link #dispose()} when {@link #getUsageLeft()} == 0
+     * Signals this item has been used once. Fires {@link ItemBroke} when {@link #getUsageLeft()} == 0
      */
     public void useOnce() {
         Preconditions.checkState(usageLeft > 0);
@@ -32,7 +32,6 @@ public class Usable extends Item {
         usageLeft--;
         if (usageLeft == 0) {
             post(new ItemBroke(this));
-            dispose();
         }
     }
 

@@ -5,13 +5,16 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.event.ItemBroke;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +25,7 @@ import java.util.List;
  * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
  */
 // TODO: test the invariant
-public class Items extends EventObject {
+public class Items extends EventObject implements Disposable {
     /**
      * Invariant: weapons.indexOf(equippedWeapon) == 0
      */
@@ -36,15 +39,17 @@ public class Items extends EventObject {
     /**
      * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it has one.
      */
-    Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables) {
-        this(eventBus, weapons, consumables, getDefaultWeapon(weapons));
-    }
-
-    Items(EventBus eventBus, List<Weapon> weapons, List<Consumable> consumables, Weapon equippedWeapon) {
+    @Inject
+    Items(EventBus eventBus, @Assisted List<Weapon> weapons, @Assisted List<Consumable> consumables) {
         super(eventBus);
         this.weapons = weapons;
         this.consumables = consumables;
-        setEquippedWeapon(equippedWeapon);
+        setEquippedWeapon(getDefaultWeapon(weapons));
+        register();
+    }
+
+    @Override
+    public void dispose() {
         register();
     }
 

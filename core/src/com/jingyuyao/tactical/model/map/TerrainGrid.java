@@ -7,6 +7,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
@@ -20,11 +21,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * A terrain grid backed by a {@link Table}.
- * Contents of the table is cleared when {@link #dispose()} is called.
  * Also contains convenience methods to work with our {@link Coordinate} system.
  */
 @Singleton
-public class TerrainGrid extends EventObject implements Iterable<Terrain> {
+public class TerrainGrid extends EventObject implements Iterable<Terrain>, Disposable {
     /**
      * (0,0) starts at bottom left.
      */
@@ -39,7 +39,6 @@ public class TerrainGrid extends EventObject implements Iterable<Terrain> {
     @Override
     public void dispose() {
         table.clear();
-        super.dispose();
     }
 
     public int getWidth() {
@@ -50,12 +49,19 @@ public class TerrainGrid extends EventObject implements Iterable<Terrain> {
         return Algorithms.tableHeight(table);
     }
 
-    public Terrain get(int x, int y) {
-        return table.get(x, y);
+    public void add(Terrain terrain) {
+        Coordinate c = terrain.getCoordinate();
+        table.put(c.getX(), c.getY(), terrain);
+    }
+
+    public void addAll(Iterable<Terrain> terrains) {
+        for (Terrain terrain : terrains) {
+            add(terrain);
+        }
     }
 
     public Terrain get(Coordinate coordinate) {
-        return get(coordinate.getX(), coordinate.getY());
+        return table.get(coordinate.getX(), coordinate.getY());
     }
 
     public Iterable<Terrain> getAll(Iterable<Coordinate> coordinates) {
@@ -65,10 +71,6 @@ public class TerrainGrid extends EventObject implements Iterable<Terrain> {
                 return get(input);
             }
         });
-    }
-
-    public void put(int x, int y, Terrain data) {
-        table.put(x, y, data);
     }
 
     @Override

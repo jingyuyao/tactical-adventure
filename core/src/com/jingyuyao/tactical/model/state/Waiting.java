@@ -2,38 +2,43 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.AttackPlanFactory;
-import com.jingyuyao.tactical.model.action.Action;
-import com.jingyuyao.tactical.model.action.EndTurn;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.TargetInfoFactory;
 
 import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
-    /**
-     * Waiting states do NOT have a {@link AbstractState#prevState}.
-     */
     @Inject
-    public Waiting(EventBus eventBus, Markings markings, TargetInfoFactory targetInfoFactory, AttackPlanFactory attackPlanFactory) {
-        super(eventBus, null, markings, targetInfoFactory, attackPlanFactory);
+    public Waiting(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
+        super(eventBus, mapState, markings, stateFactory);
     }
 
     @Override
     public void select(Player player) {
         if (player.isActionable()) {
-            goTo(new Moving(this, player));
+            goTo(getStateFactory().createMoving(player));
         }
     }
 
     @Override
     public void select(Enemy enemy) {
-        getMarkings().toggleDangerArea(getTargetInfoFactory().create(enemy));
+        getMarkings().toggleDangerArea(enemy);
     }
 
     @Override
     public ImmutableList<Action> getActions() {
-        return ImmutableList.<Action>of(new EndTurn(this, getEventBus()));
+        return ImmutableList.<Action>of(this.new EndTurn());
+    }
+
+    public class EndTurn implements Action {
+        @Override
+        public String getName() {
+            return "end";
+        }
+
+        @Override
+        public void run() {
+            post(this);
+        }
     }
 }

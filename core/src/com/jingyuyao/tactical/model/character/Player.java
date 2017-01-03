@@ -1,11 +1,14 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.event.NewActionState;
+import com.jingyuyao.tactical.model.map.TargetInfoFactory;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -14,8 +17,17 @@ import java.util.List;
 public class Player extends Character {
     private boolean actionable = true;
 
-    Player(EventBus eventBus, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items) {
-        super(eventBus, coordinate, markers, name, stats, items);
+    @Inject
+    Player(
+            EventBus eventBus,
+            TargetInfoFactory targetInfoFactory,
+            @Assisted Coordinate coordinate,
+            @InitialMarkers List<Marker> markers,
+            @Assisted String name,
+            @Assisted Stats stats,
+            @Assisted Items items
+    ) {
+        super(eventBus, targetInfoFactory, coordinate, markers, name, stats, items);
     }
 
     @Override

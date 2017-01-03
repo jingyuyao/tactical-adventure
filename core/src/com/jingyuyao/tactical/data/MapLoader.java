@@ -8,15 +8,17 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.ModelManager;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.*;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.CharacterContainer;
 import com.jingyuyao.tactical.model.map.MapFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.TerrainGrid;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,26 +29,24 @@ public class MapLoader {
     private static final String TERRAIN_LAYER = "terrain";
     private static final String TERRAIN_TYPE_KEY = "type";
 
+    private final ModelManager modelManager;
     private final CharacterFactory characterFactory;
     private final MapFactory mapFactory;
     private final ItemFactory itemFactory;
-    private final CharacterContainer characters;
-    private final TerrainGrid terrainGrid;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
     @Inject
     MapLoader(
+            ModelManager modelManager,
             CharacterFactory characterFactory,
-            MapFactory mapFactory, ItemFactory itemFactory,
-            CharacterContainer characters,
-            TerrainGrid terrainGrid,
+            MapFactory mapFactory,
+            ItemFactory itemFactory,
             OrthogonalTiledMapRenderer mapRenderer
     ) {
+        this.modelManager = modelManager;
         this.characterFactory = characterFactory;
         this.mapFactory = mapFactory;
         this.itemFactory = itemFactory;
-        this.characters = characters;
-        this.terrainGrid = terrainGrid;
         this.mapRenderer = mapRenderer;
     }
 
@@ -59,15 +59,17 @@ public class MapLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
+        List<Terrain> terrains = new ArrayList<Terrain>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-                terrainGrid.put(x, y, createTerrain(x, y, cell));
+                terrains.add(createTerrain(x, y, cell));
             }
         }
 
-        characters.addAll(createTestPlayers());
-        characters.addAll(createTestEnemies());
+        Iterable<Character> characters = Iterables.concat(createTestPlayers(), createTestEnemies());
+
+        modelManager.initializeMap(characters, terrains);
         mapRenderer.setMap(tiledMap);
     }
 
@@ -89,16 +91,16 @@ public class MapLoader {
     private Iterable<Player> createTestPlayers() {
         int hp = 20;
         return ImmutableList.of(
-                characterFactory.createPlayer(2, 2, "john", new Stats(hp, 5, normalAndObstructed()), createItems1()),
-                characterFactory.createPlayer(2, 3, "john", new Stats(hp, 6, normalAndObstructed()), createItems2())
+                characterFactory.createPlayer(new Coordinate(2, 2), "john", new Stats(hp, 5, normalAndObstructed()), createItems1()),
+                characterFactory.createPlayer(new Coordinate(2, 3), "john", new Stats(hp, 6, normalAndObstructed()), createItems2())
         );
     }
 
     private Iterable<Enemy> createTestEnemies() {
         int hp = 20;
         return ImmutableList.of(
-                characterFactory.createEnemy(8, 3, "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()),
-                characterFactory.createEnemy(9, 4, "billy", new Stats(hp, 2, normalAndObstructed()), createItems1())
+                characterFactory.createEnemy(new Coordinate(8, 3), "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()),
+                characterFactory.createEnemy(new Coordinate(9, 3), "billy", new Stats(hp, 2, normalAndObstructed()), createItems1())
         );
     }
 

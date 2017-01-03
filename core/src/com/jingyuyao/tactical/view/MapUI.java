@@ -8,10 +8,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.event.*;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
 
 import javax.inject.Inject;
@@ -36,9 +35,8 @@ public class MapUI {
     private ImmutableList<Action> currentActions;
     private boolean showButtons = true;
 
-    // TODO: get rid of map state as well...
     @Inject
-    MapUI(EventBus eventBus, @MapUiStage Stage stage, MapState mapState, Skin skin) {
+    MapUI(EventBus eventBus, @MapUiStage Stage stage, Skin skin) {
         this.skin = skin;
         this.stage = stage;
         root = new Table();
@@ -71,11 +69,6 @@ public class MapUI {
         root.add(actionButtons).right().bottom();
 
         eventBus.register(this);
-
-        // TODO: clean me up
-        stateLabel.setText("Waiting");
-        currentActions = mapState.getActions();
-        populateButtons();
     }
 
     void act(float delta) {
@@ -109,8 +102,8 @@ public class MapUI {
     }
 
     @Subscribe
-    public void stateChange(StateChange stateChange) {
-        State newState = stateChange.getObject();
+    public void stateChange(StateChanged stateChanged) {
+        State newState = stateChanged.getObject();
         stateLabel.setText(newState.getName());
         currentActions = newState.getActions();
         populateButtons();

@@ -1,21 +1,20 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Waiter;
-import com.jingyuyao.tactical.model.action.Action;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.StateChange;
+import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.Deque;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -25,53 +24,75 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 // TODO: This class needs to be thoroughly tested
 @Singleton
-public class MapState extends EventObject {
+public class MapState extends EventObject implements Disposable {
     private final Waiter waiter;
-    private final State initialState;
-    private State state;
+    private final Deque<State> stateStack;
 
     @Inject
-    public MapState(EventBus eventBus, Waiter waiter, @InitialState State state) {
+    public MapState(EventBus eventBus, Waiter waiter, @BackingStateStack Deque<State> stateStack) {
         super(eventBus);
         this.waiter = waiter;
-        // TODO: add something like MapState.begin() so we can fire off a state change event to the view
-        this.initialState = state;
-        this.state = state;
-        register();
+        this.stateStack = stateStack;
     }
 
     @Override
     public void dispose() {
-        state = initialState;
-        super.dispose();
+        stateStack.clear();
     }
 
-    @Subscribe
-    public void stateChange(StateChange stateChange) {
-        state.exit();
-        state = stateChange.getObject();
-        state.enter();
+    public void initialize(State startingState) {
+        stateStack.push(startingState);
+        startingState.enter();
+        post(new StateChanged(startingState));
     }
 
-    public ImmutableList<Action> getActions() {
-        return state.getActions();
+    void push(State newState) {
+        stateStack.peek().exit();
+        stateStack.push(newState);
+        newState.enter();
+        post(new StateChanged(newState));
+    }
+
+    void pop() {
+        if (stateStack.size() > 1) {
+            State currentState = stateStack.pop();
+            currentState.exit();
+            State lastState = stateStack.peek();
+            lastState.canceled();
+            lastState.enter();
+            post(new StateChanged(lastState));
+        }
+    }
+
+    void rollback() {
+        while (stateStack.size() > 1) {
+            pop();
+        }
+    }
+
+    void newStack(State startingState) {
+        stateStack.peek().exit();
+        stateStack.clear();
+        stateStack.push(startingState);
+        startingState.enter();
+        post(new StateChanged(startingState));
     }
 
     public void select(Player player) {
         if (waiter.isWaiting()) return;
-        state.select(player);
+        stateStack.peek().select(player);
     }
 
     public void select(Enemy enemy) {
         if (waiter.isWaiting()) return;
-        state.select(enemy);
+        stateStack.peek().select(enemy);
     }
 
     public void select(Terrain terrain) {
         if (waiter.isWaiting()) return;
-        state.select(terrain);
+        stateStack.peek().select(terrain);
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface InitialState {}
+    @interface BackingStateStack {}
 }

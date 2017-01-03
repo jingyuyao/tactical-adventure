@@ -8,7 +8,8 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.CharacterDied;
-import com.jingyuyao.tactical.model.event.NewTurn;
+import com.jingyuyao.tactical.model.state.Waiting;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
@@ -23,11 +24,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * A container for a set of {@link Character}s.
- * Listens for {@link #dispose()} in its contained {@link #characters} and remove them from the set.
  */
 // TODO: consider making this a Glazed List?
 @Singleton
-public class CharacterContainer extends EventObject implements Iterable<Character> {
+public class CharacterContainer extends EventObject implements Iterable<Character>, Disposable {
     private final Set<Character> characters;
 
     @Inject
@@ -39,8 +39,10 @@ public class CharacterContainer extends EventObject implements Iterable<Characte
 
     @Override
     public void dispose() {
+        for (Character character : characters) {
+            character.dispose();
+        }
         characters.clear();
-        super.dispose();
     }
 
     @Subscribe
@@ -49,7 +51,7 @@ public class CharacterContainer extends EventObject implements Iterable<Characte
     }
 
     @Subscribe
-    public void newTurn(NewTurn newTurn) {
+    public void endTurn(Waiting.EndTurn endTurn) {
         for (Player player : getPlayers()) {
             player.setActionable(true);
         }

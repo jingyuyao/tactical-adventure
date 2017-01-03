@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.event.WaitChange;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * A semaphore like object that posts change in its state.
  */
 @Singleton
-public class Waiter extends EventObject {
+public class Waiter extends EventObject implements Disposable {
     private final Queue<Runnable> runnables;
     private int waits;
 
@@ -36,7 +37,6 @@ public class Waiter extends EventObject {
     public void dispose() {
         runnables.clear();
         waits = 0;
-        super.dispose();
     }
 
     @Subscribe

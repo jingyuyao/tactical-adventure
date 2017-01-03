@@ -4,10 +4,13 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.CharacterDied;
-import com.jingyuyao.tactical.model.map.TargetInfo;
+import com.jingyuyao.tactical.model.map.TargetInfoFactory;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
+import com.jingyuyao.tactical.model.util.Disposable;
 import com.jingyuyao.tactical.model.util.EventObject;
 
 import javax.inject.Inject;
@@ -23,15 +26,22 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Contains all the markings in a state.
  */
 @Singleton
-public class Markings extends EventObject {
+public class Markings extends EventObject implements Disposable {
     private final MarkingFactory markingFactory;
+    private final TargetInfoFactory targetInfoFactory;
     private final Map<Character, Marking> dangerAreas;
     private Marking playerMarking;
 
     @Inject
-    public Markings(EventBus eventBus, MarkingFactory markingFactory, @InitialDangerAreas Map<Character, Marking> dangerAreas) {
+    public Markings(
+            EventBus eventBus,
+            MarkingFactory markingFactory,
+            TargetInfoFactory targetInfoFactory,
+            @InitialDangerAreas Map<Character, Marking> dangerAreas
+    ) {
         super(eventBus);
         this.markingFactory = markingFactory;
+        this.targetInfoFactory = targetInfoFactory;
         this.dangerAreas = dangerAreas;
         playerMarking = null;
         register();
@@ -39,9 +49,11 @@ public class Markings extends EventObject {
 
     @Override
     public void dispose() {
+        clearPlayerMarking();
+        for (Marking marking : dangerAreas.values()) {
+            marking.clear();
+        }
         dangerAreas.clear();
-        playerMarking = null;
-        super.dispose();
     }
 
     @Subscribe
@@ -49,15 +61,15 @@ public class Markings extends EventObject {
         dangerAreas.remove(characterDied.getObject());
     }
 
-    void showMoveAndTargets(TargetInfo targetInfo) {
+    void showMoveAndTargets(Player player) {
         clearPlayerMarking();
-        playerMarking = markingFactory.moveAndTargets(targetInfo);
+        playerMarking = markingFactory.moveAndTargets(player.createTargetInfo());
         playerMarking.apply();
     }
 
-    void showImmediateTargets(TargetInfo targetInfo) {
+    void showImmediateTargets(Player player) {
         clearPlayerMarking();
-        playerMarking = markingFactory.immediateTargets(targetInfo);
+        playerMarking = markingFactory.immediateTargets(player.createTargetInfo());
         playerMarking.apply();
     }
 
@@ -69,13 +81,12 @@ public class Markings extends EventObject {
     }
 
     // TODO: bugged, needs to be refreshed after every state
-    void toggleDangerArea(TargetInfo targetInfo) {
-        Character enemy = targetInfo.getCharacter();
+    void toggleDangerArea(Enemy enemy) {
         if (dangerAreas.containsKey(enemy)) {
             Marking marking = dangerAreas.remove(enemy);
             marking.clear();
         } else {
-            Marking dangerArea = markingFactory.danger(targetInfo);
+            Marking dangerArea = markingFactory.danger(targetInfoFactory.create(enemy));
             dangerAreas.put(enemy, dangerArea);
             dangerArea.apply();
         }
