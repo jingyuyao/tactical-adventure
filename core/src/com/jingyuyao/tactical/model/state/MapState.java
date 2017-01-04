@@ -30,7 +30,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Manages selection logic.
  */
-// TODO: This class needs to be thoroughly tested
 @Singleton
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
     private final Deque<State> stateStack;
