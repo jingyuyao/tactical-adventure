@@ -42,7 +42,7 @@ public class Characters extends EventBusObject implements ManagedBy<NewMap, Clea
     @Subscribe
     @Override
     public void initialize(NewMap data) {
-        Iterables.addAll(characters, data.getCharacters());
+        Iterables.addAll(characters, Iterables.concat(data.getPlayers(), data.getEnemies()));
     }
 
     @Subscribe

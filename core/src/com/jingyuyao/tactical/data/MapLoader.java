@@ -8,11 +8,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.*;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -65,7 +63,6 @@ public class MapLoader {
         Preconditions.checkArgument(height>0, "MapView height must be > 0");
         Preconditions.checkArgument(width>0, "MapView width must be > 0");
 
-        Iterable<Character> characters = Iterables.concat(createTestPlayers(), createTestEnemies());
         List<Terrain> terrains = new ArrayList<Terrain>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -74,7 +71,7 @@ public class MapLoader {
             }
         }
 
-        eventBus.post(new NewMap(characters, terrains, waitingProvider.get()));
+        eventBus.post(new NewMap(createTestPlayers(), createTestEnemies(), terrains, waitingProvider.get()));
         mapRenderer.setMap(tiledMap);
     }
 
@@ -93,7 +90,7 @@ public class MapLoader {
     }
 
     // TODO: remove us
-    private Iterable<Player> createTestPlayers() {
+    private List<Player> createTestPlayers() {
         int hp = 20;
         return ImmutableList.of(
                 characterFactory.createPlayer(new Coordinate(2, 2), "john", new Stats(hp, 5, normalAndObstructed()), createItems1()),
@@ -101,7 +98,7 @@ public class MapLoader {
         );
     }
 
-    private Iterable<Enemy> createTestEnemies() {
+    private List<Enemy> createTestEnemies() {
         int hp = 20;
         return ImmutableList.of(
                 characterFactory.createEnemy(new Coordinate(8, 3), "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()),
