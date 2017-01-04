@@ -5,7 +5,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.common.EventBusObject;
@@ -25,11 +24,10 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * A container for a set of {@link Character}s.
+ * Manages the set of {@link Character} on the map.
  */
-// TODO: consider making this a Glazed List?
 @Singleton
-public class Characters extends EventBusObject implements ManagedBy<NewMap, ClearMap>,Iterable<Character> {
+public class Characters extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Character> {
     private final Set<Character> characters;
 
     @Inject
@@ -61,7 +59,7 @@ public class Characters extends EventBusObject implements ManagedBy<NewMap, Clea
 
     @Subscribe
     public void endTurn(Waiting.EndTurn endTurn) {
-        for (Player player : getPlayers()) {
+        for (Player player : Iterables.filter(characters, Player.class)) {
             player.setActionable(true);
         }
     }
@@ -69,14 +67,6 @@ public class Characters extends EventBusObject implements ManagedBy<NewMap, Clea
     @Override
     public Iterator<Character> iterator() {
         return characters.iterator();
-    }
-
-    public Iterable<Player> getPlayers() {
-        return Iterables.filter(characters, Player.class);
-    }
-
-    public Iterable<Enemy> getEnemies() {
-        return Iterables.filter(characters, Enemy.class);
     }
 
     @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
