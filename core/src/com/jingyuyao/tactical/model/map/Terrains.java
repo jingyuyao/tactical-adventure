@@ -24,73 +24,76 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * A terrain grid backed by a {@link Table}.
- * Also contains convenience methods to work with our {@link Coordinate} system.
+ * A terrain grid backed by a {@link Table}. Also contains convenience methods to work with our
+ * {@link Coordinate} system.
  */
 @Singleton
-public class Terrains extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
-    /**
-     * (0,0) starts at bottom left.
-     */
-    private final Table<Integer, Integer, Terrain> table;
+public class Terrains extends EventBusObject
+    implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
+  /** (0,0) starts at bottom left. */
+  private final Table<Integer, Integer, Terrain> table;
 
-    @Inject
-    public Terrains(EventBus eventBus, @BackingTerrainTable Table<Integer, Integer, Terrain> table) {
-        super(eventBus);
-        this.table = table;
-        register();
+  @Inject
+  public Terrains(EventBus eventBus, @BackingTerrainTable Table<Integer, Integer, Terrain> table) {
+    super(eventBus);
+    this.table = table;
+    register();
+  }
+
+  @Subscribe
+  @Override
+  public void initialize(NewMap data) {
+    for (Terrain terrain : data.getTerrains()) {
+      Coordinate c = terrain.getCoordinate();
+      table.put(c.getX(), c.getY(), terrain);
     }
+    checkRectangular();
+  }
 
-    @Subscribe
-    @Override
-    public void initialize(NewMap data) {
-        for (Terrain terrain : data.getTerrains()) {
-            Coordinate c = terrain.getCoordinate();
-            table.put(c.getX(), c.getY(), terrain);
-        }
-        checkRectangular();
-    }
+  @Subscribe
+  @Override
+  public void dispose(ClearMap clearMap) {
+    table.clear();
+  }
 
-    @Subscribe
-    @Override
-    public void dispose(ClearMap clearMap) {
-        table.clear();
-    }
+  @Override
+  public Iterator<Terrain> iterator() {
+    return table.values().iterator();
+  }
 
-    @Override
-    public Iterator<Terrain> iterator() {
-        return table.values().iterator();
-    }
+  public int getWidth() {
+    return Algorithms.tableWidth(table);
+  }
 
-    public int getWidth() {
-        return Algorithms.tableWidth(table);
-    }
+  public int getHeight() {
+    return Algorithms.tableHeight(table);
+  }
 
-    public int getHeight() {
-        return Algorithms.tableHeight(table);
-    }
+  public Terrain get(Coordinate coordinate) {
+    return table.get(coordinate.getX(), coordinate.getY());
+  }
 
-    public Terrain get(Coordinate coordinate) {
-        return table.get(coordinate.getX(), coordinate.getY());
-    }
-
-    public Iterable<Terrain> getAll(Iterable<Coordinate> coordinates) {
-        return Iterables.transform(coordinates, new Function<Coordinate, Terrain>() {
-            @Override
-            public Terrain apply(Coordinate input) {
-                return get(input);
-            }
+  public Iterable<Terrain> getAll(Iterable<Coordinate> coordinates) {
+    return Iterables.transform(
+        coordinates,
+        new Function<Coordinate, Terrain>() {
+          @Override
+          public Terrain apply(Coordinate input) {
+            return get(input);
+          }
         });
-    }
+  }
 
-    private void checkRectangular() {
-        for (int x = 0; x < getWidth(); x++) {
-            for (int y = 0; y < getHeight(); y++) {
-                Preconditions.checkNotNull(get(new Coordinate(x, y)), "Terrain grid must be rectangular");
-            }
-        }
+  private void checkRectangular() {
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        Preconditions.checkNotNull(get(new Coordinate(x, y)), "Terrain grid must be rectangular");
+      }
     }
+  }
 
-    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface BackingTerrainTable {}
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingTerrainTable {}
 }

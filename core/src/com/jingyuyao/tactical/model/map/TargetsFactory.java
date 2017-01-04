@@ -15,59 +15,59 @@ import javax.inject.Singleton;
 
 @Singleton
 public class TargetsFactory {
-    private final Characters characters;
-    private final Terrains terrains;
+  private final Characters characters;
+  private final Terrains terrains;
 
-    @Inject
-    public TargetsFactory(Characters characters, Terrains terrains) {
-        this.characters = characters;
-        this.terrains = terrains;
-    }
+  @Inject
+  public TargetsFactory(Characters characters, Terrains terrains) {
+    this.characters = characters;
+    this.terrains = terrains;
+  }
 
-    /**
-     * Magic.
-     */
-    public Targets create(Character character) {
-        Graph<Coordinate> moveGraph = getMoveGraph(character);
-        SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
-        for (Coordinate move : moveGraph.nodes()) {
-            SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
-            for (Weapon weapon : character.getWeapons()) {
-                // TODO: we need to be smarter if we want irregular weapon target areas
-                // we also needs a different class of target indicators for user targetable weapons
-                for (int distance : weapon.getAttackDistances()) {
-                    for (Coordinate target : Algorithms.getNDistanceAway(
-                            terrains.getWidth(), terrains.getHeight(), move, distance)) {
-                        targetWeaponMap.put(target, weapon);
-                    }
-                }
-            }
-            moveMap.put(move, targetWeaponMap);
+  /** Magic. */
+  public Targets create(Character character) {
+    Graph<Coordinate> moveGraph = getMoveGraph(character);
+    SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
+    for (Coordinate move : moveGraph.nodes()) {
+      SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
+      for (Weapon weapon : character.getWeapons()) {
+        // TODO: we need to be smarter if we want irregular weapon target areas
+        // we also needs a different class of target indicators for user targetable weapons
+        for (int distance : weapon.getAttackDistances()) {
+          for (Coordinate target :
+              Algorithms.getNDistanceAway(
+                  terrains.getWidth(), terrains.getHeight(), move, distance)) {
+            targetWeaponMap.put(target, weapon);
+          }
         }
-        return new Targets(characters, character, moveGraph, moveMap);
+      }
+      moveMap.put(move, targetWeaponMap);
+    }
+    return new Targets(characters, character, moveGraph, moveMap);
+  }
+
+  private Graph<Coordinate> getMoveGraph(Character character) {
+    return Algorithms.minPathSearch(
+        createMovementPenaltyTable(character),
+        character.getCoordinate(),
+        character.getMoveDistance());
+  }
+
+  private Table<Integer, Integer, Integer> createMovementPenaltyTable(Character character) {
+    Table<Integer, Integer, Integer> movementPenaltyTable =
+        HashBasedTable.create(terrains.getWidth(), terrains.getHeight());
+
+    for (Terrain terrain : terrains) {
+      Coordinate coordinate = terrain.getCoordinate();
+      movementPenaltyTable.put(
+          coordinate.getX(), coordinate.getY(), terrain.getMovementPenalty(character));
     }
 
-    private Graph<Coordinate> getMoveGraph(Character character) {
-        return Algorithms.minPathSearch(
-                createMovementPenaltyTable(character),
-                character.getCoordinate(),
-                character.getMoveDistance());
+    for (Character blocked : characters) {
+      Coordinate coordinate = blocked.getCoordinate();
+      movementPenaltyTable.put(coordinate.getX(), coordinate.getY(), Algorithms.NO_EDGE);
     }
 
-    private Table<Integer, Integer, Integer> createMovementPenaltyTable(Character character) {
-        Table<Integer, Integer, Integer> movementPenaltyTable =
-                HashBasedTable.create(terrains.getWidth(), terrains.getHeight());
-
-        for (Terrain terrain : terrains) {
-            Coordinate coordinate = terrain.getCoordinate();
-            movementPenaltyTable.put(coordinate.getX(), coordinate.getY(), terrain.getMovementPenalty(character));
-        }
-
-        for (Character blocked : characters) {
-            Coordinate coordinate = blocked.getCoordinate();
-            movementPenaltyTable.put(coordinate.getX(), coordinate.getY(), Algorithms.NO_EDGE);
-        }
-
-        return movementPenaltyTable;
-    }
+    return movementPenaltyTable;
+  }
 }

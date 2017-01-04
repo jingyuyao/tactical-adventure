@@ -13,48 +13,45 @@ import com.jingyuyao.tactical.model.state.Waiting;
 import javax.inject.Inject;
 import java.util.List;
 
-/**
- * A player character
- */
+/** A player character */
 public class Player extends Character {
-    private boolean actionable = true;
+  private boolean actionable = true;
 
-    @Inject
-    Player(
-            EventBus eventBus,
-            TargetsFactory targetsFactory,
-            @Assisted Coordinate coordinate,
-            @InitialMarkers List<Marker> markers,
-            @Assisted String name,
-            @Assisted Stats stats,
-            @Assisted Items items
-    ) {
-        super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
-        register();
-    }
+  @Inject
+  Player(
+      EventBus eventBus,
+      TargetsFactory targetsFactory,
+      @Assisted Coordinate coordinate,
+      @InitialMarkers List<Marker> markers,
+      @Assisted String name,
+      @Assisted Stats stats,
+      @Assisted Items items) {
+    super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
+    register();
+  }
 
-    @Subscribe
-    public void endTurn(Waiting.EndTurn endTurn) {
-        setActionable(true);
-    }
+  @Subscribe
+  public void endTurn(Waiting.EndTurn endTurn) {
+    setActionable(true);
+  }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        unregister();
-    }
+  @Override
+  public void dispose() {
+    super.dispose();
+    unregister();
+  }
 
-    @Override
-    public void select(MapState mapState) {
-        mapState.select(this);
-    }
+  @Override
+  public void select(MapState mapState) {
+    mapState.select(this);
+  }
 
-    public boolean isActionable() {
-        return actionable;
-    }
+  public boolean isActionable() {
+    return actionable;
+  }
 
-    public void setActionable(boolean actionable) {
-        this.actionable = actionable;
-        post(new NewActionState(this, actionable));
-    }
+  public void setActionable(boolean actionable) {
+    this.actionable = actionable;
+    post(new NewActionState(this, actionable));
+  }
 }

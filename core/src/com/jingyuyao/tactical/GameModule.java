@@ -7,13 +7,12 @@ import com.google.inject.Provides;
 import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {
-    @Override
-    protected void configure() {
-    }
+  @Override
+  protected void configure() {}
 
-    @Provides
-    @Singleton
-    EventBus provideEventBus() {
-        return new EventBus("game");
-    }
+  @Provides
+  @Singleton
+  EventBus provideEventBus() {
+    return new EventBus("game");
+  }
 }

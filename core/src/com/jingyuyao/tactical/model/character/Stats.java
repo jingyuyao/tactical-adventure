@@ -5,57 +5,52 @@ import com.jingyuyao.tactical.model.map.Terrain;
 
 import java.util.Set;
 
-/**
- * Setters should be package private.
- */
+/** Setters should be package private. */
 public class Stats {
-    // TODO: remove me
-    private static final int MAX_HP = 20;
+  // TODO: remove me
+  private static final int MAX_HP = 20;
 
-    private final Set<Terrain.Type> passableTerrainTypes;
-    /**
-     * >= 0
-     */
-    private int hp;
-    private int moveDistance;
+  private final Set<Terrain.Type> passableTerrainTypes;
+  /** >= 0 */
+  private int hp;
 
-    public Stats(int hp, int moveDistance, Set<Terrain.Type> passableTerrainTypes) {
-        Preconditions.checkArgument(hp > 0);
-        this.hp = hp;
-        this.passableTerrainTypes = passableTerrainTypes;
-        this.moveDistance = moveDistance;
-    }
+  private int moveDistance;
 
-    int getHp() {
-        return hp;
-    }
+  public Stats(int hp, int moveDistance, Set<Terrain.Type> passableTerrainTypes) {
+    Preconditions.checkArgument(hp > 0);
+    this.hp = hp;
+    this.passableTerrainTypes = passableTerrainTypes;
+    this.moveDistance = moveDistance;
+  }
 
-    int getMoveDistance() {
-        return moveDistance;
-    }
+  int getHp() {
+    return hp;
+  }
 
-    /**
-     * Reduce {@link #hp} by {@code delta}.
-     * @return whether {@link #hp} <= 0
-     */
-    boolean damageBy(int delta) {
-        hp = Math.max(hp - delta, 0);
-        return hp == 0;
-    }
+  int getMoveDistance() {
+    return moveDistance;
+  }
 
-    void healBy(int delta) {
-        hp = Math.min(hp + delta, MAX_HP);
-    }
+  /**
+   * Reduce {@link #hp} by {@code delta}.
+   *
+   * @return whether {@link #hp} <= 0
+   */
+  boolean damageBy(int delta) {
+    hp = Math.max(hp - delta, 0);
+    return hp == 0;
+  }
 
-    boolean canPassTerrainType(Terrain.Type terrainType) {
-        return passableTerrainTypes.contains(terrainType);
-    }
+  void healBy(int delta) {
+    hp = Math.min(hp + delta, MAX_HP);
+  }
 
-    @Override
-    public String toString() {
-        return "Stats{" +
-                "hp=" + hp +
-                ", moveDistance=" + moveDistance +
-                '}';
-    }
+  boolean canPassTerrainType(Terrain.Type terrainType) {
+    return passableTerrainTypes.contains(terrainType);
+  }
+
+  @Override
+  public String toString() {
+    return "Stats{" + "hp=" + hp + ", moveDistance=" + moveDistance + '}';
+  }
 }

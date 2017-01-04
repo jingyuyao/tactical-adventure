@@ -23,87 +23,88 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 class CharacterActor<T extends Character> extends BaseActor<T> {
-    private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
+  private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
-    private final Sprite sprite;
+  private final Sprite sprite;
 
-    CharacterActor(
-            EventBus eventBus,
-            T object,
-            float size,
-            Waiter waiter,
-            Map<Marker, Sprite> markerSpriteMap,
-            Sprite sprite,
-            Color tint,
-            EventListener listener
-    ) {
-        super(eventBus, object, size, waiter, markerSpriteMap, listener);
-        this.sprite = sprite;
-        setColor(tint);
+  CharacterActor(
+      EventBus eventBus,
+      T object,
+      float size,
+      Waiter waiter,
+      Map<Marker, Sprite> markerSpriteMap,
+      Sprite sprite,
+      Color tint,
+      EventListener listener) {
+    super(eventBus, object, size, waiter, markerSpriteMap, listener);
+    this.sprite = sprite;
+    setColor(tint);
+  }
+
+  @Override
+  public void draw(Batch batch, float parentAlpha) {
+    if (sprite != null) {
+      sprite.setColor(getColor());
+      sprite.setBounds(getX(), getY(), getWidth(), getHeight());
+      sprite.draw(batch);
     }
+    super.draw(batch, parentAlpha);
+  }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (sprite != null) {
-            sprite.setColor(getColor());
-            sprite.setBounds(getX(), getY(), getWidth(), getHeight());
-            sprite.draw(batch);
-        }
-        super.draw(batch, parentAlpha);
+  @Subscribe
+  public void instantMoveTo(InstantMove instantMove) {
+    if (instantMove.matches(getObject())) {
+      Coordinate destination = instantMove.getDestination();
+      setPosition(destination.getX(), destination.getY());
     }
+  }
 
-    @Subscribe
-    public void instantMoveTo(InstantMove instantMove) {
-        if (instantMove.matches(getObject())) {
-            Coordinate destination = instantMove.getDestination();
-            setPosition(destination.getX(), destination.getY());
-        }
-    }
-
-    @Subscribe
-    public void moveTo(Move move) {
-        if (move.matches(getObject())) {
-            final ImmutableList<EventListener> listeners = popAllListeners();
-            SequenceAction moveSequence = getMoveSequence(move.getPath());
-            moveSequence.addAction(run(new Runnable() {
+  @Subscribe
+  public void moveTo(Move move) {
+    if (move.matches(getObject())) {
+      final ImmutableList<EventListener> listeners = popAllListeners();
+      SequenceAction moveSequence = getMoveSequence(move.getPath());
+      moveSequence.addAction(
+          run(
+              new Runnable() {
                 @Override
                 public void run() {
-                    for (EventListener listener : listeners) {
-                        addListener(listener);
-                    }
-                    getWaiter().finishOne();
+                  for (EventListener listener : listeners) {
+                    addListener(listener);
+                  }
+                  getWaiter().finishOne();
                 }
-            }));
-            getWaiter().waitOne();
-            addAction(moveSequence);
-        }
+              }));
+      getWaiter().waitOne();
+      addAction(moveSequence);
     }
+  }
 
-    @Subscribe
-    public void characterDied(CharacterDied characterDied) {
-        if (characterDied.matches(getObject())) {
-            remove();
-        }
+  @Subscribe
+  public void characterDied(CharacterDied characterDied) {
+    if (characterDied.matches(getObject())) {
+      remove();
     }
+  }
 
-    Sprite getSprite() {
-        return sprite;
-    }
+  Sprite getSprite() {
+    return sprite;
+  }
 
-    private SequenceAction getMoveSequence(Iterable<Coordinate> path) {
-        SequenceAction sequence = sequence();
-        for (Coordinate terrain : path) {
-            sequence.addAction(Actions.moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
-        }
-        return sequence;
+  private SequenceAction getMoveSequence(Iterable<Coordinate> path) {
+    SequenceAction sequence = sequence();
+    for (Coordinate terrain : path) {
+      sequence.addAction(Actions.moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
     }
+    return sequence;
+  }
 
-    private ImmutableList<EventListener> popAllListeners() {
-        ImmutableList.Builder<EventListener> builder = new ImmutableList.Builder<EventListener>();
-        for (EventListener listener : getListeners()) {
-            builder.add(listener);
-        }
-        getListeners().clear();
-        return builder.build();
+  private ImmutableList<EventListener> popAllListeners() {
+    ImmutableList.Builder<EventListener> builder = new ImmutableList.Builder<EventListener>();
+    for (EventListener listener : getListeners()) {
+      builder.add(listener);
     }
+    getListeners().clear();
+    return builder.build();
+  }
 }

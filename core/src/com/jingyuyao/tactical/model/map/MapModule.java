@@ -14,31 +14,31 @@ import java.util.List;
 import java.util.Set;
 
 public class MapModule extends AbstractModule {
-    @Override
-    protected void configure() {
-        bind(Characters.class);
-        bind(Terrains.class);
-        bind(MapFactory.class);
-        bind(TargetsFactory.class);
-    }
+  @Override
+  protected void configure() {
+    bind(Characters.class);
+    bind(Terrains.class);
+    bind(MapFactory.class);
+    bind(TargetsFactory.class);
+  }
 
-    @Provides
-    @MapObject.InitialMarkers
-    List<Marker> provideInitialMarkers() {
-        return new ArrayList<Marker>();
-    }
+  @Provides
+  @MapObject.InitialMarkers
+  List<Marker> provideInitialMarkers() {
+    return new ArrayList<Marker>();
+  }
 
-    @Provides
-    @Singleton
-    @Characters.BackingCharacterSet
-    Set<Character> provideBackingCharacterSet() {
-        return new HashSet<Character>();
-    }
+  @Provides
+  @Singleton
+  @Characters.BackingCharacterSet
+  Set<Character> provideBackingCharacterSet() {
+    return new HashSet<Character>();
+  }
 
-    @Provides
-    @Singleton
-    @Terrains.BackingTerrainTable
-    Table<Integer, Integer, Terrain> provideBackingTerrainTable() {
-        return HashBasedTable.create();
-    }
+  @Provides
+  @Singleton
+  @Terrains.BackingTerrainTable
+  Table<Integer, Integer, Terrain> provideBackingTerrainTable() {
+    return HashBasedTable.create();
+  }
 }

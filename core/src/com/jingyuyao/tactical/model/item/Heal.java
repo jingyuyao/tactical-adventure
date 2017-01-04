@@ -7,16 +7,16 @@ import com.jingyuyao.tactical.model.character.Player;
 import javax.inject.Inject;
 
 public class Heal extends Consumable {
-    // TODO: Remove me
-    private static final int AMOUNT = 10;
+  // TODO: Remove me
+  private static final int AMOUNT = 10;
 
-    @Inject
-    Heal(EventBus eventBus, @Assisted String name, @Assisted int usageLeft) {
-        super(eventBus, name, usageLeft);
-    }
+  @Inject
+  Heal(EventBus eventBus, @Assisted String name, @Assisted int usageLeft) {
+    super(eventBus, name, usageLeft);
+  }
 
-    @Override
-    protected void performConsumption(Player user) {
-        user.healBy(AMOUNT);
-    }
+  @Override
+  protected void performConsumption(Player user) {
+    user.healBy(AMOUNT);
+  }
 }

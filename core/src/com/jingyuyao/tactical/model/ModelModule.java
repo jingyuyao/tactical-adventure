@@ -13,22 +13,22 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ModelModule extends AbstractModule {
-    @Override
-    protected void configure() {
-        install(new MapModule());
-        install(new CharacterModule());
-        install(new ItemModule());
-        install(new MarkModule());
-        install(new StateModule());
+  @Override
+  protected void configure() {
+    install(new MapModule());
+    install(new CharacterModule());
+    install(new ItemModule());
+    install(new MarkModule());
+    install(new StateModule());
 
-        bind(Waiter.class);
-        bind(AttackPlanFactory.class);
-    }
+    bind(Waiter.class);
+    bind(AttackPlanFactory.class);
+  }
 
-    @Provides
-    @Singleton
-    @Waiter.BackingWaiterQueue
-    Queue<Runnable> provideRunnableQueue() {
-        return new LinkedList<Runnable>();
-    }
+  @Provides
+  @Singleton
+  @Waiter.BackingWaiterQueue
+  Queue<Runnable> provideRunnableQueue() {
+    return new LinkedList<Runnable>();
+  }
 }

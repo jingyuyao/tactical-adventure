@@ -18,111 +18,111 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WaiterTest {
-    @Mock private EventBus eventBus;
-    @Mock private Queue<Runnable> runnableQueue;
-    @Mock private ClearMap clearMap;
-    @Mock private Waiter.Changed changed;
-    @Mock private Runnable runnable;
-    @Captor private ArgumentCaptor<Object> argumentCaptor;
+  @Mock private EventBus eventBus;
+  @Mock private Queue<Runnable> runnableQueue;
+  @Mock private ClearMap clearMap;
+  @Mock private Waiter.Changed changed;
+  @Mock private Runnable runnable;
+  @Captor private ArgumentCaptor<Object> argumentCaptor;
 
-    private Waiter waiter;
+  private Waiter waiter;
 
-    @Before
-    public void setUp() {
-        waiter = new Waiter(eventBus, runnableQueue);
-        verify(eventBus).register(waiter);
-    }
+  @Before
+  public void setUp() {
+    waiter = new Waiter(eventBus, runnableQueue);
+    verify(eventBus).register(waiter);
+  }
 
-    @Test
-    public void dispose() {
-        waiter.dispose(clearMap);
+  @Test
+  public void dispose() {
+    waiter.dispose(clearMap);
 
-        verify(runnableQueue).clear();
-    }
+    verify(runnableQueue).clear();
+  }
 
-    @Test
-    public void changed_cannot_proceed() {
-        when(changed.canProceed()).thenReturn(false);
+  @Test
+  public void changed_cannot_proceed() {
+    when(changed.canProceed()).thenReturn(false);
 
-        waiter.changed(changed);
+    waiter.changed(changed);
 
-        verifyZeroInteractions(runnableQueue);
-    }
+    verifyZeroInteractions(runnableQueue);
+  }
 
-    @Test
-    public void changed_can_proceed() {
-        when(changed.canProceed()).thenReturn(true);
-        when(runnableQueue.isEmpty()).thenReturn(false).thenReturn(true);
-        when(runnableQueue.poll()).thenReturn(runnable);
+  @Test
+  public void changed_can_proceed() {
+    when(changed.canProceed()).thenReturn(true);
+    when(runnableQueue.isEmpty()).thenReturn(false).thenReturn(true);
+    when(runnableQueue.poll()).thenReturn(runnable);
 
-        waiter.changed(changed);
+    waiter.changed(changed);
 
-        verify(runnableQueue).poll();
-        verify(runnable).run();
-    }
+    verify(runnableQueue).poll();
+    verify(runnable).run();
+  }
 
-    @Test
-    public void canProceed() {
-        assertThat(waiter.canProceed()).isTrue();
-        waiter.waitOne();
-        assertThat(waiter.canProceed()).isFalse();
-        waiter.finishOne();
-        assertThat(waiter.canProceed()).isTrue();
-    }
+  @Test
+  public void canProceed() {
+    assertThat(waiter.canProceed()).isTrue();
+    waiter.waitOne();
+    assertThat(waiter.canProceed()).isFalse();
+    waiter.finishOne();
+    assertThat(waiter.canProceed()).isTrue();
+  }
 
-    @Test
-    public void waitOne() {
-        waiter.waitOne();
+  @Test
+  public void waitOne() {
+    waiter.waitOne();
 
-        verify(eventBus).post(argumentCaptor.capture());
-        verifyChanged(argumentCaptor.getValue(), false);
+    verify(eventBus).post(argumentCaptor.capture());
+    verifyChanged(argumentCaptor.getValue(), false);
 
-        waiter.waitOne();
+    waiter.waitOne();
 
-        verifyNoMoreInteractions(eventBus);
-    }
+    verifyNoMoreInteractions(eventBus);
+  }
 
-    @Test(expected = IllegalStateException.class)
-    public void finishOne_exception() {
-        waiter.finishOne();
-    }
+  @Test(expected = IllegalStateException.class)
+  public void finishOne_exception() {
+    waiter.finishOne();
+  }
 
-    @Test
-    public void finishOne() {
-        waiter.waitOne();
-        waiter.waitOne();
+  @Test
+  public void finishOne() {
+    waiter.waitOne();
+    waiter.waitOne();
 
-        reset(eventBus);
+    reset(eventBus);
 
-        waiter.finishOne();
-        verifyZeroInteractions(eventBus);
+    waiter.finishOne();
+    verifyZeroInteractions(eventBus);
 
-        reset(eventBus);
+    reset(eventBus);
 
-        waiter.finishOne();
-        verify(eventBus).post(argumentCaptor.capture());
-        verifyChanged(argumentCaptor.getValue(), true);
-    }
+    waiter.finishOne();
+    verify(eventBus).post(argumentCaptor.capture());
+    verifyChanged(argumentCaptor.getValue(), true);
+  }
 
-    @Test
-    public void runOnce_can_proceed() {
-        waiter.runOnce(runnable);
+  @Test
+  public void runOnce_can_proceed() {
+    waiter.runOnce(runnable);
 
-        verify(runnable).run();
-    }
+    verify(runnable).run();
+  }
 
-    @Test
-    public void runOnce_cannot_proceed() {
-        waiter.waitOne();
+  @Test
+  public void runOnce_cannot_proceed() {
+    waiter.waitOne();
 
-        waiter.runOnce(runnable);
+    waiter.runOnce(runnable);
 
-        verify(runnableQueue).add(runnable);
-        verifyZeroInteractions(runnable);
-    }
+    verify(runnableQueue).add(runnable);
+    verifyZeroInteractions(runnable);
+  }
 
-    private void verifyChanged(Object event, boolean canProceed) {
-        Waiter.Changed changed = TestHelpers.isInstanceOf(event, Waiter.Changed.class);
-        assertThat(changed.canProceed()).isEqualTo(canProceed);
-    }
+  private void verifyChanged(Object event, boolean canProceed) {
+    Waiter.Changed changed = TestHelpers.isInstanceOf(event, Waiter.Changed.class);
+    assertThat(changed.canProceed()).isEqualTo(canProceed);
+  }
 }

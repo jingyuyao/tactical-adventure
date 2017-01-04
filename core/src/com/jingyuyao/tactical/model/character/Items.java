@@ -19,92 +19,91 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A container for character items.
- * Belongs in object package since it is technically part of {@link Character}.
- * <br>
- * Invariants: all {@link Usable} objects must be removed immediately once {@link Usable#getUsageLeft()} == 0
+ * A container for character items. Belongs in object package since it is technically part of {@link
+ * Character}. <br>
+ * Invariants: all {@link Usable} objects must be removed immediately once {@link
+ * Usable#getUsageLeft()} == 0
  */
 // TODO: test the invariant
 public class Items extends EventBusObject implements Disposable {
-    /**
-     * Invariant: weapons.indexOf(equippedWeapon) == 0
-     */
-    private final List<Weapon> weapons;
-    private final List<Consumable> consumables;
-    /**
-     * If not null, {@code weapons.contains(equippedWeapon) == true}
-     */
-    private Weapon equippedWeapon;
+  /** Invariant: weapons.indexOf(equippedWeapon) == 0 */
+  private final List<Weapon> weapons;
 
-    /**
-     * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it has one.
-     */
-    @Inject
-    Items(EventBus eventBus, @Assisted List<Weapon> weapons, @Assisted List<Consumable> consumables) {
-        super(eventBus);
-        this.weapons = weapons;
-        this.consumables = consumables;
-        setEquippedWeapon(getDefaultWeapon(weapons));
-        register();
-    }
+  private final List<Consumable> consumables;
+  /** If not null, {@code weapons.contains(equippedWeapon) == true} */
+  private Weapon equippedWeapon;
 
-    @Override
-    public void dispose() {
-        register();
-    }
+  /**
+   * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it
+   * has one.
+   */
+  @Inject
+  Items(EventBus eventBus, @Assisted List<Weapon> weapons, @Assisted List<Consumable> consumables) {
+    super(eventBus);
+    this.weapons = weapons;
+    this.consumables = consumables;
+    setEquippedWeapon(getDefaultWeapon(weapons));
+    register();
+  }
 
-    @Subscribe
-    public void itemBroke(ItemBroke itemBroke) {
-        Iterables.removeIf(getItems(), itemBroke.getMatchesPredicate());
-        if (itemBroke.matches(equippedWeapon)) {
-            setEquippedWeapon(getDefaultWeapon(weapons));
-        }
-    }
+  /** Return the first weapon if there is one, else null. */
+  private static Weapon getDefaultWeapon(Iterable<Weapon> weapons) {
+    return Iterables.getFirst(weapons, null);
+  }
 
-    Iterable<Weapon> getWeapons() {
-        return weapons;
-    }
+  @Override
+  public void dispose() {
+    register();
+  }
 
-    Iterable<Consumable> getConsumables() {
-        return consumables;
+  @Subscribe
+  public void itemBroke(ItemBroke itemBroke) {
+    Iterables.removeIf(getItems(), itemBroke.getMatchesPredicate());
+    if (itemBroke.matches(equippedWeapon)) {
+      setEquippedWeapon(getDefaultWeapon(weapons));
     }
+  }
 
-    Iterable<Item> getItems() {
-        return Iterables.<Item>concat(weapons, consumables);
-    }
+  Iterable<Weapon> getWeapons() {
+    return weapons;
+  }
 
-    Optional<Weapon> getEquippedWeapon() {
-        return Optional.fromNullable(equippedWeapon);
-    }
+  Iterable<Consumable> getConsumables() {
+    return consumables;
+  }
 
-    /**
-     * Sets {@link #equippedWeapon} to {@code weapon}. Also swap {@code weapon} to the first
-     * item in {@link #weapons} as per invariant.
-     */
-    void setEquippedWeapon(Weapon weapon) {
-        if (weapon != null) {
-            int weaponIndex = weapons.indexOf(weapon);
-            Preconditions.checkArgument(weaponIndex != -1);
-            // Previous check also guarantees weapons is not empty
-            // Preserves the invariant
-            Collections.swap(weapons, 0, weaponIndex);
-        }
-        this.equippedWeapon = weapon;
-    }
+  Iterable<Item> getItems() {
+    return Iterables.<Item>concat(weapons, consumables);
+  }
 
-    /**
-     * Return the first weapon if there is one, else null.
-     */
-    private static Weapon getDefaultWeapon(Iterable<Weapon> weapons) {
-        return Iterables.getFirst(weapons, null);
-    }
+  Optional<Weapon> getEquippedWeapon() {
+    return Optional.fromNullable(equippedWeapon);
+  }
 
-    @Override
-    public String toString() {
-        return "Items{" +
-                "weapons=" + weapons +
-                ", consumables=" + consumables +
-                ", equippedWeapon=" + equippedWeapon +
-                '}';
+  /**
+   * Sets {@link #equippedWeapon} to {@code weapon}. Also swap {@code weapon} to the first item in
+   * {@link #weapons} as per invariant.
+   */
+  void setEquippedWeapon(Weapon weapon) {
+    if (weapon != null) {
+      int weaponIndex = weapons.indexOf(weapon);
+      Preconditions.checkArgument(weaponIndex != -1);
+      // Previous check also guarantees weapons is not empty
+      // Preserves the invariant
+      Collections.swap(weapons, 0, weaponIndex);
     }
+    this.equippedWeapon = weapon;
+  }
+
+  @Override
+  public String toString() {
+    return "Items{"
+        + "weapons="
+        + weapons
+        + ", consumables="
+        + consumables
+        + ", equippedWeapon="
+        + equippedWeapon
+        + '}';
+  }
 }

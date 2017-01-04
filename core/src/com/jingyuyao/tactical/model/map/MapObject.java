@@ -16,65 +16,58 @@ import java.util.List;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Super class of all the objects on the game grid.
- */
+/** Super class of all the objects on the game grid. */
 public abstract class MapObject extends EventBusObject {
-    /**
-     * List of marker drawn over this object.
-     */
-    private final List<Marker> markers;
-    private Coordinate coordinate;
+  /** List of marker drawn over this object. */
+  private final List<Marker> markers;
 
-    public MapObject(EventBus eventBus, Coordinate coordinate, @InitialMarkers List<Marker> markers) {
-        super(eventBus);
-        this.markers = markers;
-        this.coordinate = coordinate;
-    }
+  private Coordinate coordinate;
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
+  public MapObject(EventBus eventBus, Coordinate coordinate, @InitialMarkers List<Marker> markers) {
+    super(eventBus);
+    this.markers = markers;
+    this.coordinate = coordinate;
+  }
 
-    public void addMarker(Marker marker) {
-        markers.add(marker);
-        post(new AddMarker(this, marker));
-    }
+  public Coordinate getCoordinate() {
+    return coordinate;
+  }
 
-    public void removeMarker(Marker marker) {
-        markers.remove(marker);
-        post(new RemoveMarker(this, marker));
-    }
+  /**
+   * Sets the coordinate of this object to the new coordinate Subclasses are responsible for posting
+   * changes. This method is purposely set to protected to enforce the above rule.
+   */
+  protected void setCoordinate(Coordinate newCoordinate) {
+    coordinate = newCoordinate;
+  }
 
-    /**
-     * Sets the coordinate of this object to the new coordinate
-     * Subclasses are responsible for posting changes.
-     * This method is purposely set to protected to enforce the above rule.
-     */
-    protected void setCoordinate(Coordinate newCoordinate) {
-        coordinate = newCoordinate;
-    }
+  public void addMarker(Marker marker) {
+    markers.add(marker);
+    post(new AddMarker(this, marker));
+  }
 
-    /**
-     * Enables the visitor pattern for selection.
-     *
-     * I can't believe OOD actually taught me something useful.
-     */
-    public abstract void select(MapState mapState);
+  public void removeMarker(Marker marker) {
+    markers.remove(marker);
+    post(new RemoveMarker(this, marker));
+  }
 
-    /**
-     * Enables the visitor pattern for highlight.
-     */
-    public abstract void highlight(MapState mapState);
+  /**
+   * Enables the visitor pattern for selection.
+   *
+   * <p>I can't believe OOD actually taught me something useful.
+   */
+  public abstract void select(MapState mapState);
 
-    @Override
-    public String toString() {
-        return "MapObject{" +
-                "markers=" + markers +
-                ", coordinate=" + coordinate +
-                "}";
-    }
+  /** Enables the visitor pattern for highlight. */
+  public abstract void highlight(MapState mapState);
 
-    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    public @interface InitialMarkers {}
+  @Override
+  public String toString() {
+    return "MapObject{" + "markers=" + markers + ", coordinate=" + coordinate + "}";
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface InitialMarkers {}
 }

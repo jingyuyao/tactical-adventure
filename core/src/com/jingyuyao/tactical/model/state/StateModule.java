@@ -9,16 +9,16 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class StateModule extends AbstractModule {
-    @Override
-    protected void configure() {
-        install(new FactoryModuleBuilder().build(StateFactory.class));
-        bind(MapState.class);
-    }
+  @Override
+  protected void configure() {
+    install(new FactoryModuleBuilder().build(StateFactory.class));
+    bind(MapState.class);
+  }
 
-    @Provides
-    @Singleton
-    @MapState.BackingStateStack
-    Deque<State> provideStateStack() {
-        return new LinkedList<State>();
-    }
+  @Provides
+  @Singleton
+  @MapState.BackingStateStack
+  Deque<State> provideStateStack() {
+    return new LinkedList<State>();
+  }
 }

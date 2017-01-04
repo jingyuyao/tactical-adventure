@@ -27,106 +27,107 @@ import java.util.Deque;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Manages selection logic.
- */
+/** Manages selection logic. */
 @Singleton
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
-    private final Deque<State> stateStack;
-    private final Terrains terrains;
-    private MapObject previousHighlight;
+  private final Deque<State> stateStack;
+  private final Terrains terrains;
+  private MapObject previousHighlight;
 
-    @Inject
-    public MapState(EventBus eventBus, Terrains terrains, @BackingStateStack Deque<State> stateStack) {
-        super(eventBus);
-        this.stateStack = stateStack;
-        this.terrains = terrains;
-        register();
+  @Inject
+  public MapState(
+      EventBus eventBus, Terrains terrains, @BackingStateStack Deque<State> stateStack) {
+    super(eventBus);
+    this.stateStack = stateStack;
+    this.terrains = terrains;
+    register();
+  }
+
+  @Subscribe
+  @Override
+  public void initialize(NewMap data) {
+    State initialState = data.getInitialState();
+    stateStack.push(initialState);
+    initialState.enter();
+    post(new StateChanged(initialState));
+  }
+
+  @Subscribe
+  @Override
+  public void dispose(ClearMap clearMap) {
+    stateStack.clear();
+    previousHighlight = null;
+  }
+
+  public void select(Player player) {
+    stateStack.peek().select(player);
+  }
+
+  public void select(Enemy enemy) {
+    stateStack.peek().select(enemy);
+  }
+
+  public void select(Terrain terrain) {
+    stateStack.peek().select(terrain);
+  }
+
+  public void highlight(Character character) {
+    switchHighlightTo(character);
+    post(new HighlightCharacter(character, terrains.get(character.getCoordinate())));
+  }
+
+  public void highlight(Terrain terrain) {
+    switchHighlightTo(terrain);
+    post(new HighlightTerrain(terrain));
+  }
+
+  void push(State newState) {
+    stateStack.peek().exit();
+    stateStack.push(newState);
+    newState.enter();
+    post(new StateChanged(newState));
+  }
+
+  void pop() {
+    if (stateStack.size() > 1) {
+      State currentState = stateStack.pop();
+      currentState.exit();
+      State lastState = stateStack.peek();
+      lastState.canceled();
+      lastState.enter();
+      post(new StateChanged(lastState));
     }
+  }
 
-    @Subscribe
-    @Override
-    public void initialize(NewMap data) {
-        State initialState = data.getInitialState();
-        stateStack.push(initialState);
-        initialState.enter();
-        post(new StateChanged(initialState));
+  void rollback() {
+    while (stateStack.size() > 1) {
+      State currentState = stateStack.pop();
+      currentState.exit();
+      State lastState = stateStack.peek();
+      lastState.canceled();
+      lastState.enter();
+      post(new StateChanged(lastState));
     }
+  }
 
-    @Subscribe
-    @Override
-    public void dispose(ClearMap clearMap) {
-        stateStack.clear();
-        previousHighlight = null;
+  void newStack(State startingState) {
+    stateStack.peek().exit();
+    stateStack.clear();
+    stateStack.push(startingState);
+    startingState.enter();
+    post(new StateChanged(startingState));
+  }
+
+  private void switchHighlightTo(MapObject newHighlight) {
+    if (previousHighlight != null) {
+      previousHighlight.removeMarker(Marker.HIGHLIGHT);
     }
+    newHighlight.addMarker(Marker.HIGHLIGHT);
+    previousHighlight = newHighlight;
+  }
 
-    public void select(Player player) {
-        stateStack.peek().select(player);
-    }
-
-    public void select(Enemy enemy) {
-        stateStack.peek().select(enemy);
-    }
-
-    public void select(Terrain terrain) {
-        stateStack.peek().select(terrain);
-    }
-
-    public void highlight(Character character) {
-        switchHighlightTo(character);
-        post(new HighlightCharacter(character, terrains.get(character.getCoordinate())));
-    }
-
-    public void highlight(Terrain terrain) {
-        switchHighlightTo(terrain);
-        post(new HighlightTerrain(terrain));
-    }
-
-    void push(State newState) {
-        stateStack.peek().exit();
-        stateStack.push(newState);
-        newState.enter();
-        post(new StateChanged(newState));
-    }
-
-    void pop() {
-        if (stateStack.size() > 1) {
-            State currentState = stateStack.pop();
-            currentState.exit();
-            State lastState = stateStack.peek();
-            lastState.canceled();
-            lastState.enter();
-            post(new StateChanged(lastState));
-        }
-    }
-
-    void rollback() {
-        while (stateStack.size() > 1) {
-            State currentState = stateStack.pop();
-            currentState.exit();
-            State lastState = stateStack.peek();
-            lastState.canceled();
-            lastState.enter();
-            post(new StateChanged(lastState));
-        }
-    }
-
-    void newStack(State startingState) {
-        stateStack.peek().exit();
-        stateStack.clear();
-        stateStack.push(startingState);
-        startingState.enter();
-        post(new StateChanged(startingState));
-    }
-
-    private void switchHighlightTo(MapObject newHighlight) {
-        if (previousHighlight != null) {
-            previousHighlight.removeMarker(Marker.HIGHLIGHT);
-        }
-        newHighlight.addMarker(Marker.HIGHLIGHT);
-        previousHighlight = newHighlight;
-    }
-
-    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface BackingStateStack {}
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingStateStack {}
 }

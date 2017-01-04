@@ -21,45 +21,46 @@ import java.util.Set;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * A concrete singleton type that holds all the {@link Character} on the map.
- */
+/** A concrete singleton type that holds all the {@link Character} on the map. */
 @Singleton
-public class Characters extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Character> {
-    private final Set<Character> characters;
+public class Characters extends EventBusObject
+    implements ManagedBy<NewMap, ClearMap>, Iterable<Character> {
+  private final Set<Character> characters;
 
-    @Inject
-    Characters(EventBus eventBus, @BackingCharacterSet Set<Character> characters) {
-        super(eventBus);
-        this.characters = characters;
-        register();
+  @Inject
+  Characters(EventBus eventBus, @BackingCharacterSet Set<Character> characters) {
+    super(eventBus);
+    this.characters = characters;
+    register();
+  }
+
+  @Subscribe
+  @Override
+  public void initialize(NewMap data) {
+    Iterables.addAll(characters, Iterables.concat(data.getPlayers(), data.getEnemies()));
+  }
+
+  @Subscribe
+  @Override
+  public void dispose(ClearMap clearMap) {
+    for (Character character : characters) {
+      character.dispose();
     }
+    characters.clear();
+  }
 
-    @Subscribe
-    @Override
-    public void initialize(NewMap data) {
-        Iterables.addAll(characters, Iterables.concat(data.getPlayers(), data.getEnemies()));
-    }
+  @Subscribe
+  public void characterDied(CharacterDied characterDied) {
+    characters.remove(characterDied.getObject());
+  }
 
-    @Subscribe
-    @Override
-    public void dispose(ClearMap clearMap) {
-        for (Character character : characters) {
-            character.dispose();
-        }
-        characters.clear();
-    }
+  @Override
+  public Iterator<Character> iterator() {
+    return characters.iterator();
+  }
 
-    @Subscribe
-    public void characterDied(CharacterDied characterDied) {
-        characters.remove(characterDied.getObject());
-    }
-
-    @Override
-    public Iterator<Character> iterator() {
-        return characters.iterator();
-    }
-
-    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface BackingCharacterSet {}
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingCharacterSet {}
 }

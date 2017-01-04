@@ -5,32 +5,37 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.mark.Markings;
 
 abstract class AbstractPlayerState extends AbstractState {
-    private final Player player;
+  private final Player player;
 
-    AbstractPlayerState(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory, Player player) {
-        super(eventBus, mapState, markings, stateFactory);
-        this.player = player;
+  AbstractPlayerState(
+      EventBus eventBus,
+      MapState mapState,
+      Markings markings,
+      StateFactory stateFactory,
+      Player player) {
+    super(eventBus, mapState, markings, stateFactory);
+    this.player = player;
+  }
+
+  @Override
+  public void exit() {
+    getMarkings().clearPlayerMarking();
+    super.exit();
+  }
+
+  Player getPlayer() {
+    return player;
+  }
+
+  class Wait implements Action {
+    @Override
+    public String getName() {
+      return "wait";
     }
 
     @Override
-    public void exit() {
-        getMarkings().clearPlayerMarking();
-        super.exit();
+    public void run() {
+      finish(player);
     }
-
-    Player getPlayer() {
-        return player;
-    }
-
-    class Wait implements Action {
-        @Override
-        public String getName() {
-            return "wait";
-        }
-
-        @Override
-        public void run() {
-            finish(player);
-        }
-    }
+  }
 }

@@ -5,14 +5,14 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.ObjectEvent;
 
 public class InstantMove extends ObjectEvent<Character> {
-    private final Coordinate destination;
+  private final Coordinate destination;
 
-    public InstantMove(Character character, Coordinate destination) {
-        super(character);
-        this.destination = destination;
-    }
+  public InstantMove(Character character, Coordinate destination) {
+    super(character);
+    this.destination = destination;
+  }
 
-    public Coordinate getDestination() {
-        return destination;
-    }
+  public Coordinate getDestination() {
+    return destination;
+  }
 }

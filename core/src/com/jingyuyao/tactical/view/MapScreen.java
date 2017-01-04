@@ -9,43 +9,43 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MapScreen extends ScreenAdapter {
-    private final MapView mapView;
-    private final MapUI mapUI;
+  private final MapView mapView;
+  private final MapUI mapUI;
 
-    @Inject
-    MapScreen(MapView mapView, MapUI mapUI) {
-        this.mapView = mapView;
-        this.mapUI = mapUI;
-    }
+  @Inject
+  MapScreen(MapView mapView, MapUI mapUI) {
+    this.mapView = mapView;
+    this.mapUI = mapUI;
+  }
 
-    @Override
-    public void render(float delta) {
-        mapUI.act(delta);
-        mapView.act(delta);
+  @Override
+  public void render(float delta) {
+    mapUI.act(delta);
+    mapView.act(delta);
 
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mapView.draw();
-        mapUI.draw();
-    }
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    mapView.draw();
+    mapUI.draw();
+  }
 
-    @Override
-    public void resize(int width, int height) {
-        // This is very important...
-        mapView.resize(width, height);
-        mapUI.resize(width, height);
-    }
+  @Override
+  public void resize(int width, int height) {
+    // This is very important...
+    mapView.resize(width, height);
+    mapUI.resize(width, height);
+  }
 
-    @Override
-    public void dispose() {
-        mapView.dispose();
-        mapUI.dispose();
-    }
+  @Override
+  public void dispose() {
+    mapView.dispose();
+    mapUI.dispose();
+  }
 
-    public MapView getMapView() {
-        return mapView;
-    }
+  public MapView getMapView() {
+    return mapView;
+  }
 
-    public MapUI getMapUI() {
-        return mapUI;
-    }
+  public MapUI getMapUI() {
+    return mapUI;
+  }
 }

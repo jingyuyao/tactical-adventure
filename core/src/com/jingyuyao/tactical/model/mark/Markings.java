@@ -20,76 +20,75 @@ import java.util.Map;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Contains all the markings in a state.
- */
+/** Contains all the markings in a state. */
 @Singleton
 public class Markings extends EventBusObject implements Disposable {
-    private final MarkingFactory markingFactory;
-    private final TargetsFactory targetsFactory;
-    private final Map<Character, Marking> dangerAreas;
-    private Marking playerMarking;
+  private final MarkingFactory markingFactory;
+  private final TargetsFactory targetsFactory;
+  private final Map<Character, Marking> dangerAreas;
+  private Marking playerMarking;
 
-    @Inject
-    public Markings(
-            EventBus eventBus,
-            MarkingFactory markingFactory,
-            TargetsFactory targetsFactory,
-            @InitialDangerAreas Map<Character, Marking> dangerAreas
-    ) {
-        super(eventBus);
-        this.markingFactory = markingFactory;
-        this.targetsFactory = targetsFactory;
-        this.dangerAreas = dangerAreas;
-        playerMarking = null;
-        register();
+  @Inject
+  public Markings(
+      EventBus eventBus,
+      MarkingFactory markingFactory,
+      TargetsFactory targetsFactory,
+      @InitialDangerAreas Map<Character, Marking> dangerAreas) {
+    super(eventBus);
+    this.markingFactory = markingFactory;
+    this.targetsFactory = targetsFactory;
+    this.dangerAreas = dangerAreas;
+    playerMarking = null;
+    register();
+  }
+
+  @Override
+  public void dispose() {
+    clearPlayerMarking();
+    for (Marking marking : dangerAreas.values()) {
+      marking.clear();
     }
+    dangerAreas.clear();
+  }
 
-    @Override
-    public void dispose() {
-        clearPlayerMarking();
-        for (Marking marking : dangerAreas.values()) {
-            marking.clear();
-        }
-        dangerAreas.clear();
+  @Subscribe
+  public void characterDied(CharacterDied characterDied) {
+    dangerAreas.remove(characterDied.getObject());
+  }
+
+  public void showMoveAndTargets(Player player) {
+    clearPlayerMarking();
+    playerMarking = markingFactory.moveAndTargets(player.createTargetInfo());
+    playerMarking.apply();
+  }
+
+  public void showImmediateTargets(Player player) {
+    clearPlayerMarking();
+    playerMarking = markingFactory.immediateTargets(player.createTargetInfo());
+    playerMarking.apply();
+  }
+
+  public void clearPlayerMarking() {
+    if (playerMarking != null) {
+      playerMarking.clear();
+      playerMarking = null;
     }
+  }
 
-    @Subscribe
-    public void characterDied(CharacterDied characterDied) {
-        dangerAreas.remove(characterDied.getObject());
+  // TODO: bugged, needs to be refreshed after every state
+  public void toggleDangerArea(Enemy enemy) {
+    if (dangerAreas.containsKey(enemy)) {
+      Marking marking = dangerAreas.remove(enemy);
+      marking.clear();
+    } else {
+      Marking dangerArea = markingFactory.danger(targetsFactory.create(enemy));
+      dangerAreas.put(enemy, dangerArea);
+      dangerArea.apply();
     }
+  }
 
-    public void showMoveAndTargets(Player player) {
-        clearPlayerMarking();
-        playerMarking = markingFactory.moveAndTargets(player.createTargetInfo());
-        playerMarking.apply();
-    }
-
-    public void showImmediateTargets(Player player) {
-        clearPlayerMarking();
-        playerMarking = markingFactory.immediateTargets(player.createTargetInfo());
-        playerMarking.apply();
-    }
-
-    public void clearPlayerMarking() {
-        if (playerMarking != null) {
-            playerMarking.clear();
-            playerMarking = null;
-        }
-    }
-
-    // TODO: bugged, needs to be refreshed after every state
-    public void toggleDangerArea(Enemy enemy) {
-        if (dangerAreas.containsKey(enemy)) {
-            Marking marking = dangerAreas.remove(enemy);
-            marking.clear();
-        } else {
-            Marking dangerArea = markingFactory.danger(targetsFactory.create(enemy));
-            dangerAreas.put(enemy, dangerArea);
-            dangerArea.apply();
-        }
-    }
-
-    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    @interface InitialDangerAreas {}
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialDangerAreas {}
 }

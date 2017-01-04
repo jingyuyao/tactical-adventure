@@ -8,86 +8,85 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Markings;
 
 abstract class AbstractState extends EventBusObject implements State {
-    private final MapState mapState;
-    private final Markings markings;
-    private final StateFactory stateFactory;
+  private final MapState mapState;
+  private final Markings markings;
+  private final StateFactory stateFactory;
 
-    AbstractState(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
-        super(eventBus);
-        this.mapState = mapState;
-        this.markings = markings;
-        this.stateFactory = stateFactory;
-    }
+  AbstractState(
+      EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
+    super(eventBus);
+    this.mapState = mapState;
+    this.markings = markings;
+    this.stateFactory = stateFactory;
+  }
 
+  @Override
+  public String getName() {
+    return getClass().getSimpleName();
+  }
+
+  @Override
+  public void enter() {
+    register();
+  }
+
+  @Override
+  public void canceled() {}
+
+  @Override
+  public void exit() {
+    unregister();
+  }
+
+  @Override
+  public void select(Player player) {
+    back();
+  }
+
+  @Override
+  public void select(Enemy enemy) {
+    back();
+  }
+
+  @Override
+  public void select(Terrain terrain) {
+    back();
+  }
+
+  StateFactory getStateFactory() {
+    return stateFactory;
+  }
+
+  Markings getMarkings() {
+    return markings;
+  }
+
+  void goTo(State newState) {
+    mapState.push(newState);
+  }
+
+  void back() {
+    mapState.pop();
+  }
+
+  void rollback() {
+    mapState.rollback();
+  }
+
+  void finish(Player player) {
+    player.setActionable(false);
+    mapState.newStack(stateFactory.createWaiting());
+  }
+
+  class Back implements Action {
     @Override
     public String getName() {
-        return getClass().getSimpleName();
+      return "back";
     }
 
     @Override
-    public void enter() {
-        register();
+    public void run() {
+      back();
     }
-
-    @Override
-    public void canceled() {
-
-    }
-
-    @Override
-    public void exit() {
-        unregister();
-    }
-
-    @Override
-    public void select(Player player) {
-        back();
-    }
-
-    @Override
-    public void select(Enemy enemy) {
-        back();
-    }
-
-    @Override
-    public void select(Terrain terrain) {
-        back();
-    }
-
-    StateFactory getStateFactory() {
-        return stateFactory;
-    }
-
-    Markings getMarkings() {
-        return markings;
-    }
-
-    void goTo(State newState) {
-        mapState.push(newState);
-    }
-
-    void back() {
-        mapState.pop();
-    }
-
-    void rollback() {
-        mapState.rollback();
-    }
-
-    void finish(Player player) {
-        player.setActionable(false);
-        mapState.newStack(stateFactory.createWaiting());
-    }
-
-    class Back implements Action {
-        @Override
-        public String getName() {
-            return "back";
-        }
-
-        @Override
-        public void run() {
-            back();
-        }
-    }
+  }
 }

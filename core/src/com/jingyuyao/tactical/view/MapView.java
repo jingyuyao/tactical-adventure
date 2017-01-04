@@ -23,70 +23,77 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Contains and renders the stage.
- * The stage is rendered in a grid scale (i.e. showing a 30x20 grid).
+ * Contains and renders the stage. The stage is rendered in a grid scale (i.e. showing a 30x20
+ * grid).
  */
 @Singleton
 public class MapView implements ManagedBy<NewMap, ClearMap> {
-    private final Stage stage;
-    private final OrthogonalTiledMapRenderer mapRenderer;
-    private final ActorFactory actorFactory;
+  private final Stage stage;
+  private final OrthogonalTiledMapRenderer mapRenderer;
+  private final ActorFactory actorFactory;
 
-    /**
-     * A map view contains a stage with all the actors and a way to render them.
-     * The background map is backed by a {@link OrthogonalTiledMapRenderer}.
-     * @param stage the stage this view uses
-     * @param mapRenderer The tiled map renderer
-     */
-    @Inject
-    MapView(EventBus eventBus, @MapViewStage Stage stage, OrthogonalTiledMapRenderer mapRenderer, ActorFactory actorFactory) {
-        this.stage = stage;
-        this.mapRenderer = mapRenderer;
-        this.actorFactory = actorFactory;
-        eventBus.register(this);
+  /**
+   * A map view contains a stage with all the actors and a way to render them. The background map is
+   * backed by a {@link OrthogonalTiledMapRenderer}.
+   *
+   * @param stage the stage this view uses
+   * @param mapRenderer The tiled map renderer
+   */
+  @Inject
+  MapView(
+      EventBus eventBus,
+      @MapViewStage Stage stage,
+      OrthogonalTiledMapRenderer mapRenderer,
+      ActorFactory actorFactory) {
+    this.stage = stage;
+    this.mapRenderer = mapRenderer;
+    this.actorFactory = actorFactory;
+    eventBus.register(this);
+  }
+
+  @Subscribe
+  @Override
+  public void initialize(NewMap data) {
+    for (Terrain terrain : data.getTerrains()) {
+      stage.addActor(actorFactory.create(terrain));
     }
-
-    @Subscribe
-    @Override
-    public void initialize(NewMap data) {
-        for (Terrain terrain : data.getTerrains()) {
-            stage.addActor(actorFactory.create(terrain));
-        }
-        // Characters must be added after terrain so they get hit by touch input
-        for (Player player : data.getPlayers()) {
-            stage.addActor(actorFactory.create(player));
-        }
-        for (Enemy enemy : data.getEnemies()) {
-            stage.addActor(actorFactory.create(enemy));
-        }
+    // Characters must be added after terrain so they get hit by touch input
+    for (Player player : data.getPlayers()) {
+      stage.addActor(actorFactory.create(player));
     }
-
-    @Subscribe
-    @Override
-    public void dispose(ClearMap data) {
-        stage.clear();
+    for (Enemy enemy : data.getEnemies()) {
+      stage.addActor(actorFactory.create(enemy));
     }
+  }
 
-    void act(float delta) {
-        stage.act(delta);
-    }
+  @Subscribe
+  @Override
+  public void dispose(ClearMap data) {
+    stage.clear();
+  }
 
-    void draw() {
-        stage.getViewport().apply();
-        mapRenderer.setView((OrthographicCamera) stage.getCamera());
-        mapRenderer.render();
-        stage.draw();
-    }
+  void act(float delta) {
+    stage.act(delta);
+  }
 
-    void resize(int width, int height) {
-        // TODO: update camera so we don't show black bars
-        stage.getViewport().update(width, height);
-    }
+  void draw() {
+    stage.getViewport().apply();
+    mapRenderer.setView((OrthographicCamera) stage.getCamera());
+    mapRenderer.render();
+    stage.draw();
+  }
 
-    void dispose() {
-        stage.dispose();
-    }
+  void resize(int width, int height) {
+    // TODO: update camera so we don't show black bars
+    stage.getViewport().update(width, height);
+  }
 
-    @BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RUNTIME)
-    public @interface MapViewStage {}
+  void dispose() {
+    stage.dispose();
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapViewStage {}
 }

@@ -10,25 +10,22 @@ import com.jingyuyao.tactical.model.state.MapState;
 import javax.inject.Inject;
 import java.util.List;
 
-/**
- * An enemy character
- */
+/** An enemy character */
 public class Enemy extends Character {
-    @Inject
-    Enemy(
-            EventBus eventBus,
-            TargetsFactory targetsFactory,
-            @Assisted Coordinate coordinate,
-            @InitialMarkers List<Marker> markers,
-            @Assisted String name,
-            @Assisted Stats stats,
-            @Assisted Items items
-    ) {
-        super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
-    }
+  @Inject
+  Enemy(
+      EventBus eventBus,
+      TargetsFactory targetsFactory,
+      @Assisted Coordinate coordinate,
+      @InitialMarkers List<Marker> markers,
+      @Assisted String name,
+      @Assisted Stats stats,
+      @Assisted Items items) {
+    super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
+  }
 
-    @Override
-    public void select(MapState mapState) {
-        mapState.select(this);
-    }
+  @Override
+  public void select(MapState mapState) {
+    mapState.select(this);
+  }
 }
