@@ -34,7 +34,8 @@ public class MapActorController extends ClickListener {
 
     @Override
     public void clicked(InputEvent event, float x, float y) {
-        if (waiter.isWaiting()) return;
-        object.select(mapState);
+        if (waiter.canProceed()) {
+            object.select(mapState);
+        }
     }
 }

@@ -112,7 +112,7 @@ public class MapUI {
 
     @Subscribe
     public void waitChange(Waiter.Changed changed) {
-        showButtons = !changed.isWaiting();
+        showButtons = changed.canProceed();
         populateButtons();
     }
 

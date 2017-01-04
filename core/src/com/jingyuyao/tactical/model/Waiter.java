@@ -49,15 +49,15 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
 
     @Subscribe
     public void changed(Changed changed) {
-        if (!changed.isWaiting()) {
+        if (changed.canProceed()) {
             while (!runnableQueue.isEmpty()) {
                 runnableQueue.poll().run();
             }
         }
     }
 
-    public boolean isWaiting() {
-        return waits != 0;
+    public boolean canProceed() {
+        return waits == 0;
     }
 
     /**
@@ -65,7 +65,7 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
      */
     public void waitOne() {
         if (waits++ == 0) {
-            post(new Changed(isWaiting()));
+            post(new Changed(canProceed()));
         }
     }
 
@@ -75,16 +75,16 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
     public void finishOne() {
         Preconditions.checkState(waits > 0, "Oh boy, this bug is gonna be hard to fix");
         if (waits-- == 1) {
-            post(new Changed(isWaiting()));
+            post(new Changed(canProceed()));
         }
     }
 
     /**
-     * Run {@code runnable} immediately if {@link #isWaiting()} is false else wait until {@link #isWaiting()}
+     * Run {@code runnable} immediately if {@link #canProceed()} is true else wait until {@link #canProceed()}
      * becomes true. The order of {@code runnable}s are maintained
      */
     public void runOnce(final Runnable runnable) {
-        if (!isWaiting()) {
+        if (canProceed()) {
             runnable.run();
         } else {
             runnableQueue.add(runnable);
@@ -95,14 +95,14 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
     @interface BackingWaiterQueue {}
 
     public static class Changed implements ModelEvent {
-        private final boolean waiting;
+        private final boolean proceed;
 
-        private Changed(boolean waiting) {
-            this.waiting = waiting;
+        private Changed(boolean proceed) {
+            this.proceed = proceed;
         }
 
-        public boolean isWaiting() {
-            return waiting;
+        public boolean canProceed() {
+            return proceed;
         }
     }
 }
