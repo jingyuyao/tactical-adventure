@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 /**
@@ -38,6 +39,6 @@ public final class Coordinate {
 
   @Override
   public String toString() {
-    return "Coordinate{" + "x=" + getX() + ", y=" + getY() + "}";
+    return MoreObjects.toStringHelper(this).add("x", x).add("y", y).toString();
   }
 }

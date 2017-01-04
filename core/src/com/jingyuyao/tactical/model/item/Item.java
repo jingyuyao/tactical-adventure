@@ -15,9 +15,4 @@ public class Item extends EventBusObject {
   public String getName() {
     return name;
   }
-
-  @Override
-  public String toString() {
-    return "Item{" + ", name='" + name + '\'' + '}';
-  }
 }

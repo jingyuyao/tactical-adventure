@@ -48,9 +48,4 @@ public class Stats {
   boolean canPassTerrainType(Terrain.Type terrainType) {
     return passableTerrainTypes.contains(terrainType);
   }
-
-  @Override
-  public String toString() {
-    return "Stats{" + "hp=" + hp + ", moveDistance=" + moveDistance + '}';
-  }
 }

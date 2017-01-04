@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.base.MoreObjects;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -42,11 +43,9 @@ public class AttackPlan {
 
   @Override
   public String toString() {
-    return "AttackPlan{"
-        + "attackingPlayer="
-        + attackingPlayer.getName()
-        + ", targetEnemy="
-        + targetEnemy.getName()
-        + '}';
+    return MoreObjects.toStringHelper(this)
+        .add("attackingPlayer", attackingPlayer.toString())
+        .add("targetEnemy", targetEnemy.toString())
+        .toString();
   }
 }

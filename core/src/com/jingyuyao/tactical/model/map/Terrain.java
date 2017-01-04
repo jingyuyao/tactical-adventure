@@ -48,11 +48,6 @@ public class Terrain extends MapObject {
     }
   }
 
-  @Override
-  public String toString() {
-    return "Terrain{" + ", type=" + type + "} " + super.toString();
-  }
-
   public enum Type {
     NORMAL,
     OBSTRUCTED,

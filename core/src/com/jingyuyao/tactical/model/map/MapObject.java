@@ -61,11 +61,6 @@ public abstract class MapObject extends EventBusObject {
   /** Enables the visitor pattern for highlight. */
   public abstract void highlight(MapState mapState);
 
-  @Override
-  public String toString() {
-    return "MapObject{" + "markers=" + markers + ", coordinate=" + coordinate + "}";
-  }
-
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)

@@ -30,9 +30,4 @@ public class Usable extends Item {
       post(new ItemBroke(this));
     }
   }
-
-  @Override
-  public String toString() {
-    return "Usable{" + "usageLeft=" + usageLeft + "} " + super.toString();
-  }
 }

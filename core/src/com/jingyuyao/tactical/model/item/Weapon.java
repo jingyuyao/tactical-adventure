@@ -35,15 +35,4 @@ public class Weapon extends Usable {
   public int getAttackPower() {
     return attackPower;
   }
-
-  @Override
-  public String toString() {
-    return "Weapon{"
-        + "attackPower="
-        + attackPower
-        + ", attackDistances="
-        + attackDistances
-        + "} "
-        + super.toString();
-  }
 }

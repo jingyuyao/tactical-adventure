@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -121,15 +122,6 @@ public abstract class Character extends MapObject implements Disposable {
 
   @Override
   public String toString() {
-    return "Character{"
-        + "name='"
-        + name
-        + '\''
-        + ", stats="
-        + stats
-        + ", items="
-        + items
-        + "} "
-        + super.toString();
+    return MoreObjects.toStringHelper(this).add("name", name).toString() + super.toString();
   }
 }

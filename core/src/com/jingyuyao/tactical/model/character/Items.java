@@ -94,16 +94,4 @@ public class Items extends EventBusObject implements Disposable {
     }
     this.equippedWeapon = weapon;
   }
-
-  @Override
-  public String toString() {
-    return "Items{"
-        + "weapons="
-        + weapons
-        + ", consumables="
-        + consumables
-        + ", equippedWeapon="
-        + equippedWeapon
-        + '}';
-  }
 }
