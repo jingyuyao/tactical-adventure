@@ -12,7 +12,7 @@ public class MarkModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(MarkingFactory.class);
-        bind(Markings.class).asEagerSingleton();
+        bind(Markings.class);
     }
 
     @Provides

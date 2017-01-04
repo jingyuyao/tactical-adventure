@@ -10,6 +10,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.DataModule;
@@ -24,6 +25,8 @@ public class TacticalAdventure extends Game {
     @Override
     public void create() {
         injector = Guice.createInjector(
+                // we need to pre-load all singletons so they can start receiving events
+                Stage.PRODUCTION,
                 new AssetModule(),
                 new GameModule(),
                 new ModelModule(),

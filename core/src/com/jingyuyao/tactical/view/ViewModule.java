@@ -12,12 +12,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 
 import javax.inject.Singleton;
@@ -34,7 +28,7 @@ public class ViewModule extends AbstractModule {
 
         bind(MapScreen.class);
         bind(MapView.class);
-        bind(MapUI.class).asEagerSingleton(); // To receive initial state change event
+        bind(MapUI.class);
     }
 
     @Provides
@@ -52,25 +46,8 @@ public class ViewModule extends AbstractModule {
     @Provides
     @Singleton
     @MapView.MapViewStage
-    Stage provideMapViewStage(
-            Batch batch,
-            Characters characters,
-            Terrains terrains,
-            ActorFactory actorFactory
-    ) {
-        Stage stage = new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT), batch);
-
-        for (Terrain terrain : terrains) {
-            stage.addActor(actorFactory.create(terrain));
-        }
-        // Characters must be added after terrain so they get hit by touch input
-        for (Player player : characters.getPlayers()) {
-            stage.addActor(actorFactory.create(player));
-        }
-        for (Enemy enemy : characters.getEnemies()) {
-            stage.addActor(actorFactory.create(enemy));
-        }
-        return stage;
+    Stage provideMapViewStage(Batch batch) {
+        return new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT), batch);
     }
 
     /**
