@@ -24,7 +24,7 @@ public class Enemy extends Character {
             @Assisted Stats stats,
             @Assisted Items items
     ) {
-        super(eventBus, targetsFactory, coordinate, markers, name, stats, items);
+        super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
     }
 
     @Override

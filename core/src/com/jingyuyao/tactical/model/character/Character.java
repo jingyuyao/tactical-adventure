@@ -21,12 +21,12 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {
-    private final TargetsFactory targetsFactory;
     private final String name;
     private final Stats stats;
     private final Items items;
+    private final TargetsFactory targetsFactory;
 
-    Character(EventBus eventBus, TargetsFactory targetsFactory, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items) {
+    Character(EventBus eventBus, Coordinate coordinate, List<Marker> markers, String name, Stats stats, Items items, TargetsFactory targetsFactory) {
         super(eventBus, coordinate, markers);
         this.targetsFactory = targetsFactory;
         this.name = name;
