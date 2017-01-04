@@ -26,17 +26,13 @@ abstract class AbstractState extends EventBusObject implements State {
   }
 
   @Override
-  public void enter() {
-    register();
-  }
+  public void enter() {}
 
   @Override
   public void canceled() {}
 
   @Override
-  public void exit() {
-    unregister();
-  }
+  public void exit() {}
 
   @Override
   public void select(Player player) {
