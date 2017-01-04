@@ -53,6 +53,13 @@ public class MapStateTest {
     }
 
     @Test
+    public void subscribers() {
+        when(newMap.getInitialState()).thenReturn(state1);
+
+        TestHelpers.verifyNoDeadEvents(mapState, newMap, clearMap);
+    }
+
+    @Test
     public void initialize() throws Exception {
         when(newMap.getInitialState()).thenReturn(state1);
 
