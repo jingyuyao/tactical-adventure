@@ -24,6 +24,8 @@ https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
 
 # Project structure & guidelines
 The game follows MVC and uses the command pattern to communicate between different components.
+We follow google-java-format for all Java files. This means 2 space indents. Use the formatter
+from a plugin or download it as a jar directly before committing.
 
 ## Dependency injection
 WHAT IF WE DONT CREATE NEW LEVELS?
