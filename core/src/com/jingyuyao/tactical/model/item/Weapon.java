@@ -28,6 +28,7 @@ public class Weapon extends Usable {
         this.attackDistances = ImmutableSet.copyOf(attackDistances);
     }
 
+    // TODO: this should be a function of a coordinate and terrains
     public ImmutableSet<Integer> getAttackDistances() {
         return attackDistances;
     }
