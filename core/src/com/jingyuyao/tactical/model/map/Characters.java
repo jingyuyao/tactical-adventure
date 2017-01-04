@@ -5,13 +5,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
-import com.jingyuyao.tactical.model.state.Waiting;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +22,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Manages the set of {@link Character} on the map.
+ * A concrete singleton type that holds all the {@link Character} on the map.
  */
 @Singleton
 public class Characters extends EventBusObject implements ManagedBy<NewMap, ClearMap>, Iterable<Character> {
@@ -55,13 +53,6 @@ public class Characters extends EventBusObject implements ManagedBy<NewMap, Clea
     @Subscribe
     public void characterDied(CharacterDied characterDied) {
         characters.remove(characterDied.getObject());
-    }
-
-    @Subscribe
-    public void endTurn(Waiting.EndTurn endTurn) {
-        for (Player player : Iterables.filter(characters, Player.class)) {
-            player.setActionable(true);
-        }
     }
 
     @Override
