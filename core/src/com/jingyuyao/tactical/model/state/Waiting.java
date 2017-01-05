@@ -10,8 +10,7 @@ import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
   @Inject
-  Waiting(
-      EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
+  Waiting(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
     super(eventBus, mapState, markings, stateFactory);
   }
 
