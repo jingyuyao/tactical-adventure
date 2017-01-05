@@ -13,7 +13,7 @@ interface StateFactory {
 
   Choosing createChoosing(Player player);
 
-  UsingItem createChoosingItem(Player player);
+  UsingItem createUsingItem(Player player);
 
   Moving createMoving(Player player);
 

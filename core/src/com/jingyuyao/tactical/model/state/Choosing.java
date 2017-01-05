@@ -67,7 +67,20 @@ class Choosing extends AbstractPlayerState {
 
     @Override
     public void run() {
-      goTo(getStateFactory().createChoosingItem(getPlayer()));
+      goTo(getStateFactory().createUsingItem(getPlayer()));
+    }
+  }
+
+  class Wait implements Action {
+
+    @Override
+    public String getName() {
+      return "wait";
+    }
+
+    @Override
+    public void run() {
+      finish(getPlayer());
     }
   }
 }

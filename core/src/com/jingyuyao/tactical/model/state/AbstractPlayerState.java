@@ -27,17 +27,4 @@ abstract class AbstractPlayerState extends AbstractState {
   Player getPlayer() {
     return player;
   }
-
-  class Wait implements Action {
-
-    @Override
-    public String getName() {
-      return "wait";
-    }
-
-    @Override
-    public void run() {
-      finish(player);
-    }
-  }
 }
