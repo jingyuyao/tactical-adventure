@@ -7,6 +7,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Markings;
@@ -50,16 +51,12 @@ class Moving extends AbstractPlayerState {
   }
 
   @Override
-  public void select(final Enemy enemy) {
-    Targets playerInfo = getPlayer().createTargetInfo();
-    if (playerInfo.canHitAfterMove(enemy)) {
-      Coordinate moveCoordinate = playerInfo.moveForTarget(enemy.getCoordinate());
-      ImmutableList<Coordinate> path = playerInfo.pathTo(moveCoordinate);
-      if (path.isEmpty()) {
-        throw new RuntimeException("Shouldn't be possible");
-      }
+  public void select(Enemy enemy) {
+    Targets playerTargets = getPlayer().createTargetInfo();
+    if (playerTargets.canHitAfterMove(enemy)) {
+      Path path = playerTargets.movePathToTarget(enemy.getCoordinate());
+      moveCurrentPlayer(path);
 
-      moveCurrentPlayer(moveCoordinate, path);
       // creates an intermediate choosing state so we can backtrack here if needed
       goTo(getStateFactory().createChoosing(getPlayer()));
       goTo(getStateFactory().createSelectingWeapon(getPlayer(), enemy));
@@ -70,10 +67,10 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void select(Terrain terrain) {
-    Targets playerInfo = getPlayer().createTargetInfo();
-    if (playerInfo.canMoveTo(terrain.getCoordinate())) {
-      ImmutableList<Coordinate> path = playerInfo.pathTo(terrain.getCoordinate());
-      moveCurrentPlayer(terrain.getCoordinate(), path);
+    Targets playerTargets = getPlayer().createTargetInfo();
+    if (playerTargets.canMoveTo(terrain.getCoordinate())) {
+      Path path = playerTargets.pathTo(terrain.getCoordinate());
+      moveCurrentPlayer(path);
       goTo(getStateFactory().createChoosing(getPlayer()));
     } else {
       // we will consider clicking outside of movable area to be canceling
@@ -86,9 +83,8 @@ class Moving extends AbstractPlayerState {
     return ImmutableList.<Action>of(this.new Back());
   }
 
-  private void moveCurrentPlayer(Coordinate destination, ImmutableList<Coordinate> path) {
-    Player player = getPlayer();
-    previousCoordinate = player.getCoordinate();
-    player.moveTo(destination, path);
+  private void moveCurrentPlayer(Path path) {
+    previousCoordinate = getPlayer().getCoordinate();
+    getPlayer().move(path);
   }
 }

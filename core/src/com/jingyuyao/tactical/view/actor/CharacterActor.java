@@ -63,7 +63,7 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
   public void moveTo(Move move) {
     if (move.matches(getObject())) {
       final ImmutableList<EventListener> listeners = popAllListeners();
-      SequenceAction moveSequence = getMoveSequence(move.getPath());
+      SequenceAction moveSequence = getMoveSequence(move.getPath().getTrack());
       moveSequence.addAction(
           run(
               new Runnable() {
@@ -91,9 +91,9 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
     return sprite;
   }
 
-  private SequenceAction getMoveSequence(Iterable<Coordinate> path) {
+  private SequenceAction getMoveSequence(Iterable<Coordinate> track) {
     SequenceAction sequence = sequence();
-    for (Coordinate terrain : path) {
+    for (Coordinate terrain : track) {
       sequence.addAction(Actions.moveTo(terrain.getX(), terrain.getY(), TIME_PER_UNIT));
     }
     return sequence;

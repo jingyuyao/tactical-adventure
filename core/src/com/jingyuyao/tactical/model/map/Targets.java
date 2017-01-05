@@ -19,10 +19,7 @@ public class Targets {
   private final Characters characters;
   private final Character character;
   private final Graph<Coordinate> moveGraph;
-  /**
-   * Multi-map of move coordinate to maps of target coordinates to weapons for that target. Like so:
-   * move / ... \ target target / ... \ / ... \ weapon weapon weapon weapon
-   */
+  /** Multi-map of move coordinate to maps of target coordinates to weapons for that target. */
   private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
   Targets(
@@ -42,12 +39,12 @@ public class Targets {
 
   /** Can {@code target} be hit after moving? */
   public boolean canHitAfterMove(Character target) {
-    return allTargets().contains(target.getCoordinate());
+    return character.canTarget(target) && allTargets().contains(target.getCoordinate());
   }
 
   /** Can {@code target} be hit without moving? */
   public boolean canHitImmediately(Character target) {
-    return immediateTargets().contains(target.getCoordinate());
+    return character.canTarget(target) && immediateTargets().contains(target.getCoordinate());
   }
 
   public boolean canMoveTo(Coordinate to) {
@@ -60,15 +57,17 @@ public class Targets {
   }
 
   /** Get a path to a {@link Coordinate} from {@link #moves()}. */
-  public ImmutableList<Coordinate> pathTo(Coordinate to) {
+  public Path pathTo(Coordinate to) {
     Preconditions.checkArgument(moveMap.keys().contains(to));
-    return Algorithms.findPathTo(moveGraph, to);
+    return new Path(Algorithms.findPathTo(moveGraph, to));
   }
 
   /**
-   * Return the {@link Coordinate} with the greatest number of {@link Weapon} choices for target.
+   * Get the optimal path to {@code target}. Optimal path is the path where the destination has the
+   * greatest number of weapon choices to hit target. <br>
+   * Preconditions: {@code allTargets().contains(target)}
    */
-  public Coordinate moveForTarget(Coordinate target) {
+  public Path movePathToTarget(Coordinate target) {
     Preconditions.checkArgument(allTargets().contains(target));
 
     Coordinate currentBestTerrain = null;
@@ -80,7 +79,9 @@ public class Targets {
         currentBestTerrain = move;
       }
     }
-    return currentBestTerrain;
+
+    Preconditions.checkNotNull(currentBestTerrain);
+    return pathTo(currentBestTerrain);
   }
 
   /** Return all the target coordinates from {@link #character}'s current position after moving. */

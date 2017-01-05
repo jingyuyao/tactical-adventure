@@ -1,19 +1,18 @@
 package com.jingyuyao.tactical.model.character.event;
 
-import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.ObjectEvent;
+import com.jingyuyao.tactical.model.map.Path;
 
 public class Move extends ObjectEvent<Character> {
-  private final ImmutableList<Coordinate> path;
+  private final Path path;
 
-  public Move(Character character, ImmutableList<Coordinate> path) {
+  public Move(Character character, Path path) {
     super(character);
     this.path = path;
   }
 
-  public ImmutableList<Coordinate> getPath() {
+  public Path getPath() {
     return path;
   }
 }
