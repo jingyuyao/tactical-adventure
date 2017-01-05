@@ -58,13 +58,13 @@ public class Markings extends EventBusObject implements Disposable {
 
   public void showMoveAndTargets(Player player) {
     clearPlayerMarking();
-    playerMarking = markingFactory.moveAndTargets(player.createTargetInfo());
+    playerMarking = markingFactory.moveAndTargets(player.createTargets());
     playerMarking.apply();
   }
 
   public void showImmediateTargets(Player player) {
     clearPlayerMarking();
-    playerMarking = markingFactory.immediateTargets(player.createTargetInfo());
+    playerMarking = markingFactory.immediateTargets(player.createTargets());
     playerMarking.apply();
   }
 

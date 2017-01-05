@@ -42,7 +42,7 @@ class SelectingWeapon extends AbstractPlayerState {
   @Override
   public ImmutableList<Action> getActions() {
     Player player = getPlayer();
-    Targets playerInfo = player.createTargetInfo();
+    Targets playerInfo = player.createTargets();
 
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
     ImmutableSet<Weapon> availableWeapons =

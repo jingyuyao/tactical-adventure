@@ -52,7 +52,7 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void select(Enemy enemy) {
-    Targets playerTargets = getPlayer().createTargetInfo();
+    Targets playerTargets = getPlayer().createTargets();
     if (playerTargets.canHitAfterMove(enemy)) {
       Path path = playerTargets.movePathToTarget(enemy.getCoordinate());
       moveCurrentPlayer(path);
@@ -67,7 +67,7 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void select(Terrain terrain) {
-    Targets playerTargets = getPlayer().createTargetInfo();
+    Targets playerTargets = getPlayer().createTargets();
     if (playerTargets.canMoveTo(terrain.getCoordinate())) {
       Path path = playerTargets.pathTo(terrain.getCoordinate());
       moveCurrentPlayer(path);

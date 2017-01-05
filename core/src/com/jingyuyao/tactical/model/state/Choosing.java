@@ -40,7 +40,7 @@ class Choosing extends AbstractPlayerState {
 
   @Override
   public void select(Enemy enemy) {
-    if (getPlayer().createTargetInfo().canHitImmediately(enemy)) {
+    if (getPlayer().createTargets().canHitImmediately(enemy)) {
       goTo(getStateFactory().createSelectingWeapon(getPlayer(), enemy));
     } else {
       back();
