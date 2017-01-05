@@ -6,9 +6,8 @@ import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
-
-import javax.inject.Inject;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * An enemy character

@@ -7,10 +7,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.mark.Marker;
-
-import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Singleton;
 
 public class ActorModule extends AbstractModule {
 

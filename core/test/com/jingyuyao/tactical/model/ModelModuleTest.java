@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.Before;
 import org.junit.Test;
-
-import static com.google.common.truth.Truth.assertThat;
 
 public class ModelModuleTest {
 

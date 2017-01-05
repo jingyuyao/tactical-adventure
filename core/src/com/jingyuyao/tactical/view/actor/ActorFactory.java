@@ -10,10 +10,9 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
-
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Map;
 
 /**
  * Creates {@link BaseActor} from models and adds the proper controllers.

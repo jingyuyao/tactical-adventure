@@ -4,7 +4,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.State;
-
 import java.util.List;
 
 public class NewMap implements ModelEvent {

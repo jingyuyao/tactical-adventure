@@ -11,7 +11,11 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.character.*;
+import com.jingyuyao.tactical.model.character.CharacterFactory;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Items;
+import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
@@ -19,11 +23,14 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Waiting;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.*;
 
 @Singleton
 public class MapLoader {

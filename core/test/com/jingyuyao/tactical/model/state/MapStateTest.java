@@ -1,5 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Coordinate;
@@ -13,6 +20,7 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
+import java.util.Deque;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,11 +29,6 @@ import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.Deque;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MapStateTest {

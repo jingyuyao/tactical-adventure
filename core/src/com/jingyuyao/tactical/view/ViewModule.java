@@ -13,7 +13,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.view.actor.ActorModule;
-
 import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {

@@ -7,7 +7,6 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

@@ -3,10 +3,9 @@ package com.jingyuyao.tactical.model.state;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-
-import javax.inject.Singleton;
 import java.util.Deque;
 import java.util.LinkedList;
+import javax.inject.Singleton;
 
 public class StateModule extends AbstractModule {
 

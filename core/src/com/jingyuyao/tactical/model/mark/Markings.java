@@ -1,5 +1,10 @@
 package com.jingyuyao.tactical.model.mark;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
@@ -10,15 +15,11 @@ import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Map;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Contains all the markings in a state.

@@ -9,9 +9,8 @@ import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting;
-
-import javax.inject.Inject;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * A player character

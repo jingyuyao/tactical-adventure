@@ -12,7 +12,6 @@ import com.jingyuyao.tactical.model.character.event.RemoveMarker;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.MapView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,10 @@
 package com.jingyuyao.tactical.view;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,14 +18,10 @@ import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Contains and renders the stage. The stage is rendered in a grid scale (i.e. showing a 30x20

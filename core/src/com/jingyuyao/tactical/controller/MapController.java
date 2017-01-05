@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.view.MapUI;
 import com.jingyuyao.tactical.view.MapView;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

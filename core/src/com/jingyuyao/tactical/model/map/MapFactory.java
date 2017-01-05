@@ -3,11 +3,10 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.mark.Marker;
-
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.List;
 
 @Singleton
 public class MapFactory {

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.character;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-
 import java.util.List;
 
 public interface CharacterFactory {

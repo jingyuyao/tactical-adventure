@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

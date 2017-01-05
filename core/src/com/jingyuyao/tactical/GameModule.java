@@ -3,7 +3,6 @@ package com.jingyuyao.tactical;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-
 import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {

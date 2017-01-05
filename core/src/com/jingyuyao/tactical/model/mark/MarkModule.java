@@ -3,10 +3,9 @@ package com.jingyuyao.tactical.model.mark;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.Character;
-
-import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Singleton;
 
 public class MarkModule extends AbstractModule {
 

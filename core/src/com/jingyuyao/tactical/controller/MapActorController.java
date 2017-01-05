@@ -7,7 +7,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
-
 import javax.inject.Inject;
 
 /**

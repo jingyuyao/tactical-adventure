@@ -11,7 +11,6 @@ import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Markings;
-
 import javax.inject.Inject;
 
 class Moving extends AbstractPlayerState {

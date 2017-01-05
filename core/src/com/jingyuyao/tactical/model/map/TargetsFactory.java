@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.item.Weapon;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

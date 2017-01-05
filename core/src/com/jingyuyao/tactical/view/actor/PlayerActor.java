@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.mark.Marker;
-
 import java.util.Map;
 
 class PlayerActor extends CharacterActor<Player> {

@@ -13,10 +13,9 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.item.event.ItemBroke;
-
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * A container for character items. Belongs in object package since it is technically part of {@link

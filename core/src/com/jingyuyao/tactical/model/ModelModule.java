@@ -7,10 +7,9 @@ import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.mark.MarkModule;
 import com.jingyuyao.tactical.model.state.StateModule;
-
-import javax.inject.Singleton;
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.inject.Singleton;
 
 public class ModelModule extends AbstractModule {
 

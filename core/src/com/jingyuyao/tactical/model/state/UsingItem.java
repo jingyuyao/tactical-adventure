@@ -6,9 +6,8 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.mark.Markings;
-
-import javax.inject.Inject;
 import java.util.Locale;
+import javax.inject.Inject;
 
 // TODO: Fire off an event so the UI show a widget that manages items
 class UsingItem extends AbstractPlayerState {

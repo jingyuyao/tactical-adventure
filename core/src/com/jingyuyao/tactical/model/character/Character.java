@@ -11,10 +11,13 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.*;
+import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.TargetsFactory;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
-
 import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {

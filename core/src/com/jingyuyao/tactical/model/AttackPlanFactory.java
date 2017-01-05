@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

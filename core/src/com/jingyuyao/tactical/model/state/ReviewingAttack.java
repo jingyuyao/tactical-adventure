@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.mark.Markings;
 import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
 import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
-
 import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {
