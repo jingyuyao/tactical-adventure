@@ -100,4 +100,11 @@ public class MapView implements ManagedBy<NewMap, ClearMap> {
   public @interface MapViewStage {
 
   }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapViewViewport {
+
+  }
 }

@@ -10,5 +10,6 @@ public class ControllerModule extends AbstractModule {
     install(new FactoryModuleBuilder().build(MapActorControllerFactory.class));
 
     bind(MapController.class);
+    bind(DragCameraController.class);
   }
 }

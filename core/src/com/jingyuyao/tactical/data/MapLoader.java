@@ -79,7 +79,13 @@ public class MapLoader {
     }
 
     eventBus.post(
-        new NewMap(createTestPlayers(), createTestEnemies(), terrains, waitingProvider.get()));
+        new NewMap(
+            width,
+            height,
+            createTestPlayers(),
+            createTestEnemies(),
+            terrains,
+            waitingProvider.get()));
     mapRenderer.setMap(tiledMap);
   }
 

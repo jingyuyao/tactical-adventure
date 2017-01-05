@@ -3,39 +3,43 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.view.MapUI;
-import com.jingyuyao.tactical.view.MapView;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.event.ClearMap;
+import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.view.MapUI.MapUiStage;
+import com.jingyuyao.tactical.view.MapView.MapViewStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapController {
+public class MapController implements ManagedBy<NewMap, ClearMap> {
 
-  private final Stage mapViewStage;
-  private final Stage mapUIStage;
-  private final Terrains terrains;
+  private final InputMultiplexer inputMultiplexer;
 
   @Inject
   MapController(
-      @MapView.MapViewStage Stage mapViewStage,
-      @MapUI.MapUiStage Stage mapUIStage,
-      Terrains terrains) {
-    this.mapViewStage = mapViewStage;
-    this.mapUIStage = mapUIStage;
-    this.terrains = terrains;
-  }
-
-  public void initiateControl() {
-    int worldWidth = terrains.getWidth();
-    int worldHeight = terrains.getHeight();
-
-    DragCameraController dragCameraController =
-        new DragCameraController(worldWidth, worldHeight, mapViewStage.getViewport());
-    InputMultiplexer inputMultiplexer = new InputMultiplexer();
+      EventBus eventBus,
+      @MapViewStage Stage mapViewStage,
+      @MapUiStage Stage mapUIStage,
+      DragCameraController dragCameraController) {
+    inputMultiplexer = new InputMultiplexer();
     inputMultiplexer.addProcessor(mapUIStage);
     inputMultiplexer.addProcessor(dragCameraController);
     inputMultiplexer.addProcessor(mapViewStage);
+    eventBus.register(this);
+  }
+
+  @Subscribe
+  @Override
+  public void initialize(NewMap data) {
     Gdx.input.setInputProcessor(inputMultiplexer);
+  }
+
+  @Subscribe
+  @Override
+  public void dispose(ClearMap data) {
+    // Do we need to remove input processor?
   }
 }

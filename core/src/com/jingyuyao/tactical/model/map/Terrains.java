@@ -12,7 +12,6 @@ import com.google.common.collect.Table;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.ManagedBy;
@@ -36,6 +35,8 @@ public class Terrains extends EventBusObject
    * (0,0) starts at bottom left.
    */
   private final Table<Integer, Integer, Terrain> table;
+  private int width;
+  private int height;
 
   @Inject
   public Terrains(EventBus eventBus, @BackingTerrainTable Table<Integer, Integer, Terrain> table) {
@@ -47,6 +48,8 @@ public class Terrains extends EventBusObject
   @Subscribe
   @Override
   public void initialize(NewMap data) {
+    this.width = data.getWidth();
+    this.height = data.getHeight();
     for (Terrain terrain : data.getTerrains()) {
       Coordinate c = terrain.getCoordinate();
       table.put(c.getX(), c.getY(), terrain);
@@ -66,11 +69,11 @@ public class Terrains extends EventBusObject
   }
 
   public int getWidth() {
-    return Algorithms.tableWidth(table);
+    return width;
   }
 
   public int getHeight() {
-    return Algorithms.tableHeight(table);
+    return height;
   }
 
   public Terrain get(Coordinate coordinate) {
@@ -89,8 +92,8 @@ public class Terrains extends EventBusObject
   }
 
   private void checkRectangular() {
-    for (int x = 0; x < getWidth(); x++) {
-      for (int y = 0; y < getHeight(); y++) {
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
         Preconditions.checkNotNull(get(new Coordinate(x, y)), "Terrain grid must be rectangular");
       }
     }

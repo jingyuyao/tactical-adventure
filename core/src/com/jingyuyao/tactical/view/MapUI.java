@@ -169,4 +169,11 @@ public class MapUI {
   public @interface MapUiStage {
 
   }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapUiViewport {
+
+  }
 }

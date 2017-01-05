@@ -12,7 +12,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
 import com.jingyuyao.tactical.controller.ControllerModule;
-import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.ModelModule;
@@ -55,7 +54,6 @@ public class TacticalAdventure extends Game {
   public void setLevel(String mapName) {
     TiledMap tiledMap = injector.getInstance(AssetManager.class).get(mapName, TiledMap.class);
     injector.getInstance(MapLoader.class).loadMap(tiledMap);
-    injector.getInstance(MapController.class).initiateControl();
     setScreen(injector.getInstance(MapScreen.class));
   }
 }

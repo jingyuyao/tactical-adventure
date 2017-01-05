@@ -9,9 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
+import com.jingyuyao.tactical.view.MapUI.MapUiViewport;
+import com.jingyuyao.tactical.view.MapView.MapViewViewport;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import javax.inject.Singleton;
 
@@ -46,8 +49,15 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   @MapView.MapViewStage
-  Stage provideMapViewStage(Batch batch) {
-    return new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT), batch);
+  Stage provideMapViewStage(@MapViewViewport Viewport viewport, Batch batch) {
+    return new Stage(viewport, batch);
+  }
+
+  @Provides
+  @Singleton
+  @MapViewViewport
+  Viewport provideMapViewViewport() {
+    return new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
   }
 
   /**
@@ -62,8 +72,14 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   @MapUI.MapUiStage
-  Stage provideMapUIStage(Batch batch) {
-    // why no constructor with only batch...
-    return new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+  Stage provideMapUIStage(@MapUiViewport Viewport viewport, Batch batch) {
+    return new Stage(viewport, batch);
+  }
+
+  @Provides
+  @Singleton
+  @MapUiViewport
+  Viewport provideMapUIViewport() {
+    return new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
   }
 }
