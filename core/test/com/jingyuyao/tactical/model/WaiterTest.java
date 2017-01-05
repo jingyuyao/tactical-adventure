@@ -62,7 +62,7 @@ public class WaiterTest {
   @Test
   public void changed_can_proceed() {
     when(changed.canProceed()).thenReturn(true);
-    when(runnableQueue.isEmpty()).thenReturn(false).thenReturn(true);
+    when(runnableQueue.isEmpty()).thenReturn(false, true);
     when(runnableQueue.poll()).thenReturn(runnable);
 
     waiter.changed(changed);

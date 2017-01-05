@@ -93,7 +93,7 @@ public class UsingItemTest {
   private ImmutableList<Action> actionSetUp() {
     when(player.getConsumables()).thenReturn(consumables);
     when(consumables.iterator()).thenReturn(consumableIterator);
-    when(consumableIterator.hasNext()).thenReturn(true).thenReturn(false);
+    when(consumableIterator.hasNext()).thenReturn(true, false);
     when(consumableIterator.next()).thenReturn(consumable1);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = usingItem.getActions();

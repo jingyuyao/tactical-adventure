@@ -203,9 +203,9 @@ public class MapStateTest {
 
   @Test
   public void rollback() throws Exception {
-    when(stateStack.size()).thenReturn(3).thenReturn(2).thenReturn(1);
-    when(stateStack.pop()).thenReturn(state3).thenReturn(state2);
-    when(stateStack.peek()).thenReturn(state2).thenReturn(state1);
+    when(stateStack.size()).thenReturn(3, 2, 1);
+    when(stateStack.pop()).thenReturn(state3, state2);
+    when(stateStack.peek()).thenReturn(state2, state1);
 
     mapState.rollback();
 
