@@ -179,7 +179,7 @@ public class MovingTest {
   }
 
   @Test
-  public void actions() {
+  public void actions_back() {
     ImmutableList<Action> actions = moving.getActions();
     assertThat(actions).hasSize(1);
     StateHelpers.verifyBack(actions.get(0), mapState);

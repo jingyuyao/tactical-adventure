@@ -108,10 +108,7 @@ public class SelectingWeaponTest {
 
   @Test
   public void actions_select_weapon() {
-    actionsSetUp();
-
-    ImmutableList<Action> actions = selectingWeapon.getActions();
-    assertThat(actions).hasSize(2);
+    ImmutableList<Action> actions = actionsSetUp();
 
     Action selectWeapon = actions.get(0);
     selectWeapon.run();
@@ -120,15 +117,12 @@ public class SelectingWeaponTest {
 
   @Test
   public void actions_back() {
-    actionsSetUp();
-
-    ImmutableList<Action> actions = selectingWeapon.getActions();
-    assertThat(actions).hasSize(2);
+    ImmutableList<Action> actions = actionsSetUp();
 
     StateHelpers.verifyBack(actions.get(1), mapState);
   }
 
-  private void actionsSetUp() {
+  private ImmutableList<Action> actionsSetUp() {
     when(player.createTargets()).thenReturn(targets);
     when(player.getCoordinate()).thenReturn(PLAYER_COORDINATE);
     when(enemy.getCoordinate()).thenReturn(ENEMY_COORDINATE);
@@ -140,5 +134,8 @@ public class SelectingWeaponTest {
     when(weaponIterator.next()).thenReturn(weapon1, weapon2);
     when(attackPlanFactory.create(player, enemy)).thenReturn(attackPlan);
     when(stateFactory.createReviewingAttack(player, attackPlan)).thenReturn(reviewingAttack);
+    ImmutableList<Action> actions = selectingWeapon.getActions();
+    assertThat(actions).hasSize(2);
+    return actions;
   }
 }

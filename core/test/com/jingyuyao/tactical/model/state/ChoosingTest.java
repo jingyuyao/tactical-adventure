@@ -129,36 +129,61 @@ public class ChoosingTest {
   }
 
   @Test
-  public void actions_with_consumable() {
+  public void actions_with_consumable_use_items() {
+    ImmutableList<Action> actions = actionsSetUp_consumables();
+
+    Action useItems = actions.get(0);
+    useItems.run();
+    verify(mapState).push(usingItem);
+  }
+
+  @Test
+  public void actions_with_consumable_wait() {
+    ImmutableList<Action> actions = actionsSetUp_consumables();
+
+    verifyWait(actions.get(1));
+  }
+
+  @Test
+  public void actions_with_consumable_back() {
+    ImmutableList<Action> actions = actionsSetUp_consumables();
+
+    StateHelpers.verifyBack(actions.get(2), mapState);
+  }
+
+  @Test
+  public void actions_without_consumable_wait() {
+    ImmutableList<Action> actions = actionSetUp_without_consumables();
+
+    verifyWait(actions.get(0));
+  }
+
+  @Test
+  public void actions_without_consumable_back() {
+    ImmutableList<Action> actions = actionSetUp_without_consumables();
+
+    StateHelpers.verifyBack(actions.get(1), mapState);
+  }
+
+  private ImmutableList<Action> actionsSetUp_consumables() {
     when(choosingPlayer.getConsumables()).thenReturn(consumables);
     when(consumables.iterator()).thenReturn(consumableIterator);
     when(consumableIterator.hasNext()).thenReturn(true);
     when(stateFactory.createUsingItem(choosingPlayer)).thenReturn(usingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-
     ImmutableList<Action> actions = choosing.getActions();
     assertThat(actions).hasSize(3);
-
-    Action useItems = actions.get(0);
-    useItems.run();
-    verify(mapState).push(usingItem);
-
-    verifyWait(actions.get(1));
-    StateHelpers.verifyBack(actions.get(2), mapState);
+    return actions;
   }
 
-  @Test
-  public void actions_without_consumable() {
+  private ImmutableList<Action> actionSetUp_without_consumables() {
     when(choosingPlayer.getConsumables()).thenReturn(consumables);
     when(consumables.iterator()).thenReturn(consumableIterator);
     when(consumableIterator.hasNext()).thenReturn(false);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-
     ImmutableList<Action> actions = choosing.getActions();
     assertThat(actions).hasSize(2);
-
-    verifyWait(actions.get(0));
-    StateHelpers.verifyBack(actions.get(1), mapState);
+    return actions;
   }
 
   private void verifyWait(Action wait) {

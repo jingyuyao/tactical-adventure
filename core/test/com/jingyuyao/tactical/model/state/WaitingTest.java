@@ -80,7 +80,7 @@ public class WaitingTest {
   }
 
   @Test
-  public void actions() {
+  public void actions_wait() {
     List<Action> actions = waiting.getActions();
     assertThat(actions).hasSize(1);
     Action endTurn = actions.get(0);

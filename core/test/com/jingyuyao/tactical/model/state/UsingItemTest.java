@@ -73,21 +73,31 @@ public class UsingItemTest {
   }
 
   @Test
-  public void actions() {
-    when(player.getConsumables()).thenReturn(consumables);
-    when(consumables.iterator()).thenReturn(consumableIterator);
-    when(consumableIterator.hasNext()).thenReturn(true).thenReturn(false);
-    when(consumableIterator.next()).thenReturn(consumable1);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
+  public void actions_use_item() {
+    ImmutableList<Action> actions = actionSetUp();
 
-    ImmutableList<Action> actions = usingItem.getActions();
-    assertThat(actions).hasSize(2);
     Action useConsumable = actions.get(0);
     useConsumable.run();
     verify(consumable1).consume(player);
     verify(player).setActionable(false);
     verify(mapState).newStack(waiting);
+  }
+
+  @Test
+  public void actions_back() {
+    ImmutableList<Action> actions = actionSetUp();
 
     StateHelpers.verifyBack(actions.get(1), mapState);
+  }
+
+  private ImmutableList<Action> actionSetUp() {
+    when(player.getConsumables()).thenReturn(consumables);
+    when(consumables.iterator()).thenReturn(consumableIterator);
+    when(consumableIterator.hasNext()).thenReturn(true).thenReturn(false);
+    when(consumableIterator.next()).thenReturn(consumable1);
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+    ImmutableList<Action> actions = usingItem.getActions();
+    assertThat(actions).hasSize(2);
+    return actions;
   }
 }
