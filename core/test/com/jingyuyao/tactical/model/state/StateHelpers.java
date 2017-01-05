@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.state;
 
 import static org.mockito.Mockito.verify;
 
-class AbstractStateTest {
+class StateHelpers {
 
-  void verifyBack(Action action, MapState mapState) {
+  static void verifyBack(Action action, MapState mapState) {
     action.run();
     verify(mapState).pop();
   }

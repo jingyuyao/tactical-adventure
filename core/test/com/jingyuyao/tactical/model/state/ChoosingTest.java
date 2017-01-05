@@ -23,7 +23,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChoosingTest extends AbstractStateTest {
+public class ChoosingTest {
 
   @Mock
   private EventBus eventBus;
@@ -144,7 +144,7 @@ public class ChoosingTest extends AbstractStateTest {
     verify(mapState).push(usingItem);
 
     verifyWait(actions.get(1));
-    verifyBack(actions.get(2), mapState);
+    StateHelpers.verifyBack(actions.get(2), mapState);
   }
 
   @Test
@@ -158,7 +158,7 @@ public class ChoosingTest extends AbstractStateTest {
     assertThat(actions).hasSize(2);
 
     verifyWait(actions.get(0));
-    verifyBack(actions.get(1), mapState);
+    StateHelpers.verifyBack(actions.get(1), mapState);
   }
 
   private void verifyWait(Action wait) {

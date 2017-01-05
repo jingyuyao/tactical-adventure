@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MovingTest extends AbstractStateTest {
+public class MovingTest {
 
   private static final Coordinate MOVING_PLAYER_COORDINATE = new Coordinate(0, 1);
   private static final Coordinate ENEMY_COORDINATE = new Coordinate(0, 0);
@@ -182,6 +182,6 @@ public class MovingTest extends AbstractStateTest {
   public void actions() {
     ImmutableList<Action> actions = moving.getActions();
     assertThat(actions).hasSize(1);
-    verifyBack(actions.get(0), mapState);
+    StateHelpers.verifyBack(actions.get(0), mapState);
   }
 }
