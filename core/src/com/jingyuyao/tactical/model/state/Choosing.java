@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.mark.Markings;
 import javax.inject.Inject;
 
 class Choosing extends AbstractPlayerState {
+
   @Inject
   Choosing(
       EventBus eventBus,
@@ -59,6 +60,7 @@ class Choosing extends AbstractPlayerState {
   }
 
   class UseItems implements Action {
+
     @Override
     public String getName() {
       return "items";

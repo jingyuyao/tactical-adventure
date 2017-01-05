@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.mark.Markings;
 import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
+
   @Inject
   Waiting(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
     super(eventBus, mapState, markings, stateFactory);
@@ -32,6 +33,7 @@ public class Waiting extends AbstractState {
   }
 
   public class EndTurn implements Action {
+
     @Override
     public String getName() {
       return "end";

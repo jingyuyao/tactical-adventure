@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MapScreen extends ScreenAdapter {
+
   private final MapView mapView;
   private final MapUI mapUI;
 

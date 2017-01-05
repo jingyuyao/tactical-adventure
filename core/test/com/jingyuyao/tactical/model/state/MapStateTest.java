@@ -29,20 +29,33 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MapStateTest {
+
   private final Coordinate CORD = new Coordinate(0, 0);
 
-  @Mock private EventBus eventBus;
-  @Mock private Deque<State> stateStack;
-  @Mock private Terrains terrains;
-  @Mock private State state1;
-  @Mock private State state2;
-  @Mock private State state3;
-  @Mock private NewMap newMap;
-  @Mock private ClearMap clearMap;
-  @Mock private Player player;
-  @Mock private Enemy enemy;
-  @Mock private Terrain terrain;
-  @Captor private ArgumentCaptor<Object> argumentCaptor;
+  @Mock
+  private EventBus eventBus;
+  @Mock
+  private Deque<State> stateStack;
+  @Mock
+  private Terrains terrains;
+  @Mock
+  private State state1;
+  @Mock
+  private State state2;
+  @Mock
+  private State state3;
+  @Mock
+  private NewMap newMap;
+  @Mock
+  private ClearMap clearMap;
+  @Mock
+  private Player player;
+  @Mock
+  private Enemy enemy;
+  @Mock
+  private Terrain terrain;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private MapState mapState;
 

@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.mark.Markings;
 import javax.inject.Inject;
 
 class Moving extends AbstractPlayerState {
+
   private Coordinate previousCoordinate;
 
   @Inject

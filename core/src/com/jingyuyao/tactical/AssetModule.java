@@ -11,8 +11,11 @@ import com.google.inject.Provides;
 
 import javax.inject.Singleton;
 
-/** Contain all asset names and function to load them into an {@link AssetManager} */
+/**
+ * Contain all asset names and function to load them into an {@link AssetManager}
+ */
 public class AssetModule extends AbstractModule {
+
   public static final String TEST_MAP = "maps/test_map.tmx";
   public static final String JOHN = "sprites/john.png";
   public static final String BILLY = "sprites/billy.png";
@@ -25,7 +28,8 @@ public class AssetModule extends AbstractModule {
   public static final String SKIN = "ui/uiskin.json";
 
   @Override
-  protected void configure() {}
+  protected void configure() {
+  }
 
   @Provides
   @Singleton

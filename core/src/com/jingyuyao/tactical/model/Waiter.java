@@ -19,9 +19,12 @@ import java.util.Queue;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** A semaphore like object that posts change in its state. */
+/**
+ * A semaphore like object that posts change in its state.
+ */
 @Singleton
 public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
+
   private final Queue<Runnable> runnableQueue;
   private int waits = 0;
 
@@ -58,14 +61,18 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
     return waits == 0;
   }
 
-  /** Increments the number of current waits by one. Posts an event if wait count was zero. */
+  /**
+   * Increments the number of current waits by one. Posts an event if wait count was zero.
+   */
   public void waitOne() {
     if (waits++ == 0) {
       post(new Changed(canProceed()));
     }
   }
 
-  /** Decrements the number of current waits by one. Posts an event if wait count was one. */
+  /**
+   * Decrements the number of current waits by one. Posts an event if wait count was one.
+   */
   public void finishOne() {
     Preconditions.checkState(waits > 0, "Oh boy, this bug is gonna be hard to fix");
     if (waits-- == 1) {
@@ -88,9 +95,12 @@ public class Waiter extends EventBusObject implements ManagedBy<NewMap, ClearMap
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingWaiterQueue {}
+  @interface BackingWaiterQueue {
+
+  }
 
   public static class Changed implements ModelEvent {
+
     private final boolean proceed;
 
     private Changed(boolean proceed) {

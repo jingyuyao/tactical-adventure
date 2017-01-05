@@ -3,8 +3,11 @@ package com.jingyuyao.tactical;
 import com.google.common.eventbus.Subscribe;
 import org.junit.Test;
 
-/** Heh. */
+/**
+ * Heh.
+ */
 public class TestHelpersTest {
+
   @Test
   public void verifyNoDeadEvents_pass() {
     TestHelpers.verifyNoDeadEvents(this, new SubscribedEvent());
@@ -20,7 +23,11 @@ public class TestHelpersTest {
     // Hi!
   }
 
-  private static class SubscribedEvent {}
+  private static class SubscribedEvent {
 
-  private static class NotSubscribedEvent {}
+  }
+
+  private static class NotSubscribedEvent {
+
+  }
 }

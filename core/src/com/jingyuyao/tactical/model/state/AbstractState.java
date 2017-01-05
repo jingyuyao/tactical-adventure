@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Markings;
 
 abstract class AbstractState extends EventBusObject implements State {
+
   private final MapState mapState;
   private final Markings markings;
   private final StateFactory stateFactory;
@@ -26,13 +27,16 @@ abstract class AbstractState extends EventBusObject implements State {
   }
 
   @Override
-  public void enter() {}
+  public void enter() {
+  }
 
   @Override
-  public void canceled() {}
+  public void canceled() {
+  }
 
   @Override
-  public void exit() {}
+  public void exit() {
+  }
 
   @Override
   public void select(Player player) {
@@ -75,6 +79,7 @@ abstract class AbstractState extends EventBusObject implements State {
   }
 
   class Back implements Action {
+
     @Override
     public String getName() {
       return "back";

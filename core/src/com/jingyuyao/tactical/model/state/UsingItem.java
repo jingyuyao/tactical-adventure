@@ -12,6 +12,7 @@ import java.util.Locale;
 
 // TODO: Fire off an event so the UI show a widget that manages items
 class UsingItem extends AbstractPlayerState {
+
   @Inject
   UsingItem(
       EventBus eventBus,
@@ -33,6 +34,7 @@ class UsingItem extends AbstractPlayerState {
   }
 
   class UseConsumable implements Action {
+
     private final Consumable consumable;
 
     UseConsumable(Consumable consumable) {

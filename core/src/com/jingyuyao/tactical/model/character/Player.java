@@ -13,8 +13,11 @@ import com.jingyuyao.tactical.model.state.Waiting;
 import javax.inject.Inject;
 import java.util.List;
 
-/** A player character */
+/**
+ * A player character
+ */
 public class Player extends Character {
+
   private boolean actionable = true;
 
   @Inject

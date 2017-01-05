@@ -30,7 +30,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Singleton
 public class Terrains extends EventBusObject
     implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
-  /** (0,0) starts at bottom left. */
+
+  /**
+   * (0,0) starts at bottom left.
+   */
   private final Table<Integer, Integer, Terrain> table;
 
   @Inject
@@ -95,5 +98,7 @@ public class Terrains extends EventBusObject
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingTerrainTable {}
+  @interface BackingTerrainTable {
+
+  }
 }

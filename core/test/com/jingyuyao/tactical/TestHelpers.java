@@ -7,9 +7,14 @@ import com.google.common.eventbus.Subscribe;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-/** Contains utility methods suitable for all tests */
+/**
+ * Contains utility methods suitable for all tests
+ */
 public class TestHelpers {
-  /** Assert {@code object} is an instance of {@code clazz} then return the casted instance. */
+
+  /**
+   * Assert {@code object} is an instance of {@code clazz} then return the casted instance.
+   */
   public static <T> T isInstanceOf(Object object, Class<T> clazz) {
     assertThat(object).isInstanceOf(clazz);
     return clazz.cast(object);
@@ -30,8 +35,11 @@ public class TestHelpers {
     }
   }
 
-  /** A class that fails when detecting a {@link DeadEvent}. */
+  /**
+   * A class that fails when detecting a {@link DeadEvent}.
+   */
   private static class VerifyNoDeadEvent {
+
     @Subscribe
     public void deadEvent(DeadEvent deadEvent) {
       fail();

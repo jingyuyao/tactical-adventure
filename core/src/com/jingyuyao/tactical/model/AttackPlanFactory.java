@@ -14,6 +14,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class AttackPlanFactory {
+
   private final TargetsFactory targetsFactory;
 
   @Inject

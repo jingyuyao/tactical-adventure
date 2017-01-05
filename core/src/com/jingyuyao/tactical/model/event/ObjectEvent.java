@@ -11,23 +11,30 @@ import com.google.common.base.Predicates;
  * @param <T> the type of contained object.
  */
 public class ObjectEvent<T> implements ModelEvent {
+
   private final T object;
 
   public ObjectEvent(T object) {
     this.object = object;
   }
 
-  /** Get the object of this event. */
+  /**
+   * Get the object of this event.
+   */
   public T getObject() {
     return object;
   }
 
-  /** @return whether {@code other} is equal to {@link #object} */
+  /**
+   * @return whether {@code other} is equal to {@link #object}
+   */
   public boolean matches(Object other) {
     return object.equals(other);
   }
 
-  /** @return a {@link Predicate} that matches to {@link #object} */
+  /**
+   * @return a {@link Predicate} that matches to {@link #object}
+   */
   public Predicate<T> getMatchesPredicate() {
     return Predicates.equalTo(object);
   }

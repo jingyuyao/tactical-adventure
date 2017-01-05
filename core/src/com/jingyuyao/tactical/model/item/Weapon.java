@@ -12,6 +12,7 @@ import javax.inject.Inject;
  * since the effect of a {@link Weapon} depends on its user.
  */
 public class Weapon extends Usable {
+
   private final int attackPower;
   private final ImmutableSet<Integer> attackDistances;
 

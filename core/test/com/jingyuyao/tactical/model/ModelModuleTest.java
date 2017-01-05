@@ -8,6 +8,7 @@ import org.junit.Test;
 import static com.google.common.truth.Truth.assertThat;
 
 public class ModelModuleTest {
+
   private Injector injector;
 
   @Before

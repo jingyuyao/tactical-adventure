@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.view.actor.ActorModule;
 import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {
+
   private static final int TILE_SIZE = 32; // pixels
   private static final float RENDER_SCALE = 1f / TILE_SIZE;
   private static final int VIEWPORT_WIDTH = 15; // # tiles
@@ -50,7 +51,9 @@ public class ViewModule extends AbstractModule {
     return new Stage(new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT), batch);
   }
 
-  /** {@link com.badlogic.gdx.maps.tiled.TiledMap} must be set before the renderer can be used. */
+  /**
+   * {@link com.badlogic.gdx.maps.tiled.TiledMap} must be set before the renderer can be used.
+   */
   @Provides
   @Singleton
   OrthogonalTiledMapRenderer provideTiledMapRenderer(Batch batch) {

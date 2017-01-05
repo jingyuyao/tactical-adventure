@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 class DragCameraController extends InputAdapter {
+
   private final int worldWidth;
   private final int worldHeight;
   private final Viewport viewport;

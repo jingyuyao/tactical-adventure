@@ -15,6 +15,7 @@ import java.util.Map;
  * {@link #owner} and cleared upon death.
  */
 public class Marking extends EventBusObject {
+
   private final Character owner;
   private final Map<MapObject, Marker> markers;
   private final Waiter waiter;
@@ -49,7 +50,9 @@ public class Marking extends EventBusObject {
         new Runnable() {
           @Override
           public void run() {
-            if (cleared || applied) return;
+            if (cleared || applied) {
+              return;
+            }
 
             for (Map.Entry<MapObject, Marker> entry : markers.entrySet()) {
               entry.getKey().addMarker(entry.getValue());
@@ -59,18 +62,24 @@ public class Marking extends EventBusObject {
         });
   }
 
-  /** Clears the {@link #markers} held by this marking and prevent further {@link #apply()}. */
+  /**
+   * Clears the {@link #markers} held by this marking and prevent further {@link #apply()}.
+   */
   public void clear() {
     waiter.runOnce(
         new Runnable() {
           @Override
           public void run() {
-            if (cleared) return;
+            if (cleared) {
+              return;
+            }
             // Set flag immediately so apply() would not get called for the rare cases where
             // clear() is called before apply()
             cleared = true;
 
-            if (!applied) return;
+            if (!applied) {
+              return;
+            }
 
             for (Map.Entry<MapObject, Marker> entry : markers.entrySet()) {
               entry.getKey().removeMarker(entry.getValue());

@@ -28,6 +28,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Singleton
 public class MapView implements ManagedBy<NewMap, ClearMap> {
+
   private final Stage stage;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
@@ -95,5 +96,7 @@ public class MapView implements ManagedBy<NewMap, ClearMap> {
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapViewStage {}
+  public @interface MapViewStage {
+
+  }
 }

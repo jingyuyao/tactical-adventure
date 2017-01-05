@@ -9,6 +9,7 @@ package com.jingyuyao.tactical.model.common;
  * @param <D> event type to dispose the object
  */
 public interface ManagedBy<I, D> {
+
   /**
    * Initialize this {@link ManagedBy} object with {@code data}. Implementation should be able to
    * handle multiple calls. Implementor should mark this with {@link

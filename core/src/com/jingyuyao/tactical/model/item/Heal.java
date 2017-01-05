@@ -7,6 +7,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import javax.inject.Inject;
 
 public class Heal extends Consumable {
+
   // TODO: Remove me
   private static final int AMOUNT = 10;
 

@@ -6,6 +6,7 @@ import com.google.common.eventbus.EventBus;
  * An object that has an {@link EventBus} and contains convenience methods for interacting with it.
  */
 public class EventBusObject {
+
   private final EventBus eventBus;
   private boolean registered = false;
 
@@ -26,7 +27,9 @@ public class EventBusObject {
     }
   }
 
-  /** Unregister this object from {@link #eventBus} if it has been registered. */
+  /**
+   * Unregister this object from {@link #eventBus} if it has been registered.
+   */
   protected void unregister() {
     if (registered) {
       eventBus.unregister(this);
@@ -34,7 +37,9 @@ public class EventBusObject {
     }
   }
 
-  /** Delegates to {@link EventBus#post(Object)}. */
+  /**
+   * Delegates to {@link EventBus#post(Object)}.
+   */
   protected void post(Object event) {
     eventBus.post(event);
   }

@@ -7,8 +7,10 @@ import com.google.inject.Provides;
 import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {
+
   @Override
-  protected void configure() {}
+  protected void configure() {
+  }
 
   @Provides
   @Singleton

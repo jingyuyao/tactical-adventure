@@ -20,9 +20,12 @@ import java.util.Map;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Contains all the markings in a state. */
+/**
+ * Contains all the markings in a state.
+ */
 @Singleton
 public class Markings extends EventBusObject implements Disposable {
+
   private final MarkingFactory markingFactory;
   private final TargetsFactory targetsFactory;
   private final Map<Character, Marking> dangerAreas;
@@ -90,5 +93,7 @@ public class Markings extends EventBusObject implements Disposable {
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface InitialDangerAreas {}
+  @interface InitialDangerAreas {
+
+  }
 }

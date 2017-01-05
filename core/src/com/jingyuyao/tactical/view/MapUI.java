@@ -25,6 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Singleton
 public class MapUI {
+
   private final Stage stage;
   private final Skin skin;
   private final Table root;
@@ -157,5 +158,7 @@ public class MapUI {
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapUiStage {}
+  public @interface MapUiStage {
+
+  }
 }

@@ -15,9 +15,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Map;
 
-/** Creates {@link BaseActor} from models and adds the proper controllers. */
+/**
+ * Creates {@link BaseActor} from models and adds the proper controllers.
+ */
 @Singleton
 public class ActorFactory {
+
   private static final float ACTOR_SIZE = 1f; // world units
 
   private final EventBus eventBus;

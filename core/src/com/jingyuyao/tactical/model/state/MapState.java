@@ -27,9 +27,12 @@ import java.util.Deque;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Manages selection logic. */
+/**
+ * Manages selection logic.
+ */
 @Singleton
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
+
   private final Deque<State> stateStack;
   private final Terrains terrains;
   private MapObject previousHighlight;
@@ -129,5 +132,7 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingStateStack {}
+  @interface BackingStateStack {
+
+  }
 }

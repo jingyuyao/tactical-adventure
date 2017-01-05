@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.util.Locale;
 
 class SelectingWeapon extends AbstractPlayerState {
+
   private final Enemy enemy;
   private final AttackPlanFactory attackPlanFactory;
 
@@ -58,6 +59,7 @@ class SelectingWeapon extends AbstractPlayerState {
   }
 
   class SelectWeapon implements Action {
+
     private final Weapon weapon;
 
     SelectWeapon(Weapon weapon) {

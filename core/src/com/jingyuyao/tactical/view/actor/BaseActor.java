@@ -25,6 +25,7 @@ import java.util.Map;
  * mapObject.getY()} after animations
  */
 class BaseActor<T extends MapObject> extends Actor {
+
   private final T object;
   private final Waiter waiter;
   private final Map<Marker, Sprite> markerSpriteMap;

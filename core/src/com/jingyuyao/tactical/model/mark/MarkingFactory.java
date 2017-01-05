@@ -11,9 +11,12 @@ import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/** Produces {@link Marking}s */
+/**
+ * Produces {@link Marking}s
+ */
 @Singleton
 public class MarkingFactory {
+
   private final EventBus eventBus;
   private final Waiter waiter;
   private final Terrains terrains;
@@ -54,6 +57,7 @@ public class MarkingFactory {
   }
 
   private class Builder {
+
     private final Character character;
     private final java.util.Map<MapObject, Marker> markerMap;
 

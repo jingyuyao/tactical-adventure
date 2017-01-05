@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Coordinate;
 
 public class Path {
+
   private final ImmutableList<Coordinate> track;
   private final Coordinate destination;
 

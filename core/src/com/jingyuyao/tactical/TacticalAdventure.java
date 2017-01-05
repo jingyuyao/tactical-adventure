@@ -20,6 +20,7 @@ import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
 
 public class TacticalAdventure extends Game {
+
   private Injector injector;
 
   @Override

@@ -6,11 +6,16 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 public class AttackPlan {
+
   private final Player attackingPlayer;
   private final Enemy targetEnemy;
-  /** Never null. */
+  /**
+   * Never null.
+   */
   private final Weapon playerWeapon;
-  /** Can be null. */
+  /**
+   * Can be null.
+   */
   private final Weapon enemyWeapon;
 
   // TODO: add terrains
@@ -29,7 +34,9 @@ public class AttackPlan {
     return targetEnemy;
   }
 
-  /** Executes this attack plan, make HP reduction calculations */
+  /**
+   * Executes this attack plan, make HP reduction calculations
+   */
   public void execute() {
     // TODO: complete me
     targetEnemy.damageBy(playerWeapon.getAttackPower());

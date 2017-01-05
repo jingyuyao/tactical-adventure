@@ -18,6 +18,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {
+
   private final String name;
   private final Stats stats;
   private final Items items;
@@ -48,7 +49,9 @@ public abstract class Character extends MapObject implements Disposable {
     mapState.highlight(this);
   }
 
-  /** Return the current target info for this {@link Character}. */
+  /**
+   * Return the current target info for this {@link Character}.
+   */
   public Targets createTargets() {
     return targetsFactory.create(this);
   }

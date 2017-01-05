@@ -23,6 +23,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 class CharacterActor<T extends Character> extends BaseActor<T> {
+
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
   private final Sprite sprite;

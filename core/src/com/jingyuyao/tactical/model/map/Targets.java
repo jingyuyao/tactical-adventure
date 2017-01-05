@@ -13,13 +13,18 @@ import com.jingyuyao.tactical.model.item.Weapon;
 
 import java.util.Set;
 
-/** A snapshot of all the things a character currently can target or move to on the map. */
+/**
+ * A snapshot of all the things a character currently can target or move to on the map.
+ */
 // TODO: needs to be thoroughly tested
 public class Targets {
+
   private final Characters characters;
   private final Character character;
   private final Graph<Coordinate> moveGraph;
-  /** Multi-map of move coordinate to maps of target coordinates to weapons for that target. */
+  /**
+   * Multi-map of move coordinate to maps of target coordinates to weapons for that target.
+   */
   private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
   Targets(
@@ -37,12 +42,16 @@ public class Targets {
     return character;
   }
 
-  /** Can {@code target} be hit after moving? */
+  /**
+   * Can {@code target} be hit after moving?
+   */
   public boolean canHitAfterMove(Character target) {
     return character.canTarget(target) && allTargets().contains(target.getCoordinate());
   }
 
-  /** Can {@code target} be hit without moving? */
+  /**
+   * Can {@code target} be hit without moving?
+   */
   public boolean canHitImmediately(Character target) {
     return character.canTarget(target) && immediateTargets().contains(target.getCoordinate());
   }
@@ -51,12 +60,16 @@ public class Targets {
     return moves().contains(to);
   }
 
-  /** All the move coordinates {@link #character}'s current location. */
+  /**
+   * All the move coordinates {@link #character}'s current location.
+   */
   public ImmutableSet<Coordinate> moves() {
     return ImmutableSet.copyOf(moveMap.keys());
   }
 
-  /** Get a path to a {@link Coordinate} from {@link #moves()}. */
+  /**
+   * Get a path to a {@link Coordinate} from {@link #moves()}.
+   */
   public Path pathTo(Coordinate to) {
     Preconditions.checkArgument(moveMap.keys().contains(to));
     return new Path(Algorithms.findPathTo(moveGraph, to));
@@ -84,7 +97,9 @@ public class Targets {
     return pathTo(currentBestTerrain);
   }
 
-  /** Return all the target coordinates from {@link #character}'s current position after moving. */
+  /**
+   * Return all the target coordinates from {@link #character}'s current position after moving.
+   */
   public ImmutableSet<Coordinate> allTargets() {
     return ImmutableSet.copyOf(
         Iterables.concat(Iterables.transform(moveMap.values(), new MultiMapKeysExtractor())));
@@ -108,7 +123,9 @@ public class Targets {
     return ImmutableSet.copyOf(Sets.difference(allTargets(), moves()));
   }
 
-  /** Return all the weapons that can hit {@code to} if {@link #character} stand on {@code from}. */
+  /**
+   * Return all the weapons that can hit {@code to} if {@link #character} stand on {@code from}.
+   */
   public ImmutableSet<Weapon> weaponsFor(Coordinate from, Coordinate to) {
     Preconditions.checkArgument(moveMap.containsKey(from));
 
@@ -120,7 +137,9 @@ public class Targets {
     return ImmutableSet.of();
   }
 
-  /** Return all the {@link Character} that can be targeted by {@link #character} after moving. */
+  /**
+   * Return all the {@link Character} that can be targeted by {@link #character} after moving.
+   */
   public ImmutableList<Character> allTargetCharacters() {
     return ImmutableList.copyOf(
         Iterables.filter(
@@ -129,7 +148,9 @@ public class Targets {
                 new ContainsCoordinatePredicate(allTargets()), new CanTargetPredicate(character))));
   }
 
-  /** Return all the {@link Character} that can be targeted by {@link #character} without moving. */
+  /**
+   * Return all the {@link Character} that can be targeted by {@link #character} without moving.
+   */
   public ImmutableList<Character> immediateTargetCharacters() {
     return ImmutableList.copyOf(
         Iterables.filter(
@@ -139,17 +160,23 @@ public class Targets {
                 new CanTargetPredicate(character))));
   }
 
-  /** Returns {@link SetMultimap#keys()} from the inputs. */
+  /**
+   * Returns {@link SetMultimap#keys()} from the inputs.
+   */
   private static class MultiMapKeysExtractor
       implements Function<SetMultimap<Coordinate, ?>, Iterable<Coordinate>> {
+
     @Override
     public Iterable<Coordinate> apply(SetMultimap<Coordinate, ?> map) {
       return map.keys();
     }
   }
 
-  /** Predicate for whether the input {@link Coordinate} belongs in a {@link Set}. */
+  /**
+   * Predicate for whether the input {@link Coordinate} belongs in a {@link Set}.
+   */
   private static class ContainsCoordinatePredicate implements Predicate<MapObject> {
+
     private final Set<Coordinate> coordinates;
 
     private ContainsCoordinatePredicate(Set<Coordinate> coordinates) {
@@ -167,6 +194,7 @@ public class Targets {
    * Character}.
    */
   private static class CanTargetPredicate implements Predicate<Character> {
+
     private final Character attackingCharacter;
 
     private CanTargetPredicate(Character attackingCharacter) {

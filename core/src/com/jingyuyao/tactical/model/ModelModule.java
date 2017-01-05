@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ModelModule extends AbstractModule {
+
   @Override
   protected void configure() {
     install(new MapModule());

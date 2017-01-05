@@ -10,8 +10,11 @@ import com.jingyuyao.tactical.model.state.MapState;
 import javax.inject.Inject;
 import java.util.List;
 
-/** An enemy character */
+/**
+ * An enemy character
+ */
 public class Enemy extends Character {
+
   @Inject
   Enemy(
       EventBus eventBus,

@@ -20,23 +20,37 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MovingTest {
+
   private static final Coordinate MOVING_PLAYER_COORDINATE = new Coordinate(0, 1);
   private static final Coordinate ENEMY_COORDINATE = new Coordinate(0, 0);
   private static final Coordinate TERRAIN_COORDINATE = new Coordinate(0, 2);
 
-  @Mock private EventBus eventBus;
-  @Mock private MapState mapState;
-  @Mock private Markings markings;
-  @Mock private StateFactory stateFactory;
-  @Mock private Player movingPlayer;
-  @Mock private Player anotherPlayer;
-  @Mock private Enemy enemy;
-  @Mock private Terrain terrain;
-  @Mock private Choosing choosing;
-  @Mock private Moving dummyMoving;
-  @Mock private SelectingWeapon selectingWeapon;
-  @Mock private Targets targets;
-  @Mock private Path path;
+  @Mock
+  private EventBus eventBus;
+  @Mock
+  private MapState mapState;
+  @Mock
+  private Markings markings;
+  @Mock
+  private StateFactory stateFactory;
+  @Mock
+  private Player movingPlayer;
+  @Mock
+  private Player anotherPlayer;
+  @Mock
+  private Enemy enemy;
+  @Mock
+  private Terrain terrain;
+  @Mock
+  private Choosing choosing;
+  @Mock
+  private Moving dummyMoving;
+  @Mock
+  private SelectingWeapon selectingWeapon;
+  @Mock
+  private Targets targets;
+  @Mock
+  private Path path;
 
   private Moving moving;
 

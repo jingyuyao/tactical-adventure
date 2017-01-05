@@ -26,11 +26,16 @@ import java.util.List;
  */
 // TODO: test the invariant
 public class Items extends EventBusObject implements Disposable {
-  /** Invariant: weapons.indexOf(equippedWeapon) == 0 */
+
+  /**
+   * Invariant: weapons.indexOf(equippedWeapon) == 0
+   */
   private final List<Weapon> weapons;
 
   private final List<Consumable> consumables;
-  /** If not null, {@code weapons.contains(equippedWeapon) == true} */
+  /**
+   * If not null, {@code weapons.contains(equippedWeapon) == true}
+   */
   private Weapon equippedWeapon;
 
   /**
@@ -46,7 +51,9 @@ public class Items extends EventBusObject implements Disposable {
     register();
   }
 
-  /** Return the first weapon if there is one, else null. */
+  /**
+   * Return the first weapon if there is one, else null.
+   */
   private static Weapon getDefaultWeapon(Iterable<Weapon> weapons) {
     return Iterables.getFirst(weapons, null);
   }

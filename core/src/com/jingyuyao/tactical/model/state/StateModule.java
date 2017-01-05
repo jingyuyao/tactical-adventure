@@ -9,6 +9,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class StateModule extends AbstractModule {
+
   @Override
   protected void configure() {
     install(new FactoryModuleBuilder().build(StateFactory.class));

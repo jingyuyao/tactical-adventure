@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MarkModule extends AbstractModule {
+
   @Override
   protected void configure() {
     bind(MarkingFactory.class);

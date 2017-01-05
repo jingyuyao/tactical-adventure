@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MapController {
+
   private final Stage mapViewStage;
   private final Stage mapUIStage;
   private final Terrains terrains;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.jingyuyao.tactical.TacticalAdventure;
 
 public class IOSLauncher extends IOSApplication.Delegate {
+
   @Override
   protected IOSApplication createApplication() {
     IOSApplicationConfiguration config = new IOSApplicationConfiguration();

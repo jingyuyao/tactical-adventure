@@ -16,9 +16,14 @@ import java.util.List;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Super class of all the objects on the game grid. */
+/**
+ * Super class of all the objects on the game grid.
+ */
 public abstract class MapObject extends EventBusObject {
-  /** List of marker drawn over this object. */
+
+  /**
+   * List of marker drawn over this object.
+   */
   private final List<Marker> markers;
 
   private Coordinate coordinate;
@@ -58,11 +63,15 @@ public abstract class MapObject extends EventBusObject {
    */
   public abstract void select(MapState mapState);
 
-  /** Enables the visitor pattern for highlight. */
+  /**
+   * Enables the visitor pattern for highlight.
+   */
   public abstract void highlight(MapState mapState);
 
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface InitialMarkers {}
+  public @interface InitialMarkers {
+
+  }
 }

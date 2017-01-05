@@ -21,10 +21,13 @@ import java.util.Set;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** A concrete singleton type that holds all the {@link Character} on the map. */
+/**
+ * A concrete singleton type that holds all the {@link Character} on the map.
+ */
 @Singleton
 public class Characters extends EventBusObject
     implements ManagedBy<NewMap, ClearMap>, Iterable<Character> {
+
   private final Set<Character> characters;
 
   @Inject
@@ -62,5 +65,7 @@ public class Characters extends EventBusObject
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingCharacterSet {}
+  @interface BackingCharacterSet {
+
+  }
 }

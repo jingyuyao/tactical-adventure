@@ -11,6 +11,7 @@ import java.util.List;
 
 @Singleton
 public class MapFactory {
+
   private final EventBus eventBus;
   private final Provider<List<Marker>> markersProvider;
 

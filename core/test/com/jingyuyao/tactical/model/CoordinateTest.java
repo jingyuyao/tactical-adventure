@@ -5,6 +5,7 @@ import org.junit.Test;
 import static com.google.common.truth.Truth.assertThat;
 
 public class CoordinateTest {
+
   private static final Coordinate C1 = new Coordinate(0, 1);
   private static final Coordinate C2 = new Coordinate(0, 1);
   private static final Coordinate C3 = new Coordinate(2, 2);

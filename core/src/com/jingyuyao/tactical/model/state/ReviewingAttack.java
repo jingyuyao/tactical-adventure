@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
 import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {
+
   private final AttackPlan attackPlan;
 
   @Inject
@@ -47,6 +48,7 @@ class ReviewingAttack extends AbstractPlayerState {
   }
 
   class Attack implements Action {
+
     @Override
     public String getName() {
       return "attack";

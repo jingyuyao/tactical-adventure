@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.mark.Markings;
 
 abstract class AbstractPlayerState extends AbstractState {
+
   private final Player player;
 
   AbstractPlayerState(
@@ -28,6 +29,7 @@ abstract class AbstractPlayerState extends AbstractState {
   }
 
   class Wait implements Action {
+
     @Override
     public String getName() {
       return "wait";

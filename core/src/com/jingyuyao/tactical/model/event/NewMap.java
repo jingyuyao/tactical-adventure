@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.state.State;
 import java.util.List;
 
 public class NewMap implements ModelEvent {
+
   private final List<Player> players;
   private final List<Enemy> enemies;
   private final List<Terrain> terrains;

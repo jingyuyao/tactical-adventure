@@ -8,6 +8,7 @@ import com.google.common.base.Objects;
  * algorithms so be careful when making changes.
  */
 public final class Coordinate {
+
   private final int x;
   private final int y;
 
@@ -26,8 +27,12 @@ public final class Coordinate {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Coordinate that = (Coordinate) o;
     return getX() == that.getX() && getY() == that.getY();
   }

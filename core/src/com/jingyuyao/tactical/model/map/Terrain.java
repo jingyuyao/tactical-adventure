@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 
 public class Terrain extends MapObject {
+
   private final Type type;
 
   Terrain(EventBus eventBus, Coordinate coordinate, List<Marker> markers, Type type) {

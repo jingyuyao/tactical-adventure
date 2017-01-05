@@ -20,14 +20,23 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WaitingTest {
-  @Mock private EventBus eventBus;
-  @Mock private MapState mapState;
-  @Mock private Markings markings;
-  @Mock private StateFactory stateFactory;
-  @Mock private Player player;
-  @Mock private Enemy enemy;
-  @Mock private Terrain terrain;
-  @Mock private Moving moving;
+
+  @Mock
+  private EventBus eventBus;
+  @Mock
+  private MapState mapState;
+  @Mock
+  private Markings markings;
+  @Mock
+  private StateFactory stateFactory;
+  @Mock
+  private Player player;
+  @Mock
+  private Enemy enemy;
+  @Mock
+  private Terrain terrain;
+  @Mock
+  private Moving moving;
 
   private Waiting waiting;
 

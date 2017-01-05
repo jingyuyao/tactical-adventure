@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MapModule extends AbstractModule {
+
   @Override
   protected void configure() {
     bind(Characters.class);

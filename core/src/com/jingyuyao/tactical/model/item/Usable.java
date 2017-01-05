@@ -4,9 +4,14 @@ import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.event.ItemBroke;
 
-/** An {@link Item} that can be used and has a limited number of usages. */
+/**
+ * An {@link Item} that can be used and has a limited number of usages.
+ */
 public class Usable extends Item {
-  /** Don't expose setter */
+
+  /**
+   * Don't expose setter
+   */
   private int usageLeft;
 
   Usable(EventBus eventBus, String name, int usageLeft) {

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActorModule extends AbstractModule {
+
   @Override
   protected void configure() {
     bind(ActorFactory.class);

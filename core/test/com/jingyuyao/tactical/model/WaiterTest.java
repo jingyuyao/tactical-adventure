@@ -18,12 +18,19 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WaiterTest {
-  @Mock private EventBus eventBus;
-  @Mock private Queue<Runnable> runnableQueue;
-  @Mock private ClearMap clearMap;
-  @Mock private Waiter.Changed changed;
-  @Mock private Runnable runnable;
-  @Captor private ArgumentCaptor<Object> argumentCaptor;
+
+  @Mock
+  private EventBus eventBus;
+  @Mock
+  private Queue<Runnable> runnableQueue;
+  @Mock
+  private ClearMap clearMap;
+  @Mock
+  private Waiter.Changed changed;
+  @Mock
+  private Runnable runnable;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private Waiter waiter;
 

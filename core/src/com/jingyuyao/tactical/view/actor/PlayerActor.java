@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.Map;
 
 class PlayerActor extends CharacterActor<Player> {
+
   PlayerActor(
       EventBus eventBus,
       Player object,

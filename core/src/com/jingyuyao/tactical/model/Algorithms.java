@@ -8,8 +8,11 @@ import com.google.common.graph.*;
 
 import java.util.*;
 
-/** Functions should return immutable objects. */
+/**
+ * Functions should return immutable objects.
+ */
 public class Algorithms {
+
   public static final int NO_EDGE = -1;
 
   /**
@@ -85,7 +88,7 @@ public class Algorithms {
    * @param graph An directed acyclic graph
    * @param target The target node to find a path to
    * @return A path to {@code target} from the first node in the graph or an empty list if target is
-   *     not in the graph
+   * not in the graph
    */
   public static ImmutableList<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
     if (!graph.nodes().contains(target)) {
@@ -194,6 +197,7 @@ public class Algorithms {
    * {@link #value} is not part of the identity. Used for {@link PriorityQueue} sorting.
    */
   private static class ValueNode<N> implements Comparable<ValueNode<N>> {
+
     private final N object;
     private final int value;
 
@@ -217,8 +221,12 @@ public class Algorithms {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
       ValueNode<?> valueNode = (ValueNode<?>) o;
       return Objects.equal(object, valueNode.object);
     }

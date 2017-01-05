@@ -5,13 +5,18 @@ import com.jingyuyao.tactical.model.map.Terrain;
 
 import java.util.Set;
 
-/** Setters should be package private. */
+/**
+ * Setters should be package private.
+ */
 public class Stats {
+
   // TODO: remove me
   private static final int MAX_HP = 20;
 
   private final Set<Terrain.Type> passableTerrainTypes;
-  /** >= 0 */
+  /**
+   * >= 0
+   */
   private int hp;
 
   private int moveDistance;

@@ -10,8 +10,11 @@ import com.jingyuyao.tactical.model.state.MapState;
 
 import javax.inject.Inject;
 
-/** Only dispatches clicked events if the click begins and ends over the actor. */
+/**
+ * Only dispatches clicked events if the click begins and ends over the actor.
+ */
 public class MapActorController extends ClickListener {
+
   private final MapState mapState;
   private final Waiter waiter;
   private final MapObject object;

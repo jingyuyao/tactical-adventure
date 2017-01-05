@@ -15,6 +15,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class TargetsFactory {
+
   private final Characters characters;
   private final Terrains terrains;
 
@@ -24,7 +25,9 @@ public class TargetsFactory {
     this.terrains = terrains;
   }
 
-  /** Magic. */
+  /**
+   * Magic.
+   */
   public Targets create(Character character) {
     Graph<Coordinate> moveGraph = getMoveGraph(character);
     SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();

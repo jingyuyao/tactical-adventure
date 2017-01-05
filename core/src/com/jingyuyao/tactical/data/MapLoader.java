@@ -27,6 +27,7 @@ import java.util.*;
 
 @Singleton
 public class MapLoader {
+
   private static final String TERRAIN_LAYER = "terrain";
   private static final String TERRAIN_TYPE_KEY = "type";
 
