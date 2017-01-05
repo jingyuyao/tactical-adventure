@@ -9,13 +9,11 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
@@ -33,14 +31,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStateTest {
 
-  private final Coordinate CORD = new Coordinate(0, 0);
-
   @Mock
   private EventBus eventBus;
   @Mock
   private Deque<State> stateStack;
-  @Mock
-  private Terrains terrains;
   @Mock
   private State state1;
   @Mock
@@ -64,7 +58,7 @@ public class MapStateTest {
 
   @Before
   public void setUp() {
-    mapState = new MapState(eventBus, terrains, stateStack);
+    mapState = new MapState(eventBus, stateStack);
     verify(eventBus).register(mapState);
   }
 
@@ -123,9 +117,6 @@ public class MapStateTest {
 
   @Test
   public void highlight() throws Exception {
-    when(player.getCoordinate()).thenReturn(CORD);
-    when(terrains.get(CORD)).thenReturn(terrain);
-
     mapState.highlight(player);
     mapState.highlight(terrain);
 
@@ -136,7 +127,6 @@ public class MapStateTest {
     HighlightCharacter highlightCharacter =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
     assertThat(highlightCharacter.getObject()).isEqualTo(player);
-    assertThat(highlightCharacter.getTerrain()).isEqualTo(terrain);
 
     inOrder.verify(player).removeMarker(Marker.HIGHLIGHT);
     inOrder.verify(terrain).addMarker(Marker.HIGHLIGHT);

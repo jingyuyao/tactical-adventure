@@ -104,7 +104,6 @@ public class MapUI {
   public void highlightCharacter(HighlightCharacter highlightCharacter) {
     characterLabel.setText(
         String.format(Locale.US, "HP: %d", highlightCharacter.getObject().getHp()));
-    updateTerrainLabel(highlightCharacter.getTerrain());
   }
 
   @Subscribe
