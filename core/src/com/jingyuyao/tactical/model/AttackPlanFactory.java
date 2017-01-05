@@ -25,20 +25,20 @@ public class AttackPlanFactory {
     Optional<Weapon> playerWeapon = player.getEquippedWeapon();
     Preconditions.checkArgument(playerWeapon.isPresent());
 
-    Targets playerInfo = targetsFactory.create(player);
-    Preconditions.checkArgument(playerInfo.canHitImmediately(enemy));
+    Targets playerTargets = targetsFactory.create(player);
+    Preconditions.checkArgument(playerTargets.canHitImmediately(enemy));
 
-    Targets enemyInfo = targetsFactory.create(enemy);
-    Optional<Weapon> enemyWeapon = getHitBackWeapon(player, enemy, enemyInfo);
+    Targets enemyTargets = targetsFactory.create(enemy);
+    Optional<Weapon> enemyWeapon = getHitBackWeapon(player, enemy, enemyTargets);
 
     return new AttackPlan(player, enemy, playerWeapon.get(), enemyWeapon.orNull());
   }
 
-  private Optional<Weapon> getHitBackWeapon(Player player, Enemy enemy, Targets enemyInfo) {
+  private Optional<Weapon> getHitBackWeapon(Player player, Enemy enemy, Targets enemyTargets) {
     Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
     if (enemyEquippedWeapon.isPresent()) {
       ImmutableSet<Weapon> availableWeaponsForHittingBack =
-          enemyInfo.weaponsFor(enemy.getCoordinate(), player.getCoordinate());
+          enemyTargets.weaponsFor(enemy.getCoordinate(), player.getCoordinate());
       if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
         return enemyEquippedWeapon;
       }

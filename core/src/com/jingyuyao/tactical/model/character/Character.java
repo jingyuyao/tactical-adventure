@@ -53,7 +53,7 @@ public abstract class Character extends MapObject implements Disposable {
   }
 
   /**
-   * Return the current target info for this {@link Character}.
+   * Return the current {@link Targets} for this {@link Character}.
    */
   public Targets createTargets() {
     return targetsFactory.create(this);
