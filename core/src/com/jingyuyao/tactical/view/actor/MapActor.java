@@ -22,13 +22,13 @@ import java.util.Map;
  * <p>Invariants: - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code
  * mapObject.getY()} after animations
  */
-class BaseActor<T extends MapObject> extends Actor {
+class MapActor<T extends MapObject> extends Actor {
 
   private final T object;
   private final Map<Marker, Sprite> markerSpriteMap;
   private final List<Sprite> markerSprites;
 
-  BaseActor(
+  MapActor(
       T object,
       EventListener listener,
       float size,

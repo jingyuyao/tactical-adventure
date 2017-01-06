@@ -22,7 +22,7 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.List;
 import java.util.Map;
 
-class CharacterActor<T extends Character> extends BaseActor<T> {
+class CharacterActor<T extends Character> extends MapActor<T> {
 
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 

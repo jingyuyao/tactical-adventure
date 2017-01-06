@@ -13,7 +13,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 // Note: Guice reflection needs all injectable classes to be public
-public class TerrainActor extends BaseActor<Terrain> {
+public class TerrainActor extends MapActor<Terrain> {
 
   @Inject
   TerrainActor(
