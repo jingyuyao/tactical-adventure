@@ -1,12 +1,19 @@
 package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorConfig.EnemySprite;
+import com.jingyuyao.tactical.view.actor.ActorConfig.InitialEnemyTint;
+import com.jingyuyao.tactical.view.actor.ActorConfig.InitialPlayerTint;
+import com.jingyuyao.tactical.view.actor.ActorConfig.PlayerSprite;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Singleton;
@@ -15,7 +22,9 @@ public class ActorModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(ActorFactory.class);
+    install(new FactoryModuleBuilder().build(ActorFactory.class));
+
+    bind(ActorConfig.class);
   }
 
   @Provides
@@ -39,13 +48,37 @@ public class ActorModule extends AbstractModule {
     return markerSpriteMap;
   }
 
-  // TODO: find a better way
+  @Provides
+  @ActorWorldSize
+  float provideActorWorldSize(ActorConfig actorConfig) {
+    return actorConfig.getActorWorldSize();
+  }
+
+  @Provides
+  @InitialPlayerTint
+  Color provideInitialPlayerColor(ActorConfig actorConfig) {
+    return actorConfig.getInitialPlayerTint();
+  }
+
+  @Provides
+  @InitialEnemyTint
+  Color provideInitialEnemyColor(ActorConfig actorConfig) {
+    return actorConfig.getInitialEnemyTint();
+  }
+
+  // TODO: temp, remove me
   @Provides
   @Singleton
-  Map<String, Sprite> provideCharacterSpriteMap(AssetManager assetManager) {
-    Map<String, Sprite> characterSpriteMap = new HashMap<String, Sprite>();
-    characterSpriteMap.put("billy", new Sprite(assetManager.get(AssetModule.BILLY, Texture.class)));
-    characterSpriteMap.put("john", new Sprite(assetManager.get(AssetModule.JOHN, Texture.class)));
-    return characterSpriteMap;
+  @PlayerSprite
+  Sprite providePlayerSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.JOHN, Texture.class));
+  }
+
+  // TODO: temp, remove me
+  @Provides
+  @Singleton
+  @EnemySprite
+  Sprite provideEnemySprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.BILLY, Texture.class));
   }
 }

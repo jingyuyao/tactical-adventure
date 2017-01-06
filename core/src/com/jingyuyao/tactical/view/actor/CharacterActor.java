@@ -28,17 +28,17 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
   private final Sprite sprite;
 
   CharacterActor(
-      EventBus eventBus,
       T object,
+      EventListener listener,
       float size,
+      EventBus eventBus,
       Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
       Sprite sprite,
-      Color tint,
-      EventListener listener) {
-    super(eventBus, object, size, waiter, markerSpriteMap, listener);
+      Color initialTint) {
+    super(object, listener, size, eventBus, waiter, markerSpriteMap);
     this.sprite = sprite;
-    setColor(tint);
+    setColor(initialTint);
   }
 
   @Override
@@ -85,10 +85,6 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
     if (characterDied.matches(getObject())) {
       remove();
     }
-  }
-
-  Sprite getSprite() {
-    return sprite;
   }
 
   private SequenceAction getMoveSequence(Iterable<Coordinate> track) {

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.controller.MapActorControllerFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.ManagedBy;
@@ -33,23 +34,23 @@ public class MapView implements ManagedBy<NewMap, ClearMap> {
   private final Stage stage;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
+  private final MapActorControllerFactory mapActorControllerFactory;
 
   /**
    * A map view contains a stage with all the actors and a way to render them. The background map is
    * backed by a {@link OrthogonalTiledMapRenderer}.
-   *
-   * @param stage the stage this view uses
-   * @param mapRenderer The tiled map renderer
    */
   @Inject
   MapView(
       EventBus eventBus,
       @MapViewStage Stage stage,
       OrthogonalTiledMapRenderer mapRenderer,
-      ActorFactory actorFactory) {
+      ActorFactory actorFactory,
+      MapActorControllerFactory mapActorControllerFactory) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
+    this.mapActorControllerFactory = mapActorControllerFactory;
     eventBus.register(this);
   }
 
@@ -57,14 +58,16 @@ public class MapView implements ManagedBy<NewMap, ClearMap> {
   @Override
   public void initialize(NewMap data) {
     for (Terrain terrain : data.getTerrains()) {
-      stage.addActor(actorFactory.create(terrain));
+      stage.addActor(
+          actorFactory.createTerrainActor(terrain, mapActorControllerFactory.create(terrain)));
     }
     // Characters must be added after terrain so they get hit by touch input
     for (Player player : data.getPlayers()) {
-      stage.addActor(actorFactory.create(player));
+      stage.addActor(
+          actorFactory.createPlayerActor(player, mapActorControllerFactory.create(player)));
     }
     for (Enemy enemy : data.getEnemies()) {
-      stage.addActor(actorFactory.create(enemy));
+      stage.addActor(actorFactory.createEnemyActor(enemy, mapActorControllerFactory.create(enemy)));
     }
   }
 
