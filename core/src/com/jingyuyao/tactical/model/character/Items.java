@@ -59,7 +59,7 @@ public class Items extends EventBusObject implements Disposable {
 
   @Override
   public void dispose() {
-    register();
+    unregister();
   }
 
   @Subscribe
