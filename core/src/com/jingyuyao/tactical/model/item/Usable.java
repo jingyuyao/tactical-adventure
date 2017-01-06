@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.item.event.ItemBroke;
+import com.jingyuyao.tactical.model.item.event.RemoveItem;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
@@ -25,14 +25,14 @@ public class Usable extends Item {
   }
 
   /**
-   * Signals this item has been used once. Fires {@link ItemBroke} when {@link #getUsageLeft()} == 0
+   * Signals this item has been used once. Fires {@link RemoveItem} when {@link #getUsageLeft()} == 0
    */
   public void useOnce() {
     Preconditions.checkState(usageLeft > 0);
 
     usageLeft--;
     if (usageLeft == 0) {
-      post(new ItemBroke(this));
+      post(new RemoveItem(this));
     }
   }
 }

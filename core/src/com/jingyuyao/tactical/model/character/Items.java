@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.item.event.ItemBroke;
+import com.jingyuyao.tactical.model.item.event.RemoveItem;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
@@ -63,9 +63,9 @@ public class Items extends EventBusObject implements Disposable {
   }
 
   @Subscribe
-  public void itemBroke(ItemBroke itemBroke) {
-    Iterables.removeIf(getItems(), itemBroke.getMatchesPredicate());
-    if (itemBroke.matches(equippedWeapon)) {
+  public void removeItem(RemoveItem removeItem) {
+    Iterables.removeIf(getItems(), removeItem.getMatchesPredicate());
+    if (removeItem.matches(equippedWeapon)) {
       setEquippedWeapon(getDefaultWeapon(weapons));
     }
   }
