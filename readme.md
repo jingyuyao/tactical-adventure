@@ -27,33 +27,29 @@ The game follows MVC and uses the command pattern to communicate between differe
 We follow Google's Java style guide for all Java files. Install the style guide for Intellij
 then enable format code and optimize import on commit.
 
-## Dependency injection
-WHAT IF WE DONT CREATE NEW LEVELS?
-
 ## Big picture
-Model is constructed by the data package.
-The model is then used to create the view which attaches observers to the model to listen for changes.
-Various controllers are also attached to the view during its creation.
-These controllers holds a reference to their model objects and relays user input to be processed by the model.
-The controllers are activated right before the screen is set to the view.
+Data package dispatches an event with necessary information to set up the model and view.
+The model and the view are initialized at the same time. Model changes are dispatched as
+events to the view. Controllers are attached to the view which translate user input to model
+input via visitor pattern. Controllers also listen for new model set up to be initialized.
 
 ## Models
-- Model classes should not reference controllers or views
+- Model classes should self-contained, it should not reference libgdx, controller or views
 - Receive commands via method invocation from controllers
-- Notify state change to the view through the observable pattern
-  - Pass details regarding the exact change through the argument of notifyObservers()
-  - The argument should be concrete classes that the view can figure out
-- "Live" collections should be returned as an iterable, this accidentally storing or changing the backing data
-- "Snapshots" should be returned as an immutable collection
+- Changes in model are notified to interested components via the observer pattern using EventBus.
+  Generally separated into the following three types:
+  - Broadcast: events that alert subscribers about change in model state e.g. StateChanged
+  - Command: events that request specific action to be performed e.g. RemoveCharacter
+  - Request: events that tries to gather info from other components (no example yet)
 
 ## Views
 - Only views should hold references to assets
-- Add observers to models
-- Set up controllers upon view creation
+- Glues model and controller together in the form of Actor
+- Subscribes to various model events to update itself.
 
 ## Controllers
 - Listen to user input
-- Issue commands to models
+- Dispatches input to models via visitor pattern, this minimizes logic in controllers
 
 # Development plan
 - MVC 
