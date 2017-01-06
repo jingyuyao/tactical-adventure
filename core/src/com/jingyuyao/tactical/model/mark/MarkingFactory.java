@@ -1,13 +1,23 @@
 package com.jingyuyao.tactical.model.mark;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.google.common.eventbus.EventBus;
+import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /**
@@ -19,12 +29,18 @@ public class MarkingFactory {
   private final EventBus eventBus;
   private final Waiter waiter;
   private final Terrains terrains;
+  private final Provider<Map<MapObject, Marker>> markerMapProvider;
 
   @Inject
-  public MarkingFactory(EventBus eventBus, Waiter waiter, Terrains terrains) {
+  public MarkingFactory(
+      EventBus eventBus,
+      Waiter waiter,
+      Terrains terrains,
+      @InitialMarkerMap Provider<Map<MapObject, Marker>> markerMapProvider) {
     this.eventBus = eventBus;
     this.waiter = waiter;
     this.terrains = terrains;
+    this.markerMapProvider = markerMapProvider;
   }
 
   public Marking moveAndTargets(Targets targets) {
@@ -62,7 +78,7 @@ public class MarkingFactory {
 
     private Builder(Character character) {
       this.character = character;
-      markerMap = new java.util.HashMap<MapObject, Marker>();
+      markerMap = markerMapProvider.get();
     }
 
     private Builder add(Iterable<? extends MapObject> objects, Marker marker) {
@@ -75,5 +91,12 @@ public class MarkingFactory {
     private Marking build() {
       return new Marking(eventBus, character, markerMap, waiter);
     }
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialMarkerMap {
+
   }
 }
