@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.character.event;
 
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.ObjectEvent;
+import com.jingyuyao.tactical.model.event.AbstractEvent;
 
-public class InstantMove extends ObjectEvent<Character> {
+public class InstantMove extends AbstractEvent<Character> {
 
   private final Coordinate destination;
 

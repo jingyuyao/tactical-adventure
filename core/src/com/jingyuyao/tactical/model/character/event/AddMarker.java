@@ -1,10 +1,10 @@
 package com.jingyuyao.tactical.model.character.event;
 
-import com.jingyuyao.tactical.model.event.ObjectEvent;
+import com.jingyuyao.tactical.model.event.AbstractEvent;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 
-public class AddMarker extends ObjectEvent<MapObject> {
+public class AddMarker extends AbstractEvent<MapObject> {
 
   private final Marker marker;
 

@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.model.character.event;
 
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ObjectEvent;
+import com.jingyuyao.tactical.model.event.AbstractEvent;
 
-public class NewActionState extends ObjectEvent<Player> {
+public class NewActionState extends AbstractEvent<Player> {
 
   private final boolean actionable;
 
