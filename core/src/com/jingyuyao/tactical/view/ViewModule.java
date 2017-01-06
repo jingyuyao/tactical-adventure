@@ -20,11 +20,6 @@ import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {
 
-  private static final int TILE_SIZE = 32; // pixels
-  private static final float RENDER_SCALE = 1f / TILE_SIZE;
-  private static final int VIEWPORT_WIDTH = 15; // # tiles
-  private static final int VIEWPORT_HEIGHT = 10; // # tiles
-
   @Override
   protected void configure() {
     install(new ActorModule());
@@ -32,6 +27,7 @@ public class ViewModule extends AbstractModule {
     bind(MapScreen.class);
     bind(MapView.class);
     bind(MapUI.class);
+    bind(ViewConfig.class);
   }
 
   @Provides
@@ -56,8 +52,9 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   @MapViewViewport
-  Viewport provideMapViewViewport() {
-    return new ExtendViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+  Viewport provideMapViewViewport(ViewConfig viewConfig) {
+    return new ExtendViewport(
+        viewConfig.getViewportWorldWidth(), viewConfig.getViewportWorldHeight());
   }
 
   /**
@@ -65,8 +62,8 @@ public class ViewModule extends AbstractModule {
    */
   @Provides
   @Singleton
-  OrthogonalTiledMapRenderer provideTiledMapRenderer(Batch batch) {
-    return new OrthogonalTiledMapRenderer(null, RENDER_SCALE, batch);
+  OrthogonalTiledMapRenderer provideTiledMapRenderer(ViewConfig viewConfig, Batch batch) {
+    return new OrthogonalTiledMapRenderer(null, viewConfig.getTileToWorldScale(), batch);
   }
 
   @Provides

@@ -7,6 +7,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.view.ViewConfig;
 import javax.inject.Inject;
 
 /**
@@ -20,11 +21,11 @@ public class MapActorController extends ClickListener {
 
   @Inject
   MapActorController(
-      MapState mapState, Waiter waiter, @Assisted MapObject object, @Assisted float actorSize) {
+      MapState mapState, Waiter waiter, ViewConfig viewConfig, @Assisted MapObject object) {
     this.object = object;
     this.mapState = mapState;
     this.waiter = waiter;
-    setTapSquareSize(actorSize / 2f);
+    setTapSquareSize(viewConfig.getActorWorldSize() / 2f);
   }
 
   @Override

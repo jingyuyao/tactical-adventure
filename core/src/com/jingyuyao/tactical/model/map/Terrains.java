@@ -61,6 +61,8 @@ public class Terrains extends EventBusObject
   @Override
   public void dispose(ClearMap clearMap) {
     table.clear();
+    width = 0;
+    height = 0;
   }
 
   @Override

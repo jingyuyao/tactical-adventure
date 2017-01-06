@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.view.ViewConfig;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,8 +21,7 @@ import javax.inject.Singleton;
 @Singleton
 public class ActorFactory {
 
-  private static final float ACTOR_SIZE = 1f; // world units
-
+  private final ViewConfig viewConfig;
   private final EventBus eventBus;
   private final Waiter waiter;
   private final MapActorControllerFactory mapActorControllerFactory;
@@ -30,11 +30,13 @@ public class ActorFactory {
 
   @Inject
   ActorFactory(
+      ViewConfig viewConfig,
       EventBus eventBus,
       Waiter waiter,
       MapActorControllerFactory mapActorControllerFactory,
       Map<Marker, Sprite> markerSpriteMap,
       Map<String, Sprite> characterSpriteMap) {
+    this.viewConfig = viewConfig;
     this.eventBus = eventBus;
     this.waiter = waiter;
     this.mapActorControllerFactory = mapActorControllerFactory;
@@ -46,33 +48,33 @@ public class ActorFactory {
     return new PlayerActor(
         eventBus,
         player,
-        ACTOR_SIZE,
+        viewConfig.getActorWorldSize(),
         waiter,
         markerSpriteMap,
         characterSpriteMap.get(player.getName()),
         Color.WHITE,
-        mapActorControllerFactory.create(player, ACTOR_SIZE));
+        mapActorControllerFactory.create(player));
   }
 
   public Actor create(Enemy enemy) {
     return new CharacterActor<Enemy>(
         eventBus,
         enemy,
-        ACTOR_SIZE,
+        viewConfig.getActorWorldSize(),
         waiter,
         markerSpriteMap,
         characterSpriteMap.get(enemy.getName()),
         Color.RED,
-        mapActorControllerFactory.create(enemy, ACTOR_SIZE));
+        mapActorControllerFactory.create(enemy));
   }
 
   public Actor create(Terrain terrain) {
     return new BaseActor<Terrain>(
         eventBus,
         terrain,
-        ACTOR_SIZE,
+        viewConfig.getActorWorldSize(),
         waiter,
         markerSpriteMap,
-        mapActorControllerFactory.create(terrain, ACTOR_SIZE));
+        mapActorControllerFactory.create(terrain));
   }
 }
