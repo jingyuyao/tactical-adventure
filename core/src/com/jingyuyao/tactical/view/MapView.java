@@ -1,16 +1,10 @@
 package com.jingyuyao.tactical.view;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.controller.MapActorControllerFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -18,9 +12,8 @@ import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapViewStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -95,19 +88,5 @@ public class MapView implements ManagedBy<NewMap, ClearMap> {
 
   void dispose() {
     stage.dispose();
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  public @interface MapViewStage {
-
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  public @interface MapViewViewport {
-
   }
 }

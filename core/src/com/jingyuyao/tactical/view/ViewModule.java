@@ -13,12 +13,19 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.view.MapUI.MapUiViewport;
-import com.jingyuyao.tactical.view.MapView.MapViewViewport;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapUiViewport;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapViewStage;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapViewViewport;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {
+
+  private static final int TILE_SIZE = 32; // pixels
+  private static final float TILE_TO_WORLD_SCALE = 1f / TILE_SIZE;
+  private static final int VIEWPORT_WORLD_WIDTH = 15;
+  private static final int VIEWPORT_WORLD_HEIGHT = 10;
 
   @Override
   protected void configure() {
@@ -27,7 +34,6 @@ public class ViewModule extends AbstractModule {
     bind(MapScreen.class);
     bind(MapView.class);
     bind(MapUI.class);
-    bind(ViewConfig.class);
   }
 
   @Provides
@@ -44,7 +50,7 @@ public class ViewModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapView.MapViewStage
+  @MapViewStage
   Stage provideMapViewStage(@MapViewViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }
@@ -52,9 +58,8 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   @MapViewViewport
-  Viewport provideMapViewViewport(ViewConfig viewConfig) {
-    return new ExtendViewport(
-        viewConfig.getViewportWorldWidth(), viewConfig.getViewportWorldHeight());
+  Viewport provideMapViewViewport() {
+    return new ExtendViewport(VIEWPORT_WORLD_WIDTH, VIEWPORT_WORLD_HEIGHT);
   }
 
   /**
@@ -62,13 +67,13 @@ public class ViewModule extends AbstractModule {
    */
   @Provides
   @Singleton
-  OrthogonalTiledMapRenderer provideTiledMapRenderer(ViewConfig viewConfig, Batch batch) {
-    return new OrthogonalTiledMapRenderer(null, viewConfig.getTileToWorldScale(), batch);
+  OrthogonalTiledMapRenderer provideTiledMapRenderer(Batch batch) {
+    return new OrthogonalTiledMapRenderer(null, TILE_TO_WORLD_SCALE, batch);
   }
 
   @Provides
   @Singleton
-  @MapUI.MapUiStage
+  @MapUiStage
   Stage provideMapUIStage(@MapUiViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }

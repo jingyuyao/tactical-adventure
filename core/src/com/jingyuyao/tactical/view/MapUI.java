@@ -1,10 +1,5 @@
 package com.jingyuyao.tactical.view;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
@@ -26,8 +20,7 @@ import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -161,19 +154,5 @@ public class MapUI {
           }
         });
     return button;
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  public @interface MapUiStage {
-
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  public @interface MapUiViewport {
-
   }
 }

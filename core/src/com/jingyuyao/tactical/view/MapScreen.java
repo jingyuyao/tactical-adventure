@@ -40,12 +40,4 @@ public class MapScreen extends ScreenAdapter {
     mapView.dispose();
     mapUI.dispose();
   }
-
-  public MapView getMapView() {
-    return mapView;
-  }
-
-  public MapUI getMapUI() {
-    return mapUI;
-  }
 }

@@ -9,7 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
-import com.jingyuyao.tactical.view.MapView.MapViewViewport;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapViewViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

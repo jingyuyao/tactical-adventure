@@ -8,8 +8,8 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
-import com.jingyuyao.tactical.view.MapUI.MapUiStage;
-import com.jingyuyao.tactical.view.MapView.MapViewStage;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
+import com.jingyuyao.tactical.view.ViewAnnotations.MapViewStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
