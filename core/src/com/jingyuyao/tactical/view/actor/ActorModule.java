@@ -9,12 +9,12 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
-import com.jingyuyao.tactical.view.actor.ActorConfig.EnemySprite;
-import com.jingyuyao.tactical.view.actor.ActorConfig.InitialEnemyTint;
-import com.jingyuyao.tactical.view.actor.ActorConfig.InitialMarkerSprites;
-import com.jingyuyao.tactical.view.actor.ActorConfig.InitialPlayerTint;
-import com.jingyuyao.tactical.view.actor.ActorConfig.PlayerSprite;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialEnemyTint;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialPlayerTint;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.PlayerSprite;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +26,6 @@ public class ActorModule extends AbstractModule {
   @Override
   protected void configure() {
     install(new FactoryModuleBuilder().build(ActorFactory.class));
-
-    bind(ActorConfig.class);
   }
 
   @Provides
@@ -53,20 +51,20 @@ public class ActorModule extends AbstractModule {
 
   @Provides
   @ActorWorldSize
-  float provideActorWorldSize(ActorConfig actorConfig) {
-    return actorConfig.getActorWorldSize();
+  float provideActorWorldSize() {
+    return 1f;
   }
 
   @Provides
   @InitialPlayerTint
-  Color provideInitialPlayerColor(ActorConfig actorConfig) {
-    return actorConfig.getInitialPlayerTint();
+  Color provideInitialPlayerColor() {
+    return Color.WHITE;
   }
 
   @Provides
   @InitialEnemyTint
-  Color provideInitialEnemyColor(ActorConfig actorConfig) {
-    return actorConfig.getInitialEnemyTint();
+  Color provideInitialEnemyColor() {
+    return Color.RED;
   }
 
   @Provides

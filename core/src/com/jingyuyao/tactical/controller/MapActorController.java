@@ -7,7 +7,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import javax.inject.Inject;
 
 /**
