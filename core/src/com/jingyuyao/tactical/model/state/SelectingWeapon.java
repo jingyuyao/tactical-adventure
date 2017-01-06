@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Targets;
-import com.jingyuyao.tactical.model.mark.Markings;
 import java.util.Locale;
 import javax.inject.Inject;
 
@@ -22,12 +21,11 @@ class SelectingWeapon extends AbstractPlayerState {
   SelectingWeapon(
       EventBus eventBus,
       MapState mapState,
-      Markings markings,
       StateFactory stateFactory,
       @Assisted Player player,
       @Assisted Enemy enemy,
       AttackPlanFactory attackPlanFactory) {
-    super(eventBus, mapState, markings, stateFactory, player);
+    super(eventBus, mapState, stateFactory, player);
     this.enemy = enemy;
     this.attackPlanFactory = attackPlanFactory;
   }
@@ -36,7 +34,7 @@ class SelectingWeapon extends AbstractPlayerState {
   public void enter() {
     super.enter();
     // TODO: use a different marker for each stage
-    getMarkings().showImmediateTargets(getPlayer());
+    getPlayer().showImmediateTargets();
   }
 
   @Override

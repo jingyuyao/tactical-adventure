@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Markings;
 import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +24,6 @@ public class UsingItemTest {
   private EventBus eventBus;
   @Mock
   private MapState mapState;
-  @Mock
-  private Markings markings;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -48,7 +45,7 @@ public class UsingItemTest {
 
   @Before
   public void setUp() {
-    usingItem = new UsingItem(eventBus, mapState, markings, stateFactory, player);
+    usingItem = new UsingItem(eventBus, mapState, stateFactory, player);
   }
 
   @Test

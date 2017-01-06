@@ -5,7 +5,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.mark.Markings;
 import java.util.Locale;
 import javax.inject.Inject;
 
@@ -14,12 +13,8 @@ class UsingItem extends AbstractPlayerState {
 
   @Inject
   UsingItem(
-      EventBus eventBus,
-      MapState mapState,
-      Markings markings,
-      StateFactory stateFactory,
-      @Assisted Player player) {
-    super(eventBus, mapState, markings, stateFactory, player);
+      EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
+    super(eventBus, mapState, stateFactory, player);
   }
 
   @Override

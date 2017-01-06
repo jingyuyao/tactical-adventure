@@ -8,7 +8,8 @@ public interface Disposable {
 
   /**
    * Run any necessary clean up code to remove this object from the model or reset it to a clean
-   * state. Invariant: do not use {@link com.google.common.eventbus.EventBus} while disposing.
+   * state. Invariant: do not call {@link com.google.common.eventbus.EventBus#post(Object)} while
+   * disposing.
    */
   void dispose();
 }

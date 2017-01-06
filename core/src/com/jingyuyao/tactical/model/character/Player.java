@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
@@ -7,8 +8,10 @@ import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
+import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.state.Waiting;
+import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -17,30 +20,35 @@ import javax.inject.Inject;
  */
 public class Player extends Character {
 
+  private final MarkingFactory markingFactory;
   private boolean actionable = true;
+  private Marking marking = null;
 
   @Inject
   Player(
       EventBus eventBus,
-      TargetsFactory targetsFactory,
       @Assisted Coordinate coordinate,
       @InitialMarkers List<Marker> markers,
       @Assisted String name,
       @Assisted Stats stats,
-      @Assisted Items items) {
+      @Assisted Items items,
+      TargetsFactory targetsFactory,
+      MarkingFactory markingFactory) {
     super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
+    this.markingFactory = markingFactory;
     register();
   }
 
   @Subscribe
-  public void endTurn(Waiting.EndTurn endTurn) {
+  public void endTurn(EndTurn endTurn) {
     setActionable(true);
   }
 
   @Override
   public void dispose() {
-    super.dispose();
+    clearMarking();
     unregister();
+    super.dispose();
   }
 
   @Override
@@ -55,5 +63,26 @@ public class Player extends Character {
   public void setActionable(boolean actionable) {
     this.actionable = actionable;
     post(new NewActionState(this, actionable));
+  }
+
+  public void showImmediateTargets() {
+    Preconditions.checkState(marking == null);
+
+    marking = markingFactory.immediateTargets(createTargets());
+    marking.apply();
+  }
+
+  public void showMoveAndTargets() {
+    Preconditions.checkState(marking == null);
+
+    marking = markingFactory.moveAndTargets(createTargets());
+    marking.apply();
+  }
+
+  public void clearMarking() {
+    if (marking != null) {
+      marking.clear();
+      marking = null;
+    }
   }
 }

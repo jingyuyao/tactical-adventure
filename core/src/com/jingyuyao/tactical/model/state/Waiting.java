@@ -4,14 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.mark.Markings;
 import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
 
   @Inject
-  Waiting(EventBus eventBus, MapState mapState, Markings markings, StateFactory stateFactory) {
-    super(eventBus, mapState, markings, stateFactory);
+  Waiting(EventBus eventBus, MapState mapState, StateFactory stateFactory) {
+    super(eventBus, mapState, stateFactory);
   }
 
   @Override
@@ -23,7 +22,7 @@ public class Waiting extends AbstractState {
 
   @Override
   public void select(Enemy enemy) {
-    getMarkings().toggleDangerArea(enemy);
+    enemy.toggleDangerArea();
   }
 
   @Override

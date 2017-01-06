@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Markings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +31,6 @@ public class MovingTest {
   private EventBus eventBus;
   @Mock
   private MapState mapState;
-  @Mock
-  private Markings markings;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -59,14 +56,14 @@ public class MovingTest {
 
   @Before
   public void setUp() {
-    moving = new Moving(eventBus, mapState, markings, stateFactory, movingPlayer);
+    moving = new Moving(eventBus, mapState, stateFactory, movingPlayer);
   }
 
   @Test
   public void enter() {
     moving.enter();
 
-    markings.showMoveAndTargets(movingPlayer);
+    verify(movingPlayer).showMoveAndTargets();
   }
 
   @Test
@@ -98,7 +95,7 @@ public class MovingTest {
   public void exit() {
     moving.exit();
 
-    markings.clearPlayerMarking();
+    verify(movingPlayer).clearMarking();
   }
 
   @Test

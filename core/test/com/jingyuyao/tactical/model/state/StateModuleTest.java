@@ -6,10 +6,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.jingyuyao.tactical.model.AttackPlan;
+import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.TargetsFactory;
-import com.jingyuyao.tactical.model.mark.Markings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,9 +25,7 @@ public class StateModuleTest {
   @Mock
   private AttackPlan attackPlan;
   @Mock
-  private Markings markings;
-  @Mock
-  private TargetsFactory targetsFactory;
+  private AttackPlanFactory attackPlanFactory;
 
   private Injector injector;
 
@@ -37,8 +34,7 @@ public class StateModuleTest {
     injector = Guice.createInjector(new AbstractModule() {
       @Override
       protected void configure() {
-        bind(Markings.class).toInstance(markings);
-        bind(TargetsFactory.class).toInstance(targetsFactory);
+        bind(AttackPlanFactory.class).toInstance(attackPlanFactory);
       }
     }, new StateModule());
   }

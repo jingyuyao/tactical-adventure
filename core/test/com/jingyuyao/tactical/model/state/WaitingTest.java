@@ -9,7 +9,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Markings;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +24,6 @@ public class WaitingTest {
   @Mock
   private MapState mapState;
   @Mock
-  private Markings markings;
-  @Mock
   private StateFactory stateFactory;
   @Mock
   private Player player;
@@ -41,7 +38,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(eventBus, mapState, markings, stateFactory);
+    waiting = new Waiting(eventBus, mapState, stateFactory);
   }
 
   @Test
@@ -69,7 +66,7 @@ public class WaitingTest {
   public void select_enemy() {
     waiting.select(enemy);
 
-    verify(markings).toggleDangerArea(enemy);
+    verify(enemy).toggleDangerArea();
   }
 
   @Test

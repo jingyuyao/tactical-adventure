@@ -12,7 +12,6 @@ import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Markings;
 import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
 import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
 import org.junit.Before;
@@ -31,11 +30,9 @@ public class ReviewingAttackTest {
   @Mock
   private MapState mapState;
   @Mock
-  private Markings markings;
-  @Mock
   private StateFactory stateFactory;
   @Mock
-  private Player player;
+  private Player attackingPlayer;
   @Mock
   private AttackPlan attackPlan;
   @Captor
@@ -52,14 +49,14 @@ public class ReviewingAttackTest {
   @Before
   public void setUp() {
     reviewingAttack =
-        new ReviewingAttack(eventBus, mapState, markings, stateFactory, player, attackPlan);
+        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, attackPlan);
   }
 
   @Test
   public void enter() {
     reviewingAttack.enter();
 
-    verify(markings).showImmediateTargets(player);
+    verify(attackingPlayer).showImmediateTargets();
     verify(eventBus).post(argumentCaptor.capture());
     ShowAttackPlan showAttackPlan =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowAttackPlan.class);
@@ -70,14 +67,14 @@ public class ReviewingAttackTest {
   public void exit() {
     reviewingAttack.exit();
 
-    verify(markings).clearPlayerMarking();
+    verify(attackingPlayer).clearMarking();
     verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(HideAttackPlan.class);
   }
 
   @Test
   public void select_player() {
-    reviewingAttack.select(player);
+    reviewingAttack.select(attackingPlayer);
 
     verify(mapState).pop();
   }
@@ -105,7 +102,7 @@ public class ReviewingAttackTest {
     attack.run();
 
     verify(attackPlan).execute();
-    verify(player).setActionable(false);
+    verify(attackingPlayer).setActionable(false);
     verify(mapState).newStack(waiting);
     verifyNoMoreInteractions(mapState);
   }

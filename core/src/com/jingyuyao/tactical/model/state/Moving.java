@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Markings;
 import javax.inject.Inject;
 
 class Moving extends AbstractPlayerState {
@@ -18,19 +17,14 @@ class Moving extends AbstractPlayerState {
   private Coordinate previousCoordinate;
 
   @Inject
-  Moving(
-      EventBus eventBus,
-      MapState mapState,
-      Markings markings,
-      StateFactory stateFactory,
-      @Assisted Player player) {
-    super(eventBus, mapState, markings, stateFactory, player);
+  Moving(EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
+    super(eventBus, mapState, stateFactory, player);
   }
 
   @Override
   public void enter() {
     super.enter();
-    getMarkings().showMoveAndTargets(getPlayer());
+    getPlayer().showMoveAndTargets();
   }
 
   @Override

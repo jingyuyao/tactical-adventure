@@ -15,7 +15,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Markings;
 import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +32,6 @@ public class SelectingWeaponTest {
   private EventBus eventBus;
   @Mock
   private MapState mapState;
-  @Mock
-  private Markings markings;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -67,22 +64,21 @@ public class SelectingWeaponTest {
   @Before
   public void setUp() {
     selectingWeapon =
-        new SelectingWeapon(
-            eventBus, mapState, markings, stateFactory, player, enemy, attackPlanFactory);
+        new SelectingWeapon(eventBus, mapState, stateFactory, player, enemy, attackPlanFactory);
   }
 
   @Test
   public void enter() {
     selectingWeapon.enter();
 
-    verify(markings).showImmediateTargets(player);
+    verify(player).showImmediateTargets();
   }
 
   @Test
   public void exit() {
     selectingWeapon.exit();
 
-    verify(markings).clearPlayerMarking();
+    verify(player).clearMarking();
   }
 
   @Test
