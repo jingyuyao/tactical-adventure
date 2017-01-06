@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.event.AddMarker;
 import com.jingyuyao.tactical.model.character.event.RemoveMarker;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -26,7 +25,6 @@ import java.util.Map;
 class BaseActor<T extends MapObject> extends Actor {
 
   private final T object;
-  private final Waiter waiter;
   private final Map<Marker, Sprite> markerSpriteMap;
   private final List<Sprite> markerSprites;
 
@@ -35,11 +33,9 @@ class BaseActor<T extends MapObject> extends Actor {
       EventListener listener,
       float size,
       EventBus eventBus,
-      Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
       List<Sprite> markerSprites) {
     this.object = object;
-    this.waiter = waiter;
     this.markerSpriteMap = markerSpriteMap;
     this.markerSprites = markerSprites;
     Coordinate coordinate = object.getCoordinate();
@@ -50,10 +46,6 @@ class BaseActor<T extends MapObject> extends Actor {
 
   T getObject() {
     return object;
-  }
-
-  Waiter getWaiter() {
-    return waiter;
   }
 
   @Override

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
@@ -22,9 +21,8 @@ public class TerrainActor extends BaseActor<Terrain> {
       @Assisted EventListener listener,
       @ActorWorldSize float size,
       EventBus eventBus,
-      Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
       @InitialMarkerSprites List<Sprite> markerSprites) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites);
+    super(object, listener, size, eventBus, markerSpriteMap, markerSprites);
   }
 }

@@ -26,6 +26,7 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
 
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
+  private final Waiter waiter;
   private final Sprite sprite;
 
   CharacterActor(
@@ -38,7 +39,8 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
       List<Sprite> markerSprites,
       Sprite sprite,
       Color initialTint) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites);
+    super(object, listener, size, eventBus, markerSpriteMap, markerSprites);
+    this.waiter = waiter;
     this.sprite = sprite;
     setColor(initialTint);
   }
@@ -74,10 +76,10 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
                   for (EventListener listener : listeners) {
                     addListener(listener);
                   }
-                  getWaiter().finishOne();
+                  waiter.finishOne();
                 }
               }));
-      getWaiter().waitOne();
+      waiter.waitOne();
       addAction(moveSequence);
     }
   }
