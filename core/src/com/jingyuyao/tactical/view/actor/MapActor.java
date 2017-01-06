@@ -4,12 +4,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.character.event.AddMarker;
-import com.jingyuyao.tactical.model.character.event.RemoveMarker;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.event.SyncMarkers;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.MapView;
 import java.util.List;
@@ -57,16 +58,19 @@ class MapActor<T extends MapObject> extends Actor {
   }
 
   @Subscribe
-  public void addMarker(AddMarker addMarker) {
-    if (object.equals(addMarker.getObject())) {
-      markerSprites.add(markerSpriteMap.get(addMarker.getMarker()));
-    }
-  }
-
-  @Subscribe
-  public void removeMarker(RemoveMarker removeMarker) {
-    if (object.equals(removeMarker.getObject())) {
-      markerSprites.remove(markerSpriteMap.get(removeMarker.getMarker()));
+  public void markersChanged(SyncMarkers syncMarkers) {
+    if (syncMarkers.matches(object)) {
+      markerSprites.clear();
+      Iterables.addAll(
+          markerSprites,
+          Iterables.transform(
+              syncMarkers.getMarkers(),
+              new Function<Marker, Sprite>() {
+                @Override
+                public Sprite apply(Marker input) {
+                  return markerSpriteMap.get(input);
+                }
+              }));
     }
   }
 }

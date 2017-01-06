@@ -8,9 +8,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.character.event.AddMarker;
-import com.jingyuyao.tactical.model.character.event.RemoveMarker;
 import com.jingyuyao.tactical.model.common.EventBusObject;
+import com.jingyuyao.tactical.model.map.event.SyncMarkers;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.lang.annotation.Retention;
@@ -49,12 +48,12 @@ public abstract class MapObject extends EventBusObject {
 
   public void addMarker(Marker marker) {
     markers.add(marker);
-    post(new AddMarker(this, marker));
+    post(new SyncMarkers(this, markers));
   }
 
   public void removeMarker(Marker marker) {
     markers.remove(marker);
-    post(new RemoveMarker(this, marker));
+    post(new SyncMarkers(this, markers));
   }
 
   /**
