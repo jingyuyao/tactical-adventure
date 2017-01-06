@@ -32,7 +32,7 @@ public class MarkingFactory {
   private final Provider<Map<MapObject, Marker>> markerMapProvider;
 
   @Inject
-  public MarkingFactory(
+  MarkingFactory(
       EventBus eventBus,
       Waiter waiter,
       Terrains terrains,
