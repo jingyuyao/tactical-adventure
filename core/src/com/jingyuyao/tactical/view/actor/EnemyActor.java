@@ -11,6 +11,8 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorConfig.EnemySprite;
 import com.jingyuyao.tactical.view.actor.ActorConfig.InitialEnemyTint;
+import com.jingyuyao.tactical.view.actor.ActorConfig.InitialMarkerSprites;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
@@ -25,8 +27,10 @@ public class EnemyActor extends CharacterActor<Enemy> {
       EventBus eventBus,
       Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
+      @InitialMarkerSprites List<Sprite> markerSprites,
       @EnemySprite Sprite sprite,
       @InitialEnemyTint Color initialTint) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap, sprite, initialTint);
+    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites, sprite,
+        initialTint);
   }
 }

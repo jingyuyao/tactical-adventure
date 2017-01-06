@@ -57,6 +57,13 @@ public class ActorConfig {
 
   }
 
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialMarkerSprites {
+
+  }
+
   // TODO: temp, remove me later
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})

@@ -12,9 +12,12 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorConfig.EnemySprite;
 import com.jingyuyao.tactical.view.actor.ActorConfig.InitialEnemyTint;
+import com.jingyuyao.tactical.view.actor.ActorConfig.InitialMarkerSprites;
 import com.jingyuyao.tactical.view.actor.ActorConfig.InitialPlayerTint;
 import com.jingyuyao.tactical.view.actor.ActorConfig.PlayerSprite;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Singleton;
 
@@ -64,6 +67,12 @@ public class ActorModule extends AbstractModule {
   @InitialEnemyTint
   Color provideInitialEnemyColor(ActorConfig actorConfig) {
     return actorConfig.getInitialEnemyTint();
+  }
+
+  @Provides
+  @InitialMarkerSprites
+  List<Sprite> provideInitialMarkerSprites() {
+    return new ArrayList<Sprite>();
   }
 
   // TODO: temp, remove me

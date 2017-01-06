@@ -8,6 +8,8 @@ import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorConfig.InitialMarkerSprites;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
@@ -21,7 +23,8 @@ public class TerrainActor extends BaseActor<Terrain> {
       @ActorWorldSize float size,
       EventBus eventBus,
       Waiter waiter,
-      Map<Marker, Sprite> markerSpriteMap) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap);
+      Map<Marker, Sprite> markerSpriteMap,
+      @InitialMarkerSprites List<Sprite> markerSprites) {
+    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites);
   }
 }

@@ -19,6 +19,7 @@ import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.mark.Marker;
+import java.util.List;
 import java.util.Map;
 
 class CharacterActor<T extends Character> extends BaseActor<T> {
@@ -34,9 +35,10 @@ class CharacterActor<T extends Character> extends BaseActor<T> {
       EventBus eventBus,
       Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
+      List<Sprite> markerSprites,
       Sprite sprite,
       Color initialTint) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap);
+    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites);
     this.sprite = sprite;
     setColor(initialTint);
   }

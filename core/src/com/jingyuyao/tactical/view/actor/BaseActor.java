@@ -13,7 +13,6 @@ import com.jingyuyao.tactical.model.character.event.RemoveMarker;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.MapView;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +36,12 @@ class BaseActor<T extends MapObject> extends Actor {
       float size,
       EventBus eventBus,
       Waiter waiter,
-      Map<Marker, Sprite> markerSpriteMap) {
+      Map<Marker, Sprite> markerSpriteMap,
+      List<Sprite> markerSprites) {
     this.object = object;
     this.waiter = waiter;
     this.markerSpriteMap = markerSpriteMap;
-    markerSprites = new ArrayList<Sprite>();
+    this.markerSprites = markerSprites;
     Coordinate coordinate = object.getCoordinate();
     setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
     addListener(listener);

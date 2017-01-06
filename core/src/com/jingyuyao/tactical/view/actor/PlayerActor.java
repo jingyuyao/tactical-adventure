@@ -11,8 +11,10 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorConfig.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorConfig.InitialMarkerSprites;
 import com.jingyuyao.tactical.view.actor.ActorConfig.InitialPlayerTint;
 import com.jingyuyao.tactical.view.actor.ActorConfig.PlayerSprite;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
@@ -27,9 +29,11 @@ public class PlayerActor extends CharacterActor<Player> {
       EventBus eventBus,
       Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
+      @InitialMarkerSprites List<Sprite> markerSprites,
       @PlayerSprite Sprite sprite,
       @InitialPlayerTint Color initialTint) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap, sprite, initialTint);
+    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites, sprite,
+        initialTint);
   }
 
   @Subscribe
