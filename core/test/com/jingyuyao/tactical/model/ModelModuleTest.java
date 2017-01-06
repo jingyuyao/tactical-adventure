@@ -3,30 +3,33 @@ package com.jingyuyao.tactical.model;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ModelModuleTest {
 
-  private Injector injector;
+  @Inject
+  private Waiter waiter1;
+  @Inject
+  private Waiter waiter2;
+  @Inject
+  private AttackPlanFactory attackPlanFactory1;
+  @Inject
+  private AttackPlanFactory attackPlanFactory2;
 
   @Before
   public void setUp() {
-    injector = Guice.createInjector(new ModelModule());
+    Guice.createInjector(new ModelModule()).injectMembers(this);
   }
 
   @Test
   public void waiter_singleton() {
-    Waiter waiter1 = injector.getInstance(Waiter.class);
-    Waiter waiter2 = injector.getInstance(Waiter.class);
     assertThat(waiter1).isSameAs(waiter2);
   }
 
   @Test
   public void attackPlanFactory_singleton() {
-    AttackPlanFactory factory1 = injector.getInstance(AttackPlanFactory.class);
-    AttackPlanFactory factory2 = injector.getInstance(AttackPlanFactory.class);
-    assertThat(factory1).isSameAs(factory2);
+    assertThat(attackPlanFactory1).isSameAs(attackPlanFactory2);
   }
 }
