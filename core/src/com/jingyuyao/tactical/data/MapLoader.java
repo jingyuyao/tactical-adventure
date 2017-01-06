@@ -70,13 +70,7 @@ public class MapLoader {
     Preconditions.checkArgument(height > 0, "MapView height must be > 0");
     Preconditions.checkArgument(width > 0, "MapView width must be > 0");
 
-    List<Terrain> terrains = new ArrayList<Terrain>();
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-        terrains.add(createTerrain(x, y, cell));
-      }
-    }
+    List<Terrain> terrains = createTerrains(terrainLayer, width, height);
 
     eventBus.post(
         new NewMap(
@@ -87,6 +81,17 @@ public class MapLoader {
             terrains,
             waitingProvider.get()));
     mapRenderer.setMap(tiledMap);
+  }
+
+  private List<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
+    List<Terrain> terrains = new ArrayList<Terrain>();
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
+        terrains.add(createTerrain(x, y, cell));
+      }
+    }
+    return terrains;
   }
 
   private Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {
