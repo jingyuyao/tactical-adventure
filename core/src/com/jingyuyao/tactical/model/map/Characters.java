@@ -54,7 +54,7 @@ public class Characters extends EventBusObject
   }
 
   @Subscribe
-  public void characterDied(RemoveCharacter removeCharacter) {
+  public void removeCharacter(RemoveCharacter removeCharacter) {
     characters.remove(removeCharacter.getObject());
   }
 

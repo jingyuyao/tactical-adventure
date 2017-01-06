@@ -85,7 +85,7 @@ class CharacterActor<T extends Character> extends MapActor<T> {
   }
 
   @Subscribe
-  public void characterDied(RemoveCharacter removeCharacter) {
+  public void removeCharacter(RemoveCharacter removeCharacter) {
     if (removeCharacter.matches(getObject())) {
       remove();
     }

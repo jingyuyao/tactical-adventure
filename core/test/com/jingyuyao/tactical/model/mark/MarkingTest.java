@@ -59,12 +59,12 @@ public class MarkingTest {
   }
 
   @Test
-  public void character_died_matches_applied() {
+  public void remove_character_matches_applied() {
     set_up_marker_map();
     when(removeCharacter.matches(character)).thenReturn(true);
 
     marking.apply();
-    marking.characterDied(removeCharacter);
+    marking.removeCharacter(removeCharacter);
 
     verify(waiter, times(2)).runOnce(argumentCaptor.capture());
     runRunnables(argumentCaptor.getAllValues());
@@ -76,11 +76,11 @@ public class MarkingTest {
   }
 
   @Test
-  public void character_died_matches_not_applied() {
+  public void remove_character_matches_not_applied() {
     set_up_marker_map();
     when(removeCharacter.matches(character)).thenReturn(true);
 
-    marking.characterDied(removeCharacter);
+    marking.removeCharacter(removeCharacter);
 
     verify(waiter).runOnce(argumentCaptor.capture());
     argumentCaptor.getValue().run();
@@ -90,10 +90,10 @@ public class MarkingTest {
   }
 
   @Test
-  public void character_died_not_matches() {
+  public void remove_character_not_matches() {
     when(removeCharacter.matches(character)).thenReturn(false);
 
-    marking.characterDied(removeCharacter);
+    marking.removeCharacter(removeCharacter);
 
     verifyZeroInteractions(waiter);
     verifyZeroInteractions(eventBus);

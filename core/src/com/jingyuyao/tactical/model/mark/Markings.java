@@ -56,7 +56,7 @@ public class Markings extends EventBusObject implements Disposable {
   }
 
   @Subscribe
-  public void characterDied(RemoveCharacter removeCharacter) {
+  public void removeCharacter(RemoveCharacter removeCharacter) {
     dangerAreas.remove(removeCharacter.getObject());
   }
 

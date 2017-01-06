@@ -34,7 +34,7 @@ public class Marking extends EventBusObject {
   }
 
   @Subscribe
-  public void characterDied(RemoveCharacter removeCharacter) {
+  public void removeCharacter(RemoveCharacter removeCharacter) {
     if (removeCharacter.matches(owner)) {
       clear();
     }
