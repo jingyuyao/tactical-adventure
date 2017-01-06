@@ -4,6 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.ArrayList;
@@ -16,9 +17,10 @@ public class MapModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    install(new FactoryModuleBuilder().build(TerrainFactory.class));
+
     bind(Characters.class);
     bind(Terrains.class);
-    bind(MapFactory.class);
     bind(TargetsFactory.class);
   }
 

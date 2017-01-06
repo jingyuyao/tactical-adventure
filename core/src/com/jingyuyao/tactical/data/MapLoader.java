@@ -20,8 +20,8 @@ import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.MapFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.TerrainFactory;
 import com.jingyuyao.tactical.model.state.Waiting;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +41,7 @@ public class MapLoader {
   private final EventBus eventBus;
   private final Provider<Waiting> waitingProvider;
   private final CharacterFactory characterFactory;
-  private final MapFactory mapFactory;
+  private final TerrainFactory terrainFactory;
   private final ItemFactory itemFactory;
   private final OrthogonalTiledMapRenderer mapRenderer;
 
@@ -50,13 +50,13 @@ public class MapLoader {
       EventBus eventBus,
       Provider<Waiting> waitingProvider,
       CharacterFactory characterFactory,
-      MapFactory mapFactory,
+      TerrainFactory terrainFactory,
       ItemFactory itemFactory,
       OrthogonalTiledMapRenderer mapRenderer) {
     this.eventBus = eventBus;
     this.waitingProvider = waitingProvider;
     this.characterFactory = characterFactory;
-    this.mapFactory = mapFactory;
+    this.terrainFactory = terrainFactory;
     this.itemFactory = itemFactory;
     this.mapRenderer = mapRenderer;
   }
@@ -105,7 +105,7 @@ public class MapLoader {
         Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
       }
     }
-    return mapFactory.createTerrain(x, y, type);
+    return terrainFactory.create(new Coordinate(x, y), type);
   }
 
   // TODO: remove us

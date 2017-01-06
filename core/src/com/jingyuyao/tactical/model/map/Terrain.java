@@ -1,18 +1,25 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Algorithms;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
+import javax.inject.Inject;
 
 public class Terrain extends MapObject {
 
   private final Type type;
 
-  Terrain(EventBus eventBus, Coordinate coordinate, List<Marker> markers, Type type) {
+  @Inject
+  Terrain(
+      EventBus eventBus,
+      @Assisted Coordinate coordinate,
+      @InitialMarkers List<Marker> markers,
+      @Assisted Type type) {
     super(eventBus, coordinate, markers);
     this.type = type;
   }
