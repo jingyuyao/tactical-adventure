@@ -44,6 +44,7 @@ public class ActorFactory {
     this.characterSpriteMap = characterSpriteMap;
   }
 
+  // TODO: assisted inject these?
   public Actor create(Player player) {
     return new PlayerActor(
         eventBus,
