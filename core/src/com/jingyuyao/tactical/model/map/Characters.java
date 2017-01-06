@@ -10,7 +10,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.CharacterDied;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
@@ -54,8 +54,8 @@ public class Characters extends EventBusObject
   }
 
   @Subscribe
-  public void characterDied(CharacterDied characterDied) {
-    characters.remove(characterDied.getObject());
+  public void characterDied(RemoveCharacter removeCharacter) {
+    characters.remove(removeCharacter.getObject());
   }
 
   @Override

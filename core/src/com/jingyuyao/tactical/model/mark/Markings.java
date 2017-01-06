@@ -11,7 +11,7 @@ import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.character.event.CharacterDied;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
@@ -56,8 +56,8 @@ public class Markings extends EventBusObject implements Disposable {
   }
 
   @Subscribe
-  public void characterDied(CharacterDied characterDied) {
-    dangerAreas.remove(characterDied.getObject());
+  public void characterDied(RemoveCharacter removeCharacter) {
+    dangerAreas.remove(removeCharacter.getObject());
   }
 
   public void showMoveAndTargets(Player player) {

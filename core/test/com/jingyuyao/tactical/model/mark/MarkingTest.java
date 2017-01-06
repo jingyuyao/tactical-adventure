@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.CharacterDied;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class MarkingTest {
   @Mock
   private Waiter waiter;
   @Mock
-  private CharacterDied characterDied;
+  private RemoveCharacter removeCharacter;
   @Mock
   private Set<Entry<MapObject, Marker>> entrySet;
   @Mock
@@ -61,10 +61,10 @@ public class MarkingTest {
   @Test
   public void character_died_matches_applied() {
     set_up_marker_map();
-    when(characterDied.matches(character)).thenReturn(true);
+    when(removeCharacter.matches(character)).thenReturn(true);
 
     marking.apply();
-    marking.characterDied(characterDied);
+    marking.characterDied(removeCharacter);
 
     verify(waiter, times(2)).runOnce(argumentCaptor.capture());
     runRunnables(argumentCaptor.getAllValues());
@@ -78,9 +78,9 @@ public class MarkingTest {
   @Test
   public void character_died_matches_not_applied() {
     set_up_marker_map();
-    when(characterDied.matches(character)).thenReturn(true);
+    when(removeCharacter.matches(character)).thenReturn(true);
 
-    marking.characterDied(characterDied);
+    marking.characterDied(removeCharacter);
 
     verify(waiter).runOnce(argumentCaptor.capture());
     argumentCaptor.getValue().run();
@@ -91,9 +91,9 @@ public class MarkingTest {
 
   @Test
   public void character_died_not_matches() {
-    when(characterDied.matches(character)).thenReturn(false);
+    when(removeCharacter.matches(character)).thenReturn(false);
 
-    marking.characterDied(characterDied);
+    marking.characterDied(removeCharacter);
 
     verifyZeroInteractions(waiter);
     verifyZeroInteractions(eventBus);

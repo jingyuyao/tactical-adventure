@@ -15,9 +15,9 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.List;
 import java.util.Map;
@@ -85,8 +85,8 @@ class CharacterActor<T extends Character> extends MapActor<T> {
   }
 
   @Subscribe
-  public void characterDied(CharacterDied characterDied) {
-    if (characterDied.matches(getObject())) {
+  public void characterDied(RemoveCharacter removeCharacter) {
+    if (removeCharacter.matches(getObject())) {
       remove();
     }
   }

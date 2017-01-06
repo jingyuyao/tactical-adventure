@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.CharacterDied;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Map;
@@ -34,8 +34,8 @@ public class Marking extends EventBusObject {
   }
 
   @Subscribe
-  public void characterDied(CharacterDied characterDied) {
-    if (characterDied.matches(owner)) {
+  public void characterDied(RemoveCharacter removeCharacter) {
+    if (removeCharacter.matches(owner)) {
       clear();
     }
   }

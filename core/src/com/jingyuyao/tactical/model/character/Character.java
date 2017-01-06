@@ -5,9 +5,9 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.Coordinate;
-import com.jingyuyao.tactical.model.character.event.CharacterDied;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -113,7 +113,7 @@ public abstract class Character extends MapObject implements Disposable {
   public void damageBy(int delta) {
     boolean dead = stats.damageBy(delta);
     if (dead) {
-      post(new CharacterDied(this));
+      post(new RemoveCharacter(this));
       dispose();
     }
   }
