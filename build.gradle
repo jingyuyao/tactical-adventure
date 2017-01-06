@@ -103,6 +103,7 @@ project(":core") {
             // We can't allow that as it includes AOP which doesn't work on Android.
             exclude group: "com.google.inject", module: "guice"
         }
+        testCompile "com.google.inject.extensions:guice-testlib:$guiceVersion"
         testCompile "junit:junit:$junitVersion"
         testCompile "org.mockito:mockito-core:$mockitoVersion"
         testCompile "com.google.truth:truth:$truthVersion"
