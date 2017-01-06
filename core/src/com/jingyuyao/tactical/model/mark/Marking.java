@@ -75,6 +75,7 @@ public class Marking extends EventBusObject {
             // Set flag immediately so apply() would not get called for the rare cases where
             // clear() is called before apply()
             cleared = true;
+            unregister();
 
             if (!applied) {
               return;
@@ -83,7 +84,6 @@ public class Marking extends EventBusObject {
             for (Map.Entry<MapObject, Marker> entry : markers.entrySet()) {
               entry.getKey().removeMarker(entry.getValue());
             }
-            unregister();
           }
         });
   }
