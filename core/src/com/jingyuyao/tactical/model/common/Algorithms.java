@@ -18,14 +18,22 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Functions should return immutable objects. This class should not rely on our custom model
  * classes.
  */
+@Singleton
 public class Algorithms {
 
   public static final int NO_EDGE = -1;
+
+  @Inject
+  Algorithms() {
+
+  }
 
   /**
    * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code
@@ -36,7 +44,7 @@ public class Algorithms {
    * @param edgeCostMap The grid to get edge cost for creating the graph
    * @param maxPathCost Maximum cost for the path between initial location to any other object
    */
-  public static ValueGraph<Coordinate, Integer> minPathSearch(
+  public ValueGraph<Coordinate, Integer> minPathSearch(
       int gridWidth,
       int gridHeight,
       Map<Coordinate, Integer> edgeCostMap,
@@ -105,7 +113,7 @@ public class Algorithms {
    * @return A path to {@code target} from the first node in the graph or an empty list if target is
    * not in the graph
    */
-  public static ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
+  public ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
     Preconditions.checkArgument(graph.nodes().contains(target));
 
     ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
@@ -128,8 +136,7 @@ public class Algorithms {
    *
    * @return Randomized list of neighbors
    */
-  private static ImmutableList<Coordinate> getNeighbors(
-      int gridWidth, int gridHeight, Coordinate from) {
+  private ImmutableList<Coordinate> getNeighbors(int gridWidth, int gridHeight, Coordinate from) {
     int x = from.getX();
     int y = from.getY();
 
@@ -159,7 +166,7 @@ public class Algorithms {
    *
    * @param from starting coordinate
    */
-  public static ImmutableList<Coordinate> getNDistanceAway(
+  public ImmutableList<Coordinate> getNDistanceAway(
       int gridWidth, int gridHeight, Coordinate from, int distance) {
     if (distance == 1) {
       return getNeighbors(gridWidth, gridHeight, from);

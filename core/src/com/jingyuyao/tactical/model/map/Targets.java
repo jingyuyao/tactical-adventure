@@ -22,6 +22,7 @@ import java.util.Set;
 // TODO: needs to be thoroughly tested
 public class Targets {
 
+  private final Algorithms algorithms;
   private final Characters characters;
   private final Character character;
   private final Graph<Coordinate> moveGraph;
@@ -31,10 +32,12 @@ public class Targets {
   private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
 
   Targets(
+      Algorithms algorithms,
       Characters characters,
       Character character,
       Graph<Coordinate> moveGraph,
       SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap) {
+    this.algorithms = algorithms;
     this.characters = characters;
     this.character = character;
     this.moveGraph = moveGraph;
@@ -74,7 +77,7 @@ public class Targets {
    * Get a path to a {@link Coordinate} from {@link #moves()}.
    */
   public Path pathTo(Coordinate to) {
-    return new Path(to, Algorithms.getTrackTo(moveGraph, to));
+    return new Path(to, algorithms.getTrackTo(moveGraph, to));
   }
 
   /**
