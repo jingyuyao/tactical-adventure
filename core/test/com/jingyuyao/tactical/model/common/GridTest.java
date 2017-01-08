@@ -1,124 +1,74 @@
 package com.jingyuyao.tactical.model.common;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.jingyuyao.tactical.model.Coordinate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class GridTest {
 
-  private static final int WIDTH = 3;
-  private static final int HEIGHT = 2;
-  private static final int SIZE = WIDTH * HEIGHT;
+  private static final int WIDTH = 2;
+  private static final int HEIGHT = 3;
+
+  @Mock
+  private Map<Coordinate, Coordinate> coordinateMap;
+  @Mock
+  private Collection<Coordinate> coordinates;
+  @Mock
+  private Iterator<Coordinate> iterator;
 
   private Grid<Coordinate> grid;
 
   @Before
   public void setUp() {
-    grid = new Grid<Coordinate>(WIDTH, HEIGHT);
+    set_up_coordinate_map();
+    grid = new Grid<Coordinate>(WIDTH, HEIGHT, coordinateMap);
   }
 
   @Test(expected = IllegalStateException.class)
-  public void validate_nulls() {
-    grid.validate();
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void validate_single_null() {
-    grid.set(0, 0, obj(0, 0));
-    grid.set(0, 1, obj(0, 1));
-    grid.set(1, 0, obj(1, 0));
-    grid.set(1, 1, obj(1, 1));
-    grid.set(2, 0, obj(2, 0));
-    grid.validate();
+  public void not_properly_populated() {
+    when(coordinateMap.containsKey(coordinate(0, 1))).thenReturn(false);
+    grid = new Grid<Coordinate>(WIDTH, HEIGHT, coordinateMap);
   }
 
   @Test
-  public void get_and_set() {
-    populateGrid();
-
+  public void get() {
     for (int x = 0; x < WIDTH; x++) {
       for (int y = 0; y < HEIGHT; y++) {
-        Coordinate c = grid.get(x, y);
-        assertThat(c.getX()).isEqualTo(x);
-        assertThat(c.getY()).isEqualTo(y);
+        assertThat(grid.get(coordinate(x, y))).isEqualTo(coordinate(x, y));
       }
     }
   }
 
   @Test
   public void iteration() {
-    populateGrid();
+    when(coordinateMap.values()).thenReturn(coordinates);
+    when(coordinates.iterator()).thenReturn(iterator);
 
-    Set<Coordinate> coordinates = new HashSet<Coordinate>(SIZE);
-    for (Coordinate c : grid) {
-      if (coordinates.contains(c)) {
-        fail("iteration contains duplicates");
-      }
-      coordinates.add(c);
-    }
-
-    assertThat(coordinates).hasSize(SIZE);
+    // no point testing whether map's iterator works or not
+    assertThat(grid.iterator()).isSameAs(iterator);
   }
 
-  @Test
-  public void push() {
-    populateGrid();
-
-    Coordinate newObj = obj(100, 100);
-    Coordinate oldObj = grid.push(2, 1, newObj);
-
-    assertThat(oldObj.getX()).isEqualTo(2);
-    assertThat(oldObj.getY()).isEqualTo(1);
-    assertThat(grid.get(2, 1)).isSameAs(newObj);
-  }
-
-  @Test
-  public void from() {
-    List<Coordinate> coordinates = new ArrayList<Coordinate>();
+  private void set_up_coordinate_map() {
     for (int x = 0; x < WIDTH; x++) {
       for (int y = 0; y < HEIGHT; y++) {
-        coordinates.add(obj(x, y));
-      }
-    }
-    Function<Coordinate, Coordinate> extractor = Functions.identity();
-
-    grid = Grid.from(WIDTH, HEIGHT, coordinates, extractor);
-
-    for (int x = 0; x < WIDTH; x++) {
-      for (int y = 0; y < HEIGHT; y++) {
-        Coordinate c = grid.get(x, y);
-        assertThat(c.getX()).isEqualTo(x);
-        assertThat(c.getY()).isEqualTo(y);
+        Coordinate coordinate = coordinate(x, y);
+        when(coordinateMap.containsKey(coordinate)).thenReturn(true);
+        when(coordinateMap.get(coordinate)).thenReturn(coordinate);
       }
     }
   }
 
-  @Test(expected = IllegalStateException.class)
-  public void from_bad_inputs() {
-    List<Coordinate> coordinates = new ArrayList<Coordinate>();
-    Function<Coordinate, Coordinate> extractor = Functions.identity();
-
-    Grid.from(WIDTH, HEIGHT, coordinates, extractor);
-  }
-
-  private void populateGrid() {
-    for (int x = 0; x < WIDTH; x++) {
-      for (int y = 0; y < HEIGHT; y++) {
-        grid.set(x, y, obj(x, y));
-      }
-    }
-  }
-
-  private Coordinate obj(int x, int y) {
+  private Coordinate coordinate(int x, int y) {
     return new Coordinate(x, y);
   }
 }
