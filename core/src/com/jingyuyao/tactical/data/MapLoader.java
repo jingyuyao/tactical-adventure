@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Items;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Stats;
-import com.jingyuyao.tactical.model.common.Grid;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.ItemFactory;
@@ -26,10 +25,8 @@ import com.jingyuyao.tactical.model.map.TerrainFactory;
 import com.jingyuyao.tactical.model.state.Waiting;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -73,28 +70,26 @@ public class MapLoader {
     Preconditions.checkArgument(height > 0, "MapView height must be > 0");
     Preconditions.checkArgument(width > 0, "MapView width must be > 0");
 
-    Grid<Terrain> terrainGrid = createTerrainGrid(terrainLayer, width, height);
-
     eventBus.post(
         new NewMap(
             width,
             height,
             createTestPlayers(),
             createTestEnemies(),
-            terrainGrid,
+            createTerrains(terrainLayer, width, height),
             waitingProvider.get()));
     mapRenderer.setMap(tiledMap);
   }
 
-  private Grid<Terrain> createTerrainGrid(TiledMapTileLayer terrainLayer, int width, int height) {
-    Map<Coordinate, Terrain> terrainMap = new HashMap<Coordinate, Terrain>(width * height);
+  private List<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
+    List<Terrain> terrains = new ArrayList<Terrain>(width * height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-        terrainMap.put(new Coordinate(x, y), createTerrain(x, y, cell));
+        terrains.add(createTerrain(x, y, cell));
       }
     }
-    return new Grid<Terrain>(width, height, terrainMap);
+    return terrains;
   }
 
   private Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {

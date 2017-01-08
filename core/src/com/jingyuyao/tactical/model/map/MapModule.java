@@ -3,11 +3,15 @@ package com.jingyuyao.tactical.model.map;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.map.Terrains.BackingTerrainMap;
 import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Singleton;
 
@@ -33,5 +37,12 @@ public class MapModule extends AbstractModule {
   @Characters.BackingCharacterSet
   Set<Character> provideBackingCharacterSet() {
     return new HashSet<Character>();
+  }
+
+  @Provides
+  @Singleton
+  @BackingTerrainMap
+  Map<Coordinate, Terrain> provideBackingTerrainMap() {
+    return new HashMap<Coordinate, Terrain>();
   }
 }
