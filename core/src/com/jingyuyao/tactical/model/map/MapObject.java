@@ -7,7 +7,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.event.SyncMarkers;
 import com.jingyuyao.tactical.model.mark.Marker;

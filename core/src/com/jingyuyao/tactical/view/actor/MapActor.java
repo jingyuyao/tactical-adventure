@@ -8,7 +8,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.Coordinate;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.event.SyncMarkers;
 import com.jingyuyao.tactical.model.mark.Marker;
