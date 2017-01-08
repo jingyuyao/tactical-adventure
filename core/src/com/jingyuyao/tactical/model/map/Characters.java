@@ -29,38 +29,38 @@ import javax.inject.Singleton;
 public class Characters extends EventBusObject
     implements ManagedBy<NewMap, ClearMap>, Iterable<Character> {
 
-  private final Set<Character> characters;
+  private final Set<Character> characterSet;
 
   @Inject
-  Characters(EventBus eventBus, @BackingCharacterSet Set<Character> characters) {
+  Characters(EventBus eventBus, @BackingCharacterSet Set<Character> characterSet) {
     super(eventBus);
-    this.characters = characters;
+    this.characterSet = characterSet;
     register();
   }
 
   @Subscribe
   @Override
   public void initialize(NewMap data) {
-    Iterables.addAll(characters, Iterables.concat(data.getPlayers(), data.getEnemies()));
+    Iterables.addAll(characterSet, Iterables.concat(data.getPlayers(), data.getEnemies()));
   }
 
   @Subscribe
   @Override
   public void dispose(ClearMap clearMap) {
-    for (Character character : characters) {
+    for (Character character : characterSet) {
       character.dispose();
     }
-    characters.clear();
+    characterSet.clear();
   }
 
   @Subscribe
   public void removeCharacter(RemoveCharacter removeCharacter) {
-    characters.remove(removeCharacter.getObject());
+    characterSet.remove(removeCharacter.getObject());
   }
 
   @Override
   public Iterator<Character> iterator() {
-    return characters.iterator();
+    return characterSet.iterator();
   }
 
   @BindingAnnotation
