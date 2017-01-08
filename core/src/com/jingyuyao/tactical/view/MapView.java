@@ -50,7 +50,7 @@ public class MapView implements ManagedBy<NewMap, ClearMap> {
   @Subscribe
   @Override
   public void initialize(NewMap data) {
-    for (Terrain terrain : data.getTerrains()) {
+    for (Terrain terrain : data.getTerrainGrid()) {
       stage.addActor(
           actorFactory.createTerrainActor(terrain, mapActorControllerFactory.create(terrain)));
     }

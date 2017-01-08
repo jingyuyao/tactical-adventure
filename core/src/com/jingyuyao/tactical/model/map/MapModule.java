@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.map;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -35,12 +33,5 @@ public class MapModule extends AbstractModule {
   @Characters.BackingCharacterSet
   Set<Character> provideBackingCharacterSet() {
     return new HashSet<Character>();
-  }
-
-  @Provides
-  @Singleton
-  @Terrains.BackingTerrainTable
-  Table<Integer, Integer, Terrain> provideBackingTerrainTable() {
-    return HashBasedTable.create();
   }
 }
