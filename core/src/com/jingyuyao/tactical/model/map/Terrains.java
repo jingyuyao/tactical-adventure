@@ -91,7 +91,7 @@ public class Terrains extends EventBusObject
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         if (!terrainMap.containsKey(new Coordinate(x, y))) {
-          throw new IllegalStateException("Grid is not fully populated");
+          throw new IllegalStateException("Terrains is not fully populated");
         }
       }
     }
