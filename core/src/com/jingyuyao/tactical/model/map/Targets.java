@@ -117,7 +117,8 @@ public class Targets {
     return ImmutableSet.copyOf(
         Iterables.concat(
             Iterables.transform(
-                moveMap.get(character.getCoordinate()), new MultiMapKeysExtractor())));
+                moveMap.get(character.getCoordinate()),
+                new MultiMapKeysExtractor())));
   }
 
   /**
