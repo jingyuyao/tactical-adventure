@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
@@ -180,6 +181,11 @@ public class MarkingTest {
 
     verify(eventBus).unregister(marking);
     verifyZeroInteractions(mapObject);
+  }
+
+  @Test
+  public void subscribers() {
+    TestHelpers.verifyNoDeadEvents(marking, removeCharacter);
   }
 
   private void set_up_marker_map() {

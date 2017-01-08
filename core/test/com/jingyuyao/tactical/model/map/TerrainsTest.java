@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
@@ -129,5 +130,21 @@ public class TerrainsTest {
     when(terrainCollection.iterator()).thenReturn(terrainIterator);
 
     assertThat(terrains.iterator()).isSameAs(terrainIterator);
+  }
+
+  @Test
+  public void subscribers() {
+    when(newMap.getTerrains()).thenReturn(terrainList);
+    when(newMap.getWidth()).thenReturn(WIDTH);
+    when(newMap.getHeight()).thenReturn(HEIGHT);
+    when(terrainList.iterator()).thenReturn(terrainIterator);
+    when(terrainIterator.hasNext()).thenReturn(true, true, false);
+    when(terrainIterator.next()).thenReturn(terrain1, terrain2);
+    when(terrain1.getCoordinate()).thenReturn(COORDINATE1);
+    when(terrain2.getCoordinate()).thenReturn(COORDINATE2);
+    when(terrainMap.containsKey(COORDINATE1)).thenReturn(true);
+    when(terrainMap.containsKey(COORDINATE2)).thenReturn(true);
+
+    TestHelpers.verifyNoDeadEvents(terrains, newMap, clearMap);
   }
 }

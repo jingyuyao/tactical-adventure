@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -94,5 +95,16 @@ public class CharactersTest {
     when(characterSet.iterator()).thenReturn(characterIterator);
 
     assertThat(characters.iterator()).isSameAs(characterIterator);
+  }
+
+  @Test
+  public void subscribers() {
+    when(newMap.getPlayers()).thenReturn(players);
+    when(newMap.getEnemies()).thenReturn(enemies);
+    when(characterSet.iterator()).thenReturn(characterIterator);
+    when(characterIterator.hasNext()).thenReturn(true, true, false);
+    when(characterIterator.next()).thenReturn(player, enemy);
+
+    TestHelpers.verifyNoDeadEvents(characters, newMap, clearMap, removeCharacter);
   }
 }

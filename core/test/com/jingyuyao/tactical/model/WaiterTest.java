@@ -131,6 +131,11 @@ public class WaiterTest {
     verifyZeroInteractions(runnable);
   }
 
+  @Test
+  public void subscribers() {
+    TestHelpers.verifyNoDeadEvents(waiter, changed);
+  }
+
   private void verifyChanged(Object event, boolean canProceed) {
     Waiter.Changed changed = TestHelpers.isInstanceOf(event, Waiter.Changed.class);
     assertThat(changed.canProceed()).isEqualTo(canProceed);
