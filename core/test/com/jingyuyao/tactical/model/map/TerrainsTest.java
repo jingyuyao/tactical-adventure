@@ -78,6 +78,20 @@ public class TerrainsTest {
     assertThat(terrains.getHeight()).isEqualTo(HEIGHT);
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void initialize_not_fully_populated() {
+    when(newMap.getTerrains()).thenReturn(terrainList);
+    when(newMap.getWidth()).thenReturn(WIDTH);
+    when(newMap.getHeight()).thenReturn(HEIGHT);
+    when(terrainList.iterator()).thenReturn(terrainIterator);
+    when(terrainIterator.hasNext()).thenReturn(true, false);
+    when(terrainIterator.next()).thenReturn(terrain1);
+    when(terrain1.getCoordinate()).thenReturn(COORDINATE1);
+    when(terrainMap.containsKey(COORDINATE1)).thenReturn(true);
+
+    terrains.initialize(newMap);
+  }
+
   @Test
   public void dispose() {
     terrains.dispose(clearMap);
