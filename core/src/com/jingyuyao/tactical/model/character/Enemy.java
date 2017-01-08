@@ -6,6 +6,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Coordinate;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
+import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
@@ -58,6 +59,11 @@ public class Enemy extends Character {
 
   @Subscribe
   public void instantMoved(InstantMove instantMove) {
+    refreshDangerArea();
+  }
+
+  @Subscribe
+  public void characterRemoved(RemoveCharacter removeCharacter) {
     refreshDangerArea();
   }
 
