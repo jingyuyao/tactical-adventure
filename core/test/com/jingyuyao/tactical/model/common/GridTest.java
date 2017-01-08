@@ -43,6 +43,12 @@ public class GridTest {
   }
 
   @Test
+  public void width_and_height() {
+    assertThat(grid.getWidth()).isEqualTo(WIDTH);
+    assertThat(grid.getHeight()).isEqualTo(HEIGHT);
+  }
+
+  @Test
   public void get() {
     for (int x = 0; x < WIDTH; x++) {
       for (int y = 0; y < HEIGHT; y++) {
