@@ -6,13 +6,13 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 
 public class Path {
 
-  private final ImmutableList<Coordinate> track;
   private final Coordinate destination;
+  private final ImmutableList<Coordinate> track;
 
-  Path(ImmutableList<Coordinate> track) {
+  Path(Coordinate destination, ImmutableList<Coordinate> track) {
     Preconditions.checkArgument(!track.isEmpty());
+    this.destination = destination;
     this.track = track;
-    this.destination = track.get(track.size() - 1);
   }
 
   public ImmutableList<Coordinate> getTrack() {

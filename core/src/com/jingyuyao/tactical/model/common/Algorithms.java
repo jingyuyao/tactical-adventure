@@ -91,22 +91,22 @@ public class Algorithms {
       }
     }
 
+    Preconditions.checkState(graph.predecessors(startingCoordinate).isEmpty());
     Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in minPathSearch");
     return graph;
   }
 
   /**
-   * Attempts to find a path to {@code target}.
+   * Get the track from the starting {@link Coordinate} in the {@code graph} to {@code target}.
+   * {@code target} must exist in the {@code graph} or an exception will be thrown.
    *
    * @param graph An directed acyclic graph
    * @param target The target node to find a path to
    * @return A path to {@code target} from the first node in the graph or an empty list if target is
    * not in the graph
    */
-  public static ImmutableList<Coordinate> findPathTo(Graph<Coordinate> graph, Coordinate target) {
-    if (!graph.nodes().contains(target)) {
-      return ImmutableList.of();
-    }
+  public static ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
+    Preconditions.checkArgument(graph.nodes().contains(target));
 
     ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
     builder.add(target);
@@ -114,7 +114,7 @@ public class Algorithms {
     Set<Coordinate> predecessors = graph.predecessors(target);
     while (predecessors.size() != 0) {
       Preconditions.checkState(
-          predecessors.size() == 1, "findPathTo encountered a node with multiple predecessors");
+          predecessors.size() == 1, "getTrackTo encountered a node with multiple predecessors");
       Coordinate predecessor = predecessors.iterator().next();
       builder.add(predecessor);
       predecessors = graph.predecessors(predecessor);

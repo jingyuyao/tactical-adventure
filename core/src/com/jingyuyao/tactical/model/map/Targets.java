@@ -74,8 +74,7 @@ public class Targets {
    * Get a path to a {@link Coordinate} from {@link #moves()}.
    */
   public Path pathTo(Coordinate to) {
-    Preconditions.checkArgument(moveMap.keys().contains(to));
-    return new Path(Algorithms.findPathTo(moveGraph, to));
+    return new Path(to, Algorithms.getTrackTo(moveGraph, to));
   }
 
   /**
