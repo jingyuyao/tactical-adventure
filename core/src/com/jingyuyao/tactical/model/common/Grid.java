@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.common;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.Coordinate;
 import java.util.Iterator;
 import java.util.Map;
@@ -42,6 +44,15 @@ public class Grid<T> implements Iterable<T> {
 
   public T get(Coordinate coordinate) {
     return coordinateMap.get(coordinate);
+  }
+
+  public Iterable<T> getAll(Iterable<Coordinate> coordinates) {
+    return Iterables.transform(coordinates, new Function<Coordinate, T>() {
+      @Override
+      public T apply(Coordinate input) {
+        return get(input);
+      }
+    });
   }
 
   @Override

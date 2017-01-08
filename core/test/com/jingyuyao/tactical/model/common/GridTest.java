@@ -25,6 +25,8 @@ public class GridTest {
   private Collection<Coordinate> coordinates;
   @Mock
   private Iterator<Coordinate> iterator;
+  @Mock
+  private Iterable<Coordinate> iterable;
 
   private Grid<Coordinate> grid;
 
@@ -47,6 +49,17 @@ public class GridTest {
         assertThat(grid.get(coordinate(x, y))).isEqualTo(coordinate(x, y));
       }
     }
+  }
+
+  @Test
+  public void getAll() {
+    when(iterable.iterator()).thenReturn(iterator);
+    when(iterator.next()).thenReturn(coordinate(0, 0), coordinate(0, 1));
+
+    Iterable<Coordinate> result = grid.getAll(iterable);
+
+    assertThat(result.iterator().next()).isEqualTo(coordinate(0, 0));
+    assertThat(result.iterator().next()).isEqualTo(coordinate(0, 1));
   }
 
   @Test
