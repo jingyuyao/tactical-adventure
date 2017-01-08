@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Table;
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.Graph;
 import com.google.common.graph.Graphs;
@@ -21,7 +20,8 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * Functions should return immutable objects.
+ * Functions should return immutable objects. This class should not rely on our custom model
+ * classes.
  */
 public class Algorithms {
 
@@ -31,13 +31,15 @@ public class Algorithms {
    * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code
    * coordinateGrid} that contains all reachable nodes whose total path cost (sum of all edge
    * weights from the start to the current node) is less or equal to {@code maxPathCost}. Inbound
-   * edge costs comes from {@code edgeCostTable}.
+   * edge costs comes from {@code edgeCostMap}.
    *
-   * @param edgeCostTable The grid to get edge cost for creating the graph
+   * @param edgeCostMap The grid to get edge cost for creating the graph
    * @param maxPathCost Maximum cost for the path between initial location to any other object
    */
   public static ValueGraph<Coordinate, Integer> minPathSearch(
-      Table<Integer, Integer, Integer> edgeCostTable,
+      int gridWidth,
+      int gridHeight,
+      Map<Coordinate, Integer> edgeCostMap,
       Coordinate startingCoordinate,
       int maxPathCost) {
     MutableValueGraph<Coordinate, Integer> graph =
@@ -58,13 +60,12 @@ public class Algorithms {
       Coordinate minCoordinate = minNode.getObject();
       processedCoordinates.add(minCoordinate);
 
-      for (Coordinate neighbor :
-          getNeighbors(tableWidth(edgeCostTable), tableHeight(edgeCostTable), minCoordinate)) {
+      for (Coordinate neighbor : getNeighbors(gridWidth, gridHeight, minCoordinate)) {
         if (processedCoordinates.contains(neighbor)) {
           continue;
         }
 
-        int edgeCost = edgeCostTable.get(neighbor.getX(), neighbor.getY());
+        int edgeCost = edgeCostMap.get(neighbor);
         if (edgeCost == NO_EDGE) {
           continue;
         }
@@ -194,14 +195,6 @@ public class Algorithms {
     }
 
     return builder.build();
-  }
-
-  public static int tableWidth(Table<?, ?, ?> table) {
-    return table.columnKeySet().size();
-  }
-
-  public static int tableHeight(Table<?, ?, ?> table) {
-    return table.rowKeySet().size();
   }
 
   /**
