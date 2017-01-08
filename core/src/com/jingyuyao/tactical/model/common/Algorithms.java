@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.common;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -9,7 +9,6 @@ import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
-import com.jingyuyao.tactical.model.common.Coordinate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -129,7 +128,7 @@ public class Algorithms {
    *
    * @return Randomized list of neighbors
    */
-  public static ImmutableList<Coordinate> getNeighbors(
+  private static ImmutableList<Coordinate> getNeighbors(
       int gridWidth, int gridHeight, Coordinate from) {
     int x = from.getX();
     int y = from.getY();
