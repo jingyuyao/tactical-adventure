@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.inject.Guice;
+import com.jingyuyao.tactical.model.common.Waiter;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;

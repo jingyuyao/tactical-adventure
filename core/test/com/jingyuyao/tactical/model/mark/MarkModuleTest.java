@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.mark;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.Waiter;
+import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;

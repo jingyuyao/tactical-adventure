@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.common;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.reset;

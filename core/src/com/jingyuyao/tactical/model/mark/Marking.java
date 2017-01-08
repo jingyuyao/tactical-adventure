@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.model.mark;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.EventBusObject;
+import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Map;
 

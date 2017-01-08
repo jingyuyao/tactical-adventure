@@ -7,8 +7,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;

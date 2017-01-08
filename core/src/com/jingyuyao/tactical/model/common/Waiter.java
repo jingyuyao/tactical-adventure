@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.common;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -9,8 +9,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
-import com.jingyuyao.tactical.model.common.EventBusObject;
-import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.ModelEvent;
 import com.jingyuyao.tactical.model.event.NewMap;

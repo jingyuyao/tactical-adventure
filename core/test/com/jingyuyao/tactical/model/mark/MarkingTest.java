@@ -7,9 +7,9 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.Waiter;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Iterator;
 import java.util.Map;
