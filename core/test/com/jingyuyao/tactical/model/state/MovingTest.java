@@ -122,7 +122,7 @@ public class MovingTest {
   @Test
   public void select_enemy_can_hit() {
     when(movingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canHitAfterMove(enemy)).thenReturn(true);
+    when(targets.canTargetAfterMove(enemy)).thenReturn(true);
     when(enemy.getCoordinate()).thenReturn(ENEMY_COORDINATE);
     when(targets.movePathToTarget(ENEMY_COORDINATE)).thenReturn(path);
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
@@ -139,7 +139,7 @@ public class MovingTest {
   @Test
   public void select_enemy_cannot_hit() {
     when(movingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canHitAfterMove(enemy)).thenReturn(false);
+    when(targets.canTargetAfterMove(enemy)).thenReturn(false);
 
     moving.select(enemy);
 

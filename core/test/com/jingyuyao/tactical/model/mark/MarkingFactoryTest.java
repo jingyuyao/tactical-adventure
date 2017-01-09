@@ -74,7 +74,7 @@ public class MarkingFactoryTest {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.moves()).thenReturn(coordinates);
     when(targets.allTargetsMinusMove()).thenReturn(coordinates2);
-    when(targets.allTargetCharacters()).thenReturn(characterList);
+    when(targets.allTargetableCharacters()).thenReturn(characterList);
     set_up_terrain_mocks();
     set_up_character_mocks();
 
@@ -90,7 +90,7 @@ public class MarkingFactoryTest {
   public void immediateTargets() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.immediateTargets()).thenReturn(coordinates);
-    when(targets.immediateTargetCharacters()).thenReturn(characterList);
+    when(targets.immediateTargetableCharacters()).thenReturn(characterList);
     set_up_terrain_mocks();
     set_up_character_mocks();
 

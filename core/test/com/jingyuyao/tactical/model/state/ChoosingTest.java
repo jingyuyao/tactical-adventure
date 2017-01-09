@@ -96,7 +96,7 @@ public class ChoosingTest {
   @Test
   public void select_enemy_can_hit() {
     when(choosingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canHitImmediately(enemy)).thenReturn(true);
+    when(targets.canTargetImmediately(enemy)).thenReturn(true);
     when(stateFactory.createSelectingWeapon(choosingPlayer, enemy)).thenReturn(selectingWeapon);
 
     choosing.select(enemy);
@@ -109,7 +109,7 @@ public class ChoosingTest {
   @Test
   public void select_enemy_cannot_hit() {
     when(choosingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canHitImmediately(enemy)).thenReturn(false);
+    when(targets.canTargetImmediately(enemy)).thenReturn(false);
 
     choosing.select(enemy);
 

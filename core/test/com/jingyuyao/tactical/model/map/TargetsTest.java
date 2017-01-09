@@ -59,50 +59,50 @@ public class TargetsTest {
   }
 
   @Test
-  public void can_hit_after_move() {
+  public void can_target_after_move() {
     when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(TARGET1);
 
-    assertThat(targets.canHitAfterMove(other)).isTrue();
+    assertThat(targets.canTargetAfterMove(other)).isTrue();
   }
 
   @Test
-  public void cannot_hit_after_move() {
+  public void cannot_target_after_move() {
     when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
 
-    assertThat(targets.canHitAfterMove(other)).isFalse();
+    assertThat(targets.canTargetAfterMove(other)).isFalse();
   }
 
   @Test
-  public void hit_after_move_cannot_target() {
+  public void target_after_move_cannot_target() {
     when(character.canTarget(other)).thenReturn(false);
 
-    assertThat(targets.canHitAfterMove(other)).isFalse();
+    assertThat(targets.canTargetAfterMove(other)).isFalse();
   }
 
   @Test
-  public void can_hit_immediately() {
+  public void can_target_immediately() {
     when(character.canTarget(other)).thenReturn(true);
     when(character.getCoordinate()).thenReturn(ORIGIN);
     when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
-    assertThat(targets.canHitImmediately(other)).isTrue();
+    assertThat(targets.canTargetImmediately(other)).isTrue();
   }
 
   @Test
-  public void cannot_hit_immediately() {
+  public void cannot_target_immediately() {
     when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
 
-    assertThat(targets.canHitImmediately(other)).isFalse();
+    assertThat(targets.canTargetImmediately(other)).isFalse();
   }
 
   @Test
-  public void immediate_hit_cannot_target() {
+  public void immediate_target_cannot_target() {
     when(character.canTarget(other)).thenReturn(false);
 
-    assertThat(targets.canHitImmediately(other)).isFalse();
+    assertThat(targets.canTargetImmediately(other)).isFalse();
   }
 
   @Test
@@ -174,7 +174,7 @@ public class TargetsTest {
     when(characterIterator.next()).thenReturn(other);
     when(other.getCoordinate()).thenReturn(TARGET1);
 
-    assertThat(targets.allTargetCharacters()).containsExactly(other);
+    assertThat(targets.allTargetableCharacters()).containsExactly(other);
   }
 
   @Test
@@ -185,7 +185,7 @@ public class TargetsTest {
     when(characterIterator.next()).thenReturn(other);
     when(other.getCoordinate()).thenReturn(TARGET1);
 
-    assertThat(targets.allTargetCharacters()).isEmpty();
+    assertThat(targets.allTargetableCharacters()).isEmpty();
   }
 
   @Test
@@ -197,7 +197,7 @@ public class TargetsTest {
     when(characterIterator.next()).thenReturn(other);
     when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
-    assertThat(targets.immediateTargetCharacters()).containsExactly(other);
+    assertThat(targets.immediateTargetableCharacters()).containsExactly(other);
   }
 
   @Test
@@ -209,7 +209,7 @@ public class TargetsTest {
     when(characterIterator.next()).thenReturn(other);
     when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
-    assertThat(targets.immediateTargetCharacters()).isEmpty();
+    assertThat(targets.immediateTargetableCharacters()).isEmpty();
   }
 
   /**

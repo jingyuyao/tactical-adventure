@@ -51,14 +51,14 @@ public class Targets {
   /**
    * Can {@code target} be hit after moving?
    */
-  public boolean canHitAfterMove(Character target) {
+  public boolean canTargetAfterMove(Character target) {
     return character.canTarget(target) && allTargets().contains(target.getCoordinate());
   }
 
   /**
    * Can {@code target} be hit without moving?
    */
-  public boolean canHitImmediately(Character target) {
+  public boolean canTargetImmediately(Character target) {
     return character.canTarget(target) && immediateTargets().contains(target.getCoordinate());
   }
 
@@ -146,7 +146,7 @@ public class Targets {
   /**
    * Return all the {@link Character} that can be targeted by {@link #character} after moving.
    */
-  public ImmutableList<Character> allTargetCharacters() {
+  public ImmutableList<Character> allTargetableCharacters() {
     return ImmutableList.copyOf(
         Iterables.filter(
             characters,
@@ -157,7 +157,7 @@ public class Targets {
   /**
    * Return all the {@link Character} that can be targeted by {@link #character} without moving.
    */
-  public ImmutableList<Character> immediateTargetCharacters() {
+  public ImmutableList<Character> immediateTargetableCharacters() {
     return ImmutableList.copyOf(
         Iterables.filter(
             characters,

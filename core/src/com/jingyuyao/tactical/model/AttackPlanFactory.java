@@ -26,7 +26,7 @@ public class AttackPlanFactory {
     Preconditions.checkArgument(playerWeapon.isPresent());
 
     Targets playerTargets = targetsFactory.create(player);
-    Preconditions.checkArgument(playerTargets.canHitImmediately(enemy));
+    Preconditions.checkArgument(playerTargets.canTargetImmediately(enemy));
 
     Targets enemyTargets = targetsFactory.create(enemy);
     Optional<Weapon> enemyWeapon = getHitBackWeapon(player, enemy, enemyTargets);
