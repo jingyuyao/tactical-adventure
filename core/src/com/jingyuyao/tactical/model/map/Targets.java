@@ -59,10 +59,16 @@ public class Targets {
     return character;
   }
 
+  /**
+   * Return a filtered view of all the things the character can target given they could move.
+   */
   public FilteredTargets all() {
     return all;
   }
 
+  /**
+   * Return a filtered view of all the things the character can target without moving.
+   */
   public FilteredTargets immediate() {
     return immediate;
   }
