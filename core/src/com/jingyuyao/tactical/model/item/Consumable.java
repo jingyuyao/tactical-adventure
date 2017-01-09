@@ -13,8 +13,10 @@ public abstract class Consumable extends Usable {
   }
 
   public void consume(Player user) {
-    performConsumption(user);
-    useOnce();
+    if (getUsageLeft() > 0) {
+      performConsumption(user);
+      useOnce();
+    }
   }
 
   protected abstract void performConsumption(Player user);

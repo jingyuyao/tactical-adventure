@@ -8,7 +8,7 @@ import javax.inject.Inject;
 public class Heal extends Consumable {
 
   // TODO: Remove me
-  private static final int AMOUNT = 10;
+  static final int AMOUNT = 10;
 
   @Inject
   Heal(EventBus eventBus, @Assisted String name, @Assisted int usageLeft) {
