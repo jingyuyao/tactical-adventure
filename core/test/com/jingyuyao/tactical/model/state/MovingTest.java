@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +52,8 @@ public class MovingTest {
   private Targets targets;
   @Mock
   private Path path;
+  @Mock
+  private FilteredTargets allTargets;
 
   private Moving moving;
 
@@ -122,7 +125,8 @@ public class MovingTest {
   @Test
   public void select_enemy_can_hit() {
     when(movingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canTargetAfterMove(enemy)).thenReturn(true);
+    when(targets.all()).thenReturn(allTargets);
+    when(allTargets.canTarget(enemy)).thenReturn(true);
     when(enemy.getCoordinate()).thenReturn(ENEMY_COORDINATE);
     when(targets.movePathToTarget(ENEMY_COORDINATE)).thenReturn(path);
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
@@ -139,7 +143,8 @@ public class MovingTest {
   @Test
   public void select_enemy_cannot_hit() {
     when(movingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canTargetAfterMove(enemy)).thenReturn(false);
+    when(targets.all()).thenReturn(allTargets);
+    when(allTargets.canTarget(enemy)).thenReturn(false);
 
     moving.select(enemy);
 

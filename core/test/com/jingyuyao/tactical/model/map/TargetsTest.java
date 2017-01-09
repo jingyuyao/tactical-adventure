@@ -55,6 +55,7 @@ public class TargetsTest {
 
   @Before
   public void setUp() {
+    when(character.getCoordinate()).thenReturn(ORIGIN);
     targets = new Targets(algorithms, characters, character, graph, createTargetMap());
   }
 
@@ -63,7 +64,7 @@ public class TargetsTest {
     when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(TARGET1);
 
-    assertThat(targets.canTargetAfterMove(other)).isTrue();
+    assertThat(targets.all().canTarget(other)).isTrue();
   }
 
   @Test
@@ -71,23 +72,22 @@ public class TargetsTest {
     when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
 
-    assertThat(targets.canTargetAfterMove(other)).isFalse();
+    assertThat(targets.all().canTarget(other)).isFalse();
   }
 
   @Test
   public void target_after_move_cannot_target() {
     when(character.canTarget(other)).thenReturn(false);
 
-    assertThat(targets.canTargetAfterMove(other)).isFalse();
+    assertThat(targets.all().canTarget(other)).isFalse();
   }
 
   @Test
   public void can_target_immediately() {
     when(character.canTarget(other)).thenReturn(true);
-    when(character.getCoordinate()).thenReturn(ORIGIN);
     when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
-    assertThat(targets.canTargetImmediately(other)).isTrue();
+    assertThat(targets.immediate().canTarget(other)).isTrue();
   }
 
   @Test
@@ -95,14 +95,14 @@ public class TargetsTest {
     when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
 
-    assertThat(targets.canTargetImmediately(other)).isFalse();
+    assertThat(targets.immediate().canTarget(other)).isFalse();
   }
 
   @Test
   public void immediate_target_cannot_target() {
     when(character.canTarget(other)).thenReturn(false);
 
-    assertThat(targets.canTargetImmediately(other)).isFalse();
+    assertThat(targets.immediate().canTarget(other)).isFalse();
   }
 
   @Test
@@ -134,25 +134,17 @@ public class TargetsTest {
 
   @Test
   public void all_targets() {
-    ImmutableSet<Coordinate> allTargets = targets.allTargets();
-
-    assertThat(allTargets).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
+    assertThat(targets.all().targets()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
   }
 
   @Test
   public void immediate_targets() {
-    when(character.getCoordinate()).thenReturn(ORIGIN);
-
-    ImmutableSet<Coordinate> immediateTargets = targets.immediateTargets();
-
-    assertThat(immediateTargets).containsExactly(ORIGIN_TARGET);
+    assertThat(targets.immediate().targets()).containsExactly(ORIGIN_TARGET);
   }
 
   @Test
   public void all_targets_minus_move() {
-    ImmutableSet<Coordinate> allTargetsNoMove = targets.allTargetsMinusMove();
-
-    assertThat(allTargetsNoMove).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET);
+    assertThat(targets.all().targetsMinusMove()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET);
   }
 
   @Test
@@ -174,7 +166,7 @@ public class TargetsTest {
     when(characterIterator.next()).thenReturn(other);
     when(other.getCoordinate()).thenReturn(TARGET1);
 
-    assertThat(targets.allTargetableCharacters()).containsExactly(other);
+    assertThat(targets.all().characters()).containsExactly(other);
   }
 
   @Test
@@ -183,33 +175,29 @@ public class TargetsTest {
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);
-    when(other.getCoordinate()).thenReturn(TARGET1);
 
-    assertThat(targets.allTargetableCharacters()).isEmpty();
+    assertThat(targets.all().characters()).isEmpty();
   }
 
   @Test
   public void immediate_target_characters() {
-    when(character.getCoordinate()).thenReturn(ORIGIN);
     when(character.canTarget(other)).thenReturn(true);
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);
     when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
-    assertThat(targets.immediateTargetableCharacters()).containsExactly(other);
+    assertThat(targets.immediate().characters()).containsExactly(other);
   }
 
   @Test
   public void immediate_target_characters_cannot_target() {
-    when(character.getCoordinate()).thenReturn(ORIGIN);
     when(character.canTarget(other)).thenReturn(false);
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);
-    when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
-    assertThat(targets.immediateTargetableCharacters()).isEmpty();
+    assertThat(targets.immediate().characters()).isEmpty();
   }
 
   /**

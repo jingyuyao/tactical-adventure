@@ -47,7 +47,7 @@ class Moving extends AbstractPlayerState {
   @Override
   public void select(Enemy enemy) {
     Targets playerTargets = getPlayer().createTargets();
-    if (playerTargets.canTargetAfterMove(enemy)) {
+    if (playerTargets.all().canTarget(enemy)) {
       Path path = playerTargets.movePathToTarget(enemy.getCoordinate());
       moveCurrentPlayer(path);
 

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -14,12 +13,10 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
-import java.util.Set;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
  */
-// TODO: needs to be thoroughly tested
 public class Targets {
 
   private final Algorithms algorithms;
@@ -30,6 +27,8 @@ public class Targets {
    * Multi-map of move coordinate to maps of target coordinates to weapons for that target.
    */
   private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
+  private final FilteredTargets all;
+  private final FilteredTargets immediate;
 
   Targets(
       Algorithms algorithms,
@@ -42,26 +41,35 @@ public class Targets {
     this.character = character;
     this.moveGraph = moveGraph;
     this.moveMap = moveMap;
+    this.all =
+        new FilteredTargets(
+            Iterables.concat(
+                Iterables.transform(
+                    moveMap.values(),
+                    new MultiMapKeysExtractor())));
+    this.immediate =
+        new FilteredTargets(
+            Iterables.concat(
+                Iterables.transform(
+                    moveMap.get(character.getCoordinate()),
+                    new MultiMapKeysExtractor())));
   }
 
   public Character getCharacter() {
     return character;
   }
 
-  /**
-   * Can {@code target} be hit after moving?
-   */
-  public boolean canTargetAfterMove(Character target) {
-    return character.canTarget(target) && allTargets().contains(target.getCoordinate());
+  public FilteredTargets all() {
+    return all;
+  }
+
+  public FilteredTargets immediate() {
+    return immediate;
   }
 
   /**
-   * Can {@code target} be hit without moving?
+   * Can {@link #character} move to {@code to}.
    */
-  public boolean canTargetImmediately(Character target) {
-    return character.canTarget(target) && immediateTargets().contains(target.getCoordinate());
-  }
-
   public boolean canMoveTo(Coordinate to) {
     return moves().contains(to);
   }
@@ -86,7 +94,7 @@ public class Targets {
    * Preconditions: {@code allTargets().contains(target)}
    */
   public Path movePathToTarget(Coordinate target) {
-    Preconditions.checkArgument(allTargets().contains(target));
+    Preconditions.checkArgument(all().targets().contains(target));
 
     Coordinate currentBestTerrain = null;
     int currentMaxWeapons = 0;
@@ -100,33 +108,6 @@ public class Targets {
 
     Preconditions.checkNotNull(currentBestTerrain);
     return pathTo(currentBestTerrain);
-  }
-
-  /**
-   * Return all the target coordinates from {@link #character}'s current position after moving.
-   */
-  public ImmutableSet<Coordinate> allTargets() {
-    return ImmutableSet.copyOf(
-        Iterables.concat(Iterables.transform(moveMap.values(), new MultiMapKeysExtractor())));
-  }
-
-  /**
-   * Return all the target coordinates from {@link #character}'s current position without moving.
-   */
-  public ImmutableSet<Coordinate> immediateTargets() {
-    return ImmutableSet.copyOf(
-        Iterables.concat(
-            Iterables.transform(
-                moveMap.get(character.getCoordinate()),
-                new MultiMapKeysExtractor())));
-  }
-
-  /**
-   * Return all the target coordinates from {@link #character}'s current position after moving but
-   * excluding the move coordinates.
-   */
-  public ImmutableSet<Coordinate> allTargetsMinusMove() {
-    return ImmutableSet.copyOf(Sets.difference(allTargets(), moves()));
   }
 
   /**
@@ -144,29 +125,6 @@ public class Targets {
   }
 
   /**
-   * Return all the {@link Character} that can be targeted by {@link #character} after moving.
-   */
-  public ImmutableList<Character> allTargetableCharacters() {
-    return ImmutableList.copyOf(
-        Iterables.filter(
-            characters,
-            Predicates.and(
-                new ContainsCoordinatePredicate(allTargets()), new CanTargetPredicate(character))));
-  }
-
-  /**
-   * Return all the {@link Character} that can be targeted by {@link #character} without moving.
-   */
-  public ImmutableList<Character> immediateTargetableCharacters() {
-    return ImmutableList.copyOf(
-        Iterables.filter(
-            characters,
-            Predicates.and(
-                new ContainsCoordinatePredicate(immediateTargets()),
-                new CanTargetPredicate(character))));
-  }
-
-  /**
    * Returns {@link SetMultimap#keys()} from the inputs.
    */
   private static class MultiMapKeysExtractor
@@ -179,37 +137,51 @@ public class Targets {
   }
 
   /**
-   * Predicate for whether the input {@link Coordinate} belongs in a {@link Set}.
+   * A filtered view of the target {@link Coordinate}s.
    */
-  private static class ContainsCoordinatePredicate implements Predicate<MapObject> {
+  public class FilteredTargets {
 
-    private final Set<Coordinate> coordinates;
+    private final ImmutableSet<Coordinate> targetCoordinates;
 
-    private ContainsCoordinatePredicate(Set<Coordinate> coordinates) {
-      this.coordinates = coordinates;
+    private FilteredTargets(Iterable<Coordinate> targetCoordinates) {
+      this.targetCoordinates = ImmutableSet.copyOf(targetCoordinates);
     }
 
-    @Override
-    public boolean apply(MapObject object) {
-      return coordinates.contains(object.getCoordinate());
-    }
-  }
-
-  /**
-   * Predicate for whether the input {@link Character} can be targeted by an attacking {@link
-   * Character}.
-   */
-  private static class CanTargetPredicate implements Predicate<Character> {
-
-    private final Character attackingCharacter;
-
-    private CanTargetPredicate(Character attackingCharacter) {
-      this.attackingCharacter = attackingCharacter;
+    /**
+     * Can {@code target} be hit with this filter.
+     */
+    public boolean canTarget(Character target) {
+      return character.canTarget(target) && targetCoordinates.contains(target.getCoordinate());
     }
 
-    @Override
-    public boolean apply(Character other) {
-      return attackingCharacter.canTarget(other);
+    /**
+     * Return all the target coordinates from {@link #character}'s current position given this
+     * filter.
+     */
+    public ImmutableSet<Coordinate> targets() {
+      return ImmutableSet.copyOf(targetCoordinates);
+    }
+
+    /**
+     * Return all the target coordinates from {@link #character}'s current position given this
+     * filter but excluding the move coordinates.
+     */
+    public ImmutableSet<Coordinate> targetsMinusMove() {
+      return ImmutableSet.copyOf(Sets.difference(targetCoordinates, moves()));
+    }
+
+    /**
+     * Return all the {@link Character} that can be targeted by {@link #character} with this filter.
+     */
+    public ImmutableList<Character> characters() {
+      return ImmutableList.copyOf(Iterables.filter(
+          characters,
+          new Predicate<Character>() {
+            @Override
+            public boolean apply(Character other) {
+              return canTarget(other);
+            }
+          }));
     }
   }
 }

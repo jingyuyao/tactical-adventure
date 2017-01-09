@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.Iterator;
@@ -61,6 +62,10 @@ public class MarkingFactoryTest {
   private UnmodifiableIterator<Character> characterIterator;
   @Mock
   private Character character;
+  @Mock
+  private FilteredTargets allTargets;
+  @Mock
+  private FilteredTargets immediateTargets;
 
   private MarkingFactory markingFactory;
 
@@ -73,8 +78,9 @@ public class MarkingFactoryTest {
   public void moveAndTargets() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.moves()).thenReturn(coordinates);
-    when(targets.allTargetsMinusMove()).thenReturn(coordinates2);
-    when(targets.allTargetableCharacters()).thenReturn(characterList);
+    when(targets.all()).thenReturn(allTargets);
+    when(allTargets.targetsMinusMove()).thenReturn(coordinates2);
+    when(allTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
     set_up_character_mocks();
 
@@ -89,8 +95,9 @@ public class MarkingFactoryTest {
   @Test
   public void immediateTargets() {
     when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.immediateTargets()).thenReturn(coordinates);
-    when(targets.immediateTargetableCharacters()).thenReturn(characterList);
+    when(targets.immediate()).thenReturn(immediateTargets);
+    when(immediateTargets.targets()).thenReturn(coordinates);
+    when(immediateTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
     set_up_character_mocks();
 
@@ -104,7 +111,8 @@ public class MarkingFactoryTest {
   @Test
   public void dangerArea() {
     when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.allTargets()).thenReturn(coordinates);
+    when(targets.all()).thenReturn(allTargets);
+    when(allTargets.targets()).thenReturn(coordinates);
     set_up_terrain_mocks();
 
     markingFactory.danger(targets);

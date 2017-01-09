@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import java.util.Iterator;
 import org.junit.Before;
@@ -52,6 +53,8 @@ public class ChoosingTest {
   private UsingItem usingItem;
   @Mock
   private Waiting waiting;
+  @Mock
+  private FilteredTargets immediateTargets;
 
   private Choosing choosing;
 
@@ -96,7 +99,8 @@ public class ChoosingTest {
   @Test
   public void select_enemy_can_hit() {
     when(choosingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canTargetImmediately(enemy)).thenReturn(true);
+    when(targets.immediate()).thenReturn(immediateTargets);
+    when(immediateTargets.canTarget(enemy)).thenReturn(true);
     when(stateFactory.createSelectingWeapon(choosingPlayer, enemy)).thenReturn(selectingWeapon);
 
     choosing.select(enemy);
@@ -109,7 +113,8 @@ public class ChoosingTest {
   @Test
   public void select_enemy_cannot_hit() {
     when(choosingPlayer.createTargets()).thenReturn(targets);
-    when(targets.canTargetImmediately(enemy)).thenReturn(false);
+    when(targets.immediate()).thenReturn(immediateTargets);
+    when(immediateTargets.canTarget(enemy)).thenReturn(false);
 
     choosing.select(enemy);
 

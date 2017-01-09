@@ -45,8 +45,8 @@ public class MarkingFactory {
 
   public Marking moveAndTargets(Targets targets) {
     Iterable<Terrain> canMoveToTerrains = terrains.getAll(targets.moves());
-    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.allTargetsMinusMove());
-    Iterable<Character> canTargetCharacters = targets.allTargetableCharacters();
+    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.all().targetsMinusMove());
+    Iterable<Character> canTargetCharacters = targets.all().characters();
 
     return this.new Builder(targets.getCharacter())
         .add(canMoveToTerrains, Marker.CAN_MOVE_TO)
@@ -56,8 +56,8 @@ public class MarkingFactory {
   }
 
   public Marking immediateTargets(Targets targets) {
-    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.immediateTargets());
-    Iterable<Character> canTargetCharacters = targets.immediateTargetableCharacters();
+    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.immediate().targets());
+    Iterable<Character> canTargetCharacters = targets.immediate().characters();
 
     return this.new Builder(targets.getCharacter())
         .add(canAttackTerrains, Marker.CAN_ATTACK)
@@ -66,9 +66,16 @@ public class MarkingFactory {
   }
 
   public Marking danger(Targets targets) {
-    Iterable<Terrain> allTargets = terrains.getAll(targets.allTargets());
+    Iterable<Terrain> allTargets = terrains.getAll(targets.all().targets());
 
     return this.new Builder(targets.getCharacter()).add(allTargets, Marker.DANGER).build();
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialMarkerMap {
+
   }
 
   private class Builder {
@@ -91,12 +98,5 @@ public class MarkingFactory {
     private Marking build() {
       return new Marking(eventBus, character, markerMap, waiter);
     }
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface InitialMarkerMap {
-
   }
 }
