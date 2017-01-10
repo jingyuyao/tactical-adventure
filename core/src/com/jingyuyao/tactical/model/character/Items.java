@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Usable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
 import java.util.Collections;
@@ -20,10 +19,7 @@ import javax.inject.Inject;
 /**
  * A container for character items. Belongs in object package since it is technically part of {@link
  * Character}. <br>
- * Invariants: all {@link Usable} objects must be removed immediately once {@link
- * Usable#getUsageLeft()} == 0
  */
-// TODO: test the invariant
 public class Items extends EventBusObject implements Disposable {
 
   /**
