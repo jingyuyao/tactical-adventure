@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
@@ -168,19 +167,15 @@ public class Targets {
     }
 
     /**
-     * Return all the {@link Character} that can be targeted by {@link #character} with this filter.
+     * Return the {@link Character}s that can be targeted by {@link #character} with this filter.
      */
-    public ImmutableList<Character> characters() {
-      return
-          ImmutableList.copyOf(
-              Iterables.filter(
-                  characters,
-                  new Predicate<Character>() {
-                    @Override
-                    public boolean apply(Character other) {
-                      return canTarget(other);
-                    }
-                  }));
+    public Iterable<Character> characters() {
+      return Iterables.filter(characters, new Predicate<Character>() {
+        @Override
+        public boolean apply(Character other) {
+          return canTarget(other);
+        }
+      });
     }
   }
 }
