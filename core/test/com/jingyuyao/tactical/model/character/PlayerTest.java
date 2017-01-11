@@ -51,6 +51,8 @@ public class PlayerTest {
   private MapState mapState;
   @Mock
   private EndTurn endTurn;
+  @Mock
+  private Enemy enemy;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -135,6 +137,16 @@ public class PlayerTest {
     when(markingFactory.immediateTargets(targets)).thenReturn(marking);
 
     player.showImmediateTargets();
+
+    verify(marking).apply();
+  }
+
+  @Test
+  public void show_immediate_targets_with_chosen_enemy() {
+    when(targetsFactory.create(player)).thenReturn(targets);
+    when(markingFactory.immediateTargetsWithChosenCharacter(targets, enemy)).thenReturn(marking);
+
+    player.showImmediateTargetsWithChosenTarget(enemy);
 
     verify(marking).apply();
   }

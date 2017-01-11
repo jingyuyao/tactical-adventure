@@ -72,6 +72,13 @@ public class Player extends Character {
     marking.apply();
   }
 
+  public void showImmediateTargetsWithChosenTarget(Enemy enemy) {
+    Preconditions.checkState(marking == null);
+
+    marking = markingFactory.immediateTargetsWithChosenCharacter(createTargets(), enemy);
+    marking.apply();
+  }
+
   public void showAllTargetsWithMove() {
     Preconditions.checkState(marking == null);
 
