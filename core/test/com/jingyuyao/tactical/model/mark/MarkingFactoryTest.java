@@ -48,6 +48,8 @@ public class MarkingFactoryTest {
   @Mock
   private Character character;
   @Mock
+  private Character character2;
+  @Mock
   private FilteredTargets allTargets;
   @Mock
   private FilteredTargets immediateTargets;
@@ -66,7 +68,7 @@ public class MarkingFactoryTest {
     coordinates2 = ImmutableSet.of(COORDINATE2);
     terrainIterable = ImmutableList.of(terrain);
     terrainIterable2 = ImmutableList.of(terrain2);
-    characterList = ImmutableList.of(character);
+    characterList = ImmutableList.of(character, character2);
 
     markingFactory = new MarkingFactory(eventBus, waiter, terrains, markerMapProvider);
   }
@@ -85,6 +87,7 @@ public class MarkingFactoryTest {
     verifyMarkers(Marker.CAN_MOVE_TO, terrain);
     verifyMarkers(Marker.CAN_ATTACK, terrain2);
     verifyMarkers(Marker.POTENTIAL_TARGET, character);
+    verifyMarkers(Marker.POTENTIAL_TARGET, character2);
     verifyNoMoreInteractions(markerMap);
   }
 
@@ -100,6 +103,23 @@ public class MarkingFactoryTest {
 
     verifyMarkers(Marker.CAN_ATTACK, terrain);
     verifyMarkers(Marker.POTENTIAL_TARGET, character);
+    verifyMarkers(Marker.POTENTIAL_TARGET, character2);
+    verifyNoMoreInteractions(markerMap);
+  }
+
+  @Test
+  public void immediate_targets_with_chosen_target() {
+    when(markerMapProvider.get()).thenReturn(markerMap);
+    when(targets.immediate()).thenReturn(immediateTargets);
+    when(immediateTargets.coordinates()).thenReturn(coordinates);
+    when(immediateTargets.characters()).thenReturn(characterList);
+    set_up_terrain_mocks();
+
+    markingFactory.immediateTargetsWithChosenCharacter(targets, character2);
+
+    verifyMarkers(Marker.CAN_ATTACK, terrain);
+    verifyMarkers(Marker.POTENTIAL_TARGET, character);
+    verifyMarkers(Marker.CHOSEN_TARGET, character2);
     verifyNoMoreInteractions(markerMap);
   }
 
