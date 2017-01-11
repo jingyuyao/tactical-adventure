@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.HashMultimap;
@@ -18,6 +19,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -56,6 +60,8 @@ public class TargetsTest {
   private Iterator<Character> characterIterator;
   @Mock
   private Iterable<Terrain> terrainIterable;
+  @Captor
+  private ArgumentCaptor<ImmutableSet<Coordinate>> coordinateCaptor;
 
   private Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
   private Targets targets;
@@ -213,16 +219,21 @@ public class TargetsTest {
 
   @Test
   public void all_terrains() {
-    when(terrains.getAll(targets.all().coordinates())).thenReturn(terrainIterable);
+    when(terrains.getAll(ArgumentMatchers.<Coordinate>anyIterable())).thenReturn(terrainIterable);
 
     assertThat(targets.all().terrains()).isSameAs(terrainIterable);
+
+    verify(terrains).getAll(coordinateCaptor.capture());
+    assertThat(coordinateCaptor.getValue()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
   }
 
   @Test
   public void immediate_terrains() {
-    when(terrains.getAll(targets.immediate().coordinates())).thenReturn(terrainIterable);
+    when(terrains.getAll(ArgumentMatchers.<Coordinate>anyIterable())).thenReturn(terrainIterable);
 
     assertThat(targets.immediate().terrains()).isSameAs(terrainIterable);
+    verify(terrains).getAll(coordinateCaptor.capture());
+    assertThat(coordinateCaptor.getValue()).containsExactly(ORIGIN_TARGET);
   }
 
   /**
