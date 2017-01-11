@@ -161,4 +161,9 @@ public class PlayerTest {
     inOrder.verify(marking).apply();
     inOrder.verify(marking).clear();
   }
+
+  @Test
+  public void subscribers() {
+    TestHelpers.verifyNoDeadEvents(player, endTurn);
+  }
 }

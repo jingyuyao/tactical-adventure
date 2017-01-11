@@ -9,6 +9,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -85,5 +86,12 @@ public class ItemsTest {
   @Test
   public void get_items() {
     assertThat(items.getItems()).containsExactly(weapon1, weapon2, consumable);
+  }
+
+  @Test
+  public void subscribers() {
+    when(removeItem.getMatchesPredicate()).thenReturn(itemPredicate);
+
+    TestHelpers.verifyNoDeadEvents(items, removeItem);
   }
 }
