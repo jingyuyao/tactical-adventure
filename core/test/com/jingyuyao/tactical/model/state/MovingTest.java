@@ -128,7 +128,7 @@ public class MovingTest {
     when(targets.all()).thenReturn(allTargets);
     when(allTargets.canTarget(enemy)).thenReturn(true);
     when(enemy.getCoordinate()).thenReturn(ENEMY_COORDINATE);
-    when(targets.movePathToTarget(ENEMY_COORDINATE)).thenReturn(path);
+    when(targets.movePathToTargetCoordinate(ENEMY_COORDINATE)).thenReturn(path);
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
     when(stateFactory.createSelectingWeapon(movingPlayer, enemy)).thenReturn(selectingWeapon);

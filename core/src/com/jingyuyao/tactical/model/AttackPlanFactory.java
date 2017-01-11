@@ -38,7 +38,7 @@ public class AttackPlanFactory {
     Optional<Weapon> enemyEquippedWeapon = enemy.getEquippedWeapon();
     if (enemyEquippedWeapon.isPresent()) {
       ImmutableSet<Weapon> availableWeaponsForHittingBack =
-          enemyTargets.weaponsFor(enemy.getCoordinate(), player.getCoordinate());
+          enemyTargets.availableWeapons(enemy.getCoordinate(), player.getCoordinate());
       if (availableWeaponsForHittingBack.contains(enemyEquippedWeapon.get())) {
         return enemyEquippedWeapon;
       }

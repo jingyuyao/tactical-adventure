@@ -77,7 +77,7 @@ public class MarkingFactoryTest {
   @Test
   public void moveAndTargets() {
     when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.moves()).thenReturn(coordinates);
+    when(targets.moveCoordinates()).thenReturn(coordinates);
     when(targets.all()).thenReturn(allTargets);
     when(allTargets.targetsMinusMove()).thenReturn(coordinates2);
     when(allTargets.characters()).thenReturn(characterList);
@@ -96,7 +96,7 @@ public class MarkingFactoryTest {
   public void immediateTargets() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.targets()).thenReturn(coordinates);
+    when(immediateTargets.coordinates()).thenReturn(coordinates);
     when(immediateTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
     set_up_character_mocks();
@@ -112,7 +112,7 @@ public class MarkingFactoryTest {
   public void dangerArea() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.all()).thenReturn(allTargets);
-    when(allTargets.targets()).thenReturn(coordinates);
+    when(allTargets.coordinates()).thenReturn(coordinates);
     set_up_terrain_mocks();
 
     markingFactory.danger(targets);

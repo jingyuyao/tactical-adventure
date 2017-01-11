@@ -126,7 +126,7 @@ public class TargetsTest {
   public void move_path_to_target_max_number_of_weapons() {
     when(algorithms.getTrackTo(graph, MOVE2)).thenReturn(track);
 
-    Path path = targets.movePathToTarget(TARGET2);
+    Path path = targets.movePathToTargetCoordinate(TARGET2);
 
     assertThat(path.getDestination()).isEqualTo(MOVE2);
     assertThat(path.getTrack()).isSameAs(track);
@@ -134,12 +134,12 @@ public class TargetsTest {
 
   @Test
   public void all_targets() {
-    assertThat(targets.all().targets()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
+    assertThat(targets.all().coordinates()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
   }
 
   @Test
   public void immediate_targets() {
-    assertThat(targets.immediate().targets()).containsExactly(ORIGIN_TARGET);
+    assertThat(targets.immediate().coordinates()).containsExactly(ORIGIN_TARGET);
   }
 
   @Test
@@ -149,13 +149,13 @@ public class TargetsTest {
 
   @Test
   public void weapons_for() {
-    ImmutableSet<Weapon> weapons1 = targets.weaponsFor(MOVE1, TARGET1);
+    ImmutableSet<Weapon> weapons1 = targets.availableWeapons(MOVE1, TARGET1);
     assertThat(weapons1).containsExactly(weapon1);
 
-    ImmutableSet<Weapon> weapons2 = targets.weaponsFor(MOVE2, TARGET2);
+    ImmutableSet<Weapon> weapons2 = targets.availableWeapons(MOVE2, TARGET2);
     assertThat(weapons2).containsExactly(weapon1, weapon2);
 
-    assertThat(targets.weaponsFor(ORIGIN, TARGET1)).isEmpty();
+    assertThat(targets.availableWeapons(ORIGIN, TARGET1)).isEmpty();
   }
 
   @Test

@@ -122,7 +122,8 @@ public class SelectingWeaponTest {
     when(player.createTargets()).thenReturn(targets);
     when(player.getCoordinate()).thenReturn(PLAYER_COORDINATE);
     when(enemy.getCoordinate()).thenReturn(ENEMY_COORDINATE);
-    when(targets.weaponsFor(PLAYER_COORDINATE, ENEMY_COORDINATE)).thenReturn(targetingWeapons);
+    when(targets.availableWeapons(PLAYER_COORDINATE, ENEMY_COORDINATE))
+        .thenReturn(targetingWeapons);
     when(targetingWeapons.contains(weapon2)).thenReturn(true);
     when(player.getWeapons()).thenReturn(weapons);
     when(weapons.iterator()).thenReturn(weaponIterator);

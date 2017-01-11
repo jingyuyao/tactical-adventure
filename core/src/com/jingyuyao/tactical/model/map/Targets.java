@@ -74,38 +74,39 @@ public class Targets {
   }
 
   /**
-   * Can {@link #character} move to {@code to}.
+   * Can {@link #character} move to {@code coordinate}.
    */
-  public boolean canMoveTo(Coordinate to) {
-    return moves().contains(to);
+  public boolean canMoveTo(Coordinate coordinate) {
+    return moveCoordinates().contains(coordinate);
   }
 
   /**
-   * All the move coordinates {@link #character}'s current location.
+   * All the move {@link Coordinate} {@link #character}'s current location.
    */
-  public ImmutableSet<Coordinate> moves() {
+  public ImmutableSet<Coordinate> moveCoordinates() {
     return ImmutableSet.copyOf(moveMap.keys());
   }
 
   /**
-   * Get a path to a {@link Coordinate} from {@link #moves()}.
+   * Get a path to {@code coordinate} from {@link #moveCoordinates()}.
    */
-  public Path pathTo(Coordinate to) {
-    return new Path(to, algorithms.getTrackTo(moveGraph, to));
+  public Path pathTo(Coordinate coordinate) {
+    return new Path(coordinate, algorithms.getTrackTo(moveGraph, coordinate));
   }
 
   /**
-   * Get the optimal path to {@code target}. Optimal path is the path where the destination has the
-   * greatest number of weapon choices to hit target. <br>
-   * Preconditions: {@code allTargets().contains(target)}
+   * Get the optimal path to {@code targetCoordinate}. Optimal path is the path where the
+   * destination has the greatest number of weapon choices to hit target. <br> Preconditions: {@code
+   * allTargets().contains(target)}
    */
-  public Path movePathToTarget(Coordinate target) {
-    Preconditions.checkArgument(all().targets().contains(target));
+  // TODO: also return the least distance traveled or prefer the origin coordinate
+  public Path movePathToTargetCoordinate(Coordinate targetCoordinate) {
+    Preconditions.checkArgument(all().coordinates().contains(targetCoordinate));
 
     Coordinate currentBestTerrain = null;
     int currentMaxWeapons = 0;
     for (Coordinate move : moveMap.keys()) {
-      ImmutableSet<Weapon> weaponsForMove = weaponsFor(move, target);
+      ImmutableSet<Weapon> weaponsForMove = availableWeapons(move, targetCoordinate);
       if (weaponsForMove.size() > currentMaxWeapons) {
         currentMaxWeapons = weaponsForMove.size();
         currentBestTerrain = move;
@@ -117,9 +118,10 @@ public class Targets {
   }
 
   /**
-   * Return all the weapons that can hit {@code to} if {@link #character} stand on {@code from}.
+   * Return all the {@link Weapon} that can hit {@code to} if {@link #character} were to stand on
+   * {@code from}.
    */
-  public ImmutableSet<Weapon> weaponsFor(Coordinate from, Coordinate to) {
+  public ImmutableSet<Weapon> availableWeapons(Coordinate from, Coordinate to) {
     Preconditions.checkArgument(moveMap.containsKey(from));
 
     for (SetMultimap<Coordinate, Weapon> fromTargets : moveMap.get(from)) {
@@ -164,7 +166,7 @@ public class Targets {
      * Return all the target coordinates from {@link #character}'s current position given this
      * filter.
      */
-    public ImmutableSet<Coordinate> targets() {
+    public ImmutableSet<Coordinate> coordinates() {
       return ImmutableSet.copyOf(targetCoordinates);
     }
 
@@ -173,7 +175,7 @@ public class Targets {
      * filter but excluding the move coordinates.
      */
     public ImmutableSet<Coordinate> targetsMinusMove() {
-      return ImmutableSet.copyOf(Sets.difference(targetCoordinates, moves()));
+      return ImmutableSet.copyOf(Sets.difference(targetCoordinates, moveCoordinates()));
     }
 
     /**

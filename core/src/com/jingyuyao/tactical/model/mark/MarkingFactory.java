@@ -44,7 +44,7 @@ public class MarkingFactory {
   }
 
   public Marking moveAndTargets(Targets targets) {
-    Iterable<Terrain> canMoveToTerrains = terrains.getAll(targets.moves());
+    Iterable<Terrain> canMoveToTerrains = terrains.getAll(targets.moveCoordinates());
     Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.all().targetsMinusMove());
     Iterable<Character> canTargetCharacters = targets.all().characters();
 
@@ -56,7 +56,7 @@ public class MarkingFactory {
   }
 
   public Marking immediateTargets(Targets targets) {
-    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.immediate().targets());
+    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.immediate().coordinates());
     Iterable<Character> canTargetCharacters = targets.immediate().characters();
 
     return this.new Builder(targets.getCharacter())
@@ -66,7 +66,7 @@ public class MarkingFactory {
   }
 
   public Marking danger(Targets targets) {
-    Iterable<Terrain> allTargets = terrains.getAll(targets.all().targets());
+    Iterable<Terrain> allTargets = terrains.getAll(targets.all().coordinates());
 
     return this.new Builder(targets.getCharacter()).add(allTargets, Marker.DANGER).build();
   }
