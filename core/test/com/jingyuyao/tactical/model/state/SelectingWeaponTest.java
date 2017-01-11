@@ -71,7 +71,7 @@ public class SelectingWeaponTest {
   public void enter() {
     selectingWeapon.enter();
 
-    verify(player).showImmediateTargets();
+    verify(player).showImmediateTargetsWithChosenTarget(enemy);
   }
 
   @Test

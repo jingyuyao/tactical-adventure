@@ -33,8 +33,7 @@ class SelectingWeapon extends AbstractPlayerState {
   @Override
   public void enter() {
     super.enter();
-    // TODO: use a different marker for each stage
-    getPlayer().showImmediateTargets();
+    getPlayer().showImmediateTargetsWithChosenTarget(enemy);
   }
 
   @Override
