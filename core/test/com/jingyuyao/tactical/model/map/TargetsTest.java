@@ -37,6 +37,8 @@ public class TargetsTest {
   @Mock
   private Characters characters;
   @Mock
+  private Terrains terrains;
+  @Mock
   private Character character;
   @Mock
   private Graph<Coordinate> graph;
@@ -52,14 +54,18 @@ public class TargetsTest {
   private ImmutableList<Coordinate> track;
   @Mock
   private Iterator<Character> characterIterator;
+  @Mock
+  private Iterable<Terrain> terrainIterable;
 
+  private Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
   private Targets targets;
 
   @Before
   public void setUp() {
     when(graph.nodes()).thenReturn(ImmutableSet.of(ORIGIN, MOVE1, MOVE2));
     when(character.getCoordinate()).thenReturn(ORIGIN);
-    targets = new Targets(algorithms, characters, character, graph, createTargetMap());
+    moveMap = createMoveMap();
+    targets = new Targets(algorithms, characters, terrains, character, graph, moveMap);
   }
 
   @Test
@@ -198,26 +204,47 @@ public class TargetsTest {
     assertThat(targets.immediate().characters()).isEmpty();
   }
 
+  @Test
+  public void move_terrains() {
+    when(terrains.getAll(moveMap.keySet())).thenReturn(terrainIterable);
+
+    assertThat(targets.moveTerrains()).isSameAs(terrainIterable);
+  }
+
+  @Test
+  public void all_terrains() {
+    when(terrains.getAll(targets.all().coordinates())).thenReturn(terrainIterable);
+
+    assertThat(targets.all().terrains()).isSameAs(terrainIterable);
+  }
+
+  @Test
+  public void immediate_terrains() {
+    when(terrains.getAll(targets.immediate().coordinates())).thenReturn(terrainIterable);
+
+    assertThat(targets.immediate().terrains()).isSameAs(terrainIterable);
+  }
+
   /**
    * ORIGIN can hit ORIGIN_TARGET with originWeapon
    * MOVE1 can hit TARGET1 & TARGET2 with weapon1
    * MOVE2 can hit TARGET2 with weapon 1 & 2 and MOVE1 with weapon1
    */
-  private Map<Coordinate, SetMultimap<Coordinate, Weapon>> createTargetMap() {
-    Map<Coordinate, SetMultimap<Coordinate, Weapon>> targetMap =
+  private Map<Coordinate, SetMultimap<Coordinate, Weapon>> createMoveMap() {
+    Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap =
         new HashMap<Coordinate, SetMultimap<Coordinate, Weapon>>();
     SetMultimap<Coordinate, Weapon> origin = HashMultimap.create();
     origin.put(ORIGIN_TARGET, originWeapon);
-    targetMap.put(ORIGIN, origin);
+    moveMap.put(ORIGIN, origin);
     SetMultimap<Coordinate, Weapon> move1 = HashMultimap.create();
     move1.put(TARGET1, weapon1);
     move1.put(TARGET2, weapon1);
-    targetMap.put(MOVE1, move1);
+    moveMap.put(MOVE1, move1);
     SetMultimap<Coordinate, Weapon> move2 = HashMultimap.create();
     move2.put(TARGET2, weapon1);
     move2.put(TARGET2, weapon2);
     move1.put(MOVE1, weapon1);
-    targetMap.put(MOVE2, move2);
-    return targetMap;
+    moveMap.put(MOVE2, move2);
+    return moveMap;
   }
 }

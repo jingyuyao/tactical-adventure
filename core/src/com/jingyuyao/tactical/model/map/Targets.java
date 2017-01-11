@@ -25,6 +25,7 @@ public class Targets {
 
   private final Algorithms algorithms;
   private final Characters characters;
+  private final Terrains terrains;
   private final Character character;
   private final Graph<Coordinate> moveGraph;
   /**
@@ -37,6 +38,7 @@ public class Targets {
   Targets(
       Algorithms algorithms,
       Characters characters,
+      Terrains terrains,
       Character character,
       Graph<Coordinate> moveGraph,
       Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap) {
@@ -45,6 +47,7 @@ public class Targets {
 
     this.algorithms = algorithms;
     this.characters = characters;
+    this.terrains = terrains;
     this.character = character;
     this.moveGraph = moveGraph;
     this.moveMap = moveMap;
@@ -96,6 +99,13 @@ public class Targets {
    */
   public ImmutableSet<Coordinate> moveCoordinates() {
     return ImmutableSet.copyOf(moveMap.keySet());
+  }
+
+  /**
+   * Get the {@link Terrain}s this target can move to.
+   */
+  public Iterable<Terrain> moveTerrains() {
+    return terrains.getAll(moveMap.keySet());
   }
 
   /**
@@ -161,6 +171,13 @@ public class Targets {
      */
     public ImmutableSet<Coordinate> coordinates() {
       return ImmutableSet.copyOf(targetCoordinates);
+    }
+
+    /**
+     * Return the {@link Terrain}s this filtered view can target.
+     */
+    public Iterable<Terrain> terrains() {
+      return terrains.getAll(targetCoordinates);
     }
 
     /**

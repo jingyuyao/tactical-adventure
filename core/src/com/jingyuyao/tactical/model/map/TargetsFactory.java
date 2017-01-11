@@ -48,7 +48,7 @@ public class TargetsFactory {
       }
       moveMap.put(move, targetWeaponMap);
     }
-    return new Targets(algorithms, characters, character, moveGraph, moveMap);
+    return new Targets(algorithms, characters, terrains, character, moveGraph, moveMap);
   }
 
   private Graph<Coordinate> getMoveGraph(Character character) {
