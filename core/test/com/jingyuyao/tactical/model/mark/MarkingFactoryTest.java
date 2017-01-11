@@ -80,7 +80,7 @@ public class MarkingFactoryTest {
     when(allTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
 
-    markingFactory.moveAndTargets(targets);
+    markingFactory.allTargetsWithMove(targets);
 
     verifyMarkers(Marker.CAN_MOVE_TO, terrain);
     verifyMarkers(Marker.CAN_ATTACK, terrain2);

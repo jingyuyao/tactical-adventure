@@ -44,7 +44,7 @@ public class MarkingFactory {
     this.markerMapProvider = markerMapProvider;
   }
 
-  public Marking moveAndTargets(Targets targets) {
+  public Marking allTargetsWithMove(Targets targets) {
     Iterable<Terrain> canMoveToTerrains = terrains.getAll(targets.moveCoordinates());
     Iterable<Terrain> canAttackTerrains =
         terrains.getAll(Sets.difference(targets.all().coordinates(), targets.moveCoordinates()));

@@ -72,10 +72,10 @@ public class Player extends Character {
     marking.apply();
   }
 
-  public void showMoveAndTargets() {
+  public void showAllTargetsWithMove() {
     Preconditions.checkState(marking == null);
 
-    marking = markingFactory.moveAndTargets(createTargets());
+    marking = markingFactory.allTargetsWithMove(createTargets());
     marking.apply();
   }
 

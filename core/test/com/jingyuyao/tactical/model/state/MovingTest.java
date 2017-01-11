@@ -66,7 +66,7 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(movingPlayer).showMoveAndTargets();
+    verify(movingPlayer).showAllTargetsWithMove();
   }
 
   @Test

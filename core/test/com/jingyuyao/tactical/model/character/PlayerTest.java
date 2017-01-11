@@ -142,9 +142,9 @@ public class PlayerTest {
   @Test
   public void show_move_and_targets() {
     when(targetsFactory.create(player)).thenReturn(targets);
-    when(markingFactory.moveAndTargets(targets)).thenReturn(marking);
+    when(markingFactory.allTargetsWithMove(targets)).thenReturn(marking);
 
-    player.showMoveAndTargets();
+    player.showAllTargetsWithMove();
 
     verify(marking).apply();
   }
@@ -152,9 +152,9 @@ public class PlayerTest {
   @Test
   public void clear_marking() {
     when(targetsFactory.create(player)).thenReturn(targets);
-    when(markingFactory.moveAndTargets(targets)).thenReturn(marking);
+    when(markingFactory.allTargetsWithMove(targets)).thenReturn(marking);
 
-    player.showMoveAndTargets();
+    player.showAllTargetsWithMove();
     player.clearMarking();
 
     InOrder inOrder = Mockito.inOrder(marking);
