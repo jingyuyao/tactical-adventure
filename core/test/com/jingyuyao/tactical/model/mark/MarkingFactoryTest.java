@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.UnmodifiableIterator;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -16,7 +15,6 @@ import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
-import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Provider;
 import org.junit.Before;
@@ -27,6 +25,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MarkingFactoryTest {
+
+  private static final Coordinate COORDINATE1 = new Coordinate(0, 0);
+  private static final Coordinate COORDINATE2 = new Coordinate(0, 1);
 
   @Mock
   private EventBus eventBus;
@@ -41,25 +42,9 @@ public class MarkingFactoryTest {
   @Mock
   private Targets targets;
   @Mock
-  private ImmutableSet<Coordinate> coordinates;
-  @Mock
-  private ImmutableSet<Coordinate> coordinates2;
-  @Mock
-  private Iterable<Terrain> terrainIterable;
-  @Mock
-  private Iterable<Terrain> terrainIterable2;
-  @Mock
-  private Iterator<Terrain> terrainIterator;
-  @Mock
-  private Iterator<Terrain> terrainIterator2;
-  @Mock
   private Terrain terrain;
   @Mock
   private Terrain terrain2;
-  @Mock
-  private ImmutableList<Character> characterList;
-  @Mock
-  private UnmodifiableIterator<Character> characterIterator;
   @Mock
   private Character character;
   @Mock
@@ -67,10 +52,22 @@ public class MarkingFactoryTest {
   @Mock
   private FilteredTargets immediateTargets;
 
+  private ImmutableSet<Coordinate> coordinates;
+  private ImmutableSet<Coordinate> coordinates2;
+  private Iterable<Terrain> terrainIterable;
+  private Iterable<Terrain> terrainIterable2;
+  private ImmutableList<Character> characterList;
+
   private MarkingFactory markingFactory;
 
   @Before
   public void setUp() {
+    coordinates = ImmutableSet.of(COORDINATE1);
+    coordinates2 = ImmutableSet.of(COORDINATE2);
+    terrainIterable = ImmutableList.of(terrain);
+    terrainIterable2 = ImmutableList.of(terrain2);
+    characterList = ImmutableList.of(character);
+
     markingFactory = new MarkingFactory(eventBus, waiter, terrains, markerMapProvider);
   }
 
@@ -79,10 +76,9 @@ public class MarkingFactoryTest {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.moveCoordinates()).thenReturn(coordinates);
     when(targets.all()).thenReturn(allTargets);
-    when(allTargets.targetsMinusMove()).thenReturn(coordinates2);
+    when(allTargets.coordinates()).thenReturn(coordinates2);
     when(allTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
-    set_up_character_mocks();
 
     markingFactory.moveAndTargets(targets);
 
@@ -99,7 +95,6 @@ public class MarkingFactoryTest {
     when(immediateTargets.coordinates()).thenReturn(coordinates);
     when(immediateTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
-    set_up_character_mocks();
 
     markingFactory.immediateTargets(targets);
 
@@ -123,19 +118,7 @@ public class MarkingFactoryTest {
 
   private void set_up_terrain_mocks() {
     when(terrains.getAll(coordinates)).thenReturn(terrainIterable);
-    when(terrainIterable.iterator()).thenReturn(terrainIterator);
-    when(terrainIterator.hasNext()).thenReturn(true, false);
-    when(terrainIterator.next()).thenReturn(terrain);
     when(terrains.getAll(coordinates2)).thenReturn(terrainIterable2);
-    when(terrainIterable2.iterator()).thenReturn(terrainIterator2);
-    when(terrainIterator2.hasNext()).thenReturn(true, false);
-    when(terrainIterator2.next()).thenReturn(terrain2);
-  }
-
-  private void set_up_character_mocks() {
-    when(characterList.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, false);
-    when(characterIterator.next()).thenReturn(character);
   }
 
   private void verifyMarkers(Marker expected, MapObject... objects) {

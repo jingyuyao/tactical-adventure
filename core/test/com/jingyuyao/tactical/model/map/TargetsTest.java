@@ -143,11 +143,6 @@ public class TargetsTest {
   }
 
   @Test
-  public void all_targets_minus_move() {
-    assertThat(targets.all().targetsMinusMove()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET);
-  }
-
-  @Test
   public void weapons_for() {
     ImmutableSet<Weapon> weapons1 = targets.availableWeapons(MOVE1, TARGET1);
     assertThat(weapons1).containsExactly(weapon1);

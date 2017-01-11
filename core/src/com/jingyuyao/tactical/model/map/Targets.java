@@ -7,7 +7,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
@@ -168,14 +167,6 @@ public class Targets {
      */
     public ImmutableSet<Coordinate> coordinates() {
       return ImmutableSet.copyOf(targetCoordinates);
-    }
-
-    /**
-     * Return all the target coordinates from {@link #character}'s current position given this
-     * filter but excluding the move coordinates.
-     */
-    public ImmutableSet<Coordinate> targetsMinusMove() {
-      return ImmutableSet.copyOf(Sets.difference(targetCoordinates, moveCoordinates()));
     }
 
     /**

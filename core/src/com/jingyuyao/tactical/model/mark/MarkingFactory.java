@@ -5,6 +5,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
@@ -45,7 +46,8 @@ public class MarkingFactory {
 
   public Marking moveAndTargets(Targets targets) {
     Iterable<Terrain> canMoveToTerrains = terrains.getAll(targets.moveCoordinates());
-    Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.all().targetsMinusMove());
+    Iterable<Terrain> canAttackTerrains =
+        terrains.getAll(Sets.difference(targets.all().coordinates(), targets.moveCoordinates()));
     Iterable<Character> canTargetCharacters = targets.all().characters();
 
     return this.new Builder(targets.getCharacter())
