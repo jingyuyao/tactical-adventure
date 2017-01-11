@@ -17,7 +17,7 @@ interface StateFactory {
 
   Moving createMoving(Player player);
 
-  ReviewingAttack createReviewingAttack(Player player, AttackPlan attackPlan);
-
   SelectingWeapon createSelectingWeapon(Player player, Enemy enemy);
+
+  ReviewingAttack createReviewingAttack(Player player, Enemy enemy, AttackPlan attackPlan);
 }

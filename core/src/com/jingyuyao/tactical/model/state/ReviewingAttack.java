@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.AttackPlan;
+import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
 import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {
 
+  private final Enemy enemy;
   private final AttackPlan attackPlan;
 
   @Inject
@@ -19,17 +21,17 @@ class ReviewingAttack extends AbstractPlayerState {
       MapState mapState,
       StateFactory stateFactory,
       @Assisted Player player,
+      @Assisted Enemy enemy,
       @Assisted AttackPlan attackPlan) {
     super(eventBus, mapState, stateFactory, player);
+    this.enemy = enemy;
     this.attackPlan = attackPlan;
   }
 
   @Override
   public void enter() {
     super.enter();
-    // TODO: use a different marker for each stage
-    // TODO: show equipped weapon targets only
-    getPlayer().showImmediateTargets();
+    getPlayer().showImmediateTargetsWithChosenTarget(enemy);
     post(new ShowAttackPlan(attackPlan));
   }
 

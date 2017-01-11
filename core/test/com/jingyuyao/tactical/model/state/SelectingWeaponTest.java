@@ -130,7 +130,7 @@ public class SelectingWeaponTest {
     when(weaponIterator.hasNext()).thenReturn(true, true, false);
     when(weaponIterator.next()).thenReturn(weapon1, weapon2);
     when(attackPlanFactory.create(player, enemy)).thenReturn(attackPlan);
-    when(stateFactory.createReviewingAttack(player, attackPlan)).thenReturn(reviewingAttack);
+    when(stateFactory.createReviewingAttack(player, enemy, attackPlan)).thenReturn(reviewingAttack);
     ImmutableList<Action> actions = selectingWeapon.getActions();
     assertThat(actions).hasSize(2);
     return actions;

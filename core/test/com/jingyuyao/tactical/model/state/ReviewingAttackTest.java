@@ -49,14 +49,14 @@ public class ReviewingAttackTest {
   @Before
   public void setUp() {
     reviewingAttack =
-        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, attackPlan);
+        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, enemy, attackPlan);
   }
 
   @Test
   public void enter() {
     reviewingAttack.enter();
 
-    verify(attackingPlayer).showImmediateTargets();
+    verify(attackingPlayer).showImmediateTargetsWithChosenTarget(enemy);
     verify(eventBus).post(argumentCaptor.capture());
     ShowAttackPlan showAttackPlan =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowAttackPlan.class);

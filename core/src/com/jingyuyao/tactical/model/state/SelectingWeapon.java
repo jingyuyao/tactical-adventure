@@ -72,7 +72,8 @@ class SelectingWeapon extends AbstractPlayerState {
       getPlayer().equipWeapon(weapon);
       goTo(
           getStateFactory()
-              .createReviewingAttack(getPlayer(), attackPlanFactory.create(getPlayer(), enemy)));
+              .createReviewingAttack(
+                  getPlayer(), enemy, attackPlanFactory.create(getPlayer(), enemy)));
     }
   }
 }
