@@ -112,13 +112,11 @@ public class MarkingFactoryTest {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.immediate()).thenReturn(immediateTargets);
     when(immediateTargets.coordinates()).thenReturn(coordinates);
-    when(immediateTargets.characters()).thenReturn(characterList);
     set_up_terrain_mocks();
 
     markingFactory.immediateTargetsWithChosenCharacter(targets, character2);
 
     verifyMarkers(Marker.CAN_ATTACK, terrain);
-    verifyMarkers(Marker.POTENTIAL_TARGET, character);
     verifyMarkers(Marker.CHOSEN_TARGET, character2);
     verifyNoMoreInteractions(markerMap);
   }

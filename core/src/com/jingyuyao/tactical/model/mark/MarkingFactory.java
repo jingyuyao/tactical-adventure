@@ -5,7 +5,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
@@ -17,7 +16,6 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -71,13 +69,9 @@ public class MarkingFactory {
 
   public Marking immediateTargetsWithChosenCharacter(Targets targets, Character chosen) {
     Iterable<Terrain> canAttackTerrains = terrains.getAll(targets.immediate().coordinates());
-    // TODO: fix me
-    List<Character> canTargetCharacters = Lists.newArrayList(targets.immediate().characters());
-    canTargetCharacters.remove(chosen);
 
     return this.new Builder(targets.getCharacter())
         .add(canAttackTerrains, Marker.CAN_ATTACK)
-        .add(canTargetCharacters, Marker.POTENTIAL_TARGET)
         .add(chosen, Marker.CHOSEN_TARGET)
         .build();
   }
