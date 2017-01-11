@@ -148,16 +148,6 @@ public class TargetsTest {
   }
 
   @Test
-  public void all_targets() {
-    assertThat(targets.all().coordinates()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
-  }
-
-  @Test
-  public void immediate_targets() {
-    assertThat(targets.immediate().coordinates()).containsExactly(ORIGIN_TARGET);
-  }
-
-  @Test
   public void weapons_for() {
     ImmutableSet<Weapon> weapons1 = targets.availableWeapons(MOVE1, TARGET1);
     assertThat(weapons1).containsExactly(weapon1);

@@ -95,13 +95,6 @@ public class Targets {
   }
 
   /**
-   * All the move {@link Coordinate} {@link #character}'s current location.
-   */
-  public ImmutableSet<Coordinate> moveCoordinates() {
-    return ImmutableSet.copyOf(moveMap.keySet());
-  }
-
-  /**
    * Get the {@link Terrain}s this target can move to.
    */
   public Iterable<Terrain> moveTerrains() {
@@ -109,9 +102,11 @@ public class Targets {
   }
 
   /**
-   * Get a path to {@code coordinate} from {@link #moveCoordinates()}.
+   * Get a path to {@code coordinate}.
    */
   public Path pathTo(Coordinate coordinate) {
+    Preconditions.checkArgument(moveMap.keySet().contains(coordinate));
+
     return new Path(coordinate, algorithms.getTrackTo(moveGraph, coordinate));
   }
 
@@ -121,7 +116,7 @@ public class Targets {
    * allTargets().contains(target)}
    */
   public Path movePathToTargetCoordinate(final Coordinate targetCoordinate) {
-    Preconditions.checkArgument(all().coordinates().contains(targetCoordinate));
+    Preconditions.checkArgument(all.targetCoordinates.contains(targetCoordinate));
 
     Coordinate bestTerrain = Collections.max(moveMap.keySet(), new Comparator<Coordinate>() {
       @Override
@@ -163,14 +158,6 @@ public class Targets {
      */
     public boolean canTarget(Character target) {
       return character.canTarget(target) && targetCoordinates.contains(target.getCoordinate());
-    }
-
-    /**
-     * Return all the target coordinates from {@link #character}'s current position given this
-     * filter.
-     */
-    public ImmutableSet<Coordinate> coordinates() {
-      return ImmutableSet.copyOf(targetCoordinates);
     }
 
     /**
