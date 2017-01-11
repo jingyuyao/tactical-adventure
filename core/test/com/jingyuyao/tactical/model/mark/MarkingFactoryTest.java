@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.Map;
 import javax.inject.Provider;
 import org.junit.Before;
@@ -33,8 +32,6 @@ public class MarkingFactoryTest {
   private EventBus eventBus;
   @Mock
   private Waiter waiter;
-  @Mock
-  private Terrains terrains;
   @Mock
   private Provider<Map<MapObject, Marker>> markerMapProvider;
   @Mock
@@ -70,17 +67,16 @@ public class MarkingFactoryTest {
     terrainIterable2 = ImmutableList.of(terrain2);
     characterList = ImmutableList.of(character, character2);
 
-    markingFactory = new MarkingFactory(eventBus, waiter, terrains, markerMapProvider);
+    markingFactory = new MarkingFactory(eventBus, waiter, markerMapProvider);
   }
 
   @Test
-  public void moveAndTargets() {
+  public void all_targets_with_move() {
     when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.moveCoordinates()).thenReturn(coordinates);
+    when(targets.moveTerrains()).thenReturn(terrainIterable);
     when(targets.all()).thenReturn(allTargets);
-    when(allTargets.coordinates()).thenReturn(coordinates2);
+    when(allTargets.terrains()).thenReturn(terrainIterable2);
     when(allTargets.characters()).thenReturn(characterList);
-    set_up_terrain_mocks();
 
     markingFactory.allTargetsWithMove(targets);
 
@@ -95,9 +91,8 @@ public class MarkingFactoryTest {
   public void immediateTargets() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.coordinates()).thenReturn(coordinates);
+    when(immediateTargets.terrains()).thenReturn(terrainIterable);
     when(immediateTargets.characters()).thenReturn(characterList);
-    set_up_terrain_mocks();
 
     markingFactory.immediateTargets(targets);
 
@@ -111,8 +106,7 @@ public class MarkingFactoryTest {
   public void immediate_targets_with_chosen_target() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.coordinates()).thenReturn(coordinates);
-    set_up_terrain_mocks();
+    when(immediateTargets.terrains()).thenReturn(terrainIterable);
 
     markingFactory.immediateTargetsWithChosenCharacter(targets, character2);
 
@@ -125,18 +119,12 @@ public class MarkingFactoryTest {
   public void dangerArea() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.all()).thenReturn(allTargets);
-    when(allTargets.coordinates()).thenReturn(coordinates);
-    set_up_terrain_mocks();
+    when(allTargets.terrains()).thenReturn(terrainIterable);
 
     markingFactory.danger(targets);
 
     verifyMarkers(Marker.DANGER, terrain);
     verifyNoMoreInteractions(markerMap);
-  }
-
-  private void set_up_terrain_mocks() {
-    when(terrains.getAll(coordinates)).thenReturn(terrainIterable);
-    when(terrains.getAll(coordinates2)).thenReturn(terrainIterable2);
   }
 
   private void verifyMarkers(Marker expected, MapObject... objects) {
