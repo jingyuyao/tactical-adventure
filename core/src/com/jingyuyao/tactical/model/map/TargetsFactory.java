@@ -31,7 +31,8 @@ public class TargetsFactory {
    */
   public Targets create(Character character) {
     Graph<Coordinate> moveGraph = getMoveGraph(character);
-    SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap = HashMultimap.create();
+    Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap =
+        new HashMap<Coordinate, SetMultimap<Coordinate, Weapon>>();
     for (Coordinate move : moveGraph.nodes()) {
       SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
       for (Weapon weapon : character.getWeapons()) {

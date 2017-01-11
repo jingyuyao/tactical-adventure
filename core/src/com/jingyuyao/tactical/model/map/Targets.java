@@ -6,12 +6,17 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
@@ -23,9 +28,9 @@ public class Targets {
   private final Character character;
   private final Graph<Coordinate> moveGraph;
   /**
-   * Multi-map of move coordinate to maps of target coordinates to weapons for that target.
+   * Map of move coordinate to multi-map of target coordinates to weapons.
    */
-  private final SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
+  private final Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
   private final FilteredTargets all;
   private final FilteredTargets immediate;
 
@@ -34,24 +39,31 @@ public class Targets {
       Characters characters,
       Character character,
       Graph<Coordinate> moveGraph,
-      SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap) {
+      Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap) {
+    // Make sure moveGraph and moveMap contains the same move coordinates
+    Preconditions.checkArgument(moveGraph.nodes().equals(moveMap.keySet()));
+
     this.algorithms = algorithms;
     this.characters = characters;
     this.character = character;
     this.moveGraph = moveGraph;
     this.moveMap = moveMap;
-    this.all =
-        new FilteredTargets(
-            Iterables.concat(
-                Iterables.transform(
-                    moveMap.values(),
-                    new MultiMapKeysExtractor())));
-    this.immediate =
-        new FilteredTargets(
-            Iterables.concat(
-                Iterables.transform(
-                    moveMap.get(character.getCoordinate()),
-                    new MultiMapKeysExtractor())));
+    this.all = new FilteredTargets(extractAllTargetCoordinates(moveMap.values()));
+    this.immediate = new FilteredTargets(moveMap.get(character.getCoordinate()).keySet());
+  }
+
+  private static Iterable<Coordinate> extractAllTargetCoordinates(
+      Collection<SetMultimap<Coordinate, Weapon>> multiMaps) {
+    return
+        Iterables.concat(
+            Iterables.transform(
+                multiMaps,
+                new Function<Multimap<Coordinate, ?>, Iterable<Coordinate>>() {
+                  @Override
+                  public Iterable<Coordinate> apply(Multimap<Coordinate, ?> input) {
+                    return input.keySet();
+                  }
+                }));
   }
 
   public Character getCharacter() {
@@ -76,14 +88,14 @@ public class Targets {
    * Can {@link #character} move to {@code coordinate}.
    */
   public boolean canMoveTo(Coordinate coordinate) {
-    return moveCoordinates().contains(coordinate);
+    return moveMap.keySet().contains(coordinate);
   }
 
   /**
    * All the move {@link Coordinate} {@link #character}'s current location.
    */
   public ImmutableSet<Coordinate> moveCoordinates() {
-    return ImmutableSet.copyOf(moveMap.keys());
+    return ImmutableSet.copyOf(moveMap.keySet());
   }
 
   /**
@@ -98,22 +110,19 @@ public class Targets {
    * destination has the greatest number of weapon choices to hit target. <br> Preconditions: {@code
    * allTargets().contains(target)}
    */
-  // TODO: also return the least distance traveled or prefer the origin coordinate
-  public Path movePathToTargetCoordinate(Coordinate targetCoordinate) {
+  public Path movePathToTargetCoordinate(final Coordinate targetCoordinate) {
     Preconditions.checkArgument(all().coordinates().contains(targetCoordinate));
 
-    Coordinate currentBestTerrain = null;
-    int currentMaxWeapons = 0;
-    for (Coordinate move : moveMap.keys()) {
-      ImmutableSet<Weapon> weaponsForMove = availableWeapons(move, targetCoordinate);
-      if (weaponsForMove.size() > currentMaxWeapons) {
-        currentMaxWeapons = weaponsForMove.size();
-        currentBestTerrain = move;
+    Coordinate bestTerrain = Collections.max(moveMap.keySet(), new Comparator<Coordinate>() {
+      @Override
+      public int compare(Coordinate t1, Coordinate t2) {
+        // TODO: prefer the coordinate that is closer to origin
+        int numWeaponsForT1 = availableWeapons(t1, targetCoordinate).size();
+        int numWeaponsForT2 = availableWeapons(t2, targetCoordinate).size();
+        return numWeaponsForT1 - numWeaponsForT2;
       }
-    }
-
-    Preconditions.checkNotNull(currentBestTerrain);
-    return pathTo(currentBestTerrain);
+    });
+    return pathTo(bestTerrain);
   }
 
   /**
@@ -123,24 +132,9 @@ public class Targets {
   public ImmutableSet<Weapon> availableWeapons(Coordinate from, Coordinate to) {
     Preconditions.checkArgument(moveMap.containsKey(from));
 
-    for (SetMultimap<Coordinate, Weapon> fromTargets : moveMap.get(from)) {
-      if (fromTargets.containsKey(to)) {
-        return ImmutableSet.copyOf(fromTargets.get(to));
-      }
-    }
-    return ImmutableSet.of();
-  }
-
-  /**
-   * Returns {@link SetMultimap#keys()} from the inputs.
-   */
-  private static class MultiMapKeysExtractor
-      implements Function<SetMultimap<Coordinate, ?>, Iterable<Coordinate>> {
-
-    @Override
-    public Iterable<Coordinate> apply(SetMultimap<Coordinate, ?> map) {
-      return map.keys();
-    }
+    // No need to check `from` contains `to` as SetMultimap return an empty collection if a key
+    // does not exist
+    return ImmutableSet.copyOf(moveMap.get(from).get(to));
   }
 
   /**
@@ -173,14 +167,16 @@ public class Targets {
      * Return all the {@link Character} that can be targeted by {@link #character} with this filter.
      */
     public ImmutableList<Character> characters() {
-      return ImmutableList.copyOf(Iterables.filter(
-          characters,
-          new Predicate<Character>() {
-            @Override
-            public boolean apply(Character other) {
-              return canTarget(other);
-            }
-          }));
+      return
+          ImmutableList.copyOf(
+              Iterables.filter(
+                  characters,
+                  new Predicate<Character>() {
+                    @Override
+                    public boolean apply(Character other) {
+                      return canTarget(other);
+                    }
+                  }));
     }
   }
 }

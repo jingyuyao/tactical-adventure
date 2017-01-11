@@ -12,7 +12,9 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +57,7 @@ public class TargetsTest {
 
   @Before
   public void setUp() {
+    when(graph.nodes()).thenReturn(ImmutableSet.of(ORIGIN, MOVE1, MOVE2));
     when(character.getCoordinate()).thenReturn(ORIGIN);
     targets = new Targets(algorithms, characters, character, graph, createTargetMap());
   }
@@ -200,8 +203,9 @@ public class TargetsTest {
    * MOVE1 can hit TARGET1 & TARGET2 with weapon1
    * MOVE2 can hit TARGET2 with weapon 1 & 2 and MOVE1 with weapon1
    */
-  private SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> createTargetMap() {
-    SetMultimap<Coordinate, SetMultimap<Coordinate, Weapon>> targetMap = HashMultimap.create();
+  private Map<Coordinate, SetMultimap<Coordinate, Weapon>> createTargetMap() {
+    Map<Coordinate, SetMultimap<Coordinate, Weapon>> targetMap =
+        new HashMap<Coordinate, SetMultimap<Coordinate, Weapon>>();
     SetMultimap<Coordinate, Weapon> origin = HashMultimap.create();
     origin.put(ORIGIN_TARGET, originWeapon);
     targetMap.put(ORIGIN, origin);
