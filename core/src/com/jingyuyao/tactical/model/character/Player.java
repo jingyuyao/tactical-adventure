@@ -89,6 +89,7 @@ public class Player extends Character {
     marking.apply();
   }
 
+  // TODO: change this to only show targets for a particular weapon
   public void showImmediateTargetsWithChosenTarget(Enemy enemy) {
     Preconditions.checkState(marking == null);
 
