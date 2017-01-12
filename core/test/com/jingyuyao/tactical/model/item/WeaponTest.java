@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -113,6 +114,18 @@ public class WeaponTest {
     weapon.hit(character);
 
     verify(character).damageBy(ATTACK_POWER);
+    verifyZeroInteractions(eventBus);
+  }
+
+  @Test
+  public void hit_twice_break() {
+    weapon.hit(character);
+    weapon.hit(character);
+
+    verify(character, times(2)).damageBy(ATTACK_POWER);
+    verify(eventBus).post(argumentCaptor.capture());
+    RemoveItem removeItem = TestHelpers.isInstanceOf(argumentCaptor.getValue(), RemoveItem.class);
+    assertThat(removeItem.getObject()).isSameAs(weapon);
   }
 
   @Test

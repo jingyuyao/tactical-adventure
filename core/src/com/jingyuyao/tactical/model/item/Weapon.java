@@ -60,6 +60,7 @@ public class Weapon extends Usable {
     // Actual "hitting" is done by weapon so different weapon can impose different effects
     // on the character. Default implementation just damages the character.
     character.damageBy(attackPower);
+    useOnce();
   }
 
   /**
