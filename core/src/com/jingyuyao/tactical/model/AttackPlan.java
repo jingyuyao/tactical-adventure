@@ -1,58 +1,35 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.MoreObjects;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.character.Character;
 
+// TODO: this should now be an event
 public class AttackPlan {
 
-  private final Player attackingPlayer;
-  private final Enemy targetEnemy;
-  /**
-   * Never null.
-   */
-  private final Weapon playerWeapon;
-  /**
-   * Can be null.
-   */
-  private final Weapon enemyWeapon;
+  private final Character attacker;
+  private final Character defender;
 
-  // TODO: add terrains
-  AttackPlan(Player attackingPlayer, Enemy targetEnemy, Weapon playerWeapon, Weapon enemyWeapon) {
-    this.attackingPlayer = attackingPlayer;
-    this.targetEnemy = targetEnemy;
-    this.playerWeapon = playerWeapon;
-    this.enemyWeapon = enemyWeapon;
-  }
-
-  public Player getAttackingPlayer() {
-    return attackingPlayer;
-  }
-
-  public Enemy getTargetEnemy() {
-    return targetEnemy;
+  AttackPlan(Character attacker, Character defender) {
+    this.attacker = attacker;
+    this.defender = defender;
   }
 
   /**
-   * Executes this attack plan, make HP reduction calculations
+   * Executes this attack plan.
    */
+  // TODO: we don't need this anymore, move it to the Action
   public void execute() {
-    // TODO: complete me
-    targetEnemy.damageBy(playerWeapon.getAttackPower());
-    playerWeapon.useOnce();
-
-    if (targetEnemy.isAlive() && enemyWeapon != null) {
-      attackingPlayer.damageBy(enemyWeapon.getAttackPower());
-      enemyWeapon.useOnce();
-    }
+    attacker.tryHit(defender);
+    // no need to check for health as tryHit() will handle what happens when a dead character
+    // tries to attack
+    defender.tryHit(attacker);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("attackingPlayer", attackingPlayer.toString())
-        .add("targetEnemy", targetEnemy.toString())
+        .add("attacker", attacker.toString())
+        .add("defender", defender.toString())
         .toString();
   }
 }

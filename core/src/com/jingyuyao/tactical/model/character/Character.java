@@ -75,16 +75,8 @@ public abstract class Character extends MapObject implements Disposable {
     return items.getWeapons();
   }
 
-  public Optional<Weapon> getEquippedWeapon() {
-    return items.getEquippedWeapon();
-  }
-
   public int getMoveDistance() {
     return stats.getMoveDistance();
-  }
-
-  public boolean isAlive() {
-    return stats.getHp() > 0;
   }
 
   public boolean canTarget(Character other) {
@@ -120,6 +112,26 @@ public abstract class Character extends MapObject implements Disposable {
 
   public void healBy(int delta) {
     stats.healBy(delta);
+  }
+
+  /**
+   * "Hit" {@code other} using the currently equipped weapon if possible.
+   */
+  public void tryHit(Character other) {
+    // Hum... we could have a special after death attack!
+    if (stats.getHp() == 0) {
+      return;
+    }
+
+    Optional<Weapon> weaponOptional = items.getEquippedWeapon();
+    if (!weaponOptional.isPresent()) {
+      return;
+    }
+
+    Weapon weapon = weaponOptional.get();
+    if (weapon.canTarget(this, other)) {
+      weapon.hit(other);
+    }
   }
 
   @Override
