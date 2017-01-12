@@ -7,12 +7,16 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import com.jingyuyao.tactical.model.state.MapState;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 
 /**
@@ -83,7 +87,12 @@ public class Enemy extends Character {
   }
 
   private void applyCurrentDangerArea() {
-    dangerArea = markingFactory.danger(createTargets());
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : createTargets().all().terrains()) {
+      markerMap.put(terrain, Marker.DANGER);
+    }
+
+    dangerArea = markingFactory.create(this, markerMap);
     dangerArea.apply();
   }
 

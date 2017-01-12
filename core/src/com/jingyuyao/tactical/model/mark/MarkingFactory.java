@@ -42,6 +42,10 @@ public class MarkingFactory {
     this.markerMapProvider = markerMapProvider;
   }
 
+  public Marking create(Character owner, Map<MapObject, Marker> markerMap) {
+    return new Marking(eventBus, owner, markerMap, waiter);
+  }
+
   public Marking allTargetsWithMove(Targets targets) {
     ImmutableSet<Terrain> canMoveToTerrains = ImmutableSet.copyOf(targets.moveTerrains());
     ImmutableSet<Terrain> canAttackTerrains = ImmutableSet.copyOf(targets.all().terrains());
@@ -72,12 +76,6 @@ public class MarkingFactory {
         .add(canAttackTerrains, Marker.CAN_ATTACK)
         .add(chosen, Marker.CHOSEN_TARGET)
         .build();
-  }
-
-  public Marking danger(Targets targets) {
-    Iterable<Terrain> allTargets = targets.all().terrains();
-
-    return this.new Builder(targets.getCharacter()).add(allTargets, Marker.DANGER).build();
   }
 
   @BindingAnnotation

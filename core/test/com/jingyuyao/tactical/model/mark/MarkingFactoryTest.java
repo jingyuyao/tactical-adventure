@@ -115,18 +115,6 @@ public class MarkingFactoryTest {
     verifyNoMoreInteractions(markerMap);
   }
 
-  @Test
-  public void dangerArea() {
-    when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.all()).thenReturn(allTargets);
-    when(allTargets.terrains()).thenReturn(terrainIterable);
-
-    markingFactory.danger(targets);
-
-    verifyMarkers(Marker.DANGER, terrain);
-    verifyNoMoreInteractions(markerMap);
-  }
-
   private void verifyMarkers(Marker expected, MapObject... objects) {
     for (MapObject object : objects) {
       verify(markerMap).put(object, expected);

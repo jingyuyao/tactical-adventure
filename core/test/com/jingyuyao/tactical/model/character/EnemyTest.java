@@ -1,23 +1,29 @@
 package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Targets;
+import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +53,8 @@ public class EnemyTest {
   @Mock
   private Targets targets;
   @Mock
+  private FilteredTargets allTargets;
+  @Mock
   private Marking marking;
   @Mock
   private MapState mapState;
@@ -56,15 +64,19 @@ public class EnemyTest {
   private InstantMove instantMove;
   @Mock
   private RemoveCharacter removeCharacter;
+  @Mock
+  private Terrain terrain;
   @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
+  private ArgumentCaptor<Map<MapObject, Marker>> markerMapCaptor;
 
   private List<Marker> markers;
+  private List<Terrain> terrainList;
   private Enemy enemy;
 
   @Before
   public void setUp() {
     markers = new ArrayList<Marker>();
+    terrainList = ImmutableList.of(terrain);
     enemy =
         new Enemy(
             eventBus, COORDINATE, markers, NAME, stats, items, targetsFactory, markingFactory);
@@ -73,8 +85,7 @@ public class EnemyTest {
 
   @Test
   public void dispose() {
-    when(targetsFactory.create(enemy)).thenReturn(targets);
-    when(markingFactory.danger(targets)).thenReturn(marking);
+    set_up_targets();
 
     enemy.toggleDangerArea();
     enemy.dispose();
@@ -99,8 +110,7 @@ public class EnemyTest {
 
   @Test
   public void moved() {
-    when(targetsFactory.create(enemy)).thenReturn(targets);
-    when(markingFactory.danger(targets)).thenReturn(marking);
+    set_up_targets();
     enemy.toggleDangerArea();
 
     enemy.moved(move);
@@ -113,8 +123,7 @@ public class EnemyTest {
 
   @Test
   public void instant_move() {
-    when(targetsFactory.create(enemy)).thenReturn(targets);
-    when(markingFactory.danger(targets)).thenReturn(marking);
+    set_up_targets();
     enemy.toggleDangerArea();
 
     enemy.instantMoved(instantMove);
@@ -127,8 +136,7 @@ public class EnemyTest {
 
   @Test
   public void character_removed() {
-    when(targetsFactory.create(enemy)).thenReturn(targets);
-    when(markingFactory.danger(targets)).thenReturn(marking);
+    set_up_targets();
     enemy.toggleDangerArea();
 
     enemy.characterRemoved(removeCharacter);
@@ -157,8 +165,17 @@ public class EnemyTest {
 
   @Test
   public void toggle_danger_area() {
-    when(targetsFactory.create(enemy)).thenReturn(targets);
-    when(markingFactory.danger(targets)).thenReturn(marking);
+    set_up_targets();
+
+    enemy.toggleDangerArea();
+
+    verify(markingFactory).create(eq(enemy), markerMapCaptor.capture());
+    assertThat(markerMapCaptor.getValue()).containsExactly(terrain, Marker.DANGER);
+  }
+
+  @Test
+  public void toggle_danger_area_multiple() {
+    set_up_targets();
 
     enemy.toggleDangerArea();
     enemy.toggleDangerArea();
@@ -173,5 +190,13 @@ public class EnemyTest {
   @Test
   public void subscribers() {
     TestHelpers.verifyNoDeadEvents(enemy, move, instantMove, removeCharacter);
+  }
+
+  private void set_up_targets() {
+    when(targetsFactory.create(enemy)).thenReturn(targets);
+    when(targets.all()).thenReturn(allTargets);
+    when(allTargets.terrains()).thenReturn(terrainList);
+    when(markingFactory.create(eq(enemy), Mockito.<Map<MapObject, Marker>>any()))
+        .thenReturn(marking);
   }
 }
