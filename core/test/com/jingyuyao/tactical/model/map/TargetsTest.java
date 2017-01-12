@@ -76,7 +76,7 @@ public class TargetsTest {
 
   @Test
   public void can_target_after_move() {
-    when(character.canTarget(other)).thenReturn(true);
+    when(weapon1.canTarget(character, other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(TARGET1);
 
     assertThat(targets.all().canTarget(other)).isTrue();
@@ -84,7 +84,6 @@ public class TargetsTest {
 
   @Test
   public void cannot_target_after_move() {
-    when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
 
     assertThat(targets.all().canTarget(other)).isFalse();
@@ -92,14 +91,12 @@ public class TargetsTest {
 
   @Test
   public void target_after_move_cannot_target() {
-    when(character.canTarget(other)).thenReturn(false);
-
     assertThat(targets.all().canTarget(other)).isFalse();
   }
 
   @Test
   public void can_target_immediately() {
-    when(character.canTarget(other)).thenReturn(true);
+    when(originWeapon.canTarget(character, other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
 
     assertThat(targets.immediate().canTarget(other)).isTrue();
@@ -107,7 +104,6 @@ public class TargetsTest {
 
   @Test
   public void cannot_target_immediately() {
-    when(character.canTarget(other)).thenReturn(true);
     when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
 
     assertThat(targets.immediate().canTarget(other)).isFalse();
@@ -115,8 +111,6 @@ public class TargetsTest {
 
   @Test
   public void immediate_target_cannot_target() {
-    when(character.canTarget(other)).thenReturn(false);
-
     assertThat(targets.immediate().canTarget(other)).isFalse();
   }
 
@@ -160,7 +154,7 @@ public class TargetsTest {
 
   @Test
   public void all_target_characters() {
-    when(character.canTarget(other)).thenReturn(true);
+    when(weapon1.canTarget(character, other)).thenReturn(true);
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);
@@ -171,7 +165,6 @@ public class TargetsTest {
 
   @Test
   public void all_target_characters_cannot_target() {
-    when(character.canTarget(other)).thenReturn(false);
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);
@@ -181,7 +174,7 @@ public class TargetsTest {
 
   @Test
   public void immediate_target_characters() {
-    when(character.canTarget(other)).thenReturn(true);
+    when(originWeapon.canTarget(character, other)).thenReturn(true);
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);
@@ -192,7 +185,6 @@ public class TargetsTest {
 
   @Test
   public void immediate_target_characters_cannot_target() {
-    when(character.canTarget(other)).thenReturn(false);
     when(characters.iterator()).thenReturn(characterIterator);
     when(characterIterator.hasNext()).thenReturn(true, false);
     when(characterIterator.next()).thenReturn(other);

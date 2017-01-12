@@ -149,10 +149,26 @@ public class Targets {
     }
 
     /**
-     * Can {@code target} be hit with this filter.
+     * Can {@code defender} be hit by {@link #character} with this filter.
+     * <br>
+     * Expensive!
      */
-    public boolean canTarget(Character target) {
-      return character.canTarget(target) && targetCoordinates.contains(target.getCoordinate());
+    public boolean canTarget(Character defender) {
+      Coordinate defenderCoordinate = defender.getCoordinate();
+      if (!targetCoordinates.contains(defenderCoordinate)) {
+        return false;
+      }
+
+      for (SetMultimap<Coordinate, Weapon> targetWeapons : moveMap.values()) {
+        if (targetWeapons.containsKey(defenderCoordinate)) {
+          for (Weapon weapon : targetWeapons.get(defenderCoordinate)) {
+            if (weapon.canTarget(character, defender)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
     }
 
     /**
@@ -164,6 +180,8 @@ public class Targets {
 
     /**
      * Return the {@link Character}s that can be targeted by {@link #character} with this filter.
+     * <br>
+     * Expensive!
      */
     public Iterable<Character> characters() {
       return Iterables.filter(characters, new Predicate<Character>() {
