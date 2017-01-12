@@ -16,9 +16,11 @@ import com.google.common.base.Predicates;
 public abstract class AbstractEvent<T> implements ModelEvent {
 
   private final T object;
+  private final Predicate<T> matchesPredicate;
 
   public AbstractEvent(T object) {
     this.object = object;
+    this.matchesPredicate = Predicates.equalTo(object);
   }
 
   /**
@@ -39,6 +41,6 @@ public abstract class AbstractEvent<T> implements ModelEvent {
    * @return a {@link Predicate} that matches to {@link #object}
    */
   public Predicate<T> getMatchesPredicate() {
-    return Predicates.equalTo(object);
+    return matchesPredicate;
   }
 }
