@@ -75,7 +75,8 @@ public class Algorithms {
           continue;
         }
 
-        int edgeCost = edgeCostFunction.apply(neighbor);
+        Integer edgeCost = edgeCostFunction.apply(neighbor);
+        Preconditions.checkNotNull(edgeCost);
         if (edgeCost == NO_EDGE) {
           continue;
         }

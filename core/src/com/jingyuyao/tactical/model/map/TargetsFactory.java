@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.SetMultimap;
@@ -33,7 +32,7 @@ public class TargetsFactory {
    * Magic.
    */
   public Targets create(Character character) {
-    Graph<Coordinate> moveGraph = getMoveGraph(character);
+    Graph<Coordinate> moveGraph = createMoveGraph(character);
     Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap =
         new HashMap<Coordinate, SetMultimap<Coordinate, Weapon>>();
     for (Coordinate move : moveGraph.nodes()) {
@@ -54,7 +53,7 @@ public class TargetsFactory {
     return new Targets(algorithms, characters, terrains, character, moveGraph, moveMap);
   }
 
-  private Graph<Coordinate> getMoveGraph(Character character) {
+  private Graph<Coordinate> createMoveGraph(Character character) {
     return algorithms.minPathSearch(
         terrains.getWidth(),
         terrains.getHeight(),
@@ -72,7 +71,9 @@ public class TargetsFactory {
           return Algorithms.NO_EDGE;
         }
         Terrain terrain = terrains.get(input);
-        Preconditions.checkNotNull(terrain);
+        if (terrain == null) {
+          return Algorithms.NO_EDGE;
+        }
         return terrain.getMovementPenalty(character);
       }
     };
