@@ -38,14 +38,8 @@ public class TargetsFactory {
     for (Coordinate move : moveGraph.nodes()) {
       SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
       for (Weapon weapon : character.getWeapons()) {
-        // TODO: we need to be smarter if we want irregular weapon target areas
-        // we also needs a different class of target indicators for user targetable weapons
-        for (int distance : weapon.getAttackDistances()) {
-          for (Coordinate target :
-              algorithms.getNDistanceAway(
-                  terrains.getWidth(), terrains.getHeight(), move, distance)) {
-            targetWeaponMap.put(target, weapon);
-          }
+        for (Coordinate target : weapon.targetCoordinatesFor(move)) {
+          targetWeaponMap.put(target, weapon);
         }
       }
       moveMap.put(move, targetWeaponMap);
