@@ -101,11 +101,11 @@ project(":core") {
         compile ("com.google.inject.extensions:guice-assistedinject:$guiceVersion") {
             // The extension will fetch the normal Guice via transitive dependency.
             // We can't allow that as it includes AOP which doesn't work on Android.
-            exclude group: "com.google.inject", module: "guice"
+            exclude module: "guice"
         }
         testCompile ("com.google.inject.extensions:guice-testlib:$guiceVersion") {
             // see above
-            exclude group: "com.google.inject", module: "guice"
+            exclude module: "guice"
         }
         testCompile "junit:junit:$junitVersion"
         testCompile "org.mockito:mockito-core:$mockitoVersion"
