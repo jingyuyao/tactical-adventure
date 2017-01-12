@@ -88,21 +88,6 @@ public class MarkingFactoryTest {
   }
 
   @Test
-  public void immediateTargets() {
-    when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.terrains()).thenReturn(terrainIterable);
-    when(immediateTargets.characters()).thenReturn(characterList);
-
-    markingFactory.immediateTargets(targets);
-
-    verifyMarkers(Marker.CAN_ATTACK, terrain);
-    verifyMarkers(Marker.POTENTIAL_TARGET, character);
-    verifyMarkers(Marker.POTENTIAL_TARGET, character2);
-    verifyNoMoreInteractions(markerMap);
-  }
-
-  @Test
   public void immediate_targets_with_chosen_target() {
     when(markerMapProvider.get()).thenReturn(markerMap);
     when(targets.immediate()).thenReturn(immediateTargets);

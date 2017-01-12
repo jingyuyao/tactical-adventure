@@ -6,13 +6,18 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 
 /**
@@ -68,7 +73,16 @@ public class Player extends Character {
   public void showImmediateTargets() {
     Preconditions.checkState(marking == null);
 
-    marking = markingFactory.immediateTargets(createTargets());
+    Targets targets = createTargets();
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : targets.immediate().terrains()) {
+      markerMap.put(terrain, Marker.CAN_ATTACK);
+    }
+    for (Character character : targets.immediate().characters()) {
+      markerMap.put(character, Marker.POTENTIAL_TARGET);
+    }
+
+    marking = markingFactory.create(this, markerMap);
     marking.apply();
   }
 

@@ -59,16 +59,6 @@ public class MarkingFactory {
         .build();
   }
 
-  public Marking immediateTargets(Targets targets) {
-    Iterable<Terrain> canAttackTerrains = targets.immediate().terrains();
-    Iterable<Character> canTargetCharacters = targets.immediate().characters();
-
-    return this.new Builder(targets.getCharacter())
-        .add(canAttackTerrains, Marker.CAN_ATTACK)
-        .add(canTargetCharacters, Marker.POTENTIAL_TARGET)
-        .build();
-  }
-
   public Marking immediateTargetsWithChosenCharacter(Targets targets, Character chosen) {
     Iterable<Terrain> canAttackTerrains = targets.immediate().terrains();
 
