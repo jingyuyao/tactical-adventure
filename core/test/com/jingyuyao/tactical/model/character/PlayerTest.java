@@ -52,7 +52,7 @@ public class PlayerTest {
   @Mock
   private Targets targets;
   @Mock
-  private FilteredTargets immediateTargets;
+  private FilteredTargets filteredTargets;
   @Mock
   private Marking marking;
   @Mock
@@ -65,12 +65,15 @@ public class PlayerTest {
   private Character character;
   @Mock
   private Terrain terrain;
+  @Mock
+  private Terrain terrain2;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
   @Captor
   private ArgumentCaptor<Map<MapObject, Marker>> markerMapCaptor;
 
   private List<Terrain> terrainList;
+  private List<Terrain> terrainList2;
   private List<Character> characterList;
   private List<Marker> markers;
   private Player player;
@@ -79,6 +82,7 @@ public class PlayerTest {
   public void setUp() {
     markers = new ArrayList<Marker>();
     terrainList = ImmutableList.of(terrain);
+    terrainList2 = ImmutableList.of(terrain, terrain2);
     characterList = ImmutableList.of(character);
     player =
         new Player(
@@ -150,9 +154,9 @@ public class PlayerTest {
   @Test
   public void show_immediate_targets() {
     when(targetsFactory.create(player)).thenReturn(targets);
-    when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.terrains()).thenReturn(terrainList);
-    when(immediateTargets.characters()).thenReturn(characterList);
+    when(targets.immediate()).thenReturn(filteredTargets);
+    when(filteredTargets.terrains()).thenReturn(terrainList);
+    when(filteredTargets.characters()).thenReturn(characterList);
     when(markingFactory.create(eq(player), Mockito.<Map<MapObject, Marker>>any()))
         .thenReturn(marking);
 
@@ -167,8 +171,8 @@ public class PlayerTest {
   @Test
   public void show_immediate_targets_with_chosen_enemy() {
     when(targetsFactory.create(player)).thenReturn(targets);
-    when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.terrains()).thenReturn(terrainList);
+    when(targets.immediate()).thenReturn(filteredTargets);
+    when(filteredTargets.terrains()).thenReturn(terrainList);
     when(markingFactory.create(eq(player), Mockito.<Map<MapObject, Marker>>any()))
         .thenReturn(marking);
 
@@ -183,19 +187,27 @@ public class PlayerTest {
   @Test
   public void show_move_and_targets() {
     when(targetsFactory.create(player)).thenReturn(targets);
-    when(markingFactory.allTargetsWithMove(targets)).thenReturn(marking);
+    when(targets.moveTerrains()).thenReturn(terrainList);
+    when(targets.all()).thenReturn(filteredTargets);
+    when(filteredTargets.terrains()).thenReturn(terrainList2);
+    when(filteredTargets.characters()).thenReturn(characterList);
+    when(markingFactory.create(eq(player), Mockito.<Map<MapObject, Marker>>any()))
+        .thenReturn(marking);
 
     player.showAllTargetsWithMove();
 
     verify(marking).apply();
+    verify(markingFactory).create(eq(player), markerMapCaptor.capture());
+    assertThat(markerMapCaptor.getValue())
+        .containsExactly(
+            terrain, Marker.CAN_MOVE_TO,
+            terrain2, Marker.CAN_ATTACK,
+            character, Marker.POTENTIAL_TARGET);
   }
 
   @Test
   public void clear_marking() {
-    when(targetsFactory.create(player)).thenReturn(targets);
-    when(markingFactory.allTargetsWithMove(targets)).thenReturn(marking);
-
-    player.showAllTargetsWithMove();
+    show_move_and_targets();
     player.clearMarking();
 
     InOrder inOrder = Mockito.inOrder(marking);

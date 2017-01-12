@@ -55,7 +55,7 @@ public class MarkingTest {
 
   @Before
   public void setUp() {
-    marking = new Marking(eventBus, character, markerMap, waiter);
+    marking = new Marking(eventBus, waiter, character, markerMap);
     verify(eventBus).register(marking);
   }
 

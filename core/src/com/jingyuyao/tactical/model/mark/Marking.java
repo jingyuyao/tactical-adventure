@@ -2,12 +2,14 @@ package com.jingyuyao.tactical.model.mark;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Map;
+import javax.inject.Inject;
 
 /**
  * A marking is a map of {@link MapObject} to {@link Marker}. It is tied to a {@link Character}
@@ -25,7 +27,12 @@ public class Marking extends EventBusObject {
    * Creates a marking with the given {@code markers} map and attempts to apply them immediately
    * when {@code waiter} is not waiting.
    */
-  Marking(EventBus eventBus, Character owner, Map<MapObject, Marker> markers, Waiter waiter) {
+  @Inject
+  Marking(
+      EventBus eventBus,
+      Waiter waiter,
+      @Assisted Character owner,
+      @Assisted Map<MapObject, Marker> markers) {
     super(eventBus);
     this.owner = owner;
     this.markers = markers;

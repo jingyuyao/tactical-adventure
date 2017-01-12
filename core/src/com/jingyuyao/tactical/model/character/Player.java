@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
@@ -18,6 +20,7 @@ import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 
 /**
@@ -103,7 +106,23 @@ public class Player extends Character {
   public void showAllTargetsWithMove() {
     Preconditions.checkState(marking == null);
 
-    marking = markingFactory.allTargetsWithMove(createTargets());
+    Targets targets = createTargets();
+    ImmutableSet<Terrain> canMoveToTerrains = ImmutableSet.copyOf(targets.moveTerrains());
+    ImmutableSet<Terrain> canAttackTerrains = ImmutableSet.copyOf(targets.all().terrains());
+    Set<Terrain> canAttackTerrainsToShow = Sets.difference(canAttackTerrains, canMoveToTerrains);
+
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : canMoveToTerrains) {
+      markerMap.put(terrain, Marker.CAN_MOVE_TO);
+    }
+    for (Terrain terrain : canAttackTerrainsToShow) {
+      markerMap.put(terrain, Marker.CAN_ATTACK);
+    }
+    for (Character character : targets.all().characters()) {
+      markerMap.put(character, Marker.POTENTIAL_TARGET);
+    }
+
+    marking = markingFactory.create(this, markerMap);
     marking.apply();
   }
 
