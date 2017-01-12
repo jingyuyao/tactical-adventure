@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
@@ -77,11 +76,6 @@ public abstract class Character extends MapObject implements Disposable {
 
   public int getMoveDistance() {
     return stats.getMoveDistance();
-  }
-
-  public boolean canTarget(Character other) {
-    // TODO: make me more specific later
-    return !Objects.equal(this, other) && !Objects.equal(getClass(), other.getClass());
   }
 
   public boolean canPassTerrainType(Terrain.Type terrainType) {
