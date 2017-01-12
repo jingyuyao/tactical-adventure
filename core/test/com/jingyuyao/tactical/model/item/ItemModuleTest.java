@@ -4,6 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.common.Algorithms;
+import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -18,6 +20,12 @@ public class ItemModuleTest {
   @Bind
   @Mock
   private EventBus eventBus;
+  @Bind
+  @Mock
+  private Terrains terrains;
+  @Bind
+  @Mock
+  private Algorithms algorithms;
   @Inject
   private ItemFactory itemFactory;
 
