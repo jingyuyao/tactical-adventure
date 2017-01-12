@@ -2,7 +2,9 @@ package com.jingyuyao.tactical.model;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.inject.CreationException;
 import com.google.inject.Guice;
+import com.google.inject.Stage;
 import com.jingyuyao.tactical.model.common.Waiter;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -21,7 +23,17 @@ public class ModelModuleTest {
 
   @Before
   public void setUp() {
-    Guice.createInjector(new ModelModule()).injectMembers(this);
+    Guice.createInjector(Stage.PRODUCTION, new ModelModule()).injectMembers(this);
+  }
+
+  @Test(expected = CreationException.class)
+  public void singleton_pre_loading_develop() {
+    Guice.createInjector(Stage.DEVELOPMENT, new ModelModule()).injectMembers(this);
+  }
+
+  @Test(expected = CreationException.class)
+  public void singleton_pre_loading_tool() {
+    Guice.createInjector(Stage.TOOL, new ModelModule()).injectMembers(this);
   }
 
   @Test
