@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.common;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -41,13 +42,14 @@ public class Algorithms {
    * weights from the start to the current node) is less or equal to {@code maxPathCost}. Inbound
    * edge costs comes from {@code edgeCostMap}.
    *
-   * @param edgeCostMap The grid to get edge cost for creating the graph
+   * @param edgeCostFunction The function to obtain the incoming edge cost for a particular {@link
+   * Coordinate}. All incoming edge cost for a {@link Coordinate} is assumed to be the same.
    * @param maxPathCost Maximum cost for the path between initial location to any other object
    */
   public ValueGraph<Coordinate, Integer> minPathSearch(
       int gridWidth,
       int gridHeight,
-      Map<Coordinate, Integer> edgeCostMap,
+      Function<Coordinate, Integer> edgeCostFunction,
       Coordinate startingCoordinate,
       int maxPathCost) {
     MutableValueGraph<Coordinate, Integer> graph =
@@ -73,7 +75,7 @@ public class Algorithms {
           continue;
         }
 
-        int edgeCost = edgeCostMap.get(neighbor);
+        int edgeCost = edgeCostFunction.apply(neighbor);
         if (edgeCost == NO_EDGE) {
           continue;
         }

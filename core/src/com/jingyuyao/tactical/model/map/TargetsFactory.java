@@ -1,6 +1,9 @@
 package com.jingyuyao.tactical.model.map;
 
+import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.SetMultimap;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
@@ -55,25 +58,23 @@ public class TargetsFactory {
     return algorithms.minPathSearch(
         terrains.getWidth(),
         terrains.getHeight(),
-        createMovementPenaltyMap(character),
+        createMovementPenaltyFunction(character),
         character.getCoordinate(),
         character.getMoveDistance());
   }
 
-  private Map<Coordinate, Integer> createMovementPenaltyMap(Character character) {
-    Map<Coordinate, Integer> penaltyMap =
-        new HashMap<Coordinate, Integer>(terrains.getWidth() * terrains.getHeight());
-
-    for (Terrain terrain : terrains) {
-      Coordinate coordinate = terrain.getCoordinate();
-      penaltyMap.put(coordinate, terrain.getMovementPenalty(character));
-    }
-
-    for (Character blocked : characters) {
-      Coordinate coordinate = blocked.getCoordinate();
-      penaltyMap.put(coordinate, Algorithms.NO_EDGE);
-    }
-
-    return penaltyMap;
+  private Function<Coordinate, Integer> createMovementPenaltyFunction(final Character character) {
+    final ImmutableSet<Coordinate> blockedCoordinates = characters.coordinates();
+    return new Function<Coordinate, Integer>() {
+      @Override
+      public Integer apply(Coordinate input) {
+        if (blockedCoordinates.contains(input)) {
+          return Algorithms.NO_EDGE;
+        }
+        Terrain terrain = terrains.get(input);
+        Preconditions.checkNotNull(terrain);
+        return terrain.getMovementPenalty(character);
+      }
+    };
   }
 }

@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import java.util.Collections;
@@ -25,6 +26,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CharactersTest {
+
+  private static final Coordinate COORDINATE1 = new Coordinate(0, 1);
+  private static final Coordinate COORDINATE2 = new Coordinate(0, 2);
 
   @Mock
   private EventBus eventBus;
@@ -88,6 +92,17 @@ public class CharactersTest {
     characters.removeCharacter(removeCharacter);
 
     verify(characterSet).remove(player);
+  }
+
+  @Test
+  public void coordinates() {
+    when(characterSet.iterator()).thenReturn(characterIterator);
+    when(characterIterator.hasNext()).thenReturn(true, true, false);
+    when(characterIterator.next()).thenReturn(player, enemy);
+    when(player.getCoordinate()).thenReturn(COORDINATE1);
+    when(enemy.getCoordinate()).thenReturn(COORDINATE2);
+
+    assertThat(characters.coordinates()).containsExactly(COORDINATE1, COORDINATE2);
   }
 
   @Test

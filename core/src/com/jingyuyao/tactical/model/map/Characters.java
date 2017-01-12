@@ -5,12 +5,15 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
@@ -56,6 +59,17 @@ public class Characters extends EventBusObject
   @Subscribe
   public void removeCharacter(RemoveCharacter removeCharacter) {
     characterSet.remove(removeCharacter.getObject());
+  }
+
+  /**
+   * Return a snapshot of the {@link Coordinate}s in {@link #characterSet}.
+   */
+  public ImmutableSet<Coordinate> coordinates() {
+    ImmutableSet.Builder<Coordinate> builder = new Builder<Coordinate>();
+    for (Character character : characterSet) {
+      builder.add(character.getCoordinate());
+    }
+    return builder.build();
   }
 
   @Override
