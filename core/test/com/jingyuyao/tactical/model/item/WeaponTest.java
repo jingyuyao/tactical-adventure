@@ -10,6 +10,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
@@ -46,6 +48,10 @@ public class WeaponTest {
   private Terrains terrains;
   @Mock
   private Character character;
+  @Mock
+  private Player player;
+  @Mock
+  private Enemy enemy;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -66,6 +72,40 @@ public class WeaponTest {
   @Test
   public void get_attack_distances() {
     assertThat(weapon.getAttackDistances()).isSameAs(ATTACK_DISTANCES);
+  }
+
+  @Test
+  public void can_target_same_character() {
+    assertThat(weapon.canTarget(character, character)).isFalse();
+  }
+
+  @Test
+  public void can_target_same_type() {
+    assertThat(weapon.canTarget(player, player)).isFalse();
+  }
+
+  @Test
+  public void can_target_different_type_within_coordinate() {
+    when(terrains.getWidth()).thenReturn(WIDTH);
+    when(terrains.getHeight()).thenReturn(HEIGHT);
+    when(algorithms.getNDistanceAway(WIDTH, HEIGHT, COORDINATE2, ATTACK_DISTANCE))
+        .thenReturn(COORDINATE_LIST);
+    when(player.getCoordinate()).thenReturn(COORDINATE2);
+    when(enemy.getCoordinate()).thenReturn(COORDINATE);
+
+    assertThat(weapon.canTarget(player, enemy)).isTrue();
+  }
+
+  @Test
+  public void can_target_different_type_not_within_coordinate() {
+    when(terrains.getWidth()).thenReturn(WIDTH);
+    when(terrains.getHeight()).thenReturn(HEIGHT);
+    when(algorithms.getNDistanceAway(WIDTH, HEIGHT, COORDINATE2, ATTACK_DISTANCE))
+        .thenReturn(ImmutableList.<Coordinate>of());
+    when(player.getCoordinate()).thenReturn(COORDINATE2);
+    when(enemy.getCoordinate()).thenReturn(COORDINATE);
+
+    assertThat(weapon.canTarget(player, enemy)).isFalse();
   }
 
   @Test

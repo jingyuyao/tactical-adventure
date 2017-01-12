@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.eventbus.EventBus;
@@ -44,6 +45,15 @@ public class Weapon extends Usable {
 
   public int getAttackPower() {
     return attackPower;
+  }
+
+  /**
+   * Return whether the {@code owner} holding this weapon "target" {@code other}.
+   */
+  public boolean canTarget(Character owner, Character other) {
+    return !Objects.equal(owner, other)
+        && !Objects.equal(owner.getClass(), other.getClass())
+        && targetCoordinatesFor(owner.getCoordinate()).contains(other.getCoordinate());
   }
 
   public void hit(Character character) {
