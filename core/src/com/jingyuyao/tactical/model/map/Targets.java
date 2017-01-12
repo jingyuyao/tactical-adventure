@@ -50,11 +50,11 @@ public class Targets {
     this.character = character;
     this.moveGraph = moveGraph;
     this.moveMap = moveMap;
-    this.all = new FilteredTargets(extractAllTargetCoordinates(moveMap.values()));
+    this.all = new FilteredTargets(extractKeys(moveMap.values()));
     this.immediate = new FilteredTargets(moveMap.get(character.getCoordinate()).keySet());
   }
 
-  private static Iterable<Coordinate> extractAllTargetCoordinates(
+  private static Iterable<Coordinate> extractKeys(
       Collection<SetMultimap<Coordinate, Weapon>> multiMaps) {
     return
         Iterables.concat(
