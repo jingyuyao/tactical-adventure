@@ -89,7 +89,14 @@ public class Player extends Character {
   public void showImmediateTargetsWithChosenTarget(Enemy enemy) {
     Preconditions.checkState(marking == null);
 
-    marking = markingFactory.immediateTargetsWithChosenCharacter(createTargets(), enemy);
+    Targets targets = createTargets();
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : targets.immediate().terrains()) {
+      markerMap.put(terrain, Marker.CAN_ATTACK);
+    }
+    markerMap.put(enemy, Marker.CHOSEN_TARGET);
+
+    marking = markingFactory.create(this, markerMap);
     marking.apply();
   }
 

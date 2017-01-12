@@ -87,19 +87,6 @@ public class MarkingFactoryTest {
     verifyNoMoreInteractions(markerMap);
   }
 
-  @Test
-  public void immediate_targets_with_chosen_target() {
-    when(markerMapProvider.get()).thenReturn(markerMap);
-    when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.terrains()).thenReturn(terrainIterable);
-
-    markingFactory.immediateTargetsWithChosenCharacter(targets, character2);
-
-    verifyMarkers(Marker.CAN_ATTACK, terrain);
-    verifyMarkers(Marker.CHOSEN_TARGET, character2);
-    verifyNoMoreInteractions(markerMap);
-  }
-
   private void verifyMarkers(Marker expected, MapObject... objects) {
     for (MapObject object : objects) {
       verify(markerMap).put(object, expected);

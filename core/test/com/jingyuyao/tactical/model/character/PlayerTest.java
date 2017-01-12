@@ -167,11 +167,17 @@ public class PlayerTest {
   @Test
   public void show_immediate_targets_with_chosen_enemy() {
     when(targetsFactory.create(player)).thenReturn(targets);
-    when(markingFactory.immediateTargetsWithChosenCharacter(targets, enemy)).thenReturn(marking);
+    when(targets.immediate()).thenReturn(immediateTargets);
+    when(immediateTargets.terrains()).thenReturn(terrainList);
+    when(markingFactory.create(eq(player), Mockito.<Map<MapObject, Marker>>any()))
+        .thenReturn(marking);
 
     player.showImmediateTargetsWithChosenTarget(enemy);
 
     verify(marking).apply();
+    verify(markingFactory).create(eq(player), markerMapCaptor.capture());
+    assertThat(markerMapCaptor.getValue())
+        .containsExactly(terrain, Marker.CAN_ATTACK, enemy, Marker.CHOSEN_TARGET);
   }
 
   @Test
