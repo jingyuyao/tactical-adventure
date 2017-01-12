@@ -48,12 +48,19 @@ public class Weapon extends Usable {
   }
 
   /**
+   * Returns whether the {@code owner} holding this weapon can "hit" {@code other}.
+   * Can "hit" means we can "target" {@code other} and it is within the striking distance.
+   */
+  public boolean canHit(Character owner, Character other) {
+    return canTarget(owner, other)
+        && targetCoordinatesFor(owner.getCoordinate()).contains(other.getCoordinate());
+  }
+
+  /**
    * Return whether the {@code owner} holding this weapon "target" {@code other}.
    */
   public boolean canTarget(Character owner, Character other) {
-    return !Objects.equal(owner, other)
-        && !Objects.equal(owner.getClass(), other.getClass())
-        && targetCoordinatesFor(owner.getCoordinate()).contains(other.getCoordinate());
+    return !Objects.equal(owner, other) && !Objects.equal(owner.getClass(), other.getClass());
   }
 
   public void hit(Character character) {

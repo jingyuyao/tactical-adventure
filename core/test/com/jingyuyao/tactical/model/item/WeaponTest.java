@@ -52,6 +52,8 @@ public class WeaponTest {
   @Mock
   private Player player;
   @Mock
+  private Player player2;
+  @Mock
   private Enemy enemy;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -82,11 +84,16 @@ public class WeaponTest {
 
   @Test
   public void can_target_same_type() {
-    assertThat(weapon.canTarget(player, player)).isFalse();
+    assertThat(weapon.canTarget(player, player2)).isFalse();
   }
 
   @Test
-  public void can_target_different_type_within_coordinate() {
+  public void can_target_different_type() {
+    assertThat(weapon.canTarget(player, enemy)).isTrue();
+  }
+
+  @Test
+  public void can_hit_can_target_within_coordinate() {
     when(terrains.getWidth()).thenReturn(WIDTH);
     when(terrains.getHeight()).thenReturn(HEIGHT);
     when(algorithms.getNDistanceAway(WIDTH, HEIGHT, COORDINATE2, ATTACK_DISTANCE))
@@ -94,11 +101,11 @@ public class WeaponTest {
     when(player.getCoordinate()).thenReturn(COORDINATE2);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
 
-    assertThat(weapon.canTarget(player, enemy)).isTrue();
+    assertThat(weapon.canHit(player, enemy)).isTrue();
   }
 
   @Test
-  public void can_target_different_type_not_within_coordinate() {
+  public void can_hit_can_target_not_within_coordiante() {
     when(terrains.getWidth()).thenReturn(WIDTH);
     when(terrains.getHeight()).thenReturn(HEIGHT);
     when(algorithms.getNDistanceAway(WIDTH, HEIGHT, COORDINATE2, ATTACK_DISTANCE))
@@ -106,7 +113,17 @@ public class WeaponTest {
     when(player.getCoordinate()).thenReturn(COORDINATE2);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
 
-    assertThat(weapon.canTarget(player, enemy)).isFalse();
+    assertThat(weapon.canHit(player, enemy)).isFalse();
+  }
+
+  @Test
+  public void can_hit_same_character() {
+    assertThat(weapon.canHit(character, character)).isFalse();
+  }
+
+  @Test
+  public void can_hit_cannot_target() {
+    assertThat(weapon.canHit(player, player2)).isFalse();
   }
 
   @Test

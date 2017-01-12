@@ -217,11 +217,11 @@ public class EnemyTest {
   public void try_hit_cannot_hit() {
     when(stats.getHp()).thenReturn(1);
     when(items.getEquippedWeapon()).thenReturn(Optional.of(weapon));
-    when(weapon.canTarget(enemy, player)).thenReturn(false);
+    when(weapon.canHit(enemy, player)).thenReturn(false);
 
     enemy.tryHit(player);
 
-    verify(weapon).canTarget(enemy, player);
+    verify(weapon).canHit(enemy, player);
     verifyNoMoreInteractions(weapon);
   }
 
@@ -229,7 +229,7 @@ public class EnemyTest {
   public void try_hit_success() {
     when(stats.getHp()).thenReturn(1);
     when(items.getEquippedWeapon()).thenReturn(Optional.of(weapon));
-    when(weapon.canTarget(enemy, player)).thenReturn(true);
+    when(weapon.canHit(enemy, player)).thenReturn(true);
 
     enemy.tryHit(player);
 

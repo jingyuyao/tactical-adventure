@@ -129,7 +129,7 @@ public abstract class Character extends MapObject implements Disposable {
     }
 
     Weapon weapon = weaponOptional.get();
-    if (weapon.canTarget(this, other)) {
+    if (weapon.canHit(this, other)) {
       weapon.hit(other);
     }
   }
