@@ -46,6 +46,12 @@ public class Weapon extends Usable {
     return attackPower;
   }
 
+  public void hit(Character character) {
+    // Actual "hitting" is done by weapon so different weapon can impose different effects
+    // on the character. Default implementation just damages the character.
+    character.damageBy(attackPower);
+  }
+
   /**
    * Return a set of {@link Coordinate}s this weapon can target if the attack originates from
    * {@code coordinate}.

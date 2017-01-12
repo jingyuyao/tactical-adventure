@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
@@ -43,6 +44,8 @@ public class WeaponTest {
   private Algorithms algorithms;
   @Mock
   private Terrains terrains;
+  @Mock
+  private Character character;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -63,6 +66,13 @@ public class WeaponTest {
   @Test
   public void get_attack_distances() {
     assertThat(weapon.getAttackDistances()).isSameAs(ATTACK_DISTANCES);
+  }
+
+  @Test
+  public void hit() {
+    weapon.hit(character);
+
+    verify(character).damageBy(ATTACK_POWER);
   }
 
   @Test
