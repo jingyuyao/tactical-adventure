@@ -68,10 +68,6 @@ public class Targets {
                 }));
   }
 
-  public Character getCharacter() {
-    return character;
-  }
-
   /**
    * Return a filtered view of all the things the character can target given they could move.
    */
