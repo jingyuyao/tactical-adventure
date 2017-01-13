@@ -5,17 +5,12 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.inject.CreationException;
 import com.google.inject.Guice;
 import com.google.inject.Stage;
-import com.jingyuyao.tactical.model.common.Waiter;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ModelModuleTest {
 
-  @Inject
-  private Waiter waiter1;
-  @Inject
-  private Waiter waiter2;
   @Inject
   private AttackPlanFactory attackPlanFactory1;
   @Inject
@@ -34,11 +29,6 @@ public class ModelModuleTest {
   @Test(expected = CreationException.class)
   public void singleton_pre_loading_tool() {
     Guice.createInjector(Stage.TOOL, new ModelModule()).injectMembers(this);
-  }
-
-  @Test
-  public void waiter_singleton() {
-    assertThat(waiter1).isSameAs(waiter2);
   }
 
   @Test
