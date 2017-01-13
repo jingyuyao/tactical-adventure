@@ -87,7 +87,13 @@ public class MovingTest {
 
     moving.canceled();
 
+    verify(movingPlayer).createTargets();
+    verify(movingPlayer).getCoordinate();
     verify(movingPlayer).instantMoveTo(MOVING_PLAYER_COORDINATE);
+
+    moving.canceled();
+
+    verifyNoMoreInteractions(movingPlayer);
   }
 
   @Test
@@ -96,7 +102,13 @@ public class MovingTest {
 
     moving.canceled();
 
+    verify(movingPlayer).createTargets();
+    verify(movingPlayer).getCoordinate();
     verify(movingPlayer).instantMoveTo(MOVING_PLAYER_COORDINATE);
+
+    moving.canceled();
+
+    verifyNoMoreInteractions(movingPlayer);
   }
 
   @Test
@@ -169,6 +181,8 @@ public class MovingTest {
 
     moving.select(terrain);
 
+    verify(movingPlayer).getCoordinate();
+    verify(movingPlayer).createTargets();
     verify(movingPlayer).move(eq(path), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     verify(mapState).push(choosing);
@@ -188,9 +202,32 @@ public class MovingTest {
   }
 
   @Test
+  public void select_has_moved() {
+    select_terrain_can_move();
+
+    moving.select(enemy);
+    moving.select(movingPlayer);
+    moving.select(terrain);
+
+    verifyNoMoreInteractions(movingPlayer);
+    verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
   public void actions_back() {
     ImmutableList<Action> actions = moving.getActions();
     assertThat(actions).hasSize(1);
     StateHelpers.verifyBack(actions.get(0), mapState);
+  }
+
+  @Test
+  public void action_back_moved() {
+    select_terrain_can_move();
+
+    ImmutableList<Action> actions = moving.getActions();
+    assertThat(actions).hasSize(1);
+    actions.get(0).run();
+
+    verifyZeroInteractions(mapState);
   }
 }

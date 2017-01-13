@@ -31,11 +31,15 @@ class Moving extends AbstractPlayerState {
   public void canceled() {
     if (previousCoordinate != null) {
       getPlayer().instantMoveTo(previousCoordinate);
+      previousCoordinate = null;
     }
   }
 
   @Override
   public void select(Player player) {
+    if (previousCoordinate != null) {
+      return;
+    }
     if (Objects.equal(getPlayer(), player)) {
       goTo(getStateFactory().createChoosing(getPlayer()));
     } else {
@@ -46,6 +50,9 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void select(final Enemy enemy) {
+    if (previousCoordinate != null) {
+      return;
+    }
     Targets playerTargets = getPlayer().createTargets();
     if (playerTargets.all().canTarget(enemy)) {
       Path path = playerTargets.movePathToTargetCoordinate(enemy.getCoordinate());
@@ -64,6 +71,9 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void select(Terrain terrain) {
+    if (previousCoordinate != null) {
+      return;
+    }
     Targets playerTargets = getPlayer().createTargets();
     if (playerTargets.canMoveTo(terrain.getCoordinate())) {
       Path path = playerTargets.pathTo(terrain.getCoordinate());
@@ -81,7 +91,15 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(this.new Back());
+    return ImmutableList.<Action>of(this.new Back() {
+      @Override
+      public void run() {
+        if (previousCoordinate != null) {
+          return;
+        }
+        super.run();
+      }
+    });
   }
 
   private void moveCurrentPlayer(Path path, Runnable onFinish) {
