@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
@@ -37,7 +36,6 @@ public class MapUI {
   private final Label attackPlan;
   private final VerticalGroup actionButtons;
   private ImmutableList<Action> currentActions;
-  private boolean showButtons = true;
 
   @Inject
   MapUI(EventBus eventBus, @MapUiStage Stage stage, Skin skin) {
@@ -113,12 +111,6 @@ public class MapUI {
     populateButtons();
   }
 
-  @Subscribe
-  public void waitChange(Waiter.Changed changed) {
-    showButtons = changed.canProceed();
-    populateButtons();
-  }
-
   // TODO: create a nice looking widget to show this
   @Subscribe
   public void showAttackPlan(ShowAttackPlan showAttackPlan) {
@@ -136,10 +128,8 @@ public class MapUI {
 
   private void populateButtons() {
     actionButtons.clear();
-    if (showButtons) {
-      for (Action action : currentActions) {
-        actionButtons.addActor(createActionButton(action));
-      }
+    for (Action action : currentActions) {
+      actionButtons.addActor(createActionButton(action));
     }
   }
 
