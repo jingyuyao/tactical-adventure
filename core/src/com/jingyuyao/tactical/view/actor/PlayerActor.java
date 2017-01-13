@@ -8,7 +8,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
-import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
@@ -27,13 +26,11 @@ public class PlayerActor extends CharacterActor<Player> {
       @Assisted EventListener listener,
       @ActorWorldSize float size,
       EventBus eventBus,
-      Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
       @InitialMarkerSprites List<Sprite> markerSprites,
       @PlayerSprite Sprite sprite,
       @InitialPlayerTint Color initialTint) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites, sprite,
-        initialTint);
+    super(object, listener, size, eventBus, markerSpriteMap, markerSprites, sprite, initialTint);
   }
 
   @Subscribe

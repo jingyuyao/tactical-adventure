@@ -82,9 +82,9 @@ public abstract class Character extends MapObject implements Disposable {
     return stats.canPassTerrainType(terrainType);
   }
 
-  public void move(Path path) {
+  public void move(Path path, Runnable onFinish) {
     setCoordinate(path.getDestination());
-    post(new Move(this, path));
+    post(new Move(this, path, onFinish));
   }
 
   public void instantMoveTo(Coordinate newCoordinate) {

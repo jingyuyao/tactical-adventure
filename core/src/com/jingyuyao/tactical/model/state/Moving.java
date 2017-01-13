@@ -45,15 +45,18 @@ class Moving extends AbstractPlayerState {
   }
 
   @Override
-  public void select(Enemy enemy) {
+  public void select(final Enemy enemy) {
     Targets playerTargets = getPlayer().createTargets();
     if (playerTargets.all().canTarget(enemy)) {
       Path path = playerTargets.movePathToTargetCoordinate(enemy.getCoordinate());
-      moveCurrentPlayer(path);
-
-      // creates an intermediate choosing state so we can backtrack here if needed
-      goTo(getStateFactory().createChoosing(getPlayer()));
-      goTo(getStateFactory().createSelectingWeapon(getPlayer(), enemy));
+      moveCurrentPlayer(path, new Runnable() {
+        @Override
+        public void run() {
+          // creates an intermediate choosing state so we can backtrack here if needed
+          goTo(getStateFactory().createChoosing(getPlayer()));
+          goTo(getStateFactory().createSelectingWeapon(getPlayer(), enemy));
+        }
+      });
     } else {
       back();
     }
@@ -64,8 +67,12 @@ class Moving extends AbstractPlayerState {
     Targets playerTargets = getPlayer().createTargets();
     if (playerTargets.canMoveTo(terrain.getCoordinate())) {
       Path path = playerTargets.pathTo(terrain.getCoordinate());
-      moveCurrentPlayer(path);
-      goTo(getStateFactory().createChoosing(getPlayer()));
+      moveCurrentPlayer(path, new Runnable() {
+        @Override
+        public void run() {
+          goTo(getStateFactory().createChoosing(getPlayer()));
+        }
+      });
     } else {
       // we will consider clicking outside of movable area to be canceling
       back();
@@ -77,8 +84,8 @@ class Moving extends AbstractPlayerState {
     return ImmutableList.<Action>of(this.new Back());
   }
 
-  private void moveCurrentPlayer(Path path) {
+  private void moveCurrentPlayer(Path path, Runnable onFinish) {
     previousCoordinate = getPlayer().getCoordinate();
-    getPlayer().move(path);
+    getPlayer().move(path, onFinish);
   }
 }

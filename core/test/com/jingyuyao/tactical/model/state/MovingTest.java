@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -18,6 +19,8 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -54,6 +57,8 @@ public class MovingTest {
   private Path path;
   @Mock
   private FilteredTargets allTargets;
+  @Captor
+  private ArgumentCaptor<Runnable> runnableCaptor;
 
   private Moving moving;
 
@@ -135,7 +140,8 @@ public class MovingTest {
 
     moving.select(enemy);
 
-    verify(movingPlayer).move(path);
+    verify(movingPlayer).move(eq(path), runnableCaptor.capture());
+    runnableCaptor.getValue().run();
     verify(mapState).push(choosing);
     verify(mapState).push(selectingWeapon);
   }
@@ -163,7 +169,8 @@ public class MovingTest {
 
     moving.select(terrain);
 
-    verify(movingPlayer).move(path);
+    verify(movingPlayer).move(eq(path), runnableCaptor.capture());
+    runnableCaptor.getValue().run();
     verify(mapState).push(choosing);
     verifyNoMoreInteractions(mapState);
   }

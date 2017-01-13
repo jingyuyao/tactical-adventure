@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
@@ -25,12 +24,10 @@ public class EnemyActor extends CharacterActor<Enemy> {
       @Assisted EventListener listener,
       @ActorWorldSize float size,
       EventBus eventBus,
-      Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
       @InitialMarkerSprites List<Sprite> markerSprites,
       @EnemySprite Sprite sprite,
       @InitialEnemyTint Color initialTint) {
-    super(object, listener, size, eventBus, waiter, markerSpriteMap, markerSprites, sprite,
-        initialTint);
+    super(object, listener, size, eventBus, markerSpriteMap, markerSprites, sprite, initialTint);
   }
 }

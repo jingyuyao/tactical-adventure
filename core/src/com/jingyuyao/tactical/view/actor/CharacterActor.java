@@ -17,7 +17,6 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ class CharacterActor<T extends Character> extends MapActor<T> {
 
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
-  private final Waiter waiter;
   private final Sprite sprite;
 
   CharacterActor(
@@ -34,13 +32,11 @@ class CharacterActor<T extends Character> extends MapActor<T> {
       EventListener listener,
       float size,
       EventBus eventBus,
-      Waiter waiter,
       Map<Marker, Sprite> markerSpriteMap,
       List<Sprite> markerSprites,
       Sprite sprite,
       Color initialTint) {
     super(object, listener, size, eventBus, markerSpriteMap, markerSprites);
-    this.waiter = waiter;
     this.sprite = sprite;
     setColor(initialTint);
   }
@@ -64,7 +60,7 @@ class CharacterActor<T extends Character> extends MapActor<T> {
   }
 
   @Subscribe
-  public void moveTo(Move move) {
+  public void moveTo(final Move move) {
     if (move.matches(getObject())) {
       final ImmutableList<EventListener> listeners = popAllListeners();
       SequenceAction moveSequence = getMoveSequence(move.getPath().getTrack());
@@ -76,10 +72,9 @@ class CharacterActor<T extends Character> extends MapActor<T> {
                   for (EventListener listener : listeners) {
                     addListener(listener);
                   }
-                  waiter.finishOne();
+                  move.finish();
                 }
               }));
-      waiter.waitOne();
       addAction(moveSequence);
     }
   }
