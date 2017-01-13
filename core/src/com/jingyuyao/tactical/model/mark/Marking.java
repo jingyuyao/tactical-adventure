@@ -22,8 +22,7 @@ public class Marking extends EventBusObject {
   private boolean cleared = false;
 
   /**
-   * Creates a marking with the given {@code markers} map and attempts to apply them immediately
-   * when {@code waiter} is not waiting.
+   * Creates a marking with the given {@code markers} map.
    */
   @Inject
   Marking(EventBus eventBus, @Assisted Character owner, @Assisted Map<MapObject, Marker> markers) {
