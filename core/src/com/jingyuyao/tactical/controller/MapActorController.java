@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.common.Waiter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
@@ -16,15 +15,12 @@ import javax.inject.Inject;
 public class MapActorController extends ClickListener {
 
   private final MapState mapState;
-  private final Waiter waiter;
   private final MapObject object;
 
   @Inject
-  MapActorController(
-      @Assisted MapObject object, MapState mapState, Waiter waiter, @ActorWorldSize float size) {
+  MapActorController(@Assisted MapObject object, MapState mapState, @ActorWorldSize float size) {
     this.object = object;
     this.mapState = mapState;
-    this.waiter = waiter;
     setTapSquareSize(size / 2f);
   }
 
@@ -36,8 +32,6 @@ public class MapActorController extends ClickListener {
 
   @Override
   public void clicked(InputEvent event, float x, float y) {
-    if (waiter.canProceed()) {
-      object.select(mapState);
-    }
+    object.select(mapState);
   }
 }
