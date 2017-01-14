@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -59,7 +58,6 @@ class MapActor<T extends MapObject> extends Actor {
   }
 
   @Subscribe
-  @AllowConcurrentEvents
   public void markersChanged(SyncMarkers syncMarkers) {
     if (syncMarkers.matches(object)) {
       markerSprites.clear();
