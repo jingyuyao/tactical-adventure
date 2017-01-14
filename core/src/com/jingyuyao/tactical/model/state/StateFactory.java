@@ -20,4 +20,6 @@ interface StateFactory {
   SelectingWeapon createSelectingWeapon(Player player, Enemy enemy);
 
   ReviewingAttack createReviewingAttack(Player player, Enemy enemy, AttackPlan attackPlan);
+
+  Retaliating createRetaliating();
 }

@@ -6,6 +6,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.common.AsyncRunnable;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
@@ -77,6 +78,16 @@ public class Enemy extends Character {
     } else {
       clearDangerArea();
     }
+  }
+
+  public AsyncRunnable getRetaliation() {
+    // TODO: stub
+    return new AsyncRunnable() {
+      @Override
+      public void run(Runnable done) {
+        done.run();
+      }
+    };
   }
 
   private void refreshDangerArea() {

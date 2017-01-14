@@ -9,6 +9,8 @@ import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.common.AsyncRunner;
+import com.jingyuyao.tactical.model.map.Characters;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +23,13 @@ public class StateModuleTest {
 
   @Bind
   @Mock
+  private Characters characters;
+  @Bind
+  @Mock
   private AttackPlanFactory attackPlanFactory;
+  @Bind
+  @Mock
+  private AsyncRunner asyncRunner;
   @Mock
   private Player player;
   @Mock
@@ -48,6 +56,7 @@ public class StateModuleTest {
     stateFactory.createSelectingWeapon(player, enemy);
     stateFactory.createUsingItem(player);
     stateFactory.createReviewingAttack(player, enemy, attackPlan);
+    stateFactory.createRetaliating();
   }
 
   @Test

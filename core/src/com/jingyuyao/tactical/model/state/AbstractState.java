@@ -65,9 +65,13 @@ abstract class AbstractState extends EventBusObject implements State {
     mapState.rollback();
   }
 
+  void newWaitStack() {
+    mapState.newStack(stateFactory.createWaiting());
+  }
+
   void finish(Player player) {
     player.setActionable(false);
-    mapState.newStack(stateFactory.createWaiting());
+    newWaitStack();
   }
 
   class Back implements Action {

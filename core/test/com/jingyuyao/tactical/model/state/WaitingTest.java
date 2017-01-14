@@ -33,6 +33,8 @@ public class WaitingTest {
   private Terrain terrain;
   @Mock
   private Moving moving;
+  @Mock
+  private Retaliating retaliating;
 
   private Waiting waiting;
 
@@ -77,7 +79,9 @@ public class WaitingTest {
   }
 
   @Test
-  public void actions_wait() {
+  public void actions_endturn() {
+    when(stateFactory.createRetaliating()).thenReturn(retaliating);
+
     List<Action> actions = waiting.getActions();
     assertThat(actions).hasSize(1);
     Action endTurn = actions.get(0);
@@ -85,5 +89,6 @@ public class WaitingTest {
     endTurn.run();
 
     verify(eventBus).post(endTurn);
+    verify(mapState).push(retaliating);
   }
 }

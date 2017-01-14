@@ -40,6 +40,7 @@ public class Waiting extends AbstractState {
     @Override
     public void run() {
       post(this);
+      goTo(getStateFactory().createRetaliating());
     }
   }
 }
