@@ -98,10 +98,9 @@ public class WeaponTest {
     when(terrains.getHeight()).thenReturn(HEIGHT);
     when(algorithms.getNDistanceAway(WIDTH, HEIGHT, COORDINATE2, ATTACK_DISTANCE))
         .thenReturn(COORDINATE_LIST);
-    when(player.getCoordinate()).thenReturn(COORDINATE2);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
 
-    assertThat(weapon.canHit(player, enemy)).isTrue();
+    assertThat(weapon.canHitFrom(player, COORDINATE2, enemy)).isTrue();
   }
 
   @Test
@@ -110,20 +109,19 @@ public class WeaponTest {
     when(terrains.getHeight()).thenReturn(HEIGHT);
     when(algorithms.getNDistanceAway(WIDTH, HEIGHT, COORDINATE2, ATTACK_DISTANCE))
         .thenReturn(ImmutableList.<Coordinate>of());
-    when(player.getCoordinate()).thenReturn(COORDINATE2);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
 
-    assertThat(weapon.canHit(player, enemy)).isFalse();
+    assertThat(weapon.canHitFrom(player, COORDINATE2, enemy)).isFalse();
   }
 
   @Test
   public void can_hit_same_character() {
-    assertThat(weapon.canHit(character, character)).isFalse();
+    assertThat(weapon.canHitFrom(character, COORDINATE, character)).isFalse();
   }
 
   @Test
   public void can_hit_cannot_target() {
-    assertThat(weapon.canHit(player, player2)).isFalse();
+    assertThat(weapon.canHitFrom(player, COORDINATE, player2)).isFalse();
   }
 
   @Test
