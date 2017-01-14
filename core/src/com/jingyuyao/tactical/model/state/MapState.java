@@ -84,8 +84,8 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
   void push(State newState) {
     stateStack.peek().exit();
     stateStack.push(newState);
-    newState.enter();
     post(new StateChanged(newState));
+    newState.enter();
   }
 
   void pop() {
@@ -94,8 +94,8 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
       currentState.exit();
       State lastState = stateStack.peek();
       lastState.canceled();
-      lastState.enter();
       post(new StateChanged(lastState));
+      lastState.enter();
     }
   }
 
@@ -105,8 +105,8 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
       currentState.exit();
       State lastState = stateStack.peek();
       lastState.canceled();
-      lastState.enter();
       post(new StateChanged(lastState));
+      lastState.enter();
     }
   }
 
@@ -114,8 +114,8 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
     stateStack.peek().exit();
     stateStack.clear();
     stateStack.push(startingState);
-    startingState.enter();
     post(new StateChanged(startingState));
+    startingState.enter();
   }
 
   private void switchHighlightTo(MapObject newHighlight) {

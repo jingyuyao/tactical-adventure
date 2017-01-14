@@ -142,12 +142,12 @@ public class MapStateTest {
 
     mapState.push(state2);
 
-    verify(state1).exit();
-    verify(stateStack).push(state2);
-    verify(state2).enter();
-    verify(eventBus).post(argumentCaptor.capture());
-
+    InOrder inOrder = inOrder(state1, state2, stateStack, eventBus);
+    inOrder.verify(state1).exit();
+    inOrder.verify(stateStack).push(state2);
+    inOrder.verify(eventBus).post(argumentCaptor.capture());
     verifyStateChangedTo(argumentCaptor.getValue(), state2);
+    inOrder.verify(state2).enter();
   }
 
   @Test
@@ -175,8 +175,8 @@ public class MapStateTest {
     inOrder.verify(state2).exit();
     inOrder.verify(stateStack).peek();
     inOrder.verify(state1).canceled();
-    inOrder.verify(state1).enter();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
+    inOrder.verify(state1).enter();
     verifyStateChangedTo(argumentCaptor.getValue(), state1);
   }
 
@@ -206,17 +206,17 @@ public class MapStateTest {
     inOrder.verify(state3).exit();
     inOrder.verify(stateStack).peek();
     inOrder.verify(state2).canceled();
-    inOrder.verify(state2).enter();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     verifyStateChangedTo(argumentCaptor.getValue(), state2);
+    inOrder.verify(state2).enter();
 
     inOrder.verify(stateStack).pop();
     inOrder.verify(state2).exit();
     inOrder.verify(stateStack).peek();
     inOrder.verify(state1).canceled();
-    inOrder.verify(state1).enter();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     verifyStateChangedTo(argumentCaptor.getValue(), state1);
+    inOrder.verify(state1).enter();
   }
 
   @Test
@@ -231,8 +231,8 @@ public class MapStateTest {
     inOrder.verify(state2).exit();
     inOrder.verify(stateStack).clear();
     inOrder.verify(stateStack).push(state1);
-    inOrder.verify(state1).enter();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
+    inOrder.verify(state1).enter();
     verifyStateChangedTo(argumentCaptor.getValue(), state1);
   }
 
