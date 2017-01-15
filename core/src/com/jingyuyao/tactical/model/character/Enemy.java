@@ -77,16 +77,16 @@ public class Enemy extends Character {
     refreshDangerArea();
   }
 
+  public ListenableFuture<Void> retaliate() {
+    return retaliation.run(this);
+  }
+
   public void toggleDangerArea() {
     if (dangerArea == null) {
       applyCurrentDangerArea();
     } else {
       clearDangerArea();
     }
-  }
-
-  public ListenableFuture<Void> retaliate() {
-    return retaliation.run(this);
   }
 
   private void refreshDangerArea() {
