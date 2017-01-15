@@ -3,5 +3,8 @@ weapons
 - motor bomb: target an area (multiple squares), then bomb lands after X turns damage all inside, this is interesting because now we gotta bait enemies into it
 - AoE weapons has friendly fire, this makes the player plan actions by moving their players out of the way
 
+cover system
+- hide behind covers to avoid long range weapons
+
 player state
 - instead of dying, characters go into "down" state that needed to be rescued by another character, then it can be "revived" by a medic
