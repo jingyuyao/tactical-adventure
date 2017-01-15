@@ -2,11 +2,12 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.common.AsyncRunnable;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
@@ -80,14 +81,9 @@ public class Enemy extends Character {
     }
   }
 
-  public AsyncRunnable getRetaliation() {
+  public ListenableFuture<Void> retaliate() {
     // TODO: stub
-    return new AsyncRunnable() {
-      @Override
-      public void run(Runnable done) {
-        done.run();
-      }
-    };
+    return Futures.immediateFuture(null);
   }
 
   private void refreshDangerArea() {

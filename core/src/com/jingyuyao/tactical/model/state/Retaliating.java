@@ -3,9 +3,12 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.AsyncFunction;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.common.AsyncRunner;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrain;
 import javax.inject.Inject;
@@ -13,18 +16,15 @@ import javax.inject.Inject;
 public class Retaliating extends AbstractState {
 
   private final Characters characters;
-  private final AsyncRunner asyncRunner;
 
   @Inject
   Retaliating(
       EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      Characters characters,
-      AsyncRunner asyncRunner) {
+      Characters characters) {
     super(eventBus, mapState, stateFactory);
     this.characters = characters;
-    this.asyncRunner = asyncRunner;
   }
 
   @Override
@@ -51,13 +51,26 @@ public class Retaliating extends AbstractState {
 
   private void retaliate() {
     // TODO: does order matter?
-    for (Enemy enemy : Iterables.filter(characters, Enemy.class)) {
-      asyncRunner.execute(enemy.getRetaliation());
+    ListenableFuture<Void> currentRetaliation = Futures.immediateFuture(null);
+    for (final Enemy enemy : Iterables.filter(characters, Enemy.class)) {
+      // Make enemies retialiate one at a time
+      currentRetaliation =
+          Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
+            @Override
+            public ListenableFuture<Void> apply(Void input) throws Exception {
+              return enemy.retaliate();
+            }
+          });
     }
-    asyncRunner.execute(new Runnable() {
+    Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
       @Override
-      public void run() {
+      public void onSuccess(Void result) {
         newWaitStack();
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+
       }
     });
   }
