@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
@@ -17,6 +18,7 @@ import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
@@ -42,6 +44,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class EnemyTest {
 
   private static final Coordinate COORDINATE = new Coordinate(0, 0);
+  private static final Coordinate COORDINATE2 = new Coordinate(0, 1);
   private static final String NAME = "me";
 
   @Mock
@@ -74,6 +77,10 @@ public class EnemyTest {
   private Player player;
   @Mock
   private Weapon weapon;
+  @Mock
+  private Path path;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
   @Captor
   private ArgumentCaptor<Map<MapObject, Marker>> markerMapCaptor;
 
@@ -114,6 +121,21 @@ public class EnemyTest {
     enemy.highlight(mapState);
 
     verify(mapState).highlight(enemy);
+  }
+
+  @Test
+  public void move() {
+    when(path.getDestination()).thenReturn(COORDINATE2);
+
+    ListenableFuture<Void> future = enemy.move(path);
+
+    verify(eventBus).post(argumentCaptor.capture());
+    Move move = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Move.class);
+    assertThat(move.getPath()).isSameAs(path);
+    assertThat(future.isDone()).isFalse();
+
+    move.done();
+    assertThat(future.isDone()).isTrue();
   }
 
   @Test
