@@ -72,7 +72,7 @@ class CharacterActor<T extends Character> extends MapActor<T> {
                   for (EventListener listener : listeners) {
                     addListener(listener);
                   }
-                  move.finish();
+                  move.done();
                 }
               }));
       addAction(moveSequence);

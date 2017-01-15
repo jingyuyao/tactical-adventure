@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -9,6 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -60,10 +61,13 @@ public class MovingTest {
   @Captor
   private ArgumentCaptor<Runnable> runnableCaptor;
 
+  private ListenableFuture<Void> immediateFuture;
   private Moving moving;
 
   @Before
   public void setUp() {
+    // Futures are too hard to mock correctly
+    immediateFuture = Futures.immediateFuture(null);
     moving = new Moving(eventBus, mapState, stateFactory, movingPlayer);
   }
 
@@ -149,11 +153,11 @@ public class MovingTest {
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
     when(stateFactory.createSelectingWeapon(movingPlayer, enemy)).thenReturn(selectingWeapon);
+    when(movingPlayer.move(path)).thenReturn(immediateFuture);
 
     moving.select(enemy);
 
-    verify(movingPlayer).move(eq(path), runnableCaptor.capture());
-    runnableCaptor.getValue().run();
+    verify(movingPlayer).move(path);
     verify(mapState).push(choosing);
     verify(mapState).push(selectingWeapon);
   }
@@ -178,13 +182,13 @@ public class MovingTest {
     when(targets.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
+    when(movingPlayer.move(path)).thenReturn(immediateFuture);
 
     moving.select(terrain);
 
     verify(movingPlayer).getCoordinate();
     verify(movingPlayer).createTargets();
-    verify(movingPlayer).move(eq(path), runnableCaptor.capture());
-    runnableCaptor.getValue().run();
+    verify(movingPlayer).move(path);
     verify(mapState).push(choosing);
     verifyNoMoreInteractions(mapState);
   }

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.character.event;
 
+import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.AbstractEvent;
 import com.jingyuyao.tactical.model.map.Path;
@@ -7,22 +8,19 @@ import com.jingyuyao.tactical.model.map.Path;
 public class Move extends AbstractEvent<Character> {
 
   private final Path path;
-  private final Runnable onFinish;
+  private final SettableFuture<Void> future;
 
-  public Move(Character character, Path path, Runnable onFinish) {
+  public Move(Character character, Path path, SettableFuture<Void> future) {
     super(character);
     this.path = path;
-    this.onFinish = onFinish;
+    this.future = future;
   }
 
   public Path getPath() {
     return path;
   }
 
-  /**
-   * Indicate the move has finished.
-   */
-  public void finish() {
-    onFinish.run();
+  public void done() {
+    future.set(null);
   }
 }

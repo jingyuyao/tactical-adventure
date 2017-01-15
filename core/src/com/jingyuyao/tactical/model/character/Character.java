@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.model.character;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
@@ -82,9 +84,11 @@ public abstract class Character extends MapObject implements Disposable {
     return stats.canPassTerrainType(terrainType);
   }
 
-  public void move(Path path, Runnable onFinish) {
+  public ListenableFuture<Void> move(Path path) {
     setCoordinate(path.getDestination());
-    post(new Move(this, path, onFinish));
+    SettableFuture<Void> future = SettableFuture.create();
+    post(new Move(this, path, future));
+    return future;
   }
 
   public void instantMoveTo(Coordinate newCoordinate) {
