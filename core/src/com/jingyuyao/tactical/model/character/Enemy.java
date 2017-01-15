@@ -2,13 +2,14 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.logic.Retaliation;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
  */
 public class Enemy extends Character {
 
+  private final Retaliation retaliation;
   private final MarkingFactory markingFactory;
   private Marking dangerArea = null;
 
@@ -38,9 +40,11 @@ public class Enemy extends Character {
       @Assisted Stats stats,
       @Assisted Items items,
       TargetsFactory targetsFactory,
-      MarkingFactory markingFactory) {
+      MarkingFactory markingFactory,
+      @DefaultRetaliation Retaliation retaliation) {
     super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
     this.markingFactory = markingFactory;
+    this.retaliation = retaliation;
     register();
   }
 
@@ -82,8 +86,7 @@ public class Enemy extends Character {
   }
 
   public ListenableFuture<Void> retaliate() {
-    // TODO: stub
-    return Futures.immediateFuture(null);
+    return retaliation.run(this);
   }
 
   private void refreshDangerArea() {

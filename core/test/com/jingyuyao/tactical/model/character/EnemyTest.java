@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.logic.Retaliation;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
@@ -79,6 +80,8 @@ public class EnemyTest {
   private Weapon weapon;
   @Mock
   private Path path;
+  @Mock
+  private Retaliation retaliation;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
   @Captor
@@ -94,7 +97,8 @@ public class EnemyTest {
     terrainList = ImmutableList.of(terrain);
     enemy =
         new Enemy(
-            eventBus, COORDINATE, markers, NAME, stats, items, targetsFactory, markingFactory);
+            eventBus, COORDINATE, markers, NAME, stats, items, targetsFactory, markingFactory,
+            retaliation);
     verify(eventBus).register(enemy);
   }
 
@@ -180,6 +184,13 @@ public class EnemyTest {
   @Test
   public void name() {
     assertThat(enemy.getName()).isEqualTo(NAME);
+  }
+
+  @Test
+  public void retaliation() {
+    enemy.retaliate();
+
+    verify(retaliation).run(enemy);
   }
 
   @Test

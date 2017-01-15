@@ -1,12 +1,17 @@
 package com.jingyuyao.tactical.model.character;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.logic.PassiveRetaliation;
+import com.jingyuyao.tactical.model.logic.Retaliation;
 import com.jingyuyao.tactical.model.map.MapObject.InitialMarkers;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
@@ -40,6 +45,9 @@ public class CharacterModuleTest {
 
   @Inject
   private CharacterFactory characterFactory;
+  @Inject
+  @DefaultRetaliation
+  private Retaliation defaultRetaliation;
 
   @Before
   public void setUp() {
@@ -61,5 +69,10 @@ public class CharacterModuleTest {
         "yolo",
         new Stats(1, 1, Collections.<Type>emptySet()),
         items);
+  }
+
+  @Test
+  public void default_retaliation() {
+    assertThat(defaultRetaliation).isInstanceOf(PassiveRetaliation.class);
   }
 }
