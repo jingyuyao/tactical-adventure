@@ -73,6 +73,17 @@ public class Player extends Character {
     post(new NewActionState(this, actionable));
   }
 
+  public void showMoves() {
+    Preconditions.checkState(marking == null);
+
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : createTargets().moveTerrains()) {
+      markerMap.put(terrain, Marker.CAN_MOVE_TO);
+    }
+    marking = markingFactory.create(this, markerMap);
+    marking.apply();
+  }
+
   public void showImmediateTargets() {
     Preconditions.checkState(marking == null);
 

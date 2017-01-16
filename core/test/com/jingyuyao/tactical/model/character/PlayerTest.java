@@ -179,6 +179,20 @@ public class PlayerTest {
   }
 
   @Test
+  public void show_moves() {
+    when(targetsFactory.create(player)).thenReturn(targets);
+    when(targets.moveTerrains()).thenReturn(terrainList);
+    when(markingFactory.create(eq(player), Mockito.<Map<MapObject, Marker>>any()))
+        .thenReturn(marking);
+
+    player.showMoves();
+
+    verify(marking).apply();
+    verify(markingFactory).create(eq(player), markerMapCaptor.capture());
+    assertThat(markerMapCaptor.getValue()).containsExactly(terrain, Marker.CAN_MOVE_TO);
+  }
+
+  @Test
   public void show_immediate_targets() {
     when(targetsFactory.create(player)).thenReturn(targets);
     when(targets.immediate()).thenReturn(filteredTargets);
