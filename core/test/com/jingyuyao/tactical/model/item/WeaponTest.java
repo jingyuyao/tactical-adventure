@@ -181,10 +181,14 @@ public class WeaponTest {
 
   @Test
   public void get_targets() {
-    when(piercingFactory.create(COORDINATE, Directions.UP)).thenReturn(Optional.<Target>absent());
-    when(piercingFactory.create(COORDINATE, Directions.DOWN)).thenReturn(Optional.<Target>absent());
-    when(piercingFactory.create(COORDINATE, Directions.LEFT)).thenReturn(Optional.<Target>absent());
-    when(piercingFactory.create(COORDINATE, Directions.RIGHT)).thenReturn(Optional.of(target));
+    when(piercingFactory.create(weapon, COORDINATE, Directions.UP))
+        .thenReturn(Optional.<Target>absent());
+    when(piercingFactory.create(weapon, COORDINATE, Directions.DOWN))
+        .thenReturn(Optional.<Target>absent());
+    when(piercingFactory.create(weapon, COORDINATE, Directions.LEFT))
+        .thenReturn(Optional.<Target>absent());
+    when(piercingFactory.create(weapon, COORDINATE, Directions.RIGHT))
+        .thenReturn(Optional.of(target));
 
     assertThat(weapon.getTargets(COORDINATE)).containsExactly(target);
   }
