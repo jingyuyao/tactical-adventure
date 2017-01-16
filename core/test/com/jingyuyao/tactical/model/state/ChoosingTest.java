@@ -10,10 +10,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.map.Targets;
-import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Terrain;
-import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,36 +36,29 @@ public class ChoosingTest {
   @Mock
   private Moving moving;
   @Mock
-  private Targets targets;
-  @Mock
   private Enemy enemy;
   @Mock
   private Terrain terrain;
   @Mock
   private SelectingWeapon selectingWeapon;
   @Mock
-  private Iterable<Consumable> consumables;
-  @Mock
-  private Iterator<Consumable> consumableIterator;
-  @Mock
   private UsingItem usingItem;
   @Mock
   private Waiting waiting;
   @Mock
-  private FilteredTargets immediateTargets;
+  private Weapon weapon;
+  @Mock
+  private Consumable consumable;
 
+  private Iterable<Weapon> weaponIterable;
+  private Iterable<Consumable> consumableIterable;
   private Choosing choosing;
 
   @Before
   public void setUp() {
+    weaponIterable = ImmutableList.of(weapon);
+    consumableIterable = ImmutableList.of(consumable);
     choosing = new Choosing(eventBus, mapState, stateFactory, choosingPlayer);
-  }
-
-  @Test
-  public void enter() {
-    choosing.enter();
-
-    verify(choosingPlayer).showImmediateTargets();
   }
 
   @Test
@@ -97,25 +88,7 @@ public class ChoosingTest {
   }
 
   @Test
-  public void select_enemy_can_hit() {
-    when(choosingPlayer.createTargets()).thenReturn(targets);
-    when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.canTarget(enemy)).thenReturn(true);
-    when(stateFactory.createSelectingWeapon(choosingPlayer, enemy)).thenReturn(selectingWeapon);
-
-    choosing.select(enemy);
-
-    verify(stateFactory).createSelectingWeapon(choosingPlayer, enemy);
-    verify(mapState).push(selectingWeapon);
-    verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_enemy_cannot_hit() {
-    when(choosingPlayer.createTargets()).thenReturn(targets);
-    when(targets.immediate()).thenReturn(immediateTargets);
-    when(immediateTargets.canTarget(enemy)).thenReturn(false);
-
+  public void select_enemy() {
     choosing.select(enemy);
 
     verify(mapState).pop();
@@ -131,66 +104,33 @@ public class ChoosingTest {
   }
 
   @Test
-  public void actions_with_consumable_use_items() {
-    ImmutableList<Action> actions = actionsSetUp_consumables();
+  public void actions() {
+    ImmutableList<Action> actions = actions_set_up();
 
-    Action useItems = actions.get(0);
+    Action selectWeapons = actions.get(0);
+    selectWeapons.run();
+    verify(mapState).push(selectingWeapon);
+
+    Action useItems = actions.get(1);
     useItems.run();
     verify(mapState).push(usingItem);
-  }
 
-  @Test
-  public void actions_with_consumable_wait() {
-    ImmutableList<Action> actions = actionsSetUp_consumables();
-
-    verifyWait(actions.get(1));
-  }
-
-  @Test
-  public void actions_with_consumable_back() {
-    ImmutableList<Action> actions = actionsSetUp_consumables();
-
-    StateHelpers.verifyBack(actions.get(2), mapState);
-  }
-
-  @Test
-  public void actions_without_consumable_wait() {
-    ImmutableList<Action> actions = actionSetUp_without_consumables();
-
-    verifyWait(actions.get(0));
-  }
-
-  @Test
-  public void actions_without_consumable_back() {
-    ImmutableList<Action> actions = actionSetUp_without_consumables();
-
-    StateHelpers.verifyBack(actions.get(1), mapState);
-  }
-
-  private ImmutableList<Action> actionsSetUp_consumables() {
-    when(choosingPlayer.getConsumables()).thenReturn(consumables);
-    when(consumables.iterator()).thenReturn(consumableIterator);
-    when(consumableIterator.hasNext()).thenReturn(true);
-    when(stateFactory.createUsingItem(choosingPlayer)).thenReturn(usingItem);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-    ImmutableList<Action> actions = choosing.getActions();
-    assertThat(actions).hasSize(3);
-    return actions;
-  }
-
-  private ImmutableList<Action> actionSetUp_without_consumables() {
-    when(choosingPlayer.getConsumables()).thenReturn(consumables);
-    when(consumables.iterator()).thenReturn(consumableIterator);
-    when(consumableIterator.hasNext()).thenReturn(false);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-    ImmutableList<Action> actions = choosing.getActions();
-    assertThat(actions).hasSize(2);
-    return actions;
-  }
-
-  private void verifyWait(Action wait) {
+    Action wait = actions.get(2);
     wait.run();
     verify(choosingPlayer).setActionable(false);
     verify(mapState).newStack(waiting);
+
+    StateHelpers.verifyBack(actions.get(3), mapState);
+  }
+
+  private ImmutableList<Action> actions_set_up() {
+    when(choosingPlayer.getWeapons()).thenReturn(weaponIterable);
+    when(choosingPlayer.getConsumables()).thenReturn(consumableIterable);
+    when(stateFactory.createSelectingWeapon(choosingPlayer)).thenReturn(selectingWeapon);
+    when(stateFactory.createUsingItem(choosingPlayer)).thenReturn(usingItem);
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+    ImmutableList<Action> actions = choosing.getActions();
+    assertThat(actions).hasSize(4);
+    return actions;
   }
 }

@@ -2,13 +2,16 @@ package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.AttackPlan;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -32,6 +35,10 @@ public class StateModuleTest {
   private Enemy enemy;
   @Mock
   private AttackPlan attackPlan;
+  @Mock
+  private Weapon weapon;
+  @Mock
+  private ImmutableList<Target> targets;
   @Inject
   private MapState mapState1;
   @Inject
@@ -49,7 +56,8 @@ public class StateModuleTest {
     stateFactory.createWaiting();
     stateFactory.createMoving(player);
     stateFactory.createChoosing(player);
-    stateFactory.createSelectingWeapon(player, enemy);
+    stateFactory.createSelectingWeapon(player);
+    stateFactory.createSelectingTarget(weapon, targets);
     stateFactory.createUsingItem(player);
     stateFactory.createReviewingAttack(player, enemy, attackPlan);
     stateFactory.createRetaliating();
