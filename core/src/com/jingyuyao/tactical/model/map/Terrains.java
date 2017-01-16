@@ -82,6 +82,10 @@ public class Terrains extends EventBusObject
     });
   }
 
+  public boolean contains(Coordinate coordinate) {
+    return terrainMap.containsKey(coordinate);
+  }
+
   @Override
   public Iterator<Terrain> iterator() {
     return terrainMap.values().iterator();

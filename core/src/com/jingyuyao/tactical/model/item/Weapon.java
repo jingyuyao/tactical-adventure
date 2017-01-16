@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.eventbus.EventBus;
@@ -84,5 +86,49 @@ public class Weapon extends Usable {
       );
     }
     return builder.build();
+  }
+
+  /**
+   * Can shoot in four directions, stops at the first target hit.
+   */
+  public ImmutableList<Target> getTargets(Coordinate coordinate) {
+    ImmutableList.Builder<Target> builder = ImmutableList.builder();
+    ImmutableList<Coordinate> directions = ImmutableList.of(
+        new Coordinate(0, 1),
+        new Coordinate(0, -1),
+        new Coordinate(1, 0),
+        new Coordinate(-1, 0)
+    );
+    for (Coordinate direction : directions) {
+      Optional<Target> targetOptional = getDirectionalTarget(coordinate, direction);
+      if (targetOptional.isPresent()) {
+        builder.add(targetOptional.get());
+      }
+    }
+    return builder.build();
+  }
+
+  /**
+   * Return a {@link Target} with select one direction away from "from" and targets in the direction
+   * extending to the end of the map.
+   */
+  private Optional<Target> getDirectionalTarget(Coordinate from, Coordinate direction) {
+    ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
+    Coordinate select = offset(from, direction);
+    Coordinate current = select;
+    while (terrains.contains(current)) {
+      targetBuilder.add(current);
+      current = offset(current, direction);
+    }
+    ImmutableSet<Coordinate> targets = targetBuilder.build();
+    if (targets.isEmpty()) {
+      return Optional.absent();
+    } else {
+      return Optional.of(new Target(select, targets));
+    }
+  }
+
+  private Coordinate offset(Coordinate c1, Coordinate c2) {
+    return new Coordinate(c1.getX() + c2.getX(), c1.getY() + c2.getY());
   }
 }
