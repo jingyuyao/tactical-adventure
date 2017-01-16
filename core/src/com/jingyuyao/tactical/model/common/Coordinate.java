@@ -25,6 +25,10 @@ public final class Coordinate {
     return y;
   }
 
+  public Coordinate offsetBy(Coordinate coordinate) {
+    return new Coordinate(x + coordinate.x, y + coordinate.y);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
