@@ -1,10 +1,9 @@
-package com.jingyuyao.tactical.model.logic;
+package com.jingyuyao.tactical.model.retaliation;
 
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
-import com.jingyuyao.tactical.model.retaliation.RetaliationModule;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;

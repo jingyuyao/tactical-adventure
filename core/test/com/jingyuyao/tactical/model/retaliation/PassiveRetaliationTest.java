@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.logic;
+package com.jingyuyao.tactical.model.retaliation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
