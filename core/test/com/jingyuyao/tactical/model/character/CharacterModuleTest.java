@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.map.MapObject.InitialMarkers;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import com.jingyuyao.tactical.model.retaliation.PassiveRetaliation;
 import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import java.util.Collections;
@@ -35,9 +34,6 @@ public class CharacterModuleTest {
   @Bind
   @Mock
   private TargetsFactory targetsFactory;
-  @Bind
-  @Mock
-  private MarkingFactory markingFactory;
   @Bind
   @Mock
   @InitialMarkers

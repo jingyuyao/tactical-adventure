@@ -8,7 +8,13 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -47,13 +53,19 @@ public class PiercingFactory {
           }
         })
     );
+    Terrain selectTerrain = terrains.get(select);
+    ImmutableSet<Terrain> targetTerrains = ImmutableSet.copyOf(terrains.getAll(targetCoordinates));
 
-    return Optional.<Target>of(
-        new ConstantDamage(
-            weapon,
-            terrains.get(select),
-            ImmutableSet.copyOf(terrains.getAll(targetCoordinates)),
-            targetCharacters)
-    );
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    markerMap.put(selectTerrain, Marker.DANGER);
+    for (Terrain terrain : targetTerrains) {
+      markerMap.put(terrain, Marker.CAN_ATTACK);
+    }
+    for (Character character : targetCharacters) {
+      markerMap.put(character, Marker.POTENTIAL_TARGET);
+    }
+    Marking marking = new Marking(markerMap);
+
+    return Optional.<Target>of(new ConstantDamage(weapon, select, targetCharacters, marking));
   }
 }

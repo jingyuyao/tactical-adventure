@@ -7,18 +7,13 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.AttackPlan;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
-import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -34,9 +29,7 @@ public class ReviewingAttackTest {
   @Mock
   private Player attackingPlayer;
   @Mock
-  private AttackPlan attackPlan;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
+  private Target target;
   @Mock
   private Enemy enemy;
   @Mock
@@ -49,27 +42,21 @@ public class ReviewingAttackTest {
   @Before
   public void setUp() {
     reviewingAttack =
-        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, enemy, attackPlan);
+        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, target);
   }
 
   @Test
   public void enter() {
     reviewingAttack.enter();
 
-    verify(attackingPlayer).showImmediateTargetsWithChosenTarget(enemy);
-    verify(eventBus).post(argumentCaptor.capture());
-    ShowAttackPlan showAttackPlan =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowAttackPlan.class);
-    assertThat(showAttackPlan.getObject()).isSameAs(attackPlan);
+    verify(target).showMarking();
   }
 
   @Test
   public void exit() {
     reviewingAttack.exit();
 
-    verify(attackingPlayer).clearMarking();
-    verify(eventBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(HideAttackPlan.class);
+    verify(target).hideMarking();
   }
 
   @Test
@@ -101,7 +88,7 @@ public class ReviewingAttackTest {
     Action attack = actions.get(0);
     attack.run();
 
-    verify(attackPlan).execute();
+    verify(target).execute();
     verify(attackingPlayer).setActionable(false);
     verify(mapState).newStack(waiting);
     verifyNoMoreInteractions(mapState);

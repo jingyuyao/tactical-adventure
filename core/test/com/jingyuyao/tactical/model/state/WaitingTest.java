@@ -68,7 +68,7 @@ public class WaitingTest {
   public void select_enemy() {
     waiting.select(enemy);
 
-    verify(enemy).toggleDangerArea();
+    verify(mapState).pop();
   }
 
   @Test

@@ -23,7 +23,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SelectingWeaponTest {
 
   private static final Coordinate PLAYER_COORDINATE = new Coordinate(0, 0);
-  private static final Coordinate ENEMY_COORDINATE = new Coordinate(0, 1);
 
   @Mock
   private EventBus eventBus;
@@ -117,8 +116,8 @@ public class SelectingWeaponTest {
     when(weaponIterator.next()).thenReturn(weapon1, weapon2);
     when(weapon1.getTargets(PLAYER_COORDINATE)).thenReturn(targets1);
     when(weapon2.getTargets(PLAYER_COORDINATE)).thenReturn(targets2);
-    when(stateFactory.createSelectingTarget(weapon1, targets1)).thenReturn(selectingTarget1);
-    when(stateFactory.createSelectingTarget(weapon2, targets2)).thenReturn(selectingTarget2);
+    when(stateFactory.createSelectingTarget(player, targets1)).thenReturn(selectingTarget1);
+    when(stateFactory.createSelectingTarget(player, targets2)).thenReturn(selectingTarget2);
     ImmutableList<Action> actions = selectingWeapon.getActions();
     assertThat(actions).hasSize(3);
     return actions;

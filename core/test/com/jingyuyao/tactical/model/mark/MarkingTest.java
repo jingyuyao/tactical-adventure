@@ -4,10 +4,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,13 +23,7 @@ public class MarkingTest {
   private static final Marker DUMMY_MARKER = Marker.DANGER;
 
   @Mock
-  private EventBus eventBus;
-  @Mock
-  private Character character;
-  @Mock
   private Map<MapObject, Marker> markerMap;
-  @Mock
-  private RemoveCharacter removeCharacter;
   @Mock
   private Set<Entry<MapObject, Marker>> entrySet;
   @Mock
@@ -47,43 +37,7 @@ public class MarkingTest {
 
   @Before
   public void setUp() {
-    marking = new Marking(eventBus, character, markerMap);
-    verify(eventBus).register(marking);
-  }
-
-  @Test
-  public void remove_character_matches_applied() {
-    set_up_marker_map();
-    when(removeCharacter.matches(character)).thenReturn(true);
-
-    marking.apply();
-    marking.removeCharacter(removeCharacter);
-
-    InOrder inOrder = Mockito.inOrder(eventBus, mapObject);
-    inOrder.verify(mapObject).addMarker(DUMMY_MARKER);
-    inOrder.verify(eventBus).unregister(marking);
-    inOrder.verify(mapObject).removeMarker(DUMMY_MARKER);
-  }
-
-  @Test
-  public void remove_character_matches_not_applied() {
-    set_up_marker_map();
-    when(removeCharacter.matches(character)).thenReturn(true);
-
-    marking.removeCharacter(removeCharacter);
-
-    verifyZeroInteractions(mapObject);
-    verify(eventBus).unregister(marking);
-  }
-
-  @Test
-  public void remove_character_not_matches() {
-    when(removeCharacter.matches(character)).thenReturn(false);
-
-    marking.removeCharacter(removeCharacter);
-
-    verifyZeroInteractions(eventBus);
-    verifyZeroInteractions(mapObject);
+    marking = new Marking(markerMap);
   }
 
   @Test
@@ -112,8 +66,7 @@ public class MarkingTest {
     marking.clear();
     marking.apply();
 
-    verifyZeroInteractions(mapObject);
-    verify(eventBus).unregister(marking);
+    verify(mapObject).addMarker(DUMMY_MARKER);
   }
 
   @Test
@@ -123,9 +76,8 @@ public class MarkingTest {
     marking.apply();
     marking.clear();
 
-    InOrder inOrder = Mockito.inOrder(mapObject, eventBus);
+    InOrder inOrder = Mockito.inOrder(mapObject);
     inOrder.verify(mapObject).addMarker(DUMMY_MARKER);
-    inOrder.verify(eventBus).unregister(marking);
     inOrder.verify(mapObject).removeMarker(DUMMY_MARKER);
   }
 
@@ -136,7 +88,6 @@ public class MarkingTest {
     marking.clear();
 
     verifyZeroInteractions(mapObject);
-    verify(eventBus).unregister(marking);
   }
 
   @Test
@@ -146,13 +97,7 @@ public class MarkingTest {
     marking.clear();
     marking.clear();
 
-    verify(eventBus).unregister(marking);
     verifyZeroInteractions(mapObject);
-  }
-
-  @Test
-  public void subscribers() {
-    TestHelpers.verifyNoDeadEvents(marking, removeCharacter);
   }
 
   private void set_up_marker_map() {

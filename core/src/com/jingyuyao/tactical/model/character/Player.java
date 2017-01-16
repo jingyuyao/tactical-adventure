@@ -1,26 +1,21 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.inject.Inject;
 
 /**
@@ -28,7 +23,6 @@ import javax.inject.Inject;
  */
 public class Player extends Character {
 
-  private final MarkingFactory markingFactory;
   private boolean actionable = true;
   private Marking marking = null;
 
@@ -40,10 +34,8 @@ public class Player extends Character {
       @Assisted String name,
       @Assisted Stats stats,
       @Assisted Items items,
-      TargetsFactory targetsFactory,
-      MarkingFactory markingFactory) {
+      TargetsFactory targetsFactory) {
     super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
-    this.markingFactory = markingFactory;
     register();
   }
 
@@ -80,61 +72,7 @@ public class Player extends Character {
     for (Terrain terrain : createTargets().moveTerrains()) {
       markerMap.put(terrain, Marker.CAN_MOVE_TO);
     }
-    marking = markingFactory.create(this, markerMap);
-    marking.apply();
-  }
-
-  public void showImmediateTargets() {
-    Preconditions.checkState(marking == null);
-
-    Targets targets = createTargets();
-    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
-    for (Terrain terrain : targets.immediate().terrains()) {
-      markerMap.put(terrain, Marker.CAN_ATTACK);
-    }
-    for (Character character : targets.immediate().characters()) {
-      markerMap.put(character, Marker.POTENTIAL_TARGET);
-    }
-
-    marking = markingFactory.create(this, markerMap);
-    marking.apply();
-  }
-
-  // TODO: change this to only show targets for a particular weapon
-  public void showImmediateTargetsWithChosenTarget(Enemy enemy) {
-    Preconditions.checkState(marking == null);
-
-    Targets targets = createTargets();
-    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
-    for (Terrain terrain : targets.immediate().terrains()) {
-      markerMap.put(terrain, Marker.CAN_ATTACK);
-    }
-    markerMap.put(enemy, Marker.CHOSEN_TARGET);
-
-    marking = markingFactory.create(this, markerMap);
-    marking.apply();
-  }
-
-  public void showAllTargetsWithMove() {
-    Preconditions.checkState(marking == null);
-
-    Targets targets = createTargets();
-    ImmutableSet<Terrain> canMoveToTerrains = ImmutableSet.copyOf(targets.moveTerrains());
-    ImmutableSet<Terrain> canAttackTerrains = ImmutableSet.copyOf(targets.all().terrains());
-    Set<Terrain> canAttackTerrainsToShow = Sets.difference(canAttackTerrains, canMoveToTerrains);
-
-    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
-    for (Terrain terrain : canMoveToTerrains) {
-      markerMap.put(terrain, Marker.CAN_MOVE_TO);
-    }
-    for (Terrain terrain : canAttackTerrainsToShow) {
-      markerMap.put(terrain, Marker.CAN_ATTACK);
-    }
-    for (Character character : targets.all().characters()) {
-      markerMap.put(character, Marker.POTENTIAL_TARGET);
-    }
-
-    marking = markingFactory.create(this, markerMap);
+    marking = new Marking(markerMap);
     marking.apply();
   }
 

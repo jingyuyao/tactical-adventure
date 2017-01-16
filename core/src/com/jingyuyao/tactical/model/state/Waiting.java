@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import javax.inject.Inject;
 
@@ -18,11 +17,6 @@ public class Waiting extends AbstractState {
     if (player.isActionable()) {
       goTo(getStateFactory().createMoving(player));
     }
-  }
-
-  @Override
-  public void select(Enemy enemy) {
-    enemy.toggleDangerArea();
   }
 
   @Override

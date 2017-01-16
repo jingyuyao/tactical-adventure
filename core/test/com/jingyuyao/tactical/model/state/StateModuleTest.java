@@ -6,12 +6,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.AttackPlan;
-import com.jingyuyao.tactical.model.AttackPlanFactory;
 import com.jingyuyao.tactical.model.battle.Target;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -26,19 +22,12 @@ public class StateModuleTest {
   @Bind
   @Mock
   private Characters characters;
-  @Bind
-  @Mock
-  private AttackPlanFactory attackPlanFactory;
   @Mock
   private Player player;
   @Mock
-  private Enemy enemy;
-  @Mock
-  private AttackPlan attackPlan;
-  @Mock
-  private Weapon weapon;
-  @Mock
   private ImmutableList<Target> targets;
+  @Mock
+  private Target target;
   @Inject
   private MapState mapState1;
   @Inject
@@ -57,9 +46,9 @@ public class StateModuleTest {
     stateFactory.createMoving(player);
     stateFactory.createChoosing(player);
     stateFactory.createSelectingWeapon(player);
-    stateFactory.createSelectingTarget(weapon, targets);
+    stateFactory.createSelectingTarget(player, targets);
     stateFactory.createUsingItem(player);
-    stateFactory.createReviewingAttack(player, enemy, attackPlan);
+    stateFactory.createReviewingAttack(player, target);
     stateFactory.createRetaliating();
   }
 

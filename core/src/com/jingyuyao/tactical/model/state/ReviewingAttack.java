@@ -3,17 +3,13 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.AttackPlan;
-import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
-import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
 import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {
 
-  private final Enemy enemy;
-  private final AttackPlan attackPlan;
+  private final Target target;
 
   @Inject
   ReviewingAttack(
@@ -21,24 +17,19 @@ class ReviewingAttack extends AbstractPlayerState {
       MapState mapState,
       StateFactory stateFactory,
       @Assisted Player player,
-      @Assisted Enemy enemy,
-      @Assisted AttackPlan attackPlan) {
+      @Assisted Target target) {
     super(eventBus, mapState, stateFactory, player);
-    this.enemy = enemy;
-    this.attackPlan = attackPlan;
+    this.target = target;
   }
 
   @Override
   public void enter() {
-    super.enter();
-    getPlayer().showImmediateTargetsWithChosenTarget(enemy);
-    post(new ShowAttackPlan(attackPlan));
+    target.showMarking();
   }
 
   @Override
   public void exit() {
-    post(new HideAttackPlan());
-    super.exit();
+    target.hideMarking();
   }
 
   @Override
@@ -55,7 +46,7 @@ class ReviewingAttack extends AbstractPlayerState {
 
     @Override
     public void run() {
-      attackPlan.execute();
+      target.execute();
       finish(getPlayer());
     }
   }

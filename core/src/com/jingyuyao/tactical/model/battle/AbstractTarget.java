@@ -2,40 +2,45 @@ package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.mark.Marking;
 
 public abstract class AbstractTarget implements Target {
 
   private final Weapon weapon;
-  private final Terrain select;
-  private final ImmutableSet<Terrain> targetTerrains;
+  private final Coordinate selectCoordinate;
   private final ImmutableSet<Character> targetCharacters;
+  private final Marking marking;
 
   AbstractTarget(
       Weapon weapon,
-      Terrain select,
-      ImmutableSet<Terrain> targetTerrains,
-      ImmutableSet<Character> targetCharacters) {
+      Coordinate selectCoordinate,
+      ImmutableSet<Character> targetCharacters, Marking marking) {
     this.weapon = weapon;
-    this.select = select;
-    this.targetTerrains = targetTerrains;
+    this.selectCoordinate = selectCoordinate;
     this.targetCharacters = targetCharacters;
+    this.marking = marking;
   }
 
   @Override
-  public Terrain getSelectTerrain() {
-    return select;
-  }
-
-  @Override
-  public ImmutableSet<Terrain> getTargetTerrains() {
-    return targetTerrains;
+  public Coordinate getSelectCoordinate() {
+    return selectCoordinate;
   }
 
   @Override
   public ImmutableSet<Character> getTargetCharacters() {
     return targetCharacters;
+  }
+
+  @Override
+  public void showMarking() {
+    marking.apply();
+  }
+
+  @Override
+  public void hideMarking() {
+    marking.clear();
   }
 
   Weapon getWeapon() {
