@@ -5,9 +5,9 @@ import com.google.inject.Stage;
 import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.common.CommonModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
-import com.jingyuyao.tactical.model.logic.LogicModule;
 import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.mark.MarkModule;
+import com.jingyuyao.tactical.model.retaliation.RetaliationModule;
 import com.jingyuyao.tactical.model.state.StateModule;
 
 public class ModelModule extends AbstractModule {
@@ -23,7 +23,7 @@ public class ModelModule extends AbstractModule {
     install(new ItemModule());
     install(new MarkModule());
     install(new StateModule());
-    install(new LogicModule());
+    install(new RetaliationModule());
 
     bind(AttackPlanFactory.class);
   }

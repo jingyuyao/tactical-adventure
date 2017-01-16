@@ -8,8 +8,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.jingyuyao.tactical.model.logic.PassiveRetaliation;
-import com.jingyuyao.tactical.model.logic.Retaliation;
+import com.jingyuyao.tactical.model.retaliation.PassiveRetaliation;
+import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 

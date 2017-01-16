@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.logic;
+package com.jingyuyao.tactical.model.retaliation;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;

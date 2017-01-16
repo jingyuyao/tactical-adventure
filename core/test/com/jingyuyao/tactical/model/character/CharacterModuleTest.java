@@ -10,13 +10,13 @@ import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.logic.PassiveRetaliation;
-import com.jingyuyao.tactical.model.logic.Retaliation;
 import com.jingyuyao.tactical.model.map.MapObject.InitialMarkers;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
+import com.jingyuyao.tactical.model.retaliation.PassiveRetaliation;
+import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;

@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
+import com.jingyuyao.tactical.model.retaliation.RetaliationModule;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,17 +13,17 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LogicModuleTest {
+public class RetaliationModuleTest {
 
   @Bind
   @Mock
   private AttackPlanFactory attackPlanFactory;
   @Inject
-  private PassiveRetaliation passiveRetaliation;
+  private com.jingyuyao.tactical.model.retaliation.PassiveRetaliation passiveRetaliation;
 
   @Before
   public void setUp() {
-    Guice.createInjector(BoundFieldModule.of(this), new LogicModule()).injectMembers(this);
+    Guice.createInjector(BoundFieldModule.of(this), new RetaliationModule()).injectMembers(this);
   }
 
   @Test

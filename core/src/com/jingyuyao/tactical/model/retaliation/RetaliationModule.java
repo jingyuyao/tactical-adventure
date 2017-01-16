@@ -1,9 +1,9 @@
-package com.jingyuyao.tactical.model.logic;
+package com.jingyuyao.tactical.model.retaliation;
 
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.model.AttackPlanFactory;
 
-public class LogicModule extends AbstractModule {
+public class RetaliationModule extends AbstractModule {
 
   @Override
   protected void configure() {

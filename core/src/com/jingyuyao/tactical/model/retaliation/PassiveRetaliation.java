@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.logic;
+package com.jingyuyao.tactical.model.retaliation;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
