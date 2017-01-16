@@ -2,31 +2,31 @@ package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Terrain;
 
 public abstract class AbstractTarget implements Target {
 
-  private final Coordinate select;
-  private final ImmutableSet<Coordinate> targetCoordinates;
+  private final Terrain select;
+  private final ImmutableSet<Terrain> targetTerrains;
   private final ImmutableSet<Character> targetCharacters;
 
   AbstractTarget(
-      Coordinate select,
-      ImmutableSet<Coordinate> targetCoordinates,
+      Terrain select,
+      ImmutableSet<Terrain> targetTerrains,
       ImmutableSet<Character> targetCharacters) {
     this.select = select;
-    this.targetCoordinates = targetCoordinates;
+    this.targetTerrains = targetTerrains;
     this.targetCharacters = targetCharacters;
   }
 
   @Override
-  public Coordinate getSelect() {
+  public Terrain getSelectTerrain() {
     return select;
   }
 
   @Override
-  public ImmutableSet<Coordinate> getTargetCoordinates() {
-    return targetCoordinates;
+  public ImmutableSet<Terrain> getTargetTerrains() {
+    return targetTerrains;
   }
 
   @Override

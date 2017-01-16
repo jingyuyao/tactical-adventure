@@ -27,14 +27,14 @@ public class PiercingFactory {
   public Optional<Target> create(Coordinate origin, Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate select = origin.offsetBy(direction);
-    Coordinate current = select;
+    Coordinate current = select.offsetBy(direction);
     while (terrains.contains(current)) {
       targetBuilder.add(current);
       current = current.offsetBy(direction);
     }
 
-    final ImmutableSet<Coordinate> targetCoordiantes = targetBuilder.build();
-    if (targetCoordiantes.isEmpty()) {
+    final ImmutableSet<Coordinate> targetCoordinates = targetBuilder.build();
+    if (targetCoordinates.isEmpty()) {
       return Optional.absent();
     }
 
@@ -42,11 +42,16 @@ public class PiercingFactory {
         Iterables.filter(characters, new Predicate<Character>() {
           @Override
           public boolean apply(Character input) {
-            return targetCoordiantes.contains(input.getCoordinate());
+            return targetCoordinates.contains(input.getCoordinate());
           }
         })
     );
 
-    return Optional.<Target>of(new ConstantDamage(select, targetCoordiantes, targetCharacters));
+    return Optional.<Target>of(
+        new ConstantDamage(
+            terrains.get(select),
+            ImmutableSet.copyOf(terrains.getAll(targetCoordinates)),
+            targetCharacters)
+    );
   }
 }
