@@ -18,7 +18,7 @@ public class RetaliationModuleTest {
   @Mock
   private AttackPlanFactory attackPlanFactory;
   @Inject
-  private com.jingyuyao.tactical.model.retaliation.PassiveRetaliation passiveRetaliation;
+  private PassiveRetaliation passiveRetaliation;
 
   @Before
   public void setUp() {
