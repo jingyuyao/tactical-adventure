@@ -100,7 +100,7 @@ public class Weapon extends Usable {
   public ImmutableList<Target> getTargets(Coordinate coordinate) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate direction : Directions.ALL) {
-      Optional<Target> targetOptional = piercingFactory.create(coordinate, direction);
+      Optional<Target> targetOptional = piercingFactory.create(this, coordinate, direction);
       if (targetOptional.isPresent()) {
         builder.add(targetOptional.get());
       }

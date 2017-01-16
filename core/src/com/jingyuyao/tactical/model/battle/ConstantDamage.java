@@ -8,16 +8,18 @@ import com.jingyuyao.tactical.model.map.Terrain;
 // TODO: test me
 public class ConstantDamage extends AbstractTarget {
 
-  ConstantDamage(Terrain select,
+  ConstantDamage(
+      Weapon weapon,
+      Terrain select,
       ImmutableSet<Terrain> targetTerrains,
       ImmutableSet<Character> targetCharacters) {
-    super(select, targetTerrains, targetCharacters);
+    super(weapon, select, targetTerrains, targetCharacters);
   }
 
   @Override
-  public void execute(Weapon weapon) {
+  public void execute() {
     for (Character character : getTargetCharacters()) {
-      weapon.hit(character);
+      getWeapon().hit(character);
     }
   }
 }

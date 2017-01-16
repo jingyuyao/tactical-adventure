@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ public class PiercingFactory {
     this.terrains = terrains;
   }
 
-  public Optional<Target> create(Coordinate origin, Coordinate direction) {
+  public Optional<Target> create(Weapon weapon, Coordinate origin, Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate select = origin.offsetBy(direction);
     Coordinate current = select.offsetBy(direction);
@@ -49,6 +50,7 @@ public class PiercingFactory {
 
     return Optional.<Target>of(
         new ConstantDamage(
+            weapon,
             terrains.get(select),
             ImmutableSet.copyOf(terrains.getAll(targetCoordinates)),
             targetCharacters)
