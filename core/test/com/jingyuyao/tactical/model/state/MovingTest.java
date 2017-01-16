@@ -75,7 +75,7 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(movingPlayer).showAllTargetsWithMove();
+    verify(movingPlayer).showMoves();
   }
 
   @Test
@@ -83,21 +83,6 @@ public class MovingTest {
     moving.canceled();
 
     verifyZeroInteractions(movingPlayer);
-  }
-
-  @Test
-  public void canceled_enemy_move() {
-    select_enemy_can_hit();
-
-    moving.canceled();
-
-    verify(movingPlayer).createTargets();
-    verify(movingPlayer).getCoordinate();
-    verify(movingPlayer).instantMoveTo(MOVING_PLAYER_COORDINATE);
-
-    moving.canceled();
-
-    verifyNoMoreInteractions(movingPlayer);
   }
 
   @Test
@@ -144,30 +129,7 @@ public class MovingTest {
   }
 
   @Test
-  public void select_enemy_can_hit() {
-    when(movingPlayer.createTargets()).thenReturn(targets);
-    when(targets.all()).thenReturn(allTargets);
-    when(allTargets.canTarget(enemy)).thenReturn(true);
-    when(enemy.getCoordinate()).thenReturn(ENEMY_COORDINATE);
-    when(targets.movePathToTargetCoordinate(ENEMY_COORDINATE)).thenReturn(path);
-    when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
-    when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
-    when(stateFactory.createSelectingWeapon(movingPlayer, enemy)).thenReturn(selectingWeapon);
-    when(movingPlayer.move(path)).thenReturn(immediateFuture);
-
-    moving.select(enemy);
-
-    verify(movingPlayer).move(path);
-    verify(mapState).push(choosing);
-    verify(mapState).push(selectingWeapon);
-  }
-
-  @Test
-  public void select_enemy_cannot_hit() {
-    when(movingPlayer.createTargets()).thenReturn(targets);
-    when(targets.all()).thenReturn(allTargets);
-    when(allTargets.canTarget(enemy)).thenReturn(false);
-
+  public void select_enemy() {
     moving.select(enemy);
 
     verify(mapState).pop();
