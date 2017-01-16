@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+// TODO: test me
 @Singleton
 public class PiercingFactory {
 

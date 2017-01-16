@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
 
+// TODO: test me
 public class ConstantDamage extends AbstractTarget {
 
   ConstantDamage(
