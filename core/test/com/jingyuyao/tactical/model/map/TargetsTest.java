@@ -1,27 +1,17 @@
 package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.SetMultimap;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Weapon;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -39,79 +29,22 @@ public class TargetsTest {
   @Mock
   private Algorithms algorithms;
   @Mock
-  private Characters characters;
-  @Mock
   private Terrains terrains;
-  @Mock
-  private Character character;
   @Mock
   private Graph<Coordinate> graph;
   @Mock
-  private Character other;
-  @Mock
-  private Weapon originWeapon;
-  @Mock
-  private Weapon weapon1;
-  @Mock
-  private Weapon weapon2;
+  private Set<Coordinate> moveCoordinates;
   @Mock
   private ImmutableList<Coordinate> track;
   @Mock
-  private Iterator<Character> characterIterator;
-  @Mock
   private Iterable<Terrain> terrainIterable;
-  @Captor
-  private ArgumentCaptor<ImmutableSet<Coordinate>> coordinateCaptor;
 
-  private Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap;
   private Targets targets;
 
   @Before
   public void setUp() {
     when(graph.nodes()).thenReturn(ImmutableSet.of(ORIGIN, MOVE1, MOVE2));
-    when(character.getCoordinate()).thenReturn(ORIGIN);
-    moveMap = createMoveMap();
-    targets = new Targets(algorithms, characters, terrains, character, graph, moveMap);
-  }
-
-  @Test
-  public void can_target_after_move() {
-    when(weapon1.canTarget(character, other)).thenReturn(true);
-    when(other.getCoordinate()).thenReturn(TARGET1);
-
-    assertThat(targets.all().canTarget(other)).isTrue();
-  }
-
-  @Test
-  public void cannot_target_after_move() {
-    when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
-
-    assertThat(targets.all().canTarget(other)).isFalse();
-  }
-
-  @Test
-  public void target_after_move_cannot_target() {
-    assertThat(targets.all().canTarget(other)).isFalse();
-  }
-
-  @Test
-  public void can_target_immediately() {
-    when(originWeapon.canTarget(character, other)).thenReturn(true);
-    when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
-
-    assertThat(targets.immediate().canTarget(other)).isTrue();
-  }
-
-  @Test
-  public void cannot_target_immediately() {
-    when(other.getCoordinate()).thenReturn(NOT_IN_TARGETS);
-
-    assertThat(targets.immediate().canTarget(other)).isFalse();
-  }
-
-  @Test
-  public void immediate_target_cannot_target() {
-    assertThat(targets.immediate().canTarget(other)).isFalse();
+    targets = new Targets(algorithms, terrains, graph);
   }
 
   @Test
@@ -132,112 +65,10 @@ public class TargetsTest {
   }
 
   @Test
-  public void move_path_to_target_max_number_of_weapons() {
-    when(algorithms.getTrackTo(graph, MOVE2)).thenReturn(track);
-
-    Path path = targets.movePathToTargetCoordinate(TARGET2);
-
-    assertThat(path.getDestination()).isEqualTo(MOVE2);
-    assertThat(path.getTrack()).isSameAs(track);
-  }
-
-  @Test
-  public void weapons_for() {
-    ImmutableSet<Weapon> weapons1 = targets.availableWeapons(MOVE1, TARGET1);
-    assertThat(weapons1).containsExactly(weapon1);
-
-    ImmutableSet<Weapon> weapons2 = targets.availableWeapons(MOVE2, TARGET2);
-    assertThat(weapons2).containsExactly(weapon1, weapon2);
-
-    assertThat(targets.availableWeapons(ORIGIN, TARGET1)).isEmpty();
-  }
-
-  @Test
-  public void all_target_characters() {
-    when(weapon1.canTarget(character, other)).thenReturn(true);
-    when(characters.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, false);
-    when(characterIterator.next()).thenReturn(other);
-    when(other.getCoordinate()).thenReturn(TARGET1);
-
-    assertThat(targets.all().characters()).containsExactly(other);
-  }
-
-  @Test
-  public void all_target_characters_cannot_target() {
-    when(characters.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, false);
-    when(characterIterator.next()).thenReturn(other);
-
-    assertThat(targets.all().characters()).isEmpty();
-  }
-
-  @Test
-  public void immediate_target_characters() {
-    when(originWeapon.canTarget(character, other)).thenReturn(true);
-    when(characters.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, false);
-    when(characterIterator.next()).thenReturn(other);
-    when(other.getCoordinate()).thenReturn(ORIGIN_TARGET);
-
-    assertThat(targets.immediate().characters()).containsExactly(other);
-  }
-
-  @Test
-  public void immediate_target_characters_cannot_target() {
-    when(characters.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, false);
-    when(characterIterator.next()).thenReturn(other);
-
-    assertThat(targets.immediate().characters()).isEmpty();
-  }
-
-  @Test
   public void move_terrains() {
-    when(terrains.getAll(moveMap.keySet())).thenReturn(terrainIterable);
+    when(graph.nodes()).thenReturn(moveCoordinates);
+    when(terrains.getAll(moveCoordinates)).thenReturn(terrainIterable);
 
     assertThat(targets.moveTerrains()).isSameAs(terrainIterable);
-  }
-
-  @Test
-  public void all_terrains() {
-    when(terrains.getAll(ArgumentMatchers.<Coordinate>anyIterable())).thenReturn(terrainIterable);
-
-    assertThat(targets.all().terrains()).isSameAs(terrainIterable);
-
-    verify(terrains).getAll(coordinateCaptor.capture());
-    assertThat(coordinateCaptor.getValue()).containsExactly(TARGET1, TARGET2, ORIGIN_TARGET, MOVE1);
-  }
-
-  @Test
-  public void immediate_terrains() {
-    when(terrains.getAll(ArgumentMatchers.<Coordinate>anyIterable())).thenReturn(terrainIterable);
-
-    assertThat(targets.immediate().terrains()).isSameAs(terrainIterable);
-    verify(terrains).getAll(coordinateCaptor.capture());
-    assertThat(coordinateCaptor.getValue()).containsExactly(ORIGIN_TARGET);
-  }
-
-  /**
-   * ORIGIN can hit ORIGIN_TARGET with originWeapon
-   * MOVE1 can hit TARGET1 & TARGET2 with weapon1
-   * MOVE2 can hit TARGET2 with weapon 1 & 2 and MOVE1 with weapon1
-   */
-  private Map<Coordinate, SetMultimap<Coordinate, Weapon>> createMoveMap() {
-    Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap =
-        new HashMap<Coordinate, SetMultimap<Coordinate, Weapon>>();
-    SetMultimap<Coordinate, Weapon> origin = HashMultimap.create();
-    origin.put(ORIGIN_TARGET, originWeapon);
-    moveMap.put(ORIGIN, origin);
-    SetMultimap<Coordinate, Weapon> move1 = HashMultimap.create();
-    move1.put(TARGET1, weapon1);
-    move1.put(TARGET2, weapon1);
-    moveMap.put(MOVE1, move1);
-    SetMultimap<Coordinate, Weapon> move2 = HashMultimap.create();
-    move2.put(TARGET2, weapon1);
-    move2.put(TARGET2, weapon2);
-    move1.put(MOVE1, weapon1);
-    moveMap.put(MOVE2, move2);
-    return moveMap;
   }
 }

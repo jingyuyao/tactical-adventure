@@ -1,16 +1,11 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.SetMultimap;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Weapon;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -28,23 +23,8 @@ public class TargetsFactory {
     this.terrains = terrains;
   }
 
-  /**
-   * Magic.
-   */
   public Targets create(Character character) {
-    Graph<Coordinate> moveGraph = createMoveGraph(character);
-    Map<Coordinate, SetMultimap<Coordinate, Weapon>> moveMap =
-        new HashMap<Coordinate, SetMultimap<Coordinate, Weapon>>();
-    for (Coordinate move : moveGraph.nodes()) {
-      SetMultimap<Coordinate, Weapon> targetWeaponMap = HashMultimap.create();
-      for (Weapon weapon : character.getWeapons()) {
-        for (Coordinate target : weapon.targetCoordinatesFor(move)) {
-          targetWeaponMap.put(target, weapon);
-        }
-      }
-      moveMap.put(move, targetWeaponMap);
-    }
-    return new Targets(algorithms, characters, terrains, character, moveGraph, moveMap);
+    return new Targets(algorithms, terrains, createMoveGraph(character));
   }
 
   private Graph<Coordinate> createMoveGraph(Character character) {

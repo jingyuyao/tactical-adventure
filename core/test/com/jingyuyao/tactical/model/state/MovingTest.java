@@ -15,13 +15,10 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
-import com.jingyuyao.tactical.model.map.Targets.FilteredTargets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -51,15 +48,9 @@ public class MovingTest {
   @Mock
   private Moving dummyMoving;
   @Mock
-  private SelectingWeapon selectingWeapon;
-  @Mock
   private Targets targets;
   @Mock
   private Path path;
-  @Mock
-  private FilteredTargets allTargets;
-  @Captor
-  private ArgumentCaptor<Runnable> runnableCaptor;
 
   private ListenableFuture<Void> immediateFuture;
   private Moving moving;
