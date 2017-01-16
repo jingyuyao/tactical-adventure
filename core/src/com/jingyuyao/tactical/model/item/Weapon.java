@@ -7,9 +7,12 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.battle.PiercingFactory;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.common.Directions;
 import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.Set;
 import javax.inject.Inject;
@@ -24,6 +27,7 @@ public class Weapon extends Usable {
   private final Set<Integer> attackDistances;
   private final Algorithms algorithms;
   private final Terrains terrains;
+  private final PiercingFactory piercingFactory;
 
   @Inject
   Weapon(
@@ -33,12 +37,14 @@ public class Weapon extends Usable {
       @Assisted("attackPower") int attackPower,
       @Assisted Set<Integer> attackDistances,
       Algorithms algorithms,
-      Terrains terrains) {
+      Terrains terrains,
+      PiercingFactory piercingFactory) {
     super(eventBus, name, usageLeft);
     this.attackPower = attackPower;
     this.attackDistances = attackDistances;
     this.algorithms = algorithms;
     this.terrains = terrains;
+    this.piercingFactory = piercingFactory;
   }
 
   public Set<Integer> getAttackDistances() {
@@ -93,42 +99,12 @@ public class Weapon extends Usable {
    */
   public ImmutableList<Target> getTargets(Coordinate coordinate) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
-    ImmutableList<Coordinate> directions = ImmutableList.of(
-        new Coordinate(0, 1),
-        new Coordinate(0, -1),
-        new Coordinate(1, 0),
-        new Coordinate(-1, 0)
-    );
-    for (Coordinate direction : directions) {
-      Optional<Target> targetOptional = getDirectionalTarget(coordinate, direction);
+    for (Coordinate direction : Directions.ALL) {
+      Optional<Target> targetOptional = piercingFactory.create(coordinate, direction);
       if (targetOptional.isPresent()) {
         builder.add(targetOptional.get());
       }
     }
     return builder.build();
-  }
-
-  /**
-   * Return a {@link Target} with select one direction away from "from" and targets in the direction
-   * extending to the end of the map.
-   */
-  private Optional<Target> getDirectionalTarget(Coordinate from, Coordinate direction) {
-    ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
-    Coordinate select = offset(from, direction);
-    Coordinate current = select;
-    while (terrains.contains(current)) {
-      targetBuilder.add(current);
-      current = offset(current, direction);
-    }
-    ImmutableSet<Coordinate> targets = targetBuilder.build();
-    if (targets.isEmpty()) {
-      return Optional.absent();
-    } else {
-      return Optional.of(new Target(select, targets));
-    }
-  }
-
-  private Coordinate offset(Coordinate c1, Coordinate c2) {
-    return new Coordinate(c1.getX() + c2.getX(), c1.getY() + c2.getY());
   }
 }

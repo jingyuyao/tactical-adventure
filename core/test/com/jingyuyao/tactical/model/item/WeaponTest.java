@@ -6,15 +6,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.battle.PiercingFactory;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.common.Directions;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
 import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.Set;
@@ -55,6 +59,10 @@ public class WeaponTest {
   private Player player2;
   @Mock
   private Enemy enemy;
+  @Mock
+  private PiercingFactory piercingFactory;
+  @Mock
+  private Target target;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -64,7 +72,8 @@ public class WeaponTest {
   public void setUp() {
     weapon =
         new Weapon(
-            eventBus, NAME, INITIAL_USAGE, ATTACK_POWER, ATTACK_DISTANCES, algorithms, terrains);
+            eventBus, NAME, INITIAL_USAGE, ATTACK_POWER, ATTACK_DISTANCES, algorithms, terrains,
+            piercingFactory);
   }
 
   @Test
@@ -168,5 +177,15 @@ public class WeaponTest {
     verify(eventBus).post(argumentCaptor.capture());
     RemoveItem removeItem = TestHelpers.isInstanceOf(argumentCaptor.getValue(), RemoveItem.class);
     assertThat(removeItem.getObject()).isSameAs(weapon);
+  }
+
+  @Test
+  public void get_targets() {
+    when(piercingFactory.create(COORDINATE, Directions.UP)).thenReturn(Optional.<Target>absent());
+    when(piercingFactory.create(COORDINATE, Directions.DOWN)).thenReturn(Optional.<Target>absent());
+    when(piercingFactory.create(COORDINATE, Directions.LEFT)).thenReturn(Optional.<Target>absent());
+    when(piercingFactory.create(COORDINATE, Directions.RIGHT)).thenReturn(Optional.of(target));
+
+    assertThat(weapon.getTargets(COORDINATE)).containsExactly(target);
   }
 }

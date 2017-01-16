@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.battle.PiercingFactory;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.Collections;
@@ -26,6 +27,9 @@ public class ItemModuleTest {
   @Bind
   @Mock
   private Algorithms algorithms;
+  @Bind
+  @Mock
+  private PiercingFactory piercingFactory;
   @Inject
   private ItemFactory itemFactory;
 
