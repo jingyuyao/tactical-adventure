@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.battle;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 
@@ -9,7 +9,7 @@ public interface Target {
 
   Coordinate getSelectCoordinate();
 
-  ImmutableSet<Character> getTargetCharacters();
+  ImmutableList<Character> getTargetCharacters();
 
   void showMarking();
 

@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.character.Character;
@@ -45,7 +46,7 @@ public class PiercingFactory {
       return Optional.absent();
     }
 
-    ImmutableSet<Character> targetCharacters = ImmutableSet.copyOf(
+    ImmutableList<Character> targetCharacters = ImmutableList.copyOf(
         Iterables.filter(characters, new Predicate<Character>() {
           @Override
           public boolean apply(Character input) {
