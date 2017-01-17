@@ -61,7 +61,7 @@ public class SelectingTarget extends AbstractPlayerState {
 
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
-      if (target.getSelectCoordinate().equals(object.getCoordinate())) {
+      if (target.getSelectCoordinates().contains(object.getCoordinate())) {
         goTo(getStateFactory().createReviewingAttack(getPlayer(), target));
         return;
       }

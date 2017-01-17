@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -10,19 +11,19 @@ public abstract class AbstractTarget implements Target {
 
   private final Character attacker;
   private final Weapon weapon;
-  private final Coordinate selectCoordinate;
+  private final ImmutableSet<Coordinate> selectCoordinates;
   private final ImmutableList<Character> targetCharacters;
   private final Marking marking;
 
   AbstractTarget(
       Character attacker,
       Weapon weapon,
-      Coordinate selectCoordinate,
+      ImmutableSet<Coordinate> selectCoordinates,
       ImmutableList<Character> targetCharacters,
       Marking marking) {
     this.attacker = attacker;
     this.weapon = weapon;
-    this.selectCoordinate = selectCoordinate;
+    this.selectCoordinates = selectCoordinates;
     this.targetCharacters = targetCharacters;
     this.marking = marking;
   }
@@ -36,13 +37,13 @@ public abstract class AbstractTarget implements Target {
   }
 
   @Override
-  public ImmutableList<Character> getTargetCharacters() {
-    return targetCharacters;
+  public ImmutableSet<Coordinate> getSelectCoordinates() {
+    return selectCoordinates;
   }
 
   @Override
-  public Coordinate getSelectCoordinate() {
-    return selectCoordinate;
+  public ImmutableList<Character> getTargetCharacters() {
+    return targetCharacters;
   }
 
   @Override
