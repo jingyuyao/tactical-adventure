@@ -11,7 +11,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Terrain;
-import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +33,6 @@ public class SelectingWeaponTest {
   @Mock
   private Terrain terrain;
   @Mock
-  private Iterable<Weapon> weapons;
-  @Mock
-  private Iterator<Weapon> weaponIterator;
-  @Mock
   private Weapon weapon1;
   @Mock
   private Weapon weapon2;
@@ -50,11 +45,13 @@ public class SelectingWeaponTest {
   @Mock
   private SelectingTarget selectingTarget2;
 
+  private Iterable<Weapon> weapons;
   private SelectingWeapon selectingWeapon;
 
   @Before
   public void setUp() {
-    selectingWeapon = new SelectingWeapon(eventBus, mapState, stateFactory, player);
+    weapons = ImmutableList.of(weapon1, weapon2);
+    selectingWeapon = new SelectingWeapon(eventBus, mapState, stateFactory, player, weapons);
   }
 
   @Test
@@ -99,10 +96,6 @@ public class SelectingWeaponTest {
   }
 
   private ImmutableList<Action> actionsSetUp() {
-    when(player.getWeapons()).thenReturn(weapons);
-    when(weapons.iterator()).thenReturn(weaponIterator);
-    when(weaponIterator.hasNext()).thenReturn(true, true, false);
-    when(weaponIterator.next()).thenReturn(weapon1, weapon2);
     when(weapon1.createTargets(player)).thenReturn(targets1);
     when(weapon2.createTargets(player)).thenReturn(targets2);
     when(stateFactory.createSelectingTarget(player, targets1)).thenReturn(selectingTarget1);

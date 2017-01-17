@@ -10,19 +10,23 @@ import javax.inject.Inject;
 
 class SelectingWeapon extends AbstractPlayerState {
 
+  private final Iterable<Weapon> weapons;
+
   @Inject
   SelectingWeapon(
       EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      @Assisted Player player) {
+      @Assisted Player player,
+      @Assisted Iterable<Weapon> weapons) {
     super(eventBus, mapState, stateFactory, player);
+    this.weapons = weapons;
   }
 
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-    for (Weapon weapon : getPlayer().getWeapons()) {
+    for (Weapon weapon : weapons) {
       builder.add(this.new SelectWeapon(weapon));
     }
     builder.add(this.new Back());
@@ -46,8 +50,7 @@ class SelectingWeapon extends AbstractPlayerState {
     public void run() {
       getPlayer().equipWeapon(weapon);
       goTo(getStateFactory()
-          .createSelectingTarget(
-              getPlayer(), weapon.createTargets(getPlayer())));
+          .createSelectingTarget(getPlayer(), weapon.createTargets(getPlayer())));
     }
   }
 }

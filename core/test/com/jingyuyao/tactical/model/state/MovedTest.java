@@ -30,7 +30,7 @@ public class MovedTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private Player choosingPlayer;
+  private Player player;
   @Mock
   private Player anotherPlayer;
   @Mock
@@ -58,12 +58,12 @@ public class MovedTest {
   public void setUp() {
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
-    moved = new Moved(eventBus, mapState, stateFactory, choosingPlayer);
+    moved = new Moved(eventBus, mapState, stateFactory, player);
   }
 
   @Test
   public void select_same_player() {
-    moved.select(choosingPlayer);
+    moved.select(player);
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
@@ -110,17 +110,18 @@ public class MovedTest {
 
     Action wait = actions.get(2);
     wait.run();
-    verify(choosingPlayer).setActionable(false);
+    verify(player).setActionable(false);
     verify(mapState).newStack(waiting);
 
     StateHelpers.verifyBack(actions.get(3), mapState);
   }
 
   private ImmutableList<Action> actions_set_up() {
-    when(choosingPlayer.getWeapons()).thenReturn(weaponIterable);
-    when(choosingPlayer.getConsumables()).thenReturn(consumableIterable);
-    when(stateFactory.createSelectingWeapon(choosingPlayer)).thenReturn(selectingWeapon);
-    when(stateFactory.createSelectingItem(choosingPlayer)).thenReturn(selectingItem);
+    when(player.getWeapons()).thenReturn(weaponIterable);
+    when(player.getConsumables()).thenReturn(consumableIterable);
+    when(stateFactory.createSelectingWeapon(player, weaponIterable))
+        .thenReturn(selectingWeapon);
+    when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = moved.getActions();
     assertThat(actions).hasSize(4);

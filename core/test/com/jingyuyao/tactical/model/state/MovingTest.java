@@ -41,7 +41,7 @@ public class MovingTest {
   @Mock
   private MovementFactory movementFactory;
   @Mock
-  private Player movingPlayer;
+  private Player player;
   @Mock
   private Player anotherPlayer;
   @Mock
@@ -80,12 +80,12 @@ public class MovingTest {
     terrainList = ImmutableList.of(terrain);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(eventBus, mapState, stateFactory, movingPlayer, movementFactory);
+    moving = new Moving(eventBus, mapState, stateFactory, player, movementFactory);
   }
 
   @Test
   public void enter() {
-    when(movementFactory.create(movingPlayer)).thenReturn(movement);
+    when(movementFactory.create(player)).thenReturn(movement);
     when(movement.getTerrains()).thenReturn(terrainList);
 
     moving.enter();
@@ -97,7 +97,7 @@ public class MovingTest {
   public void canceled_nothing() {
     moving.canceled();
 
-    verifyZeroInteractions(movingPlayer);
+    verifyZeroInteractions(player);
   }
 
   @Test
@@ -106,13 +106,13 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(movementFactory).create(movingPlayer);
-    verify(movingPlayer).getCoordinate();
-    verify(movingPlayer).instantMoveTo(MOVING_PLAYER_COORDINATE);
+    verify(movementFactory).create(player);
+    verify(player).getCoordinate();
+    verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
 
     moving.canceled();
 
-    verifyNoMoreInteractions(movingPlayer);
+    verifyNoMoreInteractions(player);
   }
 
   @Test
@@ -126,9 +126,9 @@ public class MovingTest {
 
   @Test
   public void select_same_player() {
-    when(stateFactory.createMoved(movingPlayer)).thenReturn(moved);
+    when(stateFactory.createMoved(player)).thenReturn(moved);
 
-    moving.select(movingPlayer);
+    moving.select(player);
 
     verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
@@ -155,26 +155,26 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(movementFactory.create(movingPlayer)).thenReturn(movement);
+    when(movementFactory.create(player)).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
-    when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
-    when(stateFactory.createMoved(movingPlayer)).thenReturn(moved);
-    when(movingPlayer.move(path)).thenReturn(immediateFuture);
+    when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
+    when(stateFactory.createMoved(player)).thenReturn(moved);
+    when(player.move(path)).thenReturn(immediateFuture);
 
     moving.select(terrain);
 
-    verify(movingPlayer).getCoordinate();
-    verify(movementFactory).create(movingPlayer);
-    verify(movingPlayer).move(path);
+    verify(player).getCoordinate();
+    verify(movementFactory).create(player);
+    verify(player).move(path);
     verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
   }
 
   @Test
   public void select_terrain_cannot_move() {
-    when(movementFactory.create(movingPlayer)).thenReturn(movement);
+    when(movementFactory.create(player)).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
 
@@ -198,17 +198,18 @@ public class MovingTest {
 
     Action wait = actions.get(2);
     wait.run();
-    verify(movingPlayer).setActionable(false);
+    verify(player).setActionable(false);
     verify(mapState).newStack(waiting);
 
     StateHelpers.verifyBack(actions.get(3), mapState);
   }
 
   private ImmutableList<Action> actions_set_up() {
-    when(movingPlayer.getWeapons()).thenReturn(weaponIterable);
-    when(movingPlayer.getConsumables()).thenReturn(consumableIterable);
-    when(stateFactory.createSelectingWeapon(movingPlayer)).thenReturn(selectingWeapon);
-    when(stateFactory.createSelectingItem(movingPlayer)).thenReturn(selectingItem);
+    when(player.getWeapons()).thenReturn(weaponIterable);
+    when(player.getConsumables()).thenReturn(consumableIterable);
+    when(stateFactory.createSelectingWeapon(player, weaponIterable))
+        .thenReturn(selectingWeapon);
+    when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = moving.getActions();
     assertThat(actions).hasSize(4);

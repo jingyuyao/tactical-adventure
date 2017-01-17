@@ -8,6 +8,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import javax.inject.Inject;
@@ -32,6 +33,8 @@ public class StateModuleTest {
   private ImmutableList<Target> targets;
   @Mock
   private Target target;
+  @Mock
+  private Iterable<Weapon> weapons;
   @Inject
   private MapState mapState1;
   @Inject
@@ -49,7 +52,7 @@ public class StateModuleTest {
     stateFactory.createWaiting();
     stateFactory.createMoving(player);
     stateFactory.createMoved(player);
-    stateFactory.createSelectingWeapon(player);
+    stateFactory.createSelectingWeapon(player, weapons);
     stateFactory.createSelectingTarget(player, targets);
     stateFactory.createSelectingItem(player);
     stateFactory.createReviewingAttack(player, target);

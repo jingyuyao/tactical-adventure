@@ -47,7 +47,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public void run() {
-      goTo(getStateFactory().createSelectingWeapon(player));
+      goTo(getStateFactory().createSelectingWeapon(player, player.getWeapons()));
     }
   }
 
