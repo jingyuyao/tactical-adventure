@@ -14,10 +14,8 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
-import com.jingyuyao.tactical.model.state.event.HideAttackPlan;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
-import com.jingyuyao.tactical.model.state.event.ShowAttackPlan;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
 import java.util.Locale;
@@ -33,7 +31,6 @@ public class MapUI {
   private final Label characterLabel;
   private final Label terrainLabel;
   private final Label stateLabel;
-  private final Label attackPlan;
   private final VerticalGroup actionButtons;
   private ImmutableList<Action> currentActions;
 
@@ -45,7 +42,6 @@ public class MapUI {
     characterLabel = new Label(null, skin);
     terrainLabel = new Label(null, skin);
     stateLabel = new Label(null, skin);
-    attackPlan = new Label(null, skin);
     actionButtons = new VerticalGroup().space(7);
 
     root.setFillParent(true);
@@ -67,7 +63,7 @@ public class MapUI {
     // row 3
     root.row();
     root.add(stateLabel).left().bottom();
-    root.add(attackPlan).center().bottom();
+    root.add();
     root.add(actionButtons).right().bottom();
 
     eventBus.register(this);
@@ -109,17 +105,6 @@ public class MapUI {
     stateLabel.setText(newState.getName());
     currentActions = newState.getActions();
     populateButtons();
-  }
-
-  // TODO: create a nice looking widget to show this
-  @Subscribe
-  public void showAttackPlan(ShowAttackPlan showAttackPlan) {
-    attackPlan.setText(showAttackPlan.getObject().toString());
-  }
-
-  @Subscribe
-  public void hideAttackPlan(HideAttackPlan hideAttackPlan) {
-    attackPlan.setText(null);
   }
 
   private void updateTerrainLabel(Terrain terrain) {

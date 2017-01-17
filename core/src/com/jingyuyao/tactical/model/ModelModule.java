@@ -24,7 +24,5 @@ public class ModelModule extends AbstractModule {
     install(new StateModule());
     install(new RetaliationModule());
     install(new BattleModule());
-
-    bind(AttackPlanFactory.class);
   }
 }
