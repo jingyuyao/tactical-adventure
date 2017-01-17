@@ -12,16 +12,25 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class PassiveRetaliation implements Retaliation {
 
+  private final MovementFactory movementFactory;
+
+  @Inject
+  PassiveRetaliation(MovementFactory movementFactory) {
+    this.movementFactory = movementFactory;
+  }
+
   @Override
   public ListenableFuture<Void> run(final Enemy enemy) {
-    Movement targets = enemy.createMovement();
+    Movement targets = movementFactory.create(enemy);
     Coordinate originalCoordinate = enemy.getCoordinate();
 
     for (Terrain move : targets.getTerrains()) {

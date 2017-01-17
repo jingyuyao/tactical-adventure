@@ -91,7 +91,7 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(movingPlayer).createMovement();
+    verify(movementFactory).create(movingPlayer);
     verify(movingPlayer).getCoordinate();
     verify(movingPlayer).instantMoveTo(MOVING_PLAYER_COORDINATE);
 
@@ -140,7 +140,7 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(movingPlayer.createMovement()).thenReturn(movement);
+    when(movementFactory.create(movingPlayer)).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
@@ -151,7 +151,7 @@ public class MovingTest {
     moving.select(terrain);
 
     verify(movingPlayer).getCoordinate();
-    verify(movingPlayer).createMovement();
+    verify(movementFactory).create(movingPlayer);
     verify(movingPlayer).move(path);
     verify(mapState).push(choosing);
     verifyNoMoreInteractions(mapState);
@@ -159,7 +159,7 @@ public class MovingTest {
 
   @Test
   public void select_terrain_cannot_move() {
-    when(movingPlayer.createMovement()).thenReturn(movement);
+    when(movementFactory.create(movingPlayer)).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
 

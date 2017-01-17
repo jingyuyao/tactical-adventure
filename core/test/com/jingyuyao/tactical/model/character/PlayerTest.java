@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -39,8 +38,6 @@ public class PlayerTest {
   @Mock
   private Items items;
   @Mock
-  private MovementFactory movementFactory;
-  @Mock
   private MapState mapState;
   @Mock
   private EndTurn endTurn;
@@ -55,9 +52,7 @@ public class PlayerTest {
   @Before
   public void setUp() {
     markers = new ArrayList<Marker>();
-    player =
-        new Player(
-            eventBus, COORDINATE, markers, NAME, stats, items, movementFactory);
+    player = new Player(eventBus, COORDINATE, markers, NAME, stats, items);
     verify(eventBus).register(player);
     assertThat(player.isActionable()).isTrue();
   }

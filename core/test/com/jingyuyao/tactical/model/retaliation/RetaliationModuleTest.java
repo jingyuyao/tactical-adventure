@@ -1,15 +1,22 @@
 package com.jingyuyao.tactical.model.retaliation;
 
 import com.google.inject.Guice;
+import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RetaliationModuleTest {
+
+  @Bind
+  @Mock
+  private MovementFactory movementFactory;
 
   @Inject
   private PassiveRetaliation passiveRetaliation;

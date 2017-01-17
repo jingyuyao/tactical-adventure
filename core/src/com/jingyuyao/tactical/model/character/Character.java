@@ -12,8 +12,6 @@ import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
@@ -25,7 +23,6 @@ public abstract class Character extends MapObject implements Disposable {
   private final String name;
   private final Stats stats;
   private final Items items;
-  private final MovementFactory movementFactory;
 
   Character(
       EventBus eventBus,
@@ -33,10 +30,8 @@ public abstract class Character extends MapObject implements Disposable {
       List<Marker> markers,
       String name,
       Stats stats,
-      Items items,
-      MovementFactory movementFactory) {
+      Items items) {
     super(eventBus, coordinate, markers);
-    this.movementFactory = movementFactory;
     this.name = name;
     this.stats = stats;
     this.items = items;
@@ -50,13 +45,6 @@ public abstract class Character extends MapObject implements Disposable {
   @Override
   public void highlight(MapState mapState) {
     mapState.highlight(this);
-  }
-
-  /**
-   * Return the current {@link Movement} for this {@link Character}.
-   */
-  public Movement createMovement() {
-    return movementFactory.create(this);
   }
 
   public String getName() {

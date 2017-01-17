@@ -88,7 +88,7 @@ class Moving extends AbstractPlayerState {
     if (previousCoordinate != null) {
       return;
     }
-    Movement playerMovement = getPlayer().createMovement();
+    Movement playerMovement = movementFactory.create(getPlayer());
     if (playerMovement.canMoveTo(terrain.getCoordinate())) {
       Path path = playerMovement.pathTo(terrain.getCoordinate());
       previousCoordinate = getPlayer().getCoordinate();
