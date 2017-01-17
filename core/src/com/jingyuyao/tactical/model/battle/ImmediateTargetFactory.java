@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class ImmediateTargetFactory extends AbstractTargetFactory {
+public class ImmediateTargetFactory extends AbstractTargetFactory {
 
   @Inject
   ImmediateTargetFactory(Characters characters, Terrains terrains) {

@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 
 // TODO: test me
 @Singleton
-class PiercingTargetFactory extends AbstractTargetFactory {
+public class PiercingTargetFactory extends AbstractTargetFactory {
 
   @Inject
   PiercingTargetFactory(Characters characters, Terrains terrains) {
