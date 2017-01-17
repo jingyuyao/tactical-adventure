@@ -4,17 +4,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
@@ -44,26 +41,20 @@ public class PlayerTest {
   @Mock
   private MovementFactory movementFactory;
   @Mock
-  private Movement movement;
-  @Mock
   private MapState mapState;
   @Mock
   private EndTurn endTurn;
-  @Mock
-  private Terrain terrain;
   @Mock
   private Path path;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private List<Terrain> terrainList;
   private List<Marker> markers;
   private Player player;
 
   @Before
   public void setUp() {
     markers = new ArrayList<Marker>();
-    terrainList = ImmutableList.of(terrain);
     player =
         new Player(
             eventBus, COORDINATE, markers, NAME, stats, items, movementFactory);
@@ -73,12 +64,9 @@ public class PlayerTest {
 
   @Test
   public void dispose() {
-    show_moves();
-
     player.dispose();
 
     verify(eventBus).unregister(player);
-    verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
   }
 
   @Test
@@ -144,24 +132,6 @@ public class PlayerTest {
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), NewActionState.class);
     assertThat(newActionState.getObject()).isSameAs(player);
     assertThat(newActionState.isActionable()).isFalse();
-  }
-
-  @Test
-  public void show_moves() {
-    when(movementFactory.create(player)).thenReturn(movement);
-    when(movement.getTerrains()).thenReturn(terrainList);
-
-    player.showMoves();
-
-    verify(terrain).addMarker(Marker.CAN_MOVE_TO);
-  }
-
-  @Test
-  public void clear_marking() {
-    show_moves();
-    player.clearMarking();
-
-    verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
   }
 
   @Test

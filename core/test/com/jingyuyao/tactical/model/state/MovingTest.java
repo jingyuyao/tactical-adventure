@@ -14,8 +14,10 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.mark.Marker;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +38,8 @@ public class MovingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private MovementFactory movementFactory;
+  @Mock
   private Player movingPlayer;
   @Mock
   private Player anotherPlayer;
@@ -52,21 +56,26 @@ public class MovingTest {
   @Mock
   private Path path;
 
+  private Iterable<Terrain> terrainList;
   private ListenableFuture<Void> immediateFuture;
   private Moving moving;
 
   @Before
   public void setUp() {
+    terrainList = ImmutableList.of(terrain);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(eventBus, mapState, stateFactory, movingPlayer);
+    moving = new Moving(eventBus, mapState, stateFactory, movingPlayer, movementFactory);
   }
 
   @Test
   public void enter() {
+    when(movementFactory.create(movingPlayer)).thenReturn(movement);
+    when(movement.getTerrains()).thenReturn(terrainList);
+
     moving.enter();
 
-    verify(movingPlayer).showMoves();
+    verify(terrain).addMarker(Marker.CAN_MOVE_TO);
   }
 
   @Test
@@ -93,9 +102,11 @@ public class MovingTest {
 
   @Test
   public void exit() {
+    enter();
+
     moving.exit();
 
-    verify(movingPlayer).clearMarking();
+    verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
   }
 
   @Test

@@ -9,24 +9,43 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 
 class Moving extends AbstractPlayerState {
 
+  private final MovementFactory movementFactory;
   private Coordinate previousCoordinate;
+  private Marking marking;
 
   @Inject
-  Moving(EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
+  Moving(
+      EventBus eventBus,
+      MapState mapState,
+      StateFactory stateFactory,
+      @Assisted Player player,
+      MovementFactory movementFactory) {
     super(eventBus, mapState, stateFactory, player);
+    this.movementFactory = movementFactory;
   }
 
   @Override
   public void enter() {
     super.enter();
-    getPlayer().showMoves();
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : movementFactory.create(getPlayer()).getTerrains()) {
+      markerMap.put(terrain, Marker.CAN_MOVE_TO);
+    }
+    marking = new Marking(markerMap);
+    marking.apply();
   }
 
   @Override
@@ -39,7 +58,8 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void exit() {
-    getPlayer().clearMarking();
+    marking.clear();
+    marking = null;
   }
 
   @Override

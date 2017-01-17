@@ -9,6 +9,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class StateModuleTest {
 
+  @Bind
+  @Mock
+  private MovementFactory movementFactory;
   @Bind
   @Mock
   private Characters characters;
