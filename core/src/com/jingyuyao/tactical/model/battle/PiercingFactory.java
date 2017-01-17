@@ -40,6 +40,7 @@ public class PiercingFactory {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate select = origin.offsetBy(direction);
     Coordinate current = select.offsetBy(direction);
+
     while (terrains.contains(current)) {
       targetBuilder.add(current);
       current = current.offsetBy(direction);
@@ -58,20 +59,23 @@ public class PiercingFactory {
           }
         })
     );
-    Terrain selectTerrain = terrains.get(select);
-    ImmutableSet<Terrain> targetTerrains = ImmutableSet.copyOf(terrains.getAll(targetCoordinates));
 
+    Marking marking = createMarking(select, targetCoordinates, targetCharacters);
+
+    return Optional.<Target>of(
+        new ConstantDamage(attacker, weapon, select, targetCharacters, marking));
+  }
+
+  private Marking createMarking(
+      Coordinate select, Iterable<Coordinate> targets, Iterable<Character> targetCharacters) {
     Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
-    markerMap.put(selectTerrain, Marker.DANGER);
-    for (Terrain terrain : targetTerrains) {
+    markerMap.put(terrains.get(select), Marker.DANGER);
+    for (Terrain terrain : terrains.getAll(targets)) {
       markerMap.put(terrain, Marker.CAN_ATTACK);
     }
     for (Character character : targetCharacters) {
       markerMap.put(character, Marker.POTENTIAL_TARGET);
     }
-    Marking marking = new Marking(markerMap);
-
-    return Optional.<Target>of(
-        new ConstantDamage(attacker, weapon, select, targetCharacters, marking));
+    return new Marking(markerMap);
   }
 }

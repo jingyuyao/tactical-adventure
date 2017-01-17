@@ -27,24 +27,21 @@ public abstract class AbstractTarget implements Target {
     this.marking = marking;
   }
 
-  @Override
-  public Character getAttacker() {
+  Character getAttacker() {
     return attacker;
   }
 
-  @Override
-  public Weapon getWeapon() {
+  Weapon getWeapon() {
     return weapon;
+  }
+
+  ImmutableList<Character> getTargetCharacters() {
+    return targetCharacters;
   }
 
   @Override
   public Coordinate getSelectCoordinate() {
     return selectCoordinate;
-  }
-
-  @Override
-  public ImmutableList<Character> getTargetCharacters() {
-    return targetCharacters;
   }
 
   @Override
