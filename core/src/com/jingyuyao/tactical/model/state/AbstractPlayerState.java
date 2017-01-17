@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Weapon;
+import java.util.Locale;
 
 abstract class AbstractPlayerState extends AbstractState {
 
@@ -22,10 +25,14 @@ abstract class AbstractPlayerState extends AbstractState {
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-    if (!Iterables.isEmpty(player.getWeapons())) {
-      builder.add(this.new SelectWeapons());
+    // Show the first two weapon and consumable for quick access
+    for (Weapon weapon : Iterables.limit(player.getWeapons(), 1)) {
+      builder.add(this.new SelectWeapon(weapon));
     }
-    if (!Iterables.isEmpty(player.getConsumables())) {
+    for (Consumable consumable : Iterables.limit(player.getConsumables(), 1)) {
+      builder.add(this.new UseConsumable(consumable));
+    }
+    if (!Iterables.isEmpty(player.getItems())) {
       builder.add(this.new SelectItems());
     }
     builder.add(this.new Wait());
@@ -38,16 +45,44 @@ abstract class AbstractPlayerState extends AbstractState {
     newWaitStack();
   }
 
-  class SelectWeapons implements Action {
+  class SelectWeapon implements Action {
+
+    private final Weapon weapon;
+
+    SelectWeapon(Weapon weapon) {
+      this.weapon = weapon;
+    }
 
     @Override
     public String getName() {
-      return "weapons";
+      return String.format(Locale.US, "%s (%d)", weapon.getName(), weapon.getUsageLeft());
     }
 
     @Override
     public void run() {
-      goTo(getStateFactory().createSelectingWeapon(player, player.getWeapons()));
+      player.equipWeapon(weapon);
+      goTo(getStateFactory()
+          .createSelectingTarget(getPlayer(), weapon.createTargets(getPlayer())));
+    }
+  }
+
+  class UseConsumable implements Action {
+
+    private final Consumable consumable;
+
+    UseConsumable(Consumable consumable) {
+      this.consumable = consumable;
+    }
+
+    @Override
+    public String getName() {
+      return String.format(Locale.US, "%s (%d)", consumable.getName(), consumable.getUsageLeft());
+    }
+
+    @Override
+    public void run() {
+      consumable.consume(getPlayer());
+      finish();
     }
   }
 
@@ -55,7 +90,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public String getName() {
-      return "items";
+      return "all items";
     }
 
     @Override

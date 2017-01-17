@@ -10,10 +10,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
@@ -53,7 +55,7 @@ public class MovingTest {
   @Mock
   private Moving dummyMoving;
   @Mock
-  private SelectingWeapon selectingWeapon;
+  private SelectingTarget selectingTarget;
   @Mock
   private SelectingItem selectingItem;
   @Mock
@@ -66,7 +68,10 @@ public class MovingTest {
   private Weapon weapon;
   @Mock
   private Consumable consumable;
+  @Mock
+  private ImmutableList<Target> targets;
 
+  private Iterable<Item> itemIterable;
   private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
   private Iterable<Terrain> terrainList;
@@ -75,6 +80,7 @@ public class MovingTest {
 
   @Before
   public void setUp() {
+    itemIterable = ImmutableList.<Item>of(weapon, consumable);
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
     terrainList = ImmutableList.of(terrain);
@@ -185,34 +191,61 @@ public class MovingTest {
   }
 
   @Test
-  public void actions() {
+  public void select_weapon() {
     ImmutableList<Action> actions = actions_set_up();
 
-    Action selectWeapons = actions.get(0);
-    selectWeapons.run();
-    verify(mapState).push(selectingWeapon);
+    Action selectWeapon = actions.get(0);
+    selectWeapon.run();
+    verify(mapState).push(selectingTarget);
+  }
 
-    Action useItems = actions.get(1);
+  @Test
+  public void use_consumable() {
+    ImmutableList<Action> actions = actions_set_up();
+
+    Action useConsumable = actions.get(1);
+    useConsumable.run();
+    verify(consumable).consume(player);
+    verify(player).setActionable(false);
+    verify(mapState).newStack(waiting);
+  }
+
+  @Test
+  public void select_items() {
+    ImmutableList<Action> actions = actions_set_up();
+
+    Action useItems = actions.get(2);
     useItems.run();
     verify(mapState).push(selectingItem);
+  }
 
-    Action wait = actions.get(2);
+  @Test
+  public void wait_action() {
+    ImmutableList<Action> actions = actions_set_up();
+
+    Action wait = actions.get(3);
     wait.run();
     verify(player).setActionable(false);
     verify(mapState).newStack(waiting);
+  }
 
-    StateHelpers.verifyBack(actions.get(3), mapState);
+  @Test
+  public void back() {
+    ImmutableList<Action> actions = actions_set_up();
+
+    StateHelpers.verifyBack(actions.get(4), mapState);
   }
 
   private ImmutableList<Action> actions_set_up() {
+    when(player.getItems()).thenReturn(itemIterable);
     when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
-    when(stateFactory.createSelectingWeapon(player, weaponIterable))
-        .thenReturn(selectingWeapon);
+    when(weapon.createTargets(player)).thenReturn(targets);
+    when(stateFactory.createSelectingTarget(player, targets)).thenReturn(selectingTarget);
     when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = moving.getActions();
-    assertThat(actions).hasSize(4);
+    assertThat(actions).hasSize(5);
     return actions;
   }
 }

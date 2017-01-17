@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Path;
@@ -53,6 +54,10 @@ public abstract class Character extends MapObject implements Disposable {
 
   public int getHp() {
     return stats.getHp();
+  }
+
+  public Iterable<Item> getItems() {
+    return items.getItems();
   }
 
   public Iterable<Consumable> getConsumables() {
