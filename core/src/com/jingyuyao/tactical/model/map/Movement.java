@@ -8,16 +8,13 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
  */
-public class Targets {
+public class Movement {
 
   private final Algorithms algorithms;
   private final Terrains terrains;
   private final Graph<Coordinate> moveGraph;
 
-  Targets(
-      Algorithms algorithms,
-      Terrains terrains,
-      Graph<Coordinate> moveGraph) {
+  Movement(Algorithms algorithms, Terrains terrains, Graph<Coordinate> moveGraph) {
     this.algorithms = algorithms;
     this.terrains = terrains;
     this.moveGraph = moveGraph;
@@ -33,7 +30,7 @@ public class Targets {
   /**
    * Get the {@link Terrain}s this target can move to.
    */
-  public Iterable<Terrain> moveTerrains() {
+  public Iterable<Terrain> getTerrains() {
     return terrains.getAll(moveGraph.nodes());
   }
 

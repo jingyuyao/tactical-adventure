@@ -10,21 +10,21 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class TargetsFactory {
+public class MovementFactory {
 
   private final Algorithms algorithms;
   private final Characters characters;
   private final Terrains terrains;
 
   @Inject
-  public TargetsFactory(Algorithms algorithms, Characters characters, Terrains terrains) {
+  public MovementFactory(Algorithms algorithms, Characters characters, Terrains terrains) {
     this.algorithms = algorithms;
     this.characters = characters;
     this.terrains = terrains;
   }
 
-  public Targets create(Character character) {
-    return new Targets(algorithms, terrains, createMoveGraph(character));
+  public Movement create(Character character) {
+    return new Movement(algorithms, terrains, createMoveGraph(character));
   }
 
   private Graph<Coordinate> createMoveGraph(Character character) {

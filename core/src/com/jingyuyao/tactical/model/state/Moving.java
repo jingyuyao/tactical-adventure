@@ -9,8 +9,8 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import javax.inject.Inject;
 
@@ -63,9 +63,9 @@ class Moving extends AbstractPlayerState {
     if (previousCoordinate != null) {
       return;
     }
-    Targets playerTargets = getPlayer().createTargets();
-    if (playerTargets.canMoveTo(terrain.getCoordinate())) {
-      Path path = playerTargets.pathTo(terrain.getCoordinate());
+    Movement playerMovement = getPlayer().createMovement();
+    if (playerMovement.canMoveTo(terrain.getCoordinate())) {
+      Path path = playerMovement.pathTo(terrain.getCoordinate());
       previousCoordinate = getPlayer().getCoordinate();
       Futures.addCallback(getPlayer().move(path), new FutureCallback<Void>() {
         @Override

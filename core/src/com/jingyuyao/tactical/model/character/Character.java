@@ -12,9 +12,9 @@ import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Targets;
-import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -25,7 +25,7 @@ public abstract class Character extends MapObject implements Disposable {
   private final String name;
   private final Stats stats;
   private final Items items;
-  private final TargetsFactory targetsFactory;
+  private final MovementFactory movementFactory;
 
   Character(
       EventBus eventBus,
@@ -34,9 +34,9 @@ public abstract class Character extends MapObject implements Disposable {
       String name,
       Stats stats,
       Items items,
-      TargetsFactory targetsFactory) {
+      MovementFactory movementFactory) {
     super(eventBus, coordinate, markers);
-    this.targetsFactory = targetsFactory;
+    this.movementFactory = movementFactory;
     this.name = name;
     this.stats = stats;
     this.items = items;
@@ -53,10 +53,10 @@ public abstract class Character extends MapObject implements Disposable {
   }
 
   /**
-   * Return the current {@link Targets} for this {@link Character}.
+   * Return the current {@link Movement} for this {@link Character}.
    */
-  public Targets createTargets() {
-    return targetsFactory.create(this);
+  public Movement createMovement() {
+    return movementFactory.create(this);
   }
 
   public String getName() {

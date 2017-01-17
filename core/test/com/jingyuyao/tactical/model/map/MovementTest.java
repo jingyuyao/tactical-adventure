@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TargetsTest {
+public class MovementTest {
 
   private static final Coordinate ORIGIN = new Coordinate(5, 5);
   private static final Coordinate ORIGIN_TARGET = new Coordinate(6, 6);
@@ -39,26 +39,26 @@ public class TargetsTest {
   @Mock
   private Iterable<Terrain> terrainIterable;
 
-  private Targets targets;
+  private Movement movement;
 
   @Before
   public void setUp() {
     when(graph.nodes()).thenReturn(ImmutableSet.of(ORIGIN, MOVE1, MOVE2));
-    targets = new Targets(algorithms, terrains, graph);
+    movement = new Movement(algorithms, terrains, graph);
   }
 
   @Test
   public void can_move_to() {
-    assertThat(targets.canMoveTo(MOVE1)).isTrue();
-    assertThat(targets.canMoveTo(TARGET1)).isFalse();
-    assertThat(targets.canMoveTo(NOT_IN_TARGETS)).isFalse();
+    assertThat(movement.canMoveTo(MOVE1)).isTrue();
+    assertThat(movement.canMoveTo(TARGET1)).isFalse();
+    assertThat(movement.canMoveTo(NOT_IN_TARGETS)).isFalse();
   }
 
   @Test
   public void path_to() {
     when(algorithms.getTrackTo(graph, MOVE1)).thenReturn(track);
 
-    Path path = targets.pathTo(MOVE1);
+    Path path = movement.pathTo(MOVE1);
 
     assertThat(path.getTrack()).isSameAs(track);
     assertThat(path.getDestination()).isEqualTo(MOVE1);
@@ -69,6 +69,6 @@ public class TargetsTest {
     when(graph.nodes()).thenReturn(moveCoordinates);
     when(terrains.getAll(moveCoordinates)).thenReturn(terrainIterable);
 
-    assertThat(targets.moveTerrains()).isSameAs(terrainIterable);
+    assertThat(movement.getTerrains()).isSameAs(terrainIterable);
   }
 }

@@ -7,7 +7,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.TargetsFactory;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
@@ -34,8 +34,8 @@ public class Player extends Character {
       @Assisted String name,
       @Assisted Stats stats,
       @Assisted Items items,
-      TargetsFactory targetsFactory) {
-    super(eventBus, coordinate, markers, name, stats, items, targetsFactory);
+      MovementFactory movementFactory) {
+    super(eventBus, coordinate, markers, name, stats, items, movementFactory);
     register();
   }
 
@@ -69,7 +69,7 @@ public class Player extends Character {
     Preconditions.checkState(marking == null);
 
     Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
-    for (Terrain terrain : createTargets().moveTerrains()) {
+    for (Terrain terrain : createMovement().getTerrains()) {
       markerMap.put(terrain, Marker.CAN_MOVE_TO);
     }
     marking = new Marking(markerMap);

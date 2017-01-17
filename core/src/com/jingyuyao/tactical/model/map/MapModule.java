@@ -23,7 +23,7 @@ public class MapModule extends AbstractModule {
 
     bind(Characters.class);
     bind(Terrains.class);
-    bind(TargetsFactory.class);
+    bind(MovementFactory.class);
   }
 
   @Provides

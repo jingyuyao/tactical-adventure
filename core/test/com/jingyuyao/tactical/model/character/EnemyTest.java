@@ -12,8 +12,8 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.retaliation.Retaliation;
@@ -42,7 +42,7 @@ public class EnemyTest {
   @Mock
   private Items items;
   @Mock
-  private TargetsFactory targetsFactory;
+  private MovementFactory movementFactory;
   @Mock
   private MapState mapState;
   @Mock
@@ -72,7 +72,7 @@ public class EnemyTest {
     markers = new ArrayList<Marker>();
     enemy =
         new Enemy(
-            eventBus, COORDINATE, markers, NAME, stats, items, targetsFactory, retaliation);
+            eventBus, COORDINATE, markers, NAME, stats, items, movementFactory, retaliation);
   }
 
   @Test

@@ -11,9 +11,9 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Targets;
-import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -42,9 +42,9 @@ public class PlayerTest {
   @Mock
   private Items items;
   @Mock
-  private TargetsFactory targetsFactory;
+  private MovementFactory movementFactory;
   @Mock
-  private Targets targets;
+  private Movement movement;
   @Mock
   private MapState mapState;
   @Mock
@@ -66,7 +66,7 @@ public class PlayerTest {
     terrainList = ImmutableList.of(terrain);
     player =
         new Player(
-            eventBus, COORDINATE, markers, NAME, stats, items, targetsFactory);
+            eventBus, COORDINATE, markers, NAME, stats, items, movementFactory);
     verify(eventBus).register(player);
     assertThat(player.isActionable()).isTrue();
   }
@@ -148,8 +148,8 @@ public class PlayerTest {
 
   @Test
   public void show_moves() {
-    when(targetsFactory.create(player)).thenReturn(targets);
-    when(targets.moveTerrains()).thenReturn(terrainList);
+    when(movementFactory.create(player)).thenReturn(movement);
+    when(movement.getTerrains()).thenReturn(terrainList);
 
     player.showMoves();
 

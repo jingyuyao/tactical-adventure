@@ -13,8 +13,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class MovingTest {
   @Mock
   private Moving dummyMoving;
   @Mock
-  private Targets targets;
+  private Movement movement;
   @Mock
   private Path path;
 
@@ -82,7 +82,7 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(movingPlayer).createTargets();
+    verify(movingPlayer).createMovement();
     verify(movingPlayer).getCoordinate();
     verify(movingPlayer).instantMoveTo(MOVING_PLAYER_COORDINATE);
 
@@ -129,10 +129,10 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(movingPlayer.createTargets()).thenReturn(targets);
+    when(movingPlayer.createMovement()).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
-    when(targets.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
-    when(targets.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
+    when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
+    when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
     when(movingPlayer.move(path)).thenReturn(immediateFuture);
@@ -140,7 +140,7 @@ public class MovingTest {
     moving.select(terrain);
 
     verify(movingPlayer).getCoordinate();
-    verify(movingPlayer).createTargets();
+    verify(movingPlayer).createMovement();
     verify(movingPlayer).move(path);
     verify(mapState).push(choosing);
     verifyNoMoreInteractions(mapState);
@@ -148,9 +148,9 @@ public class MovingTest {
 
   @Test
   public void select_terrain_cannot_move() {
-    when(movingPlayer.createTargets()).thenReturn(targets);
+    when(movingPlayer.createMovement()).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
-    when(targets.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
+    when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
 
     moving.select(terrain);
 

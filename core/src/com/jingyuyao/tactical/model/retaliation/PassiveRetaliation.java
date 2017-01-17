@@ -12,11 +12,11 @@ public class PassiveRetaliation implements Retaliation {
   public ListenableFuture<Void> run(final Enemy enemy) {
     // TODO: current bugged due to weapon can hit owner
     /*
-    Targets targets = enemy.createTargets();
+    Movement targets = enemy.createMovement();
 
-    for (Terrain move : targets.moveTerrains()) {
+    for (Terrain move : targets.getTerrains()) {
       for (Weapon weapon : enemy.getWeapons()) {
-        for (final Target target : weapon.createTargets(move.getCoordinate())) {
+        for (final Target target : weapon.createMovement(move.getCoordinate())) {
           if (!target.getTargetCharacters().isEmpty()) {
             Path path = targets.pathTo(move.getCoordinate());
             enemy.equipWeapon(weapon);
