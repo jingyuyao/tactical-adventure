@@ -42,7 +42,7 @@ public class ChoosingTest {
   @Mock
   private SelectingWeapon selectingWeapon;
   @Mock
-  private UsingItem usingItem;
+  private SelectingItem selectingItem;
   @Mock
   private Waiting waiting;
   @Mock
@@ -106,7 +106,7 @@ public class ChoosingTest {
 
     Action useItems = actions.get(1);
     useItems.run();
-    verify(mapState).push(usingItem);
+    verify(mapState).push(selectingItem);
 
     Action wait = actions.get(2);
     wait.run();
@@ -120,7 +120,7 @@ public class ChoosingTest {
     when(choosingPlayer.getWeapons()).thenReturn(weaponIterable);
     when(choosingPlayer.getConsumables()).thenReturn(consumableIterable);
     when(stateFactory.createSelectingWeapon(choosingPlayer)).thenReturn(selectingWeapon);
-    when(stateFactory.createUsingItem(choosingPlayer)).thenReturn(usingItem);
+    when(stateFactory.createSelectingItem(choosingPlayer)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = choosing.getActions();
     assertThat(actions).hasSize(4);

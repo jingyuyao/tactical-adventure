@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UsingItemTest {
+public class SelectingItemTest {
 
   @Mock
   private EventBus eventBus;
@@ -41,30 +41,30 @@ public class UsingItemTest {
   @Mock
   private Waiting waiting;
 
-  private UsingItem usingItem;
+  private SelectingItem selectingItem;
 
   @Before
   public void setUp() {
-    usingItem = new UsingItem(eventBus, mapState, stateFactory, player);
+    selectingItem = new SelectingItem(eventBus, mapState, stateFactory, player);
   }
 
   @Test
   public void select_player() {
-    usingItem.select(player);
+    selectingItem.select(player);
 
     verify(mapState).pop();
   }
 
   @Test
   public void select_enemy() {
-    usingItem.select(enemy);
+    selectingItem.select(enemy);
 
     verify(mapState).pop();
   }
 
   @Test
   public void select_terrain() {
-    usingItem.select(terrain);
+    selectingItem.select(terrain);
 
     verify(mapState).pop();
   }
@@ -93,7 +93,7 @@ public class UsingItemTest {
     when(consumableIterator.hasNext()).thenReturn(true, false);
     when(consumableIterator.next()).thenReturn(consumable1);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    ImmutableList<Action> actions = usingItem.getActions();
+    ImmutableList<Action> actions = selectingItem.getActions();
     assertThat(actions).hasSize(2);
     return actions;
   }

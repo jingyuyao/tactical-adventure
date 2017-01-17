@@ -70,7 +70,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public void run() {
-      goTo(getStateFactory().createUsingItem(player));
+      goTo(getStateFactory().createSelectingItem(player));
     }
   }
 

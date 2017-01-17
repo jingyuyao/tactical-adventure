@@ -51,7 +51,7 @@ public class StateModuleTest {
     stateFactory.createChoosing(player);
     stateFactory.createSelectingWeapon(player);
     stateFactory.createSelectingTarget(player, targets);
-    stateFactory.createUsingItem(player);
+    stateFactory.createSelectingItem(player);
     stateFactory.createReviewingAttack(player, target);
     stateFactory.createRetaliating();
   }

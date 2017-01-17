@@ -13,9 +13,9 @@ interface StateFactory {
 
   Choosing createChoosing(Player player);
 
-  UsingItem createUsingItem(Player player);
-
   Moving createMoving(Player player);
+
+  SelectingItem createSelectingItem(Player player);
 
   SelectingWeapon createSelectingWeapon(Player player);
 

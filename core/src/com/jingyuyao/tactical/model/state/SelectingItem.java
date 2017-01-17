@@ -9,10 +9,10 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 // TODO: Fire off an event so the UI show a widget that manages items
-class UsingItem extends AbstractPlayerState {
+class SelectingItem extends AbstractPlayerState {
 
   @Inject
-  UsingItem(
+  SelectingItem(
       EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
     super(eventBus, mapState, stateFactory, player);
   }
