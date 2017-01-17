@@ -13,12 +13,6 @@ abstract class AbstractPlayerState extends AbstractState {
     this.player = player;
   }
 
-  @Override
-  public void exit() {
-    player.clearMarking();
-    super.exit();
-  }
-
   Player getPlayer() {
     return player;
   }

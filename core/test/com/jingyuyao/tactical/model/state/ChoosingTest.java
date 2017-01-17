@@ -62,13 +62,6 @@ public class ChoosingTest {
   }
 
   @Test
-  public void exit() {
-    choosing.exit();
-
-    verify(choosingPlayer).clearMarking();
-  }
-
-  @Test
   public void select_same_player() {
     choosing.select(choosingPlayer);
 

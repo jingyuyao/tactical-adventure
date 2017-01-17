@@ -9,7 +9,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Terrain;
 import java.util.Iterator;
@@ -21,8 +20,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SelectingWeaponTest {
-
-  private static final Coordinate PLAYER_COORDINATE = new Coordinate(0, 0);
 
   @Mock
   private EventBus eventBus;
@@ -58,13 +55,6 @@ public class SelectingWeaponTest {
   @Before
   public void setUp() {
     selectingWeapon = new SelectingWeapon(eventBus, mapState, stateFactory, player);
-  }
-
-  @Test
-  public void exit() {
-    selectingWeapon.exit();
-
-    verify(player).clearMarking();
   }
 
   @Test

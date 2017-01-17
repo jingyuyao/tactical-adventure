@@ -38,6 +38,11 @@ class Moving extends AbstractPlayerState {
   }
 
   @Override
+  public void exit() {
+    getPlayer().clearMarking();
+  }
+
+  @Override
   public void select(Player player) {
     if (previousCoordinate != null) {
       return;
