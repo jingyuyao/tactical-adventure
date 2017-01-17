@@ -5,11 +5,10 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import javax.inject.Inject;
 
-class Choosing extends AbstractPlayerState {
+class Moved extends AbstractPlayerState {
 
   @Inject
-  Choosing(
-      EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
+  Moved(EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
     super(eventBus, mapState, stateFactory, player);
   }
 }

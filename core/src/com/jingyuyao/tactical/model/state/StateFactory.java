@@ -11,9 +11,9 @@ interface StateFactory {
 
   Waiting createWaiting();
 
-  Choosing createChoosing(Player player);
-
   Moving createMoving(Player player);
+
+  Moved createMoved(Player player);
 
   SelectingItem createSelectingItem(Player player);
 

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -12,6 +13,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
@@ -47,20 +50,34 @@ public class MovingTest {
   @Mock
   private Terrain terrain;
   @Mock
-  private Choosing choosing;
+  private Moved moved;
   @Mock
   private Moving dummyMoving;
+  @Mock
+  private SelectingWeapon selectingWeapon;
+  @Mock
+  private SelectingItem selectingItem;
+  @Mock
+  private Waiting waiting;
   @Mock
   private Movement movement;
   @Mock
   private Path path;
+  @Mock
+  private Weapon weapon;
+  @Mock
+  private Consumable consumable;
 
+  private Iterable<Weapon> weaponIterable;
+  private Iterable<Consumable> consumableIterable;
   private Iterable<Terrain> terrainList;
   private ListenableFuture<Void> immediateFuture;
   private Moving moving;
 
   @Before
   public void setUp() {
+    weaponIterable = ImmutableList.of(weapon);
+    consumableIterable = ImmutableList.of(consumable);
     terrainList = ImmutableList.of(terrain);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
@@ -134,7 +151,7 @@ public class MovingTest {
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
     when(movingPlayer.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
-    when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
+    when(stateFactory.createMoved(movingPlayer)).thenReturn(moved);
     when(movingPlayer.move(path)).thenReturn(immediateFuture);
 
     moving.select(terrain);
@@ -142,7 +159,7 @@ public class MovingTest {
     verify(movingPlayer).getCoordinate();
     verify(movementFactory).create(movingPlayer);
     verify(movingPlayer).move(path);
-    verify(mapState).push(choosing);
+    verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
   }
 
@@ -156,5 +173,36 @@ public class MovingTest {
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
+  public void actions() {
+    ImmutableList<Action> actions = actions_set_up();
+
+    Action selectWeapons = actions.get(0);
+    selectWeapons.run();
+    verify(mapState).push(selectingWeapon);
+
+    Action useItems = actions.get(1);
+    useItems.run();
+    verify(mapState).push(selectingItem);
+
+    Action wait = actions.get(2);
+    wait.run();
+    verify(movingPlayer).setActionable(false);
+    verify(mapState).newStack(waiting);
+
+    StateHelpers.verifyBack(actions.get(3), mapState);
+  }
+
+  private ImmutableList<Action> actions_set_up() {
+    when(movingPlayer.getWeapons()).thenReturn(weaponIterable);
+    when(movingPlayer.getConsumables()).thenReturn(consumableIterable);
+    when(stateFactory.createSelectingWeapon(movingPlayer)).thenReturn(selectingWeapon);
+    when(stateFactory.createSelectingItem(movingPlayer)).thenReturn(selectingItem);
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+    ImmutableList<Action> actions = moving.getActions();
+    assertThat(actions).hasSize(4);
+    return actions;
   }
 }

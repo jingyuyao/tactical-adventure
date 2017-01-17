@@ -48,7 +48,7 @@ public class StateModuleTest {
   public void state_factory() {
     stateFactory.createWaiting();
     stateFactory.createMoving(player);
-    stateFactory.createChoosing(player);
+    stateFactory.createMoved(player);
     stateFactory.createSelectingWeapon(player);
     stateFactory.createSelectingTarget(player, targets);
     stateFactory.createSelectingItem(player);

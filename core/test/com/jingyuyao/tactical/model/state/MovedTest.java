@@ -21,7 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChoosingTest {
+public class MovedTest {
 
   @Mock
   private EventBus eventBus;
@@ -52,18 +52,18 @@ public class ChoosingTest {
 
   private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
-  private Choosing choosing;
+  private Moved moved;
 
   @Before
   public void setUp() {
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
-    choosing = new Choosing(eventBus, mapState, stateFactory, choosingPlayer);
+    moved = new Moved(eventBus, mapState, stateFactory, choosingPlayer);
   }
 
   @Test
   public void select_same_player() {
-    choosing.select(choosingPlayer);
+    moved.select(choosingPlayer);
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
@@ -73,7 +73,7 @@ public class ChoosingTest {
   public void select_different_player() {
     when(stateFactory.createMoving(anotherPlayer)).thenReturn(moving);
 
-    choosing.select(anotherPlayer);
+    moved.select(anotherPlayer);
 
     InOrder inOrder = Mockito.inOrder(mapState);
     inOrder.verify(mapState).rollback();
@@ -82,7 +82,7 @@ public class ChoosingTest {
 
   @Test
   public void select_enemy() {
-    choosing.select(enemy);
+    moved.select(enemy);
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
@@ -90,7 +90,7 @@ public class ChoosingTest {
 
   @Test
   public void select_terrain() {
-    choosing.select(terrain);
+    moved.select(terrain);
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
@@ -122,7 +122,7 @@ public class ChoosingTest {
     when(stateFactory.createSelectingWeapon(choosingPlayer)).thenReturn(selectingWeapon);
     when(stateFactory.createSelectingItem(choosingPlayer)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    ImmutableList<Action> actions = choosing.getActions();
+    ImmutableList<Action> actions = moved.getActions();
     assertThat(actions).hasSize(4);
     return actions;
   }

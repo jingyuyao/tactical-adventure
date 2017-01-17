@@ -68,7 +68,7 @@ class Moving extends AbstractPlayerState {
       Futures.addCallback(getPlayer().move(path), new FutureCallback<Void>() {
         @Override
         public void onSuccess(Void result) {
-          goTo(getStateFactory().createChoosing(getPlayer()));
+          goTo(getStateFactory().createMoved(getPlayer()));
         }
 
         @Override
