@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -110,16 +109,6 @@ public class MovingTest {
   }
 
   @Test
-  public void select_same_player() {
-    when(stateFactory.createChoosing(movingPlayer)).thenReturn(choosing);
-
-    moving.select(movingPlayer);
-
-    verify(stateFactory).createChoosing(movingPlayer);
-    verify(mapState).push(choosing);
-  }
-
-  @Test
   public void select_differentPlayer() {
     when(stateFactory.createMoving(anotherPlayer)).thenReturn(dummyMoving);
 
@@ -167,12 +156,5 @@ public class MovingTest {
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void actions_back() {
-    ImmutableList<Action> actions = moving.getActions();
-    assertThat(actions).hasSize(1);
-    StateHelpers.verifyBack(actions.get(0), mapState);
   }
 }

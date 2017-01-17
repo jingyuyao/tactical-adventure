@@ -43,7 +43,7 @@ class UsingItem extends AbstractPlayerState {
     @Override
     public void run() {
       consumable.consume(getPlayer());
-      finish(getPlayer());
+      finish();
     }
   }
 }

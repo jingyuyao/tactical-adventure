@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -62,16 +60,6 @@ class Moving extends AbstractPlayerState {
   }
 
   @Override
-  public void select(Player player) {
-    if (Objects.equal(getPlayer(), player)) {
-      goTo(getStateFactory().createChoosing(getPlayer()));
-    } else {
-      rollback();
-      goTo(getStateFactory().createMoving(player));
-    }
-  }
-
-  @Override
   public void select(Terrain terrain) {
     Movement playerMovement = movementFactory.create(getPlayer());
     if (playerMovement.canMoveTo(terrain.getCoordinate())) {
@@ -92,10 +80,5 @@ class Moving extends AbstractPlayerState {
       // we will consider clicking outside of movable area to be canceling
       back();
     }
-  }
-
-  @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(this.new Back());
   }
 }

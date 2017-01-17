@@ -69,11 +69,6 @@ abstract class AbstractState extends EventBusObject implements State {
     mapState.newStack(stateFactory.createWaiting());
   }
 
-  void finish(Player player) {
-    player.setActionable(false);
-    newWaitStack();
-  }
-
   class Back implements Action {
 
     @Override

@@ -47,7 +47,7 @@ class ReviewingAttack extends AbstractPlayerState {
     @Override
     public void run() {
       target.execute();
-      finish(getPlayer());
+      finish();
     }
   }
 }
