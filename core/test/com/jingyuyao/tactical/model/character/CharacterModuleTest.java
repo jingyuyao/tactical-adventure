@@ -8,8 +8,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.MapObject.InitialMarkers;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
@@ -52,9 +51,7 @@ public class CharacterModuleTest {
 
   @Test
   public void create_characters() {
-    Items items =
-        characterFactory.createItems(
-            Collections.<Weapon>emptyList(), Collections.<Consumable>emptyList());
+    Items items = characterFactory.createItems(Collections.<Item>emptyList());
     characterFactory.createPlayer(
         new Coordinate(0, 0),
         "yolo",

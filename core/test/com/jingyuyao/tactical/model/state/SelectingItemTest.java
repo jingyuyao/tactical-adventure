@@ -77,6 +77,7 @@ public class SelectingItemTest {
     useConsumable.run();
     verify(consumable1).consume(player);
     verify(player).setActionable(false);
+    verify(player).quickAccess(consumable1);
     verify(mapState).newStack(waiting);
   }
 

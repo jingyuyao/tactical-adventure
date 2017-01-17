@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -37,22 +36,15 @@ public class ItemsTest {
   @Mock
   private Predicate<Item> itemPredicate;
 
+  private List<Item> itemIterable;
   private Items items;
 
   @Before
   public void setUp() {
-    List<Weapon> weapons = Lists.newArrayList(weapon1, weapon2);
-    List<Consumable> consumables = Lists.newArrayList(consumable);
+    itemIterable = Lists.<Item>newArrayList(weapon1, consumable, weapon2);
 
-    items = new Items(eventBus, weapons, consumables);
+    items = new Items(eventBus, itemIterable);
     verify(eventBus).register(items);
-  }
-
-  @Test
-  public void default_weapon() {
-    Optional<Weapon> equippedWeapon = items.getEquippedWeapon();
-    assertThat(equippedWeapon.isPresent()).isTrue();
-    assertThat(equippedWeapon.get()).isSameAs(weapon1);
   }
 
   @Test
@@ -66,26 +58,22 @@ public class ItemsTest {
   public void remove_item() {
     when(removeItem.getMatchesPredicate()).thenReturn(itemPredicate);
     when(itemPredicate.apply(weapon1)).thenReturn(true);
-    when(removeItem.matches(weapon1)).thenReturn(true);
 
     items.removeItem(removeItem);
 
     assertThat(Iterables.size(items.getWeapons())).isEqualTo(1);
-    Optional<Weapon> equippedWeapon = items.getEquippedWeapon();
-    assertThat(equippedWeapon.isPresent()).isTrue();
-    assertThat(equippedWeapon.get()).isSameAs(weapon2);
   }
 
   @Test
-  public void swap_weapon() {
-    items.setEquippedWeapon(weapon2);
+  public void quick_access() {
+    items.quickAccess(weapon2);
 
-    assertThat(items.getWeapons()).containsExactly(weapon2, weapon1).inOrder();
+    assertThat(items.getItems()).containsExactly(weapon2, consumable, weapon1).inOrder();
   }
 
   @Test
   public void get_items() {
-    assertThat(items.getItems()).containsExactly(weapon1, weapon2, consumable);
+    assertThat(items.getItems()).containsExactly(weapon1, consumable, weapon2);
   }
 
   @Test

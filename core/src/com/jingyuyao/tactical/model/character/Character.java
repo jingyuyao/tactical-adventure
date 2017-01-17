@@ -88,8 +88,8 @@ public abstract class Character extends MapObject implements Disposable {
     post(new InstantMove(this, newCoordinate));
   }
 
-  public void equipWeapon(Weapon weapon) {
-    items.setEquippedWeapon(weapon);
+  public void quickAccess(Item item) {
+    items.quickAccess(item);
   }
 
   public void damageBy(int delta) {

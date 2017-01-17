@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
@@ -23,34 +22,15 @@ import javax.inject.Inject;
 public class Items extends EventBusObject implements Disposable {
 
   /**
-   * Invariant: weapons.indexOf(equippedWeapon) == 0
+   * Items in the beginning of the list are considered "quick access" items.
    */
-  private final List<Weapon> weapons;
+  private final List<Item> items;
 
-  private final List<Consumable> consumables;
-  /**
-   * If not null, {@code weapons.contains(equippedWeapon) == true}
-   */
-  private Weapon equippedWeapon;
-
-  /**
-   * Creates an {@link Items} with the first weapon in {@code weapons} as the equipped weapon if it
-   * has one.
-   */
   @Inject
-  Items(EventBus eventBus, @Assisted List<Weapon> weapons, @Assisted List<Consumable> consumables) {
+  Items(EventBus eventBus, @Assisted List<Item> items) {
     super(eventBus);
-    this.weapons = weapons;
-    this.consumables = consumables;
-    setEquippedWeapon(getDefaultWeapon(weapons));
+    this.items = items;
     register();
-  }
-
-  /**
-   * Return the first weapon if there is one, else null.
-   */
-  private static Weapon getDefaultWeapon(Iterable<Weapon> weapons) {
-    return Iterables.getFirst(weapons, null);
   }
 
   @Override
@@ -60,40 +40,23 @@ public class Items extends EventBusObject implements Disposable {
 
   @Subscribe
   public void removeItem(RemoveItem removeItem) {
-    Iterables.removeIf(getItems(), removeItem.getMatchesPredicate());
-    if (removeItem.matches(equippedWeapon)) {
-      setEquippedWeapon(getDefaultWeapon(weapons));
-    }
+    Iterables.removeIf(items, removeItem.getMatchesPredicate());
   }
 
   Iterable<Weapon> getWeapons() {
-    return weapons;
+    return Iterables.filter(items, Weapon.class);
   }
 
   Iterable<Consumable> getConsumables() {
-    return consumables;
+    return Iterables.filter(items, Consumable.class);
   }
 
   Iterable<Item> getItems() {
-    return Iterables.<Item>concat(weapons, consumables);
+    return items;
   }
 
-  Optional<Weapon> getEquippedWeapon() {
-    return Optional.fromNullable(equippedWeapon);
-  }
-
-  /**
-   * Sets {@link #equippedWeapon} to {@code weapon}. Also swap {@code weapon} to the first item in
-   * {@link #weapons} as per invariant.
-   */
-  void setEquippedWeapon(Weapon weapon) {
-    if (weapon != null) {
-      int weaponIndex = weapons.indexOf(weapon);
-      Preconditions.checkArgument(weaponIndex != -1);
-      // Previous check also guarantees weapons is not empty
-      // Preserves the invariant
-      Collections.swap(weapons, 0, weaponIndex);
-    }
-    this.equippedWeapon = weapon;
+  void quickAccess(Item item) {
+    Preconditions.checkArgument(items.contains(item));
+    Collections.swap(items, 0, items.indexOf(item));
   }
 }

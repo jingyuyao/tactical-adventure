@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.battle.ImmediateTargetFactory;
 import com.jingyuyao.tactical.model.battle.PiercingTargetFactory;
@@ -18,14 +17,12 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.NewMap;
-import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainFactory;
 import com.jingyuyao.tactical.model.state.Waiting;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -144,18 +141,18 @@ public class MapLoader {
 
   private Items createItems1() {
     int attackPower = 5;
-    List<Weapon> weapons = new ArrayList<Weapon>();
-    weapons.add(itemFactory.createWeapon("Laser5", 1, attackPower, piercingTargetFactory));
-    weapons.add(itemFactory.createWeapon("Melee5", 10, attackPower, immediateTargetFactory));
-    weapons.add(itemFactory.createWeapon("Melee5", 3, attackPower, immediateTargetFactory));
-    return characterFactory.createItems(
-        weapons, Lists.<Consumable>newArrayList(itemFactory.createHeal("pot", 3)));
+    List<Item> items = new ArrayList<Item>();
+    items.add(itemFactory.createWeapon("Laser5", 1, attackPower, piercingTargetFactory));
+    items.add(itemFactory.createWeapon("Melee5", 10, attackPower, immediateTargetFactory));
+    items.add(itemFactory.createWeapon("Melee5", 3, attackPower, immediateTargetFactory));
+    items.add(itemFactory.createHeal("pot", 3));
+    return characterFactory.createItems(items);
   }
 
   private Items createItems2() {
     int attackPower = 3;
-    List<Weapon> weapons = new ArrayList<Weapon>();
+    List<Item> weapons = new ArrayList<Item>();
     weapons.add(itemFactory.createWeapon("Laser3", 5, attackPower, piercingTargetFactory));
-    return characterFactory.createItems(weapons, Collections.<Consumable>emptyList());
+    return characterFactory.createItems(weapons);
   }
 }

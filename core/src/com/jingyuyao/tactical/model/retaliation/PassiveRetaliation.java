@@ -47,7 +47,6 @@ public class PassiveRetaliation implements Retaliation {
           if (hasPlayers) {
             enemy.setCoordinate(originalCoordinate);
             Path path = targets.pathTo(move.getCoordinate());
-            enemy.equipWeapon(weapon);
             ListenableFuture<Void> future = enemy.move(path);
             Futures.addCallback(future, new FutureCallback<Void>() {
               @Override

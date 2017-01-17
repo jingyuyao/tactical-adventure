@@ -60,7 +60,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public void run() {
-      player.equipWeapon(weapon);
+      player.quickAccess(weapon);
       goTo(getStateFactory()
           .createSelectingTarget(getPlayer(), weapon.createTargets(getPlayer())));
     }
@@ -81,6 +81,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public void run() {
+      getPlayer().quickAccess(consumable);
       consumable.consume(getPlayer());
       finish();
     }

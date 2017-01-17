@@ -1,8 +1,7 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.item.Item;
 import java.util.List;
 
 public interface CharacterFactory {
@@ -11,5 +10,5 @@ public interface CharacterFactory {
 
   Enemy createEnemy(Coordinate coordinate, String name, Stats stats, Items items);
 
-  Items createItems(List<Weapon> weapons, List<Consumable> consumables);
+  Items createItems(List<Item> items);
 }

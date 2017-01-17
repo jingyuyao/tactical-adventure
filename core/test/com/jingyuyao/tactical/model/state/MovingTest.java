@@ -196,6 +196,7 @@ public class MovingTest {
 
     Action selectWeapon = actions.get(0);
     selectWeapon.run();
+    verify(player).quickAccess(weapon);
     verify(mapState).push(selectingTarget);
   }
 
@@ -207,6 +208,7 @@ public class MovingTest {
     useConsumable.run();
     verify(consumable).consume(player);
     verify(player).setActionable(false);
+    verify(player).quickAccess(consumable);
     verify(mapState).newStack(waiting);
   }
 
