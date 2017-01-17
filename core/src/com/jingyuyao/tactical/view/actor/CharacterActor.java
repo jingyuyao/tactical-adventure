@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.controller.InputLock;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
@@ -26,6 +27,7 @@ class CharacterActor<T extends Character> extends MapActor<T> {
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
   private final Sprite sprite;
+  private final InputLock inputLock;
 
   CharacterActor(
       T object,
@@ -35,9 +37,11 @@ class CharacterActor<T extends Character> extends MapActor<T> {
       Map<Marker, Sprite> markerSpriteMap,
       List<Sprite> markerSprites,
       Sprite sprite,
-      Color initialTint) {
+      Color initialTint,
+      InputLock inputLock) {
     super(object, listener, size, eventBus, markerSpriteMap, markerSprites);
     this.sprite = sprite;
+    this.inputLock = inputLock;
     setColor(initialTint);
   }
 
@@ -73,8 +77,10 @@ class CharacterActor<T extends Character> extends MapActor<T> {
                     addListener(listener);
                   }
                   move.done();
+                  inputLock.unlock();
                 }
               }));
+      inputLock.lock();
       addAction(moveSequence);
     }
   }

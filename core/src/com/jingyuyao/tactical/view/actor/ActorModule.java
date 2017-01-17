@@ -8,6 +8,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
+import com.jingyuyao.tactical.controller.InputLock;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
@@ -25,6 +26,8 @@ public class ActorModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(InputLock.class);
+
     install(new FactoryModuleBuilder().build(ActorFactory.class));
   }
 
