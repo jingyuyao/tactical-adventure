@@ -23,7 +23,7 @@ public class BattleModuleTest {
   private Terrains terrains;
 
   @Inject
-  private PiercingFactory piercingFactory;
+  private PiercingTargetFactory piercingTargetFactory;
 
   @Before
   public void setUp() {

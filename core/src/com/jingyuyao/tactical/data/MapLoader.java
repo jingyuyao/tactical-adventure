@@ -124,7 +124,7 @@ public class MapLoader {
             new Coordinate(9, 3),
             "billy",
             new Stats(hp, 2, normalAndObstructed()),
-            createItems1()));
+            createItems2()));
   }
 
   private Set<Terrain.Type> normalAndObstructed() {
@@ -137,9 +137,9 @@ public class MapLoader {
   private Items createItems1() {
     int attackPower = 5;
     List<Weapon> weapons = new ArrayList<Weapon>();
-    weapons.add(itemFactory.createWeapon("Laser1", 1, attackPower));
-    weapons.add(itemFactory.createWeapon("Laser2", 10, attackPower));
-    weapons.add(itemFactory.createWeapon("Laser3", 3, attackPower));
+    weapons.add(itemFactory.createLaser("Laser5", 1, attackPower));
+    weapons.add(itemFactory.createMelee("Melee5", 10, attackPower));
+    weapons.add(itemFactory.createMelee("Melee5", 3, attackPower));
     return characterFactory.createItems(
         weapons, Lists.<Consumable>newArrayList(itemFactory.createHeal("pot", 3)));
   }
@@ -147,7 +147,7 @@ public class MapLoader {
   private Items createItems2() {
     int attackPower = 3;
     List<Weapon> weapons = new ArrayList<Weapon>();
-    weapons.add(itemFactory.createWeapon("Laser4", 5, attackPower));
+    weapons.add(itemFactory.createLaser("Laser3", 5, attackPower));
     return characterFactory.createItems(weapons, Collections.<Consumable>emptyList());
   }
 }

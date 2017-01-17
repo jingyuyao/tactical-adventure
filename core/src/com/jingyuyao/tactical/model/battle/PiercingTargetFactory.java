@@ -9,37 +9,26 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 // TODO: test me
 @Singleton
-public class PiercingFactory {
-
-  private final Characters characters;
-  private final Terrains terrains;
+class PiercingTargetFactory extends AbstractTargetFactory {
 
   @Inject
-  PiercingFactory(Characters characters, Terrains terrains) {
-    this.characters = characters;
-    this.terrains = terrains;
+  PiercingTargetFactory(Characters characters, Terrains terrains) {
+    super(characters, terrains);
   }
 
-  public Optional<Target> create(
-      final Character attacker,
-      Weapon weapon,
-      Coordinate direction) {
+  @Override
+  Optional<Target> create(final Character attacker, Weapon weapon, Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate current = attacker.getCoordinate().offsetBy(direction).offsetBy(direction);
 
-    while (terrains.contains(current)) {
+    while (getTerrains().contains(current)) {
       targetBuilder.add(current);
       current = current.offsetBy(direction);
     }
@@ -50,7 +39,7 @@ public class PiercingFactory {
     }
 
     ImmutableList<Character> targetCharacters = ImmutableList.copyOf(
-        Iterables.filter(characters, new Predicate<Character>() {
+        Iterables.filter(getCharacters(), new Predicate<Character>() {
           @Override
           public boolean apply(Character input) {
             return targetCoordinates.contains(input.getCoordinate());
@@ -62,17 +51,5 @@ public class PiercingFactory {
 
     return Optional.<Target>of(
         new ConstantDamage(attacker, weapon, targetCoordinates, targetCharacters, marking));
-  }
-
-  private Marking createMarking(
-      Iterable<Coordinate> targets, Iterable<Character> targetCharacters) {
-    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
-    for (Terrain terrain : terrains.getAll(targets)) {
-      markerMap.put(terrain, Marker.CAN_ATTACK);
-    }
-    for (Character character : targetCharacters) {
-      markerMap.put(character, Marker.POTENTIAL_TARGET);
-    }
-    return new Marking(markerMap);
   }
 }
