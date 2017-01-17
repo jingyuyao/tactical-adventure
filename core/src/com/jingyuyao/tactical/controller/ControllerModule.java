@@ -9,6 +9,7 @@ public class ControllerModule extends AbstractModule {
   protected void configure() {
     install(new FactoryModuleBuilder().build(MapActorControllerFactory.class));
 
+    bind(InputLock.class);
     bind(MapController.class);
     bind(DragCameraController.class);
   }
