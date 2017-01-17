@@ -16,11 +16,14 @@ public class MapActorController extends ClickListener {
 
   private final MapState mapState;
   private final MapObject object;
+  private final InputLock inputLock;
 
   @Inject
-  MapActorController(@Assisted MapObject object, MapState mapState, @ActorWorldSize float size) {
+  MapActorController(@Assisted MapObject object, MapState mapState, @ActorWorldSize float size,
+      InputLock inputLock) {
     this.object = object;
     this.mapState = mapState;
+    this.inputLock = inputLock;
     setTapSquareSize(size / 2f);
   }
 
@@ -32,6 +35,9 @@ public class MapActorController extends ClickListener {
 
   @Override
   public void clicked(InputEvent event, float x, float y) {
+    if (inputLock.isLocked()) {
+      return;
+    }
     object.select(mapState);
   }
 }

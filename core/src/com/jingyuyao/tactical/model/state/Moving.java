@@ -6,7 +6,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -64,9 +63,6 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public void select(Player player) {
-    if (previousCoordinate != null) {
-      return;
-    }
     if (Objects.equal(getPlayer(), player)) {
       goTo(getStateFactory().createChoosing(getPlayer()));
     } else {
@@ -76,18 +72,7 @@ class Moving extends AbstractPlayerState {
   }
 
   @Override
-  public void select(final Enemy enemy) {
-    if (previousCoordinate != null) {
-      return;
-    }
-    back();
-  }
-
-  @Override
   public void select(Terrain terrain) {
-    if (previousCoordinate != null) {
-      return;
-    }
     Movement playerMovement = movementFactory.create(getPlayer());
     if (playerMovement.canMoveTo(terrain.getCoordinate())) {
       Path path = playerMovement.pathTo(terrain.getCoordinate());
@@ -111,14 +96,6 @@ class Moving extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(this.new Back() {
-      @Override
-      public void run() {
-        if (previousCoordinate != null) {
-          return;
-        }
-        super.run();
-      }
-    });
+    return ImmutableList.<Action>of(this.new Back());
   }
 }

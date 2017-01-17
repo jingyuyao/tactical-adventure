@@ -170,32 +170,9 @@ public class MovingTest {
   }
 
   @Test
-  public void select_has_moved() {
-    select_terrain_can_move();
-
-    moving.select(enemy);
-    moving.select(movingPlayer);
-    moving.select(terrain);
-
-    verifyNoMoreInteractions(movingPlayer);
-    verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
   public void actions_back() {
     ImmutableList<Action> actions = moving.getActions();
     assertThat(actions).hasSize(1);
     StateHelpers.verifyBack(actions.get(0), mapState);
-  }
-
-  @Test
-  public void action_back_moved() {
-    select_terrain_can_move();
-
-    ImmutableList<Action> actions = moving.getActions();
-    assertThat(actions).hasSize(1);
-    actions.get(0).run();
-
-    verifyZeroInteractions(mapState);
   }
 }
