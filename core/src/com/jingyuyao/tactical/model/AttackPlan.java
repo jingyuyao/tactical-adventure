@@ -13,16 +13,6 @@ public class AttackPlan {
     this.defender = defender;
   }
 
-  /**
-   * Executes this attack plan.
-   */
-  public void execute() {
-    attacker.tryHit(defender);
-    // no need to check for health as tryHit() will handle what happens when a dead character
-    // tries to attack
-    defender.tryHit(attacker);
-  }
-
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)

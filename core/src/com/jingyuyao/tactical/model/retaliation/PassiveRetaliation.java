@@ -16,7 +16,7 @@ public class PassiveRetaliation implements Retaliation {
 
     for (Terrain move : targets.moveTerrains()) {
       for (Weapon weapon : enemy.getWeapons()) {
-        for (final Target target : weapon.getTargets(move.getCoordinate())) {
+        for (final Target target : weapon.createTargets(move.getCoordinate())) {
           if (!target.getTargetCharacters().isEmpty()) {
             Path path = targets.pathTo(move.getCoordinate());
             enemy.equipWeapon(weapon);

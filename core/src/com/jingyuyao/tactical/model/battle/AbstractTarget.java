@@ -8,19 +8,33 @@ import com.jingyuyao.tactical.model.mark.Marking;
 
 public abstract class AbstractTarget implements Target {
 
+  private final Character attacker;
   private final Weapon weapon;
   private final Coordinate selectCoordinate;
   private final ImmutableList<Character> targetCharacters;
   private final Marking marking;
 
   AbstractTarget(
+      Character attacker,
       Weapon weapon,
       Coordinate selectCoordinate,
-      ImmutableList<Character> targetCharacters, Marking marking) {
+      ImmutableList<Character> targetCharacters,
+      Marking marking) {
+    this.attacker = attacker;
     this.weapon = weapon;
     this.selectCoordinate = selectCoordinate;
     this.targetCharacters = targetCharacters;
     this.marking = marking;
+  }
+
+  @Override
+  public Character getAttacker() {
+    return attacker;
+  }
+
+  @Override
+  public Weapon getWeapon() {
+    return weapon;
   }
 
   @Override
@@ -41,9 +55,5 @@ public abstract class AbstractTarget implements Target {
   @Override
   public void hideMarking() {
     marking.clear();
-  }
-
-  Weapon getWeapon() {
-    return weapon;
   }
 }

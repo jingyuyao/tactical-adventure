@@ -5,9 +5,6 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.battle.PiercingFactory;
-import com.jingyuyao.tactical.model.common.Algorithms;
-import com.jingyuyao.tactical.model.map.Terrains;
-import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,12 +20,6 @@ public class ItemModuleTest {
   private EventBus eventBus;
   @Bind
   @Mock
-  private Terrains terrains;
-  @Bind
-  @Mock
-  private Algorithms algorithms;
-  @Bind
-  @Mock
   private PiercingFactory piercingFactory;
   @Inject
   private ItemFactory itemFactory;
@@ -41,6 +32,6 @@ public class ItemModuleTest {
   @Test
   public void item_factory() {
     itemFactory.createHeal("hello", 2);
-    itemFactory.createWeapon("nihao", 1, 1, Collections.<Integer>emptySet());
+    itemFactory.createWeapon("nihao", 1, 1);
   }
 }

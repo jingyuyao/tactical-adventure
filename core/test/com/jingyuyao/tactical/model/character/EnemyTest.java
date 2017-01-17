@@ -2,11 +2,8 @@ package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
@@ -128,47 +125,5 @@ public class EnemyTest {
     enemy.removeMarker(Marker.DANGER);
 
     assertThat(markers).isEmpty();
-  }
-
-  @Test
-  public void try_hit_no_hp() {
-    when(stats.getHp()).thenReturn(0);
-
-    enemy.tryHit(player);
-
-    verifyZeroInteractions(items);
-    verifyZeroInteractions(player);
-  }
-
-  @Test
-  public void try_hit_no_equipped_weapon() {
-    when(stats.getHp()).thenReturn(1);
-    when(items.getEquippedWeapon()).thenReturn(Optional.<Weapon>absent());
-
-    enemy.tryHit(player);
-  }
-
-  @Test
-  public void try_hit_cannot_hit() {
-    when(stats.getHp()).thenReturn(1);
-    when(items.getEquippedWeapon()).thenReturn(Optional.of(weapon));
-    when(weapon.canHitFrom(enemy, COORDINATE, player)).thenReturn(false);
-
-    enemy.tryHit(player);
-
-    verify(weapon).canHitFrom(enemy, COORDINATE, player);
-    verifyNoMoreInteractions(weapon);
-  }
-
-  @Test
-  public void try_hit_success() {
-    when(stats.getHp()).thenReturn(1);
-    when(items.getEquippedWeapon()).thenReturn(Optional.of(weapon));
-    when(weapon.canHitFrom(enemy, COORDINATE, player)).thenReturn(true);
-
-    enemy.tryHit(player);
-
-    verify(weapon).canHitFrom(enemy, COORDINATE, player);
-    verify(weapon).hit(player);
   }
 }

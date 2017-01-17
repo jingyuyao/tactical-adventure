@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
@@ -110,26 +109,6 @@ public abstract class Character extends MapObject implements Disposable {
 
   public void healBy(int delta) {
     stats.healBy(delta);
-  }
-
-  /**
-   * "Hit" {@code other} using the currently equipped weapon if possible.
-   */
-  public void tryHit(Character other) {
-    // Hum... we could have a special after death attack!
-    if (stats.getHp() == 0) {
-      return;
-    }
-
-    Optional<Weapon> weaponOptional = items.getEquippedWeapon();
-    if (!weaponOptional.isPresent()) {
-      return;
-    }
-
-    Weapon weapon = weaponOptional.get();
-    if (weapon.canHitFrom(this, getCoordinate(), other)) {
-      weapon.hit(other);
-    }
   }
 
   @Override

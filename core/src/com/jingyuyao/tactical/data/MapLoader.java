@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
@@ -138,9 +137,9 @@ public class MapLoader {
   private Items createItems1() {
     int attackPower = 5;
     List<Weapon> weapons = new ArrayList<Weapon>();
-    weapons.add(itemFactory.createWeapon("Axe", 1, attackPower, ImmutableSet.of(1)));
-    weapons.add(itemFactory.createWeapon("Sword", 10, attackPower, ImmutableSet.of(1)));
-    weapons.add(itemFactory.createWeapon("Bow", 3, attackPower, ImmutableSet.of(2)));
+    weapons.add(itemFactory.createWeapon("Laser1", 1, attackPower));
+    weapons.add(itemFactory.createWeapon("Laser2", 10, attackPower));
+    weapons.add(itemFactory.createWeapon("Laser3", 3, attackPower));
     return characterFactory.createItems(
         weapons, Lists.<Consumable>newArrayList(itemFactory.createHeal("pot", 3)));
   }
@@ -148,7 +147,7 @@ public class MapLoader {
   private Items createItems2() {
     int attackPower = 3;
     List<Weapon> weapons = new ArrayList<Weapon>();
-    weapons.add(itemFactory.createWeapon("Bow", 5, attackPower, ImmutableSet.of(2)));
+    weapons.add(itemFactory.createWeapon("Laser4", 5, attackPower));
     return characterFactory.createItems(weapons, Collections.<Consumable>emptyList());
   }
 }

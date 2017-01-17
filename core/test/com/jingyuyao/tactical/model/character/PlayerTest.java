@@ -2,11 +2,8 @@ package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -14,13 +11,11 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Targets;
 import com.jingyuyao.tactical.model.map.TargetsFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
 import java.util.ArrayList;
@@ -51,17 +46,11 @@ public class PlayerTest {
   @Mock
   private Targets targets;
   @Mock
-  private Marking marking;
-  @Mock
   private MapState mapState;
   @Mock
   private EndTurn endTurn;
   @Mock
-  private Enemy enemy;
-  @Mock
   private Terrain terrain;
-  @Mock
-  private Weapon weapon;
   @Mock
   private Path path;
   @Captor
@@ -173,48 +162,6 @@ public class PlayerTest {
     player.clearMarking();
 
     verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
-  }
-
-  @Test
-  public void try_hit_no_hp() {
-    when(stats.getHp()).thenReturn(0);
-
-    player.tryHit(enemy);
-
-    verifyZeroInteractions(items);
-    verifyZeroInteractions(enemy);
-  }
-
-  @Test
-  public void try_hit_no_equipped_weapon() {
-    when(stats.getHp()).thenReturn(1);
-    when(items.getEquippedWeapon()).thenReturn(Optional.<Weapon>absent());
-
-    player.tryHit(enemy);
-  }
-
-  @Test
-  public void try_hit_cannot_hit() {
-    when(stats.getHp()).thenReturn(1);
-    when(items.getEquippedWeapon()).thenReturn(Optional.of(weapon));
-    when(weapon.canHitFrom(player, COORDINATE, enemy)).thenReturn(false);
-
-    player.tryHit(enemy);
-
-    verify(weapon).canHitFrom(player, COORDINATE, enemy);
-    verifyNoMoreInteractions(weapon);
-  }
-
-  @Test
-  public void try_hit_success() {
-    when(stats.getHp()).thenReturn(1);
-    when(items.getEquippedWeapon()).thenReturn(Optional.of(weapon));
-    when(weapon.canHitFrom(player, COORDINATE, enemy)).thenReturn(true);
-
-    player.tryHit(enemy);
-
-    verify(weapon).canHitFrom(player, COORDINATE, enemy);
-    verify(weapon).hit(enemy);
   }
 
   @Test

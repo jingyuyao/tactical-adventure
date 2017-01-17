@@ -32,7 +32,11 @@ public class PiercingFactory {
     this.terrains = terrains;
   }
 
-  public Optional<Target> create(Weapon weapon, Coordinate origin, Coordinate direction) {
+  public Optional<Target> create(
+      final Character attacker,
+      Weapon weapon,
+      Coordinate origin,
+      Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate select = origin.offsetBy(direction);
     Coordinate current = select.offsetBy(direction);
@@ -50,7 +54,7 @@ public class PiercingFactory {
         Iterables.filter(characters, new Predicate<Character>() {
           @Override
           public boolean apply(Character input) {
-            return targetCoordinates.contains(input.getCoordinate());
+            return !attacker.equals(input) && targetCoordinates.contains(input.getCoordinate());
           }
         })
     );
@@ -67,6 +71,7 @@ public class PiercingFactory {
     }
     Marking marking = new Marking(markerMap);
 
-    return Optional.<Target>of(new ConstantDamage(weapon, select, targetCharacters, marking));
+    return Optional.<Target>of(
+        new ConstantDamage(attacker, weapon, select, targetCharacters, marking));
   }
 }
