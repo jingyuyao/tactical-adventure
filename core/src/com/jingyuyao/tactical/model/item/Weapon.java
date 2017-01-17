@@ -36,11 +36,11 @@ public class Weapon extends Usable {
     return attackPower;
   }
 
-  public ImmutableList<Target> createTargets(Character attacker, Coordinate origin) {
+  public ImmutableList<Target> createTargets(Character attacker) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate direction : Directions.ALL) {
       Optional<Target> targetOptional =
-          piercingFactory.create(attacker, this, origin, direction);
+          piercingFactory.create(attacker, this, direction);
       if (targetOptional.isPresent()) {
         builder.add(targetOptional.get());
       }

@@ -47,7 +47,7 @@ class SelectingWeapon extends AbstractPlayerState {
       getPlayer().equipWeapon(weapon);
       goTo(getStateFactory()
           .createSelectingTarget(
-              getPlayer(), weapon.createTargets(getPlayer(), getPlayer().getCoordinate())));
+              getPlayer(), weapon.createTargets(getPlayer())));
     }
   }
 }

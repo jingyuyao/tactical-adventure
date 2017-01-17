@@ -35,10 +35,9 @@ public class PiercingFactory {
   public Optional<Target> create(
       final Character attacker,
       Weapon weapon,
-      Coordinate origin,
       Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
-    Coordinate select = origin.offsetBy(direction);
+    Coordinate select = attacker.getCoordinate().offsetBy(direction);
     Coordinate current = select.offsetBy(direction);
 
     while (terrains.contains(current)) {
@@ -55,7 +54,7 @@ public class PiercingFactory {
         Iterables.filter(characters, new Predicate<Character>() {
           @Override
           public boolean apply(Character input) {
-            return !attacker.equals(input) && targetCoordinates.contains(input.getCoordinate());
+            return targetCoordinates.contains(input.getCoordinate());
           }
         })
     );

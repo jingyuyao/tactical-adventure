@@ -39,10 +39,10 @@ public abstract class MapObject extends EventBusObject {
   }
 
   /**
-   * Sets the coordinate of this object to the new coordinate Subclasses are responsible for posting
-   * changes. This method is purposely set to protected to enforce the above rule.
+   * Sets the coordinate of this object to the new coordinate. Subclasses are responsible for
+   * posting changes.
    */
-  protected void setCoordinate(Coordinate newCoordinate) {
+  public void setCoordinate(Coordinate newCoordinate) {
     coordinate = newCoordinate;
   }
 

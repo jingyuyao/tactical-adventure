@@ -35,7 +35,8 @@ public abstract class AbstractTarget implements Target {
     return weapon;
   }
 
-  ImmutableList<Character> getTargetCharacters() {
+  @Override
+  public ImmutableList<Character> getTargetCharacters() {
     return targetCharacters;
   }
 

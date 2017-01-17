@@ -109,13 +109,12 @@ public class SelectingWeaponTest {
   }
 
   private ImmutableList<Action> actionsSetUp() {
-    when(player.getCoordinate()).thenReturn(PLAYER_COORDINATE);
     when(player.getWeapons()).thenReturn(weapons);
     when(weapons.iterator()).thenReturn(weaponIterator);
     when(weaponIterator.hasNext()).thenReturn(true, true, false);
     when(weaponIterator.next()).thenReturn(weapon1, weapon2);
-    when(weapon1.createTargets(player, PLAYER_COORDINATE)).thenReturn(targets1);
-    when(weapon2.createTargets(player, PLAYER_COORDINATE)).thenReturn(targets2);
+    when(weapon1.createTargets(player)).thenReturn(targets1);
+    when(weapon2.createTargets(player)).thenReturn(targets2);
     when(stateFactory.createSelectingTarget(player, targets1)).thenReturn(selectingTarget1);
     when(stateFactory.createSelectingTarget(player, targets2)).thenReturn(selectingTarget2);
     ImmutableList<Action> actions = selectingWeapon.getActions();
