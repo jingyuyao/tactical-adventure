@@ -60,6 +60,16 @@ class Moving extends AbstractPlayerState {
   }
 
   @Override
+  public void select(Player player) {
+    if (getPlayer().equals(player)) {
+      goTo(getStateFactory().createMoved(player));
+    } else {
+      rollback();
+      goTo(getStateFactory().createMoving(player));
+    }
+  }
+
+  @Override
   public void select(Terrain terrain) {
     Movement playerMovement = movementFactory.create(getPlayer());
     if (playerMovement.canMoveTo(terrain.getCoordinate())) {

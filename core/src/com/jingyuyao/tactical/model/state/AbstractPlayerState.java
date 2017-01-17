@@ -20,23 +20,13 @@ abstract class AbstractPlayerState extends AbstractState {
   }
 
   @Override
-  public void select(Player player) {
-    if (this.player.equals(player)) {
-      back();
-    } else {
-      rollback();
-      goTo(getStateFactory().createMoving(player));
-    }
-  }
-
-  @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
     if (!Iterables.isEmpty(player.getWeapons())) {
       builder.add(this.new SelectWeapons());
     }
     if (!Iterables.isEmpty(player.getConsumables())) {
-      builder.add(this.new UseItems());
+      builder.add(this.new SelectItems());
     }
     builder.add(this.new Wait());
     builder.add(this.new Back());
@@ -61,7 +51,7 @@ abstract class AbstractPlayerState extends AbstractState {
     }
   }
 
-  class UseItems implements Action {
+  class SelectItems implements Action {
 
     @Override
     public String getName() {

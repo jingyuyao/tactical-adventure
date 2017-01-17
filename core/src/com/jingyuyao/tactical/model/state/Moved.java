@@ -11,4 +11,14 @@ class Moved extends AbstractPlayerState {
   Moved(EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
     super(eventBus, mapState, stateFactory, player);
   }
+
+  @Override
+  public void select(Player player) {
+    if (getPlayer().equals(player)) {
+      back();
+    } else {
+      rollback();
+      goTo(getStateFactory().createMoving(player));
+    }
+  }
 }

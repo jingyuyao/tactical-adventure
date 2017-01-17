@@ -30,7 +30,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class MovingTest {
 
   private static final Coordinate MOVING_PLAYER_COORDINATE = new Coordinate(0, 1);
-  private static final Coordinate ENEMY_COORDINATE = new Coordinate(0, 0);
   private static final Coordinate TERRAIN_COORDINATE = new Coordinate(0, 2);
 
   @Mock
@@ -123,6 +122,16 @@ public class MovingTest {
     moving.exit();
 
     verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
+  }
+
+  @Test
+  public void select_same_player() {
+    when(stateFactory.createMoved(movingPlayer)).thenReturn(moved);
+
+    moving.select(movingPlayer);
+
+    verify(mapState).push(moved);
+    verifyNoMoreInteractions(mapState);
   }
 
   @Test
