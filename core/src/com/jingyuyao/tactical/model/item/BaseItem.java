@@ -30,8 +30,13 @@ public class BaseItem extends EventBusObject implements Item {
     return usageLeft;
   }
 
-  @Override
-  public void useOnce() {
+  /**
+   * Call to use this item once.
+   * <br>
+   * Invariant: {@link com.jingyuyao.tactical.model.item.event.RemoveItem} must be posted
+   * if {@link #getUsageLeft()} == 0 after the usage
+   */
+  void useOnce() {
     Preconditions.checkState(usageLeft > 0);
 
     usageLeft--;
