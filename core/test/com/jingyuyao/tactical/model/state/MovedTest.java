@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -23,6 +24,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MovedTest {
 
+  private static final Coordinate COORDINATE = new Coordinate(0, 0);
+
   @Mock
   private EventBus eventBus;
   @Mock
@@ -31,10 +34,6 @@ public class MovedTest {
   private StateFactory stateFactory;
   @Mock
   private Player player;
-  @Mock
-  private Player anotherPlayer;
-  @Mock
-  private Moving moving;
   @Mock
   private Enemy enemy;
   @Mock
@@ -141,7 +140,8 @@ public class MovedTest {
     when(player.getItems()).thenReturn(itemIterable);
     when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
-    when(weapon.createTargets(player)).thenReturn(targets);
+    when(player.getCoordinate()).thenReturn(COORDINATE);
+    when(weapon.createTargets(COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
     when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);

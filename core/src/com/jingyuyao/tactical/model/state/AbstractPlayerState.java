@@ -42,7 +42,8 @@ abstract class AbstractPlayerState extends AbstractState {
     public void run() {
       player.quickAccess(weapon);
       goTo(getStateFactory()
-          .createSelectingTarget(getPlayer(), weapon, weapon.createTargets(getPlayer())));
+          .createSelectingTarget(
+              getPlayer(), weapon, weapon.createTargets(getPlayer().getCoordinate())));
     }
   }
 

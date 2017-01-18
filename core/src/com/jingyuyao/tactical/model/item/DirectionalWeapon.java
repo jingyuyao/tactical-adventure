@@ -34,10 +34,10 @@ abstract class DirectionalWeapon extends BaseItem implements Weapon {
   }
 
   @Override
-  public ImmutableList<Target> createTargets(Character attacker) {
+  public ImmutableList<Target> createTargets(Coordinate from) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate direction : Directions.ALL) {
-      Optional<Target> targetOptional = createTarget(attacker, direction);
+      Optional<Target> targetOptional = createTarget(from, direction);
       if (targetOptional.isPresent()) {
         builder.add(targetOptional.get());
       }
@@ -45,5 +45,5 @@ abstract class DirectionalWeapon extends BaseItem implements Weapon {
     return builder.build();
   }
 
-  abstract Optional<Target> createTarget(Character attacker, Coordinate direction);
+  abstract Optional<Target> createTarget(Coordinate from, Coordinate direction);
 }

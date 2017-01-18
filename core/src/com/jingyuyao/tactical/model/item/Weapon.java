@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.target.Target;
 
 /**
@@ -12,5 +13,5 @@ public interface Weapon extends Item {
 
   void execute(Character attacker, Target target);
 
-  ImmutableList<Target> createTargets(Character attacker);
+  ImmutableList<Target> createTargets(Coordinate from);
 }

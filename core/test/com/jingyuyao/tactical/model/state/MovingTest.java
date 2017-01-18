@@ -212,7 +212,8 @@ public class MovingTest {
     when(player.getItems()).thenReturn(itemIterable);
     when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
-    when(weapon.createTargets(player)).thenReturn(targets);
+    when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
+    when(weapon.createTargets(MOVING_PLAYER_COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
     when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);

@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.target.Target;
@@ -30,9 +29,9 @@ class PiercingLaser extends DirectionalWeapon {
   }
 
   @Override
-  Optional<Target> createTarget(Character attacker, Coordinate direction) {
+  Optional<Target> createTarget(Coordinate from, Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
-    Coordinate current = attacker.getCoordinate().offsetBy(direction).offsetBy(direction);
+    Coordinate current = from.offsetBy(direction).offsetBy(direction);
 
     while (terrains.contains(current)) {
       targetBuilder.add(current);

@@ -35,7 +35,7 @@ public class PassiveRetaliation implements Retaliation {
     for (Coordinate move : movement.getCoordinates()) {
       enemy.setCoordinate(move);
       for (final Weapon weapon : enemy.getWeapons()) {
-        for (final Target target : weapon.createTargets(enemy)) {
+        for (final Target target : weapon.createTargets(enemy.getCoordinate())) {
           ImmutableSet<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?
           if (!Iterables.isEmpty(Iterables.filter(targetCharacters, Enemy.class))) {
