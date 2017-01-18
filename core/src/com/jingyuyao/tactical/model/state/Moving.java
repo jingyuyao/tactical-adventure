@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 
-class Moving extends AbstractPlayerState {
+class Moving extends AbstractMovementState {
 
   private final MovementFactory movementFactory;
   private Coordinate previousCoordinate;
@@ -57,16 +57,6 @@ class Moving extends AbstractPlayerState {
   public void exit() {
     marking.clear();
     marking = null;
-  }
-
-  @Override
-  public void select(Player player) {
-    if (getPlayer().equals(player)) {
-      goTo(getStateFactory().createMoved(player));
-    } else {
-      rollback();
-      goTo(getStateFactory().createMoving(player));
-    }
   }
 
   @Override

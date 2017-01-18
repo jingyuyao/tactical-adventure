@@ -132,11 +132,9 @@ public class MovingTest {
 
   @Test
   public void select_same_player() {
-    when(stateFactory.createMoved(player)).thenReturn(moved);
-
     moving.select(player);
 
-    verify(mapState).push(moved);
+    verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
   }
 
