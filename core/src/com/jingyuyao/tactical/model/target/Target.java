@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.battle;
+package com.jingyuyao.tactical.model.target;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;

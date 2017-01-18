@@ -7,13 +7,13 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.battle.ConstantDamage;
-import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marking;
+import com.jingyuyao.tactical.model.target.ConstantDamage;
+import com.jingyuyao.tactical.model.target.Target;
 import javax.inject.Inject;
 
 public class PiercingLaser extends DirectionalWeapon {

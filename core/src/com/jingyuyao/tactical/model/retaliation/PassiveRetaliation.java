@@ -5,7 +5,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -15,6 +14,7 @@ import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.target.Target;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

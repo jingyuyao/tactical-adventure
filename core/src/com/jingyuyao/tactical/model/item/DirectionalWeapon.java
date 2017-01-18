@@ -4,10 +4,10 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.Directions;
+import com.jingyuyao.tactical.model.target.Target;
 
 /**
  * A weapon that can be targeted in all directions in {@link Directions#ALL}.
