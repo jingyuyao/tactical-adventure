@@ -34,11 +34,6 @@ abstract class DirectionalWeapon extends BaseItem implements Weapon {
   }
 
   @Override
-  public int getAttackPower() {
-    return attackPower;
-  }
-
-  @Override
   public ImmutableList<Target> createTargets(Character attacker) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate direction : Directions.ALL) {

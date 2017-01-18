@@ -47,11 +47,6 @@ public class MeleeTest {
   }
 
   @Test
-  public void get_attack_power() {
-    assertThat(melee.getAttackPower()).isEqualTo(ATTACK_POWER);
-  }
-
-  @Test
   public void use() {
     melee.useOnce();
 

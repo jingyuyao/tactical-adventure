@@ -12,7 +12,5 @@ public interface Weapon extends Item {
 
   void execute(Character attacker, Target target);
 
-  int getAttackPower();
-
   ImmutableList<Target> createTargets(Character attacker);
 }
