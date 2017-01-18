@@ -38,6 +38,6 @@ class Melee extends DirectionalWeapon {
     ImmutableSet<Coordinate> targetCoordinates = ImmutableSet.of(targetCoordinate);
 
     return Optional.of(
-        targetFactory.createConstantDamage(attacker, this, targetCoordinates, targetCoordinates));
+        targetFactory.create(targetCoordinates, targetCoordinates));
   }
 }

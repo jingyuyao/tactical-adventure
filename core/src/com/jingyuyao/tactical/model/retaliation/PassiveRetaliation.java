@@ -34,7 +34,7 @@ public class PassiveRetaliation implements Retaliation {
 
     for (Coordinate move : movement.getCoordinates()) {
       enemy.setCoordinate(move);
-      for (Weapon weapon : enemy.getWeapons()) {
+      for (final Weapon weapon : enemy.getWeapons()) {
         for (final Target target : weapon.createTargets(enemy)) {
           ImmutableSet<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?
@@ -50,7 +50,7 @@ public class PassiveRetaliation implements Retaliation {
             Futures.addCallback(future, new FutureCallback<Void>() {
               @Override
               public void onSuccess(Void result) {
-                target.execute();
+                weapon.execute(enemy, target);
               }
 
               @Override

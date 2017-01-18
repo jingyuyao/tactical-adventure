@@ -11,6 +11,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.target.Target;
@@ -34,6 +35,8 @@ public class ReviewingAttackTest {
   @Mock
   private Player attackingPlayer;
   @Mock
+  private Weapon weapon;
+  @Mock
   private Target target;
   @Mock
   private Enemy enemy;
@@ -49,7 +52,7 @@ public class ReviewingAttackTest {
   public void setUp() {
     selectObjects = ImmutableSet.of(attackingPlayer, enemy, terrain);
     reviewingAttack =
-        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, target);
+        new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, weapon, target);
   }
 
   @Test
@@ -153,7 +156,7 @@ public class ReviewingAttackTest {
   }
 
   private void verify_attacked() {
-    verify(target).execute();
+    verify(weapon).execute(attackingPlayer, target);
     verify(attackingPlayer).setActionable(false);
     verify(mapState).newStack(waiting);
     verifyNoMoreInteractions(mapState);

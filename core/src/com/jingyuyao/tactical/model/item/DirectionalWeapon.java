@@ -26,6 +26,14 @@ abstract class DirectionalWeapon extends BaseItem implements Weapon {
   }
 
   @Override
+  public void execute(Character attacker, Target target) {
+    for (Character opponent : target.getTargetCharacters()) {
+      opponent.damageBy(attackPower);
+    }
+    useOnce();
+  }
+
+  @Override
   public int getAttackPower() {
     return attackPower;
   }

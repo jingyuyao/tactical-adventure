@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.target.Target;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 
 public class SelectingTarget extends AbstractPlayerState {
 
+  private final Weapon weapon;
   private final ImmutableList<Target> targets;
 
   @Inject
@@ -20,8 +22,10 @@ public class SelectingTarget extends AbstractPlayerState {
       MapState mapState,
       StateFactory stateFactory,
       @Assisted Player player,
+      @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
     super(eventBus, mapState, stateFactory, player);
+    this.weapon = weapon;
     this.targets = targets;
   }
 
@@ -62,7 +66,7 @@ public class SelectingTarget extends AbstractPlayerState {
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
       if (target.getSelectObjects().contains(object)) {
-        goTo(getStateFactory().createReviewingAttack(getPlayer(), target));
+        goTo(getStateFactory().createReviewingAttack(getPlayer(), weapon, target));
         return;
       }
     }

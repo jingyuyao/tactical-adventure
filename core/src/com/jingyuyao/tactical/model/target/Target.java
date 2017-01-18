@@ -20,9 +20,4 @@ public interface Target {
   void showMarking();
 
   void hideMarking();
-
-  /**
-   * Executes this target. Behavior varies depending on the implementation.
-   */
-  void execute();
 }

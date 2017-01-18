@@ -45,6 +45,6 @@ class PiercingLaser extends DirectionalWeapon {
     }
 
     return Optional.of(
-        targetFactory.createConstantDamage(attacker, this, targetCoordinates, targetCoordinates));
+        targetFactory.create(targetCoordinates, targetCoordinates));
   }
 }

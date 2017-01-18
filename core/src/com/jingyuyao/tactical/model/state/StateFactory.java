@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.target.Target;
 
@@ -18,9 +19,10 @@ interface StateFactory {
 
   SelectingItem createSelectingItem(Player player);
 
-  SelectingTarget createSelectingTarget(Player player, ImmutableList<Target> targets);
+  SelectingTarget createSelectingTarget(
+      Player player, Weapon weapon, ImmutableList<Target> targets);
 
-  ReviewingAttack createReviewingAttack(Player player, Target target);
+  ReviewingAttack createReviewingAttack(Player player, Weapon weapon, Target target);
 
   Retaliating createRetaliating();
 }

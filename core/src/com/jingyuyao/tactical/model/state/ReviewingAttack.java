@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.target.Target;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {
 
+  private final Weapon weapon;
   private final Target target;
 
   @Inject
@@ -20,8 +22,10 @@ class ReviewingAttack extends AbstractPlayerState {
       MapState mapState,
       StateFactory stateFactory,
       @Assisted Player player,
+      @Assisted Weapon weapon,
       @Assisted Target target) {
     super(eventBus, mapState, stateFactory, player);
+    this.weapon = weapon;
     this.target = target;
   }
 
@@ -64,7 +68,7 @@ class ReviewingAttack extends AbstractPlayerState {
   }
 
   private void attack() {
-    target.execute();
+    weapon.execute(getPlayer(), target);
     finish();
   }
 

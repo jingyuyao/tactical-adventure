@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.target;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -13,38 +13,26 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Inject;
 
-abstract class AbstractTarget implements Target {
+class TargetImpl implements Target {
 
-  private final Character attacker;
-  private final Weapon weapon;
   private final ImmutableSet<Coordinate> selectCoordinates;
   private final ImmutableSet<Coordinate> targetCoordinates;
   private final Characters characters;
   private final Terrains terrains;
   private Marking marking;
 
-  AbstractTarget(
-      Character attacker,
-      Weapon weapon,
-      ImmutableSet<Coordinate> selectCoordinates,
-      ImmutableSet<Coordinate> targetCoordinates,
+  @Inject
+  TargetImpl(
+      @Assisted("select") ImmutableSet<Coordinate> selectCoordinates,
+      @Assisted("target") ImmutableSet<Coordinate> targetCoordinates,
       Characters characters,
       Terrains terrains) {
-    this.attacker = attacker;
-    this.weapon = weapon;
     this.selectCoordinates = selectCoordinates;
     this.targetCoordinates = targetCoordinates;
     this.characters = characters;
     this.terrains = terrains;
-  }
-
-  Character getAttacker() {
-    return attacker;
-  }
-
-  Weapon getWeapon() {
-    return weapon;
   }
 
   @Override

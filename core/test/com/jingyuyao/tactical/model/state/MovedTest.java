@@ -142,7 +142,7 @@ public class MovedTest {
     when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
     when(weapon.createTargets(player)).thenReturn(targets);
-    when(stateFactory.createSelectingTarget(player, targets)).thenReturn(selectingTarget);
+    when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
     when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = moved.getActions();
