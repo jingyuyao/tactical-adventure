@@ -8,7 +8,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.target.TargetFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.target;
+package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 
-class TargetImpl implements Target {
+// TODO: need a method that return a "target info" for this target to be displayed
+public class Target {
 
   private final ImmutableSet<Coordinate> selectCoordinates;
   private final ImmutableSet<Coordinate> targetCoordinates;
@@ -24,7 +25,7 @@ class TargetImpl implements Target {
   private Marking marking;
 
   @Inject
-  TargetImpl(
+  Target(
       @Assisted("select") ImmutableSet<Coordinate> selectCoordinates,
       @Assisted("target") ImmutableSet<Coordinate> targetCoordinates,
       Characters characters,
@@ -35,7 +36,9 @@ class TargetImpl implements Target {
     this.terrains = terrains;
   }
 
-  @Override
+  /**
+   * @return a current view of all the objects on the map that "selects" this target
+   */
   public ImmutableSet<MapObject> getSelectObjects() {
     return ImmutableSet.copyOf(Iterables.concat(
         terrains.getAll(selectCoordinates),
@@ -43,18 +46,18 @@ class TargetImpl implements Target {
     ));
   }
 
-  @Override
+  /**
+   * @return a current view of all the characters being targeted
+   */
   public ImmutableSet<Character> getTargetCharacters() {
     return ImmutableSet.copyOf(characters.getAll(targetCoordinates));
   }
 
-  @Override
   public void showMarking() {
     marking = createMarking();
     marking.apply();
   }
 
-  @Override
   public void hideMarking() {
     marking.clear();
     marking = null;

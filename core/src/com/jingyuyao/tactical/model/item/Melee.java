@@ -6,8 +6,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.target.Target;
-import com.jingyuyao.tactical.model.target.TargetFactory;
 import javax.inject.Inject;
 
 class Melee extends DirectionalWeapon {
