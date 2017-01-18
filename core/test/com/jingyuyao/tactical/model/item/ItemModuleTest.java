@@ -4,7 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.battle.TargetFactory;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,10 @@ public class ItemModuleTest {
   private EventBus eventBus;
   @Bind
   @Mock
-  private TargetFactory targetFactory;
+  private Characters characters;
+  @Bind
+  @Mock
+  private Terrains terrains;
   @Inject
   private ItemFactory itemFactory;
 
@@ -32,6 +36,7 @@ public class ItemModuleTest {
   @Test
   public void item_factory() {
     itemFactory.createHeal("hello", 2);
-    itemFactory.createWeapon("nihao", 1, 1, targetFactory);
+    itemFactory.createMelee("axe", 1, 3);
+    itemFactory.createPiercingLaser("lazor", 10, 5);
   }
 }

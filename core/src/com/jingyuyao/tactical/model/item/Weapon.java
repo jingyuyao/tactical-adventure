@@ -4,36 +4,45 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.battle.Target;
-import com.jingyuyao.tactical.model.battle.TargetFactory;
 import com.jingyuyao.tactical.model.character.Character;
-import javax.inject.Inject;
+import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status. Not a {@link Consumable}
  * since the effect of a {@link Weapon} depends on its user.
  */
-public class Weapon extends Usable {
+public abstract class Weapon extends Usable {
 
   private final int attackPower;
-  private final TargetFactory targetFactory;
 
-  @Inject
   Weapon(
       EventBus eventBus,
       @Assisted String name,
       @Assisted("usageLeft") int usageLeft,
-      @Assisted("attackPower") int attackPower,
-      @Assisted TargetFactory targetFactory) {
+      @Assisted("attackPower") int attackPower) {
     super(eventBus, name, usageLeft);
     this.attackPower = attackPower;
-    this.targetFactory = targetFactory;
   }
 
   public int getAttackPower() {
     return attackPower;
   }
 
-  public ImmutableList<Target> createTargets(Character attacker) {
-    return targetFactory.create(attacker, this);
+  public abstract ImmutableList<Target> createTargets(Character attacker);
+
+  Marking createMarking(Iterable<Terrain> targetTerrains, Iterable<Character> targetCharacters) {
+    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    for (Terrain terrain : targetTerrains) {
+      markerMap.put(terrain, Marker.CAN_ATTACK);
+    }
+    for (Character character : targetCharacters) {
+      markerMap.put(character, Marker.POTENTIAL_TARGET);
+    }
+    return new Marking(markerMap);
   }
 }

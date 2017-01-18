@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Stage;
-import com.jingyuyao.tactical.model.battle.BattleModule;
 import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.common.CommonModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
@@ -23,6 +22,5 @@ public class ModelModule extends AbstractModule {
     install(new ItemModule());
     install(new StateModule());
     install(new RetaliationModule());
-    install(new BattleModule());
   }
 }

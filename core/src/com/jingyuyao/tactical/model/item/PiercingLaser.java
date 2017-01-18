@@ -1,34 +1,45 @@
-package com.jingyuyao.tactical.model.battle;
+package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.eventbus.EventBus;
+import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.battle.ConstantDamage;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marking;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-// TODO: test me
-@Singleton
-public class PiercingTargetFactory extends AbstractTargetFactory {
+public class PiercingLaser extends DirectionalWeapon {
+
+  private final Characters characters;
+  private final Terrains terrains;
 
   @Inject
-  PiercingTargetFactory(Characters characters, Terrains terrains) {
-    super(characters, terrains);
+  PiercingLaser(
+      EventBus eventBus,
+      @Assisted String name,
+      @Assisted("usageLeft") int usageLeft,
+      @Assisted("attackPower") int attackPower,
+      Characters characters,
+      Terrains terrains) {
+    super(eventBus, name, usageLeft, attackPower);
+    this.characters = characters;
+    this.terrains = terrains;
   }
 
   @Override
-  Optional<Target> create(final Character attacker, Weapon weapon, Coordinate direction) {
+  Optional<Target> createTarget(Character attacker, Coordinate direction) {
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate current = attacker.getCoordinate().offsetBy(direction).offsetBy(direction);
 
-    while (getTerrains().contains(current)) {
+    while (terrains.contains(current)) {
       targetBuilder.add(current);
       current = current.offsetBy(direction);
     }
@@ -39,7 +50,7 @@ public class PiercingTargetFactory extends AbstractTargetFactory {
     }
 
     ImmutableList<Character> targetCharacters = ImmutableList.copyOf(
-        Iterables.filter(getCharacters(), new Predicate<Character>() {
+        Iterables.filter(characters, new Predicate<Character>() {
           @Override
           public boolean apply(Character input) {
             return targetCoordinates.contains(input.getCoordinate());
@@ -47,9 +58,9 @@ public class PiercingTargetFactory extends AbstractTargetFactory {
         })
     );
 
-    Marking marking = createMarking(targetCoordinates, targetCharacters);
+    Marking marking = createMarking(terrains.getAll(targetCoordinates), targetCharacters);
 
     return Optional.<Target>of(
-        new ConstantDamage(attacker, weapon, targetCoordinates, targetCharacters, marking));
+        new ConstantDamage(attacker, this, targetCoordinates, targetCharacters, marking));
   }
 }

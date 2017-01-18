@@ -10,9 +10,12 @@ import com.jingyuyao.tactical.model.mark.Marking;
 // TODO: test me
 public class ConstantDamage extends AbstractTarget {
 
-  ConstantDamage(Character attacker, Weapon weapon,
+  public ConstantDamage(
+      Character attacker,
+      Weapon weapon,
       ImmutableSet<Coordinate> selectCoordinates,
-      ImmutableList<Character> targetCharacters, Marking marking) {
+      ImmutableList<Character> targetCharacters,
+      Marking marking) {
     super(attacker, weapon, selectCoordinates, targetCharacters, marking);
   }
 

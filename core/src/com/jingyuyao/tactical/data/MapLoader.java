@@ -8,8 +8,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.battle.ImmediateTargetFactory;
-import com.jingyuyao.tactical.model.battle.PiercingTargetFactory;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Items;
@@ -41,8 +39,6 @@ public class MapLoader {
   private final CharacterFactory characterFactory;
   private final TerrainFactory terrainFactory;
   private final ItemFactory itemFactory;
-  private final ImmediateTargetFactory immediateTargetFactory;
-  private final PiercingTargetFactory piercingTargetFactory;
   private final OrthogonalTiledMapRenderer mapRenderer;
 
   @Inject
@@ -52,16 +48,12 @@ public class MapLoader {
       CharacterFactory characterFactory,
       TerrainFactory terrainFactory,
       ItemFactory itemFactory,
-      ImmediateTargetFactory immediateTargetFactory,
-      PiercingTargetFactory piercingTargetFactory,
       OrthogonalTiledMapRenderer mapRenderer) {
     this.eventBus = eventBus;
     this.waitingProvider = waitingProvider;
     this.characterFactory = characterFactory;
     this.terrainFactory = terrainFactory;
     this.itemFactory = itemFactory;
-    this.immediateTargetFactory = immediateTargetFactory;
-    this.piercingTargetFactory = piercingTargetFactory;
     this.mapRenderer = mapRenderer;
   }
 
@@ -142,9 +134,9 @@ public class MapLoader {
   private Items createItems1() {
     int attackPower = 5;
     List<Item> items = new ArrayList<Item>();
-    items.add(itemFactory.createWeapon("Laser5", 1, attackPower, piercingTargetFactory));
-    items.add(itemFactory.createWeapon("Melee5", 10, attackPower, immediateTargetFactory));
-    items.add(itemFactory.createWeapon("Melee5", 3, attackPower, immediateTargetFactory));
+    items.add(itemFactory.createPiercingLaser("Laser5", 1, attackPower));
+    items.add(itemFactory.createMelee("Melee5", 10, attackPower));
+    items.add(itemFactory.createMelee("Melee5", 3, attackPower));
     items.add(itemFactory.createHeal("pot", 3));
     return characterFactory.createItems(items);
   }
@@ -152,7 +144,7 @@ public class MapLoader {
   private Items createItems2() {
     int attackPower = 3;
     List<Item> weapons = new ArrayList<Item>();
-    weapons.add(itemFactory.createWeapon("Laser3", 5, attackPower, piercingTargetFactory));
+    weapons.add(itemFactory.createPiercingLaser("Laser3", 5, attackPower));
     return characterFactory.createItems(weapons);
   }
 }
