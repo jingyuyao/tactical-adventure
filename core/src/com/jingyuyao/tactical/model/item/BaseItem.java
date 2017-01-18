@@ -30,10 +30,7 @@ public class BaseItem extends EventBusObject implements Item {
     return usageLeft;
   }
 
-  /**
-   * Signals this item has been used once. Fires {@link RemoveItem} when {@link #getUsageLeft()} ==
-   * 0
-   */
+  @Override
   public void useOnce() {
     Preconditions.checkState(usageLeft > 0);
 
