@@ -36,8 +36,6 @@ public class MovementTest {
   private Set<Coordinate> moveCoordinates;
   @Mock
   private ImmutableList<Coordinate> track;
-  @Mock
-  private Iterable<Terrain> terrainIterable;
 
   private Movement movement;
 
@@ -67,8 +65,7 @@ public class MovementTest {
   @Test
   public void move_terrains() {
     when(graph.nodes()).thenReturn(moveCoordinates);
-    when(terrains.getAll(moveCoordinates)).thenReturn(terrainIterable);
 
-    assertThat(movement.getTerrains()).isSameAs(terrainIterable);
+    assertThat(movement.getCoordinates()).isSameAs(moveCoordinates);
   }
 }

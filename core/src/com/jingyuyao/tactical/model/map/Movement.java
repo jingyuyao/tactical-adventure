@@ -35,8 +35,8 @@ public class Movement {
   /**
    * Get the {@link Terrain}s this target can move to.
    */
-  public Iterable<Terrain> getTerrains() {
-    return terrains.getAll(moveGraph.nodes());
+  public Iterable<Coordinate> getCoordinates() {
+    return moveGraph.nodes();
   }
 
   /**
