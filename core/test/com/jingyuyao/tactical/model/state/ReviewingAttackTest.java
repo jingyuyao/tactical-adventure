@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -41,12 +42,12 @@ public class ReviewingAttackTest {
   @Mock
   private Waiting waiting;
 
-  private Iterable<MapObject> selectObjects;
+  private ImmutableSet<MapObject> selectObjects;
   private ReviewingAttack reviewingAttack;
 
   @Before
   public void setUp() {
-    selectObjects = ImmutableList.of(attackingPlayer, enemy, terrain);
+    selectObjects = ImmutableSet.of(attackingPlayer, enemy, terrain);
     reviewingAttack =
         new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, target);
   }
@@ -148,7 +149,7 @@ public class ReviewingAttackTest {
 
   private void set_up_target(boolean canAttack) {
     when(target.getSelectObjects())
-        .thenReturn(canAttack ? selectObjects : ImmutableList.<MapObject>of());
+        .thenReturn(canAttack ? selectObjects : ImmutableSet.<MapObject>of());
   }
 
   private void verify_attacked() {

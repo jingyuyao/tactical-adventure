@@ -48,16 +48,16 @@ abstract class AbstractTarget implements Target {
   }
 
   @Override
-  public Iterable<MapObject> getSelectObjects() {
-    return Iterables.concat(
+  public ImmutableSet<MapObject> getSelectObjects() {
+    return ImmutableSet.copyOf(Iterables.concat(
         terrains.getAll(selectCoordinates),
         characters.getAll(selectCoordinates)
-    );
+    ));
   }
 
   @Override
-  public Iterable<Character> getTargetCharacters() {
-    return characters.getAll(targetCoordinates);
+  public ImmutableSet<Character> getTargetCharacters() {
+    return ImmutableSet.copyOf(characters.getAll(targetCoordinates));
   }
 
   @Override

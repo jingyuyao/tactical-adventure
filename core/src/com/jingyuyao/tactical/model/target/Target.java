@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.target;
 
+import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.MapObject;
 
@@ -9,12 +10,12 @@ public interface Target {
   /**
    * @return a current view of all the objects on the map that "selects" this target
    */
-  Iterable<MapObject> getSelectObjects();
+  ImmutableSet<MapObject> getSelectObjects();
 
   /**
    * @return a current view of all the characters being targeted
    */
-  Iterable<Character> getTargetCharacters();
+  ImmutableSet<Character> getTargetCharacters();
 
   void showMarking();
 
