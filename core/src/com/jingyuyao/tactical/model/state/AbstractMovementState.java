@@ -18,16 +18,6 @@ abstract class AbstractMovementState extends AbstractPlayerState {
   }
 
   @Override
-  public void select(Player player) {
-    if (getPlayer().equals(player)) {
-      back();
-    } else {
-      rollback();
-      goTo(getStateFactory().createMoving(player));
-    }
-  }
-
-  @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
     // Show the first two weapon and consumable for quick access

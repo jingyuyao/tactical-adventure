@@ -17,10 +17,8 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.target.Target;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,19 +39,13 @@ public class MovingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private MovementFactory movementFactory;
-  @Mock
   private Player player;
-  @Mock
-  private Player anotherPlayer;
   @Mock
   private Enemy enemy;
   @Mock
   private Terrain terrain;
   @Mock
   private Moved moved;
-  @Mock
-  private Moving dummyMoving;
   @Mock
   private SelectingTarget selectingTarget;
   @Mock
@@ -74,7 +66,6 @@ public class MovingTest {
   private Iterable<Item> itemIterable;
   private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
-  private Iterable<Terrain> terrainList;
   private ListenableFuture<Void> immediateFuture;
   private Moving moving;
 
@@ -83,20 +74,16 @@ public class MovingTest {
     itemIterable = ImmutableList.<Item>of(weapon, consumable);
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
-    terrainList = ImmutableList.of(terrain);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(eventBus, mapState, stateFactory, player, movementFactory);
+    moving = new Moving(eventBus, mapState, stateFactory, player, movement);
   }
 
   @Test
   public void enter() {
-    when(movementFactory.create(player)).thenReturn(movement);
-    when(movement.getTerrains()).thenReturn(terrainList);
-
     moving.enter();
 
-    verify(terrain).addMarker(Marker.CAN_MOVE_TO);
+    verify(movement).showMarking();
   }
 
   @Test
@@ -112,7 +99,6 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(movementFactory).create(player);
     verify(player).getCoordinate();
     verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
 
@@ -127,26 +113,15 @@ public class MovingTest {
 
     moving.exit();
 
-    verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
+    verify(movement).hideMarking();
   }
 
   @Test
-  public void select_same_player() {
+  public void select_player() {
     moving.select(player);
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_differentPlayer() {
-    when(stateFactory.createMoving(anotherPlayer)).thenReturn(dummyMoving);
-
-    moving.select(anotherPlayer);
-
-    verify(stateFactory).createMoving(anotherPlayer);
-    verify(mapState).rollback();
-    verify(mapState).push(dummyMoving);
   }
 
   @Test
@@ -159,7 +134,6 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(movementFactory.create(player)).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
@@ -170,7 +144,6 @@ public class MovingTest {
     moving.select(terrain);
 
     verify(player).getCoordinate();
-    verify(movementFactory).create(player);
     verify(player).move(path);
     verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
@@ -178,7 +151,6 @@ public class MovingTest {
 
   @Test
   public void select_terrain_cannot_move() {
-    when(movementFactory.create(player)).thenReturn(movement);
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
 

@@ -7,8 +7,8 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.target.Target;
 import javax.inject.Inject;
@@ -34,7 +34,8 @@ public class StateModuleTest {
   @Mock
   private Target target;
   @Mock
-  private Iterable<Weapon> weapons;
+  private Movement movement;
+
   @Inject
   private MapState mapState1;
   @Inject
@@ -50,7 +51,7 @@ public class StateModuleTest {
   @Test
   public void state_factory() {
     stateFactory.createWaiting();
-    stateFactory.createMoving(player);
+    stateFactory.createMoving(player, movement);
     stateFactory.createMoved(player);
     stateFactory.createSelectingTarget(player, targets);
     stateFactory.createSelectingItem(player);

@@ -17,9 +17,7 @@ import com.jingyuyao.tactical.model.target.Target;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,22 +66,11 @@ public class MovedTest {
   }
 
   @Test
-  public void select_same_player() {
+  public void select_player() {
     moved.select(player);
 
     verify(mapState).pop();
     verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_different_player() {
-    when(stateFactory.createMoving(anotherPlayer)).thenReturn(moving);
-
-    moved.select(anotherPlayer);
-
-    InOrder inOrder = Mockito.inOrder(mapState);
-    inOrder.verify(mapState).rollback();
-    inOrder.verify(mapState).push(moving);
   }
 
   @Test
