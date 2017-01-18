@@ -1,23 +1,11 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Character;
 
 /**
- * An {@link Item} that can be used by a {@link Player}.
+ * An {@link Item} that can be used be used on a {@link Character}.
  */
-public abstract class Consumable extends Usable {
+public interface Consumable extends Item {
 
-  Consumable(EventBus eventBus, String name, int usageLeft) {
-    super(eventBus, name, usageLeft);
-  }
-
-  public void consume(Player user) {
-    if (getUsageLeft() > 0) {
-      performConsumption(user);
-      useOnce();
-    }
-  }
-
-  protected abstract void performConsumption(Player user);
+  void consume(Character character);
 }

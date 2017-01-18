@@ -40,7 +40,6 @@ public class HealTest {
   public void consume() {
     heal.consume(player);
     heal.consume(player);
-    heal.consume(player);
 
     verify(player, times(2)).healBy(Heal.AMOUNT);
     verify(eventBus).post(argumentCaptor.capture());

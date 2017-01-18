@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.target.Target;
  * An {@link Item} that can affect a {@link Character}'s HP and status. Not a {@link Consumable}
  * since the effect of a {@link Weapon} depends on its user.
  */
-public abstract class Weapon extends Usable {
+public abstract class Weapon extends BaseItem {
 
   private final int attackPower;
 

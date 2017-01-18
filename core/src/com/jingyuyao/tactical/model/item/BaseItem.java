@@ -8,22 +8,24 @@ import com.jingyuyao.tactical.model.item.event.RemoveItem;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-public class Usable extends EventBusObject implements Item {
+public class BaseItem extends EventBusObject implements Item {
 
   private final String name;
   private int usageLeft;
 
-  Usable(EventBus eventBus, String name, int usageLeft) {
+  BaseItem(EventBus eventBus, String name, int usageLeft) {
     super(eventBus);
     Preconditions.checkArgument(usageLeft > 0);
     this.name = name;
     this.usageLeft = usageLeft;
   }
 
+  @Override
   public String getName() {
     return name;
   }
 
+  @Override
   public int getUsageLeft() {
     return usageLeft;
   }

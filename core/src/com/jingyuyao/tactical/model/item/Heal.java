@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Character;
 import javax.inject.Inject;
 
-class Heal extends Consumable {
+class Heal extends BaseItem implements Consumable {
 
   // TODO: Remove me
   static final int AMOUNT = 10;
@@ -16,7 +16,8 @@ class Heal extends Consumable {
   }
 
   @Override
-  protected void performConsumption(Player user) {
+  public void consume(Character user) {
     user.healBy(AMOUNT);
+    useOnce();
   }
 }
