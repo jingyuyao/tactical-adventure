@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.target.TargetFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +28,9 @@ public class MeleeTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Characters characters;
-  @Mock
   private Terrains terrains;
+  @Mock
+  private TargetFactory targetFactory;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -38,7 +38,7 @@ public class MeleeTest {
 
   @Before
   public void setUp() {
-    melee = new Melee(eventBus, NAME, INITIAL_USAGE, ATTACK_POWER, characters, terrains);
+    melee = new Melee(eventBus, NAME, INITIAL_USAGE, ATTACK_POWER, terrains, targetFactory);
   }
 
   @Test

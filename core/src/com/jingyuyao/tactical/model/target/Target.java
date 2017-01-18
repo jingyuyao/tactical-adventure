@@ -1,20 +1,27 @@
 package com.jingyuyao.tactical.model.target;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObject;
 
 // TODO: need a method that return a "target info" for this target to be displayed
 public interface Target {
 
-  ImmutableSet<Coordinate> getSelectCoordinates();
+  /**
+   * @return a current view of all the objects on the map that "selects" this target
+   */
+  Iterable<MapObject> getSelectObjects();
 
-  ImmutableList<Character> getTargetCharacters();
+  /**
+   * @return a current view of all the characters being targeted
+   */
+  Iterable<Character> getTargetCharacters();
 
   void showMarking();
 
   void hideMarking();
 
+  /**
+   * Executes this target. Behavior varies depending on the implementation.
+   */
   void execute();
 }

@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.retaliation;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -37,7 +36,7 @@ public class PassiveRetaliation implements Retaliation {
       enemy.setCoordinate(move.getCoordinate());
       for (Weapon weapon : enemy.getWeapons()) {
         for (final Target target : weapon.createTargets(enemy)) {
-          ImmutableList<Character> targetCharacters = target.getTargetCharacters();
+          Iterable<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?
           if (!Iterables.isEmpty(Iterables.filter(targetCharacters, Enemy.class))) {
             continue;

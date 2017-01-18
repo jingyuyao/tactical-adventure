@@ -5,6 +5,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.Iterables;
@@ -70,6 +71,15 @@ public class Characters extends EventBusObject
       builder.add(character.getCoordinate());
     }
     return builder.build();
+  }
+
+  public Iterable<Character> getAll(final ImmutableSet<Coordinate> coordinates) {
+    return Iterables.filter(characterSet, new Predicate<Character>() {
+      @Override
+      public boolean apply(Character input) {
+        return coordinates.contains(input.getCoordinate());
+      }
+    });
   }
 
   @Override

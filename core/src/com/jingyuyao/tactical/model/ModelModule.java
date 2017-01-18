@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.retaliation.RetaliationModule;
 import com.jingyuyao.tactical.model.state.StateModule;
+import com.jingyuyao.tactical.model.target.TargetModule;
 
 public class ModelModule extends AbstractModule {
 
@@ -22,5 +23,6 @@ public class ModelModule extends AbstractModule {
     install(new ItemModule());
     install(new StateModule());
     install(new RetaliationModule());
+    install(new TargetModule());
   }
 }

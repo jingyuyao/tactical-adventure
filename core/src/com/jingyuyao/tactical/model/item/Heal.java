@@ -5,7 +5,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import javax.inject.Inject;
 
-public class Heal extends Consumable {
+class Heal extends Consumable {
 
   // TODO: Remove me
   static final int AMOUNT = 10;

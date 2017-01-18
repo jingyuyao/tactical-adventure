@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.target.Target;
 /**
  * A weapon that can be targeted in all directions in {@link Directions#ALL}.
  */
-public abstract class DirectionalWeapon extends Weapon {
+abstract class DirectionalWeapon extends Weapon {
 
   DirectionalWeapon(
       EventBus eventBus,

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -61,7 +62,7 @@ public class SelectingTarget extends AbstractPlayerState {
 
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
-      if (target.getSelectCoordinates().contains(object.getCoordinate())) {
+      if (Iterables.contains(target.getSelectObjects(), object)) {
         goTo(getStateFactory().createReviewingAttack(getPlayer(), target));
         return;
       }
