@@ -8,26 +8,27 @@ import com.jingyuyao.tactical.model.item.event.RemoveItem;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-public class BaseItem extends EventBusObject implements Item {
+public class BaseItem<T extends ItemStats> extends EventBusObject implements Item {
 
-  private final String name;
-  private int usageLeft;
+  private final T itemStats;
 
-  BaseItem(EventBus eventBus, String name, int usageLeft) {
+  BaseItem(EventBus eventBus, T itemStats) {
     super(eventBus);
-    Preconditions.checkArgument(usageLeft > 0);
-    this.name = name;
-    this.usageLeft = usageLeft;
+    this.itemStats = itemStats;
   }
 
   @Override
   public String getName() {
-    return name;
+    return itemStats.getName();
   }
 
   @Override
   public int getUsageLeft() {
-    return usageLeft;
+    return itemStats.getUsageLeft();
+  }
+
+  T getItemStats() {
+    return itemStats;
   }
 
   /**
@@ -37,10 +38,10 @@ public class BaseItem extends EventBusObject implements Item {
    * if {@link #getUsageLeft()} == 0 after the usage
    */
   void useOnce() {
-    Preconditions.checkState(usageLeft > 0);
+    Preconditions.checkState(itemStats.getUsageLeft() > 0);
 
-    usageLeft--;
-    if (usageLeft == 0) {
+    itemStats.setUsageLeft(itemStats.getUsageLeft() - 1);
+    if (itemStats.getUsageLeft() == 0) {
       post(new RemoveItem(this));
     }
   }

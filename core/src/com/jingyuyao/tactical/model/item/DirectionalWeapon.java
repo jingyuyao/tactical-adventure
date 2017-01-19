@@ -11,23 +11,16 @@ import com.jingyuyao.tactical.model.common.Directions;
 /**
  * A weapon that can be targeted in all directions in {@link Directions#ALL}.
  */
-abstract class DirectionalWeapon extends BaseItem implements Weapon {
+abstract class DirectionalWeapon extends BaseItem<WeaponStats> implements Weapon {
 
-  private final int attackPower;
-
-  DirectionalWeapon(
-      EventBus eventBus,
-      @Assisted String name,
-      @Assisted("usageLeft") int usageLeft,
-      @Assisted("attackPower") int attackPower) {
-    super(eventBus, name, usageLeft);
-    this.attackPower = attackPower;
+  DirectionalWeapon(EventBus eventBus, @Assisted WeaponStats weaponInfo) {
+    super(eventBus, weaponInfo);
   }
 
   @Override
   public void execute(Character attacker, Target target) {
     for (Character opponent : target.getTargetCharacters()) {
-      opponent.damageBy(attackPower);
+      opponent.damageBy(getItemStats().getAttackPower());
     }
     useOnce();
   }

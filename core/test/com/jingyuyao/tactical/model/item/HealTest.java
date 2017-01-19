@@ -33,7 +33,7 @@ public class HealTest {
 
   @Before
   public void setUp() {
-    heal = new Heal(eventBus, NAME, INITIAL_USAGE);
+    heal = new Heal(eventBus, new ItemStats(NAME, INITIAL_USAGE));
   }
 
   @Test

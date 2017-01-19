@@ -37,7 +37,9 @@ public class MeleeTest {
 
   @Before
   public void setUp() {
-    melee = new Melee(eventBus, NAME, INITIAL_USAGE, ATTACK_POWER, terrains, targetFactory);
+    melee =
+        new Melee(
+            eventBus, new WeaponStats(NAME, INITIAL_USAGE, ATTACK_POWER), terrains, targetFactory);
   }
 
   @Test

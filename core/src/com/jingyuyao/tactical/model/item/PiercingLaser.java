@@ -16,12 +16,10 @@ class PiercingLaser extends DirectionalWeapon {
   @Inject
   PiercingLaser(
       EventBus eventBus,
-      @Assisted String name,
-      @Assisted("usageLeft") int usageLeft,
-      @Assisted("attackPower") int attackPower,
+      @Assisted WeaponStats weaponInfo,
       Terrains terrains,
       TargetFactory targetFactory) {
-    super(eventBus, name, usageLeft, attackPower);
+    super(eventBus, weaponInfo);
     this.targetFactory = targetFactory;
     this.terrains = terrains;
   }

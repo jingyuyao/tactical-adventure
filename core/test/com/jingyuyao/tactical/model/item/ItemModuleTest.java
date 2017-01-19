@@ -38,8 +38,8 @@ public class ItemModuleTest {
 
   @Test
   public void item_factory() {
-    itemFactory.createHeal("hello", 2);
-    itemFactory.createMelee("axe", 1, 3);
-    itemFactory.createPiercingLaser("lazor", 10, 5);
+    itemFactory.createHeal(new ItemStats("pot", 5));
+    itemFactory.createMelee(new WeaponStats("axe", 1, 100));
+    itemFactory.createPiercingLaser(new WeaponStats("lazor", 10, 5));
   }
 }
