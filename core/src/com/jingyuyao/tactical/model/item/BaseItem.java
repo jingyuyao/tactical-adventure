@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.item.event.RemoveItem;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-public class BaseItem<T extends ItemStats> extends EventBusObject implements Item {
+class BaseItem<T extends ItemStats> extends EventBusObject implements Item {
 
   private final T itemStats;
 
