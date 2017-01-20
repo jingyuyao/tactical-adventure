@@ -33,6 +33,12 @@ The model and the view are initialized at the same time. Model changes are dispa
 events to the view. Controllers are attached to the view which translate user input to model
 input via visitor pattern. Controllers also listen for new model set up to be initialized.
 
+### Note for EventBus
+Generally, we want the relationship between producers and listeners to be 1-N or N-1.
+This is the most efficient way to distribute the event using the EventBus. We should avoid N-N
+event distribution such as an actor listening for an event from every object. Instead, we should
+have a "collector" that listens for object events and pass them to actors.
+
 ## Models
 - Model classes should self-contained, it should not reference libgdx, controller or views
 - Receive commands via method invocation from controllers
