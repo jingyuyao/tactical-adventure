@@ -1,20 +1,20 @@
 package com.jingyuyao.tactical.view.actor;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.event.SyncMarkers;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.MapView;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An {@link Actor} on a {@link MapView}. Draws all {@link Marker} that belongs to {@link MapObject}
@@ -23,54 +23,50 @@ import java.util.Map;
  * <p>Invariants: - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code
  * mapObject.getY()} after animations
  */
-class MapActor<T extends MapObject> extends Actor {
+public class MapActor extends Actor {
 
-  private final T object;
-  private final Map<Marker, Sprite> markerSpriteMap;
   private final List<Sprite> markerSprites;
+  private Sprite sprite;
 
+  @AssistedInject
   MapActor(
-      T object,
-      EventListener listener,
-      float size,
-      EventBus eventBus,
-      Map<Marker, Sprite> markerSpriteMap,
-      List<Sprite> markerSprites) {
-    this.object = object;
-    this.markerSpriteMap = markerSpriteMap;
-    this.markerSprites = markerSprites;
-    Coordinate coordinate = object.getCoordinate();
-    setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
-    addListener(listener);
-    eventBus.register(this);
+      @Assisted Coordinate initialCoordinate,
+      @Assisted EventListener listener,
+      @ActorWorldSize float size,
+      @InitialMarkerSprites List<Sprite> markerSprites) {
+    this(initialCoordinate, listener, null, Color.WHITE, size, markerSprites);
   }
 
-  T getObject() {
-    return object;
+  @AssistedInject
+  MapActor(
+      @Assisted Coordinate initialCoordinate,
+      @Assisted EventListener listener,
+      @Assisted Sprite sprite,
+      @Assisted Color initialColor,
+      @ActorWorldSize float size,
+      @InitialMarkerSprites List<Sprite> markerSprites) {
+    this.sprite = sprite;
+    this.markerSprites = markerSprites;
+    setColor(initialColor);
+    setBounds(initialCoordinate.getX() * size, initialCoordinate.getY() * size, size, size);
+    addListener(listener);
   }
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
+    if (sprite != null) {
+      sprite.setColor(getColor());
+      sprite.setBounds(getX(), getY(), getWidth(), getHeight());
+      sprite.draw(batch);
+    }
     for (Sprite sprite : markerSprites) {
       sprite.setBounds(getX(), getY(), getWidth(), getHeight());
       sprite.draw(batch);
     }
   }
 
-  @Subscribe
-  public void markersChanged(SyncMarkers syncMarkers) {
-    if (syncMarkers.matches(object)) {
-      markerSprites.clear();
-      Iterables.addAll(
-          markerSprites,
-          Iterables.transform(
-              syncMarkers.getMarkers(),
-              new Function<Marker, Sprite>() {
-                @Override
-                public Sprite apply(Marker input) {
-                  return markerSpriteMap.get(input);
-                }
-              }));
-    }
+  void setMarkerSprites(Iterable<Sprite> sprites) {
+    markerSprites.clear();
+    Iterables.addAll(markerSprites, sprites);
   }
 }

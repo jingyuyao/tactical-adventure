@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.AbstractModule;
@@ -9,12 +8,12 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.controller.InputLock;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
+import com.jingyuyao.tactical.view.actor.ActorAnnotations.BackingActorMap;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialEnemyTint;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialPlayerTint;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.PlayerSprite;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +28,10 @@ public class ActorModule extends AbstractModule {
     requireBinding(InputLock.class);
 
     install(new FactoryModuleBuilder().build(ActorFactory.class));
+
+    bind(Actors.class);
+    bind(MapObjectSubscriber.class);
+    bind(CharacterSubscriber.class);
   }
 
   @Provides
@@ -59,18 +62,6 @@ public class ActorModule extends AbstractModule {
   }
 
   @Provides
-  @InitialPlayerTint
-  Color provideInitialPlayerColor() {
-    return Color.WHITE;
-  }
-
-  @Provides
-  @InitialEnemyTint
-  Color provideInitialEnemyColor() {
-    return Color.RED;
-  }
-
-  @Provides
   @InitialMarkerSprites
   List<Sprite> provideInitialMarkerSprites() {
     return new ArrayList<Sprite>();
@@ -90,5 +81,12 @@ public class ActorModule extends AbstractModule {
   @EnemySprite
   Sprite provideEnemySprite(AssetManager assetManager) {
     return new Sprite(assetManager.get(AssetModule.BILLY, Texture.class));
+  }
+
+  @Provides
+  @Singleton
+  @BackingActorMap
+  Map<MapObject, MapActor> provideBackingActorMap() {
+    return new HashMap<MapObject, MapActor>();
   }
 }
