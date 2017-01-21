@@ -15,9 +15,7 @@ import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.ManagedBy;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
@@ -34,7 +32,6 @@ import javax.inject.Singleton;
 public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
 
   private final Deque<State> stateStack;
-  private MapObject previousHighlight;
 
   @Inject
   public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
@@ -56,7 +53,6 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
   @Override
   public void dispose(ClearMap clearMap) {
     stateStack.clear();
-    previousHighlight = null;
   }
 
   public void select(Player player) {
@@ -72,12 +68,10 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
   }
 
   public void highlight(Character character) {
-    switchHighlightTo(character);
     post(new HighlightCharacter(character));
   }
 
   public void highlight(Terrain terrain) {
-    switchHighlightTo(terrain);
     post(new HighlightTerrain(terrain));
   }
 
@@ -116,14 +110,6 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
     stateStack.push(startingState);
     post(new StateChanged(startingState));
     startingState.enter();
-  }
-
-  private void switchHighlightTo(MapObject newHighlight) {
-    if (previousHighlight != null) {
-      previousHighlight.removeMarker(Marker.HIGHLIGHT);
-    }
-    newHighlight.addMarker(Marker.HIGHLIGHT);
-    previousHighlight = newHighlight;
   }
 
   @BindingAnnotation

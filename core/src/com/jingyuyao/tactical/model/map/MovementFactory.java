@@ -6,6 +6,7 @@ import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,16 +16,22 @@ public class MovementFactory {
   private final Algorithms algorithms;
   private final Characters characters;
   private final Terrains terrains;
+  private final MarkingFactory markingFactory;
 
   @Inject
-  public MovementFactory(Algorithms algorithms, Characters characters, Terrains terrains) {
+  public MovementFactory(
+      Algorithms algorithms,
+      Characters characters,
+      Terrains terrains,
+      MarkingFactory markingFactory) {
     this.algorithms = algorithms;
     this.characters = characters;
     this.terrains = terrains;
+    this.markingFactory = markingFactory;
   }
 
   public Movement create(Character character) {
-    return new Movement(algorithms, terrains, createMoveGraph(character));
+    return new Movement(algorithms, terrains, createMoveGraph(character), markingFactory);
   }
 
   private Graph<Coordinate> createMoveGraph(Character character) {

@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
@@ -116,21 +115,20 @@ public class MapStateTest {
   }
 
   @Test
-  public void highlight() throws Exception {
+  public void highlight_character() throws Exception {
     mapState.highlight(player);
-    mapState.highlight(terrain);
 
-    InOrder inOrder = inOrder(player, terrain, eventBus);
-
-    inOrder.verify(player).addMarker(Marker.HIGHLIGHT);
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     HighlightCharacter highlightCharacter =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
     assertThat(highlightCharacter.getObject()).isEqualTo(player);
+  }
 
-    inOrder.verify(player).removeMarker(Marker.HIGHLIGHT);
-    inOrder.verify(terrain).addMarker(Marker.HIGHLIGHT);
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
+  @Test
+  public void highlight_terrain() {
+    mapState.highlight(terrain);
+
+    verify(eventBus).post(argumentCaptor.capture());
     HighlightTerrain highlightTerrain =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightTerrain.class);
     assertThat(highlightTerrain.getObject()).isEqualTo(terrain);

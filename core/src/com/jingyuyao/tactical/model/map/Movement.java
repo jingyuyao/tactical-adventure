@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
+import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,15 +15,21 @@ import java.util.Map;
  */
 public class Movement {
 
+  private final Graph<Coordinate> moveGraph;
   private final Algorithms algorithms;
   private final Terrains terrains;
-  private final Graph<Coordinate> moveGraph;
+  private final MarkingFactory markingFactory;
   private Marking marking;
 
-  Movement(Algorithms algorithms, Terrains terrains, Graph<Coordinate> moveGraph) {
+  Movement(
+      Algorithms algorithms,
+      Terrains terrains,
+      Graph<Coordinate> moveGraph,
+      MarkingFactory markingFactory) {
     this.algorithms = algorithms;
     this.terrains = terrains;
     this.moveGraph = moveGraph;
+    this.markingFactory = markingFactory;
   }
 
   /**
@@ -63,6 +70,6 @@ public class Movement {
     for (Terrain terrain : terrains.getAll(moveGraph.nodes())) {
       markerMap.put(terrain, Marker.CAN_MOVE_TO);
     }
-    return new Marking(markerMap);
+    return markingFactory.create(markerMap);
   }
 }

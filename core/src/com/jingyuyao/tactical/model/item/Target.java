@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
+import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ public class Target {
   private final ImmutableSet<Coordinate> targetCoordinates;
   private final Characters characters;
   private final Terrains terrains;
+  private final MarkingFactory markingFactory;
   private Marking marking;
 
   @Inject
@@ -29,11 +31,13 @@ public class Target {
       @Assisted("select") ImmutableSet<Coordinate> selectCoordinates,
       @Assisted("target") ImmutableSet<Coordinate> targetCoordinates,
       Characters characters,
-      Terrains terrains) {
+      Terrains terrains,
+      MarkingFactory markingFactory) {
     this.selectCoordinates = selectCoordinates;
     this.targetCoordinates = targetCoordinates;
     this.characters = characters;
     this.terrains = terrains;
+    this.markingFactory = markingFactory;
   }
 
   /**
@@ -71,6 +75,6 @@ public class Target {
     for (Character character : getTargetCharacters()) {
       markerMap.put(character, Marker.POTENTIAL_TARGET);
     }
-    return new Marking(markerMap);
+    return markingFactory.create(markerMap);
   }
 }

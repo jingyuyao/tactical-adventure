@@ -8,6 +8,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,10 @@ public class MapModuleTest {
   @Bind
   @Mock
   private EventBus eventBus;
+  @Bind
+  @Mock
+  private MarkingFactory markingFactory;
+
   @Inject
   private Characters characters;
   @Inject

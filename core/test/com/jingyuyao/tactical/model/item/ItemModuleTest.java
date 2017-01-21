@@ -6,6 +6,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,9 @@ public class ItemModuleTest {
   @Bind
   @Mock
   private Terrains terrains;
+  @Bind
+  @Mock
+  private MarkingFactory markingFactory;
 
   @Inject
   private ItemFactory itemFactory;

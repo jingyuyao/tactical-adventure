@@ -30,7 +30,8 @@ public class ActorModule extends AbstractModule {
     install(new FactoryModuleBuilder().build(ActorFactory.class));
 
     bind(Actors.class);
-    bind(MapObjectSubscriber.class);
+    bind(MarkingSubscriber.class);
+    bind(HighlightSubscriber.class);
     bind(CharacterSubscriber.class);
   }
 

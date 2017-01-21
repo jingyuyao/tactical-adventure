@@ -65,6 +65,14 @@ public class MapActor extends Actor {
     }
   }
 
+  void addMarkerSprite(Sprite markerSprite) {
+    markerSprites.add(markerSprite);
+  }
+
+  void removeMarkerSprite(Sprite markerSprite) {
+    markerSprites.remove(markerSprite);
+  }
+
   void setMarkerSprites(Iterable<Sprite> sprites) {
     markerSprites.clear();
     Iterables.addAll(markerSprites, sprites);

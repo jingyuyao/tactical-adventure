@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.common.CommonModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
+import com.jingyuyao.tactical.model.mark.MarkModule;
 import com.jingyuyao.tactical.model.retaliation.RetaliationModule;
 import com.jingyuyao.tactical.model.state.StateModule;
 
@@ -17,10 +18,11 @@ public class ModelModule extends AbstractModule {
       addError("ModelModule requires singleton pre-loading.");
     }
     install(new CommonModule());
+    install(new MarkModule());
     install(new MapModule());
     install(new CharacterModule());
     install(new ItemModule());
-    install(new StateModule());
     install(new RetaliationModule());
+    install(new StateModule());
   }
 }
