@@ -11,11 +11,8 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,13 +43,11 @@ public class PlayerTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private List<Marker> markers;
   private Player player;
 
   @Before
   public void setUp() {
-    markers = new ArrayList<Marker>();
-    player = new Player(eventBus, COORDINATE, markers, NAME, stats, items);
+    player = new Player(eventBus, COORDINATE, NAME, stats, items);
     verify(eventBus).register(player);
     assertThat(player.isActionable()).isTrue();
   }
@@ -105,17 +100,6 @@ public class PlayerTest {
   @Test
   public void name() {
     assertThat(player.getName()).isEqualTo(NAME);
-  }
-
-  @Test
-  public void markers() {
-    player.addMarker(Marker.DANGER);
-
-    assertThat(markers).containsExactly(Marker.DANGER);
-
-    player.removeMarker(Marker.DANGER);
-
-    assertThat(markers).isEmpty();
   }
 
   @Test

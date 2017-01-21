@@ -15,9 +15,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
-import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {
 
@@ -25,14 +23,8 @@ public abstract class Character extends MapObject implements Disposable {
   private final Stats stats;
   private final Items items;
 
-  Character(
-      EventBus eventBus,
-      Coordinate coordinate,
-      List<Marker> markers,
-      String name,
-      Stats stats,
-      Items items) {
-    super(eventBus, coordinate, markers);
+  Character(EventBus eventBus, Coordinate coordinate, String name, Stats stats, Items items) {
+    super(eventBus, coordinate);
     this.name = name;
     this.stats = stats;
     this.items = items;

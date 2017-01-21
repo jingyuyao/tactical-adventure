@@ -5,9 +5,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
-import java.util.List;
 import javax.inject.Inject;
 
 public class Terrain extends MapObject {
@@ -15,12 +13,8 @@ public class Terrain extends MapObject {
   private final Type type;
 
   @Inject
-  Terrain(
-      EventBus eventBus,
-      @Assisted Coordinate coordinate,
-      @InitialMarkers List<Marker> markers,
-      @Assisted Type type) {
-    super(eventBus, coordinate, markers);
+  Terrain(EventBus eventBus, @Assisted Coordinate coordinate, @Assisted Type type) {
+    super(eventBus, coordinate);
     this.type = type;
   }
 

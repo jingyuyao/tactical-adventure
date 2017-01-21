@@ -10,11 +10,8 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import com.jingyuyao.tactical.model.state.MapState;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,13 +42,11 @@ public class EnemyTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private List<Marker> markers;
   private Enemy enemy;
 
   @Before
   public void setUp() {
-    markers = new ArrayList<Marker>();
-    enemy = new Enemy(eventBus, COORDINATE, markers, NAME, stats, items, retaliation);
+    enemy = new Enemy(eventBus, COORDINATE, NAME, stats, items, retaliation);
   }
 
   @Test
@@ -93,16 +88,5 @@ public class EnemyTest {
     enemy.retaliate();
 
     verify(retaliation).run(enemy);
-  }
-
-  @Test
-  public void markers() {
-    enemy.addMarker(Marker.DANGER);
-
-    assertThat(markers).containsExactly(Marker.DANGER);
-
-    enemy.removeMarker(Marker.DANGER);
-
-    assertThat(markers).isEmpty();
   }
 }

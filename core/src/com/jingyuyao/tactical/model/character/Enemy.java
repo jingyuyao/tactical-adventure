@@ -5,10 +5,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import com.jingyuyao.tactical.model.state.MapState;
-import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -22,12 +20,11 @@ public class Enemy extends Character {
   Enemy(
       EventBus eventBus,
       @Assisted Coordinate coordinate,
-      @InitialMarkers List<Marker> markers,
       @Assisted String name,
       @Assisted Stats stats,
       @Assisted Items items,
       @DefaultRetaliation Retaliation retaliation) {
-    super(eventBus, coordinate, markers, name, stats, items);
+    super(eventBus, coordinate, name, stats, items);
     this.retaliation = retaliation;
   }
 

@@ -5,10 +5,8 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
-import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -22,11 +20,10 @@ public class Player extends Character {
   Player(
       EventBus eventBus,
       @Assisted Coordinate coordinate,
-      @InitialMarkers List<Marker> markers,
       @Assisted String name,
       @Assisted Stats stats,
       @Assisted Items items) {
-    super(eventBus, coordinate, markers, name, stats, items);
+    super(eventBus, coordinate, name, stats, items);
     register();
   }
 

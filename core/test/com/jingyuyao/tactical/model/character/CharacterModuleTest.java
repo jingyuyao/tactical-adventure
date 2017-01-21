@@ -9,14 +9,11 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.MapObject.InitialMarkers;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.retaliation.PassiveRetaliation;
 import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import java.util.Collections;
-import java.util.List;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +30,6 @@ public class CharacterModuleTest {
   @Bind
   @Mock
   private MovementFactory movementFactory;
-  @Bind
-  @Mock
-  @InitialMarkers
-  private List<Marker> initialMarkers;
 
   @Inject
   private CharacterFactory characterFactory;

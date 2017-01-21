@@ -6,11 +6,8 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains.BackingTerrainMap;
-import com.jingyuyao.tactical.model.mark.Marker;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Singleton;
@@ -24,12 +21,6 @@ public class MapModule extends AbstractModule {
     bind(Characters.class);
     bind(Terrains.class);
     bind(MovementFactory.class);
-  }
-
-  @Provides
-  @MapObject.InitialMarkers
-  List<Marker> provideInitialMarkers() {
-    return new ArrayList<Marker>();
   }
 
   @Provides
