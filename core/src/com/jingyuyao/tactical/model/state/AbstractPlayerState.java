@@ -67,30 +67,4 @@ abstract class AbstractPlayerState extends AbstractState {
       finish();
     }
   }
-
-  class SelectItems implements Action {
-
-    @Override
-    public String getName() {
-      return "all items";
-    }
-
-    @Override
-    public void run() {
-      goTo(getStateFactory().createSelectingItem(player));
-    }
-  }
-
-  class Wait implements Action {
-
-    @Override
-    public String getName() {
-      return "wait";
-    }
-
-    @Override
-    public void run() {
-      finish();
-    }
-  }
 }

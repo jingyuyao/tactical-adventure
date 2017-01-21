@@ -34,4 +34,30 @@ abstract class AbstractMovementState extends AbstractPlayerState {
     builder.add(this.new Back());
     return builder.build();
   }
+
+  class SelectItems implements Action {
+
+    @Override
+    public String getName() {
+      return "all items";
+    }
+
+    @Override
+    public void run() {
+      goTo(getStateFactory().createSelectingItem(getPlayer()));
+    }
+  }
+
+  class Wait implements Action {
+
+    @Override
+    public String getName() {
+      return "wait";
+    }
+
+    @Override
+    public void run() {
+      finish();
+    }
+  }
 }
