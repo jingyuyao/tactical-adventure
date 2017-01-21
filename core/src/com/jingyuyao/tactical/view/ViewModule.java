@@ -29,6 +29,10 @@ public class ViewModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    if (!currentStage().equals(com.google.inject.Stage.PRODUCTION)) {
+      addError("ViewModule requires Stage.PRODUCTION for singleton pre-loading.");
+    }
+
     install(new ActorModule());
 
     bind(MapScreen.class);
