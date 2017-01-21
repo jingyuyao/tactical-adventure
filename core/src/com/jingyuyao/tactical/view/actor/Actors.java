@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.controller.MapActorControllerFactory;
+import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -30,7 +30,7 @@ public class Actors implements ManagedBy<NewMap, ClearMap> {
   private final Stage stage;
   private final Map<MapObject, MapActor> actorMap;
   private final ActorFactory actorFactory;
-  private final MapActorControllerFactory mapActorControllerFactory;
+  private final ControllerFactory controllerFactory;
   private final Sprite playerSprite;
   private final Sprite enemySprite;
 
@@ -40,13 +40,13 @@ public class Actors implements ManagedBy<NewMap, ClearMap> {
       @MapViewStage Stage stage,
       @BackingActorMap Map<MapObject, MapActor> actorMap,
       ActorFactory actorFactory,
-      MapActorControllerFactory mapActorControllerFactory,
+      ControllerFactory controllerFactory,
       @PlayerSprite Sprite playerSprite,
       @EnemySprite Sprite enemySprite) {
     this.stage = stage;
     this.actorMap = actorMap;
     this.actorFactory = actorFactory;
-    this.mapActorControllerFactory = mapActorControllerFactory;
+    this.controllerFactory = controllerFactory;
     this.playerSprite = playerSprite;
     this.enemySprite = enemySprite;
     eventBus.register(this);
@@ -57,21 +57,21 @@ public class Actors implements ManagedBy<NewMap, ClearMap> {
   public void initialize(NewMap data) {
     for (Terrain terrain : data.getTerrains()) {
       MapActor actor = actorFactory
-          .create(terrain.getCoordinate(), mapActorControllerFactory.create(terrain));
+          .create(terrain.getCoordinate(), controllerFactory.create(terrain));
       actorMap.put(terrain, actor);
       stage.addActor(actor);
     }
     // Characters must be added after terrain so they get hit by touch input
     for (Player player : data.getPlayers()) {
       MapActor actor = actorFactory
-          .create(player.getCoordinate(), mapActorControllerFactory.create(player), playerSprite,
+          .create(player.getCoordinate(), controllerFactory.create(player), playerSprite,
               Color.WHITE);
       actorMap.put(player, actor);
       stage.addActor(actor);
     }
     for (Enemy enemy : data.getEnemies()) {
       MapActor actor = actorFactory
-          .create(enemy.getCoordinate(), mapActorControllerFactory.create(enemy), enemySprite,
+          .create(enemy.getCoordinate(), controllerFactory.create(enemy), enemySprite,
               Color.RED);
       actorMap.put(enemy, actor);
       stage.addActor(actor);

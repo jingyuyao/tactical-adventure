@@ -7,7 +7,7 @@ public class ControllerModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new FactoryModuleBuilder().build(MapActorControllerFactory.class));
+    install(new FactoryModuleBuilder().build(ControllerFactory.class));
 
     bind(InputLock.class);
     bind(MapController.class);
