@@ -98,13 +98,9 @@ public class MovingTest {
     select_terrain_can_move();
 
     moving.canceled();
-
-    verify(player).getCoordinate();
-    verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
-
     moving.canceled();
 
-    verifyNoMoreInteractions(player);
+    verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
   }
 
   @Test
@@ -143,7 +139,6 @@ public class MovingTest {
 
     moving.select(terrain);
 
-    verify(player).getCoordinate();
     verify(player).move(path);
     verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
