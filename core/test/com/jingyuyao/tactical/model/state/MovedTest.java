@@ -60,7 +60,7 @@ public class MovedTest {
   public void setUp() {
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
-    itemIterable = ImmutableList.<Item>of(weapon, consumable);
+    itemIterable = ImmutableList.of(weapon, consumable);
     moved = new Moved(eventBus, mapState, stateFactory, player);
   }
 
