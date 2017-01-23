@@ -12,7 +12,6 @@ public class ItemModule extends AbstractModule {
   protected void configure() {
     requireBinding(Characters.class);
     requireBinding(Terrains.class);
-    requireBinding(TargetFactory.class);
 
     install(new FactoryModuleBuilder()
         .implement(Weapon.class, Names.named("Melee"), Melee.class)
