@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -23,8 +22,6 @@ public class TerrainTest {
   private static final Type TYPE = Type.NORMAL;
 
   @Mock
-  private EventBus eventBus;
-  @Mock
   private MapState mapState;
   @Mock
   private Character character;
@@ -33,7 +30,7 @@ public class TerrainTest {
 
   @Before
   public void setUp() {
-    terrain = new Terrain(eventBus, COORDINATE, TYPE);
+    terrain = new Terrain(COORDINATE, TYPE);
   }
 
   @Test

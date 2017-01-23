@@ -1,19 +1,16 @@
 package com.jingyuyao.tactical.model.map;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**
  * Super class of all the objects on the game grid.
  */
-public abstract class MapObject extends EventBusObject {
+public abstract class MapObject {
 
   private Coordinate coordinate;
 
-  public MapObject(EventBus eventBus, Coordinate coordinate) {
-    super(eventBus);
+  public MapObject(Coordinate coordinate) {
     this.coordinate = coordinate;
   }
 

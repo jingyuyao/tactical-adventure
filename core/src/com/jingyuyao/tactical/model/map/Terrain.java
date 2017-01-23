@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.map;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
@@ -13,8 +12,8 @@ public class Terrain extends MapObject {
   private final Type type;
 
   @Inject
-  Terrain(EventBus eventBus, @Assisted Coordinate coordinate, @Assisted Type type) {
-    super(eventBus, coordinate);
+  Terrain(@Assisted Coordinate coordinate, @Assisted Type type) {
+    super(coordinate);
     this.type = type;
   }
 

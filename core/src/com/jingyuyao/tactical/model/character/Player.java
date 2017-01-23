@@ -25,18 +25,11 @@ public class Player extends Character {
       @Assisted Stats stats,
       @Assisted List<Item> items) {
     super(eventBus, coordinate, stats, items);
-    register();
   }
 
   @Subscribe
   public void endTurn(EndTurn endTurn) {
     setActionable(true);
-  }
-
-  @Override
-  public void dispose() {
-    unregister();
-    super.dispose();
   }
 
   @Override
@@ -50,6 +43,6 @@ public class Player extends Character {
 
   public void setActionable(boolean actionable) {
     this.actionable = actionable;
-    post(new NewActionState(this, actionable));
+    getEventBus().post(new NewActionState(this, actionable));
   }
 }

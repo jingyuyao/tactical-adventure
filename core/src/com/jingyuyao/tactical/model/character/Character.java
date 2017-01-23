@@ -25,19 +25,21 @@ import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {
 
+  private final EventBus eventBus;
   private final Stats stats;
   private final List<Item> items;
 
   Character(EventBus eventBus, Coordinate coordinate, Stats stats, List<Item> items) {
-    super(eventBus, coordinate);
+    super(coordinate);
+    this.eventBus = eventBus;
     this.stats = stats;
     this.items = items;
-    register();
+    eventBus.register(this);
   }
 
   @Override
   public void dispose() {
-    unregister();
+    eventBus.unregister(this);
   }
 
   @Override
@@ -49,6 +51,10 @@ public abstract class Character extends MapObject implements Disposable {
   public void removeItem(RemoveItem removeItem) {
     // TODO: how to make this constant time?
     items.remove(removeItem.getObject());
+  }
+
+  EventBus getEventBus() {
+    return eventBus;
   }
 
   public String getName() {
@@ -70,7 +76,7 @@ public abstract class Character extends MapObject implements Disposable {
   public void damageBy(int delta) {
     boolean dead = stats.damageBy(delta);
     if (dead) {
-      post(new RemoveCharacter(this));
+      eventBus.post(new RemoveCharacter(this));
       dispose();
     }
   }
@@ -99,13 +105,13 @@ public abstract class Character extends MapObject implements Disposable {
   public ListenableFuture<Void> move(Path path) {
     setCoordinate(path.getDestination());
     SettableFuture<Void> future = SettableFuture.create();
-    post(new Move(this, path, future));
+    eventBus.post(new Move(this, path, future));
     return future;
   }
 
   public void instantMoveTo(Coordinate newCoordinate) {
     setCoordinate(newCoordinate);
-    post(new InstantMove(this, newCoordinate));
+    eventBus.post(new InstantMove(this, newCoordinate));
   }
 
   @Override
