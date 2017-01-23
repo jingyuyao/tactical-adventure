@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.mark;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.event.HideMarking;
 import com.jingyuyao.tactical.model.mark.event.ShowMarking;
@@ -12,8 +11,9 @@ import javax.inject.Inject;
 /**
  * A marking is a map of {@link MapObject} to {@link Marker}.
  */
-public class Marking extends EventBusObject {
+public class Marking {
 
+  private final EventBus eventBus;
   private final Map<MapObject, Marker> markers;
   private boolean applied = false;
 
@@ -22,7 +22,7 @@ public class Marking extends EventBusObject {
    */
   @Inject
   Marking(EventBus eventBus, @Assisted Map<MapObject, Marker> markers) {
-    super(eventBus);
+    this.eventBus = eventBus;
     this.markers = markers;
   }
 
@@ -32,7 +32,7 @@ public class Marking extends EventBusObject {
   public void apply() {
     if (!applied) {
       applied = true;
-      post(new ShowMarking(markers));
+      eventBus.post(new ShowMarking(markers));
     }
   }
 
@@ -42,7 +42,7 @@ public class Marking extends EventBusObject {
   public void clear() {
     if (applied) {
       applied = false;
-      post(new HideMarking(markers));
+      eventBus.post(new HideMarking(markers));
     }
   }
 }

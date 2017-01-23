@@ -2,18 +2,18 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-class BaseItem<T extends ItemStats> extends EventBusObject implements Item {
+class BaseItem<T extends ItemStats> implements Item {
 
+  private final EventBus eventBus;
   private final T itemStats;
 
   BaseItem(EventBus eventBus, T itemStats) {
-    super(eventBus);
+    this.eventBus = eventBus;
     this.itemStats = itemStats;
   }
 
@@ -42,7 +42,7 @@ class BaseItem<T extends ItemStats> extends EventBusObject implements Item {
 
     itemStats.setUsageLeft(itemStats.getUsageLeft() - 1);
     if (itemStats.getUsageLeft() == 0) {
-      post(new RemoveItem(this));
+      eventBus.post(new RemoveItem(this));
     }
   }
 }

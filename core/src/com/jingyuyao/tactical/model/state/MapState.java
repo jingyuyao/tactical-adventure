@@ -11,7 +11,6 @@ import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.common.EventBusObject;
 import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
@@ -29,13 +28,14 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState extends EventBusObject implements EventSubscriber {
+public class MapState implements EventSubscriber {
 
   private final Deque<State> stateStack;
+  private EventBus eventBus;
 
   @Inject
   public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
-    super(eventBus);
+    this.eventBus = eventBus;
     this.stateStack = stateStack;
   }
 
@@ -44,7 +44,7 @@ public class MapState extends EventBusObject implements EventSubscriber {
     State initialState = data.getInitialState();
     stateStack.push(initialState);
     initialState.enter();
-    post(new StateChanged(initialState));
+    eventBus.post(new StateChanged(initialState));
   }
 
   @Subscribe
@@ -65,17 +65,17 @@ public class MapState extends EventBusObject implements EventSubscriber {
   }
 
   public void highlight(Character character) {
-    post(new HighlightCharacter(character));
+    eventBus.post(new HighlightCharacter(character));
   }
 
   public void highlight(Terrain terrain) {
-    post(new HighlightTerrain(terrain));
+    eventBus.post(new HighlightTerrain(terrain));
   }
 
   void push(State newState) {
     stateStack.peek().exit();
     stateStack.push(newState);
-    post(new StateChanged(newState));
+    eventBus.post(new StateChanged(newState));
     newState.enter();
   }
 
@@ -85,7 +85,7 @@ public class MapState extends EventBusObject implements EventSubscriber {
       currentState.exit();
       State lastState = stateStack.peek();
       lastState.canceled();
-      post(new StateChanged(lastState));
+      eventBus.post(new StateChanged(lastState));
       lastState.enter();
     }
   }
@@ -96,7 +96,7 @@ public class MapState extends EventBusObject implements EventSubscriber {
       currentState.exit();
       State lastState = stateStack.peek();
       lastState.canceled();
-      post(new StateChanged(lastState));
+      eventBus.post(new StateChanged(lastState));
       lastState.enter();
     }
   }
@@ -105,7 +105,7 @@ public class MapState extends EventBusObject implements EventSubscriber {
     stateStack.peek().exit();
     stateStack.clear();
     stateStack.push(startingState);
-    post(new StateChanged(startingState));
+    eventBus.post(new StateChanged(startingState));
     startingState.enter();
   }
 
