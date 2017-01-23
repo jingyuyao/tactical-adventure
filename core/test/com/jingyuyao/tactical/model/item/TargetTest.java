@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -15,7 +16,6 @@ import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ public class TargetTest {
   @Mock
   private Marking marking;
   @Captor
-  private ArgumentCaptor<Map<MapObject, Marker>> markerMapCaptor;
+  private ArgumentCaptor<ImmutableMultimap<MapObject, Marker>> markerMapCaptor;
 
   private Target target;
 
@@ -75,14 +75,17 @@ public class TargetTest {
   public void show_marking() {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
     when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
-    when(markingFactory.create(Mockito.<Map<MapObject, Marker>>any())).thenReturn(marking);
+    when(markingFactory.create(Mockito.<ImmutableMultimap<MapObject, Marker>>any()))
+        .thenReturn(marking);
 
     target.showMarking();
 
     verify(markingFactory).create(markerMapCaptor.capture());
     verify(marking).apply();
+    assertThat(markerMapCaptor.getValue()).hasSize(2);
     assertThat(markerMapCaptor.getValue())
-        .containsExactly(terrain, Marker.CAN_ATTACK, character, Marker.POTENTIAL_TARGET);
+        .containsEntry(terrain, Marker.CAN_ATTACK);
+    assertThat(markerMapCaptor.getValue()).containsEntry(character, Marker.POTENTIAL_TARGET);
   }
 
   @Test

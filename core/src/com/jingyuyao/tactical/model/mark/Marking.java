@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model.mark;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.event.HideMarking;
 import com.jingyuyao.tactical.model.mark.event.ShowMarking;
-import java.util.Map;
 import javax.inject.Inject;
 
 /**
@@ -14,14 +14,14 @@ import javax.inject.Inject;
 public class Marking {
 
   private final EventBus eventBus;
-  private final Map<MapObject, Marker> markers;
+  private final ImmutableMultimap<MapObject, Marker> markers;
   private boolean applied = false;
 
   /**
    * Creates a marking with the given {@code markers} map.
    */
   @Inject
-  Marking(EventBus eventBus, @Assisted Map<MapObject, Marker> markers) {
+  Marking(EventBus eventBus, @Assisted ImmutableMultimap<MapObject, Marker> markers) {
     this.eventBus = eventBus;
     this.markers = markers;
   }

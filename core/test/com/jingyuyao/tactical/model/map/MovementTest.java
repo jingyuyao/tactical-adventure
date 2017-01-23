@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
@@ -12,7 +13,6 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
-import java.util.Map;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +47,7 @@ public class MovementTest {
   @Mock
   private Marking marking;
   @Captor
-  private ArgumentCaptor<Map<MapObject, Marker>> markerMapCaptor;
+  private ArgumentCaptor<ImmutableMultimap<MapObject, Marker>> markerMapCaptor;
 
   private Set<Coordinate> moveCoordinates;
   private Movement movement;
@@ -84,13 +84,15 @@ public class MovementTest {
   @Test
   public void show_marking() {
     when(terrains.getAll(moveCoordinates)).thenReturn(ImmutableList.of(terrain));
-    when(markingFactory.create(Mockito.<Map<MapObject, Marker>>any())).thenReturn(marking);
+    when(markingFactory.create(Mockito.<ImmutableMultimap<MapObject, Marker>>any()))
+        .thenReturn(marking);
 
     movement.showMarking();
 
     verify(markingFactory).create(markerMapCaptor.capture());
     verify(marking).apply();
-    assertThat(markerMapCaptor.getValue()).containsExactly(terrain, Marker.CAN_MOVE_TO);
+    assertThat(markerMapCaptor.getValue()).hasSize(1);
+    assertThat(markerMapCaptor.getValue()).containsEntry(terrain, Marker.CAN_MOVE_TO);
   }
 
   @Test

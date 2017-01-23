@@ -5,12 +5,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.event.HideMarking;
 import com.jingyuyao.tactical.model.mark.event.ShowMarking;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class MarkingTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Map<MapObject, Marker> markerMap;
+  private ImmutableMultimap<MapObject, Marker> markerMap;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 

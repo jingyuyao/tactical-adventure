@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.model.mark;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.jingyuyao.tactical.model.map.MapObject;
-import java.util.Map;
 
 public interface MarkingFactory {
 
-  Marking create(Map<MapObject, Marker> markers);
+  Marking create(ImmutableMultimap<MapObject, Marker> markers);
 }

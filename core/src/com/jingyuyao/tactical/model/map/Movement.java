@@ -1,14 +1,13 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
@@ -66,10 +65,10 @@ public class Movement {
   }
 
   private Marking createMarking() {
-    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
     for (Terrain terrain : terrains.getAll(moveGraph.nodes())) {
-      markerMap.put(terrain, Marker.CAN_MOVE_TO);
+      builder.put(terrain, Marker.CAN_MOVE_TO);
     }
-    return markingFactory.create(markerMap);
+    return markingFactory.create(builder.build());
   }
 }

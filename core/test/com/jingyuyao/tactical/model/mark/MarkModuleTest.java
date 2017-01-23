@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.mark;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -30,6 +30,6 @@ public class MarkModuleTest {
 
   @Test
   public void marking_factory() {
-    markingFactory.create(ImmutableMap.<MapObject, Marker>of());
+    markingFactory.create(ImmutableMultimap.<MapObject, Marker>of());
   }
 }

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
@@ -11,8 +12,6 @@ import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 
 // TODO: need a method that return a "target info" for this target to be displayed
@@ -69,13 +68,13 @@ public class Target {
   }
 
   private Marking createMarking() {
-    Map<MapObject, Marker> markerMap = new HashMap<MapObject, Marker>();
+    ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
     for (Terrain terrain : terrains.getAll(targetCoordinates)) {
-      markerMap.put(terrain, Marker.CAN_ATTACK);
+      builder.put(terrain, Marker.CAN_ATTACK);
     }
     for (Character character : getTargetCharacters()) {
-      markerMap.put(character, Marker.POTENTIAL_TARGET);
+      builder.put(character, Marker.POTENTIAL_TARGET);
     }
-    return markingFactory.create(markerMap);
+    return markingFactory.create(builder.build());
   }
 }

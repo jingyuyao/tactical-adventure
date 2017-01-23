@@ -7,6 +7,7 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.event.HideMarking;
 import com.jingyuyao.tactical.model.mark.event.ShowMarking;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
@@ -26,20 +27,24 @@ public class MarkingSubscriber implements EventSubscriber {
 
   @Subscribe
   public void showMarking(ShowMarking showMarking) {
-    for (Entry<MapObject, Marker> entry : showMarking.getObject().entrySet()) {
+    for (Entry<MapObject, Collection<Marker>> entry : showMarking.getObject().asMap().entrySet()) {
       MapActor actor = actors.get(entry.getKey());
       if (actor != null) {
-        actor.addMarkerSprite(markerSpriteMap.get(entry.getValue()));
+        for (Marker marker : entry.getValue()) {
+          actor.addMarkerSprite(markerSpriteMap.get(marker));
+        }
       }
     }
   }
 
   @Subscribe
   public void hideMarking(HideMarking hideMarking) {
-    for (Entry<MapObject, Marker> entry : hideMarking.getObject().entrySet()) {
+    for (Entry<MapObject, Collection<Marker>> entry : hideMarking.getObject().asMap().entrySet()) {
       MapActor actor = actors.get(entry.getKey());
       if (actor != null) {
-        actor.removeMarkerSprite(markerSpriteMap.get(entry.getValue()));
+        for (Marker marker : entry.getValue()) {
+          actor.removeMarkerSprite(markerSpriteMap.get(marker));
+        }
       }
     }
   }
