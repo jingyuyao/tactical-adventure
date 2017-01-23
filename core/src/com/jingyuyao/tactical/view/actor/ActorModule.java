@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.multibindings.Multibinder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.controller.InputLock;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
@@ -29,10 +31,12 @@ public class ActorModule extends AbstractModule {
 
     install(new FactoryModuleBuilder().build(ActorFactory.class));
 
-    bind(Actors.class);
-    bind(MarkingSubscriber.class);
-    bind(HighlightSubscriber.class);
-    bind(CharacterSubscriber.class);
+    Multibinder<EventSubscriber> subscriberBinder =
+        Multibinder.newSetBinder(binder(), EventSubscriber.class);
+    subscriberBinder.addBinding().to(Actors.class);
+    subscriberBinder.addBinding().to(MarkingSubscriber.class);
+    subscriberBinder.addBinding().to(HighlightSubscriber.class);
+    subscriberBinder.addBinding().to(CharacterSubscriber.class);
   }
 
   @Provides

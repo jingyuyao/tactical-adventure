@@ -7,12 +7,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.EventBusObject;
-import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import java.lang.annotation.Retention;
@@ -27,8 +25,7 @@ import javax.inject.Singleton;
  */
 // TODO: sync changes terrains' coordinates with grid when terrain can change locations
 @Singleton
-public class Terrains extends EventBusObject
-    implements ManagedBy<NewMap, ClearMap>, Iterable<Terrain> {
+public class Terrains implements EventSubscriber, Iterable<Terrain> {
 
   // We rely on coordinates' hashing invariant
   private final Map<Coordinate, Terrain> terrainMap;
@@ -36,14 +33,11 @@ public class Terrains extends EventBusObject
   private int height;
 
   @Inject
-  Terrains(EventBus eventBus, @BackingTerrainMap Map<Coordinate, Terrain> terrainMap) {
-    super(eventBus);
+  Terrains(@BackingTerrainMap Map<Coordinate, Terrain> terrainMap) {
     this.terrainMap = terrainMap;
-    register();
   }
 
   @Subscribe
-  @Override
   public void initialize(NewMap data) {
     for (Terrain terrain : data.getTerrains()) {
       terrainMap.put(terrain.getCoordinate(), terrain);
@@ -54,7 +48,6 @@ public class Terrains extends EventBusObject
   }
 
   @Subscribe
-  @Override
   public void dispose(ClearMap clearMap) {
     terrainMap.clear();
     width = 0;

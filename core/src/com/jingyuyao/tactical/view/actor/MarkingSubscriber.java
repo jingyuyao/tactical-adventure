@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.event.HideMarking;
@@ -13,16 +13,15 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MarkingSubscriber {
+public class MarkingSubscriber implements EventSubscriber {
 
   private final Actors actors;
   private final Map<Marker, Sprite> markerSpriteMap;
 
   @Inject
-  MarkingSubscriber(EventBus eventBus, Actors actors, Map<Marker, Sprite> markerSpriteMap) {
+  MarkingSubscriber(Actors actors, Map<Marker, Sprite> markerSpriteMap) {
     this.actors = actors;
     this.markerSpriteMap = markerSpriteMap;
-    eventBus.register(this);
   }
 
   @Subscribe

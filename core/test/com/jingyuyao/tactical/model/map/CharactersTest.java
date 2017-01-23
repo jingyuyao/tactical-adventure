@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -31,8 +30,6 @@ public class CharactersTest {
   private static final Coordinate COORDINATE2 = new Coordinate(0, 2);
 
   @Mock
-  private EventBus eventBus;
-  @Mock
   private Set<Character> characterSet;
   @Mock
   private NewMap newMap;
@@ -54,8 +51,7 @@ public class CharactersTest {
 
   @Before
   public void setUp() {
-    characters = new Characters(eventBus, characterSet);
-    verify(eventBus).register(characters);
+    characters = new Characters(characterSet);
     players = Collections.singletonList(player);
     enemies = Collections.singletonList(enemy);
   }

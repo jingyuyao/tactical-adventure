@@ -8,18 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.controller.InputLock;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class CharacterSubscriber {
+public class CharacterSubscriber implements EventSubscriber {
 
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
@@ -27,10 +27,9 @@ public class CharacterSubscriber {
   private final InputLock inputLock;
 
   @Inject
-  CharacterSubscriber(Actors actors, EventBus eventBus, InputLock inputLock) {
+  CharacterSubscriber(Actors actors, InputLock inputLock) {
     this.actors = actors;
     this.inputLock = inputLock;
-    eventBus.register(this);
   }
 
   @Subscribe

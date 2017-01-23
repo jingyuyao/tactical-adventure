@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.EventBusObject;
-import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -29,7 +29,7 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearMap> {
+public class MapState extends EventBusObject implements EventSubscriber {
 
   private final Deque<State> stateStack;
 
@@ -37,11 +37,9 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
   public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
     super(eventBus);
     this.stateStack = stateStack;
-    register();
   }
 
   @Subscribe
-  @Override
   public void initialize(NewMap data) {
     State initialState = data.getInitialState();
     stateStack.push(initialState);
@@ -50,7 +48,6 @@ public class MapState extends EventBusObject implements ManagedBy<NewMap, ClearM
   }
 
   @Subscribe
-  @Override
   public void dispose(ClearMap clearMap) {
     stateStack.clear();
   }

@@ -7,11 +7,13 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
+import java.util.Set;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,11 +42,11 @@ public class StateModuleTest {
   private Movement movement;
 
   @Inject
-  private MapState mapState1;
-  @Inject
-  private MapState mapState2;
-  @Inject
   private StateFactory stateFactory;
+  @Inject
+  private MapState mapState;
+  @Inject
+  private Set<EventSubscriber> eventSubscribers;
 
   @Before
   public void setUp() {
@@ -63,7 +65,7 @@ public class StateModuleTest {
   }
 
   @Test
-  public void map_state_singleton() {
-    assertThat(mapState1).isSameAs(mapState2);
+  public void event_subscriber() {
+    assertThat(eventSubscribers).containsExactly(mapState);
   }
 }

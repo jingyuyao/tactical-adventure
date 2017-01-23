@@ -9,10 +9,10 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
-import com.google.inject.Stage;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.MapLoader;
+import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
@@ -23,20 +23,20 @@ public class TacticalAdventure extends Game {
   @Inject
   private EventBus eventBus;
   @Inject
+  private Model model;
+  @Inject
   private MapScreen mapScreen;
+  @Inject
+  private MapLoader mapLoader;
   @Inject
   private Batch batch;
   @Inject
   private AssetManager assetManager;
-  @Inject
-  private MapLoader mapLoader;
 
   @Override
   public void create() {
     Guice
         .createInjector(
-            // we need to pre-load all singletons so they can start receiving events
-            Stage.PRODUCTION,
             new AssetModule(),
             new GameModule(),
             new ModelModule(),
@@ -44,6 +44,7 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
+    model.registerEventSubscribers();
     eventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }

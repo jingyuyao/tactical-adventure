@@ -4,14 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Preconditions;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -25,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Actors implements ManagedBy<NewMap, ClearMap> {
+public class Actors implements EventSubscriber {
 
   private final Stage stage;
   private final Map<MapObject, MapActor> actorMap;
@@ -36,7 +35,6 @@ public class Actors implements ManagedBy<NewMap, ClearMap> {
 
   @Inject
   Actors(
-      EventBus eventBus,
       @MapViewStage Stage stage,
       @BackingActorMap Map<MapObject, MapActor> actorMap,
       ActorFactory actorFactory,
@@ -49,11 +47,9 @@ public class Actors implements ManagedBy<NewMap, ClearMap> {
     this.controllerFactory = controllerFactory;
     this.playerSprite = playerSprite;
     this.enemySprite = enemySprite;
-    eventBus.register(this);
   }
 
   @Subscribe
-  @Override
   public void initialize(NewMap data) {
     for (Terrain terrain : data.getTerrains()) {
       MapActor actor = actorFactory
@@ -79,7 +75,6 @@ public class Actors implements ManagedBy<NewMap, ClearMap> {
   }
 
   @Subscribe
-  @Override
   public void dispose(ClearMap data) {
     actorMap.clear();
     stage.clear();

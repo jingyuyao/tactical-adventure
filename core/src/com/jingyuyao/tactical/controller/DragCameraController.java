@@ -4,9 +4,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.common.ManagedBy;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapViewViewport;
@@ -14,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class DragCameraController extends InputAdapter implements ManagedBy<NewMap, ClearMap> {
+class DragCameraController extends InputAdapter implements EventSubscriber {
 
   private final Viewport viewport;
   private int worldWidth;
@@ -24,20 +23,17 @@ class DragCameraController extends InputAdapter implements ManagedBy<NewMap, Cle
   private int lastY;
 
   @Inject
-  DragCameraController(EventBus eventBus, @MapViewViewport Viewport viewport) {
+  DragCameraController(@MapViewViewport Viewport viewport) {
     this.viewport = viewport;
-    eventBus.register(this);
   }
 
   @Subscribe
-  @Override
   public void initialize(NewMap data) {
     worldWidth = data.getWidth();
     worldHeight = data.getHeight();
   }
 
   @Subscribe
-  @Override
   public void dispose(ClearMap data) {
     lastPointer = -1;
     lastX = 0;

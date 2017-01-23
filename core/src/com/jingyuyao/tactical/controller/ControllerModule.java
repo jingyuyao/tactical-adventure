@@ -2,6 +2,8 @@ package com.jingyuyao.tactical.controller;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.multibindings.Multibinder;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 
 public class ControllerModule extends AbstractModule {
 
@@ -9,8 +11,9 @@ public class ControllerModule extends AbstractModule {
   protected void configure() {
     install(new FactoryModuleBuilder().build(ControllerFactory.class));
 
-    bind(InputLock.class);
-    bind(MapController.class);
-    bind(DragCameraController.class);
+    Multibinder<EventSubscriber> subscriberBinder =
+        Multibinder.newSetBinder(binder(), EventSubscriber.class);
+    subscriberBinder.addBinding().to(DragCameraController.class);
+    subscriberBinder.addBinding().to(MapController.class);
   }
 }

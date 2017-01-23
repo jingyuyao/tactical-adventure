@@ -58,7 +58,6 @@ public class MapStateTest {
   @Before
   public void setUp() {
     mapState = new MapState(eventBus, stateStack);
-    verify(eventBus).register(mapState);
   }
 
   @Test

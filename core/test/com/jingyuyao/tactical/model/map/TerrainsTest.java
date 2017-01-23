@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.ClearMap;
@@ -27,8 +26,6 @@ public class TerrainsTest {
   private static final Coordinate COORDINATE1 = new Coordinate(0, 0);
   private static final Coordinate COORDINATE2 = new Coordinate(1, 0);
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private Map<Coordinate, Terrain> terrainMap;
   @Mock
@@ -54,8 +51,7 @@ public class TerrainsTest {
 
   @Before
   public void setUp() {
-    terrains = new Terrains(eventBus, terrainMap);
-    verify(eventBus).register(terrains);
+    terrains = new Terrains(terrainMap);
   }
 
   @Test
