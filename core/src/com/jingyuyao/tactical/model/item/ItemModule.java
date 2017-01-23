@@ -15,6 +15,7 @@ public class ItemModule extends AbstractModule {
 
     install(new FactoryModuleBuilder()
         .implement(Weapon.class, Names.named("DirectionalWeapon"), DirectionalWeapon.class)
+        .implement(Weapon.class, Names.named("Grenade"), Grenade.class)
         .implement(Consumable.class, Names.named("Heal"), Heal.class)
         .build(ItemFactory.class));
     install(new FactoryModuleBuilder().build(TargetFactory.class));

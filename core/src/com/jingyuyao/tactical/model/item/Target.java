@@ -27,13 +27,13 @@ public class Target {
 
   @Inject
   Target(
-      @Assisted("select") ImmutableSet<Coordinate> selectCoordinates,
-      @Assisted("target") ImmutableSet<Coordinate> targetCoordinates,
+      @Assisted("select") Iterable<Coordinate> selectCoordinates,
+      @Assisted("target") Iterable<Coordinate> targetCoordinates,
       Characters characters,
       Terrains terrains,
       MarkingFactory markingFactory) {
-    this.selectCoordinates = selectCoordinates;
-    this.targetCoordinates = targetCoordinates;
+    this.selectCoordinates = ImmutableSet.copyOf(selectCoordinates);
+    this.targetCoordinates = ImmutableSet.copyOf(targetCoordinates);
     this.characters = characters;
     this.terrains = terrains;
     this.markingFactory = markingFactory;

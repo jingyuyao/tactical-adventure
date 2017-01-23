@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponStats;
+import com.jingyuyao.tactical.model.item.GrenadeStats;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.ItemStats;
@@ -133,27 +134,26 @@ public class MapLoader {
   }
 
   private List<Item> createItems1() {
-    int attackPower = 5;
     List<Item> items = new ArrayList<Item>();
     items.add(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Laser5", 1, attackPower, 10)));
+            .createDirectionalWeapon(new DirectionalWeaponStats("Laser5", 1, 5, 10)));
     items.add(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Melee5", 10, attackPower, 1)));
+            .createDirectionalWeapon(new DirectionalWeaponStats("Melee5", 10, 5, 1)));
     items.add(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Melee5", 3, attackPower, 1)));
+            .createDirectionalWeapon(new DirectionalWeaponStats("Melee10", 3, 10, 1)));
     items.add(itemFactory.createHeal(new ItemStats("pot", 3)));
     return items;
   }
 
   private List<Item> createItems2() {
-    int attackPower = 3;
     List<Item> weapons = new ArrayList<Item>();
     weapons.add(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Laser3", 5, attackPower, 10)));
+            .createDirectionalWeapon(new DirectionalWeaponStats("Laser3", 5, 3, 10)));
+    weapons.add(itemFactory.createGrenade(new GrenadeStats("Grenade5", 3, 5, 5, 3)));
     return weapons;
   }
 }

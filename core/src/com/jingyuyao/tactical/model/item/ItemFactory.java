@@ -7,6 +7,9 @@ public interface ItemFactory {
   @Named("DirectionalWeapon")
   Weapon createDirectionalWeapon(DirectionalWeaponStats weaponStats);
 
+  @Named("Grenade")
+  Weapon createGrenade(GrenadeStats grenadeStats);
+
   @Named("Heal")
   Consumable createHeal(ItemStats itemStats);
 }
