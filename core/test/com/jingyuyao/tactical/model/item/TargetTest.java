@@ -45,6 +45,8 @@ public class TargetTest {
   @Mock
   private Terrain terrain;
   @Mock
+  private Terrain terrain2;
+  @Mock
   private Marking marking;
   @Captor
   private ArgumentCaptor<ImmutableMultimap<MapObject, Marker>> markerMapCaptor;
@@ -74,6 +76,7 @@ public class TargetTest {
   @Test
   public void show_marking() {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
+    when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain2));
     when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
     when(markingFactory.create(Mockito.<ImmutableMultimap<MapObject, Marker>>any()))
         .thenReturn(marking);
@@ -82,9 +85,9 @@ public class TargetTest {
 
     verify(markingFactory).create(markerMapCaptor.capture());
     verify(marking).apply();
-    assertThat(markerMapCaptor.getValue()).hasSize(2);
-    assertThat(markerMapCaptor.getValue())
-        .containsEntry(terrain, Marker.CAN_ATTACK);
+    assertThat(markerMapCaptor.getValue()).hasSize(3);
+    assertThat(markerMapCaptor.getValue()).containsEntry(terrain, Marker.CAN_ATTACK);
+    assertThat(markerMapCaptor.getValue()).containsEntry(terrain2, Marker.TARGET_SELECT);
     assertThat(markerMapCaptor.getValue()).containsEntry(character, Marker.POTENTIAL_TARGET);
   }
 
