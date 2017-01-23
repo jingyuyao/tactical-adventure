@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -17,9 +19,7 @@ import com.jingyuyao.tactical.view.actor.ActorAnnotations.BackingActorMap;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.PlayerSprite;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Singleton;
 
@@ -68,8 +68,8 @@ public class ActorModule extends AbstractModule {
 
   @Provides
   @InitialMarkerSprites
-  List<Sprite> provideInitialMarkerSprites() {
-    return new ArrayList<Sprite>();
+  Multiset<Sprite> provideInitialMarkerSprites() {
+    return HashMultiset.create();
   }
 
   // TODO: temp, remove me

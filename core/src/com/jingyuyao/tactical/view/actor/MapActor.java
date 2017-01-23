@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Multiset;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
-import java.util.List;
 
 /**
  * An {@link Actor} on a {@link MapView}. Draws all {@link Marker} that belongs to {@link MapObject}
@@ -25,7 +24,7 @@ import java.util.List;
  */
 public class MapActor extends Actor {
 
-  private final List<Sprite> markerSprites;
+  private final Multiset<Sprite> markerSprites;
   private Sprite sprite;
 
   @AssistedInject
@@ -33,7 +32,7 @@ public class MapActor extends Actor {
       @Assisted Coordinate initialCoordinate,
       @Assisted EventListener listener,
       @ActorWorldSize float size,
-      @InitialMarkerSprites List<Sprite> markerSprites) {
+      @InitialMarkerSprites Multiset<Sprite> markerSprites) {
     this(initialCoordinate, listener, null, Color.WHITE, size, markerSprites);
   }
 
@@ -44,7 +43,7 @@ public class MapActor extends Actor {
       @Assisted Sprite sprite,
       @Assisted Color initialColor,
       @ActorWorldSize float size,
-      @InitialMarkerSprites List<Sprite> markerSprites) {
+      @InitialMarkerSprites Multiset<Sprite> markerSprites) {
     this.sprite = sprite;
     this.markerSprites = markerSprites;
     setColor(initialColor);
@@ -59,7 +58,10 @@ public class MapActor extends Actor {
       sprite.setBounds(getX(), getY(), getWidth(), getHeight());
       sprite.draw(batch);
     }
-    for (Sprite sprite : markerSprites) {
+    // We allow actor to retain multiple copies of a marker sprite but we only show one at a time
+    // this allows multiple markings to apply and remove the same marker on an actor without
+    // worrying about other markings
+    for (Sprite sprite : markerSprites.elementSet()) {
       sprite.setBounds(getX(), getY(), getWidth(), getHeight());
       sprite.draw(batch);
     }
@@ -71,10 +73,5 @@ public class MapActor extends Actor {
 
   void removeMarkerSprite(Sprite markerSprite) {
     markerSprites.remove(markerSprite);
-  }
-
-  void setMarkerSprites(Iterable<Sprite> sprites) {
-    markerSprites.clear();
-    Iterables.addAll(markerSprites, sprites);
   }
 }
