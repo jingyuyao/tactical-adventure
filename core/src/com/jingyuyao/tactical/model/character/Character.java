@@ -1,7 +1,10 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
@@ -12,30 +15,40 @@ import com.jingyuyao.tactical.model.common.Disposable;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.item.event.RemoveItem;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.MapState;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class Character extends MapObject implements Disposable {
 
   private final Stats stats;
-  private final Items items;
+  private final List<Item> items;
 
-  Character(EventBus eventBus, Coordinate coordinate, Stats stats, Items items) {
+  Character(EventBus eventBus, Coordinate coordinate, Stats stats, List<Item> items) {
     super(eventBus, coordinate);
     this.stats = stats;
     this.items = items;
+    register();
   }
 
   @Override
   public void dispose() {
-    items.dispose();
+    unregister();
   }
 
   @Override
   public void highlight(MapState mapState) {
     mapState.highlight(this);
+  }
+
+  @Subscribe
+  public void removeItem(RemoveItem removeItem) {
+    // TODO: how to make this constant time?
+    items.remove(removeItem.getObject());
   }
 
   public String getName() {
@@ -67,19 +80,20 @@ public abstract class Character extends MapObject implements Disposable {
   }
 
   public Iterable<Item> getItems() {
-    return items.getItems();
+    return items;
   }
 
   public Iterable<Consumable> getConsumables() {
-    return items.getConsumables();
+    return Iterables.filter(items, Consumable.class);
   }
 
   public Iterable<Weapon> getWeapons() {
-    return items.getWeapons();
+    return Iterables.filter(items, Weapon.class);
   }
 
   public void quickAccess(Item item) {
-    items.quickAccess(item);
+    Preconditions.checkArgument(items.contains(item));
+    Collections.swap(items, 0, items.indexOf(item));
   }
 
   public ListenableFuture<Void> move(Path path) {

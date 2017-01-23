@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Items;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -133,20 +132,20 @@ public class MapLoader {
     return standOnTerrainTypes;
   }
 
-  private Items createItems1() {
+  private List<Item> createItems1() {
     int attackPower = 5;
     List<Item> items = new ArrayList<Item>();
     items.add(itemFactory.createPiercingLaser(new WeaponStats("Laser5", 1, attackPower)));
     items.add(itemFactory.createMelee(new WeaponStats("Melee5", 10, attackPower)));
     items.add(itemFactory.createMelee(new WeaponStats("Melee5", 3, attackPower)));
     items.add(itemFactory.createHeal(new ItemStats("pot", 3)));
-    return characterFactory.createItems(items);
+    return items;
   }
 
-  private Items createItems2() {
+  private List<Item> createItems2() {
     int attackPower = 3;
     List<Item> weapons = new ArrayList<Item>();
     weapons.add(itemFactory.createPiercingLaser(new WeaponStats("Laser3", 5, attackPower)));
-    return characterFactory.createItems(weapons);
+    return weapons;
   }
 }

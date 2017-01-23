@@ -44,15 +44,14 @@ public class CharacterModuleTest {
 
   @Test
   public void create_characters() {
-    Items items = characterFactory.createItems(Collections.<Item>emptyList());
     characterFactory.createPlayer(
         new Coordinate(0, 0),
         new Stats("yolo", 1, 1, Collections.<Type>emptySet()),
-        items);
+        Collections.<Item>emptyList());
     characterFactory.createEnemy(
         new Coordinate(0, 0),
         new Stats("holo", 1, 1, Collections.<Type>emptySet()),
-        items);
+        Collections.<Item>emptyList());
   }
 
   @Test

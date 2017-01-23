@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface CharacterFactory {
 
-  Player createPlayer(Coordinate coordinate, Stats stats, Items items);
+  Player createPlayer(Coordinate coordinate, Stats stats, List<Item> items);
 
-  Enemy createEnemy(Coordinate coordinate, Stats stats, Items items);
-
-  Items createItems(List<Item> items);
+  Enemy createEnemy(Coordinate coordinate, Stats stats, List<Item> items);
 }
