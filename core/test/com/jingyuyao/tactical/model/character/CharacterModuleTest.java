@@ -47,13 +47,11 @@ public class CharacterModuleTest {
     Items items = characterFactory.createItems(Collections.<Item>emptyList());
     characterFactory.createPlayer(
         new Coordinate(0, 0),
-        "yolo",
-        new Stats(1, 1, Collections.<Type>emptySet()),
+        new Stats("yolo", 1, 1, Collections.<Type>emptySet()),
         items);
     characterFactory.createEnemy(
         new Coordinate(0, 0),
-        "yolo",
-        new Stats(1, 1, Collections.<Type>emptySet()),
+        new Stats("holo", 1, 1, Collections.<Type>emptySet()),
         items);
   }
 

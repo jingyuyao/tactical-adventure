@@ -109,20 +109,20 @@ public class MapLoader {
     int hp = 20;
     return ImmutableList.of(
         characterFactory.createPlayer(
-            new Coordinate(2, 2), "john", new Stats(hp, 5, normalAndObstructed()), createItems1()),
+            new Coordinate(2, 2), new Stats("john", hp, 5, normalAndObstructed()), createItems1()),
         characterFactory.createPlayer(
-            new Coordinate(2, 3), "john", new Stats(hp, 6, normalAndObstructed()), createItems2()));
+            new Coordinate(2, 3), new Stats("john", hp, 6, normalAndObstructed()), createItems2()));
   }
 
   private List<Enemy> createTestEnemies() {
     int hp = 20;
     return ImmutableList.of(
         characterFactory.createEnemy(
-            new Coordinate(8, 3), "billy", new Stats(hp, 3, normalAndObstructed()), createItems1()),
+            new Coordinate(8, 3), new Stats("billy", hp, 3, normalAndObstructed()),
+            createItems1()),
         characterFactory.createEnemy(
             new Coordinate(9, 3),
-            "billy",
-            new Stats(hp, 2, normalAndObstructed()),
+            new Stats("billy", hp, 2, normalAndObstructed()),
             createItems2()));
   }
 

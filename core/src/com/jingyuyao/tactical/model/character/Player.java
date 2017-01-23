@@ -20,10 +20,9 @@ public class Player extends Character {
   Player(
       EventBus eventBus,
       @Assisted Coordinate coordinate,
-      @Assisted String name,
       @Assisted Stats stats,
       @Assisted Items items) {
-    super(eventBus, coordinate, name, stats, items);
+    super(eventBus, coordinate, stats, items);
     register();
   }
 

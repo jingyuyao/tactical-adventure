@@ -46,7 +46,7 @@ public class EnemyTest {
 
   @Before
   public void setUp() {
-    enemy = new Enemy(eventBus, COORDINATE, NAME, stats, items, retaliation);
+    enemy = new Enemy(eventBus, COORDINATE, stats, items, retaliation);
   }
 
   @Test
@@ -80,6 +80,8 @@ public class EnemyTest {
 
   @Test
   public void name() {
+    when(stats.getName()).thenReturn(NAME);
+
     assertThat(enemy.getName()).isEqualTo(NAME);
   }
 

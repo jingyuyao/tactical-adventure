@@ -20,11 +20,10 @@ public class Enemy extends Character {
   Enemy(
       EventBus eventBus,
       @Assisted Coordinate coordinate,
-      @Assisted String name,
       @Assisted Stats stats,
       @Assisted Items items,
       @DefaultRetaliation Retaliation retaliation) {
-    super(eventBus, coordinate, name, stats, items);
+    super(eventBus, coordinate, stats, items);
     this.retaliation = retaliation;
   }
 

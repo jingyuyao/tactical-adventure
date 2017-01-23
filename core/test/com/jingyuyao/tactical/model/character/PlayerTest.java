@@ -47,7 +47,7 @@ public class PlayerTest {
 
   @Before
   public void setUp() {
-    player = new Player(eventBus, COORDINATE, NAME, stats, items);
+    player = new Player(eventBus, COORDINATE, stats, items);
     verify(eventBus).register(player);
     assertThat(player.isActionable()).isTrue();
   }
@@ -99,6 +99,8 @@ public class PlayerTest {
 
   @Test
   public void name() {
+    when(stats.getName()).thenReturn(NAME);
+
     assertThat(player.getName()).isEqualTo(NAME);
   }
 

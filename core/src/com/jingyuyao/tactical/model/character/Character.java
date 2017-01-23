@@ -19,13 +19,11 @@ import com.jingyuyao.tactical.model.state.MapState;
 
 public abstract class Character extends MapObject implements Disposable {
 
-  private final String name;
   private final Stats stats;
   private final Items items;
 
-  Character(EventBus eventBus, Coordinate coordinate, String name, Stats stats, Items items) {
+  Character(EventBus eventBus, Coordinate coordinate, Stats stats, Items items) {
     super(eventBus, coordinate);
-    this.name = name;
     this.stats = stats;
     this.items = items;
   }
@@ -41,23 +39,11 @@ public abstract class Character extends MapObject implements Disposable {
   }
 
   public String getName() {
-    return name;
+    return stats.getName();
   }
 
   public int getHp() {
     return stats.getHp();
-  }
-
-  public Iterable<Item> getItems() {
-    return items.getItems();
-  }
-
-  public Iterable<Consumable> getConsumables() {
-    return items.getConsumables();
-  }
-
-  public Iterable<Weapon> getWeapons() {
-    return items.getWeapons();
   }
 
   public int getMoveDistance() {
@@ -66,22 +52,6 @@ public abstract class Character extends MapObject implements Disposable {
 
   public boolean canPassTerrainType(Terrain.Type terrainType) {
     return stats.canPassTerrainType(terrainType);
-  }
-
-  public ListenableFuture<Void> move(Path path) {
-    setCoordinate(path.getDestination());
-    SettableFuture<Void> future = SettableFuture.create();
-    post(new Move(this, path, future));
-    return future;
-  }
-
-  public void instantMoveTo(Coordinate newCoordinate) {
-    setCoordinate(newCoordinate);
-    post(new InstantMove(this, newCoordinate));
-  }
-
-  public void quickAccess(Item item) {
-    items.quickAccess(item);
   }
 
   public void damageBy(int delta) {
@@ -96,8 +66,36 @@ public abstract class Character extends MapObject implements Disposable {
     stats.healBy(delta);
   }
 
+  public Iterable<Item> getItems() {
+    return items.getItems();
+  }
+
+  public Iterable<Consumable> getConsumables() {
+    return items.getConsumables();
+  }
+
+  public Iterable<Weapon> getWeapons() {
+    return items.getWeapons();
+  }
+
+  public void quickAccess(Item item) {
+    items.quickAccess(item);
+  }
+
+  public ListenableFuture<Void> move(Path path) {
+    setCoordinate(path.getDestination());
+    SettableFuture<Void> future = SettableFuture.create();
+    post(new Move(this, path, future));
+    return future;
+  }
+
+  public void instantMoveTo(Coordinate newCoordinate) {
+    setCoordinate(newCoordinate);
+    post(new InstantMove(this, newCoordinate));
+  }
+
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("name", name).toString() + super.toString();
+    return MoreObjects.toStringHelper(this).add("name", getName()).toString() + super.toString();
   }
 }
