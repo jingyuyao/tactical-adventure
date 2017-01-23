@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -26,8 +25,6 @@ public class MovedTest {
 
   private static final Coordinate COORDINATE = new Coordinate(0, 0);
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private MapState mapState;
   @Mock
@@ -61,7 +58,7 @@ public class MovedTest {
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
     itemIterable = ImmutableList.of(weapon, consumable);
-    moved = new Moved(eventBus, mapState, stateFactory, player);
+    moved = new Moved(mapState, stateFactory, player);
   }
 
   @Test

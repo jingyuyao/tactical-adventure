@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -18,13 +17,12 @@ public class SelectingTarget extends AbstractPlayerState {
 
   @Inject
   SelectingTarget(
-      EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
-    super(eventBus, mapState, stateFactory, player);
+    super(mapState, stateFactory, player);
     this.weapon = weapon;
     this.targets = targets;
   }

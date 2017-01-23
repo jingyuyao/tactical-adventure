@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -10,9 +9,8 @@ abstract class AbstractPlayerState extends AbstractState {
 
   private final Player player;
 
-  AbstractPlayerState(
-      EventBus eventBus, MapState mapState, StateFactory stateFactory, Player player) {
-    super(eventBus, mapState, stateFactory);
+  AbstractPlayerState(MapState mapState, StateFactory stateFactory, Player player) {
+    super(mapState, stateFactory);
     this.player = player;
   }
 

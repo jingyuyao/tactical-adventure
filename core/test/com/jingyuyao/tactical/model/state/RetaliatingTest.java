@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Character;
@@ -24,8 +23,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class RetaliatingTest {
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private MapState mapState;
   @Mock
@@ -53,7 +50,7 @@ public class RetaliatingTest {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
     characterList = ImmutableList.of(player, enemy, enemy2);
-    retaliating = new Retaliating(eventBus, mapState, stateFactory, characters);
+    retaliating = new Retaliating(mapState, stateFactory, characters);
   }
 
   @Test

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -32,8 +31,6 @@ public class MovingTest {
   private static final Coordinate MOVING_PLAYER_COORDINATE = new Coordinate(0, 1);
   private static final Coordinate TERRAIN_COORDINATE = new Coordinate(0, 2);
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private MapState mapState;
   @Mock
@@ -76,7 +73,7 @@ public class MovingTest {
     consumableIterable = ImmutableList.of(consumable);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(eventBus, mapState, stateFactory, player, movement);
+    moving = new Moving(mapState, stateFactory, player, movement);
   }
 
   @Test

@@ -22,11 +22,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WaitingTest {
 
   @Mock
-  private EventBus eventBus;
-  @Mock
   private MapState mapState;
   @Mock
   private StateFactory stateFactory;
+  @Mock
+  private EventBus eventBus;
   @Mock
   private Player player;
   @Mock
@@ -46,7 +46,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(eventBus, mapState, stateFactory, movementFactory);
+    waiting = new Waiting(mapState, stateFactory, eventBus, movementFactory);
   }
 
   @Test

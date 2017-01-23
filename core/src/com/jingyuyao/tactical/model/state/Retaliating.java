@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -18,12 +17,8 @@ public class Retaliating extends AbstractState {
   private final Characters characters;
 
   @Inject
-  Retaliating(
-      EventBus eventBus,
-      MapState mapState,
-      StateFactory stateFactory,
-      Characters characters) {
-    super(eventBus, mapState, stateFactory);
+  Retaliating(MapState mapState, StateFactory stateFactory, Characters characters) {
+    super(mapState, stateFactory);
     this.characters = characters;
   }
 

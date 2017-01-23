@@ -2,19 +2,14 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 abstract class AbstractMovementState extends AbstractPlayerState {
 
-  AbstractMovementState(
-      EventBus eventBus,
-      MapState mapState,
-      StateFactory stateFactory,
-      Player player) {
-    super(eventBus, mapState, stateFactory, player);
+  AbstractMovementState(MapState mapState, StateFactory stateFactory, Player player) {
+    super(mapState, stateFactory, player);
   }
 
   @Override

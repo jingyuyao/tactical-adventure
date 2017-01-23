@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -12,9 +11,8 @@ import javax.inject.Inject;
 class SelectingItem extends AbstractPlayerState {
 
   @Inject
-  SelectingItem(
-      EventBus eventBus, MapState mapState, StateFactory stateFactory, @Assisted Player player) {
-    super(eventBus, mapState, stateFactory, player);
+  SelectingItem(MapState mapState, StateFactory stateFactory, @Assisted Player player) {
+    super(mapState, stateFactory, player);
   }
 
   @Override

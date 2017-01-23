@@ -8,15 +8,17 @@ import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
 
+  private final EventBus eventBus;
   private final MovementFactory movementFactory;
 
   @Inject
   Waiting(
-      EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
+      EventBus eventBus,
       MovementFactory movementFactory) {
-    super(eventBus, mapState, stateFactory);
+    super(mapState, stateFactory);
+    this.eventBus = eventBus;
     this.movementFactory = movementFactory;
   }
 
@@ -41,7 +43,7 @@ public class Waiting extends AbstractState {
 
     @Override
     public void run() {
-      post(this);
+      eventBus.post(this);
       goTo(getStateFactory().createRetaliating());
     }
   }

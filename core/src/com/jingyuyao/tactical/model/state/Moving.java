@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
@@ -18,12 +17,11 @@ class Moving extends AbstractMovementState {
 
   @Inject
   Moving(
-      EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
       @Assisted Player player,
       @Assisted Movement movement) {
-    super(eventBus, mapState, stateFactory, player);
+    super(mapState, stateFactory, player);
     this.movement = movement;
   }
 

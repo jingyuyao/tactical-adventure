@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -24,8 +23,6 @@ public class SelectingTargetTest {
 
   private static final Coordinate COORDINATE = new Coordinate(0, 1);
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private MapState mapState;
   @Mock
@@ -51,8 +48,7 @@ public class SelectingTargetTest {
   @Before
   public void setUp() {
     targets = ImmutableList.of(target1, target2);
-    selectingTarget =
-        new SelectingTarget(eventBus, mapState, stateFactory, player, weapon, targets);
+    selectingTarget = new SelectingTarget(mapState, stateFactory, player, weapon, targets);
   }
 
   @Test
