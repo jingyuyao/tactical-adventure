@@ -42,10 +42,11 @@ class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponStats> {
   }
 
   private Optional<Target> createTarget(Coordinate from, Coordinate direction) {
-    ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     Coordinate current = from.offsetBy(direction);
+    ImmutableSet selectCoordinates = ImmutableSet.of(current);
     int leftOverDistance = getItemStats().getDistance();
 
+    ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     while (leftOverDistance > 0 && terrains.contains(current)) {
       targetBuilder.add(current);
       current = current.offsetBy(direction);
@@ -58,6 +59,6 @@ class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponStats> {
     }
 
     return Optional.of(
-        targetFactory.create(targetCoordinates, targetCoordinates));
+        targetFactory.create(selectCoordinates, targetCoordinates));
   }
 }

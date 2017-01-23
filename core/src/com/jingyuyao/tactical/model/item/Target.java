@@ -69,11 +69,11 @@ public class Target {
 
   private Marking createMarking() {
     ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
-    for (Terrain terrain : terrains.getAll(targetCoordinates)) {
-      builder.put(terrain, Marker.CAN_ATTACK);
-    }
     for (Terrain terrain : terrains.getAll(selectCoordinates)) {
       builder.put(terrain, Marker.TARGET_SELECT);
+    }
+    for (Terrain terrain : terrains.getAll(targetCoordinates)) {
+      builder.put(terrain, Marker.CAN_ATTACK);
     }
     for (Character character : getTargetCharacters()) {
       builder.put(character, Marker.POTENTIAL_TARGET);
