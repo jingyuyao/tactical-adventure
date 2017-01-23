@@ -64,7 +64,7 @@ public class ReviewingAttackTest {
   @Test
   public void select_player_cannot_attack() {
     when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
-    when(target.selectedBy(COORDINATE)).thenReturn(false);
+    when(target.canTarget(COORDINATE)).thenReturn(false);
 
     reviewingAttack.select(attackingPlayer);
 
@@ -75,7 +75,7 @@ public class ReviewingAttackTest {
   public void select_player_can_attack() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
-    when(target.selectedBy(COORDINATE)).thenReturn(true);
+    when(target.canTarget(COORDINATE)).thenReturn(true);
 
     reviewingAttack.select(attackingPlayer);
 
@@ -85,7 +85,7 @@ public class ReviewingAttackTest {
   @Test
   public void select_enemy_cannot_attack() {
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
-    when(target.selectedBy(COORDINATE)).thenReturn(false);
+    when(target.canTarget(COORDINATE)).thenReturn(false);
 
     reviewingAttack.select(enemy);
 
@@ -96,7 +96,7 @@ public class ReviewingAttackTest {
   public void select_enemy_can_attack() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
-    when(target.selectedBy(COORDINATE)).thenReturn(true);
+    when(target.canTarget(COORDINATE)).thenReturn(true);
 
     reviewingAttack.select(enemy);
 
@@ -106,7 +106,7 @@ public class ReviewingAttackTest {
   @Test
   public void select_terrain_cannot_attack() {
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
-    when(target.selectedBy(COORDINATE)).thenReturn(false);
+    when(target.canTarget(COORDINATE)).thenReturn(false);
 
     reviewingAttack.select(terrain);
 
@@ -117,7 +117,7 @@ public class ReviewingAttackTest {
   public void select_terrain_can_attack() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
-    when(target.selectedBy(COORDINATE)).thenReturn(true);
+    when(target.canTarget(COORDINATE)).thenReturn(true);
 
     reviewingAttack.select(terrain);
 

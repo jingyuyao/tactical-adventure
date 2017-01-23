@@ -46,6 +46,10 @@ public class Target {
     return selectCoordinates.contains(coordinate);
   }
 
+  public boolean canTarget(Coordinate coordinate) {
+    return targetCoordinates.contains(coordinate);
+  }
+
   /**
    * @return a current view of all the characters being targeted
    */

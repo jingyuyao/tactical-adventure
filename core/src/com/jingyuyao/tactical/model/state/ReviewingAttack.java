@@ -58,7 +58,7 @@ class ReviewingAttack extends AbstractPlayerState {
   }
 
   private void handleSelection(MapObject object) {
-    if (target.selectedBy(object.getCoordinate())) {
+    if (target.canTarget(object.getCoordinate())) {
       attack();
     } else {
       back();
