@@ -14,8 +14,8 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.item.event.RemoveItem;
+import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -27,7 +27,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EnemyTest {
+// TODO: test retaliation
+public class PassiveEnemyTest {
 
   private static final Coordinate COORDINATE = new Coordinate(0, 0);
   private static final Coordinate COORDINATE2 = new Coordinate(0, 1);
@@ -40,6 +41,8 @@ public class EnemyTest {
   @Mock
   private MapState mapState;
   @Mock
+  private MovementFactory movementFactory;
+  @Mock
   private Path path;
   @Mock
   private Weapon weapon1;
@@ -49,18 +52,16 @@ public class EnemyTest {
   private Consumable consumable;
   @Mock
   private RemoveItem removeItem;
-  @Mock
-  private Retaliation retaliation;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
   private List<Item> items;
-  private Enemy enemy;
+  private PassiveEnemy enemy;
 
   @Before
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
-    enemy = new Enemy(eventBus, COORDINATE, stats, items, retaliation);
+    enemy = new PassiveEnemy(eventBus, COORDINATE, stats, items, movementFactory);
     verify(eventBus).register(enemy);
   }
 
@@ -128,12 +129,5 @@ public class EnemyTest {
     when(stats.getName()).thenReturn(NAME);
 
     assertThat(enemy.getName()).isEqualTo(NAME);
-  }
-
-  @Test
-  public void retaliation() {
-    enemy.retaliate();
-
-    verify(retaliation).run(enemy);
   }
 }
