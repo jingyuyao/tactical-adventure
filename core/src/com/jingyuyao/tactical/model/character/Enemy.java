@@ -12,9 +12,6 @@ import java.util.List;
  */
 public abstract class Enemy extends Character {
 
-  /**
-   * Retaliation type is supplied by child class.
-   */
   Enemy(EventBus eventBus, Coordinate coordinate, Stats stats, List<Item> items) {
     super(eventBus, coordinate, stats, items);
   }
