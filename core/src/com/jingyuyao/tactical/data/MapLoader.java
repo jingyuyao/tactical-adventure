@@ -116,10 +116,10 @@ public class MapLoader {
   private List<Enemy> createTestEnemies() {
     int hp = 20;
     return ImmutableList.of(
-        characterFactory.createEnemy(
+        characterFactory.createPassiveEnemy(
             new Coordinate(8, 3), new Stats("billy", hp, 3, normalAndObstructed()),
             createItems1()),
-        characterFactory.createEnemy(
+        characterFactory.createPassiveEnemy(
             new Coordinate(9, 3),
             new Stats("billy", hp, 2, normalAndObstructed()),
             createItems2()));

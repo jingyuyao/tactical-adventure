@@ -2,14 +2,11 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.CharacterModule.DefaultRetaliation;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.retaliation.Retaliation;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
-import javax.inject.Inject;
 
 /**
  * An enemy character
@@ -18,13 +15,15 @@ public class Enemy extends Character {
 
   private final Retaliation retaliation;
 
-  @Inject
+  /**
+   * Retaliation type is supplied by child class.
+   */
   Enemy(
       EventBus eventBus,
-      @Assisted Coordinate coordinate,
-      @Assisted Stats stats,
-      @Assisted List<Item> items,
-      @DefaultRetaliation Retaliation retaliation) {
+      Coordinate coordinate,
+      Stats stats,
+      List<Item> items,
+      Retaliation retaliation) {
     super(eventBus, coordinate, stats, items);
     this.retaliation = retaliation;
   }
