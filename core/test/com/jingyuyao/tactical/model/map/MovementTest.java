@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
@@ -8,12 +9,18 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
+import java.util.Map;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,17 +39,23 @@ public class MovementTest {
   @Mock
   private Graph<Coordinate> graph;
   @Mock
-  private Set<Coordinate> moveCoordinates;
-  @Mock
   private ImmutableList<Coordinate> track;
   @Mock
   private MarkingFactory markingFactory;
+  @Mock
+  private Terrain terrain;
+  @Mock
+  private Marking marking;
+  @Captor
+  private ArgumentCaptor<Map<MapObject, Marker>> markerMapCaptor;
 
+  private Set<Coordinate> moveCoordinates;
   private Movement movement;
 
   @Before
   public void setUp() {
-    when(graph.nodes()).thenReturn(ImmutableSet.of(ORIGIN, MOVE1, MOVE2));
+    moveCoordinates = ImmutableSet.of(ORIGIN, MOVE1, MOVE2);
+    when(graph.nodes()).thenReturn(moveCoordinates);
     movement = new Movement(algorithms, terrains, graph, markingFactory);
   }
 
@@ -65,8 +78,27 @@ public class MovementTest {
 
   @Test
   public void move_terrains() {
-    when(graph.nodes()).thenReturn(moveCoordinates);
+    assertThat(movement.getCoordinates()).containsExactly(ORIGIN, MOVE1, MOVE2);
+  }
 
-    assertThat(movement.getCoordinates()).isSameAs(moveCoordinates);
+  @Test
+  public void show_marking() {
+    when(terrains.getAll(moveCoordinates)).thenReturn(ImmutableList.of(terrain));
+    when(markingFactory.create(Mockito.<Map<MapObject, Marker>>any())).thenReturn(marking);
+
+    movement.showMarking();
+
+    verify(markingFactory).create(markerMapCaptor.capture());
+    verify(marking).apply();
+    assertThat(markerMapCaptor.getValue()).containsExactly(terrain, Marker.CAN_MOVE_TO);
+  }
+
+  @Test
+  public void hide_marking() {
+    show_marking();
+
+    movement.hideMarking();
+
+    verify(marking).clear();
   }
 }
