@@ -9,5 +9,5 @@ public enum Marker {
   CAN_ATTACK,
   DANGER,
   POTENTIAL_TARGET,
-  CHOSEN_TARGET,
+  TARGET_SELECT,
 }

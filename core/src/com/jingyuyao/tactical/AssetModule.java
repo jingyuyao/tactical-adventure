@@ -22,7 +22,7 @@ public class AssetModule extends AbstractModule {
   public static final String MOVE = "sprites/move.png";
   public static final String DANGER = "sprites/danger.png";
   public static final String ATTACK = "sprites/attack.png";
-  public static final String CHOSEN_TARGET = "sprites/chosen_target.png";
+  public static final String TARGET_SELECT = "sprites/target_select.png";
   public static final String POTENTIAL_TARGET = "sprites/potential_target.png";
   public static final String SKIN = "ui/uiskin.json";
 
@@ -46,7 +46,7 @@ public class AssetModule extends AbstractModule {
     manager.load(MOVE, Texture.class);
     manager.load(DANGER, Texture.class);
     manager.load(ATTACK, Texture.class);
-    manager.load(CHOSEN_TARGET, Texture.class);
+    manager.load(TARGET_SELECT, Texture.class);
     manager.load(POTENTIAL_TARGET, Texture.class);
     manager.load(SKIN, Skin.class);
 

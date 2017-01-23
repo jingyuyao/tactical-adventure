@@ -55,8 +55,8 @@ public class ActorModule extends AbstractModule {
         Marker.POTENTIAL_TARGET,
         new Sprite(assetManager.get(AssetModule.POTENTIAL_TARGET, Texture.class)));
     markerSpriteMap.put(
-        Marker.CHOSEN_TARGET,
-        new Sprite(assetManager.get(AssetModule.CHOSEN_TARGET, Texture.class)));
+        Marker.TARGET_SELECT,
+        new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class)));
     return markerSpriteMap;
   }
 
