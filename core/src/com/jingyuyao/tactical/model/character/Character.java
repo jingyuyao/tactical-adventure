@@ -74,8 +74,8 @@ public abstract class Character extends MapObject implements Disposable {
   }
 
   public void damageBy(int delta) {
-    boolean dead = stats.damageBy(delta);
-    if (dead) {
+    stats.damageBy(delta);
+    if (stats.isDead()) {
       eventBus.post(new RemoveCharacter(this));
       dispose();
     }
@@ -83,6 +83,10 @@ public abstract class Character extends MapObject implements Disposable {
 
   public void healBy(int delta) {
     stats.healBy(delta);
+  }
+
+  public boolean isDead() {
+    return stats.isDead();
   }
 
   public Iterable<Item> getItems() {

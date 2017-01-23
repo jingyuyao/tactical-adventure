@@ -136,6 +136,23 @@ public class ReviewingAttackTest {
   }
 
   @Test
+  public void attack_killed_self() {
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+    ImmutableList<Action> actions = actionsSetUp();
+
+    Action attack = actions.get(0);
+
+    when(attackingPlayer.isDead()).thenReturn(true);
+    attack.run();
+
+    verify(weapon).execute(attackingPlayer, target);
+    verify(mapState).newStack(waiting);
+    verify(attackingPlayer).isDead();
+    verifyNoMoreInteractions(attackingPlayer);
+    verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
   public void actions_back() {
     ImmutableList<Action> actions = actionsSetUp();
 

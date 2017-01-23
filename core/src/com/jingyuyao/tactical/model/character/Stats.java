@@ -42,18 +42,16 @@ public class Stats {
     return moveDistance;
   }
 
-  /**
-   * Reduce {@link #hp} by {@code delta}.
-   *
-   * @return whether {@link #hp} <= 0
-   */
-  boolean damageBy(int delta) {
+  void damageBy(int delta) {
     hp = Math.max(hp - delta, 0);
-    return hp == 0;
   }
 
   void healBy(int delta) {
     hp = Math.min(hp + delta, MAX_HP);
+  }
+
+  boolean isDead() {
+    return hp == 0;
   }
 
   boolean canPassTerrainType(Terrain.Type terrainType) {
