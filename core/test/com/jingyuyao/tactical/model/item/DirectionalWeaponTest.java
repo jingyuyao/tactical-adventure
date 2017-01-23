@@ -18,11 +18,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 // TODO: finish me
 @RunWith(MockitoJUnitRunner.class)
-public class MeleeTest {
+public class DirectionalWeaponTest {
 
   private static final String NAME = "ok";
   private static final int INITIAL_USAGE = 2;
   private static final int ATTACK_POWER = 5;
+  private static final int ATTACK_DISTANCE = 2;
 
   @Mock
   private EventBus eventBus;
@@ -33,13 +34,16 @@ public class MeleeTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private Melee melee;
+  private DirectionalWeapon melee;
 
   @Before
   public void setUp() {
     melee =
-        new Melee(
-            eventBus, new WeaponStats(NAME, INITIAL_USAGE, ATTACK_POWER), terrains, targetFactory);
+        new DirectionalWeapon(
+            eventBus,
+            new DirectionalWeaponStats(NAME, INITIAL_USAGE, ATTACK_POWER, ATTACK_DISTANCE),
+            terrains,
+            targetFactory);
   }
 
   @Test

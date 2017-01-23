@@ -6,10 +6,10 @@ import com.jingyuyao.tactical.model.character.Character;
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
  */
-abstract class AbstractWeapon extends BaseItem<WeaponStats> implements Weapon {
+abstract class AbstractWeapon<T extends WeaponStats> extends BaseItem<T> implements Weapon {
 
-  AbstractWeapon(EventBus eventBus, WeaponStats itemStats) {
-    super(eventBus, itemStats);
+  AbstractWeapon(EventBus eventBus, T weaponStats) {
+    super(eventBus, weaponStats);
   }
 
   @Override

@@ -14,10 +14,10 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.model.item.DirectionalWeaponStats;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.ItemStats;
-import com.jingyuyao.tactical.model.item.WeaponStats;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainFactory;
 import com.jingyuyao.tactical.model.state.Waiting;
@@ -135,9 +135,15 @@ public class MapLoader {
   private List<Item> createItems1() {
     int attackPower = 5;
     List<Item> items = new ArrayList<Item>();
-    items.add(itemFactory.createPiercingLaser(new WeaponStats("Laser5", 1, attackPower)));
-    items.add(itemFactory.createMelee(new WeaponStats("Melee5", 10, attackPower)));
-    items.add(itemFactory.createMelee(new WeaponStats("Melee5", 3, attackPower)));
+    items.add(
+        itemFactory
+            .createDirectionalWeapon(new DirectionalWeaponStats("Laser5", 1, attackPower, 10)));
+    items.add(
+        itemFactory
+            .createDirectionalWeapon(new DirectionalWeaponStats("Melee5", 10, attackPower, 1)));
+    items.add(
+        itemFactory
+            .createDirectionalWeapon(new DirectionalWeaponStats("Melee5", 3, attackPower, 1)));
     items.add(itemFactory.createHeal(new ItemStats("pot", 3)));
     return items;
   }
@@ -145,7 +151,9 @@ public class MapLoader {
   private List<Item> createItems2() {
     int attackPower = 3;
     List<Item> weapons = new ArrayList<Item>();
-    weapons.add(itemFactory.createPiercingLaser(new WeaponStats("Laser3", 5, attackPower)));
+    weapons.add(
+        itemFactory
+            .createDirectionalWeapon(new DirectionalWeaponStats("Laser3", 5, attackPower, 10)));
     return weapons;
   }
 }

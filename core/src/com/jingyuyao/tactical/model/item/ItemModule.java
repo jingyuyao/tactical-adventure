@@ -14,8 +14,7 @@ public class ItemModule extends AbstractModule {
     requireBinding(Terrains.class);
 
     install(new FactoryModuleBuilder()
-        .implement(Weapon.class, Names.named("Melee"), Melee.class)
-        .implement(Weapon.class, Names.named("PiercingLaser"), PiercingLaser.class)
+        .implement(Weapon.class, Names.named("DirectionalWeapon"), DirectionalWeapon.class)
         .implement(Consumable.class, Names.named("Heal"), Heal.class)
         .build(ItemFactory.class));
     install(new FactoryModuleBuilder().build(TargetFactory.class));
