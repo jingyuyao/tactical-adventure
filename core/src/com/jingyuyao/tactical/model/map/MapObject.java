@@ -25,7 +25,7 @@ public abstract class MapObject extends EventBusObject {
    * Sets the coordinate of this object to the new coordinate. Subclasses are responsible for
    * posting changes.
    */
-  public void setCoordinate(Coordinate newCoordinate) {
+  protected void setCoordinate(Coordinate newCoordinate) {
     coordinate = newCoordinate;
   }
 
