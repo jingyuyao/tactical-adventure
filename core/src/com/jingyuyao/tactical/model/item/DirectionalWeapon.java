@@ -4,25 +4,16 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.Directions;
 
 /**
  * A weapon that can be targeted in all directions in {@link Directions#ALL}.
  */
-abstract class DirectionalWeapon extends BaseItem<WeaponStats> implements Weapon {
+abstract class DirectionalWeapon extends AbstractWeapon {
 
   DirectionalWeapon(EventBus eventBus, @Assisted WeaponStats weaponInfo) {
     super(eventBus, weaponInfo);
-  }
-
-  @Override
-  public void execute(Character attacker, Target target) {
-    for (Character opponent : target.getTargetCharacters()) {
-      opponent.damageBy(getItemStats().getAttackPower());
-    }
-    useOnce();
   }
 
   @Override
