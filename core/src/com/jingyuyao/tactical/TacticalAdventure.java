@@ -9,7 +9,6 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Stage;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
@@ -17,15 +16,25 @@ import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
+import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
 
-  private Injector injector;
+  @Inject
+  private EventBus eventBus;
+  @Inject
+  private MapScreen mapScreen;
+  @Inject
+  private Batch batch;
+  @Inject
+  private AssetManager assetManager;
+  @Inject
+  private MapLoader mapLoader;
 
   @Override
   public void create() {
-    injector =
-        Guice.createInjector(
+    Guice
+        .createInjector(
             // we need to pre-load all singletons so they can start receiving events
             Stage.PRODUCTION,
             new AssetModule(),
@@ -33,8 +42,9 @@ public class TacticalAdventure extends Game {
             new ModelModule(),
             new DataModule(),
             new ViewModule(),
-            new ControllerModule());
-    injector.getInstance(EventBus.class).register(this);
+            new ControllerModule())
+        .injectMembers(this);
+    eventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }
 
@@ -46,14 +56,14 @@ public class TacticalAdventure extends Game {
   @Override
   public void dispose() {
     super.dispose();
-    injector.getInstance(MapScreen.class).dispose();
-    injector.getInstance(Batch.class).dispose();
-    injector.getInstance(AssetManager.class).dispose();
+    mapScreen.dispose();
+    batch.dispose();
+    assetManager.dispose();
   }
 
   public void setLevel(String mapName) {
-    TiledMap tiledMap = injector.getInstance(AssetManager.class).get(mapName, TiledMap.class);
-    injector.getInstance(MapLoader.class).loadMap(tiledMap);
-    setScreen(injector.getInstance(MapScreen.class));
+    TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
+    mapLoader.loadMap(tiledMap);
+    setScreen(mapScreen);
   }
 }
