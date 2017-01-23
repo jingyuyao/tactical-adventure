@@ -43,7 +43,7 @@ class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponStats> {
 
   private Optional<Target> createTarget(Coordinate from, Coordinate direction) {
     Coordinate current = from.offsetBy(direction);
-    ImmutableSet selectCoordinates = ImmutableSet.of(current);
+    ImmutableSet<Coordinate> selectCoordinates = ImmutableSet.of(current);
     int leftOverDistance = getItemStats().getDistance();
 
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
