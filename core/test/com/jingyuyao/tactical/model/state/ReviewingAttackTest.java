@@ -6,14 +6,12 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,12 +43,10 @@ public class ReviewingAttackTest {
   @Mock
   private Waiting waiting;
 
-  private ImmutableSet<MapObject> selectObjects;
   private ReviewingAttack reviewingAttack;
 
   @Before
   public void setUp() {
-    selectObjects = ImmutableSet.of(attackingPlayer, enemy, terrain);
     reviewingAttack =
         new ReviewingAttack(eventBus, mapState, stateFactory, attackingPlayer, weapon, target);
   }
@@ -71,7 +67,8 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_player_cannot_attack() {
-    set_up_target(false);
+    when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
+    when(target.selectedBy(COORDINATE)).thenReturn(false);
 
     reviewingAttack.select(attackingPlayer);
 
@@ -81,7 +78,8 @@ public class ReviewingAttackTest {
   @Test
   public void select_player_can_attack() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    set_up_target(true);
+    when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
+    when(target.selectedBy(COORDINATE)).thenReturn(true);
 
     reviewingAttack.select(attackingPlayer);
 
@@ -90,7 +88,8 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_enemy_cannot_attack() {
-    set_up_target(false);
+    when(enemy.getCoordinate()).thenReturn(COORDINATE);
+    when(target.selectedBy(COORDINATE)).thenReturn(false);
 
     reviewingAttack.select(enemy);
 
@@ -100,7 +99,8 @@ public class ReviewingAttackTest {
   @Test
   public void select_enemy_can_attack() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    set_up_target(true);
+    when(enemy.getCoordinate()).thenReturn(COORDINATE);
+    when(target.selectedBy(COORDINATE)).thenReturn(true);
 
     reviewingAttack.select(enemy);
 
@@ -109,7 +109,8 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_terrain_cannot_attack() {
-    set_up_target(false);
+    when(terrain.getCoordinate()).thenReturn(COORDINATE);
+    when(target.selectedBy(COORDINATE)).thenReturn(false);
 
     reviewingAttack.select(terrain);
 
@@ -119,7 +120,8 @@ public class ReviewingAttackTest {
   @Test
   public void select_terrain_can_attack() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    set_up_target(true);
+    when(terrain.getCoordinate()).thenReturn(COORDINATE);
+    when(target.selectedBy(COORDINATE)).thenReturn(true);
 
     reviewingAttack.select(terrain);
 
@@ -148,11 +150,6 @@ public class ReviewingAttackTest {
     ImmutableList<Action> actions = reviewingAttack.getActions();
     assertThat(actions).hasSize(2);
     return actions;
-  }
-
-  private void set_up_target(boolean canAttack) {
-    when(target.getSelectObjects())
-        .thenReturn(canAttack ? selectObjects : ImmutableSet.<MapObject>of());
   }
 
   private void verify_attacked() {

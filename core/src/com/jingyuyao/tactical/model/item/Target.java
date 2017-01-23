@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -41,19 +40,17 @@ public class Target {
   }
 
   /**
-   * @return a current view of all the objects on the map that "selects" this target
+   * Returns whether or not {@code coordinate} "selects" this {@link Target}.
    */
-  public ImmutableSet<MapObject> getSelectObjects() {
-    return ImmutableSet.copyOf(Iterables.concat(
-        terrains.getAll(selectCoordinates),
-        characters.getAll(selectCoordinates)
-    ));
+  public boolean selectedBy(Coordinate coordinate) {
+    return selectCoordinates.contains(coordinate);
   }
 
   /**
    * @return a current view of all the characters being targeted
    */
   public ImmutableSet<Character> getTargetCharacters() {
+    // Returns an immutable set since characters can die and we don't want an iteration error
     return ImmutableSet.copyOf(characters.getAll(targetCoordinates));
   }
 

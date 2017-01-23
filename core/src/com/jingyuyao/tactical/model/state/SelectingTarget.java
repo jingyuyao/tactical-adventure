@@ -65,7 +65,7 @@ public class SelectingTarget extends AbstractPlayerState {
 
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
-      if (target.getSelectObjects().contains(object)) {
+      if (target.selectedBy(object.getCoordinate())) {
         goTo(getStateFactory().createReviewingAttack(getPlayer(), weapon, target));
         return;
       }
