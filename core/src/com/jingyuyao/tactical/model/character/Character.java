@@ -109,7 +109,7 @@ public abstract class Character extends MapObject implements Disposable {
   public ListenableFuture<Void> move(Path path) {
     setCoordinate(path.getDestination());
     SettableFuture<Void> future = SettableFuture.create();
-    eventBus.post(new Move(this, path, future));
+    eventBus.post(new Move(this, future, path));
     return future;
   }
 

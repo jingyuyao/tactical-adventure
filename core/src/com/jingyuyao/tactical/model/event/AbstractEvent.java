@@ -18,7 +18,7 @@ public abstract class AbstractEvent<T> implements ModelEvent {
   private final T object;
   private final Predicate<T> matchesPredicate;
 
-  public AbstractEvent(T object) {
+  protected AbstractEvent(T object) {
     this.object = object;
     this.matchesPredicate = Predicates.equalTo(object);
   }
