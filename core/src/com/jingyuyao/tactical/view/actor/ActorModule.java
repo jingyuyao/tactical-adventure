@@ -37,6 +37,7 @@ public class ActorModule extends AbstractModule {
     subscriberBinder.addBinding().to(MarkingSubscriber.class);
     subscriberBinder.addBinding().to(HighlightSubscriber.class);
     subscriberBinder.addBinding().to(CharacterSubscriber.class);
+    subscriberBinder.addBinding().to(AttackSubscriber.class);
   }
 
   @Provides

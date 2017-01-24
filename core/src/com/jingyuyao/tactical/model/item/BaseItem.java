@@ -27,6 +27,10 @@ class BaseItem<T extends ItemStats> implements Item {
     return itemStats.getUsageLeft();
   }
 
+  EventBus getEventBus() {
+    return eventBus;
+  }
+
   T getItemStats() {
     return itemStats;
   }
