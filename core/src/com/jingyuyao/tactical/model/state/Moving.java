@@ -49,7 +49,7 @@ class Moving extends AbstractMovementState {
     if (movement.canMoveTo(terrain.getCoordinate())) {
       Path path = movement.pathTo(terrain.getCoordinate());
       previousCoordinate = getPlayer().getCoordinate();
-      Futures.addCallback(getPlayer().move(path), new FutureCallback<Void>() {
+      Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
         @Override
         public void onSuccess(Void result) {
           goTo(getStateFactory().createMoved(getPlayer()));

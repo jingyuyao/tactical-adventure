@@ -51,7 +51,7 @@ class PassiveEnemy extends Enemy {
             setCoordinate(originalCoordinate);
             Path path = movement.pathTo(moveCoordinate);
 
-            return Futures.transformAsync(move(path), new AsyncFunction<Void, Void>() {
+            return Futures.transformAsync(moveAlong(path), new AsyncFunction<Void, Void>() {
               @Override
               public ListenableFuture<Void> apply(Void input) {
                 return weapon.attack(PassiveEnemy.this, target);

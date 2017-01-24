@@ -114,7 +114,7 @@ public class PlayerTest {
   public void move() {
     when(path.getDestination()).thenReturn(COORDINATE2);
 
-    ListenableFuture<Void> future = player.move(path);
+    ListenableFuture<Void> future = player.moveAlong(path);
 
     verify(eventBus).post(argumentCaptor.capture());
     Move move = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Move.class);

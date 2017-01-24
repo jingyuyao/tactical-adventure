@@ -132,11 +132,11 @@ public class MovingTest {
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
     when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createMoved(player)).thenReturn(moved);
-    when(player.move(path)).thenReturn(immediateFuture);
+    when(player.moveAlong(path)).thenReturn(immediateFuture);
 
     moving.select(terrain);
 
-    verify(player).move(path);
+    verify(player).moveAlong(path);
     verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
   }

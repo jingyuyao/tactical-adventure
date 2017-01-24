@@ -113,7 +113,7 @@ public class PassiveEnemyTest {
   public void move() {
     when(path.getDestination()).thenReturn(COORDINATE2);
 
-    ListenableFuture<Void> future = enemy.move(path);
+    ListenableFuture<Void> future = enemy.moveAlong(path);
 
     verify(eventBus).post(argumentCaptor.capture());
     Move move = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Move.class);

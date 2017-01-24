@@ -106,7 +106,7 @@ public abstract class Character extends MapObject implements Disposable {
     Collections.swap(items, 0, items.indexOf(item));
   }
 
-  public ListenableFuture<Void> move(Path path) {
+  public ListenableFuture<Void> moveAlong(Path path) {
     setCoordinate(path.getDestination());
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Move(this, future, path));
