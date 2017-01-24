@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -55,6 +56,11 @@ public class Target {
   public ImmutableSet<Character> getTargetCharacters() {
     // Returns an immutable set since characters can die and we don't want an iteration error
     return ImmutableSet.copyOf(characters.getAll(targetCoordinates));
+  }
+
+  public ImmutableSet<MapObject> getAllTargetObjects() {
+    return ImmutableSet.copyOf(
+        Iterables.concat(terrains.getAll(targetCoordinates), characters.getAll(targetCoordinates)));
   }
 
   public void showMarking() {

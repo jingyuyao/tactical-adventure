@@ -3,7 +3,9 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Character;
@@ -90,5 +92,14 @@ public class Actors implements EventSubscriber {
 
   MapActor get(MapObject object) {
     return actorMap.get(object);
+  }
+
+  Iterable<MapActor> getAll(Iterable<MapObject> objects) {
+    return Iterables.transform(objects, new Function<MapObject, MapActor>() {
+      @Override
+      public MapActor apply(MapObject input) {
+        return get(input);
+      }
+    });
   }
 }
