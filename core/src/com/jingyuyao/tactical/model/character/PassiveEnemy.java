@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.character;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
@@ -36,8 +36,8 @@ class PassiveEnemy extends Enemy {
     Movement movement = movementFactory.create(this);
     Coordinate originalCoordinate = getCoordinate();
 
-    for (Coordinate move : movement.getCoordinates()) {
-      setCoordinate(move);
+    for (Coordinate moveCoordinate : movement.getCoordinates()) {
+      setCoordinate(moveCoordinate);
       for (final Weapon weapon : getWeapons()) {
         for (final Target target : weapon.createTargets(getCoordinate())) {
           ImmutableSet<Character> targetCharacters = target.getTargetCharacters();
@@ -49,20 +49,14 @@ class PassiveEnemy extends Enemy {
 
           if (hasPlayers) {
             setCoordinate(originalCoordinate);
-            Path path = movement.pathTo(move);
-            ListenableFuture<Void> future = move(path);
-            Futures.addCallback(future, new FutureCallback<Void>() {
-              @Override
-              public void onSuccess(Void result) {
-                weapon.attack(PassiveEnemy.this, target);
-              }
+            Path path = movement.pathTo(moveCoordinate);
 
+            return Futures.transformAsync(move(path), new AsyncFunction<Void, Void>() {
               @Override
-              public void onFailure(Throwable t) {
-
+              public ListenableFuture<Void> apply(Void input) {
+                return weapon.attack(PassiveEnemy.this, target);
               }
             });
-            return future;
           }
         }
       }
