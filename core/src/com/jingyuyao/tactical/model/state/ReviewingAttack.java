@@ -66,7 +66,7 @@ class ReviewingAttack extends AbstractPlayerState {
   }
 
   private void attack() {
-    weapon.execute(getPlayer(), target);
+    weapon.attack(getPlayer(), target);
     finish();
   }
 

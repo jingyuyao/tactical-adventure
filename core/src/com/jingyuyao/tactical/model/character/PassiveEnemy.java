@@ -54,7 +54,7 @@ class PassiveEnemy extends Enemy {
             Futures.addCallback(future, new FutureCallback<Void>() {
               @Override
               public void onSuccess(Void result) {
-                weapon.execute(PassiveEnemy.this, target);
+                weapon.attack(PassiveEnemy.this, target);
               }
 
               @Override

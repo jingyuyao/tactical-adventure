@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.common.Coordinate;
  */
 public interface Weapon extends Item {
 
-  void execute(Character attacker, Target target);
+  void attack(Character attacker, Target target);
 
   ImmutableList<Target> createTargets(Coordinate from);
 }

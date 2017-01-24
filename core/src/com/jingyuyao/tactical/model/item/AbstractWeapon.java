@@ -13,7 +13,7 @@ abstract class AbstractWeapon<T extends WeaponStats> extends BaseItem<T> impleme
   }
 
   @Override
-  public void execute(Character attacker, Target target) {
+  public void attack(Character attacker, Target target) {
     for (Character opponent : target.getTargetCharacters()) {
       opponent.damageBy(getItemStats().getAttackPower());
     }
