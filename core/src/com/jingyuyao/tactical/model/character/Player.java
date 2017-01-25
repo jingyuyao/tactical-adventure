@@ -36,6 +36,6 @@ public class Player extends Character {
 
   public void setActionable(boolean actionable) {
     this.actionable = actionable;
-    getEventBus().post(new NewActionState(this, actionable));
+    post(new NewActionState(this, actionable));
   }
 }

@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.Disposable;
+import com.jingyuyao.tactical.model.event.AbstractEvent;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -53,8 +54,8 @@ public abstract class Character extends MapObject implements Disposable {
     items.remove(removeItem.getObject());
   }
 
-  EventBus getEventBus() {
-    return eventBus;
+  public void post(AbstractEvent<?> event) {
+    eventBus.post(event);
   }
 
   public String getName() {
