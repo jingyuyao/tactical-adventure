@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.item.event;
+package com.jingyuyao.tactical.model.character.event;
 
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.event.FutureEvent;

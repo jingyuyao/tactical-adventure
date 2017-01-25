@@ -5,7 +5,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.item.event.Attack;
+import com.jingyuyao.tactical.model.character.event.Attack;
 
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
