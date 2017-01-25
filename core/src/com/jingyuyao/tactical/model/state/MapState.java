@@ -104,6 +104,10 @@ public class MapState {
     startingState.enter();
   }
 
+  void removeLast() {
+    stateStack.pop();
+  }
+
   private void switchHighlightTo(MapObject highlight) {
     if (currentHighlight != null) {
       currentHighlight.removeMarker(Marker.HIGHLIGHT);

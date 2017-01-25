@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -66,8 +68,18 @@ class ReviewingAttack extends AbstractPlayerState {
   }
 
   private void attack() {
-    weapon.attack(target);
-    finish();
+    goTo(getStateFactory().createIgnoreInput());
+    Futures.addCallback(weapon.attack(target), new FutureCallback<Void>() {
+      @Override
+      public void onSuccess(Void result) {
+        finish();
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+
+      }
+    });
   }
 
   class Attack implements Action {

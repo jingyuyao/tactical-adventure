@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.controller.InputLock;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
@@ -23,18 +22,15 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
   private final Sprite sprite;
-  private final InputLock inputLock;
 
   CharacterActor(
       T object,
       EventListener listener,
       float size,
       Map<Marker, Sprite> markerSpriteMap,
-      Sprite sprite,
-      InputLock inputLock) {
+      Sprite sprite) {
     super(object, listener, size, markerSpriteMap);
     this.sprite = sprite;
-    this.inputLock = inputLock;
     object.registerListener(this);
   }
 
@@ -61,7 +57,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
   @Subscribe
   public void moveTo(final Move move) {
-    inputLock.lock();
     final ImmutableList<EventListener> listeners = popAllListeners();
     SequenceAction moveSequence = getMoveSequence(move.getPath().getTrack());
     moveSequence.addAction(
@@ -73,7 +68,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
                   addListener(listener);
                 }
                 move.done();
-                inputLock.unlock();
               }
             }));
     addAction(moveSequence);
@@ -81,8 +75,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
   @Subscribe
   public void attacked(final Attack attack) {
-    inputLock.lock();
-
     final Marking marking = attack.getObject().createHitMarking();
 
     Runnable showHitMarker = new Runnable() {
@@ -110,7 +102,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
             new Runnable() {
               @Override
               public void run() {
-                inputLock.unlock();
                 attack.done();
               }
             }));

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.controller.InputLock;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
@@ -21,9 +20,8 @@ public class PlayerActor extends CharacterActor<Player> {
       @Assisted EventListener listener,
       @ActorWorldSize float size,
       Map<Marker, Sprite> markerSpriteMap,
-      @PlayerSprite Sprite sprite,
-      InputLock inputLock) {
-    super(object, listener, size, markerSpriteMap, sprite, inputLock);
+      @PlayerSprite Sprite sprite) {
+    super(object, listener, size, markerSpriteMap, sprite);
   }
 
   @Override

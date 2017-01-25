@@ -66,6 +66,10 @@ abstract class AbstractState implements State {
     mapState.newStack(stateFactory.createWaiting());
   }
 
+  void removeLast() {
+    mapState.removeLast();
+  }
+
   class Back implements Action {
 
     @Override

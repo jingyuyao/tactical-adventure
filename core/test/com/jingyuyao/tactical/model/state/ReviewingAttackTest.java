@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
@@ -15,7 +16,9 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,6 +42,8 @@ public class ReviewingAttackTest {
   private Terrain terrain;
   @Mock
   private Waiting waiting;
+  @Mock
+  private IgnoreInput ignoreInput;
 
   private ReviewingAttack reviewingAttack;
 
@@ -73,9 +78,11 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_player_can_attack() {
+    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
+    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
 
     reviewingAttack.select(attackingPlayer);
 
@@ -94,9 +101,11 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_enemy_can_attack() {
+    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
+    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
 
     reviewingAttack.select(enemy);
 
@@ -115,9 +124,11 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_terrain_can_attack() {
+    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
+    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
 
     reviewingAttack.select(terrain);
 
@@ -126,7 +137,9 @@ public class ReviewingAttackTest {
 
   @Test
   public void actions_attack() {
+    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(stateFactory.createWaiting()).thenReturn(waiting);
+    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
     ImmutableList<Action> actions = actionsSetUp();
 
     Action attack = actions.get(0);
@@ -149,9 +162,11 @@ public class ReviewingAttackTest {
   }
 
   private void verify_attacked() {
-    verify(weapon).attack(target);
-    verify(attackingPlayer).setActionable(false);
-    verify(mapState).newStack(waiting);
+    InOrder inOrder = Mockito.inOrder(mapState, weapon, attackingPlayer);
+    inOrder.verify(mapState).push(ignoreInput);
+    inOrder.verify(weapon).attack(target);
+    inOrder.verify(attackingPlayer).setActionable(false);
+    inOrder.verify(mapState).newStack(waiting);
     verifyNoMoreInteractions(mapState);
   }
 }

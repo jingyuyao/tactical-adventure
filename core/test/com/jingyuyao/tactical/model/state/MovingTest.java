@@ -22,7 +22,9 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,6 +61,8 @@ public class MovingTest {
   private Consumable consumable;
   @Mock
   private ImmutableList<Target> targets;
+  @Mock
+  private IgnoreInput ignoreInput;
 
   private Iterable<Item> itemIterable;
   private Iterable<Weapon> weaponIterable;
@@ -132,12 +136,15 @@ public class MovingTest {
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
     when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createMoved(player)).thenReturn(moved);
+    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(player.moveAlong(path)).thenReturn(immediateFuture);
 
     moving.select(terrain);
 
-    verify(player).moveAlong(path);
-    verify(mapState).push(moved);
+    InOrder inOrder = Mockito.inOrder(player, mapState);
+    inOrder.verify(mapState).push(ignoreInput);
+    inOrder.verify(player).moveAlong(path);
+    inOrder.verify(mapState).push(moved);
     verifyNoMoreInteractions(mapState);
   }
 

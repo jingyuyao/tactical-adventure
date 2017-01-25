@@ -11,6 +11,8 @@ import com.jingyuyao.tactical.model.map.Movement;
  */
 interface StateFactory {
 
+  IgnoreInput createIgnoreInput();
+
   Waiting createWaiting();
 
   Moving createMoving(Player player, Movement movement);
