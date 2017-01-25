@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
@@ -41,8 +40,6 @@ public class CharactersTest {
   private Enemy enemy;
   @Mock
   private Iterator<Character> characterIterator;
-  @Mock
-  private RemoveSelf removeSelf;
 
   // Mocking list iteration when we are abusing functional programming is too hard
   private List<Player> players;
@@ -51,7 +48,7 @@ public class CharactersTest {
 
   @Before
   public void setUp() {
-    characters = new Characters(eventBus, characterSet);
+    characters = new Characters(characterSet);
     players = Collections.singletonList(player);
     enemies = Collections.singletonList(enemy);
   }
@@ -70,22 +67,14 @@ public class CharactersTest {
 
   @Test
   public void dispose() {
-    when(characterSet.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, true, false);
-    when(characterIterator.next()).thenReturn(player, enemy);
-
     characters.dispose(clearMap);
 
-    verify(player).dispose();
-    verify(enemy).dispose();
     verify(characterSet).clear();
   }
 
   @Test
   public void remove_character() {
-    when(removeSelf.getObject()).thenReturn(player);
-
-    characters.removeCharacter(removeSelf);
+    characters.removeCharacter(player);
 
     verify(characterSet).remove(player);
   }
@@ -112,10 +101,7 @@ public class CharactersTest {
   public void subscribers() {
     when(newMap.getPlayers()).thenReturn(players);
     when(newMap.getEnemies()).thenReturn(enemies);
-    when(characterSet.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, true, false);
-    when(characterIterator.next()).thenReturn(player, enemy);
 
-    TestHelpers.verifyNoDeadEvents(characters, newMap, clearMap, removeSelf);
+    TestHelpers.verifyNoDeadEvents(characters, newMap, clearMap);
   }
 }

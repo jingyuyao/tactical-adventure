@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
@@ -23,7 +23,7 @@ public class MapModuleTest {
 
   @Bind
   @Mock
-  private EventBus eventBus;
+  private Algorithms algorithms;
   @Bind
   @Mock
   private MarkingFactory markingFactory;

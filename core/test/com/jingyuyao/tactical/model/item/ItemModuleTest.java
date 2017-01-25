@@ -1,12 +1,14 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
+import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +21,6 @@ public class ItemModuleTest {
 
   @Bind
   @Mock
-  private EventBus eventBus;
-  @Bind
-  @Mock
   private Characters characters;
   @Bind
   @Mock
@@ -29,6 +28,8 @@ public class ItemModuleTest {
   @Bind
   @Mock
   private MarkingFactory markingFactory;
+  @Mock
+  private Character owner;
 
   @Inject
   private ItemFactory itemFactory;
@@ -42,7 +43,13 @@ public class ItemModuleTest {
 
   @Test
   public void item_factory() {
-    itemFactory.createHeal(new ItemStats("pot", 5));
-    itemFactory.createDirectionalWeapon(new DirectionalWeaponStats("laser", 1, 100, 5));
+    itemFactory.createHeal(owner, new ItemStats("pot", 5));
+    itemFactory.createDirectionalWeapon(owner, new DirectionalWeaponStats("laser", 1, 100, 5));
+    itemFactory.createGrenade(owner, new GrenadeStats("boom", 1, 50, 2, 10));
+  }
+
+  @Test
+  public void target_factory() {
+    targetFactory.create(Collections.<Coordinate>emptyList(), Collections.<Coordinate>emptyList());
   }
 }

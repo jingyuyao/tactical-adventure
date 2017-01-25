@@ -145,7 +145,7 @@ public class ReviewingAttackTest {
     when(attackingPlayer.isDead()).thenReturn(true);
     attack.run();
 
-    verify(weapon).attack(attackingPlayer, target);
+    verify(weapon).attack(target);
     verify(mapState).newStack(waiting);
     verify(attackingPlayer).isDead();
     verifyNoMoreInteractions(attackingPlayer);
@@ -166,7 +166,7 @@ public class ReviewingAttackTest {
   }
 
   private void verify_attacked() {
-    verify(weapon).attack(attackingPlayer, target);
+    verify(weapon).attack(target);
     verify(attackingPlayer).setActionable(false);
     verify(mapState).newStack(waiting);
     verifyNoMoreInteractions(mapState);

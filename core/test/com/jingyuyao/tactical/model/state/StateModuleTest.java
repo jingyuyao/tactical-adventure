@@ -3,9 +3,11 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.item.Target;
@@ -24,6 +26,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class StateModuleTest {
 
+  @Bind
+  @Mock
+  @ModelEventBus
+  private EventBus eventBus;
   @Bind
   @Mock
   private MovementFactory movementFactory;

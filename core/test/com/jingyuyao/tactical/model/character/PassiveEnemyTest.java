@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
@@ -13,9 +14,10 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.item.event.RemoveItem;
+import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -35,13 +37,17 @@ public class PassiveEnemyTest {
   private static final String NAME = "me";
 
   @Mock
+  private Multiset<Marker> markers;
+  @Mock
+  private Characters characters;
+  @Mock
   private EventBus eventBus;
   @Mock
   private Stats stats;
   @Mock
-  private MapState mapState;
-  @Mock
   private MovementFactory movementFactory;
+  @Mock
+  private MapState mapState;
   @Mock
   private Path path;
   @Mock
@@ -50,8 +56,6 @@ public class PassiveEnemyTest {
   private Weapon weapon2;
   @Mock
   private Consumable consumable;
-  @Mock
-  private RemoveItem removeItem;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -61,15 +65,8 @@ public class PassiveEnemyTest {
   @Before
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
-    enemy = new PassiveEnemy(eventBus, COORDINATE, stats, items, movementFactory);
-    verify(eventBus).register(enemy);
-  }
-
-  @Test
-  public void dispose() {
-    enemy.dispose();
-
-    verify(eventBus).unregister(enemy);
+    enemy =
+        new PassiveEnemy(COORDINATE, markers, characters, eventBus, stats, items, movementFactory);
   }
 
   @Test

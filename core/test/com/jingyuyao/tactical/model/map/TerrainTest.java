@@ -4,10 +4,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,8 @@ public class TerrainTest {
   private static final Type TYPE = Type.NORMAL;
 
   @Mock
+  private Multiset<Marker> markers;
+  @Mock
   private MapState mapState;
   @Mock
   private Character character;
@@ -30,7 +34,7 @@ public class TerrainTest {
 
   @Before
   public void setUp() {
-    terrain = new Terrain(COORDINATE, TYPE);
+    terrain = new Terrain(COORDINATE, markers, TYPE);
   }
 
   @Test

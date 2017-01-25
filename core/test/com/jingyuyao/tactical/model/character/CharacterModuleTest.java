@@ -1,13 +1,15 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.eventbus.EventBus;
+import com.google.common.collect.Multiset;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -21,7 +23,11 @@ public class CharacterModuleTest {
 
   @Bind
   @Mock
-  private EventBus eventBus;
+  private Characters characters;
+  @Bind
+  @Mock
+  @InitialMarkers
+  private Multiset<Marker> markers;
   @Bind
   @Mock
   private MovementFactory movementFactory;
@@ -38,11 +44,9 @@ public class CharacterModuleTest {
   public void create_characters() {
     characterFactory.createPlayer(
         new Coordinate(0, 0),
-        new Stats("yolo", 1, 1, Collections.<Type>emptySet()),
-        Collections.<Item>emptyList());
+        new Stats("yolo", 1, 1, Collections.<Type>emptySet()));
     characterFactory.createPassiveEnemy(
         new Coordinate(0, 0),
-        new Stats("holo", 1, 1, Collections.<Type>emptySet()),
-        Collections.<Item>emptyList());
+        new Stats("holo", 1, 1, Collections.<Type>emptySet()));
   }
 }

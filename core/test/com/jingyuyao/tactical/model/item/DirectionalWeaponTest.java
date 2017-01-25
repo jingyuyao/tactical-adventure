@@ -4,15 +4,11 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.item.event.RemoveItem;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Terrains;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -26,13 +22,11 @@ public class DirectionalWeaponTest {
   private static final int ATTACK_DISTANCE = 2;
 
   @Mock
-  private EventBus eventBus;
+  private Character owner;
   @Mock
   private Terrains terrains;
   @Mock
   private TargetFactory targetFactory;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
 
   private DirectionalWeapon melee;
 
@@ -40,7 +34,7 @@ public class DirectionalWeaponTest {
   public void setUp() {
     melee =
         new DirectionalWeapon(
-            eventBus,
+            owner,
             new DirectionalWeaponStats(NAME, INITIAL_USAGE, ATTACK_POWER, ATTACK_DISTANCE),
             terrains,
             targetFactory);
@@ -55,11 +49,9 @@ public class DirectionalWeaponTest {
   public void use() {
     melee.useOnce();
 
-    verifyZeroInteractions(eventBus);
+    verifyZeroInteractions(owner);
 
     melee.useOnce();
-    verify(eventBus).post(argumentCaptor.capture());
-    RemoveItem removeItem = TestHelpers.isInstanceOf(argumentCaptor.getValue(), RemoveItem.class);
-    assertThat(removeItem.getObject()).isSameAs(melee);
+    verify(owner).removeItem(melee);
   }
 }

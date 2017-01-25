@@ -1,49 +1,40 @@
 package com.jingyuyao.tactical.model.mark;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.mark.event.HideMarking;
-import com.jingyuyao.tactical.model.mark.event.ShowMarking;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MarkingTest {
 
   @Mock
-  private EventBus eventBus;
-  @Mock
-  private ImmutableMultimap<MapObject, Marker> markerMap;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
+  private MapObject object;
 
+  private ImmutableMultimap<MapObject, Marker> markerMap;
   private Marking marking;
 
   @Before
   public void setUp() {
-    marking = new Marking(eventBus, markerMap);
+    markerMap = ImmutableMultimap.of(object, Marker.CAN_ATTACK);
+    marking = new Marking(markerMap);
   }
 
   @Test
   public void apply() {
     marking.apply();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    ShowMarking showMarking =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowMarking.class);
-    assertThat(showMarking.getObject()).isSameAs(markerMap);
+    verify(object).addMarker(Marker.CAN_ATTACK);
+    verifyNoMoreInteractions(object);
   }
 
   @Test
@@ -51,10 +42,8 @@ public class MarkingTest {
     marking.apply();
     marking.apply();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    ShowMarking showMarking =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowMarking.class);
-    assertThat(showMarking.getObject()).isSameAs(markerMap);
+    verify(object).addMarker(Marker.CAN_ATTACK);
+    verifyNoMoreInteractions(object);
   }
 
   @Test
@@ -62,10 +51,8 @@ public class MarkingTest {
     marking.clear();
     marking.apply();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    ShowMarking showMarking =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowMarking.class);
-    assertThat(showMarking.getObject()).isSameAs(markerMap);
+    verify(object).addMarker(Marker.CAN_ATTACK);
+    verifyNoMoreInteractions(object);
   }
 
   @Test
@@ -73,20 +60,17 @@ public class MarkingTest {
     marking.apply();
     marking.clear();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
-    ShowMarking showMarking =
-        TestHelpers.isInstanceOf(argumentCaptor.getAllValues().get(0), ShowMarking.class);
-    assertThat(showMarking.getObject()).isSameAs(markerMap);
-    HideMarking hideMarking =
-        TestHelpers.isInstanceOf(argumentCaptor.getAllValues().get(1), HideMarking.class);
-    assertThat(hideMarking.getObject()).isSameAs(markerMap);
+    InOrder inOrder = Mockito.inOrder(object);
+    inOrder.verify(object).addMarker(Marker.CAN_ATTACK);
+    inOrder.verify(object).removeMarker(Marker.CAN_ATTACK);
+    verifyNoMoreInteractions(object);
   }
 
   @Test
   public void clear() {
     marking.clear();
 
-    verifyZeroInteractions(eventBus);
+    verifyZeroInteractions(object);
   }
 
   @Test
@@ -94,6 +78,6 @@ public class MarkingTest {
     marking.clear();
     marking.clear();
 
-    verifyZeroInteractions(eventBus);
+    verifyZeroInteractions(object);
   }
 }
