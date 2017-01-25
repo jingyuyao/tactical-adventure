@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelModule;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 public class TacticalAdventure extends Game {
 
   @Inject
+  @ModelEventBus
   private EventBus eventBus;
   @Inject
   private Model model;
