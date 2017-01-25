@@ -23,30 +23,21 @@ https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
 - Set Java language level to 6 in project settings since that is what libgdx likes
 
 # Project structure & guidelines
-The game follows MVC and uses the command pattern to communicate between different components.
+The game follows MVC and uses Guice to share objects between components.
 We follow Google's Java style guide for all Java files. Install the style guide for Intellij
 then enable format code and optimize import on commit.
 
-## Big picture
-Data package dispatches an event with necessary information to set up the model and view.
-The model and the view are initialized at the same time. Model changes are dispatched as
-events to the view. Controllers are attached to the view which translate user input to model
-input via visitor pattern. Controllers also listen for new model set up to be initialized.
-
 ### Note for EventBus
-Generally, we want the relationship between producers and listeners to be 1-N or N-1.
-This is the most efficient way to distribute the event using the EventBus. We should avoid N-N
-event distribution such as an actor listening for an event from every object. Instead, we should
-have a "collector" that listens for object events and pass them to actors.
+We use EventBus to communicate model events to the view. We should NOT use EventBus to communicate
+between model components. This is due to the order sensitive nature of model logic. We also should
+not use EventBus for things that can be cheaply polled per frame by the view. Our EventBus' are also
+scoped. We have ONE model scoped EventBus. Each character also have its own EventBus which is used
+to send events to its associated actor.
 
 ## Models
 - Model classes should self-contained, it should not reference libgdx, controller or views
 - Receive commands via method invocation from controllers
 - Changes in model are notified to interested components via the observer pattern using EventBus.
-  Generally separated into the following three types:
-  - Broadcast: events that alert subscribers about change in model state e.g. StateChanged
-  - Command: events that request specific action to be performed e.g. RemoveCharacter
-  - Request: events that tries to gather info from other components (no example yet)
 
 ## Views
 - Only views should hold references to assets
