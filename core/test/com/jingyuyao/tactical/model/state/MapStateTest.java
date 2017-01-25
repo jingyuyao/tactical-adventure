@@ -11,10 +11,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
-import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.map.Terrain;
 import java.util.Deque;
@@ -40,10 +38,6 @@ public class MapStateTest {
   private State state2;
   @Mock
   private State state3;
-  @Mock
-  private NewMap newMap;
-  @Mock
-  private ClearMap clearMap;
   @Mock
   private Player player;
   @Mock

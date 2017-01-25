@@ -12,8 +12,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
 import java.util.Iterator;
 import java.util.Set;
 import org.junit.Before;
@@ -34,10 +32,6 @@ public class CharactersTest {
   private EventBus eventBus;
   @Mock
   private Set<Character> characterSet;
-  @Mock
-  private NewMap newMap;
-  @Mock
-  private ClearMap clearMap;
   @Mock
   private Player player;
   @Mock

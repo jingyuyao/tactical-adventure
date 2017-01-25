@@ -9,8 +9,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.AddTerrain;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -35,10 +33,6 @@ public class TerrainsTest {
   private EventBus eventBus;
   @Mock
   private Map<Coordinate, Terrain> terrainMap;
-  @Mock
-  private NewMap newMap;
-  @Mock
-  private ClearMap clearMap;
   @Mock
   private List<Terrain> terrainList;
   @Mock
