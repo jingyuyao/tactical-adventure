@@ -12,7 +12,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.multibindings.Multibinder;
 import com.jingyuyao.tactical.AssetModule;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapUiViewport;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapViewStage;
@@ -31,9 +33,7 @@ public class ViewModule extends AbstractModule {
   protected void configure() {
     install(new ActorModule());
 
-    bind(MapScreen.class);
-    bind(MapView.class);
-    bind(MapUI.class);
+    Multibinder.newSetBinder(binder(), EventSubscriber.class).addBinding().to(MapUI.class);
   }
 
   @Provides

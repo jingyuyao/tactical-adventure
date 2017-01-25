@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapUI {
+public class MapUI implements EventSubscriber {
 
   private final Stage stage;
   private final Skin skin;
@@ -35,7 +35,7 @@ public class MapUI {
   private ImmutableList<Action> currentActions;
 
   @Inject
-  MapUI(EventBus eventBus, @MapUiStage Stage stage, Skin skin) {
+  MapUI(@MapUiStage Stage stage, Skin skin) {
     this.skin = skin;
     this.stage = stage;
     root = new Table();
@@ -65,8 +65,6 @@ public class MapUI {
     root.add(stateLabel).left().bottom();
     root.add();
     root.add(actionButtons).right().bottom();
-
-    eventBus.register(this);
   }
 
   void act(float delta) {
