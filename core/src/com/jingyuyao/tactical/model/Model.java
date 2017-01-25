@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.state.State;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-// TODO: use model.initialize instead of firing events :/
 @Singleton
 public class Model {
 
@@ -19,10 +18,7 @@ public class Model {
   private final MapState mapState;
 
   @Inject
-  Model(
-      Characters characters,
-      Terrains terrains,
-      MapState mapState) {
+  Model(Characters characters, Terrains terrains, MapState mapState) {
     this.characters = characters;
     this.terrains = terrains;
     this.mapState = mapState;
