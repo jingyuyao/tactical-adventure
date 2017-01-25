@@ -37,9 +37,6 @@ class BaseItem<T extends ItemStats> implements Item {
 
   /**
    * Call to use this item once.
-   * <br>
-   * Invariant: {@link com.jingyuyao.tactical.model.item.event.RemoveItem} must be posted
-   * if {@link #getUsageLeft()} == 0 after the usage
    */
   void useOnce() {
     Preconditions.checkState(itemStats.getUsageLeft() > 0);
