@@ -1,13 +1,11 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.event.NewActionState;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.state.Waiting.EndTurn;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -25,11 +23,6 @@ public class Player extends Character {
       @Assisted Stats stats,
       @Assisted List<Item> items) {
     super(eventBus, coordinate, stats, items);
-  }
-
-  @Subscribe
-  public void endTurn(EndTurn endTurn) {
-    setActionable(true);
   }
 
   @Override

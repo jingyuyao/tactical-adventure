@@ -5,9 +5,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -26,7 +27,7 @@ public class WaitingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private EventBus eventBus;
+  private Characters characters;
   @Mock
   private Player player;
   @Mock
@@ -46,7 +47,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(mapState, stateFactory, eventBus, movementFactory);
+    waiting = new Waiting(mapState, stateFactory, movementFactory, characters);
   }
 
   @Test
@@ -87,6 +88,7 @@ public class WaitingTest {
 
   @Test
   public void actions_endturn() {
+    when(characters.iterator()).thenReturn(ImmutableList.of(player, enemy).iterator());
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
     List<Action> actions = waiting.getActions();
@@ -95,7 +97,7 @@ public class WaitingTest {
 
     endTurn.run();
 
-    verify(eventBus).post(endTurn);
+    verify(player).setActionable(true);
     verify(mapState).push(retaliating);
   }
 }

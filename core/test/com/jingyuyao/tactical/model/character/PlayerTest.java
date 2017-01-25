@@ -126,15 +126,6 @@ public class PlayerTest {
   }
 
   @Test
-  public void end_turn() {
-    player.setActionable(false);
-
-    player.endTurn(endTurn);
-
-    assertThat(player.isActionable()).isTrue();
-  }
-
-  @Test
   public void name() {
     when(stats.getName()).thenReturn(NAME);
 
@@ -150,10 +141,5 @@ public class PlayerTest {
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), NewActionState.class);
     assertThat(newActionState.getObject()).isSameAs(player);
     assertThat(newActionState.isActionable()).isFalse();
-  }
-
-  @Test
-  public void subscribers() {
-    TestHelpers.verifyNoDeadEvents(player, endTurn);
   }
 }

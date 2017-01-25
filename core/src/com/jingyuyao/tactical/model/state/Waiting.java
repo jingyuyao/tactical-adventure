@@ -1,25 +1,26 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
+import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
 
-  private final EventBus eventBus;
   private final MovementFactory movementFactory;
+  private final Characters characters;
 
   @Inject
   Waiting(
       MapState mapState,
       StateFactory stateFactory,
-      EventBus eventBus,
-      MovementFactory movementFactory) {
+      MovementFactory movementFactory,
+      Characters characters) {
     super(mapState, stateFactory);
-    this.eventBus = eventBus;
     this.movementFactory = movementFactory;
+    this.characters = characters;
   }
 
   @Override
@@ -43,7 +44,9 @@ public class Waiting extends AbstractState {
 
     @Override
     public void run() {
-      eventBus.post(this);
+      for (Player player : Iterables.filter(characters, Player.class)) {
+        player.setActionable(true);
+      }
       goTo(getStateFactory().createRetaliating());
     }
   }
