@@ -7,13 +7,14 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.event.ModelEvent;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -54,10 +55,6 @@ public abstract class Character extends MapObject {
     eventBus.register(listener);
   }
 
-  public void postEvent(ModelEvent event) {
-    eventBus.post(event);
-  }
-
   public String getName() {
     return stats.getName();
   }
@@ -78,16 +75,12 @@ public abstract class Character extends MapObject {
     stats.damageBy(delta);
     if (stats.isDead()) {
       characters.removeCharacter(this);
-      postEvent(new RemoveSelf());
+      eventBus.post(new RemoveSelf());
     }
   }
 
   public void healBy(int delta) {
     stats.healBy(delta);
-  }
-
-  public boolean isDead() {
-    return stats.isDead();
   }
 
   public void addItem(Item item) {
@@ -119,13 +112,19 @@ public abstract class Character extends MapObject {
   public ListenableFuture<Void> moveAlong(Path path) {
     setCoordinate(path.getDestination());
     SettableFuture<Void> future = SettableFuture.create();
-    postEvent(new Move(this, future, path));
+    eventBus.post(new Move(this, future, path));
     return future;
   }
 
   public void instantMoveTo(Coordinate newCoordinate) {
     setCoordinate(newCoordinate);
-    postEvent(new InstantMove(this, newCoordinate));
+    eventBus.post(new InstantMove(this, newCoordinate));
+  }
+
+  public ListenableFuture<Void> attacks(Target target) {
+    SettableFuture<Void> future = SettableFuture.create();
+    eventBus.post(new Attack(target, future));
+    return future;
   }
 
   @Override

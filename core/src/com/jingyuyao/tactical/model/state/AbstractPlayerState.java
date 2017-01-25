@@ -19,9 +19,7 @@ abstract class AbstractPlayerState extends AbstractState {
   }
 
   void finish() {
-    if (!player.isDead()) {
-      player.setActionable(false);
-    }
+    player.setActionable(false);
     newWaitStack();
   }
 
