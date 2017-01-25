@@ -4,7 +4,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import javax.inject.Inject;
 
-class Heal extends BaseItem<ItemStats> implements Consumable {
+public class Heal extends BaseItem<ItemStats> implements Consumable {
 
   // TODO: Remove me
   static final int AMOUNT = 10;

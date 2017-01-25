@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.controller.InputLock;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
@@ -17,9 +16,7 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.event.Attack;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import java.util.Map;
-import javax.inject.Inject;
 
 public class CharacterActor<T extends Character> extends MapActor<T> {
 
@@ -28,13 +25,12 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
   private final Sprite sprite;
   private final InputLock inputLock;
 
-  @Inject
   CharacterActor(
-      @Assisted T object,
-      @Assisted EventListener listener,
-      @ActorWorldSize float size,
+      T object,
+      EventListener listener,
+      float size,
       Map<Marker, Sprite> markerSpriteMap,
-      @Assisted Sprite sprite,
+      Sprite sprite,
       InputLock inputLock) {
     super(object, listener, size, markerSpriteMap);
     this.sprite = sprite;

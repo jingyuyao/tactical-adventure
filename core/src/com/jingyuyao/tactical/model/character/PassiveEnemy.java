@@ -22,7 +22,7 @@ import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.List;
 import javax.inject.Inject;
 
-class PassiveEnemy extends Enemy {
+public class PassiveEnemy extends Enemy {
 
   private final MovementFactory movementFactory;
 

@@ -10,7 +10,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.name.Names;
 import com.jingyuyao.tactical.model.item.Item;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -21,9 +20,7 @@ public class CharacterModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new FactoryModuleBuilder()
-        .implement(Enemy.class, Names.named("PassiveEnemy"), PassiveEnemy.class)
-        .build(CharacterFactory.class));
+    install(new FactoryModuleBuilder().build(CharacterFactory.class));
   }
 
   @Provides
@@ -34,7 +31,7 @@ public class CharacterModule extends AbstractModule {
   @Provides
   @CharacterEventBus
   EventBus provideCharacterEventBus() {
-    return new EventBus();
+    return new EventBus("character");
   }
 
   @BindingAnnotation
