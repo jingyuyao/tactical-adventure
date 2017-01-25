@@ -38,7 +38,7 @@ public class AttackSubscriber implements EventSubscriber {
   public void attacked(final Attack attack) {
     inputLock.lock();
 
-    final Iterable<MapActor> targets = actors.getAll(attack.getTarget().getAllTargetObjects());
+    final Iterable<MapActor> targets = actors.getAll(attack.getObject().getAllTargetObjects());
 
     Runnable showHitMarker = new Runnable() {
       @Override

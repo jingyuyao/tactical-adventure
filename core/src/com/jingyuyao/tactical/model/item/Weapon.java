@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.common.Coordinate;
  */
 public interface Weapon extends Item {
 
-  ListenableFuture<Void> attack(Character attacker, Target target);
+  ListenableFuture<Void> attack(Target target);
 
   ImmutableList<Target> createTargets(Coordinate from);
 }
