@@ -38,7 +38,6 @@ public class TacticalAdventure extends Game {
     Guice
         .createInjector(
             new AssetModule(),
-            new GameModule(),
             new ModelModule(),
             new DataModule(),
             new ViewModule(),

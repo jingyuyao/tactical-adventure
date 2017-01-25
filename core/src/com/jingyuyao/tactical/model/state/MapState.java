@@ -8,6 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -37,7 +38,7 @@ public class MapState implements EventSubscriber {
   private MapObject currentHighlight;
 
   @Inject
-  public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
+  public MapState(@ModelEventBus EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
     this.eventBus = eventBus;
     this.stateStack = stateStack;
   }

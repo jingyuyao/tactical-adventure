@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.common.EventSubscriber;
 import java.util.Set;
 import javax.inject.Inject;
@@ -14,7 +15,7 @@ public class Model {
   private final Set<EventSubscriber> eventSubscribers;
 
   @Inject
-  Model(EventBus eventBus, Set<EventSubscriber> eventSubscribers) {
+  Model(@ModelEventBus EventBus eventBus, Set<EventSubscriber> eventSubscribers) {
     this.eventBus = eventBus;
     this.eventSubscribers = eventSubscribers;
   }

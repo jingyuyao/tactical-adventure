@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -45,7 +46,7 @@ public class MapLoader {
 
   @Inject
   MapLoader(
-      EventBus eventBus,
+      @ModelEventBus EventBus eventBus,
       Provider<Waiting> waitingProvider,
       CharacterFactory characterFactory,
       TerrainFactory terrainFactory,
