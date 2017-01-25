@@ -58,11 +58,6 @@ public class Target {
     return ImmutableSet.copyOf(characters.getAll(targetCoordinates));
   }
 
-  public ImmutableSet<MapObject> getAllTargetObjects() {
-    return ImmutableSet.copyOf(
-        Iterables.concat(terrains.getAll(targetCoordinates), characters.getAll(targetCoordinates)));
-  }
-
   public void showMarking() {
     marking = createMarking();
     marking.apply();
@@ -71,6 +66,16 @@ public class Target {
   public void hideMarking() {
     marking.clear();
     marking = null;
+  }
+
+  public Marking createHitMarking() {
+    ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
+    Iterable<MapObject> hitObjects =
+        Iterables.concat(terrains.getAll(targetCoordinates), characters.getAll(targetCoordinates));
+    for (MapObject object : hitObjects) {
+      builder.put(object, Marker.DANGER);
+    }
+    return markingFactory.create(builder.build());
   }
 
   private Marking createMarking() {

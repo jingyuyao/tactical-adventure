@@ -14,8 +14,8 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
 import java.util.Map;
 
 public class CharacterActor<T extends Character> extends MapActor<T> {
@@ -83,20 +83,18 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
   public void attacked(final Attack attack) {
     inputLock.lock();
 
+    final Marking marking = attack.getObject().createHitMarking();
+
     Runnable showHitMarker = new Runnable() {
       @Override
       public void run() {
-        for (MapObject target : attack.getObject().getAllTargetObjects()) {
-          target.addMarker(Marker.DANGER);
-        }
+        marking.apply();
       }
     };
     Runnable hideHitMarker = new Runnable() {
       @Override
       public void run() {
-        for (MapObject target : attack.getObject().getAllTargetObjects()) {
-          target.removeMarker(Marker.DANGER);
-        }
+        marking.clear();
       }
     };
 
