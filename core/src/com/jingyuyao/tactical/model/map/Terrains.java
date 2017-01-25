@@ -7,12 +7,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.model.map.event.AddTerrain;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Iterator;
@@ -25,33 +24,30 @@ import javax.inject.Singleton;
  */
 // TODO: sync changes terrains' coordinates with grid when terrain can change locations
 @Singleton
-public class Terrains implements EventSubscriber, Iterable<Terrain> {
+public class Terrains implements Iterable<Terrain> {
 
+  private final EventBus eventBus;
   // We rely on coordinates' hashing invariant
   private final Map<Coordinate, Terrain> terrainMap;
   private int width;
   private int height;
 
   @Inject
-  Terrains(@BackingTerrainMap Map<Coordinate, Terrain> terrainMap) {
+  Terrains(
+      @ModelEventBus EventBus eventBus,
+      @BackingTerrainMap Map<Coordinate, Terrain> terrainMap) {
+    this.eventBus = eventBus;
     this.terrainMap = terrainMap;
   }
 
-  @Subscribe
-  public void initialize(NewMap data) {
-    for (Terrain terrain : data.getTerrains()) {
+  public void initialize(Iterable<Terrain> terrains, int width, int height) {
+    for (Terrain terrain : terrains) {
       terrainMap.put(terrain.getCoordinate(), terrain);
+      eventBus.post(new AddTerrain(terrain));
     }
-    width = data.getWidth();
-    height = data.getHeight();
+    this.width = width;
+    this.height = height;
     validateRectangular();
-  }
-
-  @Subscribe
-  public void dispose(ClearMap clearMap) {
-    terrainMap.clear();
-    width = 0;
-    height = 0;
   }
 
   public int getWidth() {

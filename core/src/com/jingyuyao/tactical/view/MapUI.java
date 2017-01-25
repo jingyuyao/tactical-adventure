@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
@@ -23,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapUI implements EventSubscriber {
+public class MapUI {
 
   private final Stage stage;
   private final Skin skin;

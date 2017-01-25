@@ -4,40 +4,24 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapViewViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class DragCameraController extends InputAdapter implements EventSubscriber {
+class DragCameraController extends InputAdapter {
 
   private final Viewport viewport;
-  private int worldWidth;
-  private int worldHeight;
+  private final Terrains terrains;
   private int lastPointer = -1;
   private int lastX;
   private int lastY;
 
   @Inject
-  DragCameraController(@MapViewViewport Viewport viewport) {
+  DragCameraController(@MapViewViewport Viewport viewport, Terrains terrains) {
     this.viewport = viewport;
-  }
-
-  @Subscribe
-  public void initialize(NewMap data) {
-    worldWidth = data.getWidth();
-    worldHeight = data.getHeight();
-  }
-
-  @Subscribe
-  public void dispose(ClearMap data) {
-    lastPointer = -1;
-    lastX = 0;
-    lastY = 0;
+    this.terrains = terrains;
   }
 
   @Override
@@ -53,8 +37,8 @@ class DragCameraController extends InputAdapter implements EventSubscriber {
     if (lastPointer == pointer) {
       int screenWidth = viewport.getScreenWidth();
       int screenHeight = viewport.getScreenHeight();
-      float horizontalDragScale = (float) worldWidth / screenWidth;
-      float verticalDragScale = (float) worldHeight / screenHeight;
+      float horizontalDragScale = (float) terrains.getWidth() / screenWidth;
+      float verticalDragScale = (float) terrains.getHeight() / screenHeight;
 
       float deltaX = (screenX - lastX) * horizontalDragScale;
       float deltaY = (screenY - lastY) * verticalDragScale;
@@ -67,9 +51,9 @@ class DragCameraController extends InputAdapter implements EventSubscriber {
       float rawNewY = cameraPosition.y + deltaY;
 
       float cameraLowerXBound = viewport.getWorldWidth() / 2f;
-      float cameraUpperXBound = worldWidth - cameraLowerXBound;
+      float cameraUpperXBound = terrains.getWidth() - cameraLowerXBound;
       float cameraLowerYBound = viewport.getWorldHeight() / 2f;
-      float cameraUpperYBound = worldHeight - cameraLowerYBound;
+      float cameraUpperYBound = terrains.getHeight() - cameraLowerYBound;
 
       float boundedNewX = bound(cameraLowerXBound, rawNewX, cameraUpperXBound);
       float boundedNewY = bound(cameraLowerYBound, rawNewY, cameraUpperYBound);

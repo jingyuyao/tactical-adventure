@@ -9,13 +9,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.Iterables;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.model.map.event.AddEnemy;
+import com.jingyuyao.tactical.model.map.event.AddPlayer;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Iterator;
@@ -27,23 +29,25 @@ import javax.inject.Singleton;
  * A concrete singleton type that holds all the {@link Character} on the map.
  */
 @Singleton
-public class Characters implements EventSubscriber, Iterable<Character> {
+public class Characters implements Iterable<Character> {
 
+  private final EventBus eventBus;
   private final Set<Character> characterSet;
 
   @Inject
-  Characters(@BackingCharacterSet Set<Character> characterSet) {
+  Characters(@ModelEventBus EventBus eventBus, @BackingCharacterSet Set<Character> characterSet) {
+    this.eventBus = eventBus;
     this.characterSet = characterSet;
   }
 
-  @Subscribe
-  public void initialize(NewMap data) {
-    Iterables.addAll(characterSet, Iterables.concat(data.getPlayers(), data.getEnemies()));
+  public void add(Player player) {
+    characterSet.add(player);
+    eventBus.post(new AddPlayer(player));
   }
 
-  @Subscribe
-  public void dispose(ClearMap clearMap) {
-    characterSet.clear();
+  public void add(Enemy enemy) {
+    characterSet.add(enemy);
+    eventBus.post(new AddEnemy(enemy));
   }
 
   public void removeCharacter(Character character) {

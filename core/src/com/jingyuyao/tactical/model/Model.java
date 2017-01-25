@@ -1,10 +1,14 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import java.util.Set;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.State;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -13,28 +17,41 @@ import javax.inject.Singleton;
 public class Model {
 
   private final EventBus eventBus;
-  private final Set<EventSubscriber> eventSubscribers;
+  private final Characters characters;
+  private final Terrains terrains;
+  private final MapState mapState;
 
   @Inject
-  Model(@ModelEventBus EventBus eventBus, Set<EventSubscriber> eventSubscribers) {
+  Model(
+      @ModelEventBus EventBus eventBus,
+      Characters characters,
+      Terrains terrains,
+      MapState mapState) {
     this.eventBus = eventBus;
-    this.eventSubscribers = eventSubscribers;
+    this.characters = characters;
+    this.terrains = terrains;
+    this.mapState = mapState;
   }
 
-  /**
-   * Registers all the {@link EventSubscriber} to the {@link EventBus}. {@link EventSubscriber}s are
-   * found using {@link com.google.inject.multibindings.Multibinder} as each module contributes
-   * the set of classes that needs to be registered.
-   */
-  public void registerEventSubscribers() {
-    // Only singletons should be registered on model initialization, dynamically added classes
-    // should add themselves to the EventBus.
-    for (EventSubscriber subscriber : eventSubscribers) {
-      Preconditions.checkState(subscriber.getClass().isAnnotationPresent(Singleton.class));
+  public void newMap(
+      int width,
+      int height,
+      Iterable<Terrain> terrains,
+      Iterable<Player> players,
+      Iterable<Enemy> enemies,
+      State initialState) {
+    this.terrains.initialize(terrains, width, height);
+    // Characters must be added after terrain so they get hit by touch input
+    for (Player player : players) {
+      characters.add(player);
     }
+    for (Enemy enemy : enemies) {
+      characters.add(enemy);
+    }
+    mapState.initialize(initialState);
+  }
 
-    for (EventSubscriber subscriber : eventSubscribers) {
-      eventBus.register(subscriber);
-    }
+  public void registerListener(Object listener) {
+    eventBus.register(listener);
   }
 }

@@ -8,10 +8,8 @@ import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.multibindings.Multibinder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.controller.InputLock;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
@@ -30,8 +28,6 @@ public class ActorModule extends AbstractModule {
     requireBinding(InputLock.class);
 
     install(new FactoryModuleBuilder().build(ActorFactory.class));
-
-    Multibinder.newSetBinder(binder(), EventSubscriber.class).addBinding().to(Actors.class);
   }
 
   @Provides

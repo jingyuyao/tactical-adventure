@@ -6,15 +6,11 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.mark.Marker;
@@ -31,7 +27,7 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState implements EventSubscriber {
+public class MapState {
 
   private final Deque<State> stateStack;
   private EventBus eventBus;
@@ -43,18 +39,10 @@ public class MapState implements EventSubscriber {
     this.stateStack = stateStack;
   }
 
-  @Subscribe
-  public void initialize(NewMap data) {
-    State initialState = data.getInitialState();
+  public void initialize(State initialState) {
     stateStack.push(initialState);
     initialState.enter();
     eventBus.post(new StateChanged(initialState));
-  }
-
-  @Subscribe
-  public void dispose(ClearMap clearMap) {
-    currentHighlight = null;
-    stateStack.clear();
   }
 
   public void select(Player player) {

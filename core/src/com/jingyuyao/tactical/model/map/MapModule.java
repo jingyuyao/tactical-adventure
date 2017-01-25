@@ -11,11 +11,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.multibindings.Multibinder;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.map.Terrains.BackingTerrainMap;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.MarkingFactory;
@@ -35,11 +33,6 @@ public class MapModule extends AbstractModule {
     requireBinding(MarkingFactory.class);
 
     install(new FactoryModuleBuilder().build(TerrainFactory.class));
-
-    Multibinder<EventSubscriber> subscriberBinder =
-        Multibinder.newSetBinder(binder(), EventSubscriber.class);
-    subscriberBinder.addBinding().to(Characters.class);
-    subscriberBinder.addBinding().to(Terrains.class);
   }
 
   @Provides

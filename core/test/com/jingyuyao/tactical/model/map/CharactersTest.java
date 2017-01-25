@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -12,13 +12,15 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
-import java.util.Collections;
+import com.jingyuyao.tactical.model.map.event.AddEnemy;
+import com.jingyuyao.tactical.model.map.event.AddPlayer;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -28,6 +30,8 @@ public class CharactersTest {
   private static final Coordinate COORDINATE1 = new Coordinate(0, 1);
   private static final Coordinate COORDINATE2 = new Coordinate(0, 2);
 
+  @Mock
+  private EventBus eventBus;
   @Mock
   private Set<Character> characterSet;
   @Mock
@@ -40,36 +44,34 @@ public class CharactersTest {
   private Enemy enemy;
   @Mock
   private Iterator<Character> characterIterator;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
-  // Mocking list iteration when we are abusing functional programming is too hard
-  private List<Player> players;
-  private List<Enemy> enemies;
   private Characters characters;
 
   @Before
   public void setUp() {
-    characters = new Characters(characterSet);
-    players = Collections.singletonList(player);
-    enemies = Collections.singletonList(enemy);
+    characters = new Characters(eventBus, characterSet);
   }
 
   @Test
-  public void initialize() {
-    when(newMap.getPlayers()).thenReturn(players);
-    when(newMap.getEnemies()).thenReturn(enemies);
-
-    characters.initialize(newMap);
+  public void add_player() {
+    characters.add(player);
 
     verify(characterSet).add(player);
-    verify(characterSet).add(enemy);
-    verifyNoMoreInteractions(characterSet);
+    verify(eventBus).post(argumentCaptor.capture());
+    assertThat(TestHelpers.isInstanceOf(argumentCaptor.getValue(), AddPlayer.class).getObject())
+        .isSameAs(player);
   }
 
   @Test
-  public void dispose() {
-    characters.dispose(clearMap);
+  public void add_enemy() {
+    characters.add(enemy);
 
-    verify(characterSet).clear();
+    verify(characterSet).add(enemy);
+    verify(eventBus).post(argumentCaptor.capture());
+    assertThat(TestHelpers.isInstanceOf(argumentCaptor.getValue(), AddEnemy.class).getObject())
+        .isSameAs(enemy);
   }
 
   @Test
@@ -95,13 +97,5 @@ public class CharactersTest {
     when(characterSet.iterator()).thenReturn(characterIterator);
 
     assertThat(characters.iterator()).isSameAs(characterIterator);
-  }
-
-  @Test
-  public void subscribers() {
-    when(newMap.getPlayers()).thenReturn(players);
-    when(newMap.getEnemies()).thenReturn(enemies);
-
-    TestHelpers.verifyNoDeadEvents(characters, newMap, clearMap);
   }
 }

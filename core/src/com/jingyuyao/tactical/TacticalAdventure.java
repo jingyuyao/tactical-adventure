@@ -10,12 +10,15 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
+import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.MapScreen;
+import com.jingyuyao.tactical.view.MapUI;
+import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.ViewModule;
 import javax.inject.Inject;
 
@@ -29,7 +32,13 @@ public class TacticalAdventure extends Game {
   @Inject
   private MapScreen mapScreen;
   @Inject
+  private MapUI mapUI;
+  @Inject
+  private MapView mapView;
+  @Inject
   private MapLoader mapLoader;
+  @Inject
+  private MapController mapController;
   @Inject
   private Batch batch;
   @Inject
@@ -45,7 +54,8 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
-    model.registerEventSubscribers();
+    model.registerListener(mapUI);
+    model.registerListener(mapView);
     eventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }
@@ -67,5 +77,6 @@ public class TacticalAdventure extends Game {
     TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
     mapLoader.loadMap(tiledMap);
     setScreen(mapScreen);
+    mapController.receiveInput();
   }
 }

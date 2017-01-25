@@ -61,29 +61,13 @@ public class MapStateTest {
   }
 
   @Test
-  public void subscribers() {
-    when(newMap.getInitialState()).thenReturn(state1);
-
-    TestHelpers.verifyNoDeadEvents(mapState, newMap, clearMap);
-  }
-
-  @Test
   public void initialize() throws Exception {
-    when(newMap.getInitialState()).thenReturn(state1);
-
-    mapState.initialize(newMap);
+    mapState.initialize(state1);
 
     verify(stateStack).push(state1);
     verify(state1).enter();
     verify(eventBus).post(argumentCaptor.capture());
     verifyStateChangedTo(argumentCaptor.getValue(), state1);
-  }
-
-  @Test
-  public void dispose() throws Exception {
-    mapState.dispose(clearMap);
-
-    verify(stateStack).clear();
   }
 
   @Test

@@ -7,15 +7,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponStats;
 import com.jingyuyao.tactical.model.item.GrenadeStats;
 import com.jingyuyao.tactical.model.item.ItemFactory;
@@ -37,7 +35,7 @@ public class MapLoader {
   private static final String TERRAIN_LAYER = "terrain";
   private static final String TERRAIN_TYPE_KEY = "type";
 
-  private final EventBus eventBus;
+  private final Model model;
   private final Provider<Waiting> waitingProvider;
   private final CharacterFactory characterFactory;
   private final TerrainFactory terrainFactory;
@@ -46,13 +44,13 @@ public class MapLoader {
 
   @Inject
   MapLoader(
-      @ModelEventBus EventBus eventBus,
+      Model model,
       Provider<Waiting> waitingProvider,
       CharacterFactory characterFactory,
       TerrainFactory terrainFactory,
       ItemFactory itemFactory,
       OrthogonalTiledMapRenderer mapRenderer) {
-    this.eventBus = eventBus;
+    this.model = model;
     this.waitingProvider = waitingProvider;
     this.characterFactory = characterFactory;
     this.terrainFactory = terrainFactory;
@@ -69,14 +67,13 @@ public class MapLoader {
     Preconditions.checkArgument(height > 0, "MapView height must be > 0");
     Preconditions.checkArgument(width > 0, "MapView width must be > 0");
 
-    eventBus.post(
-        new NewMap(
-            width,
-            height,
-            createTestPlayers(),
-            createTestEnemies(),
-            createTerrains(terrainLayer, width, height),
-            waitingProvider.get()));
+    model.newMap(
+        width,
+        height,
+        createTerrains(terrainLayer, width, height),
+        createTestPlayers(),
+        createTestEnemies(),
+        waitingProvider.get());
     mapRenderer.setMap(tiledMap);
   }
 

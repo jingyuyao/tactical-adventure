@@ -1,13 +1,17 @@
 package com.jingyuyao.tactical.model;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import javax.inject.Singleton;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.State;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,37 +22,48 @@ public class ModelTest {
 
   @Mock
   private EventBus eventBus;
+  @Mock
+  private Characters characters;
+  @Mock
+  private Terrains terrains;
+  @Mock
+  private MapState mapState;
+  @Mock
+  private Object object;
+  @Mock
+  private Iterable<Terrain> terrainIterable;
+  @Mock
+  private Player player;
+  @Mock
+  private Enemy enemy;
+  @Mock
+  private State state;
 
-  @Test
-  public void register_event_subscribers_all_annotated() {
-    EventSubscriber annotated = new SingletonAnnotated();
-    Model model = new Model(eventBus, ImmutableSet.of(annotated));
+  private Iterable<Player> playerIterable;
+  private Iterable<Enemy> enemyIterable;
+  private Model model;
 
-    model.registerEventSubscribers();
-
-    verify(eventBus).register(annotated);
+  @Before
+  public void setUp() {
+    playerIterable = ImmutableList.of(player);
+    enemyIterable = ImmutableList.of(enemy);
+    model = new Model(eventBus, characters, terrains, mapState);
   }
 
   @Test
-  public void register_event_subscribers_has_not_annotated() {
-    EventSubscriber annotated = new SingletonAnnotated();
-    EventSubscriber notAnnotated = new NotSingletonAnnotated();
-    Model model = new Model(eventBus, ImmutableSet.of(annotated, notAnnotated));
+  public void register_listener() {
+    model.registerListener(object);
 
-    try {
-      model.registerEventSubscribers();
-      fail();
-    } catch (IllegalStateException e) {
-      verifyZeroInteractions(eventBus);
-    }
+    verify(eventBus).register(object);
   }
 
-  @Singleton
-  private static class SingletonAnnotated implements EventSubscriber {
+  @Test
+  public void new_map() {
+    model.newMap(10, 5, terrainIterable, playerIterable, enemyIterable, state);
 
-  }
-
-  private static class NotSingletonAnnotated implements EventSubscriber {
-
+    verify(terrains).initialize(terrainIterable, 10, 5);
+    verify(characters).add(player);
+    verify(characters).add(enemy);
+    verify(mapState).initialize(state);
   }
 }

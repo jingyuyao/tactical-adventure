@@ -3,17 +3,13 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.common.EventSubscriber;
-import com.jingyuyao.tactical.model.event.ClearMap;
-import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
 import com.jingyuyao.tactical.view.ViewAnnotations.MapViewStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapController implements EventSubscriber {
+public class MapController {
 
   private final InputMultiplexer inputMultiplexer;
 
@@ -28,13 +24,7 @@ public class MapController implements EventSubscriber {
     inputMultiplexer.addProcessor(mapViewStage);
   }
 
-  @Subscribe
-  public void initialize(NewMap data) {
+  public void receiveInput() {
     Gdx.input.setInputProcessor(inputMultiplexer);
-  }
-
-  @Subscribe
-  public void dispose(ClearMap data) {
-    // Do we need to remove input processor?
   }
 }
