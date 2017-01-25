@@ -61,6 +61,7 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
   @Subscribe
   public void moveTo(final Move move) {
+    inputLock.lock();
     final ImmutableList<EventListener> listeners = popAllListeners();
     SequenceAction moveSequence = getMoveSequence(move.getPath().getTrack());
     moveSequence.addAction(
@@ -75,7 +76,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
                 inputLock.unlock();
               }
             }));
-    inputLock.lock();
     addAction(moveSequence);
   }
 
