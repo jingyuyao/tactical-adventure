@@ -1,11 +1,10 @@
 package com.jingyuyao.tactical.model.mark;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.mark.event.HideMarking;
-import com.jingyuyao.tactical.model.mark.event.ShowMarking;
+import java.util.Collection;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 
 /**
@@ -13,7 +12,6 @@ import javax.inject.Inject;
  */
 public class Marking {
 
-  private final EventBus eventBus;
   private final ImmutableMultimap<MapObject, Marker> markers;
   private boolean applied = false;
 
@@ -21,8 +19,7 @@ public class Marking {
    * Creates a marking with the given {@code markers} map.
    */
   @Inject
-  Marking(EventBus eventBus, @Assisted ImmutableMultimap<MapObject, Marker> markers) {
-    this.eventBus = eventBus;
+  Marking(@Assisted ImmutableMultimap<MapObject, Marker> markers) {
     this.markers = markers;
   }
 
@@ -32,7 +29,11 @@ public class Marking {
   public void apply() {
     if (!applied) {
       applied = true;
-      eventBus.post(new ShowMarking(markers));
+      for (Entry<MapObject, Collection<Marker>> entry : markers.asMap().entrySet()) {
+        for (Marker marker : entry.getValue()) {
+          entry.getKey().addMarker(marker);
+        }
+      }
     }
   }
 
@@ -42,7 +43,11 @@ public class Marking {
   public void clear() {
     if (applied) {
       applied = false;
-      eventBus.post(new HideMarking(markers));
+      for (Entry<MapObject, Collection<Marker>> entry : markers.asMap().entrySet()) {
+        for (Marker marker : entry.getValue()) {
+          entry.getKey().removeMarker(marker);
+        }
+      }
     }
   }
 }

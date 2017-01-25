@@ -14,7 +14,9 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.state.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.state.event.StateChanged;
@@ -32,6 +34,7 @@ public class MapState implements EventSubscriber {
 
   private final Deque<State> stateStack;
   private EventBus eventBus;
+  private MapObject currentHighlight;
 
   @Inject
   public MapState(EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
@@ -49,6 +52,7 @@ public class MapState implements EventSubscriber {
 
   @Subscribe
   public void dispose(ClearMap clearMap) {
+    currentHighlight = null;
     stateStack.clear();
   }
 
@@ -65,10 +69,12 @@ public class MapState implements EventSubscriber {
   }
 
   public void highlight(Character character) {
+    switchHighlightTo(character);
     eventBus.post(new HighlightCharacter(character));
   }
 
   public void highlight(Terrain terrain) {
+    switchHighlightTo(terrain);
     eventBus.post(new HighlightTerrain(terrain));
   }
 
@@ -107,6 +113,16 @@ public class MapState implements EventSubscriber {
     stateStack.push(startingState);
     eventBus.post(new StateChanged(startingState));
     startingState.enter();
+  }
+
+  private void switchHighlightTo(MapObject highlight) {
+    if (currentHighlight != null) {
+      currentHighlight.removeMarker(Marker.HIGHLIGHT);
+    }
+    currentHighlight = highlight;
+    if (currentHighlight != null) {
+      currentHighlight.addMarker(Marker.HIGHLIGHT);
+    }
   }
 
   @BindingAnnotation

@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.map;
 
+import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**
@@ -8,10 +10,12 @@ import com.jingyuyao.tactical.model.state.MapState;
  */
 public abstract class MapObject {
 
+  private final Multiset<Marker> markers;
   private Coordinate coordinate;
 
-  public MapObject(Coordinate coordinate) {
+  public MapObject(Coordinate coordinate, Multiset<Marker> markers) {
     this.coordinate = coordinate;
+    this.markers = markers;
   }
 
   public Coordinate getCoordinate() {
@@ -24,6 +28,18 @@ public abstract class MapObject {
    */
   protected void setCoordinate(Coordinate newCoordinate) {
     coordinate = newCoordinate;
+  }
+
+  public Multiset<Marker> getMarkers() {
+    return markers;
+  }
+
+  public void addMarker(Marker marker) {
+    markers.add(marker);
+  }
+
+  public void removeMarker(Marker marker) {
+    markers.remove(marker);
   }
 
   /**

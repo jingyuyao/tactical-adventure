@@ -19,7 +19,7 @@ abstract class AbstractWeapon<T extends WeaponStats> extends BaseItem<T> impleme
   @Override
   public ListenableFuture<Void> attack(final Target target) {
     SettableFuture<Void> future = SettableFuture.create();
-    getOwner().post(new Attack(target, future));
+    getOwner().postEvent(new Attack(target, future));
     Futures.addCallback(future, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {

@@ -1,14 +1,15 @@
 package com.jingyuyao.tactical.view.actor;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Terrain;
 
 public interface ActorFactory {
 
-  MapActor create(Coordinate initialCoordinate, EventListener eventListener);
+  TerrainActor create(Terrain terrain, EventListener eventListener);
 
-  MapActor create(
-      Coordinate initialCoordinate, EventListener eventListener, Sprite sprite, Color initialColor);
+  PlayerActor create(Player player, EventListener eventListener);
+
+  EnemyActor create(Enemy enemy, EventListener eventListener);
 }

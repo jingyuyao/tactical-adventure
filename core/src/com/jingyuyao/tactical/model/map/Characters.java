@@ -12,7 +12,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.EventSubscriber;
 import com.jingyuyao.tactical.model.event.ClearMap;
@@ -44,15 +43,11 @@ public class Characters implements EventSubscriber, Iterable<Character> {
 
   @Subscribe
   public void dispose(ClearMap clearMap) {
-    for (Character character : characterSet) {
-      character.dispose();
-    }
     characterSet.clear();
   }
 
-  @Subscribe
-  public void removeCharacter(RemoveCharacter removeCharacter) {
-    characterSet.remove(removeCharacter.getObject());
+  public void removeCharacter(Character character) {
+    characterSet.remove(character);
   }
 
   /**

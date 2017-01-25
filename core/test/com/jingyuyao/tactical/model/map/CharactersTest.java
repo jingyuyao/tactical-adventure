@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.character.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.ClearMap;
 import com.jingyuyao.tactical.model.event.NewMap;
@@ -42,7 +42,7 @@ public class CharactersTest {
   @Mock
   private Iterator<Character> characterIterator;
   @Mock
-  private RemoveCharacter removeCharacter;
+  private RemoveSelf removeSelf;
 
   // Mocking list iteration when we are abusing functional programming is too hard
   private List<Player> players;
@@ -51,7 +51,7 @@ public class CharactersTest {
 
   @Before
   public void setUp() {
-    characters = new Characters(characterSet);
+    characters = new Characters(eventBus, characterSet);
     players = Collections.singletonList(player);
     enemies = Collections.singletonList(enemy);
   }
@@ -83,9 +83,9 @@ public class CharactersTest {
 
   @Test
   public void remove_character() {
-    when(removeCharacter.getObject()).thenReturn(player);
+    when(removeSelf.getObject()).thenReturn(player);
 
-    characters.removeCharacter(removeCharacter);
+    characters.removeCharacter(removeSelf);
 
     verify(characterSet).remove(player);
   }
@@ -116,6 +116,6 @@ public class CharactersTest {
     when(characterIterator.hasNext()).thenReturn(true, true, false);
     when(characterIterator.next()).thenReturn(player, enemy);
 
-    TestHelpers.verifyNoDeadEvents(characters, newMap, clearMap, removeCharacter);
+    TestHelpers.verifyNoDeadEvents(characters, newMap, clearMap, removeSelf);
   }
 }

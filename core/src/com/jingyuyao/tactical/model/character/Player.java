@@ -1,10 +1,14 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.event.NewActionState;
+import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import javax.inject.Inject;
@@ -18,11 +22,13 @@ public class Player extends Character {
 
   @Inject
   Player(
-      EventBus eventBus,
       @Assisted Coordinate coordinate,
+      @InitialMarkers Multiset<Marker> markers,
+      Characters characters,
+      @CharacterEventBus EventBus eventBus,
       @Assisted Stats stats,
       List<Item> items) {
-    super(eventBus, coordinate, stats, items);
+    super(coordinate, markers, characters, eventBus, stats, items);
   }
 
   @Override
@@ -36,6 +42,5 @@ public class Player extends Character {
 
   public void setActionable(boolean actionable) {
     this.actionable = actionable;
-    post(new NewActionState(this, actionable));
   }
 }

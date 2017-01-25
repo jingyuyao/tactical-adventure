@@ -1,9 +1,12 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 
@@ -12,8 +15,14 @@ import java.util.List;
  */
 public abstract class Enemy extends Character {
 
-  Enemy(EventBus eventBus, Coordinate coordinate, Stats stats, List<Item> items) {
-    super(eventBus, coordinate, stats, items);
+  Enemy(
+      Coordinate coordinate,
+      Multiset<Marker> markers,
+      Characters characters,
+      EventBus eventBus,
+      Stats stats,
+      List<Item> items) {
+    super(coordinate, markers, characters, eventBus, stats, items);
   }
 
   @Override

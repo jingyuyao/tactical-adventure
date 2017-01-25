@@ -31,13 +31,7 @@ public class ActorModule extends AbstractModule {
 
     install(new FactoryModuleBuilder().build(ActorFactory.class));
 
-    Multibinder<EventSubscriber> subscriberBinder =
-        Multibinder.newSetBinder(binder(), EventSubscriber.class);
-    subscriberBinder.addBinding().to(Actors.class);
-    subscriberBinder.addBinding().to(MarkingSubscriber.class);
-    subscriberBinder.addBinding().to(HighlightSubscriber.class);
-    subscriberBinder.addBinding().to(CharacterSubscriber.class);
-    subscriberBinder.addBinding().to(AttackSubscriber.class);
+    Multibinder.newSetBinder(binder(), EventSubscriber.class).addBinding().to(Actors.class);
   }
 
   @Provides

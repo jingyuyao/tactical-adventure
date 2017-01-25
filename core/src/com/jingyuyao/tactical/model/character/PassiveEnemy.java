@@ -2,18 +2,23 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -22,12 +27,15 @@ class PassiveEnemy extends Enemy {
   private final MovementFactory movementFactory;
 
   @Inject
-  PassiveEnemy(EventBus eventBus,
+  PassiveEnemy(
       @Assisted Coordinate coordinate,
+      @InitialMarkers Multiset<Marker> markers,
+      Characters characters,
+      @CharacterEventBus EventBus eventBus,
       @Assisted Stats stats,
       List<Item> items,
       MovementFactory movementFactory) {
-    super(eventBus, coordinate, stats, items);
+    super(coordinate, markers, characters, eventBus, stats, items);
     this.movementFactory = movementFactory;
   }
 
