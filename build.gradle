@@ -103,10 +103,6 @@ project(":core") {
             // We can't allow that as it includes AOP which doesn't work on Android.
             exclude module: "guice"
         }
-        compile("com.google.inject.extensions:guice-multibindings:$guiceVersion") {
-            // see above
-            exclude module: "guice"
-        }
         testCompile("com.google.inject.extensions:guice-testlib:$guiceVersion") {
             // see above
             exclude module: "guice"
