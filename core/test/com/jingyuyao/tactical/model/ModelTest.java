@@ -51,13 +51,6 @@ public class ModelTest {
   }
 
   @Test
-  public void register_listener() {
-    model.registerListener(object);
-
-    verify(eventBus).register(object);
-  }
-
-  @Test
   public void new_map() {
     model.newMap(10, 5, terrainIterable, playerIterable, enemyIterable, state);
 

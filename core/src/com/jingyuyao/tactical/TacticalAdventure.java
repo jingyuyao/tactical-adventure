@@ -26,7 +26,7 @@ public class TacticalAdventure extends Game {
 
   @Inject
   @ModelEventBus
-  private EventBus eventBus;
+  private EventBus modelEventBus;
   @Inject
   private Model model;
   @Inject
@@ -54,9 +54,9 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
-    model.registerListener(mapUI);
-    model.registerListener(mapView);
-    eventBus.register(this);
+    modelEventBus.register(mapUI);
+    modelEventBus.register(mapView);
+    modelEventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }
 

@@ -50,8 +50,4 @@ public class Model {
     }
     mapState.initialize(initialState);
   }
-
-  public void registerListener(Object listener) {
-    eventBus.register(listener);
-  }
 }
