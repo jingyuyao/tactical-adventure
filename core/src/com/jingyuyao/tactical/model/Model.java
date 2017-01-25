@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+// TODO: use model.initialize instead of firing events :/
 @Singleton
 public class Model {
 
