@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -16,18 +14,15 @@ import javax.inject.Singleton;
 @Singleton
 public class Model {
 
-  private final EventBus eventBus;
   private final Characters characters;
   private final Terrains terrains;
   private final MapState mapState;
 
   @Inject
   Model(
-      @ModelEventBus EventBus eventBus,
       Characters characters,
       Terrains terrains,
       MapState mapState) {
-    this.eventBus = eventBus;
     this.characters = characters;
     this.terrains = terrains;
     this.mapState = mapState;

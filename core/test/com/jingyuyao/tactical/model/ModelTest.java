@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -20,8 +19,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ModelTest {
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private Characters characters;
   @Mock
@@ -47,7 +44,7 @@ public class ModelTest {
   public void setUp() {
     playerIterable = ImmutableList.of(player);
     enemyIterable = ImmutableList.of(enemy);
-    model = new Model(eventBus, characters, terrains, mapState);
+    model = new Model(characters, terrains, mapState);
   }
 
   @Test
