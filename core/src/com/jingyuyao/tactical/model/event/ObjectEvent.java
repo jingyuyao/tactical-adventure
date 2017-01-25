@@ -10,11 +10,14 @@ package com.jingyuyao.tactical.model.event;
  *
  * @param <T> the type of contained object.
  */
-public abstract class AbstractEvent<T> implements ModelEvent {
+public class ObjectEvent<T> implements ModelEvent {
 
   private final T object;
 
-  protected AbstractEvent(T object) {
+  /**
+   * Protected constructor to prevent making a generic event.
+   */
+  protected ObjectEvent(T object) {
     this.object = object;
   }
 
