@@ -24,6 +24,7 @@ public class CharacterModule extends AbstractModule {
   }
 
   @Provides
+  @InitialItems
   List<Item> provideInitialItems() {
     return new ArrayList<Item>();
   }
@@ -38,6 +39,14 @@ public class CharacterModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface CharacterEventBus {
+
+  }
+
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialItems {
 
   }
 }

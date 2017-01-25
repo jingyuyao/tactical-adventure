@@ -4,6 +4,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
+import com.jingyuyao.tactical.model.character.CharacterModule.InitialItems;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -27,7 +28,7 @@ public class Player extends Character {
       Characters characters,
       @CharacterEventBus EventBus eventBus,
       @Assisted Stats stats,
-      List<Item> items) {
+      @InitialItems List<Item> items) {
     super(coordinate, markers, characters, eventBus, stats, items);
   }
 

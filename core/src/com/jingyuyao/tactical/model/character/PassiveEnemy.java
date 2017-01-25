@@ -9,6 +9,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
+import com.jingyuyao.tactical.model.character.CharacterModule.InitialItems;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -33,7 +34,7 @@ public class PassiveEnemy extends Enemy {
       Characters characters,
       @CharacterEventBus EventBus eventBus,
       @Assisted Stats stats,
-      List<Item> items,
+      @InitialItems List<Item> items,
       MovementFactory movementFactory) {
     super(coordinate, markers, characters, eventBus, stats, items);
     this.movementFactory = movementFactory;
