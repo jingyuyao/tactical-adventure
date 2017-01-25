@@ -2,20 +2,23 @@ package com.jingyuyao.tactical.controller;
 
 import javax.inject.Singleton;
 
+/**
+ * A non-blocking semaphore.
+ */
 @Singleton
 public class InputLock {
 
-  private boolean locked = false;
+  private int locks = 0;
 
   public void lock() {
-    locked = true;
+    locks++;
   }
 
   public void unlock() {
-    locked = false;
+    locks--;
   }
 
   public boolean isLocked() {
-    return locked;
+    return locks > 0;
   }
 }
