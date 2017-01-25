@@ -1,7 +1,6 @@
-package com.jingyuyao.tactical.model.state.event;
+package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.AbstractEvent;
 
 public class HighlightCharacter extends AbstractEvent<Character> {
 

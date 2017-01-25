@@ -1,7 +1,6 @@
-package com.jingyuyao.tactical.model.map.event;
+package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.AbstractEvent;
 
 public class AddPlayer extends AbstractEvent<Player> {
 

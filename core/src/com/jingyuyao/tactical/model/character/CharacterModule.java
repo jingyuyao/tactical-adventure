@@ -47,7 +47,6 @@ public class CharacterModule extends AbstractModule {
 
   }
 
-
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)

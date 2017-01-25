@@ -1,6 +1,5 @@
-package com.jingyuyao.tactical.model.map.event;
+package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.event.AbstractEvent;
 import com.jingyuyao.tactical.model.map.Terrain;
 
 public class AddTerrain extends AbstractEvent<Terrain> {
