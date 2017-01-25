@@ -1,8 +1,5 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-
 /**
  * An {@link ModelEvent} that contains an {@link #object} and some basic utilities. Due to type
  * erasure, subclasses should NOT contain generic parameters since {@link
@@ -16,11 +13,9 @@ import com.google.common.base.Predicates;
 public abstract class AbstractEvent<T> implements ModelEvent {
 
   private final T object;
-  private final Predicate<T> matchesPredicate;
 
   protected AbstractEvent(T object) {
     this.object = object;
-    this.matchesPredicate = Predicates.equalTo(object);
   }
 
   /**
@@ -28,19 +23,5 @@ public abstract class AbstractEvent<T> implements ModelEvent {
    */
   public T getObject() {
     return object;
-  }
-
-  /**
-   * @return whether {@code other} is equal to {@link #object}
-   */
-  public boolean matches(Object other) {
-    return object.equals(other);
-  }
-
-  /**
-   * @return a {@link Predicate} that matches to {@link #object}
-   */
-  public Predicate<T> getMatchesPredicate() {
-    return matchesPredicate;
   }
 }
