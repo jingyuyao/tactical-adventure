@@ -6,7 +6,7 @@ import com.google.common.util.concurrent.SettableFuture;
  * An event that must be completed externally (usually by the view).
  * See {@link ObjectEvent} as to why this class is abstract.
  */
-public abstract class FutureEvent<T> extends ObjectEvent<T> {
+public class FutureEvent<T> extends ObjectEvent<T> {
 
   private final SettableFuture<Void> future;
 
