@@ -4,7 +4,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
@@ -16,7 +15,6 @@ import com.jingyuyao.tactical.model.event.AbstractEvent;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.item.event.RemoveItem;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -46,12 +44,6 @@ public abstract class Character extends MapObject implements Disposable {
   @Override
   public void highlight(MapState mapState) {
     mapState.highlight(this);
-  }
-
-  @Subscribe
-  public void removeItem(RemoveItem removeItem) {
-    // TODO: how to make this constant time?
-    items.remove(removeItem.getObject());
   }
 
   public void post(AbstractEvent<?> event) {
@@ -90,6 +82,14 @@ public abstract class Character extends MapObject implements Disposable {
     return stats.isDead();
   }
 
+  public void addItem(Item item) {
+    items.add(item);
+  }
+
+  public void removeItem(Item item) {
+    items.remove(item);
+  }
+
   public Iterable<Item> getItems() {
     return items;
   }
@@ -103,8 +103,9 @@ public abstract class Character extends MapObject implements Disposable {
   }
 
   public void quickAccess(Item item) {
-    Preconditions.checkArgument(items.contains(item));
-    Collections.swap(items, 0, items.indexOf(item));
+    int itemIndex = items.indexOf(item);
+    Preconditions.checkArgument(itemIndex != -1);
+    Collections.swap(items, 0, itemIndex);
   }
 
   public ListenableFuture<Void> moveAlong(Path path) {

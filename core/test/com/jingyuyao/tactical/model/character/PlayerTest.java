@@ -96,9 +96,7 @@ public class PlayerTest {
 
   @Test
   public void remove_item() {
-    when(removeItem.getObject()).thenReturn(weapon1);
-
-    player.removeItem(removeItem);
+    player.removeItem(weapon1);
 
     assertThat(items).containsExactly(consumable, weapon2).inOrder();
   }

@@ -95,9 +95,7 @@ public class PassiveEnemyTest {
 
   @Test
   public void remove_item() {
-    when(removeItem.getObject()).thenReturn(weapon1);
-
-    enemy.removeItem(removeItem);
+    enemy.removeItem(weapon1);
 
     assertThat(items).containsExactly(consumable, weapon2).inOrder();
   }

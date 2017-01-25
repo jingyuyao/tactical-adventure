@@ -1,20 +1,24 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.item.event.RemoveItem;
+import com.jingyuyao.tactical.model.character.Character;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
 class BaseItem<T extends ItemStats> implements Item {
 
-  private final EventBus eventBus;
+  private final Character owner;
   private final T itemStats;
 
-  BaseItem(EventBus eventBus, T itemStats) {
-    this.eventBus = eventBus;
+  BaseItem(Character owner, T itemStats) {
+    this.owner = owner;
     this.itemStats = itemStats;
+  }
+
+  @Override
+  public Character getOwner() {
+    return owner;
   }
 
   @Override
@@ -25,10 +29,6 @@ class BaseItem<T extends ItemStats> implements Item {
   @Override
   public int getUsageLeft() {
     return itemStats.getUsageLeft();
-  }
-
-  EventBus getEventBus() {
-    return eventBus;
   }
 
   T getItemStats() {
@@ -46,7 +46,7 @@ class BaseItem<T extends ItemStats> implements Item {
 
     itemStats.setUsageLeft(itemStats.getUsageLeft() - 1);
     if (itemStats.getUsageLeft() == 0) {
-      eventBus.post(new RemoveItem(this));
+      owner.removeItem(this);
     }
   }
 }

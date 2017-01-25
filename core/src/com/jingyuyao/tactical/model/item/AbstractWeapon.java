@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -13,14 +12,14 @@ import com.jingyuyao.tactical.model.item.event.Attack;
  */
 abstract class AbstractWeapon<T extends WeaponStats> extends BaseItem<T> implements Weapon {
 
-  AbstractWeapon(EventBus eventBus, T weaponStats) {
-    super(eventBus, weaponStats);
+  AbstractWeapon(Character owner, T weaponStats) {
+    super(owner, weaponStats);
   }
 
   @Override
   public ListenableFuture<Void> attack(Character attacker, final Target target) {
     SettableFuture<Void> future = SettableFuture.create();
-    getEventBus().post(new Attack(attacker, future, target));
+    getOwner().post(new Attack(attacker, future, target));
     Futures.addCallback(future, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {

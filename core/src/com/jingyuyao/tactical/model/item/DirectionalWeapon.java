@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.common.Directions;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -20,11 +20,11 @@ class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponStats> {
 
   @Inject
   DirectionalWeapon(
-      EventBus eventBus,
+      @Assisted Character owner,
       @Assisted DirectionalWeaponStats weaponStats,
       Terrains terrains,
       TargetFactory targetFactory) {
-    super(eventBus, weaponStats);
+    super(owner, weaponStats);
     this.terrains = terrains;
     this.targetFactory = targetFactory;
   }

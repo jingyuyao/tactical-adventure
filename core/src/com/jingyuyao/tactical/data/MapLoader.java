@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -16,7 +17,6 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.NewMap;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponStats;
 import com.jingyuyao.tactical.model.item.GrenadeStats;
-import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.item.ItemStats;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -106,24 +106,24 @@ public class MapLoader {
 
   // TODO: remove us
   private List<Player> createTestPlayers() {
-    int hp = 20;
-    return ImmutableList.of(
-        characterFactory.createPlayer(
-            new Coordinate(2, 2), new Stats("john", hp, 5, normalAndObstructed()), createItems1()),
-        characterFactory.createPlayer(
-            new Coordinate(2, 3), new Stats("john", hp, 6, normalAndObstructed()), createItems2()));
+    Player p1 = characterFactory.createPlayer(
+        new Coordinate(2, 2), new Stats("john", 20, 5, normalAndObstructed()));
+    Player p2 = characterFactory.createPlayer(
+        new Coordinate(2, 3), new Stats("john", 20, 6, normalAndObstructed()));
+    addItems1(p1);
+    addItems2(p2);
+    return ImmutableList.of(p1, p2);
   }
 
   private List<Enemy> createTestEnemies() {
-    int hp = 20;
-    return ImmutableList.of(
-        characterFactory.createPassiveEnemy(
-            new Coordinate(8, 3), new Stats("billy", hp, 3, normalAndObstructed()),
-            createItems1()),
-        characterFactory.createPassiveEnemy(
-            new Coordinate(9, 3),
-            new Stats("billy", hp, 2, normalAndObstructed()),
-            createItems2()));
+    Enemy e1 = characterFactory.createPassiveEnemy(
+        new Coordinate(8, 3), new Stats("billy", 20, 3, normalAndObstructed()));
+    Enemy e2 = characterFactory.createPassiveEnemy(
+        new Coordinate(9, 3),
+        new Stats("billy", 20, 2, normalAndObstructed()));
+    addItems1(e1);
+    addItems2(e2);
+    return ImmutableList.of(e1, e2);
   }
 
   private Set<Terrain.Type> normalAndObstructed() {
@@ -133,27 +133,23 @@ public class MapLoader {
     return standOnTerrainTypes;
   }
 
-  private List<Item> createItems1() {
-    List<Item> items = new ArrayList<Item>();
-    items.add(
+  private void addItems1(Character owner) {
+    owner.addItem(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Laser5", 1, 5, 10)));
-    items.add(
+            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Laser5", 1, 5, 10)));
+    owner.addItem(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Melee5", 10, 5, 1)));
-    items.add(
+            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Melee5", 10, 5, 1)));
+    owner.addItem(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Melee10", 3, 10, 1)));
-    items.add(itemFactory.createHeal(new ItemStats("pot", 3)));
-    return items;
+            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Melee10", 3, 10, 1)));
+    owner.addItem(itemFactory.createHeal(owner, new ItemStats("pot", 3)));
   }
 
-  private List<Item> createItems2() {
-    List<Item> weapons = new ArrayList<Item>();
-    weapons.add(
+  private void addItems2(Character owner) {
+    owner.addItem(
         itemFactory
-            .createDirectionalWeapon(new DirectionalWeaponStats("Laser3", 5, 3, 10)));
-    weapons.add(itemFactory.createGrenade(new GrenadeStats("Grenade5", 3, 5, 5, 3)));
-    return weapons;
+            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Laser3", 5, 3, 10)));
+    owner.addItem(itemFactory.createGrenade(owner, new GrenadeStats("Grenade5", 3, 5, 5, 3)));
   }
 }

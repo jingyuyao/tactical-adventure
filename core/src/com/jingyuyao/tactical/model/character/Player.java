@@ -21,7 +21,7 @@ public class Player extends Character {
       EventBus eventBus,
       @Assisted Coordinate coordinate,
       @Assisted Stats stats,
-      @Assisted List<Item> items) {
+      List<Item> items) {
     super(eventBus, coordinate, stats, items);
   }
 

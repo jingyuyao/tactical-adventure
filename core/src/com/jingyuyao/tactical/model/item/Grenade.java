@@ -3,9 +3,9 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.EventBus;
 import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -19,12 +19,12 @@ public class Grenade extends AbstractWeapon<GrenadeStats> {
 
   @Inject
   Grenade(
-      EventBus eventBus,
+      @Assisted Character owner,
       @Assisted GrenadeStats grenadeStats,
       Algorithms algorithms,
       Terrains terrains,
       TargetFactory targetFactory) {
-    super(eventBus, grenadeStats);
+    super(owner, grenadeStats);
     this.algorithms = algorithms;
     this.terrains = terrains;
     this.targetFactory = targetFactory;

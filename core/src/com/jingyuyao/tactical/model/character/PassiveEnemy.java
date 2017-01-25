@@ -25,7 +25,7 @@ class PassiveEnemy extends Enemy {
   PassiveEnemy(EventBus eventBus,
       @Assisted Coordinate coordinate,
       @Assisted Stats stats,
-      @Assisted List<Item> items,
+      List<Item> items,
       MovementFactory movementFactory) {
     super(eventBus, coordinate, stats, items);
     this.movementFactory = movementFactory;

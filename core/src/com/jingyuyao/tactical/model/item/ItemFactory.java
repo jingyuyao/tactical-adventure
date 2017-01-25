@@ -1,15 +1,16 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.inject.name.Named;
+import com.jingyuyao.tactical.model.character.Character;
 
 public interface ItemFactory {
 
   @Named("DirectionalWeapon")
-  Weapon createDirectionalWeapon(DirectionalWeaponStats weaponStats);
+  Weapon createDirectionalWeapon(Character owner, DirectionalWeaponStats weaponStats);
 
   @Named("Grenade")
-  Weapon createGrenade(GrenadeStats grenadeStats);
+  Weapon createGrenade(Character owner, GrenadeStats grenadeStats);
 
   @Named("Heal")
-  Consumable createHeal(ItemStats itemStats);
+  Consumable createHeal(Character owner, ItemStats itemStats);
 }
