@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.mark.Marking;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,5 +83,17 @@ public class TargetTest {
     verify(terrain).removeMarker(Marker.CAN_ATTACK);
     verify(terrain2).removeMarker(Marker.TARGET_SELECT);
     verify(character).removeMarker(Marker.POTENTIAL_TARGET);
+  }
+
+  @Test
+  public void create_hit_marking() {
+    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
+    when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
+
+    Marking hitMarking = target.createHitMarking();
+    hitMarking.apply();
+
+    verify(terrain).addMarker(Marker.HIT);
+    verify(character).addMarker(Marker.HIT);
   }
 }
