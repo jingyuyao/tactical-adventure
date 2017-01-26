@@ -100,7 +100,7 @@ public class Terrains implements Iterable<Terrain> {
             .filter(new Predicate<Coordinate>() {
               @Override
               public boolean apply(Coordinate input) {
-                return terrainMap.containsKey(input);
+                return contains(input);
               }
             })
             .transform(new Function<Coordinate, Terrain>() {

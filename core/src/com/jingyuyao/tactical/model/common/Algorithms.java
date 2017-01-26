@@ -39,17 +39,17 @@ public class Algorithms {
   /**
    * Creates a directed, acyclic graph starting at {@code startingCoordinate} in {@code
    * coordinateGrid} that contains all reachable nodes whose total path cost (sum of all edge
-   * weights from the start to the current node) is less or equal to {@code maxPathCost}. Inbound
+   * weights from the start to the current node) is less or equal to {@code distance}. Inbound
    * edge costs comes from {@code edgeCostMap}.
    *
    * @param edgeCostFunction The function to obtain the incoming edge cost for a particular {@link
    * Coordinate}. All incoming edge cost for a {@link Coordinate} is assumed to be the same.
-   * @param maxPathCost Maximum cost for the path between initial location to any other object
+   * @param distance Maximum distance for the path between initial location to any other object
    */
   public ValueGraph<Coordinate, Integer> distanceFromGraph(
       Function<Terrain, Integer> edgeCostFunction,
       Coordinate startingCoordinate,
-      int maxPathCost) {
+      int distance) {
     MutableValueGraph<Coordinate, Integer> graph =
         ValueGraphBuilder.directed()
             .allowsSelfLoops(false)
@@ -81,7 +81,7 @@ public class Algorithms {
         }
 
         int pathCost = minNode.getValue() + edgeCost;
-        if (pathCost > maxPathCost) {
+        if (pathCost > distance) {
           continue;
         }
 
