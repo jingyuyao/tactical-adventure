@@ -238,15 +238,14 @@ public class CharacterTest {
     when(cannotPassTerrain.getType()).thenReturn(Type.MOUNTAIN);
     when(
         terrainGraphs.distanceFrom(
-            Mockito.<Function<Terrain, Integer>>any(),
-            Mockito.<Coordinate>any(),
-            Mockito.anyInt())).thenReturn(coordinateGraph);
+            Mockito.<Coordinate>any(), Mockito.anyInt(), Mockito.<Function<Terrain, Integer>>any()
+        )).thenReturn(coordinateGraph);
 
     assertThat(character.createMoveGraph()).isSameAs(coordinateGraph);
 
     verify(terrainGraphs)
         .distanceFrom(
-            functionCaptor.capture(), Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10));
+            Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10), functionCaptor.capture());
     Function<Terrain, Integer> function = functionCaptor.getValue();
     assertThat(function.apply(terrain)).isEqualTo(123);
     assertThat(function.apply(blockedTerrain)).isEqualTo(TerrainGraphs.BLOCKED);

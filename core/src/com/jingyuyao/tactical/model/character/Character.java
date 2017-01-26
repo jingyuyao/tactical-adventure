@@ -128,7 +128,7 @@ public abstract class Character extends MapObject {
 
   public Graph<Coordinate> createMoveGraph() {
     return terrainGraphs.distanceFrom(
-        createMovementPenaltyFunction(), getCoordinate(), stats.getMoveDistance());
+        getCoordinate(), stats.getMoveDistance(), createMovementPenaltyFunction());
   }
 
   private Function<Terrain, Integer> createMovementPenaltyFunction() {

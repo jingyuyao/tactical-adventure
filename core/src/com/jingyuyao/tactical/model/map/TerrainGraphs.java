@@ -35,19 +35,17 @@ public class TerrainGraphs {
   }
 
   /**
-   * Creates a directed, acyclic graph starting at {@code startingCoordinate} in {@code
-   * coordinateGrid} that contains all reachable nodes whose total path cost (sum of all edge
-   * weights from the start to the current node) is less or equal to {@code distance}. Inbound
-   * edge costs comes from {@code edgeCostMap}.
+   * Creates a directed, acyclic graph starting at {@code startingCoordinate} that contains all
+   * reachable nodes whose total path cost (sum of all edge weights from the start to the current
+   * node) is less or equal to {@code distance}. Inbound edge costs comes from {@code
+   * edgeCosFunction}.
    *
+   * @param distance Maximum distance for the path between initial location to any other object
    * @param edgeCostFunction The function to obtain the incoming edge cost for a particular {@link
    * Coordinate}. All incoming edge cost for a {@link Coordinate} is assumed to be the same.
-   * @param distance Maximum distance for the path between initial location to any other object
    */
   public ValueGraph<Coordinate, Integer> distanceFrom(
-      Function<Terrain, Integer> edgeCostFunction,
-      Coordinate startingCoordinate,
-      int distance) {
+      Coordinate startingCoordinate, int distance, Function<Terrain, Integer> edgeCostFunction) {
     MutableValueGraph<Coordinate, Integer> graph =
         ValueGraphBuilder.directed()
             .allowsSelfLoops(false)
