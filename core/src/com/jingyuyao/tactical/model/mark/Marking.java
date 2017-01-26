@@ -50,4 +50,21 @@ public class Marking {
       }
     }
   }
+
+  public static class MarkingBuilder {
+
+    private final ImmutableMultimap.Builder<MapObject, Marker> mapBuilder;
+
+    public MarkingBuilder() {
+      this.mapBuilder = ImmutableMultimap.builder();
+    }
+
+    public void put(MapObject object, Marker marker) {
+      mapBuilder.put(object, marker);
+    }
+
+    public Marking build() {
+      return new Marking(mapBuilder.build());
+    }
+  }
 }
