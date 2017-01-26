@@ -12,7 +12,6 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
-import com.jingyuyao.tactical.model.mark.MarkModule;
 import com.jingyuyao.tactical.model.state.StateModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -22,7 +21,6 @@ public class ModelModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new MarkModule());
     install(new MapModule());
     install(new CharacterModule());
     install(new ItemModule());
