@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.event.AddTerrain;
 import java.util.Collection;
 import java.util.Iterator;

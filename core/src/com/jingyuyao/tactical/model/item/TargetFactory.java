@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Coordinate;
 
 interface TargetFactory {
 

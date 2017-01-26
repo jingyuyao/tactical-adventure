@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.common.Coordinate;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;

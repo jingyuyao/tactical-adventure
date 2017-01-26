@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Coordinate;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status. Not a {@link Consumable}

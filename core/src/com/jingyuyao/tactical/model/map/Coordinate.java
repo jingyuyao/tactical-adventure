@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.common;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;

@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.common.Coordinate;
 
 public class Directions {
 
