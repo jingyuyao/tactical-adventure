@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;

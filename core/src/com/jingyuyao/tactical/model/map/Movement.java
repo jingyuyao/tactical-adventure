@@ -4,9 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.Marking.MarkingBuilder;
+import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.

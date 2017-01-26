@@ -13,8 +13,8 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.Marking;
+import com.jingyuyao.tactical.model.map.Marker;
+import com.jingyuyao.tactical.model.map.Marking;
 import java.util.Map;
 
 public class CharacterActor<T extends Character> extends MapActor<T> {

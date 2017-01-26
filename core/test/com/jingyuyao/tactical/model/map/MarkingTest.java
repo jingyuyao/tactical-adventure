@@ -1,11 +1,10 @@
-package com.jingyuyao.tactical.model.mark;
+package com.jingyuyao.tactical.model.map;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.jingyuyao.tactical.model.map.MapObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

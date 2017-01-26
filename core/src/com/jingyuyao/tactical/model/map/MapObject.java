@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.map;
 
 import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 
 /**

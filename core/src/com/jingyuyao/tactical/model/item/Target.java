@@ -7,11 +7,11 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Marker;
+import com.jingyuyao.tactical.model.map.Marking;
+import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.Marking.MarkingBuilder;
 import javax.inject.Inject;
 
 // TODO: need a method that return a "target info" for this target to be displayed

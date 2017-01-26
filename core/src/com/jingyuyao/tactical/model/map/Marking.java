@@ -1,8 +1,7 @@
-package com.jingyuyao.tactical.model.mark;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.Collection;
 import java.util.Map.Entry;
 import javax.inject.Inject;

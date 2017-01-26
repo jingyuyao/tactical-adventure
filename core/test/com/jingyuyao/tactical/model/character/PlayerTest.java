@@ -8,7 +8,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;

@@ -16,10 +16,10 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.mark.Marker;
 import java.util.List;
 import javax.inject.Inject;
 

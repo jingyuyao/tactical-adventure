@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.mark.Marker;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
 import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
 import java.util.Map;
