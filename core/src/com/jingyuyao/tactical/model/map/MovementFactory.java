@@ -28,9 +28,7 @@ public class MovementFactory {
   }
 
   private Graph<Coordinate> createMoveGraph(Character character) {
-    return algorithms.minPathSearch(
-        terrains.getWidth(),
-        terrains.getHeight(),
+    return algorithms.distanceFromGraph(
         createMovementPenaltyFunction(character),
         character.getCoordinate(),
         character.getMoveDistance());

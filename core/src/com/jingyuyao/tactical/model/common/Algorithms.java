@@ -10,6 +10,7 @@ import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,21 +24,22 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Functions should return immutable objects. This class should not rely on our custom model
- * classes.
+ * Functions should return immutable objects.
  */
 @Singleton
 public class Algorithms {
 
   public static final int NO_EDGE = -1;
 
-  @Inject
-  Algorithms() {
+  private final Terrains terrains;
 
+  @Inject
+  Algorithms(Terrains terrains) {
+    this.terrains = terrains;
   }
 
   /**
-   * Creates a directed, acyclic graph starting at {@code (startX, startY)} in {@code
+   * Creates a directed, acyclic graph starting at {@code startingCoordinate} in {@code
    * coordinateGrid} that contains all reachable nodes whose total path cost (sum of all edge
    * weights from the start to the current node) is less or equal to {@code maxPathCost}. Inbound
    * edge costs comes from {@code edgeCostMap}.
@@ -46,9 +48,7 @@ public class Algorithms {
    * Coordinate}. All incoming edge cost for a {@link Coordinate} is assumed to be the same.
    * @param maxPathCost Maximum cost for the path between initial location to any other object
    */
-  public ValueGraph<Coordinate, Integer> minPathSearch(
-      int gridWidth,
-      int gridHeight,
+  public ValueGraph<Coordinate, Integer> distanceFromGraph(
       Function<Coordinate, Integer> edgeCostFunction,
       Coordinate startingCoordinate,
       int maxPathCost) {
@@ -70,7 +70,7 @@ public class Algorithms {
       Coordinate minCoordinate = minNode.getObject();
       processedCoordinates.add(minCoordinate);
 
-      for (Coordinate neighbor : getNeighbors(gridWidth, gridHeight, minCoordinate)) {
+      for (Coordinate neighbor : getNeighbors(minCoordinate)) {
         if (processedCoordinates.contains(neighbor)) {
           continue;
         }
@@ -103,7 +103,7 @@ public class Algorithms {
     }
 
     Preconditions.checkState(graph.predecessors(startingCoordinate).isEmpty());
-    Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in minPathSearch");
+    Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFromGraph");
     return graph;
   }
 
@@ -139,7 +139,7 @@ public class Algorithms {
    *
    * @return Randomized list of neighbors
    */
-  private ImmutableList<Coordinate> getNeighbors(int gridWidth, int gridHeight, Coordinate from) {
+  private ImmutableList<Coordinate> getNeighbors(Coordinate from) {
     int x = from.getX();
     int y = from.getY();
 
@@ -148,63 +148,18 @@ public class Algorithms {
     if (x > 0) {
       neighbors.add(new Coordinate(x - 1, y));
     }
-    if (x < gridWidth - 1) {
+    if (x < terrains.getWidth() - 1) {
       neighbors.add(new Coordinate(x + 1, y));
     }
     if (y > 0) {
       neighbors.add(new Coordinate(x, y - 1));
     }
-    if (y < gridHeight - 1) {
+    if (y < terrains.getHeight() - 1) {
       neighbors.add(new Coordinate(x, y + 1));
     }
 
     Collections.shuffle(neighbors);
     return ImmutableList.copyOf(neighbors);
-  }
-
-  /**
-   * Get the coordinates that "look" like {@code distance} away. This method is the same as {@link
-   * #getNeighbors(int, int, Coordinate)} if {@code distance==1}. Otherwise it will return a max
-   * list of eight neighbors that looks like they are {@code distance} away.
-   *
-   * @param from starting coordinate
-   */
-  public ImmutableList<Coordinate> getNDistanceAway(
-      int gridWidth, int gridHeight, Coordinate from, int distance) {
-    if (distance == 1) {
-      return getNeighbors(gridWidth, gridHeight, from);
-    }
-
-    int x = from.getX();
-    int y = from.getY();
-    ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
-
-    if (x - distance >= 0) {
-      builder.add(new Coordinate(x - distance, y)); // left
-    }
-    if (x + distance < gridWidth) {
-      builder.add(new Coordinate(x + distance, y)); // right
-    }
-    if (y - distance >= 0) {
-      builder.add(new Coordinate(x, y - distance)); // down
-    }
-    if (y + distance < gridHeight) {
-      builder.add(new Coordinate(x, y + distance)); // top
-    }
-    if (x - distance + 1 >= 0 && y - distance + 1 >= 0) {
-      builder.add(new Coordinate(x - distance + 1, y - distance + 1)); // left down
-    }
-    if (x + distance - 1 < gridWidth && y - distance + 1 >= 0) {
-      builder.add(new Coordinate(x + distance - 1, y - distance + 1)); // right down
-    }
-    if (x - distance + 1 >= 0 && y + distance - 1 < gridHeight) {
-      builder.add(new Coordinate(x - distance + 1, y + distance - 1)); // left top
-    }
-    if (x + distance - 1 < gridWidth && y + distance - 1 < gridHeight) {
-      builder.add(new Coordinate(x + distance - 1, y + distance - 1)); // right top
-    }
-
-    return builder.build();
   }
 
   /**
