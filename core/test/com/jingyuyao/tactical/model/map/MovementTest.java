@@ -5,22 +5,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,13 +35,7 @@ public class MovementTest {
   @Mock
   private ImmutableList<Coordinate> track;
   @Mock
-  private MarkingFactory markingFactory;
-  @Mock
   private Terrain terrain;
-  @Mock
-  private Marking marking;
-  @Captor
-  private ArgumentCaptor<ImmutableMultimap<MapObject, Marker>> markerMapCaptor;
 
   private Set<Coordinate> moveCoordinates;
   private Movement movement;
@@ -56,7 +44,7 @@ public class MovementTest {
   public void setUp() {
     moveCoordinates = ImmutableSet.of(ORIGIN, MOVE1, MOVE2);
     when(graph.nodes()).thenReturn(moveCoordinates);
-    movement = new Movement(algorithms, terrains, graph, markingFactory);
+    movement = new Movement(algorithms, terrains, graph);
   }
 
   @Test
@@ -84,15 +72,10 @@ public class MovementTest {
   @Test
   public void show_marking() {
     when(terrains.getAll(moveCoordinates)).thenReturn(ImmutableList.of(terrain));
-    when(markingFactory.create(Mockito.<ImmutableMultimap<MapObject, Marker>>any()))
-        .thenReturn(marking);
 
     movement.showMarking();
 
-    verify(markingFactory).create(markerMapCaptor.capture());
-    verify(marking).apply();
-    assertThat(markerMapCaptor.getValue()).hasSize(1);
-    assertThat(markerMapCaptor.getValue()).containsEntry(terrain, Marker.CAN_MOVE_TO);
+    verify(terrain).addMarker(Marker.CAN_MOVE_TO);
   }
 
   @Test
@@ -101,6 +84,6 @@ public class MovementTest {
 
     movement.hideMarking();
 
-    verify(marking).clear();
+    verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
   }
 }

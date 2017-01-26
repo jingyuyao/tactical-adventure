@@ -1,13 +1,12 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
+import com.jingyuyao.tactical.model.mark.Marking.MarkingBuilder;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
@@ -17,18 +16,12 @@ public class Movement {
   private final Graph<Coordinate> moveGraph;
   private final Algorithms algorithms;
   private final Terrains terrains;
-  private final MarkingFactory markingFactory;
   private Marking marking;
 
-  Movement(
-      Algorithms algorithms,
-      Terrains terrains,
-      Graph<Coordinate> moveGraph,
-      MarkingFactory markingFactory) {
+  Movement(Algorithms algorithms, Terrains terrains, Graph<Coordinate> moveGraph) {
     this.algorithms = algorithms;
     this.terrains = terrains;
     this.moveGraph = moveGraph;
-    this.markingFactory = markingFactory;
   }
 
   /**
@@ -65,10 +58,10 @@ public class Movement {
   }
 
   private Marking createMarking() {
-    ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
+    MarkingBuilder builder = new MarkingBuilder();
     for (Terrain terrain : terrains.getAll(moveGraph.nodes())) {
       builder.put(terrain, Marker.CAN_MOVE_TO);
     }
-    return markingFactory.create(builder.build());
+    return builder.build();
   }
 }

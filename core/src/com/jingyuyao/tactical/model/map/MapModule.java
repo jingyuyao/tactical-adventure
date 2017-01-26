@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains.BackingTerrainMap;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ public class MapModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(Algorithms.class);
-    requireBinding(MarkingFactory.class);
 
     install(new FactoryModuleBuilder().build(TerrainFactory.class));
   }

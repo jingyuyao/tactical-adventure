@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +25,6 @@ public class MapModuleTest {
   @Bind
   @Mock
   private Algorithms algorithms;
-  @Bind
-  @Mock
-  private MarkingFactory markingFactory;
 
   @Inject
   private TerrainFactory terrainFactory;
