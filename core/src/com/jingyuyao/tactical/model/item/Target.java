@@ -73,7 +73,7 @@ public class Target {
     Iterable<MapObject> hitObjects =
         Iterables.concat(terrains.getAll(targetCoordinates), characters.getAll(targetCoordinates));
     for (MapObject object : hitObjects) {
-      builder.put(object, Marker.DANGER);
+      builder.put(object, Marker.HIT);
     }
     return markingFactory.create(builder.build());
   }

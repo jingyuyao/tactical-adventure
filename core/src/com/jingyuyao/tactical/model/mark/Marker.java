@@ -7,7 +7,7 @@ public enum Marker {
   HIGHLIGHT,
   CAN_MOVE_TO,
   CAN_ATTACK,
-  DANGER,
+  HIT,
   POTENTIAL_TARGET,
   TARGET_SELECT,
 }

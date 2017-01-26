@@ -36,7 +36,7 @@ public class ActorModule extends AbstractModule {
     markerSpriteMap.put(
         Marker.CAN_MOVE_TO, new Sprite(assetManager.get(AssetModule.MOVE, Texture.class)));
     markerSpriteMap.put(
-        Marker.DANGER, new Sprite(assetManager.get(AssetModule.DANGER, Texture.class)));
+        Marker.HIT, new Sprite(assetManager.get(AssetModule.HIT, Texture.class)));
     markerSpriteMap.put(
         Marker.CAN_ATTACK, new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class)));
     markerSpriteMap.put(
