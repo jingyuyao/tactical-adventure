@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Terrain;
 import javax.inject.Inject;
 

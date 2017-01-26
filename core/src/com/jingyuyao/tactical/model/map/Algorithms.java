@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.common;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -10,8 +10,7 @@ import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
-import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

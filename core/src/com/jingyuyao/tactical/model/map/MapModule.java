@@ -12,7 +12,6 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains.BackingTerrainMap;
 import java.lang.annotation.Retention;

@@ -5,9 +5,9 @@ import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
