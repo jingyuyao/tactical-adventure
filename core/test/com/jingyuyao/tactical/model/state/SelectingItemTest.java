@@ -92,7 +92,7 @@ public class SelectingItemTest {
 
     Action useConsumable = actions.get(1);
     useConsumable.run();
-    verify(consumable1).consume(player);
+    verify(consumable1).consume();
     verify(player).setActionable(false);
     verify(player).quickAccess(consumable1);
     verify(mapState).branchTo(waiting);

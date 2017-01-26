@@ -4,7 +4,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +18,6 @@ public class HealTest {
 
   @Mock
   private Character owner;
-  @Mock
-  private Player player;
 
   private Heal heal;
 
@@ -31,10 +28,10 @@ public class HealTest {
 
   @Test
   public void consume() {
-    heal.consume(player);
-    heal.consume(player);
+    heal.consume();
+    heal.consume();
 
-    verify(player, times(2)).healBy(Heal.AMOUNT);
+    verify(owner, times(2)).healBy(Heal.AMOUNT);
     verify(owner).removeItem(heal);
   }
 }

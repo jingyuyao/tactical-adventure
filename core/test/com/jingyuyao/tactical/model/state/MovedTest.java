@@ -101,7 +101,7 @@ public class MovedTest {
 
     Action useConsumable = actions.get(1);
     useConsumable.run();
-    verify(consumable).consume(player);
+    verify(consumable).consume();
     verify(player).setActionable(false);
     verify(player).quickAccess(consumable);
     verify(mapState).branchTo(waiting);

@@ -61,7 +61,7 @@ abstract class AbstractPlayerState extends AbstractState {
     @Override
     public void run() {
       getPlayer().quickAccess(consumable);
-      consumable.consume(getPlayer());
+      consumable.consume();
       finish();
     }
   }

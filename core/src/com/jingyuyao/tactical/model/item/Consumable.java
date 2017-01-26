@@ -7,5 +7,8 @@ import com.jingyuyao.tactical.model.character.Character;
  */
 public interface Consumable extends Item {
 
-  void consume(Character character);
+  /**
+   * Apply this {@link Item}'s effects to its {@link Item#getOwner()}.
+   */
+  void consume();
 }
