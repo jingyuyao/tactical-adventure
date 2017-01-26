@@ -10,12 +10,10 @@ import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -49,7 +47,7 @@ public class Algorithms {
    * @param maxPathCost Maximum cost for the path between initial location to any other object
    */
   public ValueGraph<Coordinate, Integer> distanceFromGraph(
-      Function<Coordinate, Integer> edgeCostFunction,
+      Function<Terrain, Integer> edgeCostFunction,
       Coordinate startingCoordinate,
       int maxPathCost) {
     MutableValueGraph<Coordinate, Integer> graph =
@@ -70,12 +68,13 @@ public class Algorithms {
       Coordinate minCoordinate = minNode.getObject();
       processedCoordinates.add(minCoordinate);
 
-      for (Coordinate neighbor : getNeighbors(minCoordinate)) {
-        if (processedCoordinates.contains(neighbor)) {
+      for (Terrain neighborTerrain : terrains.getNeighbors(minCoordinate)) {
+        Coordinate neighborCoordinate = neighborTerrain.getCoordinate();
+        if (processedCoordinates.contains(neighborCoordinate)) {
           continue;
         }
 
-        Integer edgeCost = edgeCostFunction.apply(neighbor);
+        Integer edgeCost = edgeCostFunction.apply(neighborTerrain);
         Preconditions.checkNotNull(edgeCost);
         if (edgeCost == NO_EDGE) {
           continue;
@@ -86,16 +85,17 @@ public class Algorithms {
           continue;
         }
 
-        ValueNode<Coordinate> neighborNode = new ValueNode<Coordinate>(neighbor, pathCost);
-        if (!pathCostMap.containsKey(neighbor)) {
-          graph.putEdgeValue(minCoordinate, neighbor, pathCost);
-          pathCostMap.put(neighbor, pathCost);
-        } else if (pathCost < pathCostMap.get(neighbor)) {
+        ValueNode<Coordinate> neighborNode =
+            new ValueNode<Coordinate>(neighborCoordinate, pathCost);
+        if (!pathCostMap.containsKey(neighborCoordinate)) {
+          graph.putEdgeValue(minCoordinate, neighborCoordinate, pathCost);
+          pathCostMap.put(neighborCoordinate, pathCost);
+        } else if (pathCost < pathCostMap.get(neighborCoordinate)) {
           // Remove neighbor from graph so that (minNode, neighbor) is the only edge
-          graph.removeNode(neighbor);
-          graph.putEdgeValue(minCoordinate, neighbor, pathCost);
+          graph.removeNode(neighborCoordinate);
+          graph.putEdgeValue(minCoordinate, neighborCoordinate, pathCost);
           // Adjust path cost of the current neighbor
-          pathCostMap.put(neighbor, pathCost);
+          pathCostMap.put(neighborCoordinate, pathCost);
           minNodeQueue.remove(neighborNode);
         }
         minNodeQueue.add(neighborNode);
@@ -132,34 +132,6 @@ public class Algorithms {
     }
 
     return builder.build().reverse();
-  }
-
-  /**
-   * Returns the in-bound neighbors of {@code from}.
-   *
-   * @return Randomized list of neighbors
-   */
-  private ImmutableList<Coordinate> getNeighbors(Coordinate from) {
-    int x = from.getX();
-    int y = from.getY();
-
-    List<Coordinate> neighbors = new ArrayList<Coordinate>(4);
-
-    if (x > 0) {
-      neighbors.add(new Coordinate(x - 1, y));
-    }
-    if (x < terrains.getWidth() - 1) {
-      neighbors.add(new Coordinate(x + 1, y));
-    }
-    if (y > 0) {
-      neighbors.add(new Coordinate(x, y - 1));
-    }
-    if (y < terrains.getHeight() - 1) {
-      neighbors.add(new Coordinate(x, y + 1));
-    }
-
-    Collections.shuffle(neighbors);
-    return ImmutableList.copyOf(neighbors);
   }
 
   /**

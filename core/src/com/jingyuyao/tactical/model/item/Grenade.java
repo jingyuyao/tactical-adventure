@@ -8,6 +8,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
+import com.jingyuyao.tactical.model.map.Terrain;
 import javax.inject.Inject;
 
 // TODO: test me
@@ -41,10 +42,10 @@ public class Grenade extends AbstractWeapon<GrenadeStats> {
     return builder.build();
   }
 
-  private static class ConstWeight implements Function<Coordinate, Integer> {
+  private static class ConstWeight implements Function<Terrain, Integer> {
 
     @Override
-    public Integer apply(Coordinate input) {
+    public Integer apply(Terrain input) {
       return 1;
     }
   }

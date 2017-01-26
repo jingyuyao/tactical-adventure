@@ -34,19 +34,15 @@ public class MovementFactory {
         character.getMoveDistance());
   }
 
-  private Function<Coordinate, Integer> createMovementPenaltyFunction(final Character character) {
+  private Function<Terrain, Integer> createMovementPenaltyFunction(final Character character) {
     final ImmutableSet<Coordinate> blockedCoordinates = characters.coordinates();
-    return new Function<Coordinate, Integer>() {
+    return new Function<Terrain, Integer>() {
       @Override
-      public Integer apply(Coordinate input) {
-        if (blockedCoordinates.contains(input)) {
+      public Integer apply(Terrain input) {
+        if (blockedCoordinates.contains(input.getCoordinate())) {
           return Algorithms.NO_EDGE;
         }
-        Terrain terrain = terrains.get(input);
-        if (terrain == null) {
-          return Algorithms.NO_EDGE;
-        }
-        return terrain.getMovementPenalty(character);
+        return input.getMovementPenalty(character);
       }
     };
   }
