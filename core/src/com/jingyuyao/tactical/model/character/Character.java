@@ -127,7 +127,7 @@ public abstract class Character extends MapObject {
   }
 
   public Graph<Coordinate> createMoveGraph() {
-    return terrainGraphs.distanceFromGraph(
+    return terrainGraphs.distanceFrom(
         createMovementPenaltyFunction(), getCoordinate(), stats.getMoveDistance());
   }
 
@@ -138,7 +138,7 @@ public abstract class Character extends MapObject {
       public Integer apply(Terrain input) {
         if (blockedCoordinates.contains(input.getCoordinate())
             || !stats.canPassTerrainType(input.getType())) {
-          return TerrainGraphs.NO_EDGE;
+          return TerrainGraphs.BLOCKED;
         }
         return input.getMovementPenalty();
       }

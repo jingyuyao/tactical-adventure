@@ -237,7 +237,7 @@ public class CharacterTest {
     when(cannotPassTerrain.getCoordinate()).thenReturn(DESTINATION);
     when(cannotPassTerrain.getType()).thenReturn(Type.MOUNTAIN);
     when(
-        terrainGraphs.distanceFromGraph(
+        terrainGraphs.distanceFrom(
             Mockito.<Function<Terrain, Integer>>any(),
             Mockito.<Coordinate>any(),
             Mockito.anyInt())).thenReturn(coordinateGraph);
@@ -245,12 +245,12 @@ public class CharacterTest {
     assertThat(character.createMoveGraph()).isSameAs(coordinateGraph);
 
     verify(terrainGraphs)
-        .distanceFromGraph(
+        .distanceFrom(
             functionCaptor.capture(), Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10));
     Function<Terrain, Integer> function = functionCaptor.getValue();
     assertThat(function.apply(terrain)).isEqualTo(123);
-    assertThat(function.apply(blockedTerrain)).isEqualTo(TerrainGraphs.NO_EDGE);
-    assertThat(function.apply(cannotPassTerrain)).isEqualTo(TerrainGraphs.NO_EDGE);
+    assertThat(function.apply(blockedTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
+    assertThat(function.apply(cannotPassTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
   }
 
   private static class CharacterImpl extends Character {

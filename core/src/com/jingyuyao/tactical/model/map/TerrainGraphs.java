@@ -26,7 +26,7 @@ import javax.inject.Singleton;
 @Singleton
 public class TerrainGraphs {
 
-  public static final int NO_EDGE = -1;
+  public static final int BLOCKED = -1;
 
   private final Terrains terrains;
 
@@ -45,7 +45,7 @@ public class TerrainGraphs {
    * Coordinate}. All incoming edge cost for a {@link Coordinate} is assumed to be the same.
    * @param distance Maximum distance for the path between initial location to any other object
    */
-  public ValueGraph<Coordinate, Integer> distanceFromGraph(
+  public ValueGraph<Coordinate, Integer> distanceFrom(
       Function<Terrain, Integer> edgeCostFunction,
       Coordinate startingCoordinate,
       int distance) {
@@ -75,7 +75,7 @@ public class TerrainGraphs {
 
         Integer edgeCost = edgeCostFunction.apply(neighborTerrain);
         Preconditions.checkNotNull(edgeCost);
-        if (edgeCost == NO_EDGE) {
+        if (edgeCost == BLOCKED) {
           continue;
         }
 
@@ -102,7 +102,7 @@ public class TerrainGraphs {
     }
 
     Preconditions.checkState(graph.predecessors(startingCoordinate).isEmpty());
-    Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFromGraph");
+    Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
     return graph;
   }
 
