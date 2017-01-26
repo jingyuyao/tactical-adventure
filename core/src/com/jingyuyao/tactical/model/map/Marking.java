@@ -1,10 +1,8 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.inject.assistedinject.Assisted;
 import java.util.Collection;
 import java.util.Map.Entry;
-import javax.inject.Inject;
 
 /**
  * A marking is a map of {@link MapObject} to {@link Marker}.
@@ -17,8 +15,7 @@ public class Marking {
   /**
    * Creates a marking with the given {@code markers} map.
    */
-  @Inject
-  Marking(@Assisted ImmutableMultimap<MapObject, Marker> markers) {
+  Marking(ImmutableMultimap<MapObject, Marker> markers) {
     this.markers = markers;
   }
 
