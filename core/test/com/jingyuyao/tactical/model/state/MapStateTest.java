@@ -112,10 +112,10 @@ public class MapStateTest {
   }
 
   @Test
-  public void push() throws Exception {
+  public void go_to() throws Exception {
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.push(state2);
+    mapState.goTo(state2);
 
     InOrder inOrder = inOrder(state1, state2, stateStack, eventBus);
     inOrder.verify(state1).exit();
@@ -126,10 +126,10 @@ public class MapStateTest {
   }
 
   @Test
-  public void pop_nothing() throws Exception {
+  public void back_nothing() throws Exception {
     when(stateStack.size()).thenReturn(1);
 
-    mapState.pop();
+    mapState.back();
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
@@ -137,12 +137,12 @@ public class MapStateTest {
   }
 
   @Test
-  public void pop() throws Exception {
+  public void back() throws Exception {
     when(stateStack.size()).thenReturn(2);
     when(stateStack.pop()).thenReturn(state2);
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.pop();
+    mapState.back();
 
     InOrder inOrder = inOrder(stateStack, state2, state1, eventBus);
 
@@ -198,7 +198,7 @@ public class MapStateTest {
   public void newStack() throws Exception {
     when(stateStack.peek()).thenReturn(state2);
 
-    mapState.newStack(state1);
+    mapState.branchTo(state1);
 
     InOrder inOrder = inOrder(stateStack, state1, state2, eventBus);
 
@@ -209,6 +209,13 @@ public class MapStateTest {
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(state1).enter();
     verifyStateChangedTo(argumentCaptor.getValue(), state1);
+  }
+
+  @Test
+  public void pop() {
+    mapState.pop();
+
+    verify(stateStack).pop();
   }
 
   private void verifyStateChangedTo(Object event, State targetState) {

@@ -7,7 +7,7 @@ class StateHelpers {
 
   static void verifyBack(Action action, MapState mapState) {
     action.run();
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 }

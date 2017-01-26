@@ -73,7 +73,7 @@ public class ReviewingAttackTest {
 
     reviewingAttack.select(attackingPlayer);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
@@ -96,7 +96,7 @@ public class ReviewingAttackTest {
 
     reviewingAttack.select(enemy);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
@@ -119,7 +119,7 @@ public class ReviewingAttackTest {
 
     reviewingAttack.select(terrain);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
@@ -163,10 +163,10 @@ public class ReviewingAttackTest {
 
   private void verify_attacked() {
     InOrder inOrder = Mockito.inOrder(mapState, weapon, attackingPlayer);
-    inOrder.verify(mapState).push(ignoreInput);
+    inOrder.verify(mapState).goTo(ignoreInput);
     inOrder.verify(weapon).attack(target);
     inOrder.verify(attackingPlayer).setActionable(false);
-    inOrder.verify(mapState).newStack(waiting);
+    inOrder.verify(mapState).branchTo(waiting);
     verifyNoMoreInteractions(mapState);
   }
 }

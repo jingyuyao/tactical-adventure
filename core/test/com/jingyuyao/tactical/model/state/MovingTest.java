@@ -117,7 +117,7 @@ public class MovingTest {
   public void select_player() {
     moving.select(player);
 
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -125,7 +125,7 @@ public class MovingTest {
   public void select_enemy() {
     moving.select(enemy);
 
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -142,9 +142,9 @@ public class MovingTest {
     moving.select(terrain);
 
     InOrder inOrder = Mockito.inOrder(player, mapState);
-    inOrder.verify(mapState).push(ignoreInput);
+    inOrder.verify(mapState).goTo(ignoreInput);
     inOrder.verify(player).moveAlong(path);
-    inOrder.verify(mapState).push(moved);
+    inOrder.verify(mapState).goTo(moved);
     verifyNoMoreInteractions(mapState);
   }
 
@@ -155,7 +155,7 @@ public class MovingTest {
 
     moving.select(terrain);
 
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -166,7 +166,7 @@ public class MovingTest {
     Action selectWeapon = actions.get(0);
     selectWeapon.run();
     verify(player).quickAccess(weapon);
-    verify(mapState).push(selectingTarget);
+    verify(mapState).goTo(selectingTarget);
   }
 
   @Test
@@ -178,7 +178,7 @@ public class MovingTest {
     verify(consumable).consume(player);
     verify(player).setActionable(false);
     verify(player).quickAccess(consumable);
-    verify(mapState).newStack(waiting);
+    verify(mapState).branchTo(waiting);
   }
 
   @Test
@@ -187,7 +187,7 @@ public class MovingTest {
 
     Action useItems = actions.get(2);
     useItems.run();
-    verify(mapState).push(selectingItem);
+    verify(mapState).goTo(selectingItem);
   }
 
   @Test
@@ -197,7 +197,7 @@ public class MovingTest {
     Action wait = actions.get(3);
     wait.run();
     verify(player).setActionable(false);
-    verify(mapState).newStack(waiting);
+    verify(mapState).branchTo(waiting);
   }
 
   @Test

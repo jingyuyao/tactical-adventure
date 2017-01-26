@@ -60,7 +60,7 @@ public class Retaliating extends AbstractState {
     Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        newWaitStack();
+        branchToWait();
       }
 
       @Override

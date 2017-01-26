@@ -38,7 +38,7 @@ public class IgnoreInputTest {
   public void exit() {
     ignoreInput.exit();
 
-    verify(mapState).removeLast();
+    verify(mapState).pop();
   }
 
   @Test

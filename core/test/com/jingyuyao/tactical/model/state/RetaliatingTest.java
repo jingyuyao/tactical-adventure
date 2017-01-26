@@ -79,6 +79,6 @@ public class RetaliatingTest {
     InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState);
     inOrder.verify(enemy).retaliate();
     inOrder.verify(enemy2).retaliate();
-    inOrder.verify(mapState).newStack(waiting);
+    inOrder.verify(mapState).branchTo(waiting);
   }
 }

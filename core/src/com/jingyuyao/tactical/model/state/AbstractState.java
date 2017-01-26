@@ -51,23 +51,23 @@ abstract class AbstractState implements State {
   }
 
   void goTo(State newState) {
-    mapState.push(newState);
+    mapState.goTo(newState);
   }
 
   void back() {
-    mapState.pop();
+    mapState.back();
   }
 
   void rollback() {
     mapState.rollback();
   }
 
-  void newWaitStack() {
-    mapState.newStack(stateFactory.createWaiting());
+  void branchToWait() {
+    mapState.branchTo(stateFactory.createWaiting());
   }
 
   void removeLast() {
-    mapState.removeLast();
+    mapState.pop();
   }
 
   class Back implements Action {

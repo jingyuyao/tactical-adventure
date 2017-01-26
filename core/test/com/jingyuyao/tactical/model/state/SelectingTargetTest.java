@@ -75,7 +75,7 @@ public class SelectingTargetTest {
 
     selectingTarget.select(player);
 
-    verify(mapState).push(reviewingAttack);
+    verify(mapState).goTo(reviewingAttack);
   }
 
   @Test
@@ -86,7 +86,7 @@ public class SelectingTargetTest {
 
     selectingTarget.select(enemy);
 
-    verify(mapState).push(reviewingAttack);
+    verify(mapState).goTo(reviewingAttack);
   }
 
   @Test
@@ -97,7 +97,7 @@ public class SelectingTargetTest {
 
     selectingTarget.select(terrain);
 
-    verify(mapState).push(reviewingAttack);
+    verify(mapState).goTo(reviewingAttack);
   }
 
   @Test
@@ -110,7 +110,7 @@ public class SelectingTargetTest {
     selectingTarget.select(enemy);
     selectingTarget.select(terrain);
 
-    verify(mapState, times(3)).pop();
+    verify(mapState, times(3)).back();
   }
 
   @Test
@@ -120,6 +120,6 @@ public class SelectingTargetTest {
 
     actions.get(0).run();
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 }

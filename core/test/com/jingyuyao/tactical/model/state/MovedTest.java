@@ -65,7 +65,7 @@ public class MovedTest {
   public void select_player() {
     moved.select(player);
 
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -73,7 +73,7 @@ public class MovedTest {
   public void select_enemy() {
     moved.select(enemy);
 
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -81,7 +81,7 @@ public class MovedTest {
   public void select_terrain() {
     moved.select(terrain);
 
-    verify(mapState).pop();
+    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -92,7 +92,7 @@ public class MovedTest {
     Action selectWeapon = actions.get(0);
     selectWeapon.run();
     verify(player).quickAccess(weapon);
-    verify(mapState).push(selectingTarget);
+    verify(mapState).goTo(selectingTarget);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class MovedTest {
     verify(consumable).consume(player);
     verify(player).setActionable(false);
     verify(player).quickAccess(consumable);
-    verify(mapState).newStack(waiting);
+    verify(mapState).branchTo(waiting);
   }
 
   @Test
@@ -113,7 +113,7 @@ public class MovedTest {
 
     Action useItems = actions.get(2);
     useItems.run();
-    verify(mapState).push(selectingItem);
+    verify(mapState).goTo(selectingItem);
   }
 
   @Test
@@ -123,7 +123,7 @@ public class MovedTest {
     Action wait = actions.get(3);
     wait.run();
     verify(player).setActionable(false);
-    verify(mapState).newStack(waiting);
+    verify(mapState).branchTo(waiting);
   }
 
   @Test

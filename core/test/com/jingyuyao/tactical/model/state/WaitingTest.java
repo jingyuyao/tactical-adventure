@@ -59,7 +59,7 @@ public class WaitingTest {
     waiting.select(player);
 
     verify(stateFactory).createMoving(player, movement);
-    verify(mapState).push(moving);
+    verify(mapState).goTo(moving);
   }
 
   @Test
@@ -76,14 +76,14 @@ public class WaitingTest {
   public void select_enemy() {
     waiting.select(enemy);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
   public void select_terrain() {
     waiting.select(terrain);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
@@ -98,6 +98,6 @@ public class WaitingTest {
     endTurn.run();
 
     verify(player).setActionable(true);
-    verify(mapState).push(retaliating);
+    verify(mapState).goTo(retaliating);
   }
 }

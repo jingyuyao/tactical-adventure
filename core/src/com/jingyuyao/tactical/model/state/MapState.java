@@ -67,14 +67,20 @@ public class MapState {
     eventBus.post(new HighlightTerrain(terrain));
   }
 
-  void push(State newState) {
+  /**
+   * Go to {@code newState} and add it to the current stack of {@link State}.
+   */
+  void goTo(State newState) {
     stateStack.peek().exit();
     stateStack.push(newState);
     eventBus.post(new StateChanged(newState));
     newState.enter();
   }
 
-  void pop() {
+  /**
+   * Go back to the previous {@link State} if there is one.
+   */
+  void back() {
     if (stateStack.size() > 1) {
       State currentState = stateStack.pop();
       currentState.exit();
@@ -85,6 +91,9 @@ public class MapState {
     }
   }
 
+  /**
+   * Go back all the way to the first {@link State} in the current stack.
+   */
   void rollback() {
     while (stateStack.size() > 1) {
       State currentState = stateStack.pop();
@@ -96,7 +105,10 @@ public class MapState {
     }
   }
 
-  void newStack(State startingState) {
+  /**
+   * Go to {@code startingState} on a new stack.
+   */
+  void branchTo(State startingState) {
     stateStack.peek().exit();
     stateStack.clear();
     stateStack.push(startingState);
@@ -104,7 +116,10 @@ public class MapState {
     startingState.enter();
   }
 
-  void removeLast() {
+  /**
+   * Remove the last state on the stack. Use with caution.
+   */
+  void pop() {
     stateStack.pop();
   }
 

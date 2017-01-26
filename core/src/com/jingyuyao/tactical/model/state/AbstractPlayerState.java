@@ -20,7 +20,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
   void finish() {
     player.setActionable(false);
-    newWaitStack();
+    branchToWait();
   }
 
   class SelectWeapon implements Action {

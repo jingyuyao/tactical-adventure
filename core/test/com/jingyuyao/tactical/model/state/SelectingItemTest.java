@@ -59,21 +59,21 @@ public class SelectingItemTest {
   public void select_player() {
     selectingItem.select(player);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
   public void select_enemy() {
     selectingItem.select(enemy);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
   public void select_terrain() {
     selectingItem.select(terrain);
 
-    verify(mapState).pop();
+    verify(mapState).back();
   }
 
   @Test
@@ -83,7 +83,7 @@ public class SelectingItemTest {
     Action selectWeapon = actions.get(0);
     selectWeapon.run();
     verify(player).quickAccess(weapon);
-    verify(mapState).push(selectingTarget);
+    verify(mapState).goTo(selectingTarget);
   }
 
   @Test
@@ -95,7 +95,7 @@ public class SelectingItemTest {
     verify(consumable1).consume(player);
     verify(player).setActionable(false);
     verify(player).quickAccess(consumable1);
-    verify(mapState).newStack(waiting);
+    verify(mapState).branchTo(waiting);
   }
 
   @Test
