@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
+import com.google.common.graph.Graph;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.Attack;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public abstract class Character extends MapObject {
 
+  private final Algorithms algorithms;
   private final Characters characters;
   private final EventBus eventBus;
   private final Stats stats;
@@ -38,11 +40,13 @@ public abstract class Character extends MapObject {
   Character(
       Coordinate coordinate,
       Multiset<Marker> markers,
+      Algorithms algorithms,
       Characters characters,
       EventBus eventBus,
       Stats stats,
       List<Item> items) {
     super(coordinate, markers);
+    this.algorithms = algorithms;
     this.characters = characters;
     this.eventBus = eventBus;
     this.stats = stats;
@@ -64,10 +68,6 @@ public abstract class Character extends MapObject {
 
   public int getHp() {
     return stats.getHp();
-  }
-
-  public int getMoveDistance() {
-    return stats.getMoveDistance();
   }
 
   public boolean canPassTerrainType(Terrain.Type terrainType) {
@@ -130,7 +130,12 @@ public abstract class Character extends MapObject {
     return future;
   }
 
-  public Function<Terrain, Integer> createMovementPenaltyFunction() {
+  public Graph<Coordinate> createMoveGraph() {
+    return algorithms.distanceFromGraph(
+        createMovementPenaltyFunction(), getCoordinate(), stats.getMoveDistance());
+  }
+
+  private Function<Terrain, Integer> createMovementPenaltyFunction() {
     final ImmutableSet<Coordinate> blockedCoordinates = characters.coordinates();
     return new Function<Terrain, Integer>() {
       @Override

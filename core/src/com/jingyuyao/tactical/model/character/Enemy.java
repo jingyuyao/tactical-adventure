@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.character;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -18,11 +19,12 @@ public abstract class Enemy extends Character {
   Enemy(
       Coordinate coordinate,
       Multiset<Marker> markers,
+      Algorithms algorithms,
       Characters characters,
       EventBus eventBus,
       Stats stats,
       List<Item> items) {
-    super(coordinate, markers, characters, eventBus, stats, items);
+    super(coordinate, markers, algorithms, characters, eventBus, stats, items);
   }
 
   @Override

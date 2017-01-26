@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -26,6 +27,8 @@ public class PassiveEnemyTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
+  private Algorithms algorithms;
+  @Mock
   private Characters characters;
   @Mock
   private EventBus eventBus;
@@ -43,7 +46,8 @@ public class PassiveEnemyTest {
   @Before
   public void setUp() {
     enemy =
-        new PassiveEnemy(COORDINATE, markers, characters, eventBus, stats, items, movementFactory);
+        new PassiveEnemy(
+            COORDINATE, markers, algorithms, characters, eventBus, stats, items, movementFactory);
   }
 
   @Test

@@ -10,6 +10,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MovementFactory;
@@ -22,6 +23,7 @@ public class CharacterModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(Algorithms.class);
     requireBinding(Characters.class);
     requireBinding(MovementFactory.class);
 

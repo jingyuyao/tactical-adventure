@@ -6,8 +6,10 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
@@ -42,6 +44,8 @@ public class WaitingTest {
   private MovementFactory movementFactory;
   @Mock
   private Movement movement;
+  @Mock
+  private Graph<Coordinate> moveGraph;
 
   private Waiting waiting;
 
@@ -53,7 +57,8 @@ public class WaitingTest {
   @Test
   public void select_player_actionable() {
     when(player.isActionable()).thenReturn(true);
-    when(movementFactory.create(player)).thenReturn(movement);
+    when(player.createMoveGraph()).thenReturn(moveGraph);
+    when(movementFactory.create(moveGraph)).thenReturn(movement);
     when(stateFactory.createMoving(player, movement)).thenReturn(moving);
 
     waiting.select(player);

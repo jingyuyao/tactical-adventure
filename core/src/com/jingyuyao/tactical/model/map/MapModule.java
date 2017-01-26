@@ -29,6 +29,7 @@ public class MapModule extends AbstractModule {
   protected void configure() {
     requireBinding(Algorithms.class);
 
+    install(new FactoryModuleBuilder().build(MovementFactory.class));
     install(new FactoryModuleBuilder().build(TerrainFactory.class));
   }
 

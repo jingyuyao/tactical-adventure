@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -25,6 +26,8 @@ public class PlayerTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
+  private Algorithms algorithms;
+  @Mock
   private Characters characters;
   @Mock
   private EventBus eventBus;
@@ -38,7 +41,7 @@ public class PlayerTest {
 
   @Before
   public void setUp() {
-    player = new Player(PLAYER_COORDINATE, markers, characters, eventBus, stats, items);
+    player = new Player(PLAYER_COORDINATE, markers, algorithms, characters, eventBus, stats, items);
     assertThat(player.isActionable()).isTrue();
   }
 

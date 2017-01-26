@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
+import com.google.common.graph.ValueGraph;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Attack;
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,6 +49,8 @@ public class CharacterTest {
 
   @Mock
   private Multiset<Marker> markers;
+  @Mock
+  private Algorithms algorithms;
   @Mock
   private Characters characters;
   @Mock
@@ -71,8 +75,12 @@ public class CharacterTest {
   private Object listener;
   @Mock
   private Terrain terrain;
+  @Mock
+  private ValueGraph<Coordinate, Integer> coordinateGraph;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<Function<Terrain, Integer>> functionCaptor;
 
   private List<Item> items;
   private Character character;
@@ -81,7 +89,8 @@ public class CharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(CHARACTER_COORDINATE, markers, characters, eventBus, stats, items);
+        new CharacterImpl(
+            CHARACTER_COORDINATE, markers, algorithms, characters, eventBus, stats, items);
   }
 
   @Test
@@ -110,13 +119,6 @@ public class CharacterTest {
     when(stats.getHp()).thenReturn(1);
 
     assertThat(character.getHp()).isEqualTo(1);
-  }
-
-  @Test
-  public void move_distance() {
-    when(stats.getMoveDistance()).thenReturn(10);
-
-    assertThat(character.getMoveDistance()).isEqualTo(10);
   }
 
   @Test
@@ -228,13 +230,23 @@ public class CharacterTest {
   }
 
   @Test
-  public void movement_penalty_function() {
+  public void create_move_graph() {
+    when(stats.getMoveDistance()).thenReturn(10);
     when(characters.coordinates()).thenReturn(ImmutableSet.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(BLOCKED_COORDINATE, DESTINATION);
     when(terrain.getMovementPenalty(character)).thenReturn(123);
+    when(
+        algorithms.distanceFromGraph(
+            Mockito.<Function<Terrain, Integer>>any(),
+            Mockito.<Coordinate>any(),
+            Mockito.anyInt())).thenReturn(coordinateGraph);
 
-    Function<Terrain, Integer> function = character.createMovementPenaltyFunction();
+    assertThat(character.createMoveGraph()).isSameAs(coordinateGraph);
 
+    verify(algorithms)
+        .distanceFromGraph(
+            functionCaptor.capture(), Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10));
+    Function<Terrain, Integer> function = functionCaptor.getValue();
     assertThat(function.apply(terrain)).isEqualTo(Algorithms.NO_EDGE);
     assertThat(function.apply(terrain)).isEqualTo(123);
   }
@@ -244,11 +256,12 @@ public class CharacterTest {
     CharacterImpl(
         Coordinate coordinate,
         Multiset<Marker> markers,
+        Algorithms algorithms,
         Characters characters,
         EventBus eventBus,
         Stats stats,
         List<Item> items) {
-      super(coordinate, markers, characters, eventBus, stats, items);
+      super(coordinate, markers, algorithms, characters, eventBus, stats, items);
     }
 
     @Override

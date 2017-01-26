@@ -26,7 +26,8 @@ public class Waiting extends AbstractState {
   @Override
   public void select(Player player) {
     if (player.isActionable()) {
-      goTo(getStateFactory().createMoving(player, movementFactory.create(player)));
+      goTo(
+          getStateFactory().createMoving(player, movementFactory.create(player.createMoveGraph())));
     }
   }
 

@@ -2,9 +2,11 @@ package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
+import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
+import javax.inject.Inject;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
@@ -16,7 +18,8 @@ public class Movement {
   private final Terrains terrains;
   private Marking marking;
 
-  Movement(Algorithms algorithms, Terrains terrains, Graph<Coordinate> moveGraph) {
+  @Inject
+  Movement(Algorithms algorithms, Terrains terrains, @Assisted Graph<Coordinate> moveGraph) {
     this.algorithms = algorithms;
     this.terrains = terrains;
     this.moveGraph = moveGraph;
