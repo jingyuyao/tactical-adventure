@@ -5,6 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
@@ -14,6 +16,7 @@ import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveSelf;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
@@ -22,6 +25,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
@@ -38,6 +42,7 @@ public class CharacterTest {
 
   private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
   private static final Coordinate DESTINATION = new Coordinate(50, 50);
+  private static final Coordinate BLOCKED_COORDINATE = new Coordinate(12, 12);
   private static final String NAME = "hello";
 
   @Mock
@@ -64,6 +69,8 @@ public class CharacterTest {
   private Target target;
   @Mock
   private Object listener;
+  @Mock
+  private Terrain terrain;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -218,6 +225,18 @@ public class CharacterTest {
 
     attack.done();
     assertThat(future.isDone()).isTrue();
+  }
+
+  @Test
+  public void movement_penalty_function() {
+    when(characters.coordinates()).thenReturn(ImmutableSet.of(BLOCKED_COORDINATE));
+    when(terrain.getCoordinate()).thenReturn(BLOCKED_COORDINATE, DESTINATION);
+    when(terrain.getMovementPenalty(character)).thenReturn(123);
+
+    Function<Terrain, Integer> function = character.createMovementPenaltyFunction();
+
+    assertThat(function.apply(terrain)).isEqualTo(Algorithms.NO_EDGE);
+    assertThat(function.apply(terrain)).isEqualTo(123);
   }
 
   private static class CharacterImpl extends Character {
