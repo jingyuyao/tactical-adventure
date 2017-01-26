@@ -21,7 +21,8 @@ public class ItemStats {
     return usageLeft;
   }
 
-  void setUsageLeft(int usageLeft) {
-    this.usageLeft = usageLeft;
+  void decrementUsageLeft() {
+    Preconditions.checkState(usageLeft > 0);
+    usageLeft--;
   }
 }

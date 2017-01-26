@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.character.Character;
 
 /**
@@ -39,9 +38,8 @@ class BaseItem<T extends ItemStats> implements Item {
    * Call to use this item once.
    */
   void useOnce() {
-    Preconditions.checkState(itemStats.getUsageLeft() > 0);
+    itemStats.decrementUsageLeft();
 
-    itemStats.setUsageLeft(itemStats.getUsageLeft() - 1);
     if (itemStats.getUsageLeft() == 0) {
       owner.removeItem(this);
     }
