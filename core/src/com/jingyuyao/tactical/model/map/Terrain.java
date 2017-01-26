@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.model.map;
 
 import com.google.common.collect.Multiset;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -36,11 +34,7 @@ public class Terrain extends MapObject {
     return type;
   }
 
-  public int getMovementPenalty(Character character) {
-    if (!character.canPassTerrainType(type)) {
-      return Algorithms.NO_EDGE;
-    }
-
+  public int getMovementPenalty() {
     switch (type) {
       case OBSTRUCTED:
         return 2;

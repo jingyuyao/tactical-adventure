@@ -70,10 +70,6 @@ public abstract class Character extends MapObject {
     return stats.getHp();
   }
 
-  public boolean canPassTerrainType(Terrain.Type terrainType) {
-    return stats.canPassTerrainType(terrainType);
-  }
-
   public void damageBy(int delta) {
     stats.damageBy(delta);
     if (stats.isDead()) {
@@ -140,10 +136,11 @@ public abstract class Character extends MapObject {
     return new Function<Terrain, Integer>() {
       @Override
       public Integer apply(Terrain input) {
-        if (blockedCoordinates.contains(input.getCoordinate())) {
+        if (blockedCoordinates.contains(input.getCoordinate())
+            || !stats.canPassTerrainType(input.getType())) {
           return Algorithms.NO_EDGE;
         }
-        return input.getMovementPenalty(Character.this);
+        return input.getMovementPenalty();
       }
     };
   }

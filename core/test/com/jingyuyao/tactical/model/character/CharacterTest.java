@@ -76,6 +76,10 @@ public class CharacterTest {
   @Mock
   private Terrain terrain;
   @Mock
+  private Terrain cannotPassTerrain;
+  @Mock
+  private Terrain blockedTerrain;
+  @Mock
   private ValueGraph<Coordinate, Integer> coordinateGraph;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -119,15 +123,6 @@ public class CharacterTest {
     when(stats.getHp()).thenReturn(1);
 
     assertThat(character.getHp()).isEqualTo(1);
-  }
-
-  @Test
-  public void can_pass_terrain_type() {
-    when(stats.canPassTerrainType(Type.NORMAL)).thenReturn(true);
-    when(stats.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
-
-    assertThat(character.canPassTerrainType(Type.NORMAL)).isTrue();
-    assertThat(character.canPassTerrainType(Type.MOUNTAIN)).isFalse();
   }
 
   @Test
@@ -232,9 +227,15 @@ public class CharacterTest {
   @Test
   public void create_move_graph() {
     when(stats.getMoveDistance()).thenReturn(10);
+    when(stats.canPassTerrainType(Type.NORMAL)).thenReturn(true);
+    when(stats.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
     when(characters.coordinates()).thenReturn(ImmutableSet.of(BLOCKED_COORDINATE));
-    when(terrain.getCoordinate()).thenReturn(BLOCKED_COORDINATE, DESTINATION);
-    when(terrain.getMovementPenalty(character)).thenReturn(123);
+    when(terrain.getCoordinate()).thenReturn(DESTINATION);
+    when(terrain.getType()).thenReturn(Type.NORMAL);
+    when(terrain.getMovementPenalty()).thenReturn(123);
+    when(blockedTerrain.getCoordinate()).thenReturn(BLOCKED_COORDINATE);
+    when(cannotPassTerrain.getCoordinate()).thenReturn(DESTINATION);
+    when(cannotPassTerrain.getType()).thenReturn(Type.MOUNTAIN);
     when(
         algorithms.distanceFromGraph(
             Mockito.<Function<Terrain, Integer>>any(),
@@ -247,8 +248,9 @@ public class CharacterTest {
         .distanceFromGraph(
             functionCaptor.capture(), Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10));
     Function<Terrain, Integer> function = functionCaptor.getValue();
-    assertThat(function.apply(terrain)).isEqualTo(Algorithms.NO_EDGE);
     assertThat(function.apply(terrain)).isEqualTo(123);
+    assertThat(function.apply(blockedTerrain)).isEqualTo(Algorithms.NO_EDGE);
+    assertThat(function.apply(cannotPassTerrain)).isEqualTo(Algorithms.NO_EDGE);
   }
 
   private static class CharacterImpl extends Character {

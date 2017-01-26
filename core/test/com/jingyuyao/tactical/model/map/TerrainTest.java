@@ -2,11 +2,9 @@ package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -53,20 +51,5 @@ public class TerrainTest {
   @Test
   public void getType() {
     assertThat(terrain.getType()).isEqualTo(TYPE);
-  }
-
-  @Test
-  public void move_penalty_can_pass() {
-    when(character.canPassTerrainType(TYPE)).thenReturn(true);
-
-    // we are not going to test the actual values for not
-    assertThat(terrain.getMovementPenalty(character)).isNotEqualTo(Algorithms.NO_EDGE);
-  }
-
-  @Test
-  public void move_penalty_cannot_pass() {
-    when(character.canPassTerrainType(TYPE)).thenReturn(false);
-
-    assertThat(terrain.getMovementPenalty(character)).isEqualTo(Algorithms.NO_EDGE);
   }
 }
