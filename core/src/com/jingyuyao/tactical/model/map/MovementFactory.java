@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.map;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Algorithms;
@@ -13,13 +11,11 @@ import javax.inject.Singleton;
 public class MovementFactory {
 
   private final Algorithms algorithms;
-  private final Characters characters;
   private final Terrains terrains;
 
   @Inject
-  public MovementFactory(Algorithms algorithms, Characters characters, Terrains terrains) {
+  public MovementFactory(Algorithms algorithms, Terrains terrains) {
     this.algorithms = algorithms;
-    this.characters = characters;
     this.terrains = terrains;
   }
 
@@ -29,21 +25,8 @@ public class MovementFactory {
 
   private Graph<Coordinate> createMoveGraph(Character character) {
     return algorithms.distanceFromGraph(
-        createMovementPenaltyFunction(character),
+        character.createMovementPenaltyFunction(),
         character.getCoordinate(),
         character.getMoveDistance());
-  }
-
-  private Function<Terrain, Integer> createMovementPenaltyFunction(final Character character) {
-    final ImmutableSet<Coordinate> blockedCoordinates = characters.coordinates();
-    return new Function<Terrain, Integer>() {
-      @Override
-      public Integer apply(Terrain input) {
-        if (blockedCoordinates.contains(input.getCoordinate())) {
-          return Algorithms.NO_EDGE;
-        }
-        return input.getMovementPenalty(character);
-      }
-    };
   }
 }

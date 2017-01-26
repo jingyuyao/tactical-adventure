@@ -1,7 +1,9 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
@@ -11,6 +13,7 @@ import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.character.event.RemoveSelf;
+import com.jingyuyao.tactical.model.common.Algorithms;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
@@ -125,6 +128,19 @@ public abstract class Character extends MapObject {
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Attack(target, future));
     return future;
+  }
+
+  public Function<Terrain, Integer> createMovementPenaltyFunction() {
+    final ImmutableSet<Coordinate> blockedCoordinates = characters.coordinates();
+    return new Function<Terrain, Integer>() {
+      @Override
+      public Integer apply(Terrain input) {
+        if (blockedCoordinates.contains(input.getCoordinate())) {
+          return Algorithms.NO_EDGE;
+        }
+        return input.getMovementPenalty(Character.this);
+      }
+    };
   }
 
   @Override
