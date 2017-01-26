@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.common.Directions;
+import com.jingyuyao.tactical.model.map.Directions;
 import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
 
