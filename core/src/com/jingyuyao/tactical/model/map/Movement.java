@@ -13,13 +13,13 @@ import javax.inject.Inject;
 public class Movement {
 
   private final Graph<Coordinate> moveGraph;
-  private final Algorithms algorithms;
+  private final TerrainGraphs terrainGraphs;
   private final Terrains terrains;
   private Marking marking;
 
   @Inject
-  Movement(Algorithms algorithms, Terrains terrains, @Assisted Graph<Coordinate> moveGraph) {
-    this.algorithms = algorithms;
+  Movement(TerrainGraphs terrainGraphs, Terrains terrains, @Assisted Graph<Coordinate> moveGraph) {
+    this.terrainGraphs = terrainGraphs;
     this.terrains = terrains;
     this.moveGraph = moveGraph;
   }
@@ -44,7 +44,7 @@ public class Movement {
   public Path pathTo(Coordinate coordinate) {
     Preconditions.checkArgument(moveGraph.nodes().contains(coordinate));
 
-    return new Path(coordinate, algorithms.getTrackTo(moveGraph, coordinate));
+    return new Path(coordinate, terrainGraphs.getTrackTo(moveGraph, coordinate));
   }
 
   public void showMarking() {

@@ -6,10 +6,10 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.MovementFactory;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -27,7 +27,7 @@ public class PassiveEnemyTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private Algorithms algorithms;
+  private TerrainGraphs terrainGraphs;
   @Mock
   private Characters characters;
   @Mock
@@ -47,7 +47,8 @@ public class PassiveEnemyTest {
   public void setUp() {
     enemy =
         new PassiveEnemy(
-            COORDINATE, markers, algorithms, characters, eventBus, stats, items, movementFactory);
+            COORDINATE, markers, terrainGraphs, characters, eventBus, stats, items,
+            movementFactory);
   }
 
   @Test

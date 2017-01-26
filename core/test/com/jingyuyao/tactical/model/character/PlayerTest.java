@@ -7,9 +7,9 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Marker;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -26,7 +26,7 @@ public class PlayerTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private Algorithms algorithms;
+  private TerrainGraphs terrainGraphs;
   @Mock
   private Characters characters;
   @Mock
@@ -41,7 +41,8 @@ public class PlayerTest {
 
   @Before
   public void setUp() {
-    player = new Player(PLAYER_COORDINATE, markers, algorithms, characters, eventBus, stats, items);
+    player = new Player(PLAYER_COORDINATE, markers, terrainGraphs, characters, eventBus, stats,
+        items);
     assertThat(player.isActionable()).isTrue();
   }
 

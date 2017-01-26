@@ -5,12 +5,12 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -24,7 +24,7 @@ public class CharacterModuleTest {
 
   @Bind
   @Mock
-  private Algorithms algorithms;
+  private TerrainGraphs terrainGraphs;
   @Bind
   @Mock
   private Characters characters;

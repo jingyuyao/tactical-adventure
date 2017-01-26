@@ -21,17 +21,17 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Functions should return immutable objects.
+ * Contains methods to produce graphs from the current terrains.
  */
 @Singleton
-public class Algorithms {
+public class TerrainGraphs {
 
   public static final int NO_EDGE = -1;
 
   private final Terrains terrains;
 
   @Inject
-  Algorithms(Terrains terrains) {
+  TerrainGraphs(Terrains terrains) {
     this.terrains = terrains;
   }
 

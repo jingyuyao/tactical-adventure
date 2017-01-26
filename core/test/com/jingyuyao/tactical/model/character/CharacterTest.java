@@ -22,12 +22,12 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class CharacterTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private Algorithms algorithms;
+  private TerrainGraphs terrainGraphs;
   @Mock
   private Characters characters;
   @Mock
@@ -94,7 +94,7 @@ public class CharacterTest {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
         new CharacterImpl(
-            CHARACTER_COORDINATE, markers, algorithms, characters, eventBus, stats, items);
+            CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, stats, items);
   }
 
   @Test
@@ -237,20 +237,20 @@ public class CharacterTest {
     when(cannotPassTerrain.getCoordinate()).thenReturn(DESTINATION);
     when(cannotPassTerrain.getType()).thenReturn(Type.MOUNTAIN);
     when(
-        algorithms.distanceFromGraph(
+        terrainGraphs.distanceFromGraph(
             Mockito.<Function<Terrain, Integer>>any(),
             Mockito.<Coordinate>any(),
             Mockito.anyInt())).thenReturn(coordinateGraph);
 
     assertThat(character.createMoveGraph()).isSameAs(coordinateGraph);
 
-    verify(algorithms)
+    verify(terrainGraphs)
         .distanceFromGraph(
             functionCaptor.capture(), Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10));
     Function<Terrain, Integer> function = functionCaptor.getValue();
     assertThat(function.apply(terrain)).isEqualTo(123);
-    assertThat(function.apply(blockedTerrain)).isEqualTo(Algorithms.NO_EDGE);
-    assertThat(function.apply(cannotPassTerrain)).isEqualTo(Algorithms.NO_EDGE);
+    assertThat(function.apply(blockedTerrain)).isEqualTo(TerrainGraphs.NO_EDGE);
+    assertThat(function.apply(cannotPassTerrain)).isEqualTo(TerrainGraphs.NO_EDGE);
   }
 
   private static class CharacterImpl extends Character {
@@ -258,12 +258,12 @@ public class CharacterTest {
     CharacterImpl(
         Coordinate coordinate,
         Multiset<Marker> markers,
-        Algorithms algorithms,
+        TerrainGraphs terrainGraphs,
         Characters characters,
         EventBus eventBus,
         Stats stats,
         List<Item> items) {
-      super(coordinate, markers, algorithms, characters, eventBus, stats, items);
+      super(coordinate, markers, terrainGraphs, characters, eventBus, stats, items);
     }
 
     @Override

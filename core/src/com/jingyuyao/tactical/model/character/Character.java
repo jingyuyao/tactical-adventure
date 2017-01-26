@@ -19,19 +19,19 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class Character extends MapObject {
 
-  private final Algorithms algorithms;
+  private final TerrainGraphs terrainGraphs;
   private final Characters characters;
   private final EventBus eventBus;
   private final Stats stats;
@@ -40,13 +40,13 @@ public abstract class Character extends MapObject {
   Character(
       Coordinate coordinate,
       Multiset<Marker> markers,
-      Algorithms algorithms,
+      TerrainGraphs terrainGraphs,
       Characters characters,
       EventBus eventBus,
       Stats stats,
       List<Item> items) {
     super(coordinate, markers);
-    this.algorithms = algorithms;
+    this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
     this.stats = stats;
@@ -127,7 +127,7 @@ public abstract class Character extends MapObject {
   }
 
   public Graph<Coordinate> createMoveGraph() {
-    return algorithms.distanceFromGraph(
+    return terrainGraphs.distanceFromGraph(
         createMovementPenaltyFunction(), getCoordinate(), stats.getMoveDistance());
   }
 
@@ -138,7 +138,7 @@ public abstract class Character extends MapObject {
       public Integer apply(Terrain input) {
         if (blockedCoordinates.contains(input.getCoordinate())
             || !stats.canPassTerrainType(input.getType())) {
-          return Algorithms.NO_EDGE;
+          return TerrainGraphs.NO_EDGE;
         }
         return input.getMovementPenalty();
       }

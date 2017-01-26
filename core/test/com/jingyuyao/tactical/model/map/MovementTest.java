@@ -25,7 +25,7 @@ public class MovementTest {
   private static final Coordinate NOT_IN_TARGETS = new Coordinate(10, 10);
 
   @Mock
-  private Algorithms algorithms;
+  private TerrainGraphs terrainGraphs;
   @Mock
   private Terrains terrains;
   @Mock
@@ -42,7 +42,7 @@ public class MovementTest {
   public void setUp() {
     moveCoordinates = ImmutableSet.of(ORIGIN, MOVE1, MOVE2);
     when(graph.nodes()).thenReturn(moveCoordinates);
-    movement = new Movement(algorithms, terrains, graph);
+    movement = new Movement(terrainGraphs, terrains, graph);
   }
 
   @Test
@@ -54,7 +54,7 @@ public class MovementTest {
 
   @Test
   public void path_to() {
-    when(algorithms.getTrackTo(graph, MOVE1)).thenReturn(track);
+    when(terrainGraphs.getTrackTo(graph, MOVE1)).thenReturn(track);
 
     Path path = movement.pathTo(MOVE1);
 

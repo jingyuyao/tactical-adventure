@@ -7,10 +7,10 @@ import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.character.CharacterModule.InitialItems;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import javax.inject.Inject;
@@ -26,12 +26,12 @@ public class Player extends Character {
   Player(
       @Assisted Coordinate coordinate,
       @InitialMarkers Multiset<Marker> markers,
-      Algorithms algorithms,
+      TerrainGraphs terrainGraphs,
       Characters characters,
       @CharacterEventBus EventBus eventBus,
       @Assisted Stats stats,
       @InitialItems List<Item> items) {
-    super(coordinate, markers, algorithms, characters, eventBus, stats, items);
+    super(coordinate, markers, terrainGraphs, characters, eventBus, stats, items);
   }
 
   @Override

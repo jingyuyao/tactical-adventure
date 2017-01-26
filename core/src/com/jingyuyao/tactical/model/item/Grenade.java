@@ -7,36 +7,36 @@ import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import javax.inject.Inject;
 
 // TODO: test me
 public class Grenade extends AbstractWeapon<GrenadeStats> {
 
-  private final Algorithms algorithms;
+  private final TerrainGraphs terrainGraphs;
   private final TargetFactory targetFactory;
 
   @Inject
   Grenade(
       @Assisted Character owner,
       @Assisted GrenadeStats grenadeStats,
-      Algorithms algorithms,
+      TerrainGraphs terrainGraphs,
       TargetFactory targetFactory) {
     super(owner, grenadeStats);
-    this.algorithms = algorithms;
+    this.terrainGraphs = terrainGraphs;
     this.targetFactory = targetFactory;
   }
 
   @Override
   public ImmutableList<Target> createTargets(Coordinate from) {
     Graph<Coordinate> selectCoordinates =
-        algorithms.distanceFromGraph(new ConstWeight(), from, getItemStats().getDistance());
+        terrainGraphs.distanceFromGraph(new ConstWeight(), from, getItemStats().getDistance());
 
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate select : selectCoordinates.nodes()) {
       Graph<Coordinate> targetCoordinates =
-          algorithms.distanceFromGraph(new ConstWeight(), select, getItemStats().getSize());
+          terrainGraphs.distanceFromGraph(new ConstWeight(), select, getItemStats().getSize());
       builder.add(targetFactory.create(ImmutableSet.of(select), targetCoordinates.nodes()));
     }
     return builder.build();

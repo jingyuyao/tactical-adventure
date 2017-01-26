@@ -23,7 +23,7 @@ public class MapModuleTest {
   private EventBus eventBus;
   @Bind
   @Mock
-  private Algorithms algorithms;
+  private TerrainGraphs terrainGraphs;
 
   @Inject
   private TerrainFactory terrainFactory;

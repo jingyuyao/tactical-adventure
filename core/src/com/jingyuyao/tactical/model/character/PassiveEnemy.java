@@ -14,13 +14,13 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Algorithms;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -32,13 +32,13 @@ public class PassiveEnemy extends Enemy {
   PassiveEnemy(
       @Assisted Coordinate coordinate,
       @InitialMarkers Multiset<Marker> markers,
-      Algorithms algorithms,
+      TerrainGraphs terrainGraphs,
       Characters characters,
       @CharacterEventBus EventBus eventBus,
       @Assisted Stats stats,
       @InitialItems List<Item> items,
       MovementFactory movementFactory) {
-    super(coordinate, markers, algorithms, characters, eventBus, stats, items);
+    super(coordinate, markers, terrainGraphs, characters, eventBus, stats, items);
     this.movementFactory = movementFactory;
   }
 
