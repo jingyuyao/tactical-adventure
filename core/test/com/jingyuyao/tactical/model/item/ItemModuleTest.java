@@ -7,7 +7,6 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -25,9 +24,6 @@ public class ItemModuleTest {
   @Bind
   @Mock
   private Terrains terrains;
-  @Bind
-  @Mock
-  private MarkingFactory markingFactory;
   @Mock
   private Character owner;
 

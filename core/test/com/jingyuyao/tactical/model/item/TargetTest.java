@@ -5,24 +5,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
-import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,23 +32,17 @@ public class TargetTest {
   @Mock
   private Terrains terrains;
   @Mock
-  private MarkingFactory markingFactory;
-  @Mock
   private Character character;
   @Mock
   private Terrain terrain;
   @Mock
   private Terrain terrain2;
-  @Mock
-  private Marking marking;
-  @Captor
-  private ArgumentCaptor<ImmutableMultimap<MapObject, Marker>> markerMapCaptor;
 
   private Target target;
 
   @Before
   public void setUp() {
-    target = new Target(selectCoordinates, targetCoordinates, characters, terrains, markingFactory);
+    target = new Target(selectCoordinates, targetCoordinates, characters, terrains);
   }
 
   @Test
@@ -78,17 +65,12 @@ public class TargetTest {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
     when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain2));
     when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
-    when(markingFactory.create(Mockito.<ImmutableMultimap<MapObject, Marker>>any()))
-        .thenReturn(marking);
 
     target.showMarking();
 
-    verify(markingFactory).create(markerMapCaptor.capture());
-    verify(marking).apply();
-    assertThat(markerMapCaptor.getValue()).hasSize(3);
-    assertThat(markerMapCaptor.getValue()).containsEntry(terrain, Marker.CAN_ATTACK);
-    assertThat(markerMapCaptor.getValue()).containsEntry(terrain2, Marker.TARGET_SELECT);
-    assertThat(markerMapCaptor.getValue()).containsEntry(character, Marker.POTENTIAL_TARGET);
+    verify(terrain).addMarker(Marker.CAN_ATTACK);
+    verify(terrain2).addMarker(Marker.TARGET_SELECT);
+    verify(character).addMarker(Marker.POTENTIAL_TARGET);
   }
 
   @Test
@@ -97,6 +79,8 @@ public class TargetTest {
 
     target.hideMarking();
 
-    verify(marking).clear();
+    verify(terrain).removeMarker(Marker.CAN_ATTACK);
+    verify(terrain2).removeMarker(Marker.TARGET_SELECT);
+    verify(character).removeMarker(Marker.POTENTIAL_TARGET);
   }
 }

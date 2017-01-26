@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.inject.assistedinject.Assisted;
@@ -12,7 +11,7 @@ import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.mark.Marker;
 import com.jingyuyao.tactical.model.mark.Marking;
-import com.jingyuyao.tactical.model.mark.MarkingFactory;
+import com.jingyuyao.tactical.model.mark.Marking.MarkingBuilder;
 import javax.inject.Inject;
 
 // TODO: need a method that return a "target info" for this target to be displayed
@@ -22,7 +21,6 @@ public class Target {
   private final ImmutableSet<Coordinate> targetCoordinates;
   private final Characters characters;
   private final Terrains terrains;
-  private final MarkingFactory markingFactory;
   private Marking marking;
 
   @Inject
@@ -30,13 +28,11 @@ public class Target {
       @Assisted("select") Iterable<Coordinate> selectCoordinates,
       @Assisted("target") Iterable<Coordinate> targetCoordinates,
       Characters characters,
-      Terrains terrains,
-      MarkingFactory markingFactory) {
+      Terrains terrains) {
     this.selectCoordinates = ImmutableSet.copyOf(selectCoordinates);
     this.targetCoordinates = ImmutableSet.copyOf(targetCoordinates);
     this.characters = characters;
     this.terrains = terrains;
-    this.markingFactory = markingFactory;
   }
 
   /**
@@ -69,17 +65,17 @@ public class Target {
   }
 
   public Marking createHitMarking() {
-    ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
+    MarkingBuilder builder = new MarkingBuilder();
     Iterable<MapObject> hitObjects =
         Iterables.concat(terrains.getAll(targetCoordinates), characters.getAll(targetCoordinates));
     for (MapObject object : hitObjects) {
       builder.put(object, Marker.HIT);
     }
-    return markingFactory.create(builder.build());
+    return builder.build();
   }
 
   private Marking createMarking() {
-    ImmutableMultimap.Builder<MapObject, Marker> builder = ImmutableMultimap.builder();
+    MarkingBuilder builder = new MarkingBuilder();
     for (Terrain terrain : terrains.getAll(selectCoordinates)) {
       builder.put(terrain, Marker.TARGET_SELECT);
     }
@@ -89,6 +85,6 @@ public class Target {
     for (Character character : getTargetCharacters()) {
       builder.put(character, Marker.POTENTIAL_TARGET);
     }
-    return markingFactory.create(builder.build());
+    return builder.build();
   }
 }
