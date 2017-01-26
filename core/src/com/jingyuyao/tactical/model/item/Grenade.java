@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.common.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
 
+// TODO: test me
 public class Grenade extends AbstractWeapon<GrenadeStats> {
 
   private final Algorithms algorithms;
