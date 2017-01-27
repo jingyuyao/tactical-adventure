@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.state.MapState;
 import javax.inject.Inject;
 
-public class Terrain extends MapObject {
+public class Terrain extends AbstractMapObject {
 
   private final Type type;
 

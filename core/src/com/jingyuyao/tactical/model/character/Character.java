@@ -18,9 +18,9 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -29,7 +29,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Character<T extends CharacterData> extends MapObject {
+public abstract class Character<T extends CharacterData> extends AbstractMapObject {
 
   private final T data;
   private final List<Item> items;

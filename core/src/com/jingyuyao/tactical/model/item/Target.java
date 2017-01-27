@@ -67,7 +67,9 @@ public class Target {
   public Marking createHitMarking() {
     MarkingBuilder builder = new MarkingBuilder();
     Iterable<MapObject> hitObjects =
-        Iterables.concat(terrains.getAll(targetCoordinates), characters.getAll(targetCoordinates));
+        Iterables.<MapObject>concat(
+            terrains.getAll(targetCoordinates),
+            characters.getAll(targetCoordinates));
     for (MapObject object : hitObjects) {
       builder.put(object, Marker.HIT);
     }
