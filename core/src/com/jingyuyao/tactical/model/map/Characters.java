@@ -48,17 +48,8 @@ public class Characters {
     eventBus.post(new AddEnemy(enemy));
   }
 
-  public void removeCharacter(Character character) {
+  public void remove(Character character) {
     characterSet.remove(character);
-  }
-
-  public Iterable<Coordinate> coordinates() {
-    return Iterables.transform(characterSet, new Function<Character, Coordinate>() {
-      @Override
-      public Coordinate apply(Character input) {
-        return input.getCoordinate();
-      }
-    });
   }
 
   public Iterable<Player> getPlayers() {
@@ -74,6 +65,15 @@ public class Characters {
       @Override
       public boolean apply(Character input) {
         return coordinates.contains(input.getCoordinate());
+      }
+    });
+  }
+
+  public Iterable<Coordinate> coordinates() {
+    return Iterables.transform(characterSet, new Function<Character, Coordinate>() {
+      @Override
+      public Coordinate apply(Character input) {
+        return input.getCoordinate();
       }
     });
   }

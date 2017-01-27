@@ -143,7 +143,7 @@ public class CharacterTest {
     character.damageBy(5);
 
     verify(stats).damageBy(5);
-    verify(characters).removeCharacter(character);
+    verify(characters).remove(character);
     verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(RemoveSelf.class);
   }

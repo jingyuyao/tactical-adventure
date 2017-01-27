@@ -73,7 +73,7 @@ public abstract class Character extends MapObject {
   public void damageBy(int delta) {
     stats.damageBy(delta);
     if (stats.isDead()) {
-      characters.removeCharacter(this);
+      characters.remove(this);
       eventBus.post(new RemoveSelf());
     }
   }

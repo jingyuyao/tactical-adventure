@@ -69,7 +69,7 @@ public class CharactersTest {
 
   @Test
   public void remove_character() {
-    characters.removeCharacter(player);
+    characters.remove(player);
 
     verify(characterSet).remove(player);
   }
