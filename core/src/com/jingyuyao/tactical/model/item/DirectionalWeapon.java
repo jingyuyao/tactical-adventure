@@ -14,7 +14,7 @@ import javax.inject.Inject;
  * A weapon that can be targeted in all directions in {@link Directions#ALL}.
  */
 // TODO: test me
-public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponStats> {
+public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponData> {
 
   private final Terrains terrains;
   private final TargetFactory targetFactory;
@@ -22,7 +22,7 @@ public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponStats> {
   @Inject
   DirectionalWeapon(
       @Assisted Character owner,
-      @Assisted DirectionalWeaponStats weaponStats,
+      @Assisted DirectionalWeaponData weaponStats,
       Terrains terrains,
       TargetFactory targetFactory) {
     super(owner, weaponStats);

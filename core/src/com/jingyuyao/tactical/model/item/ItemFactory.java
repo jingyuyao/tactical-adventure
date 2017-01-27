@@ -4,9 +4,9 @@ import com.jingyuyao.tactical.model.character.Character;
 
 public interface ItemFactory {
 
-  DirectionalWeapon createDirectionalWeapon(Character owner, DirectionalWeaponStats weaponStats);
+  DirectionalWeapon createDirectionalWeapon(Character owner, DirectionalWeaponData weaponStats);
 
-  Grenade createGrenade(Character owner, GrenadeStats grenadeStats);
+  Grenade createGrenade(Character owner, GrenadeData grenadeStats);
 
-  Heal createHeal(Character owner, ItemStats itemStats);
+  Heal createHeal(Character owner, ItemData itemData);
 }

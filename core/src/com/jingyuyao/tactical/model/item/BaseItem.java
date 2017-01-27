@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.character.Character;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-class BaseItem<T extends ItemStats> implements Item {
+class BaseItem<T extends ItemData> implements Item {
 
   private final Character owner;
   private final T itemStats;

@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model.item;
 
-public class GrenadeStats extends WeaponStats {
+public class GrenadeData extends WeaponData {
 
   private final int distance;
   private final int size;
 
-  public GrenadeStats(String name, int usageLeft, int attackPower, int distance, int size) {
+  public GrenadeData(String name, int usageLeft, int attackPower, int distance, int size) {
     super(name, usageLeft, attackPower);
     this.distance = distance;
     this.size = size;

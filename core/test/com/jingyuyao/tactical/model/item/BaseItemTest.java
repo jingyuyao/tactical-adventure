@@ -19,13 +19,13 @@ public class BaseItemTest {
   @Mock
   private Character owner;
   @Mock
-  private ItemStats itemStats;
+  private ItemData itemData;
 
-  private BaseItem<ItemStats> item;
+  private BaseItem<ItemData> item;
 
   @Before
   public void setUp() {
-    item = new BaseItem<ItemStats>(owner, itemStats);
+    item = new BaseItem<ItemData>(owner, itemData);
   }
 
   @Test
@@ -35,34 +35,34 @@ public class BaseItemTest {
 
   @Test
   public void name() {
-    when(itemStats.getName()).thenReturn(NAME);
+    when(itemData.getName()).thenReturn(NAME);
 
     assertThat(item.getName()).isEqualTo(NAME);
   }
 
   @Test
   public void usage_left() {
-    when(itemStats.getUsageLeft()).thenReturn(10);
+    when(itemData.getUsageLeft()).thenReturn(10);
 
     assertThat(item.getUsageLeft()).isEqualTo(10);
   }
 
   @Test
   public void use_once() {
-    when(itemStats.getUsageLeft()).thenReturn(1);
+    when(itemData.getUsageLeft()).thenReturn(1);
 
     item.useOnce();
 
-    verify(itemStats).decrementUsageLeft();
+    verify(itemData).decrementUsageLeft();
   }
 
   @Test
   public void use_once_broken() {
-    when(itemStats.getUsageLeft()).thenReturn(0);
+    when(itemData.getUsageLeft()).thenReturn(0);
 
     item.useOnce();
 
-    verify(itemStats).decrementUsageLeft();
+    verify(itemData).decrementUsageLeft();
     verify(owner).removeItem(item);
   }
 }

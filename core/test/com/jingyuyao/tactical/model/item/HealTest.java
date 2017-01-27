@@ -23,7 +23,7 @@ public class HealTest {
 
   @Before
   public void setUp() {
-    heal = new Heal(owner, new ItemStats(NAME, INITIAL_USAGE));
+    heal = new Heal(owner, new ItemData(NAME, INITIAL_USAGE));
   }
 
   @Test

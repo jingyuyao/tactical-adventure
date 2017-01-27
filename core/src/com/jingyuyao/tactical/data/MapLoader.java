@@ -13,10 +13,10 @@ import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Stats;
-import com.jingyuyao.tactical.model.item.DirectionalWeaponStats;
-import com.jingyuyao.tactical.model.item.GrenadeStats;
+import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
+import com.jingyuyao.tactical.model.item.GrenadeData;
+import com.jingyuyao.tactical.model.item.ItemData;
 import com.jingyuyao.tactical.model.item.ItemFactory;
-import com.jingyuyao.tactical.model.item.ItemStats;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainFactory;
@@ -134,20 +134,20 @@ public class MapLoader {
   private void addItems1(Character owner) {
     owner.addItem(
         itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Laser5", 1, 5, 10)));
+            .createDirectionalWeapon(owner, new DirectionalWeaponData("Laser5", 1, 5, 10)));
     owner.addItem(
         itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Melee5", 10, 5, 1)));
+            .createDirectionalWeapon(owner, new DirectionalWeaponData("Melee5", 10, 5, 1)));
     owner.addItem(
         itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Melee10", 3, 10, 1)));
-    owner.addItem(itemFactory.createHeal(owner, new ItemStats("pot", 3)));
+            .createDirectionalWeapon(owner, new DirectionalWeaponData("Melee10", 3, 10, 1)));
+    owner.addItem(itemFactory.createHeal(owner, new ItemData("pot", 3)));
   }
 
   private void addItems2(Character owner) {
     owner.addItem(
         itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponStats("Laser3", 5, 3, 10)));
-    owner.addItem(itemFactory.createGrenade(owner, new GrenadeStats("Grenade5", 3, 5, 5, 3)));
+            .createDirectionalWeapon(owner, new DirectionalWeaponData("Laser3", 5, 3, 10)));
+    owner.addItem(itemFactory.createGrenade(owner, new GrenadeData("Grenade5", 3, 5, 5, 3)));
   }
 }

@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import javax.inject.Inject;
 
 // TODO: test me
-public class Grenade extends AbstractWeapon<GrenadeStats> {
+public class Grenade extends AbstractWeapon<GrenadeData> {
 
   private final TerrainGraphs terrainGraphs;
   private final TargetFactory targetFactory;
@@ -20,7 +20,7 @@ public class Grenade extends AbstractWeapon<GrenadeStats> {
   @Inject
   Grenade(
       @Assisted Character owner,
-      @Assisted GrenadeStats grenadeStats,
+      @Assisted GrenadeData grenadeStats,
       TerrainGraphs terrainGraphs,
       TargetFactory targetFactory) {
     super(owner, grenadeStats);
