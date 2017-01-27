@@ -5,9 +5,9 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
@@ -52,23 +52,21 @@ public class Characters {
     characterSet.remove(character);
   }
 
-  /**
-   * Return a snapshot of the {@link Coordinate}s in {@link #characterSet}.
-   */
-  public ImmutableSet<Coordinate> coordinates() {
-    ImmutableSet.Builder<Coordinate> builder = new Builder<Coordinate>();
-    for (Character character : characterSet) {
-      builder.add(character.getCoordinate());
-    }
-    return builder.build();
+  public Iterable<Coordinate> coordinates() {
+    return Iterables.transform(characterSet, new Function<Character, Coordinate>() {
+      @Override
+      public Coordinate apply(Character input) {
+        return input.getCoordinate();
+      }
+    });
   }
 
-  public ImmutableSet<Player> getPlayers() {
-    return ImmutableSet.copyOf(Iterables.filter(characterSet, Player.class));
+  public Iterable<Player> getPlayers() {
+    return Iterables.filter(characterSet, Player.class);
   }
 
-  public ImmutableSet<Enemy> getEnemies() {
-    return ImmutableSet.copyOf(Iterables.filter(characterSet, Enemy.class));
+  public Iterable<Enemy> getEnemies() {
+    return Iterables.filter(characterSet, Enemy.class);
   }
 
   public Iterable<Character> getAll(final ImmutableSet<Coordinate> coordinates) {

@@ -132,11 +132,11 @@ public abstract class Character extends MapObject {
   }
 
   private Function<Terrain, Integer> createMovementPenaltyFunction() {
-    final ImmutableSet<Coordinate> blockedCoordinates = characters.coordinates();
+    final ImmutableSet<Coordinate> blocked = ImmutableSet.copyOf(characters.coordinates());
     return new Function<Terrain, Integer>() {
       @Override
       public Integer apply(Terrain input) {
-        if (blockedCoordinates.contains(input.getCoordinate())
+        if (blocked.contains(input.getCoordinate())
             || !stats.canPassTerrainType(input.getType())) {
           return TerrainGraphs.BLOCKED;
         }

@@ -5,7 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -93,7 +93,7 @@ public class WaitingTest {
 
   @Test
   public void actions_end_turn() {
-    when(characters.getPlayers()).thenReturn(ImmutableSet.of(player));
+    when(characters.getPlayers()).thenReturn(ImmutableList.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
     List<Action> actions = waiting.getActions();

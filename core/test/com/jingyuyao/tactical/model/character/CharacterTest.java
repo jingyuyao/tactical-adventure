@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
@@ -229,7 +229,7 @@ public class CharacterTest {
     when(stats.getMoveDistance()).thenReturn(10);
     when(stats.canPassTerrainType(Type.NORMAL)).thenReturn(true);
     when(stats.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
-    when(characters.coordinates()).thenReturn(ImmutableSet.of(BLOCKED_COORDINATE));
+    when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
     when(terrain.getType()).thenReturn(Type.NORMAL);
     when(terrain.getMovementPenalty()).thenReturn(123);
