@@ -24,7 +24,7 @@ import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import java.util.List;
 import javax.inject.Inject;
 
-public class PassiveEnemy extends Enemy {
+public class PassiveEnemy extends AbstractEnemy {
 
   private final MovementFactory movementFactory;
 

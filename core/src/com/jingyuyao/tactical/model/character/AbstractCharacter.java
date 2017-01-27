@@ -29,7 +29,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractCharacter<T extends CharacterData>
+abstract class AbstractCharacter<T extends CharacterData>
     extends AbstractMapObject implements Character {
 
   private final T data;
