@@ -1,12 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import com.google.common.eventbus.EventBus;
-import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -17,8 +11,7 @@ import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Terrain;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import java.util.Deque;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -131,12 +124,5 @@ public class MapState {
     if (currentHighlight != null) {
       currentHighlight.addMarker(Marker.HIGHLIGHT);
     }
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface BackingStateStack {
-
   }
 }
