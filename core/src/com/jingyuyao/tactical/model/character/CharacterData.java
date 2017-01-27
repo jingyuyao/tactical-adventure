@@ -10,21 +10,25 @@ import java.util.Set;
  */
 public class CharacterData {
 
-  // TODO: remove me
-  private static final int MAX_HP = 20;
-
   private final String name;
   private final Set<Terrain.Type> passableTerrainTypes;
+  private int maxHp;
   /**
-   * >= 0
+   * 0 <= hp <= maxHp
    */
   private int hp;
 
   private int moveDistance;
 
-  public CharacterData(String name, int hp, int moveDistance, Set<Type> passableTerrainTypes) {
+  public CharacterData(
+      String name,
+      int maxHp,
+      int hp,
+      int moveDistance,
+      Set<Type> passableTerrainTypes) {
+    Preconditions.checkArgument(hp >= 0 && hp <= maxHp);
     this.name = name;
-    Preconditions.checkArgument(hp > 0);
+    this.maxHp = maxHp;
     this.hp = hp;
     this.passableTerrainTypes = passableTerrainTypes;
     this.moveDistance = moveDistance;
@@ -47,7 +51,7 @@ public class CharacterData {
   }
 
   void healBy(int delta) {
-    hp = Math.min(hp + delta, MAX_HP);
+    hp = Math.min(hp + delta, maxHp);
   }
 
   boolean isDead() {

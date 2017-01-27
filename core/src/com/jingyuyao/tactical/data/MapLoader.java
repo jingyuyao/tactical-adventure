@@ -105,9 +105,9 @@ public class MapLoader {
   // TODO: remove us
   private List<Player> createTestPlayers() {
     Player p1 = characterFactory.createPlayer(
-        new Coordinate(2, 2), new CharacterData("john", 20, 5, normalAndObstructed()));
+        new Coordinate(2, 2), new CharacterData("john", 20, 20, 5, normalAndObstructed()));
     Player p2 = characterFactory.createPlayer(
-        new Coordinate(2, 3), new CharacterData("john", 20, 6, normalAndObstructed()));
+        new Coordinate(2, 3), new CharacterData("john", 20, 20, 6, normalAndObstructed()));
     addItems1(p1);
     addItems2(p2);
     return ImmutableList.of(p1, p2);
@@ -115,10 +115,10 @@ public class MapLoader {
 
   private List<Enemy> createTestEnemies() {
     Enemy e1 = characterFactory.createPassiveEnemy(
-        new Coordinate(8, 3), new CharacterData("billy", 20, 3, normalAndObstructed()));
+        new Coordinate(8, 3), new CharacterData("billy", 20, 20, 3, normalAndObstructed()));
     Enemy e2 = characterFactory.createPassiveEnemy(
         new Coordinate(9, 3),
-        new CharacterData("billy", 20, 2, normalAndObstructed()));
+        new CharacterData("billy", 20, 20, 2, normalAndObstructed()));
     addItems1(e1);
     addItems2(e2);
     return ImmutableList.of(e1, e2);
