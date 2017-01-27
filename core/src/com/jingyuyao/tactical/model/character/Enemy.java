@@ -14,17 +14,17 @@ import java.util.List;
 /**
  * An enemy character
  */
-public abstract class Enemy extends Character {
+public abstract class Enemy extends Character<CharacterData> {
 
   Enemy(
       Coordinate coordinate,
       Multiset<Marker> markers,
-      CharacterData characterData,
+      CharacterData data,
       List<Item> items,
       EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters) {
-    super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
+    super(coordinate, markers, data, items, eventBus, terrainGraphs, characters);
   }
 
   @Override

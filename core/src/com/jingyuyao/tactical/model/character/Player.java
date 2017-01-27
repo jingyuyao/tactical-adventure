@@ -18,20 +18,18 @@ import javax.inject.Inject;
 /**
  * A player character
  */
-public class Player extends Character {
-
-  private boolean actionable = true;
+public class Player extends Character<PlayerData> {
 
   @Inject
   Player(
       @Assisted Coordinate coordinate,
       @InitialMarkers Multiset<Marker> markers,
-      @Assisted CharacterData characterData,
+      @Assisted PlayerData data,
       @InitialItems List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters) {
-    super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
+    super(coordinate, markers, data, items, eventBus, terrainGraphs, characters);
   }
 
   @Override
@@ -40,10 +38,10 @@ public class Player extends Character {
   }
 
   public boolean isActionable() {
-    return actionable;
+    return getData().isActionable();
   }
 
   public void setActionable(boolean actionable) {
-    this.actionable = actionable;
+    getData().setActionable(actionable);
   }
 }

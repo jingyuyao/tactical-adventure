@@ -32,13 +32,13 @@ public class PassiveEnemy extends Enemy {
   PassiveEnemy(
       @Assisted Coordinate coordinate,
       @InitialMarkers Multiset<Marker> markers,
-      @Assisted CharacterData characterData,
+      @Assisted CharacterData data,
       @InitialItems List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters,
       MovementFactory movementFactory) {
-    super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
+    super(coordinate, markers, data, items, eventBus, terrainGraphs, characters);
     this.movementFactory = movementFactory;
   }
 

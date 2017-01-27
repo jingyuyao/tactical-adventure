@@ -27,7 +27,7 @@ public class PassiveEnemyTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private CharacterData characterData;
+  private CharacterData data;
   @Mock
   private EventBus eventBus;
   @Mock
@@ -47,8 +47,7 @@ public class PassiveEnemyTest {
   public void setUp() {
     enemy =
         new PassiveEnemy(
-            COORDINATE, markers, characterData, items, eventBus, terrainGraphs, characters,
-            movementFactory);
+            COORDINATE, markers, data, items, eventBus, terrainGraphs, characters, movementFactory);
   }
 
   @Test

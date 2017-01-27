@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.character.CharacterData;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.PlayerData;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
 import com.jingyuyao.tactical.model.item.GrenadeData;
 import com.jingyuyao.tactical.model.item.HealData;
@@ -105,9 +106,9 @@ public class MapLoader {
   // TODO: remove us
   private List<Player> createTestPlayers() {
     Player p1 = characterFactory.createPlayer(
-        new Coordinate(2, 2), new CharacterData("john", 20, 20, 5, normalAndObstructed()));
+        new Coordinate(2, 2), new PlayerData("john", 20, 20, 5, normalAndObstructed(), true));
     Player p2 = characterFactory.createPlayer(
-        new Coordinate(2, 3), new CharacterData("john", 20, 20, 6, normalAndObstructed()));
+        new Coordinate(2, 3), new PlayerData("john", 20, 20, 6, normalAndObstructed(), true));
     addItems1(p1);
     addItems2(p2);
     return ImmutableList.of(p1, p2);

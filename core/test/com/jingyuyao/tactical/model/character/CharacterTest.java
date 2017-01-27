@@ -50,7 +50,7 @@ public class CharacterTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private CharacterData characterData;
+  private CharacterData data;
   @Mock
   private EventBus eventBus;
   @Mock
@@ -94,8 +94,7 @@ public class CharacterTest {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
         new CharacterImpl(
-            CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, characterData,
-            items);
+            CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, data, items);
   }
 
   @Test
@@ -114,36 +113,36 @@ public class CharacterTest {
 
   @Test
   public void name() {
-    when(characterData.getName()).thenReturn(NAME);
+    when(data.getName()).thenReturn(NAME);
 
     assertThat(character.getName()).isEqualTo(NAME);
   }
 
   @Test
   public void hp() {
-    when(characterData.getHp()).thenReturn(1);
+    when(data.getHp()).thenReturn(1);
 
     assertThat(character.getHp()).isEqualTo(1);
   }
 
   @Test
   public void damage_by_not_dead() {
-    when(characterData.isDead()).thenReturn(false);
+    when(data.isDead()).thenReturn(false);
 
     character.damageBy(5);
 
-    verify(characterData).damageBy(5);
+    verify(data).damageBy(5);
     verifyZeroInteractions(characters);
     verifyZeroInteractions(eventBus);
   }
 
   @Test
   public void damage_by_dead() {
-    when(characterData.isDead()).thenReturn(true);
+    when(data.isDead()).thenReturn(true);
 
     character.damageBy(5);
 
-    verify(characterData).damageBy(5);
+    verify(data).damageBy(5);
     verify(characters).remove(character);
     verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(RemoveSelf.class);
@@ -153,7 +152,7 @@ public class CharacterTest {
   public void heal_by() {
     character.healBy(10);
 
-    verify(characterData).healBy(10);
+    verify(data).healBy(10);
   }
 
   @Test
@@ -227,9 +226,9 @@ public class CharacterTest {
 
   @Test
   public void create_move_graph() {
-    when(characterData.getMoveDistance()).thenReturn(10);
-    when(characterData.canPassTerrainType(Type.NORMAL)).thenReturn(true);
-    when(characterData.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
+    when(data.getMoveDistance()).thenReturn(10);
+    when(data.canPassTerrainType(Type.NORMAL)).thenReturn(true);
+    when(data.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
     when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
     when(terrain.getType()).thenReturn(Type.NORMAL);

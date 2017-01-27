@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
@@ -26,7 +27,7 @@ public class PlayerTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private CharacterData characterData;
+  private PlayerData data;
   @Mock
   private List<Item> items;
   @Mock
@@ -42,9 +43,7 @@ public class PlayerTest {
   @Before
   public void setUp() {
     player =
-        new Player(
-            PLAYER_COORDINATE, markers, characterData, items, eventBus, terrainGraphs, characters);
-    assertThat(player.isActionable()).isTrue();
+        new Player(PLAYER_COORDINATE, markers, data, items, eventBus, terrainGraphs, characters);
   }
 
   @Test
@@ -55,9 +54,16 @@ public class PlayerTest {
   }
 
   @Test
+  public void get_actionable() {
+    when(data.isActionable()).thenReturn(true);
+
+    assertThat(player.isActionable()).isTrue();
+  }
+
+  @Test
   public void set_actionable() {
     player.setActionable(false);
 
-    assertThat(player.isActionable()).isFalse();
+    verify(data).setActionable(false);
   }
 }

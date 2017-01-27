@@ -29,9 +29,9 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Character extends MapObject {
+public abstract class Character<T extends CharacterData> extends MapObject {
 
-  private final CharacterData characterData;
+  private final T data;
   private final List<Item> items;
   private final TerrainGraphs terrainGraphs;
   private final Characters characters;
@@ -40,7 +40,7 @@ public abstract class Character extends MapObject {
   Character(
       Coordinate coordinate,
       Multiset<Marker> markers,
-      CharacterData characterData,
+      T data,
       List<Item> items,
       EventBus eventBus,
       TerrainGraphs terrainGraphs,
@@ -49,7 +49,7 @@ public abstract class Character extends MapObject {
     this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
-    this.characterData = characterData;
+    this.data = data;
     this.items = items;
   }
 
@@ -63,23 +63,23 @@ public abstract class Character extends MapObject {
   }
 
   public String getName() {
-    return characterData.getName();
+    return data.getName();
   }
 
   public int getHp() {
-    return characterData.getHp();
+    return data.getHp();
   }
 
   public void damageBy(int delta) {
-    characterData.damageBy(delta);
-    if (characterData.isDead()) {
+    data.damageBy(delta);
+    if (data.isDead()) {
       characters.remove(this);
       eventBus.post(new RemoveSelf());
     }
   }
 
   public void healBy(int delta) {
-    characterData.healBy(delta);
+    data.healBy(delta);
   }
 
   public void addItem(Item item) {
@@ -128,7 +128,11 @@ public abstract class Character extends MapObject {
 
   public Graph<Coordinate> createMoveGraph() {
     return terrainGraphs.distanceFrom(
-        getCoordinate(), characterData.getMoveDistance(), createMovementPenaltyFunction());
+        getCoordinate(), data.getMoveDistance(), createMovementPenaltyFunction());
+  }
+
+  T getData() {
+    return data;
   }
 
   private Function<Terrain, Integer> createMovementPenaltyFunction() {
@@ -137,7 +141,7 @@ public abstract class Character extends MapObject {
       @Override
       public Integer apply(Terrain input) {
         if (blocked.contains(input.getCoordinate())
-            || !characterData.canPassTerrainType(input.getType())) {
+            || !data.canPassTerrainType(input.getType())) {
           return TerrainGraphs.BLOCKED;
         }
         return input.getMovementPenalty();
