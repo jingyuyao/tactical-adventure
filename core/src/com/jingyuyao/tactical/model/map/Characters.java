@@ -1,24 +1,17 @@
 package com.jingyuyao.tactical.model.map;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
-import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.jingyuyao.tactical.model.map.MapModule.BackingCharacterSet;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -76,12 +69,5 @@ public class Characters {
         return input.getCoordinate();
       }
     });
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface BackingCharacterSet {
-
   }
 }

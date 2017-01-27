@@ -1,20 +1,13 @@
 package com.jingyuyao.tactical.model.map;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
-import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.AddTerrain;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.jingyuyao.tactical.model.map.MapModule.BackingTerrainMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -102,12 +95,5 @@ public class Terrains {
         }
       }
     }
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface BackingTerrainMap {
-
   }
 }

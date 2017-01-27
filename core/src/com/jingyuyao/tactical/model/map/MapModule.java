@@ -12,7 +12,6 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Terrains.BackingTerrainMap;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class MapModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @Characters.BackingCharacterSet
+  @BackingCharacterSet
   Set<Character> provideBackingCharacterSet() {
     return new HashSet<Character>();
   }
@@ -55,6 +54,20 @@ public class MapModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface InitialMarkers {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingCharacterSet {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingTerrainMap {
 
   }
 }
