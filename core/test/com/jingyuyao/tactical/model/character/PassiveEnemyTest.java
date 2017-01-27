@@ -33,7 +33,7 @@ public class PassiveEnemyTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Stats stats;
+  private CharacterData characterData;
   @Mock
   private List<Item> items;
   @Mock
@@ -47,7 +47,7 @@ public class PassiveEnemyTest {
   public void setUp() {
     enemy =
         new PassiveEnemy(
-            COORDINATE, markers, terrainGraphs, characters, eventBus, stats, items,
+            COORDINATE, markers, terrainGraphs, characters, eventBus, characterData, items,
             movementFactory);
   }
 

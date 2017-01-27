@@ -4,7 +4,7 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 
 public interface CharacterFactory {
 
-  Player createPlayer(Coordinate coordinate, Stats stats);
+  Player createPlayer(Coordinate coordinate, CharacterData characterData);
 
-  PassiveEnemy createPassiveEnemy(Coordinate coordinate, Stats stats);
+  PassiveEnemy createPassiveEnemy(Coordinate coordinate, CharacterData characterData);
 }

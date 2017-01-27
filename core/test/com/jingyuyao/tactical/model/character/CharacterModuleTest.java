@@ -48,9 +48,9 @@ public class CharacterModuleTest {
   public void create_characters() {
     characterFactory.createPlayer(
         new Coordinate(0, 0),
-        new Stats("yolo", 1, 1, Collections.<Type>emptySet()));
+        new CharacterData("yolo", 1, 1, Collections.<Type>emptySet()));
     characterFactory.createPassiveEnemy(
         new Coordinate(0, 0),
-        new Stats("holo", 1, 1, Collections.<Type>emptySet()));
+        new CharacterData("holo", 1, 1, Collections.<Type>emptySet()));
   }
 }

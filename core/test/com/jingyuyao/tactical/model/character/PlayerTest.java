@@ -32,7 +32,7 @@ public class PlayerTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Stats stats;
+  private CharacterData characterData;
   @Mock
   private List<Item> items;
   @Mock
@@ -41,7 +41,8 @@ public class PlayerTest {
 
   @Before
   public void setUp() {
-    player = new Player(PLAYER_COORDINATE, markers, terrainGraphs, characters, eventBus, stats,
+    player = new Player(PLAYER_COORDINATE, markers, terrainGraphs, characters, eventBus,
+        characterData,
         items);
     assertThat(player.isActionable()).isTrue();
   }

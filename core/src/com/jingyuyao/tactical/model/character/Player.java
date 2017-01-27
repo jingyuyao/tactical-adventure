@@ -29,9 +29,9 @@ public class Player extends Character {
       TerrainGraphs terrainGraphs,
       Characters characters,
       @CharacterEventBus EventBus eventBus,
-      @Assisted Stats stats,
+      @Assisted CharacterData characterData,
       @InitialItems List<Item> items) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, stats, items);
+    super(coordinate, markers, terrainGraphs, characters, eventBus, characterData, items);
   }
 
   @Override

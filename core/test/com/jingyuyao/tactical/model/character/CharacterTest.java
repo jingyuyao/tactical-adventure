@@ -56,7 +56,7 @@ public class CharacterTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Stats stats;
+  private CharacterData characterData;
   @Mock
   private Weapon weapon1;
   @Mock
@@ -94,7 +94,8 @@ public class CharacterTest {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
         new CharacterImpl(
-            CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, stats, items);
+            CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, characterData,
+            items);
   }
 
   @Test
@@ -113,36 +114,36 @@ public class CharacterTest {
 
   @Test
   public void name() {
-    when(stats.getName()).thenReturn(NAME);
+    when(characterData.getName()).thenReturn(NAME);
 
     assertThat(character.getName()).isEqualTo(NAME);
   }
 
   @Test
   public void hp() {
-    when(stats.getHp()).thenReturn(1);
+    when(characterData.getHp()).thenReturn(1);
 
     assertThat(character.getHp()).isEqualTo(1);
   }
 
   @Test
   public void damage_by_not_dead() {
-    when(stats.isDead()).thenReturn(false);
+    when(characterData.isDead()).thenReturn(false);
 
     character.damageBy(5);
 
-    verify(stats).damageBy(5);
+    verify(characterData).damageBy(5);
     verifyZeroInteractions(characters);
     verifyZeroInteractions(eventBus);
   }
 
   @Test
   public void damage_by_dead() {
-    when(stats.isDead()).thenReturn(true);
+    when(characterData.isDead()).thenReturn(true);
 
     character.damageBy(5);
 
-    verify(stats).damageBy(5);
+    verify(characterData).damageBy(5);
     verify(characters).remove(character);
     verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(RemoveSelf.class);
@@ -152,7 +153,7 @@ public class CharacterTest {
   public void heal_by() {
     character.healBy(10);
 
-    verify(stats).healBy(10);
+    verify(characterData).healBy(10);
   }
 
   @Test
@@ -226,9 +227,9 @@ public class CharacterTest {
 
   @Test
   public void create_move_graph() {
-    when(stats.getMoveDistance()).thenReturn(10);
-    when(stats.canPassTerrainType(Type.NORMAL)).thenReturn(true);
-    when(stats.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
+    when(characterData.getMoveDistance()).thenReturn(10);
+    when(characterData.canPassTerrainType(Type.NORMAL)).thenReturn(true);
+    when(characterData.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
     when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
     when(terrain.getType()).thenReturn(Type.NORMAL);
@@ -260,9 +261,9 @@ public class CharacterTest {
         TerrainGraphs terrainGraphs,
         Characters characters,
         EventBus eventBus,
-        Stats stats,
+        CharacterData characterData,
         List<Item> items) {
-      super(coordinate, markers, terrainGraphs, characters, eventBus, stats, items);
+      super(coordinate, markers, terrainGraphs, characters, eventBus, characterData, items);
     }
 
     @Override

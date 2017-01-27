@@ -22,9 +22,9 @@ public abstract class Enemy extends Character {
       TerrainGraphs terrainGraphs,
       Characters characters,
       EventBus eventBus,
-      Stats stats,
+      CharacterData characterData,
       List<Item> items) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, stats, items);
+    super(coordinate, markers, terrainGraphs, characters, eventBus, characterData, items);
   }
 
   @Override

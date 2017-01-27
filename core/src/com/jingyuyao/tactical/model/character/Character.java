@@ -34,7 +34,7 @@ public abstract class Character extends MapObject {
   private final TerrainGraphs terrainGraphs;
   private final Characters characters;
   private final EventBus eventBus;
-  private final Stats stats;
+  private final CharacterData characterData;
   private final List<Item> items;
 
   Character(
@@ -43,13 +43,13 @@ public abstract class Character extends MapObject {
       TerrainGraphs terrainGraphs,
       Characters characters,
       EventBus eventBus,
-      Stats stats,
+      CharacterData characterData,
       List<Item> items) {
     super(coordinate, markers);
     this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
-    this.stats = stats;
+    this.characterData = characterData;
     this.items = items;
   }
 
@@ -63,23 +63,23 @@ public abstract class Character extends MapObject {
   }
 
   public String getName() {
-    return stats.getName();
+    return characterData.getName();
   }
 
   public int getHp() {
-    return stats.getHp();
+    return characterData.getHp();
   }
 
   public void damageBy(int delta) {
-    stats.damageBy(delta);
-    if (stats.isDead()) {
+    characterData.damageBy(delta);
+    if (characterData.isDead()) {
       characters.remove(this);
       eventBus.post(new RemoveSelf());
     }
   }
 
   public void healBy(int delta) {
-    stats.healBy(delta);
+    characterData.healBy(delta);
   }
 
   public void addItem(Item item) {
@@ -128,7 +128,7 @@ public abstract class Character extends MapObject {
 
   public Graph<Coordinate> createMoveGraph() {
     return terrainGraphs.distanceFrom(
-        getCoordinate(), stats.getMoveDistance(), createMovementPenaltyFunction());
+        getCoordinate(), characterData.getMoveDistance(), createMovementPenaltyFunction());
   }
 
   private Function<Terrain, Integer> createMovementPenaltyFunction() {
@@ -137,7 +137,7 @@ public abstract class Character extends MapObject {
       @Override
       public Integer apply(Terrain input) {
         if (blocked.contains(input.getCoordinate())
-            || !stats.canPassTerrainType(input.getType())) {
+            || !characterData.canPassTerrainType(input.getType())) {
           return TerrainGraphs.BLOCKED;
         }
         return input.getMovementPenalty();

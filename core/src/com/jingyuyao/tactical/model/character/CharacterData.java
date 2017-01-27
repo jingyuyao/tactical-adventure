@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Setters should be package private.
  */
-public class Stats {
+public class CharacterData {
 
   // TODO: remove me
   private static final int MAX_HP = 20;
@@ -22,7 +22,7 @@ public class Stats {
 
   private int moveDistance;
 
-  public Stats(String name, int hp, int moveDistance, Set<Type> passableTerrainTypes) {
+  public CharacterData(String name, int hp, int moveDistance, Set<Type> passableTerrainTypes) {
     this.name = name;
     Preconditions.checkArgument(hp > 0);
     this.hp = hp;

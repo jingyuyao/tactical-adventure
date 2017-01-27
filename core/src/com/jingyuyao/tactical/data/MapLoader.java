@@ -9,10 +9,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.CharacterData;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.character.Stats;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
 import com.jingyuyao.tactical.model.item.GrenadeData;
 import com.jingyuyao.tactical.model.item.ItemData;
@@ -105,9 +105,9 @@ public class MapLoader {
   // TODO: remove us
   private List<Player> createTestPlayers() {
     Player p1 = characterFactory.createPlayer(
-        new Coordinate(2, 2), new Stats("john", 20, 5, normalAndObstructed()));
+        new Coordinate(2, 2), new CharacterData("john", 20, 5, normalAndObstructed()));
     Player p2 = characterFactory.createPlayer(
-        new Coordinate(2, 3), new Stats("john", 20, 6, normalAndObstructed()));
+        new Coordinate(2, 3), new CharacterData("john", 20, 6, normalAndObstructed()));
     addItems1(p1);
     addItems2(p2);
     return ImmutableList.of(p1, p2);
@@ -115,10 +115,10 @@ public class MapLoader {
 
   private List<Enemy> createTestEnemies() {
     Enemy e1 = characterFactory.createPassiveEnemy(
-        new Coordinate(8, 3), new Stats("billy", 20, 3, normalAndObstructed()));
+        new Coordinate(8, 3), new CharacterData("billy", 20, 3, normalAndObstructed()));
     Enemy e2 = characterFactory.createPassiveEnemy(
         new Coordinate(9, 3),
-        new Stats("billy", 20, 2, normalAndObstructed()));
+        new CharacterData("billy", 20, 2, normalAndObstructed()));
     addItems1(e1);
     addItems2(e2);
     return ImmutableList.of(e1, e2);
