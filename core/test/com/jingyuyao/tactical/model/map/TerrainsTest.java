@@ -98,15 +98,6 @@ public class TerrainsTest {
   }
 
   @Test
-  public void get() {
-    when(terrainMap.get(COORDINATE1)).thenReturn(terrain1);
-    when(terrainMap.get(COORDINATE2)).thenReturn(terrain2);
-
-    assertThat(terrains.get(COORDINATE1)).isSameAs(terrain1);
-    assertThat(terrains.get(COORDINATE2)).isSameAs(terrain2);
-  }
-
-  @Test
   public void getAll() {
     when(terrainMap.get(COORDINATE1)).thenReturn(terrain1);
     when(terrainMap.get(COORDINATE2)).thenReturn(terrain2);

@@ -58,15 +58,11 @@ public class Terrains {
     return height;
   }
 
-  public Terrain get(Coordinate coordinate) {
-    return terrainMap.get(coordinate);
-  }
-
   public Iterable<Terrain> getAll(Iterable<Coordinate> coordinates) {
     return Iterables.transform(coordinates, new Function<Coordinate, Terrain>() {
       @Override
       public Terrain apply(Coordinate input) {
-        return get(input);
+        return terrainMap.get(input);
       }
     });
   }
@@ -93,7 +89,7 @@ public class Terrains {
         .transform(new Function<Coordinate, Terrain>() {
           @Override
           public Terrain apply(Coordinate input) {
-            return get(input);
+            return terrainMap.get(input);
           }
         });
   }
