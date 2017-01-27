@@ -18,7 +18,6 @@ import com.jingyuyao.tactical.model.event.AddTerrain;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -29,7 +28,7 @@ import javax.inject.Singleton;
  */
 // TODO: sync changes terrains' coordinates with grid when terrain can change locations
 @Singleton
-public class Terrains implements Iterable<Terrain> {
+public class Terrains {
 
   private final EventBus eventBus;
   // We rely on coordinates' hashing invariant
@@ -111,11 +110,6 @@ public class Terrains implements Iterable<Terrain> {
     List<Terrain> neighbors = Lists.newArrayList(neighborIterable);
     Collections.shuffle(neighbors);
     return ImmutableList.copyOf(neighbors);
-  }
-
-  @Override
-  public Iterator<Terrain> iterator() {
-    return terrainMap.values().iterator();
   }
 
   private void validateRectangular() throws IllegalStateException {

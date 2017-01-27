@@ -116,12 +116,4 @@ public class TerrainsTest {
     assertThat(resultIterator.next()).isSameAs(terrain1);
     assertThat(resultIterator.next()).isSameAs(terrain2);
   }
-
-  @Test
-  public void iterator() {
-    when(terrainMap.values()).thenReturn(terrainCollection);
-    when(terrainCollection.iterator()).thenReturn(terrainIterator);
-
-    assertThat(terrains.iterator()).isSameAs(terrainIterator);
-  }
 }
