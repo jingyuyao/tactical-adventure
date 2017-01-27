@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * An enemy character
  */
-public abstract class Enemy extends Character<CharacterData> {
+public abstract class Enemy extends AbstractCharacter<CharacterData> {
 
   Enemy(
       Coordinate coordinate,

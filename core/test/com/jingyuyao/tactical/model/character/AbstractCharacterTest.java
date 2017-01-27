@@ -40,7 +40,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CharacterTest {
+public class AbstractCharacterTest {
 
   private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
   private static final Coordinate DESTINATION = new Coordinate(50, 50);
@@ -252,7 +252,7 @@ public class CharacterTest {
     assertThat(function.apply(cannotPassTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
   }
 
-  private static class CharacterImpl extends Character {
+  private static class CharacterImpl extends AbstractCharacter<CharacterData> {
 
     CharacterImpl(
         Coordinate coordinate,

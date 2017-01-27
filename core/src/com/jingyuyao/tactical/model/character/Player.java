@@ -18,7 +18,7 @@ import javax.inject.Inject;
 /**
  * A player character
  */
-public class Player extends Character<PlayerData> {
+public class Player extends AbstractCharacter<PlayerData> {
 
   @Inject
   Player(
