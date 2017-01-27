@@ -5,10 +5,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.event.AddTerrain;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,9 @@ public class TerrainsTest {
   @Mock
   private Terrain terrain2;
   @Mock
-  private Collection<Terrain> terrainCollection;
+  private Terrain terrain3;
+  @Mock
+  private Terrain terrain4;
   @Mock
   private Iterator<Terrain> terrainIterator;
   @Mock
@@ -115,5 +117,39 @@ public class TerrainsTest {
     Iterator<Terrain> resultIterator = result.iterator();
     assertThat(resultIterator.next()).isSameAs(terrain1);
     assertThat(resultIterator.next()).isSameAs(terrain2);
+  }
+
+  @Test
+  public void contains() {
+    when(terrainMap.containsKey(COORDINATE1)).thenReturn(true);
+
+    assertThat(terrains.contains(COORDINATE1)).isTrue();
+  }
+
+  @Test
+  public void get_neighbors_some() {
+    when(terrainMap.containsKey(Directions.DOWN)).thenReturn(true);
+    when(terrainMap.containsKey(Directions.UP)).thenReturn(true);
+    when(terrainMap.get(Directions.DOWN)).thenReturn(terrain1);
+    when(terrainMap.get(Directions.UP)).thenReturn(terrain2);
+
+    assertThat(terrains.getNeighbors(COORDINATE1)).containsExactly(terrain1, terrain2);
+  }
+
+  @Test
+  public void get_neighbors_all() {
+    Map<Coordinate, Terrain> neighbors = ImmutableMap.of(
+        Directions.DOWN, terrain1,
+        Directions.LEFT, terrain2,
+        Directions.RIGHT, terrain3,
+        Directions.UP, terrain4
+    );
+    for (Coordinate direction : Directions.ALL) {
+      when(terrainMap.containsKey(direction)).thenReturn(true);
+      when(terrainMap.get(direction)).thenReturn(neighbors.get(direction));
+    }
+
+    assertThat(terrains.getNeighbors(COORDINATE1))
+        .containsExactly(terrain1, terrain2, terrain3, terrain4);
   }
 }

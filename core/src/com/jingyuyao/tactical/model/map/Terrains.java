@@ -8,17 +8,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.BindingAnnotation;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.AddTerrain;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -79,37 +75,27 @@ public class Terrains {
     return terrainMap.containsKey(coordinate);
   }
 
-  /**
-   * Returns the neighbors of {@code from}.
-   *
-   * @return Randomized list of neighbors
-   */
-  public ImmutableList<Terrain> getNeighbors(final Coordinate from) {
-    Iterable<Terrain> neighborIterable =
-        FluentIterable
-            .from(Directions.ALL)
-            .transform(new Function<Coordinate, Coordinate>() {
-              @Override
-              public Coordinate apply(Coordinate input) {
-                return from.offsetBy(input);
-              }
-            })
-            .filter(new Predicate<Coordinate>() {
-              @Override
-              public boolean apply(Coordinate input) {
-                return contains(input);
-              }
-            })
-            .transform(new Function<Coordinate, Terrain>() {
-              @Override
-              public Terrain apply(Coordinate input) {
-                return get(input);
-              }
-            });
-
-    List<Terrain> neighbors = Lists.newArrayList(neighborIterable);
-    Collections.shuffle(neighbors);
-    return ImmutableList.copyOf(neighbors);
+  public Iterable<Terrain> getNeighbors(final Coordinate from) {
+    return FluentIterable
+        .from(Directions.ALL)
+        .transform(new Function<Coordinate, Coordinate>() {
+          @Override
+          public Coordinate apply(Coordinate input) {
+            return from.offsetBy(input);
+          }
+        })
+        .filter(new Predicate<Coordinate>() {
+          @Override
+          public boolean apply(Coordinate input) {
+            return contains(input);
+          }
+        })
+        .transform(new Function<Coordinate, Terrain>() {
+          @Override
+          public Terrain apply(Coordinate input) {
+            return get(input);
+          }
+        });
   }
 
   private void validateRectangular() throws IllegalStateException {
