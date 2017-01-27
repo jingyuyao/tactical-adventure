@@ -2,12 +2,12 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 
-public class ItemData {
+class ItemData {
 
   private final String name;
   private int usageLeft;
 
-  public ItemData(String name, int usageLeft) {
+  ItemData(String name, int usageLeft) {
     Preconditions.checkArgument(usageLeft > 0);
     this.name = name;
     this.usageLeft = usageLeft;

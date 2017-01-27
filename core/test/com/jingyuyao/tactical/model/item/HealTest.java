@@ -15,6 +15,7 @@ public class HealTest {
 
   private static final String NAME = "pot";
   private static final int INITIAL_USAGE = 2;
+  private static final int AMOUNT = 11;
 
   @Mock
   private Character owner;
@@ -23,7 +24,7 @@ public class HealTest {
 
   @Before
   public void setUp() {
-    heal = new Heal(owner, new ItemData(NAME, INITIAL_USAGE));
+    heal = new Heal(owner, new HealData(NAME, INITIAL_USAGE, AMOUNT));
   }
 
   @Test
@@ -31,7 +32,7 @@ public class HealTest {
     heal.consume();
     heal.consume();
 
-    verify(owner, times(2)).healBy(Heal.AMOUNT);
+    verify(owner, times(2)).healBy(AMOUNT);
     verify(owner).removeItem(heal);
   }
 }

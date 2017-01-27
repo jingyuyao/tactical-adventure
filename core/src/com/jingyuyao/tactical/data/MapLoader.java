@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
 import com.jingyuyao.tactical.model.item.GrenadeData;
-import com.jingyuyao.tactical.model.item.ItemData;
+import com.jingyuyao.tactical.model.item.HealData;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrain;
@@ -141,7 +141,7 @@ public class MapLoader {
     owner.addItem(
         itemFactory
             .createDirectionalWeapon(owner, new DirectionalWeaponData("Melee10", 3, 10, 1)));
-    owner.addItem(itemFactory.createHeal(owner, new ItemData("pot", 3)));
+    owner.addItem(itemFactory.createHeal(owner, new HealData("pot", 3, 10)));
   }
 
   private void addItems2(Character owner) {

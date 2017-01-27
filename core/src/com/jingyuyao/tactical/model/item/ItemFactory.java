@@ -8,5 +8,5 @@ public interface ItemFactory {
 
   Grenade createGrenade(Character owner, GrenadeData grenadeStats);
 
-  Heal createHeal(Character owner, ItemData itemData);
+  Heal createHeal(Character owner, HealData healData);
 }

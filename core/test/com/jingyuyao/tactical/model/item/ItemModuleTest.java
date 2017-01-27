@@ -39,7 +39,7 @@ public class ItemModuleTest {
 
   @Test
   public void item_factory() {
-    itemFactory.createHeal(owner, new ItemData("pot", 5));
+    itemFactory.createHeal(owner, new HealData("pot", 5, 10));
     itemFactory.createDirectionalWeapon(owner, new DirectionalWeaponData("laser", 1, 100, 5));
     itemFactory.createGrenade(owner, new GrenadeData("boom", 1, 50, 2, 10));
   }
