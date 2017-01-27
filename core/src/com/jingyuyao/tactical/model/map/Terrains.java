@@ -58,6 +58,10 @@ public class Terrains {
     return height;
   }
 
+  public boolean contains(Coordinate coordinate) {
+    return terrainMap.containsKey(coordinate);
+  }
+
   public Iterable<Terrain> getAll(Iterable<Coordinate> coordinates) {
     return Iterables.transform(coordinates, new Function<Coordinate, Terrain>() {
       @Override
@@ -65,10 +69,6 @@ public class Terrains {
         return terrainMap.get(input);
       }
     });
-  }
-
-  public boolean contains(Coordinate coordinate) {
-    return terrainMap.containsKey(coordinate);
   }
 
   public Iterable<Terrain> getNeighbors(final Coordinate from) {
