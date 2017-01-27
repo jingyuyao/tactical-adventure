@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MovementFactory;
@@ -45,7 +44,7 @@ public class Waiting extends AbstractState {
 
     @Override
     public void run() {
-      for (Player player : Iterables.filter(characters, Player.class)) {
+      for (Player player : characters.getPlayers()) {
         player.setActionable(true);
       }
       goTo(getStateFactory().createRetaliating());

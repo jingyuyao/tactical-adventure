@@ -84,11 +84,4 @@ public class CharactersTest {
 
     assertThat(characters.coordinates()).containsExactly(COORDINATE1, COORDINATE2);
   }
-
-  @Test
-  public void iterator() {
-    when(characterSet.iterator()).thenReturn(characterIterator);
-
-    assertThat(characters.iterator()).isSameAs(characterIterator);
-  }
 }

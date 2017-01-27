@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -47,8 +46,8 @@ public class Retaliating extends AbstractState {
   private void retaliate() {
     // TODO: does order matter?
     ListenableFuture<Void> currentRetaliation = Futures.immediateFuture(null);
-    for (final Enemy enemy : Iterables.filter(characters, Enemy.class)) {
-      // Make enemies retialiate one at a time
+    for (final Enemy enemy : characters.getEnemies()) {
+      // Make enemies retaliate one at a time
       currentRetaliation =
           Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
             @Override

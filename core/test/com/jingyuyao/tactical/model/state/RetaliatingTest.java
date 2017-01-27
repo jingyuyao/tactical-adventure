@@ -4,10 +4,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -42,14 +41,14 @@ public class RetaliatingTest {
 
   private ListenableFuture<Void> retaliation;
   private ListenableFuture<Void> retaliation2;
-  private ImmutableList<Character> characterList;
+  private ImmutableSet<Enemy> enemyList;
   private Retaliating retaliating;
 
   @Before
   public void setUp() {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
-    characterList = ImmutableList.of(player, enemy, enemy2);
+    enemyList = ImmutableSet.of(enemy, enemy2);
     retaliating = new Retaliating(mapState, stateFactory, characters);
   }
 
@@ -69,7 +68,7 @@ public class RetaliatingTest {
 
   @Test
   public void enter() {
-    when(characters.iterator()).thenReturn(characterList.iterator());
+    when(characters.getEnemies()).thenReturn(enemyList);
     when(enemy.retaliate()).thenReturn(retaliation);
     when(enemy2.retaliate()).thenReturn(retaliation2);
     when(stateFactory.createWaiting()).thenReturn(waiting);

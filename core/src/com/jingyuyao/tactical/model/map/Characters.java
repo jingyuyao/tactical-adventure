@@ -19,7 +19,6 @@ import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Iterator;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,7 +27,7 @@ import javax.inject.Singleton;
  * A concrete singleton type that holds all the {@link Character} on the map.
  */
 @Singleton
-public class Characters implements Iterable<Character> {
+public class Characters {
 
   private final EventBus eventBus;
   private final Set<Character> characterSet;
@@ -64,6 +63,14 @@ public class Characters implements Iterable<Character> {
     return builder.build();
   }
 
+  public ImmutableSet<Player> getPlayers() {
+    return ImmutableSet.copyOf(Iterables.filter(characterSet, Player.class));
+  }
+
+  public ImmutableSet<Enemy> getEnemies() {
+    return ImmutableSet.copyOf(Iterables.filter(characterSet, Enemy.class));
+  }
+
   public Iterable<Character> getAll(final ImmutableSet<Coordinate> coordinates) {
     return Iterables.filter(characterSet, new Predicate<Character>() {
       @Override
@@ -71,11 +78,6 @@ public class Characters implements Iterable<Character> {
         return coordinates.contains(input.getCoordinate());
       }
     });
-  }
-
-  @Override
-  public Iterator<Character> iterator() {
-    return characterSet.iterator();
   }
 
   @BindingAnnotation
