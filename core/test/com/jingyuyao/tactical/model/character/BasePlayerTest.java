@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PlayerTest {
+public class BasePlayerTest {
 
   private static final Coordinate PLAYER_COORDINATE = new Coordinate(0, 0);
 
@@ -43,7 +43,8 @@ public class PlayerTest {
   @Before
   public void setUp() {
     player =
-        new Player(PLAYER_COORDINATE, markers, data, items, eventBus, terrainGraphs, characters);
+        new BasePlayer(PLAYER_COORDINATE, markers, data, items, eventBus, terrainGraphs,
+            characters);
   }
 
   @Test
