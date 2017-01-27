@@ -1,5 +1,10 @@
 package com.jingyuyao.tactical.view;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,13 +16,12 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
+import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
-import com.jingyuyao.tactical.view.ViewAnnotations.MapUiViewport;
-import com.jingyuyao.tactical.view.ViewAnnotations.MapViewStage;
-import com.jingyuyao.tactical.view.ViewAnnotations.MapViewViewport;
 import com.jingyuyao.tactical.view.actor.ActorModule;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {
@@ -79,5 +83,33 @@ public class ViewModule extends AbstractModule {
   @MapUiViewport
   Viewport provideMapUIViewport() {
     return new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapUiStage {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapUiViewport {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapViewStage {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface MapViewViewport {
+
   }
 }

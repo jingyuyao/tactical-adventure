@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
-import com.jingyuyao.tactical.view.ViewAnnotations.MapUiStage;
+import com.jingyuyao.tactical.view.ViewModule.MapUiStage;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
