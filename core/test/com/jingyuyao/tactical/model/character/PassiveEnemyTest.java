@@ -27,15 +27,15 @@ public class PassiveEnemyTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private TerrainGraphs terrainGraphs;
-  @Mock
-  private Characters characters;
+  private CharacterData characterData;
   @Mock
   private EventBus eventBus;
   @Mock
-  private CharacterData characterData;
-  @Mock
   private List<Item> items;
+  @Mock
+  private TerrainGraphs terrainGraphs;
+  @Mock
+  private Characters characters;
   @Mock
   private MovementFactory movementFactory;
   @Mock
@@ -47,7 +47,7 @@ public class PassiveEnemyTest {
   public void setUp() {
     enemy =
         new PassiveEnemy(
-            COORDINATE, markers, terrainGraphs, characters, eventBus, characterData, items,
+            COORDINATE, markers, characterData, items, eventBus, terrainGraphs, characters,
             movementFactory);
   }
 

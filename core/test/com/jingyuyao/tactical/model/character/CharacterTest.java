@@ -50,13 +50,13 @@ public class CharacterTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private TerrainGraphs terrainGraphs;
-  @Mock
-  private Characters characters;
+  private CharacterData characterData;
   @Mock
   private EventBus eventBus;
   @Mock
-  private CharacterData characterData;
+  private TerrainGraphs terrainGraphs;
+  @Mock
+  private Characters characters;
   @Mock
   private Weapon weapon1;
   @Mock
@@ -263,7 +263,7 @@ public class CharacterTest {
         EventBus eventBus,
         CharacterData characterData,
         List<Item> items) {
-      super(coordinate, markers, terrainGraphs, characters, eventBus, characterData, items);
+      super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
     }
 
     @Override

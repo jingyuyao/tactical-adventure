@@ -26,24 +26,24 @@ public class PlayerTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private TerrainGraphs terrainGraphs;
-  @Mock
-  private Characters characters;
-  @Mock
-  private EventBus eventBus;
-  @Mock
   private CharacterData characterData;
   @Mock
   private List<Item> items;
+  @Mock
+  private EventBus eventBus;
+  @Mock
+  private TerrainGraphs terrainGraphs;
+  @Mock
+  private Characters characters;
   @Mock
   private MapState mapState;
   private Player player;
 
   @Before
   public void setUp() {
-    player = new Player(PLAYER_COORDINATE, markers, terrainGraphs, characters, eventBus,
-        characterData,
-        items);
+    player =
+        new Player(
+            PLAYER_COORDINATE, markers, characterData, items, eventBus, terrainGraphs, characters);
     assertThat(player.isActionable()).isTrue();
   }
 

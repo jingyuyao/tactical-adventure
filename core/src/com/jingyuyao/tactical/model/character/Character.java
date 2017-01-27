@@ -31,20 +31,20 @@ import java.util.List;
 
 public abstract class Character extends MapObject {
 
+  private final CharacterData characterData;
+  private final List<Item> items;
   private final TerrainGraphs terrainGraphs;
   private final Characters characters;
   private final EventBus eventBus;
-  private final CharacterData characterData;
-  private final List<Item> items;
 
   Character(
       Coordinate coordinate,
       Multiset<Marker> markers,
-      TerrainGraphs terrainGraphs,
-      Characters characters,
-      EventBus eventBus,
       CharacterData characterData,
-      List<Item> items) {
+      List<Item> items,
+      EventBus eventBus,
+      TerrainGraphs terrainGraphs,
+      Characters characters) {
     super(coordinate, markers);
     this.terrainGraphs = terrainGraphs;
     this.characters = characters;

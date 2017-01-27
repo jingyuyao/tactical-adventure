@@ -19,12 +19,12 @@ public abstract class Enemy extends Character {
   Enemy(
       Coordinate coordinate,
       Multiset<Marker> markers,
-      TerrainGraphs terrainGraphs,
-      Characters characters,
-      EventBus eventBus,
       CharacterData characterData,
-      List<Item> items) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, characterData, items);
+      List<Item> items,
+      EventBus eventBus,
+      TerrainGraphs terrainGraphs,
+      Characters characters) {
+    super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
   }
 
   @Override

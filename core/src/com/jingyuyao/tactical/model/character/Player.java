@@ -26,12 +26,12 @@ public class Player extends Character {
   Player(
       @Assisted Coordinate coordinate,
       @InitialMarkers Multiset<Marker> markers,
-      TerrainGraphs terrainGraphs,
-      Characters characters,
-      @CharacterEventBus EventBus eventBus,
       @Assisted CharacterData characterData,
-      @InitialItems List<Item> items) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, characterData, items);
+      @InitialItems List<Item> items,
+      @CharacterEventBus EventBus eventBus,
+      TerrainGraphs terrainGraphs,
+      Characters characters) {
+    super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
   }
 
   @Override
