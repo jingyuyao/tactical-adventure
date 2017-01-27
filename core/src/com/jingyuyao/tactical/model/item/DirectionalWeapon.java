@@ -45,7 +45,7 @@ public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponData> {
   private Optional<Target> createTarget(Coordinate from, Coordinate direction) {
     Coordinate current = from.offsetBy(direction);
     ImmutableSet<Coordinate> selectCoordinates = ImmutableSet.of(current);
-    int leftOverDistance = getItemStats().getDistance();
+    int leftOverDistance = getData().getDistance();
 
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     while (leftOverDistance > 0 && terrains.contains(current)) {

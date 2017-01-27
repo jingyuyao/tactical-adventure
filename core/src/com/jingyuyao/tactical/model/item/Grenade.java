@@ -31,12 +31,12 @@ public class Grenade extends AbstractWeapon<GrenadeData> {
   @Override
   public ImmutableList<Target> createTargets(Coordinate from) {
     Graph<Coordinate> selectCoordinates =
-        terrainGraphs.distanceFrom(from, getItemStats().getDistance(), new ConstWeight());
+        terrainGraphs.distanceFrom(from, getData().getDistance(), new ConstWeight());
 
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate select : selectCoordinates.nodes()) {
       Graph<Coordinate> targetCoordinates =
-          terrainGraphs.distanceFrom(select, getItemStats().getSize(), new ConstWeight());
+          terrainGraphs.distanceFrom(select, getData().getSize(), new ConstWeight());
       builder.add(targetFactory.create(ImmutableSet.of(select), targetCoordinates.nodes()));
     }
     return builder.build();

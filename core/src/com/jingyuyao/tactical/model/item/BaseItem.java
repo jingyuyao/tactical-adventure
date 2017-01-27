@@ -8,11 +8,11 @@ import com.jingyuyao.tactical.model.character.Character;
 class BaseItem<T extends ItemData> implements Item {
 
   private final Character owner;
-  private final T itemStats;
+  private final T data;
 
-  BaseItem(Character owner, T itemStats) {
+  BaseItem(Character owner, T data) {
     this.owner = owner;
-    this.itemStats = itemStats;
+    this.data = data;
   }
 
   @Override
@@ -22,25 +22,25 @@ class BaseItem<T extends ItemData> implements Item {
 
   @Override
   public String getName() {
-    return itemStats.getName();
+    return data.getName();
   }
 
   @Override
   public int getUsageLeft() {
-    return itemStats.getUsageLeft();
+    return data.getUsageLeft();
   }
 
-  T getItemStats() {
-    return itemStats;
+  T getData() {
+    return data;
   }
 
   /**
    * Call to use this item once.
    */
   void useOnce() {
-    itemStats.decrementUsageLeft();
+    data.decrementUsageLeft();
 
-    if (itemStats.getUsageLeft() == 0) {
+    if (data.getUsageLeft() == 0) {
       owner.removeItem(this);
     }
   }

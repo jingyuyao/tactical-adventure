@@ -21,7 +21,7 @@ abstract class AbstractWeapon<T extends WeaponData> extends BaseItem<T> implemen
       @Override
       public void onSuccess(Void result) {
         for (Character opponent : target.getTargetCharacters()) {
-          opponent.damageBy(getItemStats().getAttackPower());
+          opponent.damageBy(getData().getAttackPower());
         }
         useOnce();
       }
