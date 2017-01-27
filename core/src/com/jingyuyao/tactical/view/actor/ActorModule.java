@@ -1,21 +1,24 @@
 package com.jingyuyao.tactical.view.actor;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
+import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.ActorWorldSize;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.BackingActorMap;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.EnemySprite;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.InitialMarkerSprites;
-import com.jingyuyao.tactical.view.actor.ActorAnnotations.PlayerSprite;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Singleton;
@@ -81,5 +84,42 @@ public class ActorModule extends AbstractModule {
   @BackingActorMap
   Map<MapObject, MapActor> provideBackingActorMap() {
     return new HashMap<MapObject, MapActor>();
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  public @interface ActorWorldSize {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialMarkerSprites {
+
+  }
+
+  // TODO: temp, remove me later
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface PlayerSprite {
+
+  }
+
+  // TODO: temp, remove me later
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface EnemySprite {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingActorMap {
+
   }
 }
