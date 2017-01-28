@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import java.util.Locale;
 
 abstract class AbstractPlayerState extends AbstractState {
 
@@ -33,7 +32,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public String getName() {
-      return String.format(Locale.US, "%s (%d)", weapon.getName(), weapon.getUsageLeft());
+      return weapon.toString();
     }
 
     @Override
@@ -55,7 +54,7 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public String getName() {
-      return String.format(Locale.US, "%s (%d)", consumable.getName(), consumable.getUsageLeft());
+      return consumable.toString();
     }
 
     @Override
