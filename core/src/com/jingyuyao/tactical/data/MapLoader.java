@@ -15,16 +15,8 @@ import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.item.DirectionalWeapon;
-import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
-import com.jingyuyao.tactical.model.item.Grenade;
-import com.jingyuyao.tactical.model.item.GrenadeData;
-import com.jingyuyao.tactical.model.item.Heal;
-import com.jingyuyao.tactical.model.item.HealData;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.state.Waiting;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -34,35 +26,34 @@ import javax.inject.Singleton;
 public class MapLoader {
 
   private static final String TERRAIN_LAYER = "terrain";
-  private static final String TERRAIN_TYPE_KEY = "type";
 
   private final Model model;
   private final Provider<Waiting> waitingProvider;
   private final CharacterFactory characterFactory;
-  private final ItemFactory itemFactory;
   private final Gson gson;
   private final AssetManager assetManager;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final TerrainLoader terrainLoader;
+  private final ItemLoader itemLoader;
 
   @Inject
   MapLoader(
       Model model,
       Provider<Waiting> waitingProvider,
       CharacterFactory characterFactory,
-      ItemFactory itemFactory,
       Gson gson,
       AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer,
-      TerrainLoader terrainLoader) {
+      TerrainLoader terrainLoader,
+      ItemLoader itemLoader) {
     this.model = model;
     this.waitingProvider = waitingProvider;
     this.characterFactory = characterFactory;
-    this.itemFactory = itemFactory;
     this.gson = gson;
     this.assetManager = assetManager;
     this.mapRenderer = mapRenderer;
     this.terrainLoader = terrainLoader;
+    this.itemLoader = itemLoader;
   }
 
   public void loadMap(String mapName) {
@@ -109,7 +100,7 @@ public class MapLoader {
 
   private Player createPlayer(PlayerSave playerSave) {
     String className = playerSave.getClassName();
-    List<Item> items = createItems(playerSave.getItems());
+    List<Item> items = itemLoader.createItems(playerSave.getItems());
     Player player;
     if (BasePlayer.class.getSimpleName().equals(className)) {
       player = characterFactory.createBasePlayer(playerSave.getData(), items);
@@ -121,7 +112,7 @@ public class MapLoader {
 
   private Enemy createEnemy(EnemySave enemySave) {
     String className = enemySave.getClassName();
-    List<Item> items = createItems(enemySave.getItems());
+    List<Item> items = itemLoader.createItems(enemySave.getItems());
     Enemy enemy;
     if (PassiveEnemy.class.getSimpleName().equals(className)) {
       enemy = characterFactory.createPassiveEnemy(enemySave.getData(), items);
@@ -129,28 +120,5 @@ public class MapLoader {
       throw new IllegalArgumentException("Unknown enemy class name: " + className);
     }
     return enemy;
-  }
-
-  private List<Item> createItems(Iterable<ItemSave> itemSaves) {
-    List<Item> items = new ArrayList<Item>();
-    if (itemSaves != null) {
-      for (ItemSave itemSave : itemSaves) {
-        items.add(createItem(itemSave));
-      }
-    }
-    return items;
-  }
-
-  private Item createItem(ItemSave itemSave) {
-    String className = itemSave.getClassName();
-    if (DirectionalWeapon.class.getSimpleName().equals(className)) {
-      return itemFactory.createDirectionalWeapon(
-          itemSave.getData(gson, DirectionalWeaponData.class));
-    } else if (Grenade.class.getSimpleName().equals(className)) {
-      return itemFactory.createGrenade(itemSave.getData(gson, GrenadeData.class));
-    } else if (Heal.class.getSimpleName().equals(className)) {
-      return itemFactory.createHeal(itemSave.getData(gson, HealData.class));
-    }
-    throw new IllegalArgumentException("Unknown item class name: " + className);
   }
 }
