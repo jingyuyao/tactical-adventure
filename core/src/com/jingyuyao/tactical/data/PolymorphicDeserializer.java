@@ -8,6 +8,9 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import java.lang.reflect.Type;
 
+/**
+ * Adapted from http://stackoverflow.com/a/8683689
+ */
 public class PolymorphicDeserializer<T> implements JsonDeserializer<T> {
 
   private static final String CLASS_NAME = "className";
