@@ -82,7 +82,7 @@ public class ReviewingAttackTest {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
-    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
+    when(attackingPlayer.attacks(weapon, target)).thenReturn(Futures.<Void>immediateFuture(null));
 
     reviewingAttack.select(attackingPlayer);
 
@@ -105,7 +105,7 @@ public class ReviewingAttackTest {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
-    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
+    when(attackingPlayer.attacks(weapon, target)).thenReturn(Futures.<Void>immediateFuture(null));
 
     reviewingAttack.select(enemy);
 
@@ -128,7 +128,7 @@ public class ReviewingAttackTest {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
-    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
+    when(attackingPlayer.attacks(weapon, target)).thenReturn(Futures.<Void>immediateFuture(null));
 
     reviewingAttack.select(terrain);
 
@@ -139,7 +139,7 @@ public class ReviewingAttackTest {
   public void actions_attack() {
     when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(weapon.attack(target)).thenReturn(Futures.<Void>immediateFuture(null));
+    when(attackingPlayer.attacks(weapon, target)).thenReturn(Futures.<Void>immediateFuture(null));
     ImmutableList<Action> actions = actionsSetUp();
 
     Action attack = actions.get(0);
@@ -164,7 +164,7 @@ public class ReviewingAttackTest {
   private void verify_attacked() {
     InOrder inOrder = Mockito.inOrder(mapState, weapon, attackingPlayer);
     inOrder.verify(mapState).goTo(ignoreInput);
-    inOrder.verify(weapon).attack(target);
+    inOrder.verify(attackingPlayer).attacks(weapon, target);
     inOrder.verify(attackingPlayer).setActionable(false);
     inOrder.verify(mapState).branchTo(waiting);
     verifyNoMoreInteractions(mapState);

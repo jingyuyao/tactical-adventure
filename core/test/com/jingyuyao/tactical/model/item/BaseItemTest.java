@@ -49,20 +49,8 @@ public class BaseItemTest {
 
   @Test
   public void use_once() {
-    when(itemData.getUsageLeft()).thenReturn(1);
-
     item.useOnce();
 
-    verify(itemData).decrementUsageLeft();
-  }
-
-  @Test
-  public void use_once_broken() {
-    when(itemData.getUsageLeft()).thenReturn(0);
-
-    item.useOnce();
-
-    verify(itemData).decrementUsageLeft();
-    verify(owner).removeItem(item);
+    verify(itemData).useOnce();
   }
 }

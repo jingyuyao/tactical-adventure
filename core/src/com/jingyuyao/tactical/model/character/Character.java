@@ -30,11 +30,13 @@ public interface Character extends MapObject {
 
   Iterable<Consumable> getConsumables();
 
+  ListenableFuture<Void> attacks(Weapon weapon, Target target);
+
+  void consumes(Consumable consumable);
+
   ListenableFuture<Void> moveAlong(Path path);
 
   void instantMoveTo(Coordinate coordinate);
-
-  ListenableFuture<Void> attacks(Target target);
 
   Graph<Coordinate> createMoveGraph();
 }

@@ -12,8 +12,7 @@ public class Heal extends BaseItem<HealData> implements Consumable {
   }
 
   @Override
-  public void consume() {
-    useOnce();
-    getOwner().healBy(getData().getAmount());
+  public void apply(Character character) {
+    character.healBy(getData().getAmount());
   }
 }

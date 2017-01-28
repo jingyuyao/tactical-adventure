@@ -26,7 +26,7 @@ public class ItemData {
     return usageLeft;
   }
 
-  void decrementUsageLeft() {
+  void useOnce() {
     Preconditions.checkState(usageLeft > 0);
     usageLeft--;
   }

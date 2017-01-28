@@ -8,6 +8,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.graph.Graph;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.Attack;
@@ -86,13 +88,15 @@ abstract class AbstractCharacter<T extends CharacterData>
   }
 
   @Override
-  public Iterable<Item> getItems() {
-    return items;
+  public void quickAccess(Item item) {
+    int itemIndex = items.indexOf(item);
+    Preconditions.checkArgument(itemIndex != -1);
+    Collections.swap(items, 0, itemIndex);
   }
 
   @Override
-  public Iterable<Consumable> getConsumables() {
-    return Iterables.filter(items, Consumable.class);
+  public Iterable<Item> getItems() {
+    return items;
   }
 
   @Override
@@ -101,10 +105,34 @@ abstract class AbstractCharacter<T extends CharacterData>
   }
 
   @Override
-  public void quickAccess(Item item) {
-    int itemIndex = items.indexOf(item);
-    Preconditions.checkArgument(itemIndex != -1);
-    Collections.swap(items, 0, itemIndex);
+  public Iterable<Consumable> getConsumables() {
+    return Iterables.filter(items, Consumable.class);
+  }
+
+  @Override
+  public ListenableFuture<Void> attacks(final Weapon weapon, final Target target) {
+    SettableFuture<Void> future = SettableFuture.create();
+    eventBus.post(new Attack(target, future));
+    Futures.addCallback(future, new FutureCallback<Void>() {
+      @Override
+      public void onSuccess(Void result) {
+        weapon.damages(target);
+        useThenRemoveIfBroken(weapon);
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+
+      }
+    });
+    return future;
+  }
+
+  @Override
+  public void consumes(Consumable consumable) {
+    // TODO: we'll probably need to return a future here when we have animation for consumables
+    consumable.apply(this);
+    useThenRemoveIfBroken(consumable);
   }
 
   @Override
@@ -119,13 +147,6 @@ abstract class AbstractCharacter<T extends CharacterData>
   public void instantMoveTo(Coordinate newCoordinate) {
     setCoordinate(newCoordinate);
     eventBus.post(new InstantMove(this, newCoordinate));
-  }
-
-  @Override
-  public ListenableFuture<Void> attacks(Target target) {
-    SettableFuture<Void> future = SettableFuture.create();
-    eventBus.post(new Attack(target, future));
-    return future;
   }
 
   @Override
@@ -146,6 +167,13 @@ abstract class AbstractCharacter<T extends CharacterData>
         return input.getMovementPenalty();
       }
     };
+  }
+
+  private void useThenRemoveIfBroken(Item item) {
+    item.useOnce();
+    if (item.getUsageLeft() == 0) {
+      items.remove(item);
+    }
   }
 
   @Override

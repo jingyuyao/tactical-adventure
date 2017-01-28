@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.jingyuyao.tactical.model.character.Character;
@@ -18,21 +17,19 @@ public class HealTest {
   private static final int AMOUNT = 11;
 
   @Mock
-  private Character owner;
+  private Character character;
 
   private Heal heal;
 
   @Before
   public void setUp() {
-    heal = new Heal(owner, new HealData(NAME, INITIAL_USAGE, AMOUNT));
+    heal = new Heal(character, new HealData(NAME, INITIAL_USAGE, AMOUNT));
   }
 
   @Test
   public void consume() {
-    heal.consume();
-    heal.consume();
+    heal.apply(character);
 
-    verify(owner, times(2)).healBy(AMOUNT);
-    verify(owner).removeItem(heal);
+    verify(character).healBy(AMOUNT);
   }
 }

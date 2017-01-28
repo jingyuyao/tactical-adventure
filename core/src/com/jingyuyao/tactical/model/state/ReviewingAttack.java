@@ -69,7 +69,7 @@ class ReviewingAttack extends AbstractPlayerState {
 
   private void attack() {
     goTo(getStateFactory().createIgnoreInput());
-    Futures.addCallback(weapon.attack(target), new FutureCallback<Void>() {
+    Futures.addCallback(getPlayer().attacks(weapon, target), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
         finish();

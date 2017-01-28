@@ -64,7 +64,7 @@ public class PassiveEnemy extends AbstractEnemy {
             return Futures.transformAsync(moveAlong(path), new AsyncFunction<Void, Void>() {
               @Override
               public ListenableFuture<Void> apply(Void input) {
-                return weapon.attack(target);
+                return attacks(weapon, target);
               }
             });
           }

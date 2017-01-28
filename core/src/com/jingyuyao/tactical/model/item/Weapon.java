@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Coordinate;
 
@@ -11,7 +10,7 @@ import com.jingyuyao.tactical.model.map.Coordinate;
  */
 public interface Weapon extends Item {
 
-  ListenableFuture<Void> attack(Target target);
+  void damages(Target target);
 
   ImmutableList<Target> createTargets(Coordinate from);
 }

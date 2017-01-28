@@ -153,6 +153,13 @@ public class AbstractCharacterTest {
   }
 
   @Test
+  public void quick_access() {
+    character.quickAccess(weapon2);
+
+    assertThat(items).containsExactly(weapon2, consumable, weapon1).inOrder();
+  }
+
+  @Test
   public void get_items() {
     assertThat(character.getItems()).containsExactly(weapon1, consumable, weapon2).inOrder();
     assertThat(character.getWeapons()).containsExactly(weapon1, weapon2).inOrder();
@@ -160,10 +167,65 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void quick_access() {
-    character.quickAccess(weapon2);
+  public void attacks() {
+    when(weapon1.getUsageLeft()).thenReturn(1);
 
-    assertThat(items).containsExactly(weapon2, consumable, weapon1).inOrder();
+    ListenableFuture<Void> future = character.attacks(weapon1, target);
+
+    verify(eventBus).post(argumentCaptor.capture());
+    Attack attack = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Attack.class);
+    assertThat(attack.getObject()).isSameAs(target);
+    assertThat(future.isDone()).isFalse();
+    verifyZeroInteractions(weapon1);
+    assertThat(items).contains(weapon1);
+
+    attack.done();
+    verify(weapon1).damages(target);
+    verify(weapon1).useOnce();
+    assertThat(future.isDone()).isTrue();
+    assertThat(items).contains(weapon1);
+  }
+
+  @Test
+  public void attacks_weapon_break() {
+    when(weapon1.getUsageLeft()).thenReturn(0);
+
+    ListenableFuture<Void> future = character.attacks(weapon1, target);
+
+    verify(eventBus).post(argumentCaptor.capture());
+    Attack attack = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Attack.class);
+    assertThat(attack.getObject()).isSameAs(target);
+    assertThat(future.isDone()).isFalse();
+    verifyZeroInteractions(weapon1);
+    assertThat(items).contains(weapon1);
+
+    attack.done();
+    verify(weapon1).damages(target);
+    verify(weapon1).useOnce();
+    assertThat(future.isDone()).isTrue();
+    assertThat(items).doesNotContain(weapon1);
+  }
+
+  @Test
+  public void consumes() {
+    when(consumable.getUsageLeft()).thenReturn(1);
+
+    character.consumes(consumable);
+
+    verify(consumable).apply(character);
+    verify(consumable).useOnce();
+    assertThat(items).contains(consumable);
+  }
+
+  @Test
+  public void consumes_break() {
+    when(consumable.getUsageLeft()).thenReturn(0);
+
+    character.consumes(consumable);
+
+    verify(consumable).apply(character);
+    verify(consumable).useOnce();
+    assertThat(items).doesNotContain(consumable);
   }
 
   @Test
@@ -192,19 +254,6 @@ public class AbstractCharacterTest {
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), InstantMove.class);
     assertThat(instantMove.getObject()).isSameAs(character);
     assertThat(instantMove.getDestination()).isEqualTo(DESTINATION);
-  }
-
-  @Test
-  public void attacks() {
-    ListenableFuture<Void> future = character.attacks(target);
-
-    verify(eventBus).post(argumentCaptor.capture());
-    Attack attack = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Attack.class);
-    assertThat(attack.getObject()).isSameAs(target);
-    assertThat(future.isDone()).isFalse();
-
-    attack.done();
-    assertThat(future.isDone()).isTrue();
   }
 
   @Test

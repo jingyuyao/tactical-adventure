@@ -30,18 +30,12 @@ class BaseItem<T extends ItemData> implements Item {
     return data.getUsageLeft();
   }
 
-  T getData() {
-    return data;
+  @Override
+  public void useOnce() {
+    data.useOnce();
   }
 
-  /**
-   * Call to use this item once.
-   */
-  void useOnce() {
-    data.decrementUsageLeft();
-
-    if (data.getUsageLeft() == 0) {
-      owner.removeItem(this);
-    }
+  T getData() {
+    return data;
   }
 }
