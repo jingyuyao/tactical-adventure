@@ -4,12 +4,14 @@ import com.google.common.collect.Multiset;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,8 +47,10 @@ public class CharacterModuleTest {
   @Test
   public void create_characters() {
     characterFactory.createBasePlayer(
-        new PlayerData(new Coordinate(0, 0), "yolo", 1, 1, 1, true));
+        new PlayerData(new Coordinate(0, 0), "yolo", 1, 1, 1, true),
+        Collections.<Item>emptyList());
     characterFactory.createPassiveEnemy(
-        new CharacterData(new Coordinate(0, 0), "holo", 1, 1, 1));
+        new CharacterData(new Coordinate(0, 0), "holo", 1, 1, 1),
+        Collections.<Item>emptyList());
   }
 }

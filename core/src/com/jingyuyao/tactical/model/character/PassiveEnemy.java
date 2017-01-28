@@ -9,7 +9,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
-import com.jingyuyao.tactical.model.character.CharacterModule.InitialItems;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -32,7 +31,7 @@ public class PassiveEnemy extends AbstractEnemy {
   PassiveEnemy(
       @Assisted CharacterData data,
       @InitialMarkers Multiset<Marker> markers,
-      @InitialItems List<Item> items,
+      @Assisted List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters,

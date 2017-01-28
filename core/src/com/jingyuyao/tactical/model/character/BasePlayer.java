@@ -4,7 +4,6 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
-import com.jingyuyao.tactical.model.character.CharacterModule.InitialItems;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
@@ -20,7 +19,7 @@ public class BasePlayer extends AbstractCharacter<PlayerData> implements Player 
   BasePlayer(
       @Assisted PlayerData data,
       @InitialMarkers Multiset<Marker> markers,
-      @InitialItems List<Item> items,
+      @Assisted List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters) {

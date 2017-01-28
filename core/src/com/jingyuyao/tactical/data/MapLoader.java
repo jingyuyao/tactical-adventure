@@ -12,7 +12,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.BasePlayer;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
@@ -115,34 +114,36 @@ public class MapLoader {
 
   private Player createPlayer(PlayerSave playerSave) {
     String className = playerSave.getClassName();
+    List<Item> items = createItems(playerSave.getItems());
     Player player;
     if (BasePlayer.class.getSimpleName().equals(className)) {
-      player = characterFactory.createBasePlayer(playerSave.getData());
+      player = characterFactory.createBasePlayer(playerSave.getData(), items);
     } else {
       throw new IllegalArgumentException("Unknown player class name: " + className);
     }
-    addItems(player, playerSave.getItems());
     return player;
   }
 
   private Enemy createEnemy(EnemySave enemySave) {
     String className = enemySave.getClassName();
+    List<Item> items = createItems(enemySave.getItems());
     Enemy enemy;
     if (PassiveEnemy.class.getSimpleName().equals(className)) {
-      enemy = characterFactory.createPassiveEnemy(enemySave.getData());
+      enemy = characterFactory.createPassiveEnemy(enemySave.getData(), items);
     } else {
       throw new IllegalArgumentException("Unknown enemy class name: " + className);
     }
-    addItems(enemy, enemySave.getItems());
     return enemy;
   }
 
-  private void addItems(Character owner, Iterable<ItemSave> items) {
-    if (items != null) {
-      for (ItemSave itemSave : items) {
-        owner.addItem(createItem(itemSave));
+  private List<Item> createItems(Iterable<ItemSave> itemSaves) {
+    List<Item> items = new ArrayList<Item>();
+    if (itemSaves != null) {
+      for (ItemSave itemSave : itemSaves) {
+        items.add(createItem(itemSave));
       }
     }
+    return items;
   }
 
   private Item createItem(ItemSave itemSave) {
