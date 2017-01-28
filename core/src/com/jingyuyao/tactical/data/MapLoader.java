@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -39,6 +41,7 @@ public class MapLoader {
   private final CharacterFactory characterFactory;
   private final TerrainFactory terrainFactory;
   private final ItemFactory itemFactory;
+  private final AssetManager assetManager;
   private final OrthogonalTiledMapRenderer mapRenderer;
 
   @Inject
@@ -48,16 +51,22 @@ public class MapLoader {
       CharacterFactory characterFactory,
       TerrainFactory terrainFactory,
       ItemFactory itemFactory,
+      AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer) {
     this.model = model;
     this.waitingProvider = waitingProvider;
     this.characterFactory = characterFactory;
     this.terrainFactory = terrainFactory;
     this.itemFactory = itemFactory;
+    this.assetManager = assetManager;
     this.mapRenderer = mapRenderer;
   }
 
-  public void loadMap(TiledMap tiledMap) {
+  public void loadMap(String mapName) {
+    assetManager.load(mapName + ".tmx", TiledMap.class);
+    assetManager.finishLoading();
+    TiledMap tiledMap = assetManager.get(mapName + ".tmx", TiledMap.class);
+
     TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
     Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
 
@@ -65,6 +74,8 @@ public class MapLoader {
     int width = terrainLayer.getWidth();
     Preconditions.checkArgument(height > 0, "MapView height must be > 0");
     Preconditions.checkArgument(width > 0, "MapView width must be > 0");
+
+    FileHandle mapData = Gdx.files.internal(mapName + ".json");
 
     model.newMap(
         width,

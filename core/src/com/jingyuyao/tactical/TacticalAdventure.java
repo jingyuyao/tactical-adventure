@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -71,8 +70,7 @@ public class TacticalAdventure extends Game {
   }
 
   public void setLevel(String mapName) {
-    TiledMap tiledMap = assetManager.get(mapName, TiledMap.class);
-    mapLoader.loadMap(tiledMap);
+    mapLoader.loadMap(mapName);
     setScreen(mapScreen);
     mapController.receiveInput();
   }
