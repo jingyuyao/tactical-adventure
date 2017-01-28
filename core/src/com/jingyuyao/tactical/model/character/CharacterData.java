@@ -7,14 +7,18 @@ import com.google.common.base.Preconditions;
  */
 public class CharacterData {
 
-  private final String name;
+  private String name;
   private int maxHp;
   /**
    * 0 <= hp <= maxHp
    */
   private int hp;
-
   private int moveDistance;
+
+  // No args constructor is needed for serialization
+  CharacterData() {
+
+  }
 
   public CharacterData(
       String name,

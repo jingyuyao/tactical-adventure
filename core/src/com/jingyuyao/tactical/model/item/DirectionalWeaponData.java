@@ -2,7 +2,10 @@ package com.jingyuyao.tactical.model.item;
 
 public class DirectionalWeaponData extends WeaponData {
 
-  private final int distance;
+  private int distance;
+
+  DirectionalWeaponData() {
+  }
 
   public DirectionalWeaponData(String name, int usageLeft, int attackPower, int distance) {
     super(name, usageLeft, attackPower);

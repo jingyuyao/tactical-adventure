@@ -4,6 +4,9 @@ public class PlayerData extends CharacterData {
 
   private boolean actionable;
 
+  PlayerData() {
+  }
+
   public PlayerData(
       String name,
       int maxHp,

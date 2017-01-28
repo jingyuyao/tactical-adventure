@@ -4,8 +4,13 @@ import com.google.common.base.Preconditions;
 
 class ItemData {
 
-  private final String name;
+  private String name;
   private int usageLeft;
+
+  // No args constructor is needed for serialization
+  ItemData() {
+
+  }
 
   ItemData(String name, int usageLeft) {
     Preconditions.checkArgument(usageLeft > 0);

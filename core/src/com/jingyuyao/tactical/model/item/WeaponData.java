@@ -1,10 +1,13 @@
 package com.jingyuyao.tactical.model.item;
 
-public class WeaponData extends ItemData {
+class WeaponData extends ItemData {
 
-  private final int attackPower;
+  private int attackPower;
 
-  public WeaponData(String name, int usageLeft, int attackPower) {
+  WeaponData() {
+  }
+
+  WeaponData(String name, int usageLeft, int attackPower) {
     super(name, usageLeft);
     this.attackPower = attackPower;
   }
