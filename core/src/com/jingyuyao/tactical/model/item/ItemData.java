@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 
-class ItemData {
+public class ItemData {
 
   private String name;
   private int usageLeft;

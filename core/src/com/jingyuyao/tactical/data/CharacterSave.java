@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import java.util.List;
 
-class CharacterSave {
+class CharacterSave extends BaseSave {
 
   private List<ItemSave> items;
 

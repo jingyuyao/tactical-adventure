@@ -1,20 +1,14 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.jingyuyao.tactical.model.item.ItemData;
 
-class ItemSave {
+class ItemSave extends BaseSave {
 
-  /**
-   * The canonical class name.
-   */
-  private String className;
   private JsonObject data;
 
-  String getClassName() {
-    return className;
-  }
-
-  JsonObject getData() {
-    return data;
+  <T extends ItemData> T getData(Gson gson, Class<T> type) {
+    return gson.fromJson(data, type);
   }
 }
