@@ -4,9 +4,9 @@ import com.jingyuyao.tactical.model.character.PlayerData;
 
 class PlayerSave extends CharacterSave {
 
-  private PlayerData player;
+  private PlayerData data;
 
-  PlayerData getPlayer() {
-    return player;
+  PlayerData getData() {
+    return data;
   }
 }

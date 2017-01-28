@@ -4,9 +4,14 @@ import com.jingyuyao.tactical.model.character.CharacterData;
 
 class EnemySave extends CharacterSave {
 
-  private CharacterData enemy;
+  private String className;
+  private CharacterData data;
 
-  CharacterData getEnemy() {
-    return enemy;
+  String getClassName() {
+    return className;
+  }
+
+  CharacterData getData() {
+    return data;
   }
 }

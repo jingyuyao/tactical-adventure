@@ -7,11 +7,11 @@ class ItemSave {
   /**
    * The canonical class name.
    */
-  private String dataClassName;
+  private String className;
   private JsonObject data;
 
-  String getDataClassName() {
-    return dataClassName;
+  String getClassName() {
+    return className;
   }
 
   JsonObject getData() {

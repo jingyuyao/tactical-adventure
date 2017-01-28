@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
 import com.jingyuyao.tactical.model.item.Item;
@@ -107,33 +108,39 @@ public class MapLoader {
   }
 
   private Player createPlayer(PlayerSave playerSave) {
-    Player player = characterFactory.createPlayer(playerSave.getPlayer());
-    if (playerSave.getItems() != null) {
-      for (ItemSave itemSave : playerSave.getItems()) {
-        player.addItem(createItem(player, itemSave));
-      }
-    }
+    Player player = characterFactory.createPlayer(playerSave.getData());
+    addItems(player, playerSave);
     return player;
   }
 
   private Enemy createEnemy(EnemySave enemySave) {
-    Enemy enemy = characterFactory.createPassiveEnemy(enemySave.getEnemy());
-    if (enemySave.getItems() != null) {
-      for (ItemSave itemSave : enemySave.getItems()) {
-        enemy.addItem(createItem(enemy, itemSave));
-      }
+    String className = enemySave.getClassName();
+    Enemy enemy;
+    if (PassiveEnemy.class.getCanonicalName().equals(className)) {
+      enemy = characterFactory.createPassiveEnemy(enemySave.getData());
+    } else {
+      throw new IllegalArgumentException("Unknown enemy class name");
     }
+    addItems(enemy, enemySave);
     return enemy;
   }
 
+  private void addItems(Character owner, CharacterSave save) {
+    if (save.getItems() != null) {
+      for (ItemSave itemSave : save.getItems()) {
+        owner.addItem(createItem(owner, itemSave));
+      }
+    }
+  }
+
   private Item createItem(Character owner, ItemSave itemSave) {
-    String canonicalClassName = itemSave.getDataClassName();
-    if (DirectionalWeaponData.class.getCanonicalName().equals(canonicalClassName)) {
+    String className = itemSave.getClassName();
+    if (DirectionalWeaponData.class.getCanonicalName().equals(className)) {
       return itemFactory.createDirectionalWeapon(
           owner,
           gson.fromJson(itemSave.getData(), DirectionalWeaponData.class));
     }
-    throw new IllegalArgumentException("Cannot create item from save");
+    throw new IllegalArgumentException("Unknown item class name");
   }
 
   private Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {

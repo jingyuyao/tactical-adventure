@@ -1,7 +1,7 @@
 {
   "players": [
     {
-      "player": {
+      "data": {
         "coordinate": {
           "x": 2,
           "y": 2
@@ -14,7 +14,7 @@
       },
       "items": [
         {
-          "dataClassName": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
+          "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {
             "name": "axe",
             "usageLeft": 10,
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "player": {
+      "data": {
         "coordinate": {
           "x": 3,
           "y": 3
@@ -40,7 +40,8 @@
   ],
   "enemies": [
     {
-      "enemy": {
+      "className": "com.jingyuyao.tactical.model.character.PassiveEnemy",
+      "data": {
         "coordinate": {
           "x": 9,
           "y": 2
@@ -52,7 +53,8 @@
       }
     },
     {
-      "enemy": {
+      "className": "com.jingyuyao.tactical.model.character.PassiveEnemy",
+      "data": {
         "coordinate": {
           "x": 8,
           "y": 3
