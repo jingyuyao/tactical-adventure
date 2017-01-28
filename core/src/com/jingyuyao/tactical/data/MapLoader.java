@@ -23,9 +23,7 @@ import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.terrain.TerrainFactory;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -90,25 +88,29 @@ public class MapLoader {
   }
 
   private Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {
+    Coordinate coordinate = new Coordinate(x, y);
+
     MapProperties tileProperties = cell.getTile().getProperties();
-    Terrain.Type type = Terrain.Type.NORMAL;
     if (tileProperties.containsKey(TERRAIN_TYPE_KEY)) {
-      String tileType = tileProperties.get(TERRAIN_TYPE_KEY, String.class);
-      try {
-        type = Terrain.Type.valueOf(tileType);
-      } catch (IllegalArgumentException e) {
-        Gdx.app.log("Terrain", String.format("invalid type %s", tileType));
+      String type = tileProperties.get(TERRAIN_TYPE_KEY, String.class);
+      if (type.equals("OBSTRUCTED")) {
+        return terrainFactory.createObstructed(coordinate);
+      } else if (type.equals("WATER")) {
+        return terrainFactory.createWater(coordinate);
+      } else {
+        Gdx.app.error("MapLoader", "Unrecognized terrain type: " + type);
       }
     }
-    return terrainFactory.create(new Coordinate(x, y), type);
+
+    return terrainFactory.createLand(coordinate);
   }
 
   // TODO: remove us
   private List<Player> createTestPlayers() {
     Player p1 = characterFactory.createPlayer(
-        new Coordinate(2, 2), new PlayerData("john", 20, 20, 5, normalAndObstructed(), true));
+        new Coordinate(2, 2), new PlayerData("john", 20, 20, 5, true));
     Player p2 = characterFactory.createPlayer(
-        new Coordinate(2, 3), new PlayerData("john", 20, 20, 6, normalAndObstructed(), true));
+        new Coordinate(2, 3), new PlayerData("john", 20, 20, 6, true));
     addItems1(p1);
     addItems2(p2);
     return ImmutableList.of(p1, p2);
@@ -116,20 +118,13 @@ public class MapLoader {
 
   private List<Enemy> createTestEnemies() {
     Enemy e1 = characterFactory.createPassiveEnemy(
-        new Coordinate(8, 3), new CharacterData("billy", 20, 20, 3, normalAndObstructed()));
+        new Coordinate(8, 3), new CharacterData("billy", 20, 20, 3));
     Enemy e2 = characterFactory.createPassiveEnemy(
         new Coordinate(9, 3),
-        new CharacterData("billy", 20, 20, 2, normalAndObstructed()));
+        new CharacterData("billy", 20, 20, 2));
     addItems1(e1);
     addItems2(e2);
     return ImmutableList.of(e1, e2);
-  }
-
-  private Set<Terrain.Type> normalAndObstructed() {
-    Set<Terrain.Type> standOnTerrainTypes = new HashSet<Terrain.Type>();
-    standOnTerrainTypes.add(Terrain.Type.NORMAL);
-    standOnTerrainTypes.add(Terrain.Type.OBSTRUCTED);
-    return standOnTerrainTypes;
   }
 
   private void addItems1(Character owner) {

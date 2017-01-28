@@ -157,7 +157,7 @@ abstract class AbstractCharacter<T extends CharacterData>
       @Override
       public Integer apply(Terrain input) {
         if (blocked.contains(input.getCoordinate())
-            || !data.canPassTerrainType(input.getType())) {
+            || !input.canHold(AbstractCharacter.this)) {
           return TerrainGraphs.BLOCKED;
         }
         return input.getMovementPenalty();

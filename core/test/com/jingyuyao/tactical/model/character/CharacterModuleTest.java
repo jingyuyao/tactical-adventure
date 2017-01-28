@@ -10,8 +10,6 @@ import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
-import com.jingyuyao.tactical.model.terrain.Terrain.Type;
-import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,9 +46,9 @@ public class CharacterModuleTest {
   public void create_characters() {
     characterFactory.createPlayer(
         new Coordinate(0, 0),
-        new PlayerData("yolo", 1, 1, 1, Collections.<Type>emptySet(), true));
+        new PlayerData("yolo", 1, 1, 1, true));
     characterFactory.createPassiveEnemy(
         new Coordinate(0, 0),
-        new CharacterData("holo", 1, 1, 1, Collections.<Type>emptySet()));
+        new CharacterData("holo", 1, 1, 1));
   }
 }

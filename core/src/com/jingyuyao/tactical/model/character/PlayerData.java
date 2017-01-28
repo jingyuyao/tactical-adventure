@@ -1,8 +1,5 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.jingyuyao.tactical.model.terrain.Terrain.Type;
-import java.util.Set;
-
 public class PlayerData extends CharacterData {
 
   private boolean actionable;
@@ -12,9 +9,8 @@ public class PlayerData extends CharacterData {
       int maxHp,
       int hp,
       int moveDistance,
-      Set<Type> passableTerrainTypes,
       boolean actionable) {
-    super(name, maxHp, hp, moveDistance, passableTerrainTypes);
+    super(name, maxHp, hp, moveDistance);
     this.actionable = actionable;
   }
 

@@ -28,7 +28,6 @@ import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.terrain.Terrain.Type;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -227,15 +226,13 @@ public class AbstractCharacterTest {
   @Test
   public void create_move_graph() {
     when(data.getMoveDistance()).thenReturn(10);
-    when(data.canPassTerrainType(Type.NORMAL)).thenReturn(true);
-    when(data.canPassTerrainType(Type.MOUNTAIN)).thenReturn(false);
     when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
-    when(terrain.getType()).thenReturn(Type.NORMAL);
+    when(terrain.canHold(character)).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(123);
     when(blockedTerrain.getCoordinate()).thenReturn(BLOCKED_COORDINATE);
     when(cannotPassTerrain.getCoordinate()).thenReturn(DESTINATION);
-    when(cannotPassTerrain.getType()).thenReturn(Type.MOUNTAIN);
+    when(cannotPassTerrain.canHold(character)).thenReturn(false);
     when(
         terrainGraphs.distanceFrom(
             Mockito.<Coordinate>any(), Mockito.anyInt(), Mockito.<Function<Terrain, Integer>>any()

@@ -105,7 +105,7 @@ public class MapUI {
   }
 
   private void updateTerrainLabel(Terrain terrain) {
-    terrainLabel.setText(String.format("Type: %s", terrain.getType().toString()));
+    terrainLabel.setText(String.format("Type: %s", terrain.getClass().getSimpleName()));
   }
 
   private void populateButtons() {

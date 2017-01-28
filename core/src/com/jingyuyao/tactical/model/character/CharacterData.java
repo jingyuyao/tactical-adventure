@@ -1,9 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.terrain.Terrain.Type;
-import java.util.Set;
 
 /**
  * Setters should be package private.
@@ -11,7 +8,6 @@ import java.util.Set;
 public class CharacterData {
 
   private final String name;
-  private final Set<Terrain.Type> passableTerrainTypes;
   private int maxHp;
   /**
    * 0 <= hp <= maxHp
@@ -24,13 +20,11 @@ public class CharacterData {
       String name,
       int maxHp,
       int hp,
-      int moveDistance,
-      Set<Type> passableTerrainTypes) {
+      int moveDistance) {
     Preconditions.checkArgument(hp >= 0 && hp <= maxHp);
     this.name = name;
     this.maxHp = maxHp;
     this.hp = hp;
-    this.passableTerrainTypes = passableTerrainTypes;
     this.moveDistance = moveDistance;
   }
 
@@ -56,9 +50,5 @@ public class CharacterData {
 
   boolean isDead() {
     return hp == 0;
-  }
-
-  boolean canPassTerrainType(Terrain.Type terrainType) {
-    return passableTerrainTypes.contains(terrainType);
   }
 }

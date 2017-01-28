@@ -7,7 +7,6 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.terrain.Terrain.Type;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +27,8 @@ public class TerrainModuleTest {
   @Test
   public void can_create_terrains() {
     Guice.createInjector(BoundFieldModule.of(this), new TerrainModule()).injectMembers(this);
-    terrainFactory.create(new Coordinate(0, 0), Type.NORMAL);
+    terrainFactory.createLand(new Coordinate(0, 0));
+    terrainFactory.createWater(new Coordinate(0, 1));
+    terrainFactory.createObstructed(new Coordinate(2, 2));
   }
 }
