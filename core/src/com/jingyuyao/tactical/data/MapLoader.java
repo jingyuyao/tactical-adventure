@@ -11,13 +11,17 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
+import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.GrenadeData;
+import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.HealData;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
@@ -110,7 +114,13 @@ public class MapLoader {
   }
 
   private Player createPlayer(PlayerSave playerSave) {
-    Player player = characterFactory.createPlayer(playerSave.getData());
+    String className = playerSave.getClassName();
+    Player player;
+    if (BasePlayer.class.getSimpleName().equals(className)) {
+      player = characterFactory.createBasePlayer(playerSave.getData());
+    } else {
+      throw new IllegalArgumentException("Unknown player class name: " + className);
+    }
     addItems(player, playerSave.getItems());
     return player;
   }
@@ -121,7 +131,7 @@ public class MapLoader {
     if (PassiveEnemy.class.getSimpleName().equals(className)) {
       enemy = characterFactory.createPassiveEnemy(enemySave.getData());
     } else {
-      throw new IllegalArgumentException("Unknown enemy class name");
+      throw new IllegalArgumentException("Unknown enemy class name: " + className);
     }
     addItems(enemy, enemySave.getItems());
     return enemy;
@@ -137,15 +147,15 @@ public class MapLoader {
 
   private Item createItem(Character owner, ItemSave itemSave) {
     String className = itemSave.getClassName();
-    if (DirectionalWeaponData.class.getSimpleName().equals(className)) {
+    if (DirectionalWeapon.class.getSimpleName().equals(className)) {
       return itemFactory.createDirectionalWeapon(
           owner, gson.fromJson(itemSave.getData(), DirectionalWeaponData.class));
-    } else if (GrenadeData.class.getSimpleName().equals(className)) {
+    } else if (Grenade.class.getSimpleName().equals(className)) {
       return itemFactory.createGrenade(owner, gson.fromJson(itemSave.getData(), GrenadeData.class));
-    } else if (HealData.class.getSimpleName().equals(className)) {
+    } else if (Heal.class.getSimpleName().equals(className)) {
       return itemFactory.createHeal(owner, gson.fromJson(itemSave.getData(), HealData.class));
     }
-    throw new IllegalArgumentException("Unknown item class name");
+    throw new IllegalArgumentException("Unknown item class name: " + className);
   }
 
   private Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {

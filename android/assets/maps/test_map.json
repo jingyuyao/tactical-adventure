@@ -1,6 +1,7 @@
 {
   "players": [
     {
+      "className": "BasePlayer",
       "data": {
         "coordinate": {
           "x": 2,
@@ -14,7 +15,7 @@
       },
       "items": [
         {
-          "className": "DirectionalWeaponData",
+          "className": "DirectionalWeapon",
           "data": {
             "name": "axe",
             "usageLeft": 10,
@@ -23,7 +24,7 @@
           }
         },
         {
-          "className": "HealData",
+          "className": "Heal",
           "data": {
             "name": "pot",
             "usageLeft": 3,
@@ -33,6 +34,7 @@
       ]
     },
     {
+      "className": "BasePlayer",
       "data": {
         "coordinate": {
           "x": 3,
@@ -46,7 +48,7 @@
       },
       "items": [
         {
-          "className": "GrenadeData",
+          "className": "Grenade",
           "data": {
             "name": "grenade",
             "usageLeft": 10,
@@ -70,7 +72,18 @@
         "maxHp": 20,
         "hp": 20,
         "moveDistance": 5
-      }
+      },
+      "items": [
+        {
+          "className": "DirectionalWeapon",
+          "data": {
+            "name": "axe",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        }
+      ]
     },
     {
       "className": "PassiveEnemy",
@@ -83,7 +96,18 @@
         "maxHp": 25,
         "hp": 25,
         "moveDistance": 6
-      }
+      },
+      "items": [
+        {
+          "className": "DirectionalWeapon",
+          "data": {
+            "name": "axe",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        }
+      ]
     }
   ]
 }
