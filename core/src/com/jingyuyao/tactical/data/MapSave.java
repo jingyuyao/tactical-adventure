@@ -1,11 +1,17 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.character.CharacterData;
 import java.util.List;
 
-public class MapSave {
+class MapSave {
 
   private List<PlayerSave> players;
-  private List<CharacterData> enemies;
+  private List<EnemySave> enemies;
 
+  List<PlayerSave> getPlayers() {
+    return players;
+  }
+
+  List<EnemySave> getEnemies() {
+    return enemies;
+  }
 }

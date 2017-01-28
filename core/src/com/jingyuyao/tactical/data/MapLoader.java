@@ -9,18 +9,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.CharacterData;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.character.PlayerData;
-import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
-import com.jingyuyao.tactical.model.item.GrenadeData;
-import com.jingyuyao.tactical.model.item.HealData;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObjectData;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.terrain.TerrainFactory;
@@ -41,6 +37,7 @@ public class MapLoader {
   private final CharacterFactory characterFactory;
   private final TerrainFactory terrainFactory;
   private final ItemFactory itemFactory;
+  private final Gson gson;
   private final AssetManager assetManager;
   private final OrthogonalTiledMapRenderer mapRenderer;
 
@@ -51,6 +48,7 @@ public class MapLoader {
       CharacterFactory characterFactory,
       TerrainFactory terrainFactory,
       ItemFactory itemFactory,
+      Gson gson,
       AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer) {
     this.model = model;
@@ -58,6 +56,7 @@ public class MapLoader {
     this.characterFactory = characterFactory;
     this.terrainFactory = terrainFactory;
     this.itemFactory = itemFactory;
+    this.gson = gson;
     this.assetManager = assetManager;
     this.mapRenderer = mapRenderer;
   }
@@ -76,18 +75,45 @@ public class MapLoader {
     Preconditions.checkArgument(width > 0, "MapView width must be > 0");
 
     FileHandle mapData = Gdx.files.internal(mapName + ".json");
+    MapSave mapSave = gson.fromJson(mapData.readString(), MapSave.class);
 
     model.newMap(
         width,
         height,
         createTerrains(terrainLayer, width, height),
-        createTestPlayers(),
-        createTestEnemies(),
+        createPlayers(mapSave.getPlayers()),
+        createEnemies(mapSave.getEnemies()),
         waitingProvider.get());
     mapRenderer.setMap(tiledMap);
   }
 
-  private List<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
+  private Iterable<Player> createPlayers(List<PlayerSave> playerSaves) {
+    ImmutableList.Builder<Player> builder = ImmutableList.builder();
+    for (PlayerSave playerSave : playerSaves) {
+      builder.add(createPlayer(playerSave));
+    }
+    return builder.build();
+  }
+
+  private Iterable<Enemy> createEnemies(List<EnemySave> enemySaves) {
+    ImmutableList.Builder<Enemy> builder = ImmutableList.builder();
+    for (EnemySave enemySave : enemySaves) {
+      builder.add(createEnemy(enemySave));
+    }
+    return builder.build();
+  }
+
+  private Player createPlayer(PlayerSave playerSave) {
+    // TODO: add items
+    return characterFactory.createPlayer(playerSave.getPlayer());
+  }
+
+  private Enemy createEnemy(EnemySave enemySave) {
+    // TODO: add items
+    return characterFactory.createPassiveEnemy(enemySave.getEnemy());
+  }
+
+  private Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
     List<Terrain> terrains = new ArrayList<Terrain>(width * height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -99,62 +125,20 @@ public class MapLoader {
   }
 
   private Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {
-    Coordinate coordinate = new Coordinate(x, y);
+    MapObjectData data = new MapObjectData(new Coordinate(x, y));
 
     MapProperties tileProperties = cell.getTile().getProperties();
     if (tileProperties.containsKey(TERRAIN_TYPE_KEY)) {
       String type = tileProperties.get(TERRAIN_TYPE_KEY, String.class);
       if (type.equals("OBSTRUCTED")) {
-        return terrainFactory.createObstructed(coordinate);
+        return terrainFactory.createObstructed(data);
       } else if (type.equals("WATER")) {
-        return terrainFactory.createWater(coordinate);
+        return terrainFactory.createWater(data);
       } else {
         Gdx.app.error("MapLoader", "Unrecognized terrain type: " + type);
       }
     }
 
-    return terrainFactory.createLand(coordinate);
-  }
-
-  // TODO: remove us
-  private List<Player> createTestPlayers() {
-    Player p1 = characterFactory.createPlayer(
-        new Coordinate(2, 2), new PlayerData("john", 20, 20, 5, true));
-    Player p2 = characterFactory.createPlayer(
-        new Coordinate(2, 3), new PlayerData("john", 20, 20, 6, true));
-    addItems1(p1);
-    addItems2(p2);
-    return ImmutableList.of(p1, p2);
-  }
-
-  private List<Enemy> createTestEnemies() {
-    Enemy e1 = characterFactory.createPassiveEnemy(
-        new Coordinate(8, 3), new CharacterData("billy", 20, 20, 3));
-    Enemy e2 = characterFactory.createPassiveEnemy(
-        new Coordinate(9, 3),
-        new CharacterData("billy", 20, 20, 2));
-    addItems1(e1);
-    addItems2(e2);
-    return ImmutableList.of(e1, e2);
-  }
-
-  private void addItems1(Character owner) {
-    owner.addItem(
-        itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponData("Laser5", 1, 5, 10)));
-    owner.addItem(
-        itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponData("Melee5", 10, 5, 1)));
-    owner.addItem(
-        itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponData("Melee10", 3, 10, 1)));
-    owner.addItem(itemFactory.createHeal(owner, new HealData("pot", 3, 10)));
-  }
-
-  private void addItems2(Character owner) {
-    owner.addItem(
-        itemFactory
-            .createDirectionalWeapon(owner, new DirectionalWeaponData("Laser3", 5, 3, 10)));
-    owner.addItem(itemFactory.createGrenade(owner, new GrenadeData("Grenade5", 3, 5, 5, 3)));
+    return terrainFactory.createLand(data);
   }
 }

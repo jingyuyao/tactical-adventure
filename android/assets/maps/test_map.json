@@ -1,2 +1,56 @@
 {
+  "players": [
+    {
+      "player": {
+        "coordinate": {
+          "x": 2,
+          "y": 2
+        },
+        "name": "dude",
+        "maxHp": 20,
+        "hp": 20,
+        "moveDistance": 5,
+        "actionable": true
+      }
+    },
+    {
+      "player": {
+        "coordinate": {
+          "x": 3,
+          "y": 3
+        },
+        "name": "dude2",
+        "maxHp": 25,
+        "hp": 25,
+        "moveDistance": 6,
+        "actionable": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "enemy": {
+        "coordinate": {
+          "x": 9,
+          "y": 2
+        },
+        "name": "enemy",
+        "maxHp": 20,
+        "hp": 20,
+        "moveDistance": 5
+      }
+    },
+    {
+      "enemy": {
+        "coordinate": {
+          "x": 8,
+          "y": 3
+        },
+        "name": "enemy2",
+        "maxHp": 25,
+        "hp": 25,
+        "moveDistance": 6
+      }
+    }
+  ]
 }
