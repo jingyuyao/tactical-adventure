@@ -9,8 +9,13 @@ import com.google.common.base.Objects;
  */
 public final class Coordinate {
 
-  private final int x;
-  private final int y;
+  // Do not expose setters!
+  private int x;
+  private int y;
+
+  // No args constructor for serialization
+  Coordinate() {
+  }
 
   public Coordinate(int x, int y) {
     this.x = x;
