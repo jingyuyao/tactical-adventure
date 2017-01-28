@@ -14,6 +14,8 @@ public interface Character extends MapObject {
 
   void registerListener(Object listener);
 
+  String getName();
+
   void damageBy(int delta);
 
   void healBy(int delta);

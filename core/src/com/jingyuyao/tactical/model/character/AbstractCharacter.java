@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -30,6 +29,7 @@ import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 abstract class AbstractCharacter<T extends CharacterData>
     extends AbstractMapObject<T> implements Character {
@@ -61,6 +61,11 @@ abstract class AbstractCharacter<T extends CharacterData>
   @Override
   public void registerListener(Object listener) {
     eventBus.register(listener);
+  }
+
+  @Override
+  public String getName() {
+    return getData().getName();
   }
 
   @Override
@@ -178,9 +183,6 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", getData().getName())
-        .add("hp", getData().getHp())
-        .toString();
+    return String.format(Locale.US, "%s (%d)", getName(), getData().getHp());
   }
 }

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.character.Character;
+import java.util.Locale;
 
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
@@ -16,5 +17,11 @@ abstract class AbstractWeapon<T extends WeaponData> extends BaseItem<T> implemen
     for (Character opponent : target.getTargetCharacters()) {
       opponent.damageBy(getData().getAttackPower());
     }
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        Locale.US, "%s A:%d U:%d", getName(), getData().getAttackPower(), getUsageLeft());
   }
 }
