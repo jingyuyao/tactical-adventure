@@ -18,7 +18,7 @@ public class DataModule extends AbstractModule {
   @Singleton
   Gson provideGson() {
     return new GsonBuilder()
-        .registerTypeAdapter(ItemData.class, new ItemDataDeserializer())
+        .registerTypeAdapter(ItemData.class, new PolymorphicDeserializer<ItemData>())
         .create();
   }
 }

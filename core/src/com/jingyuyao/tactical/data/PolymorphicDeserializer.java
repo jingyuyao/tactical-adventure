@@ -6,16 +6,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import com.jingyuyao.tactical.model.item.ItemData;
 import java.lang.reflect.Type;
 
-public class ItemDataDeserializer implements JsonDeserializer<ItemData> {
+public class PolymorphicDeserializer<T> implements JsonDeserializer<T> {
 
   private static final String CLASS_NAME = "className";
   private static final String DATA = "data";
 
   @Override
-  public ItemData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+  public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
     JsonObject jsonObject = json.getAsJsonObject();
     JsonPrimitive prim = (JsonPrimitive) jsonObject.get(CLASS_NAME);
