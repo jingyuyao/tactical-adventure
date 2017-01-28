@@ -44,7 +44,6 @@ public class AbstractCharacterTest {
   private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
   private static final Coordinate DESTINATION = new Coordinate(50, 50);
   private static final Coordinate BLOCKED_COORDINATE = new Coordinate(12, 12);
-  private static final String NAME = "hello";
 
   @Mock
   private Multiset<Marker> markers;
@@ -92,8 +91,7 @@ public class AbstractCharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(
-            CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, data, items);
+        new CharacterImpl(data, markers, terrainGraphs, characters, eventBus, items);
   }
 
   @Test
@@ -174,7 +172,7 @@ public class AbstractCharacterTest {
 
     ListenableFuture<Void> future = character.moveAlong(path);
 
-    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
+    verify(data).setCoordinate(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     Move move = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Move.class);
     assertThat(move.getPath()).isSameAs(path);
@@ -188,7 +186,7 @@ public class AbstractCharacterTest {
   public void instant_move() {
     character.instantMoveTo(DESTINATION);
 
-    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
+    verify(data).setCoordinate(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), InstantMove.class);
@@ -211,6 +209,7 @@ public class AbstractCharacterTest {
 
   @Test
   public void create_move_graph() {
+    when(data.getCoordinate()).thenReturn(CHARACTER_COORDINATE);
     when(data.getMoveDistance()).thenReturn(10);
     when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
@@ -238,14 +237,13 @@ public class AbstractCharacterTest {
   private static class CharacterImpl extends AbstractCharacter<CharacterData> {
 
     CharacterImpl(
-        Coordinate coordinate,
+        CharacterData data,
         Multiset<Marker> markers,
         TerrainGraphs terrainGraphs,
         Characters characters,
         EventBus eventBus,
-        CharacterData characterData,
         List<Item> items) {
-      super(coordinate, markers, characterData, items, eventBus, terrainGraphs, characters);
+      super(data, markers, items, eventBus, terrainGraphs, characters);
     }
 
     @Override

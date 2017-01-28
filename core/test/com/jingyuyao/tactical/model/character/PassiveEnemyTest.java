@@ -6,7 +6,6 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
@@ -21,8 +20,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 // TODO: test retaliation
 public class PassiveEnemyTest {
-
-  private static final Coordinate COORDINATE = new Coordinate(0, 0);
 
   @Mock
   private Multiset<Marker> markers;
@@ -47,7 +44,7 @@ public class PassiveEnemyTest {
   public void setUp() {
     enemy =
         new PassiveEnemy(
-            COORDINATE, markers, data, items, eventBus, terrainGraphs, characters, movementFactory);
+            data, markers, items, eventBus, terrainGraphs, characters, movementFactory);
   }
 
   @Test

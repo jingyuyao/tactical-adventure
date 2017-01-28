@@ -30,27 +30,24 @@ import java.util.Collections;
 import java.util.List;
 
 abstract class AbstractCharacter<T extends CharacterData>
-    extends AbstractMapObject implements Character {
+    extends AbstractMapObject<T> implements Character {
 
-  private final T data;
   private final List<Item> items;
   private final TerrainGraphs terrainGraphs;
   private final Characters characters;
   private final EventBus eventBus;
 
   AbstractCharacter(
-      Coordinate coordinate,
-      Multiset<Marker> markers,
       T data,
+      Multiset<Marker> markers,
       List<Item> items,
       EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters) {
-    super(coordinate, markers);
+    super(data, markers);
     this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
-    this.data = data;
     this.items = items;
   }
 
@@ -66,8 +63,8 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public void damageBy(int delta) {
-    data.damageBy(delta);
-    if (data.isDead()) {
+    getData().damageBy(delta);
+    if (getData().isDead()) {
       characters.remove(this);
       eventBus.post(new RemoveSelf());
     }
@@ -75,7 +72,7 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public void healBy(int delta) {
-    data.healBy(delta);
+    getData().healBy(delta);
   }
 
   @Override
@@ -134,11 +131,7 @@ abstract class AbstractCharacter<T extends CharacterData>
   @Override
   public Graph<Coordinate> createMoveGraph() {
     return terrainGraphs.distanceFrom(
-        getCoordinate(), data.getMoveDistance(), createMovementPenaltyFunction());
-  }
-
-  T getData() {
-    return data;
+        getCoordinate(), getData().getMoveDistance(), createMovementPenaltyFunction());
   }
 
   private Function<Terrain, Integer> createMovementPenaltyFunction() {
@@ -158,8 +151,8 @@ abstract class AbstractCharacter<T extends CharacterData>
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("name", data.getName())
-        .add("hp", data.getHp())
+        .add("name", getData().getName())
+        .add("hp", getData().getHp())
         .toString();
   }
 }

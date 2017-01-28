@@ -5,24 +5,24 @@ import com.google.common.collect.Multiset;
 /**
  * Super class of all the objects on the game grid.
  */
-public abstract class AbstractMapObject implements MapObject {
+public abstract class AbstractMapObject<T extends MapObjectData> implements MapObject {
 
+  private final T data;
   private final Multiset<Marker> markers;
-  private Coordinate coordinate;
 
-  protected AbstractMapObject(Coordinate coordinate, Multiset<Marker> markers) {
-    this.coordinate = coordinate;
+  protected AbstractMapObject(T data, Multiset<Marker> markers) {
+    this.data = data;
     this.markers = markers;
   }
 
   @Override
   public Coordinate getCoordinate() {
-    return coordinate;
+    return data.getCoordinate();
   }
 
   @Override
   public void setCoordinate(Coordinate newCoordinate) {
-    coordinate = newCoordinate;
+    data.setCoordinate(newCoordinate);
   }
 
   @Override
@@ -38,5 +38,9 @@ public abstract class AbstractMapObject implements MapObject {
   @Override
   public void removeMarker(Marker marker) {
     markers.remove(marker);
+  }
+
+  protected T getData() {
+    return data;
   }
 }

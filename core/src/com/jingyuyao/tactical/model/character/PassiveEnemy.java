@@ -30,15 +30,14 @@ public class PassiveEnemy extends AbstractEnemy {
 
   @Inject
   PassiveEnemy(
-      @Assisted Coordinate coordinate,
-      @InitialMarkers Multiset<Marker> markers,
       @Assisted CharacterData data,
+      @InitialMarkers Multiset<Marker> markers,
       @InitialItems List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters,
       MovementFactory movementFactory) {
-    super(coordinate, markers, data, items, eventBus, terrainGraphs, characters);
+    super(data, markers, items, eventBus, terrainGraphs, characters);
     this.movementFactory = movementFactory;
   }
 

@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.model.terrain;
 
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObjectData;
 
 public interface TerrainFactory {
 
-  Land createLand(Coordinate coordinate);
+  Land createLand(MapObjectData mapObjectData);
 
-  Obstructed createObstructed(Coordinate coordinate);
+  Obstructed createObstructed(MapObjectData mapObjectData);
 
-  Water createWater(Coordinate coordinate);
+  Water createWater(MapObjectData data);
 }

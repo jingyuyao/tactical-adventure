@@ -7,7 +7,6 @@ import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.character.CharacterModule.InitialItems;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
@@ -19,14 +18,13 @@ public class BasePlayer extends AbstractCharacter<PlayerData> implements Player 
 
   @Inject
   BasePlayer(
-      @Assisted Coordinate coordinate,
-      @InitialMarkers Multiset<Marker> markers,
       @Assisted PlayerData data,
+      @InitialMarkers Multiset<Marker> markers,
       @InitialItems List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters) {
-    super(coordinate, markers, data, items, eventBus, terrainGraphs, characters);
+    super(data, markers, items, eventBus, terrainGraphs, characters);
   }
 
   @Override

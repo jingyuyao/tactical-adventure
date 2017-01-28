@@ -8,7 +8,6 @@ import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -21,8 +20,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BasePlayerTest {
-
-  private static final Coordinate PLAYER_COORDINATE = new Coordinate(0, 0);
 
   @Mock
   private Multiset<Marker> markers;
@@ -43,8 +40,7 @@ public class BasePlayerTest {
   @Before
   public void setUp() {
     player =
-        new BasePlayer(PLAYER_COORDINATE, markers, data, items, eventBus, terrainGraphs,
-            characters);
+        new BasePlayer(data, markers, items, eventBus, terrainGraphs, characters);
   }
 
   @Test

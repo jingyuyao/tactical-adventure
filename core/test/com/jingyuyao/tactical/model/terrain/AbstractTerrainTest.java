@@ -4,7 +4,7 @@ import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObjectData;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import org.junit.Before;
@@ -16,8 +16,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractTerrainTest {
 
-  private static final Coordinate COORDINATE = new Coordinate(10, 10);
-
+  @Mock
+  private MapObjectData data;
   @Mock
   private Multiset<Marker> markers;
   @Mock
@@ -27,7 +27,7 @@ public class AbstractTerrainTest {
 
   @Before
   public void setUp() {
-    terrain = new TerrainImpl(COORDINATE, markers);
+    terrain = new TerrainImpl(data, markers);
   }
 
   @Test
@@ -46,8 +46,8 @@ public class AbstractTerrainTest {
 
   private static class TerrainImpl extends AbstractTerrain {
 
-    TerrainImpl(Coordinate coordinate, Multiset<Marker> markers) {
-      super(coordinate, markers);
+    TerrainImpl(MapObjectData data, Multiset<Marker> markers) {
+      super(data, markers);
     }
 
     @Override

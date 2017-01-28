@@ -3,14 +3,14 @@ package com.jingyuyao.tactical.model.terrain;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObjectData;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 
-abstract class AbstractTerrain extends AbstractMapObject implements Terrain {
+abstract class AbstractTerrain extends AbstractMapObject<MapObjectData> implements Terrain {
 
-  AbstractTerrain(Coordinate coordinate, Multiset<Marker> markers) {
-    super(coordinate, markers);
+  AbstractTerrain(MapObjectData data, Multiset<Marker> markers) {
+    super(data, markers);
   }
 
   @Override

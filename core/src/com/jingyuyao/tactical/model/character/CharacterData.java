@@ -1,11 +1,13 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.MapObjectData;
 
 /**
  * Setters should be package private.
  */
-public class CharacterData {
+public class CharacterData extends MapObjectData {
 
   private String name;
   private int maxHp;
@@ -21,10 +23,12 @@ public class CharacterData {
   }
 
   public CharacterData(
+      Coordinate coordinate,
       String name,
       int maxHp,
       int hp,
       int moveDistance) {
+    super(coordinate);
     Preconditions.checkArgument(hp >= 0 && hp <= maxHp);
     this.name = name;
     this.maxHp = maxHp;
