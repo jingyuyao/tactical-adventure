@@ -11,9 +11,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObjectData;
@@ -104,13 +107,33 @@ public class MapLoader {
   }
 
   private Player createPlayer(PlayerSave playerSave) {
-    // TODO: add items
-    return characterFactory.createPlayer(playerSave.getPlayer());
+    Player player = characterFactory.createPlayer(playerSave.getPlayer());
+    if (playerSave.getItems() != null) {
+      for (ItemSave itemSave : playerSave.getItems()) {
+        player.addItem(createItem(player, itemSave));
+      }
+    }
+    return player;
   }
 
   private Enemy createEnemy(EnemySave enemySave) {
-    // TODO: add items
-    return characterFactory.createPassiveEnemy(enemySave.getEnemy());
+    Enemy enemy = characterFactory.createPassiveEnemy(enemySave.getEnemy());
+    if (enemySave.getItems() != null) {
+      for (ItemSave itemSave : enemySave.getItems()) {
+        enemy.addItem(createItem(enemy, itemSave));
+      }
+    }
+    return enemy;
+  }
+
+  private Item createItem(Character owner, ItemSave itemSave) {
+    String canonicalClassName = itemSave.getDataClassName();
+    if (DirectionalWeaponData.class.getCanonicalName().equals(canonicalClassName)) {
+      return itemFactory.createDirectionalWeapon(
+          owner,
+          gson.fromJson(itemSave.getData(), DirectionalWeaponData.class));
+    }
+    throw new IllegalArgumentException("Cannot create item from save");
   }
 
   private Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
@@ -135,7 +158,7 @@ public class MapLoader {
       } else if (type.equals("WATER")) {
         return terrainFactory.createWater(data);
       } else {
-        Gdx.app.error("MapLoader", "Unrecognized terrain type: " + type);
+        throw new IllegalArgumentException("Unrecognized terrain type: " + type);
       }
     }
 

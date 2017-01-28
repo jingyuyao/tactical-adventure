@@ -1,6 +1,12 @@
 package com.jingyuyao.tactical.data;
 
-// TODO: we need save type info to do polymorphic item serialization
+import java.util.List;
+
 class CharacterSave {
 
+  private List<ItemSave> items;
+
+  List<ItemSave> getItems() {
+    return items;
+  }
 }

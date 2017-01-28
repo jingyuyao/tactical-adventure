@@ -11,7 +11,18 @@
         "hp": 20,
         "moveDistance": 5,
         "actionable": true
-      }
+      },
+      "items": [
+        {
+          "dataClassName": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
+          "data": {
+            "name": "axe",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        }
+      ]
     },
     {
       "player": {
