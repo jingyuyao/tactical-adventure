@@ -17,6 +17,8 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.DirectionalWeaponData;
+import com.jingyuyao.tactical.model.item.GrenadeData;
+import com.jingyuyao.tactical.model.item.HealData;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.ItemFactory;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -116,7 +118,7 @@ public class MapLoader {
   private Enemy createEnemy(EnemySave enemySave) {
     String className = enemySave.getClassName();
     Enemy enemy;
-    if (PassiveEnemy.class.getCanonicalName().equals(className)) {
+    if (PassiveEnemy.class.getSimpleName().equals(className)) {
       enemy = characterFactory.createPassiveEnemy(enemySave.getData());
     } else {
       throw new IllegalArgumentException("Unknown enemy class name");
@@ -135,10 +137,13 @@ public class MapLoader {
 
   private Item createItem(Character owner, ItemSave itemSave) {
     String className = itemSave.getClassName();
-    if (DirectionalWeaponData.class.getCanonicalName().equals(className)) {
+    if (DirectionalWeaponData.class.getSimpleName().equals(className)) {
       return itemFactory.createDirectionalWeapon(
-          owner,
-          gson.fromJson(itemSave.getData(), DirectionalWeaponData.class));
+          owner, gson.fromJson(itemSave.getData(), DirectionalWeaponData.class));
+    } else if (GrenadeData.class.getSimpleName().equals(className)) {
+      return itemFactory.createGrenade(owner, gson.fromJson(itemSave.getData(), GrenadeData.class));
+    } else if (HealData.class.getSimpleName().equals(className)) {
+      return itemFactory.createHeal(owner, gson.fromJson(itemSave.getData(), HealData.class));
     }
     throw new IllegalArgumentException("Unknown item class name");
   }
@@ -168,7 +173,6 @@ public class MapLoader {
         throw new IllegalArgumentException("Unrecognized terrain type: " + type);
       }
     }
-
     return terrainFactory.createLand(data);
   }
 }

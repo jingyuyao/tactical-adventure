@@ -14,12 +14,20 @@
       },
       "items": [
         {
-          "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
+          "className": "DirectionalWeaponData",
           "data": {
             "name": "axe",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
+          }
+        },
+        {
+          "className": "HealData",
+          "data": {
+            "name": "pot",
+            "usageLeft": 3,
+            "amount": 5
           }
         }
       ]
@@ -35,12 +43,24 @@
         "hp": 25,
         "moveDistance": 6,
         "actionable": true
-      }
+      },
+      "items": [
+        {
+          "className": "GrenadeData",
+          "data": {
+            "name": "grenade",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 3,
+            "size": 2
+          }
+        }
+      ]
     }
   ],
   "enemies": [
     {
-      "className": "com.jingyuyao.tactical.model.character.PassiveEnemy",
+      "className": "PassiveEnemy",
       "data": {
         "coordinate": {
           "x": 9,
@@ -53,7 +73,7 @@
       }
     },
     {
-      "className": "com.jingyuyao.tactical.model.character.PassiveEnemy",
+      "className": "PassiveEnemy",
       "data": {
         "coordinate": {
           "x": 8,
