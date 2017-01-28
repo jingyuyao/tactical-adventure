@@ -12,6 +12,7 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -27,7 +28,6 @@ public class MapModule extends AbstractModule {
     requireBinding(TerrainGraphs.class);
 
     install(new FactoryModuleBuilder().build(MovementFactory.class));
-    install(new FactoryModuleBuilder().build(TerrainFactory.class));
   }
 
   @Provides

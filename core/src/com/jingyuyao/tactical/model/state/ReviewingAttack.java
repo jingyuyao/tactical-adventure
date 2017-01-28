@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {

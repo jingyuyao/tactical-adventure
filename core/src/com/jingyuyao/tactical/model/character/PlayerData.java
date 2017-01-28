@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.terrain.Terrain.Type;
 import java.util.Set;
 
 public class PlayerData extends CharacterData {

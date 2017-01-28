@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorModule.ActorWorldSize;
 import java.util.Map;
 import javax.inject.Inject;

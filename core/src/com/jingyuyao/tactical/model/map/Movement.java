@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
 /**

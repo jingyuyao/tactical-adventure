@@ -8,6 +8,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.map.MapModule.BackingTerrainMap;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;

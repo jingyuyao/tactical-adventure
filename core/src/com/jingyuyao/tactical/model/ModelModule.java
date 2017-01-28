@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.state.StateModule;
+import com.jingyuyao.tactical.model.terrain.TerrainModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Singleton;
@@ -23,6 +24,7 @@ public class ModelModule extends AbstractModule {
   protected void configure() {
     install(new MapModule());
     install(new CharacterModule());
+    install(new TerrainModule());
     install(new ItemModule());
     install(new StateModule());
   }

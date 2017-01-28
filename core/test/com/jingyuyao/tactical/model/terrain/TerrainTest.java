@@ -1,12 +1,13 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.terrain;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.Multiset;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.terrain.Terrain.Type;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +24,6 @@ public class TerrainTest {
   private Multiset<Marker> markers;
   @Mock
   private MapState mapState;
-  @Mock
-  private Character character;
 
   private Terrain terrain;
 

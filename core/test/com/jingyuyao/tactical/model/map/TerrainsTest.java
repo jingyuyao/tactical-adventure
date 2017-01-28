@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;

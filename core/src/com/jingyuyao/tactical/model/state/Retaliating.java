@@ -8,7 +8,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
 public class Retaliating extends AbstractState {

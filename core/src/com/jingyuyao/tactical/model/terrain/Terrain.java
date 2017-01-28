@@ -1,8 +1,11 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.terrain;
 
 import com.google.common.collect.Multiset;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.map.AbstractMapObject;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import javax.inject.Inject;
 

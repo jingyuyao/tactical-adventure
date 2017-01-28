@@ -32,7 +32,7 @@ public class MovementTest {
   @Mock
   private ImmutableList<Coordinate> track;
   @Mock
-  private Terrain terrain;
+  private com.jingyuyao.tactical.model.terrain.Terrain terrain;
 
   private Set<Coordinate> moveCoordinates;
   private Movement movement;

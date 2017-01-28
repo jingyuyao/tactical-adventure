@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.AddTerrain;
-import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import javax.inject.Inject;

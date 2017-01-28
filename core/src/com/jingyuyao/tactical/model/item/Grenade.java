@@ -7,8 +7,8 @@ import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
 // TODO: test me

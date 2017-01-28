@@ -3,10 +3,10 @@ package com.jingyuyao.tactical.model;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

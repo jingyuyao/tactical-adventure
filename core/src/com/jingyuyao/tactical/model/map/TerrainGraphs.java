@@ -10,6 +10,7 @@ import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

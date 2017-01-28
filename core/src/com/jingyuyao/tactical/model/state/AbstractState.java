@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.Terrain;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 
 abstract class AbstractState implements State {
 

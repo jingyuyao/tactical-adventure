@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.map.Terrain;
-import com.jingyuyao.tactical.model.map.Terrain.Type;
+import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.terrain.Terrain.Type;
 import java.util.Set;
 
 /**

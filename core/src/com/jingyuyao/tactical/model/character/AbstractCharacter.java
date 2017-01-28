@@ -23,9 +23,9 @@ import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Terrain;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Collections;
 import java.util.List;
 
