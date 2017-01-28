@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.jingyuyao.tactical.model.character.Character;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,20 +16,13 @@ public class BaseItemTest {
   private static final String NAME = "item";
 
   @Mock
-  private Character owner;
-  @Mock
   private ItemData itemData;
 
   private BaseItem<ItemData> item;
 
   @Before
   public void setUp() {
-    item = new BaseItem<ItemData>(owner, itemData);
-  }
-
-  @Test
-  public void owner() {
-    assertThat(item.getOwner()).isSameAs(owner);
+    item = new BaseItem<ItemData>(itemData);
   }
 
   @Test

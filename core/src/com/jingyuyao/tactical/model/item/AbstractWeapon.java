@@ -7,8 +7,8 @@ import com.jingyuyao.tactical.model.character.Character;
  */
 abstract class AbstractWeapon<T extends WeaponData> extends BaseItem<T> implements Weapon {
 
-  AbstractWeapon(Character owner, T weaponStats) {
-    super(owner, weaponStats);
+  AbstractWeapon(T weaponStats) {
+    super(weaponStats);
   }
 
   @Override

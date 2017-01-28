@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Directions;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -21,11 +20,10 @@ public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponData> {
 
   @Inject
   DirectionalWeapon(
-      @Assisted Character owner,
       @Assisted DirectionalWeaponData weaponStats,
       Terrains terrains,
       TargetFactory targetFactory) {
-    super(owner, weaponStats);
+    super(weaponStats);
     this.terrains = terrains;
     this.targetFactory = targetFactory;
   }

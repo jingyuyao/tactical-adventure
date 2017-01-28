@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -19,11 +18,10 @@ public class Grenade extends AbstractWeapon<GrenadeData> {
 
   @Inject
   Grenade(
-      @Assisted Character owner,
       @Assisted GrenadeData grenadeStats,
       TerrainGraphs terrainGraphs,
       TargetFactory targetFactory) {
-    super(owner, grenadeStats);
+    super(grenadeStats);
     this.terrainGraphs = terrainGraphs;
     this.targetFactory = targetFactory;
   }

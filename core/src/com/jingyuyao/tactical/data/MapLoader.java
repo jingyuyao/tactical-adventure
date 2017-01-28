@@ -140,20 +140,20 @@ public class MapLoader {
   private void addItems(Character owner, Iterable<ItemSave> items) {
     if (items != null) {
       for (ItemSave itemSave : items) {
-        owner.addItem(createItem(owner, itemSave));
+        owner.addItem(createItem(itemSave));
       }
     }
   }
 
-  private Item createItem(Character owner, ItemSave itemSave) {
+  private Item createItem(ItemSave itemSave) {
     String className = itemSave.getClassName();
     if (DirectionalWeapon.class.getSimpleName().equals(className)) {
       return itemFactory.createDirectionalWeapon(
-          owner, itemSave.getData(gson, DirectionalWeaponData.class));
+          itemSave.getData(gson, DirectionalWeaponData.class));
     } else if (Grenade.class.getSimpleName().equals(className)) {
-      return itemFactory.createGrenade(owner, itemSave.getData(gson, GrenadeData.class));
+      return itemFactory.createGrenade(itemSave.getData(gson, GrenadeData.class));
     } else if (Heal.class.getSimpleName().equals(className)) {
-      return itemFactory.createHeal(owner, itemSave.getData(gson, HealData.class));
+      return itemFactory.createHeal(itemSave.getData(gson, HealData.class));
     }
     throw new IllegalArgumentException("Unknown item class name: " + className);
   }

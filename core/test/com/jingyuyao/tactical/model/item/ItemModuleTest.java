@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.item;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -24,8 +23,6 @@ public class ItemModuleTest {
   @Bind
   @Mock
   private Terrains terrains;
-  @Mock
-  private Character owner;
 
   @Inject
   private ItemFactory itemFactory;
@@ -39,9 +36,9 @@ public class ItemModuleTest {
 
   @Test
   public void item_factory() {
-    itemFactory.createHeal(owner, new HealData("pot", 5, 10));
-    itemFactory.createDirectionalWeapon(owner, new DirectionalWeaponData("laser", 1, 100, 5));
-    itemFactory.createGrenade(owner, new GrenadeData("boom", 1, 50, 2, 10));
+    itemFactory.createHeal(new HealData("pot", 5, 10));
+    itemFactory.createDirectionalWeapon(new DirectionalWeaponData("laser", 1, 100, 5));
+    itemFactory.createGrenade(new GrenadeData("boom", 1, 50, 2, 10));
   }
 
   @Test
