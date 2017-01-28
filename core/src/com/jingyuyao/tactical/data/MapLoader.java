@@ -111,7 +111,7 @@ public class MapLoader {
 
   private Player createPlayer(PlayerSave playerSave) {
     Player player = characterFactory.createPlayer(playerSave.getData());
-    addItems(player, playerSave);
+    addItems(player, playerSave.getItems());
     return player;
   }
 
@@ -123,13 +123,13 @@ public class MapLoader {
     } else {
       throw new IllegalArgumentException("Unknown enemy class name");
     }
-    addItems(enemy, enemySave);
+    addItems(enemy, enemySave.getItems());
     return enemy;
   }
 
-  private void addItems(Character owner, CharacterSave save) {
-    if (save.getItems() != null) {
-      for (ItemSave itemSave : save.getItems()) {
+  private void addItems(Character owner, Iterable<ItemSave> items) {
+    if (items != null) {
+      for (ItemSave itemSave : items) {
         owner.addItem(createItem(owner, itemSave));
       }
     }
