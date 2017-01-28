@@ -48,6 +48,11 @@ to send events to its associated actor.
 - Listen to user input
 - Dispatches input to models via visitor pattern, this minimizes logic in controllers
 
+## Data
+- Only the data part of an object is saved
+- The data objects are dynamically saved and loaded with the class information intact
+- The data objects should be able to create an instance of the game object using visitor pattern
+
 # Development plan
 - MVC 
 - path finding + moving
