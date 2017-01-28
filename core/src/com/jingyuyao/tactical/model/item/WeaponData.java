@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-class WeaponData extends ItemData {
+abstract class WeaponData extends ItemData {
 
   private int attackPower;
 

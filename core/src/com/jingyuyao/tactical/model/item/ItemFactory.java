@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.item;
 
 public interface ItemFactory {
 
-  DirectionalWeapon createDirectionalWeapon(DirectionalWeaponData weaponStats);
+  DirectionalWeapon create(DirectionalWeaponData weaponStats);
 
-  Grenade createGrenade(GrenadeData grenadeStats);
+  Grenade create(GrenadeData grenadeStats);
 
-  Heal createHeal(HealData healData);
+  Heal create(HealData healData);
 }

@@ -11,6 +11,11 @@ public class GrenadeData extends WeaponData {
     this.size = size;
   }
 
+  @Override
+  public Item load(ItemFactory factory) {
+    return factory.create(this);
+  }
+
   int getDistance() {
     return distance;
   }

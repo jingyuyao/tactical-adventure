@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 
-public class ItemData {
+public abstract class ItemData {
 
   private String name;
   private int usageLeft;
@@ -30,4 +30,9 @@ public class ItemData {
     Preconditions.checkState(usageLeft > 0);
     usageLeft--;
   }
+
+  /**
+   * Enables the visitor pattern for item creation.
+   */
+  public abstract Item load(ItemFactory factory);
 }

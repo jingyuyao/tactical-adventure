@@ -15,7 +15,7 @@
       },
       "items": [
         {
-          "className": "DirectionalWeapon",
+          "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {
             "name": "axe",
             "usageLeft": 10,
@@ -24,7 +24,7 @@
           }
         },
         {
-          "className": "Heal",
+          "className": "com.jingyuyao.tactical.model.item.HealData",
           "data": {
             "name": "pot",
             "usageLeft": 3,
@@ -48,7 +48,7 @@
       },
       "items": [
         {
-          "className": "Grenade",
+          "className": "com.jingyuyao.tactical.model.item.GrenadeData",
           "data": {
             "name": "grenade",
             "usageLeft": 10,
@@ -75,7 +75,7 @@
       },
       "items": [
         {
-          "className": "DirectionalWeapon",
+          "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {
             "name": "axe",
             "usageLeft": 10,
@@ -99,7 +99,7 @@
       },
       "items": [
         {
-          "className": "DirectionalWeapon",
+          "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {
             "name": "axe",
             "usageLeft": 10,

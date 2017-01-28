@@ -12,6 +12,11 @@ public class DirectionalWeaponData extends WeaponData {
     this.distance = distance;
   }
 
+  @Override
+  public Item load(ItemFactory factory) {
+    return factory.create(this);
+  }
+
   int getDistance() {
     return distance;
   }

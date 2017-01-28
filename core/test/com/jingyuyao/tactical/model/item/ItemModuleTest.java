@@ -36,9 +36,9 @@ public class ItemModuleTest {
 
   @Test
   public void item_factory() {
-    itemFactory.createHeal(new HealData("pot", 5, 10));
-    itemFactory.createDirectionalWeapon(new DirectionalWeaponData("laser", 1, 100, 5));
-    itemFactory.createGrenade(new GrenadeData("boom", 1, 50, 2, 10));
+    itemFactory.create(new HealData("pot", 5, 10));
+    itemFactory.create(new DirectionalWeaponData("laser", 1, 100, 5));
+    itemFactory.create(new GrenadeData("boom", 1, 50, 2, 10));
   }
 
   @Test

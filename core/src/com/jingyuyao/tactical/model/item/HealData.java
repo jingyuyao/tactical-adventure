@@ -12,6 +12,11 @@ public class HealData extends ItemData {
     this.amount = amount;
   }
 
+  @Override
+  public Item load(ItemFactory factory) {
+    return factory.create(this);
+  }
+
   int getAmount() {
     return amount;
   }
