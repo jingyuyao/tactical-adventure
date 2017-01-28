@@ -7,8 +7,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.state.Waiting;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -24,9 +28,8 @@ public class MapLoader {
   private final Gson gson;
   private final AssetManager assetManager;
   private final OrthogonalTiledMapRenderer mapRenderer;
+  private final CharacterLoader characterLoader;
   private final TerrainLoader terrainLoader;
-  private final PlayerLoader playerLoader;
-  private final EnemyLoader enemyLoader;
 
   @Inject
   MapLoader(
@@ -35,17 +38,15 @@ public class MapLoader {
       Gson gson,
       AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer,
-      TerrainLoader terrainLoader,
-      PlayerLoader playerLoader,
-      EnemyLoader enemyLoader) {
+      CharacterLoader characterLoader,
+      TerrainLoader terrainLoader) {
     this.model = model;
     this.waitingProvider = waitingProvider;
     this.gson = gson;
     this.assetManager = assetManager;
     this.mapRenderer = mapRenderer;
+    this.characterLoader = characterLoader;
     this.terrainLoader = terrainLoader;
-    this.playerLoader = playerLoader;
-    this.enemyLoader = enemyLoader;
   }
 
   public void loadMap(String mapName) {
@@ -64,14 +65,15 @@ public class MapLoader {
     FileHandle mapData = Gdx.files.internal(mapName + ".json");
     MapSave mapSave = gson.fromJson(mapData.readString(), MapSave.class);
 
+    Iterable<Character> characters = characterLoader.createCharacter(mapSave.getCharacterSaves());
+
     model.newMap(
         width,
         height,
         terrainLoader.createTerrains(terrainLayer, width, height),
-        playerLoader.createPlayers(mapSave.getPlayers()),
-        enemyLoader.createEnemies(mapSave.getEnemies()),
+        Iterables.filter(characters, Player.class),
+        Iterables.filter(characters, Enemy.class),
         waitingProvider.get());
     mapRenderer.setMap(tiledMap);
   }
-
 }

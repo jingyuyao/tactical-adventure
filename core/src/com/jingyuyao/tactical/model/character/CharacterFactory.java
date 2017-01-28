@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CharacterFactory {
 
-  BasePlayer createBasePlayer(PlayerData data, List<Item> items);
+  BasePlayer create(BasePlayerData data, List<Item> items);
 
-  PassiveEnemy createPassiveEnemy(CharacterData data, List<Item> items);
+  PassiveEnemy create(PassiveEnemyData data, List<Item> items);
 }

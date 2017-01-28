@@ -6,7 +6,6 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.MovementFactory;
@@ -46,11 +45,7 @@ public class CharacterModuleTest {
 
   @Test
   public void create_characters() {
-    characterFactory.createBasePlayer(
-        new PlayerData(new Coordinate(0, 0), "yolo", 1, 1, 1, true),
-        Collections.<Item>emptyList());
-    characterFactory.createPassiveEnemy(
-        new CharacterData(new Coordinate(0, 0), "holo", 1, 1, 1),
-        Collections.<Item>emptyList());
+    characterFactory.create(new BasePlayerData(), Collections.<Item>emptyList());
+    characterFactory.create(new PassiveEnemyData(), Collections.<Item>emptyList());
   }
 }

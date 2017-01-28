@@ -4,7 +4,8 @@ public class MapObjectData {
 
   private Coordinate coordinate;
 
-  protected MapObjectData() {
+  // No args constructor needed for serialization
+  public MapObjectData() {
   }
 
   public MapObjectData(Coordinate coordinate) {

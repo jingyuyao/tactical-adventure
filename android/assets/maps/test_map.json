@@ -1,19 +1,21 @@
 {
-  "players": [
+  "characterSaves": [
     {
-      "className": "BasePlayer",
-      "data": {
-        "coordinate": {
-          "x": 2,
-          "y": 2
-        },
-        "name": "dude",
-        "maxHp": 20,
-        "hp": 20,
-        "moveDistance": 5,
-        "actionable": true
+      "characterData": {
+        "className": "com.jingyuyao.tactical.model.character.BasePlayerData",
+        "data": {
+          "coordinate": {
+            "x": 2,
+            "y": 2
+          },
+          "name": "dude",
+          "maxHp": 20,
+          "hp": 20,
+          "moveDistance": 5,
+          "actionable": true
+        }
       },
-      "items": [
+      "itemDataList": [
         {
           "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {
@@ -34,19 +36,21 @@
       ]
     },
     {
-      "className": "BasePlayer",
-      "data": {
-        "coordinate": {
-          "x": 3,
-          "y": 3
-        },
-        "name": "dude2",
-        "maxHp": 25,
-        "hp": 25,
-        "moveDistance": 6,
-        "actionable": true
+      "characterData": {
+        "className": "com.jingyuyao.tactical.model.character.BasePlayerData",
+        "data": {
+          "coordinate": {
+            "x": 3,
+            "y": 3
+          },
+          "name": "dude2",
+          "maxHp": 25,
+          "hp": 25,
+          "moveDistance": 6,
+          "actionable": true
+        }
       },
-      "items": [
+      "itemDataList": [
         {
           "className": "com.jingyuyao.tactical.model.item.GrenadeData",
           "data": {
@@ -58,22 +62,22 @@
           }
         }
       ]
-    }
-  ],
-  "enemies": [
+    },
     {
-      "className": "PassiveEnemy",
-      "data": {
-        "coordinate": {
-          "x": 9,
-          "y": 2
-        },
-        "name": "enemy",
-        "maxHp": 20,
-        "hp": 20,
-        "moveDistance": 5
+      "characterData": {
+        "className": "com.jingyuyao.tactical.model.character.PassiveEnemyData",
+        "data": {
+          "coordinate": {
+            "x": 9,
+            "y": 2
+          },
+          "name": "enemy",
+          "maxHp": 20,
+          "hp": 20,
+          "moveDistance": 5
+        }
       },
-      "items": [
+      "itemDataList": [
         {
           "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {
@@ -86,18 +90,20 @@
       ]
     },
     {
-      "className": "PassiveEnemy",
-      "data": {
-        "coordinate": {
-          "x": 8,
-          "y": 3
-        },
-        "name": "enemy2",
-        "maxHp": 25,
-        "hp": 25,
-        "moveDistance": 6
+      "characterData": {
+        "className": "com.jingyuyao.tactical.model.character.PassiveEnemyData",
+        "data": {
+          "coordinate": {
+            "x": 8,
+            "y": 3
+          },
+          "name": "enemy2",
+          "maxHp": 25,
+          "hp": 25,
+          "moveDistance": 6
+        }
       },
-      "items": [
+      "itemDataList": [
         {
           "className": "com.jingyuyao.tactical.model.item.DirectionalWeaponData",
           "data": {

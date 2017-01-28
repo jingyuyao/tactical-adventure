@@ -24,7 +24,7 @@ public class BasePlayerTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private PlayerData data;
+  private BasePlayerData data;
   @Mock
   private List<Item> items;
   @Mock

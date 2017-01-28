@@ -9,10 +9,11 @@ import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 
-abstract class AbstractEnemy extends AbstractCharacter<CharacterData> implements Enemy {
+abstract class AbstractEnemy<T extends CharacterData>
+    extends AbstractCharacter<T> implements Enemy {
 
   AbstractEnemy(
-      CharacterData data,
+      T data,
       Multiset<Marker> markers,
       List<Item> items,
       EventBus eventBus,

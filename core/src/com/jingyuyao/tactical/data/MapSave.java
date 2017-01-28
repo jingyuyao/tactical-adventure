@@ -4,14 +4,9 @@ import java.util.List;
 
 class MapSave {
 
-  private List<PlayerSave> players;
-  private List<EnemySave> enemies;
+  private List<CharacterSave> characterSaves;
 
-  List<PlayerSave> getPlayers() {
-    return players;
-  }
-
-  List<EnemySave> getEnemies() {
-    return enemies;
+  List<CharacterSave> getCharacterSaves() {
+    return characterSaves;
   }
 }

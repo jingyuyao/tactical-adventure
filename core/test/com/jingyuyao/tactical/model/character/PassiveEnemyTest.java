@@ -24,7 +24,7 @@ public class PassiveEnemyTest {
   @Mock
   private Multiset<Marker> markers;
   @Mock
-  private CharacterData data;
+  private PassiveEnemyData data;
   @Mock
   private EventBus eventBus;
   @Mock

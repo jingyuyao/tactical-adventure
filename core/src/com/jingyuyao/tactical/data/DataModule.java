@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.jingyuyao.tactical.model.character.CharacterData;
 import com.jingyuyao.tactical.model.item.ItemData;
 
 public class DataModule extends AbstractModule {
@@ -19,6 +20,7 @@ public class DataModule extends AbstractModule {
   Gson provideGson() {
     return new GsonBuilder()
         .registerTypeAdapter(ItemData.class, new PolymorphicDeserializer<ItemData>())
+        .registerTypeAdapter(CharacterData.class, new PolymorphicDeserializer<CharacterData>())
         .create();
   }
 }

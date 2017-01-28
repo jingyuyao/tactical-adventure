@@ -23,13 +23,13 @@ import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import java.util.List;
 import javax.inject.Inject;
 
-public class PassiveEnemy extends AbstractEnemy {
+public class PassiveEnemy extends AbstractEnemy<PassiveEnemyData> {
 
   private final MovementFactory movementFactory;
 
   @Inject
   PassiveEnemy(
-      @Assisted CharacterData data,
+      @Assisted PassiveEnemyData data,
       @InitialMarkers Multiset<Marker> markers,
       @Assisted List<Item> items,
       @CharacterEventBus EventBus eventBus,

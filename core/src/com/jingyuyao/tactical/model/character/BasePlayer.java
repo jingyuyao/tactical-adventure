@@ -13,11 +13,11 @@ import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import javax.inject.Inject;
 
-public class BasePlayer extends AbstractCharacter<PlayerData> implements Player {
+public class BasePlayer extends AbstractCharacter<BasePlayerData> implements Player {
 
   @Inject
   BasePlayer(
-      @Assisted PlayerData data,
+      @Assisted BasePlayerData data,
       @InitialMarkers Multiset<Marker> markers,
       @Assisted List<Item> items,
       @CharacterEventBus EventBus eventBus,
