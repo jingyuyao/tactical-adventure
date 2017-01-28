@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class ItemLoader {
+class ItemLoader {
 
   private final Gson gson;
   private final ItemFactory itemFactory;

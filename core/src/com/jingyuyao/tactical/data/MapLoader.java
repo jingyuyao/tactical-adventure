@@ -10,11 +10,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
-import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.CharacterFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.state.Waiting;
 import java.util.List;
@@ -35,6 +33,7 @@ public class MapLoader {
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final TerrainLoader terrainLoader;
   private final ItemLoader itemLoader;
+  private final PlayerLoader playerLoader;
 
   @Inject
   MapLoader(
@@ -45,7 +44,7 @@ public class MapLoader {
       AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer,
       TerrainLoader terrainLoader,
-      ItemLoader itemLoader) {
+      ItemLoader itemLoader, PlayerLoader playerLoader) {
     this.model = model;
     this.waitingProvider = waitingProvider;
     this.characterFactory = characterFactory;
@@ -54,6 +53,7 @@ public class MapLoader {
     this.mapRenderer = mapRenderer;
     this.terrainLoader = terrainLoader;
     this.itemLoader = itemLoader;
+    this.playerLoader = playerLoader;
   }
 
   public void loadMap(String mapName) {
@@ -76,18 +76,10 @@ public class MapLoader {
         width,
         height,
         terrainLoader.createTerrains(terrainLayer, width, height),
-        createPlayers(mapSave.getPlayers()),
+        playerLoader.createPlayers(mapSave.getPlayers()),
         createEnemies(mapSave.getEnemies()),
         waitingProvider.get());
     mapRenderer.setMap(tiledMap);
-  }
-
-  private Iterable<Player> createPlayers(List<PlayerSave> playerSaves) {
-    ImmutableList.Builder<Player> builder = ImmutableList.builder();
-    for (PlayerSave playerSave : playerSaves) {
-      builder.add(createPlayer(playerSave));
-    }
-    return builder.build();
   }
 
   private Iterable<Enemy> createEnemies(List<EnemySave> enemySaves) {
@@ -96,18 +88,6 @@ public class MapLoader {
       builder.add(createEnemy(enemySave));
     }
     return builder.build();
-  }
-
-  private Player createPlayer(PlayerSave playerSave) {
-    String className = playerSave.getClassName();
-    List<Item> items = itemLoader.createItems(playerSave.getItems());
-    Player player;
-    if (BasePlayer.class.getSimpleName().equals(className)) {
-      player = characterFactory.createBasePlayer(playerSave.getData(), items);
-    } else {
-      throw new IllegalArgumentException("Unknown player class name: " + className);
-    }
-    return player;
   }
 
   private Enemy createEnemy(EnemySave enemySave) {
