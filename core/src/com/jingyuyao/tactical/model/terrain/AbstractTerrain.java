@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.terrain;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -20,5 +21,10 @@ abstract class AbstractTerrain extends AbstractMapObject implements Terrain {
   @Override
   public void highlight(MapState mapState) {
     mapState.highlight(this);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).toString();
   }
 }

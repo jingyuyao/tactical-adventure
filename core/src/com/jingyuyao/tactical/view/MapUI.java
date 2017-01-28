@@ -15,9 +15,7 @@ import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapUiStage;
-import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -86,14 +84,14 @@ public class MapUI {
   // TODO: need to refresh stats after attack
   @Subscribe
   public void highlightCharacter(HighlightCharacter highlightCharacter) {
-    characterLabel.setText(
-        String.format(Locale.US, "HP: %d", highlightCharacter.getObject().getHp()));
+    terrainLabel.setText(null);
+    characterLabel.setText(highlightCharacter.getObject().toString());
   }
 
   @Subscribe
   public void highlightTerrain(HighlightTerrain highlightTerrain) {
     characterLabel.setText(null);
-    updateTerrainLabel(highlightTerrain.getObject());
+    terrainLabel.setText(highlightTerrain.getObject().toString());
   }
 
   @Subscribe
@@ -102,10 +100,6 @@ public class MapUI {
     stateLabel.setText(newState.getName());
     currentActions = newState.getActions();
     populateButtons();
-  }
-
-  private void updateTerrainLabel(Terrain terrain) {
-    terrainLabel.setText(String.format("Type: %s", terrain.getClass().getSimpleName()));
   }
 
   private void populateButtons() {

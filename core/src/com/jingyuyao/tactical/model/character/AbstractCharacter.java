@@ -65,16 +65,6 @@ abstract class AbstractCharacter<T extends CharacterData>
   }
 
   @Override
-  public String getName() {
-    return data.getName();
-  }
-
-  @Override
-  public int getHp() {
-    return data.getHp();
-  }
-
-  @Override
   public void damageBy(int delta) {
     data.damageBy(delta);
     if (data.isDead()) {
@@ -167,6 +157,9 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("name", getName()).toString() + super.toString();
+    return MoreObjects.toStringHelper(this)
+        .add("name", data.getName())
+        .add("hp", data.getHp())
+        .toString();
   }
 }

@@ -111,20 +111,6 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void name() {
-    when(data.getName()).thenReturn(NAME);
-
-    assertThat(character.getName()).isEqualTo(NAME);
-  }
-
-  @Test
-  public void hp() {
-    when(data.getHp()).thenReturn(1);
-
-    assertThat(character.getHp()).isEqualTo(1);
-  }
-
-  @Test
   public void damage_by_not_dead() {
     when(data.isDead()).thenReturn(false);
 
