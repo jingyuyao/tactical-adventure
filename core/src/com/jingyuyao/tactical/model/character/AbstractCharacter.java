@@ -183,6 +183,6 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public String toString() {
-    return String.format(Locale.US, "%s H:%d", getName(), getData().getHp());
+    return String.format(Locale.US, "%s\nHealth(%d)", getName(), getData().getHp());
   }
 }

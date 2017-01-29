@@ -22,6 +22,6 @@ abstract class AbstractWeapon<T extends WeaponData> extends BaseItem<T> implemen
   @Override
   public String toString() {
     return String.format(
-        Locale.US, "%s A:%d U:%d", getName(), getData().getAttackPower(), getUsageLeft());
+        Locale.US, "%s\nAtk(%d) Usg(%d)", getName(), getData().getAttackPower(), getUsageLeft());
   }
 }

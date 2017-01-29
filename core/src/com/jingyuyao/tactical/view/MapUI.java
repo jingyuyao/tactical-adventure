@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.view;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -9,8 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
@@ -43,6 +47,8 @@ public class MapUI {
     terrainLabel = new Label(null, skin);
     stateLabel = new Label(null, skin);
     actionButtons = new VerticalGroup().space(7).columnRight();
+
+    characterLabel.setAlignment(Align.right);
 
     root.setFillParent(true);
     root.setDebug(true);
@@ -80,7 +86,9 @@ public class MapUI {
   @Subscribe
   public void highlightCharacter(HighlightCharacter highlightCharacter) {
     terrainLabel.setText(null);
-    characterLabel.setText(highlightCharacter.getObject().toString());
+    Character character = highlightCharacter.getObject();
+    characterLabel.setText(character.toString());
+    characterLabel.setColor(Player.class.isInstance(character) ? Color.GREEN : Color.RED);
   }
 
   @Subscribe
@@ -106,8 +114,12 @@ public class MapUI {
 
   private TextButton createActionButton(final Action action) {
     TextButton button = new TextButton(action.getName(), skin);
-    button.getLabel().setFontScale(1.3f);
-    button.getLabelCell().padLeft(10).padRight(10).prefHeight(Value.percentHeight(0.10f, root));
+    button.getLabel().setAlignment(Align.right);
+    button
+        .getLabelCell()
+        .padLeft(10)
+        .padRight(10)
+        .prefHeight(Value.percentHeight(0.10f, root));
     button.addListener(
         new ChangeListener() {
           @Override

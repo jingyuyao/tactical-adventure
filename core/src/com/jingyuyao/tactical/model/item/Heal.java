@@ -20,6 +20,6 @@ public class Heal extends BaseItem<HealData> implements Consumable {
   @Override
   public String toString() {
     return String.format(
-        Locale.US, "%s H:%d U:%d", getName(), getData().getAmount(), getUsageLeft());
+        Locale.US, "%s\nHeal(%d) Usg(%d)", getName(), getData().getAmount(), getUsageLeft());
   }
 }
