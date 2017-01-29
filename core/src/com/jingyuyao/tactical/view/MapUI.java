@@ -39,7 +39,7 @@ public class MapUI {
     characterLabel = new Label(null, skin);
     terrainLabel = new Label(null, skin);
     stateLabel = new Label(null, skin);
-    actionButtons = new VerticalGroup().space(7);
+    actionButtons = new VerticalGroup().space(7).columnRight();
 
     root.setFillParent(true);
     root.setDebug(true);
