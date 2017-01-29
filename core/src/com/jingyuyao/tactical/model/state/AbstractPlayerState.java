@@ -31,7 +31,7 @@ abstract class AbstractPlayerState extends AbstractState {
     }
 
     @Override
-    public String getName() {
+    public String getText() {
       return weapon.toString();
     }
 
@@ -53,7 +53,7 @@ abstract class AbstractPlayerState extends AbstractState {
     }
 
     @Override
-    public String getName() {
+    public String getText() {
       return consumable.toString();
     }
 

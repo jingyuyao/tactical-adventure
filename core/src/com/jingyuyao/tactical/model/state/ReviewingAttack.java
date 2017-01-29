@@ -85,7 +85,7 @@ class ReviewingAttack extends AbstractPlayerState {
   class Attack implements Action {
 
     @Override
-    public String getName() {
+    public String getText() {
       return "attack";
     }
 

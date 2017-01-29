@@ -33,7 +33,7 @@ abstract class AbstractMovementState extends AbstractPlayerState {
   class SelectItems implements Action {
 
     @Override
-    public String getName() {
+    public String getText() {
       return "all items";
     }
 
@@ -46,7 +46,7 @@ abstract class AbstractMovementState extends AbstractPlayerState {
   class Wait implements Action {
 
     @Override
-    public String getName() {
+    public String getText() {
       return "wait";
     }
 

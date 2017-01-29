@@ -113,7 +113,7 @@ public class MapUI {
   }
 
   private TextButton createActionButton(final Action action) {
-    TextButton button = new TextButton(action.getName(), skin);
+    TextButton button = new TextButton(action.getText(), skin);
     button.getLabel().setAlignment(Align.right);
     button
         .getLabelCell()

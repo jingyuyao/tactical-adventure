@@ -4,7 +4,7 @@ import com.jingyuyao.tactical.model.event.ModelEvent;
 
 public interface Action extends ModelEvent {
 
-  String getName();
+  String getText();
 
   void run();
 }

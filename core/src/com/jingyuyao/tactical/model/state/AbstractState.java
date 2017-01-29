@@ -73,7 +73,7 @@ abstract class AbstractState implements State {
   class Back implements Action {
 
     @Override
-    public String getName() {
+    public String getText() {
       return "back";
     }
 

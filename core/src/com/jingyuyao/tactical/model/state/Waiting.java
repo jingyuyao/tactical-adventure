@@ -38,7 +38,7 @@ public class Waiting extends AbstractState {
   public class EndTurn implements Action {
 
     @Override
-    public String getName() {
+    public String getText() {
       return "end";
     }
 
