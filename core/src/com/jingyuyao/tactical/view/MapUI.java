@@ -35,7 +35,9 @@ public class MapUI {
   MapUI(@MapUiStage Stage stage, Skin skin) {
     this.skin = skin;
     this.stage = stage;
-    root = new Table();
+
+    // Logical cell layout starts at top left corner
+    root = new Table().pad(10);
     characterLabel = new Label(null, skin);
     terrainLabel = new Label(null, skin);
     stateLabel = new Label(null, skin);
@@ -45,23 +47,15 @@ public class MapUI {
     root.setDebug(true);
     stage.addActor(root);
 
-    // Logical cell layout starts at top left corner
-    root.top().left().pad(10);
-
     // row 1
-    root.add(characterLabel).left().top();
-    root.add(); // filler since we want 3x3 table
-    root.add(terrainLabel).right().top();
+    root.row().top();
+    root.add(terrainLabel).left();
+    root.add(characterLabel).right();
 
     // row 2
-    root.row(); // Careful to not chain anything here since it sets default for all rows
-    root.add().expand(); // A filler cell that pushes the buttons to the bottom
-
-    // row 3
-    root.row();
-    root.add(stateLabel).left().bottom();
-    root.add();
-    root.add(actionButtons).right().bottom();
+    root.row().bottom();
+    root.add(stateLabel).left();
+    root.add(actionButtons).right().expand();
   }
 
   void act(float delta) {
