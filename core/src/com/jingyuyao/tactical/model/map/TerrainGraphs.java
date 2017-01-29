@@ -99,7 +99,6 @@ public class TerrainGraphs {
       }
     }
 
-    Preconditions.checkState(graph.predecessors(startingCoordinate).isEmpty());
     Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
     return graph;
   }
