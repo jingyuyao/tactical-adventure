@@ -28,8 +28,8 @@ public class ViewModule extends AbstractModule {
 
   private static final int TILE_SIZE = 32; // pixels
   private static final float TILE_TO_WORLD_SCALE = 1f / TILE_SIZE;
-  private static final int VIEWPORT_WORLD_WIDTH = 15;
-  private static final int VIEWPORT_WORLD_HEIGHT = 10;
+  private static final int VIEWPORT_WORLD_WIDTH = 16;
+  private static final int VIEWPORT_WORLD_HEIGHT = 9;
 
   @Override
   protected void configure() {
