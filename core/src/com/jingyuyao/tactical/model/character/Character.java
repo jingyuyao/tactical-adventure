@@ -12,6 +12,8 @@ import com.jingyuyao.tactical.model.map.Path;
 
 public interface Character extends MapObject {
 
+  CharacterData getSaveData();
+
   void registerListener(Object listener);
 
   String getName();

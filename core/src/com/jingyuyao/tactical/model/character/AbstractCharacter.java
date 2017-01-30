@@ -59,6 +59,11 @@ abstract class AbstractCharacter<T extends CharacterData>
   }
 
   @Override
+  public CharacterData getSaveData() {
+    return getData();
+  }
+
+  @Override
   public void registerListener(Object listener) {
     eventBus.register(listener);
   }
