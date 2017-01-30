@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.MapLoader;
+import com.jingyuyao.tactical.data.MapSaver;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.MapScreen;
@@ -32,9 +33,11 @@ public class TacticalAdventure extends Game {
   @Inject
   private MapView mapView;
   @Inject
+  private MapController mapController;
+  @Inject
   private MapLoader mapLoader;
   @Inject
-  private MapController mapController;
+  private MapSaver mapSaver;
   @Inject
   private Batch batch;
   @Inject
@@ -71,6 +74,7 @@ public class TacticalAdventure extends Game {
 
   public void setLevel(String mapName) {
     mapLoader.loadMap(mapName);
+    mapSaver.saveMap(mapName);
     setScreen(mapScreen);
     mapController.receiveInput();
   }
