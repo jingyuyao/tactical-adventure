@@ -8,7 +8,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.actor.ActorModule.ActorWorldSize;
-import com.jingyuyao.tactical.view.actor.ActorModule.PlayerSprite;
 import java.util.Map;
 import javax.inject.Inject;
 
@@ -20,7 +19,7 @@ public class PlayerActor extends CharacterActor<Player> {
       @Assisted EventListener listener,
       @ActorWorldSize float size,
       Map<Marker, Sprite> markerSpriteMap,
-      @PlayerSprite Sprite sprite) {
+      @Assisted Sprite sprite) {
     super(object, listener, size, markerSpriteMap, sprite);
   }
 

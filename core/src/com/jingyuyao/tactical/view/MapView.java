@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.Subscribe;
@@ -13,6 +14,7 @@ import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -27,6 +29,7 @@ public class MapView {
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
+  private final Map<String, Sprite> nameSpriteMap;
 
   /**
    * A map view contains a stage with all the actors and a way to render them. The background map is
@@ -36,11 +39,13 @@ public class MapView {
   MapView(@MapViewStage Stage stage,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
-      ControllerFactory controllerFactory) {
+      ControllerFactory controllerFactory,
+      Map<String, Sprite> nameSpriteMap) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
     this.controllerFactory = controllerFactory;
+    this.nameSpriteMap = nameSpriteMap;
   }
 
   @Subscribe
@@ -52,13 +57,17 @@ public class MapView {
   @Subscribe
   public void addPlayer(AddPlayer addPlayer) {
     Player player = addPlayer.getObject();
-    stage.addActor(actorFactory.create(player, controllerFactory.create(player)));
+    stage.addActor(
+        actorFactory.create(
+            player, controllerFactory.create(player), nameSpriteMap.get(player.getName())));
   }
 
   @Subscribe
   public void addEnemy(AddEnemy addEnemy) {
     Enemy enemy = addEnemy.getObject();
-    stage.addActor(actorFactory.create(enemy, controllerFactory.create(enemy)));
+    stage.addActor(
+        actorFactory.create(
+            enemy, controllerFactory.create(enemy), nameSpriteMap.get(enemy.getName())));
   }
 
   void act(float delta) {
