@@ -1,10 +1,12 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import java.util.Set;
 import javax.inject.Inject;
 
 /**
@@ -13,13 +15,11 @@ import javax.inject.Inject;
 public class Movement {
 
   private final Graph<Coordinate> moveGraph;
-  private final Movements movements;
   private final Terrains terrains;
   private Marking marking;
 
   @Inject
-  Movement(Movements movements, Terrains terrains, @Assisted Graph<Coordinate> moveGraph) {
-    this.movements = movements;
+  Movement(Terrains terrains, @Assisted Graph<Coordinate> moveGraph) {
     this.terrains = terrains;
     this.moveGraph = moveGraph;
   }
@@ -44,7 +44,7 @@ public class Movement {
   public Path pathTo(Coordinate coordinate) {
     Preconditions.checkArgument(moveGraph.nodes().contains(coordinate));
 
-    return new Path(coordinate, movements.getTrackTo(moveGraph, coordinate));
+    return new Path(coordinate, getTrackTo(moveGraph, coordinate));
   }
 
   public void showMarking() {
@@ -63,5 +63,32 @@ public class Movement {
       builder.put(terrain, Marker.CAN_MOVE_TO);
     }
     return builder.build();
+  }
+
+  /**
+   * Get the track from the starting {@link Coordinate} in the {@code graph} to {@code target}.
+   * {@code target} must exist in the {@code graph} or an exception will be thrown.
+   *
+   * @param graph An directed acyclic graph
+   * @param target The target node to find a path to
+   * @return A path to {@code target} from the first node in the graph or an empty list if target is
+   * not in the graph
+   */
+  private ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
+    Preconditions.checkArgument(graph.nodes().contains(target));
+
+    ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
+    builder.add(target);
+
+    Set<Coordinate> predecessors = graph.predecessors(target);
+    while (predecessors.size() != 0) {
+      Preconditions.checkState(
+          predecessors.size() == 1, "getTrackTo encountered a node with multiple predecessors");
+      Coordinate predecessor = predecessors.iterator().next();
+      builder.add(predecessor);
+      predecessors = graph.predecessors(predecessor);
+    }
+
+    return builder.build().reverse();
   }
 }

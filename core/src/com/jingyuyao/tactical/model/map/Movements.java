@@ -3,10 +3,8 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.ElementOrder;
-import com.google.common.graph.Graph;
 import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
@@ -115,33 +113,6 @@ public class Movements {
 
     Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
     return graph;
-  }
-
-  /**
-   * Get the track from the starting {@link Coordinate} in the {@code graph} to {@code target}.
-   * {@code target} must exist in the {@code graph} or an exception will be thrown.
-   *
-   * @param graph An directed acyclic graph
-   * @param target The target node to find a path to
-   * @return A path to {@code target} from the first node in the graph or an empty list if target is
-   * not in the graph
-   */
-  ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
-    Preconditions.checkArgument(graph.nodes().contains(target));
-
-    ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
-    builder.add(target);
-
-    Set<Coordinate> predecessors = graph.predecessors(target);
-    while (predecessors.size() != 0) {
-      Preconditions.checkState(
-          predecessors.size() == 1, "getTrackTo encountered a node with multiple predecessors");
-      Coordinate predecessor = predecessors.iterator().next();
-      builder.add(predecessor);
-      predecessors = graph.predecessors(predecessor);
-    }
-
-    return builder.build().reverse();
   }
 
   Function<Terrain, Integer> createEdgeCostFunction(final Character character) {
