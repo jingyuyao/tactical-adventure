@@ -34,6 +34,16 @@ not use EventBus for things that can be cheaply polled per frame by the view. Ou
 scoped. We have ONE model scoped EventBus. Each character also have its own EventBus which is used
 to send events to its associated actor.
 
+### Note for serialization
+We use Gson to serialize/deserialize game objects (except for terrains). We make use of the
+runtime type adapter from gson/extra to add type information to our generic lists of characters
+and items. Each concrete classes of the generic types should be registered to the corresponding
+type adapter. Each concrete class that require Guice injection should also be registered in the
+data module. The gson deserialization reduce the need for factories as we no longer need to create
+instances by hand. All the data fields and injected by gson. Since gson requires an instance before
+injections, all model objects either need a no-args constructor or a Guice injectable constructor
+(with no assisted injections).
+
 ## Models
 - Model classes should self-contained, it should not reference libgdx, controller or views
 - Receive commands via method invocation from controllers
