@@ -2,14 +2,12 @@ package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
-import javax.inject.Inject;
 
 public class Heal extends BaseItem implements Consumable {
 
   private int amount;
 
-  @Inject
-  Heal() {
+  private Heal() {
   }
 
   Heal(String name, int usageLeft, int amount) {

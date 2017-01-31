@@ -61,8 +61,7 @@ public class DataModule extends AbstractModule {
         BasePlayer.class,
         PassiveEnemy.class,
         DirectionalWeapon.class,
-        Grenade.class,
-        Heal.class
+        Grenade.class
     );
   }
 
