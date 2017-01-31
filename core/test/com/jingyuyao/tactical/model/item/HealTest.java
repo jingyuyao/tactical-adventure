@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.model.character.Character;
 import org.junit.Before;
@@ -13,10 +12,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class HealTest {
 
+  private static final String NAME = "heal";
+  private static final int USAGE_LEFT = 1;
   private static final int AMOUNT = 11;
 
-  @Mock
-  private HealData healData;
   @Mock
   private Character character;
 
@@ -24,13 +23,11 @@ public class HealTest {
 
   @Before
   public void setUp() {
-    heal = new Heal(healData);
+    heal = new Heal(NAME, USAGE_LEFT, AMOUNT);
   }
 
   @Test
   public void consume() {
-    when(healData.getAmount()).thenReturn(AMOUNT);
-
     heal.apply(character);
 
     verify(character).healBy(AMOUNT);

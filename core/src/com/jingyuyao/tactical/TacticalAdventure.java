@@ -74,7 +74,7 @@ public class TacticalAdventure extends Game {
 
   public void setLevel(String mapName) {
     mapLoader.loadMap(mapName);
-    mapSaver.saveMap(mapName);
+//    mapSaver.saveMap(mapName);
     setScreen(mapScreen);
     mapController.receiveInput();
   }

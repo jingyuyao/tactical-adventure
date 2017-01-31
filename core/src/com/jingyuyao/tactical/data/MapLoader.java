@@ -28,7 +28,6 @@ public class MapLoader {
   private final Gson gson;
   private final AssetManager assetManager;
   private final OrthogonalTiledMapRenderer mapRenderer;
-  private final CharacterLoader characterLoader;
   private final TerrainLoader terrainLoader;
 
   @Inject
@@ -38,14 +37,12 @@ public class MapLoader {
       Gson gson,
       AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer,
-      CharacterLoader characterLoader,
       TerrainLoader terrainLoader) {
     this.model = model;
     this.waitingProvider = waitingProvider;
     this.gson = gson;
     this.assetManager = assetManager;
     this.mapRenderer = mapRenderer;
-    this.characterLoader = characterLoader;
     this.terrainLoader = terrainLoader;
   }
 
@@ -65,7 +62,7 @@ public class MapLoader {
     FileHandle mapData = Gdx.files.internal(mapName + ".json");
     MapSave mapSave = gson.fromJson(mapData.readString(), MapSave.class);
 
-    Iterable<Character> characters = characterLoader.createCharacter(mapSave.getCharacterSaves());
+    Iterable<Character> characters = mapSave.getCharacters();
 
     model.newMap(
         width,

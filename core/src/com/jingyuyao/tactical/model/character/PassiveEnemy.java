@@ -7,7 +7,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -23,20 +22,28 @@ import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import java.util.List;
 import javax.inject.Inject;
 
-public class PassiveEnemy extends AbstractEnemy<PassiveEnemyData> {
+public class PassiveEnemy extends AbstractEnemy {
 
-  private final MovementFactory movementFactory;
+  private transient final MovementFactory movementFactory;
 
   @Inject
   PassiveEnemy(
-      @Assisted PassiveEnemyData data,
       @InitialMarkers Multiset<Marker> markers,
-      @Assisted List<Item> items,
       @CharacterEventBus EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters,
       MovementFactory movementFactory) {
-    super(data, markers, items, eventBus, terrainGraphs, characters);
+    super(markers, eventBus, terrainGraphs, characters);
+    this.movementFactory = movementFactory;
+  }
+
+  PassiveEnemy(Coordinate coordinate,
+      Multiset<Marker> markers, TerrainGraphs terrainGraphs,
+      Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
+      List<Item> items,
+      MovementFactory movementFactory) {
+    super(coordinate, markers, terrainGraphs, characters, eventBus, name, maxHp, hp, moveDistance,
+        items);
     this.movementFactory = movementFactory;
   }
 

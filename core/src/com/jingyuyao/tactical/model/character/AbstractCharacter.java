@@ -31,25 +31,40 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-abstract class AbstractCharacter<T extends CharacterData>
-    extends AbstractMapObject<T> implements Character {
+abstract class AbstractCharacter extends AbstractMapObject implements Character {
 
-  private final List<Item> items;
-  private final TerrainGraphs terrainGraphs;
-  private final Characters characters;
-  private final EventBus eventBus;
+  private transient final TerrainGraphs terrainGraphs;
+  private transient final Characters characters;
+  private transient final EventBus eventBus;
+  private String name;
+  private int maxHp;
+  private int hp;
+  private int moveDistance;
+  private List<Item> items;
 
   AbstractCharacter(
-      T data,
       Multiset<Marker> markers,
-      List<Item> items,
       EventBus eventBus,
       TerrainGraphs terrainGraphs,
       Characters characters) {
-    super(data, markers);
+    super(markers);
     this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
+  }
+
+  AbstractCharacter(Coordinate coordinate,
+      Multiset<Marker> markers, TerrainGraphs terrainGraphs,
+      Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
+      List<Item> items) {
+    super(coordinate, markers);
+    this.terrainGraphs = terrainGraphs;
+    this.characters = characters;
+    this.eventBus = eventBus;
+    this.name = name;
+    this.maxHp = maxHp;
+    this.hp = hp;
+    this.moveDistance = moveDistance;
     this.items = items;
   }
 
@@ -59,24 +74,24 @@ abstract class AbstractCharacter<T extends CharacterData>
   }
 
   @Override
-  public CharacterData getSaveData() {
-    return getData();
-  }
-
-  @Override
   public void registerListener(Object listener) {
     eventBus.register(listener);
   }
 
   @Override
   public String getName() {
-    return getData().getName();
+    return name;
+  }
+
+  @Override
+  public int getHp() {
+    return hp;
   }
 
   @Override
   public void damageBy(int delta) {
-    getData().damageBy(delta);
-    if (getData().isDead()) {
+    hp = Math.max(hp - delta, 0);
+    if (hp == 0) {
       characters.remove(this);
       eventBus.post(new RemoveSelf());
     }
@@ -84,7 +99,7 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public void healBy(int delta) {
-    getData().healBy(delta);
+    hp = Math.min(hp + delta, maxHp);
   }
 
   @Override
@@ -162,7 +177,7 @@ abstract class AbstractCharacter<T extends CharacterData>
   @Override
   public Graph<Coordinate> createMoveGraph() {
     return terrainGraphs.distanceFrom(
-        getCoordinate(), getData().getMoveDistance(), createMovementPenaltyFunction());
+        getCoordinate(), moveDistance, createMovementPenaltyFunction());
   }
 
   private Function<Terrain, Integer> createMovementPenaltyFunction() {
@@ -188,6 +203,6 @@ abstract class AbstractCharacter<T extends CharacterData>
 
   @Override
   public String toString() {
-    return String.format(Locale.US, "%s\nHealth(%d)", getName(), getData().getHp());
+    return String.format(Locale.US, "%s\nHealth(%d)", name, hp);
   }
 }

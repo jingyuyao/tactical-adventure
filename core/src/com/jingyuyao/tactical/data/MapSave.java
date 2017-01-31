@@ -1,12 +1,13 @@
 package com.jingyuyao.tactical.data;
 
+import com.jingyuyao.tactical.model.character.Character;
 import java.util.List;
 
 class MapSave {
 
-  private List<CharacterSave> characterSaves;
+  private List<Character> characters;
 
-  List<CharacterSave> getCharacterSaves() {
-    return characterSaves;
+  List<Character> getCharacters() {
+    return characters;
   }
 }

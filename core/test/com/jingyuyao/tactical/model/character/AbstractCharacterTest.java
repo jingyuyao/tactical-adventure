@@ -44,11 +44,13 @@ public class AbstractCharacterTest {
   private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
   private static final Coordinate DESTINATION = new Coordinate(50, 50);
   private static final Coordinate BLOCKED_COORDINATE = new Coordinate(12, 12);
+  private static final String NAME = "yo";
+  private static final int MAX_HP = 20;
+  private static final int HP = 10;
+  private static final int MOVE_DISTANCE = 3;
 
   @Mock
   private Multiset<Marker> markers;
-  @Mock
-  private CharacterData data;
   @Mock
   private EventBus eventBus;
   @Mock
@@ -91,7 +93,8 @@ public class AbstractCharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(data, markers, terrainGraphs, characters, eventBus, items);
+        new CharacterImpl(CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus,
+            NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
@@ -110,22 +113,18 @@ public class AbstractCharacterTest {
 
   @Test
   public void damage_by_not_dead() {
-    when(data.isDead()).thenReturn(false);
-
     character.damageBy(5);
 
-    verify(data).damageBy(5);
+    assertThat(character.getHp()).isEqualTo(HP - 5);
     verifyZeroInteractions(characters);
     verifyZeroInteractions(eventBus);
   }
 
   @Test
   public void damage_by_dead() {
-    when(data.isDead()).thenReturn(true);
+    character.damageBy(11);
 
-    character.damageBy(5);
-
-    verify(data).damageBy(5);
+    assertThat(character.getHp()).isEqualTo(0);
     verify(characters).remove(character);
     verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(RemoveSelf.class);
@@ -133,9 +132,9 @@ public class AbstractCharacterTest {
 
   @Test
   public void heal_by() {
-    character.healBy(10);
+    character.healBy(20);
 
-    verify(data).healBy(10);
+    assertThat(character.getHp()).isEqualTo(MAX_HP);
   }
 
   @Test
@@ -234,7 +233,7 @@ public class AbstractCharacterTest {
 
     ListenableFuture<Void> future = character.moveAlong(path);
 
-    verify(data).setCoordinate(DESTINATION);
+    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     Move move = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Move.class);
     assertThat(move.getPath()).isSameAs(path);
@@ -248,7 +247,7 @@ public class AbstractCharacterTest {
   public void instant_move() {
     character.instantMoveTo(DESTINATION);
 
-    verify(data).setCoordinate(DESTINATION);
+    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), InstantMove.class);
@@ -258,8 +257,6 @@ public class AbstractCharacterTest {
 
   @Test
   public void create_move_graph() {
-    when(data.getCoordinate()).thenReturn(CHARACTER_COORDINATE);
-    when(data.getMoveDistance()).thenReturn(10);
     when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
     when(terrain.canHold(character)).thenReturn(true);
@@ -276,23 +273,21 @@ public class AbstractCharacterTest {
 
     verify(terrainGraphs)
         .distanceFrom(
-            Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(10), functionCaptor.capture());
+            Mockito.eq(CHARACTER_COORDINATE), Mockito.eq(MOVE_DISTANCE), functionCaptor.capture());
     Function<Terrain, Integer> function = functionCaptor.getValue();
     assertThat(function.apply(terrain)).isEqualTo(123);
     assertThat(function.apply(blockedTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
     assertThat(function.apply(cannotPassTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
   }
 
-  private static class CharacterImpl extends AbstractCharacter<CharacterData> {
+  private static class CharacterImpl extends AbstractCharacter {
 
-    CharacterImpl(
-        CharacterData data,
-        Multiset<Marker> markers,
-        TerrainGraphs terrainGraphs,
-        Characters characters,
-        EventBus eventBus,
+    CharacterImpl(Coordinate coordinate,
+        Multiset<Marker> markers, TerrainGraphs terrainGraphs,
+        Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
         List<Item> items) {
-      super(data, markers, items, eventBus, terrainGraphs, characters);
+      super(coordinate, markers, terrainGraphs, characters, eventBus, name, maxHp, hp, moveDistance,
+          items);
     }
 
     @Override

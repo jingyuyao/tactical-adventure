@@ -1,25 +1,30 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 import javax.inject.Inject;
 
-public class Heal extends BaseItem<HealData> implements Consumable {
+public class Heal extends BaseItem implements Consumable {
+
+  private int amount;
 
   @Inject
-  Heal(@Assisted HealData healData) {
-    super(healData);
+  Heal() {
+  }
+
+  Heal(String name, int usageLeft, int amount) {
+    super(name, usageLeft);
+    this.amount = amount;
   }
 
   @Override
   public void apply(Character character) {
-    character.healBy(getData().getAmount());
+    character.healBy(amount);
   }
 
   @Override
   public String toString() {
     return String.format(
-        Locale.US, "%s\nHeal(%d) Usg(%d)", getName(), getData().getAmount(), getUsageLeft());
+        Locale.US, "%s\nHeal(%d) Usg(%d)", getName(), amount, getUsageLeft());
   }
 }

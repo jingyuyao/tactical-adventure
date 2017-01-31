@@ -12,7 +12,6 @@ public class ItemModule extends AbstractModule {
     requireBinding(Characters.class);
     requireBinding(Terrains.class);
 
-    install(new FactoryModuleBuilder().build(ItemFactory.class));
     install(new FactoryModuleBuilder().build(TargetFactory.class));
   }
 }

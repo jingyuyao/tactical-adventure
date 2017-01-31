@@ -5,8 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.jingyuyao.tactical.model.character.CharacterData;
-import com.jingyuyao.tactical.model.item.ItemData;
+import com.jingyuyao.tactical.model.character.BasePlayer;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.PassiveEnemy;
+import com.jingyuyao.tactical.model.item.DirectionalWeapon;
+import com.jingyuyao.tactical.model.item.Grenade;
+import com.jingyuyao.tactical.model.item.Heal;
+import com.jingyuyao.tactical.model.item.Item;
 
 public class DataModule extends AbstractModule {
 
@@ -17,10 +22,21 @@ public class DataModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Gson provideGson() {
+  Gson provideGson(
+      DataSerializer<BasePlayer> basePlayerDataSerializer,
+      DataSerializer<PassiveEnemy> passiveEnemyDataSerializer,
+      DataSerializer<DirectionalWeapon> directionalWeaponDataSerializer,
+      DataSerializer<Grenade> grenadeDataSerializer,
+      DataSerializer<Heal> healDataSerializer
+  ) {
     return new GsonBuilder()
-        .registerTypeAdapter(ItemData.class, new DataAdapter<ItemData>())
-        .registerTypeAdapter(CharacterData.class, new DataAdapter<CharacterData>())
+        .registerTypeAdapter(Character.class, new PolymorphicDeserializer<Character>())
+        .registerTypeAdapter(Item.class, new PolymorphicDeserializer<Item>())
+        .registerTypeAdapter(BasePlayer.class, basePlayerDataSerializer)
+        .registerTypeAdapter(PassiveEnemy.class, passiveEnemyDataSerializer)
+        .registerTypeAdapter(DirectionalWeapon.class, directionalWeaponDataSerializer)
+        .registerTypeAdapter(Grenade.class, grenadeDataSerializer)
+        .registerTypeAdapter(Heal.class, healDataSerializer)
         .create();
   }
 }

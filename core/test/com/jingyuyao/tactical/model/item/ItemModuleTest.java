@@ -25,20 +25,11 @@ public class ItemModuleTest {
   private Terrains terrains;
 
   @Inject
-  private ItemFactory itemFactory;
-  @Inject
   private TargetFactory targetFactory;
 
   @Before
   public void setUp() {
     Guice.createInjector(BoundFieldModule.of(this), new ItemModule()).injectMembers(this);
-  }
-
-  @Test
-  public void item_factory() {
-    itemFactory.create(new HealData());
-    itemFactory.create(new DirectionalWeaponData());
-    itemFactory.create(new GrenadeData());
   }
 
   @Test

@@ -7,7 +7,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.CharacterData;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
@@ -52,15 +51,6 @@ public class Characters {
 
   public Iterable<Enemy> getEnemies() {
     return Iterables.filter(characterSet, Enemy.class);
-  }
-
-  public Iterable<CharacterData> getCharacterDatas() {
-    return Iterables.transform(characterSet, new Function<Character, CharacterData>() {
-      @Override
-      public CharacterData apply(Character input) {
-        return input.getSaveData();
-      }
-    });
   }
 
   public Iterable<Character> getAll(final ImmutableSet<Coordinate> coordinates) {

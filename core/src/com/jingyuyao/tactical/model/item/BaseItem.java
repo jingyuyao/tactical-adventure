@@ -1,32 +1,36 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.base.Preconditions;
+
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-class BaseItem<T extends ItemData> implements Item {
+class BaseItem implements Item {
 
-  private final T data;
+  private String name;
+  private int usageLeft;
 
-  BaseItem(T data) {
-    this.data = data;
+  BaseItem() {
+  }
+
+  BaseItem(String name, int usageLeft) {
+    this.name = name;
+    this.usageLeft = usageLeft;
   }
 
   @Override
   public String getName() {
-    return data.getName();
+    return name;
   }
 
   @Override
   public int getUsageLeft() {
-    return data.getUsageLeft();
+    return usageLeft;
   }
 
   @Override
   public void useOnce() {
-    data.useOnce();
-  }
-
-  T getData() {
-    return data;
+    Preconditions.checkState(usageLeft > 0);
+    usageLeft--;
   }
 }

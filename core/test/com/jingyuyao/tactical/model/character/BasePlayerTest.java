@@ -2,12 +2,12 @@ package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
@@ -21,10 +21,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BasePlayerTest {
 
+  private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
+  private static final String NAME = "yo";
+  private static final int MAX_HP = 20;
+  private static final int HP = 10;
+  private static final int MOVE_DISTANCE = 3;
+
   @Mock
   private Multiset<Marker> markers;
-  @Mock
-  private BasePlayerData data;
   @Mock
   private List<Item> items;
   @Mock
@@ -40,7 +44,8 @@ public class BasePlayerTest {
   @Before
   public void setUp() {
     player =
-        new BasePlayer(data, markers, items, eventBus, terrainGraphs, characters);
+        new BasePlayer(CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, NAME,
+            MAX_HP, HP, MOVE_DISTANCE, items, true);
   }
 
   @Test
@@ -52,8 +57,6 @@ public class BasePlayerTest {
 
   @Test
   public void get_actionable() {
-    when(data.isActionable()).thenReturn(true);
-
     assertThat(player.isActionable()).isTrue();
   }
 
@@ -61,6 +64,6 @@ public class BasePlayerTest {
   public void set_actionable() {
     player.setActionable(false);
 
-    verify(data).setActionable(false);
+    assertThat(player.isActionable()).isFalse();
   }
 }

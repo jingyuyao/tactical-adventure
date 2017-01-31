@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Directions;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -13,17 +12,14 @@ import javax.inject.Inject;
  * A weapon that can be targeted in all directions in {@link Directions#ALL}.
  */
 // TODO: test me
-public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponData> {
+public class DirectionalWeapon extends AbstractWeapon {
 
-  private final Terrains terrains;
-  private final TargetFactory targetFactory;
+  private transient final Terrains terrains;
+  private transient final TargetFactory targetFactory;
+  private int distance;
 
   @Inject
-  DirectionalWeapon(
-      @Assisted DirectionalWeaponData weaponStats,
-      Terrains terrains,
-      TargetFactory targetFactory) {
-    super(weaponStats);
+  DirectionalWeapon(Terrains terrains, TargetFactory targetFactory) {
     this.terrains = terrains;
     this.targetFactory = targetFactory;
   }
@@ -43,7 +39,7 @@ public class DirectionalWeapon extends AbstractWeapon<DirectionalWeaponData> {
   private Optional<Target> createTarget(Coordinate from, Coordinate direction) {
     Coordinate current = from.offsetBy(direction);
     ImmutableSet<Coordinate> selectCoordinates = ImmutableSet.of(current);
-    int leftOverDistance = getData().getDistance();
+    int leftOverDistance = distance;
 
     ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
     while (leftOverDistance > 0 && terrains.contains(current)) {
