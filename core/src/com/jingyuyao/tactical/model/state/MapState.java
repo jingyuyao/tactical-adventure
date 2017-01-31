@@ -22,8 +22,8 @@ import javax.inject.Singleton;
 @Singleton
 public class MapState {
 
+  private final EventBus eventBus;
   private final Deque<State> stateStack;
-  private EventBus eventBus;
   private MapObject currentHighlight;
 
   @Inject
@@ -36,6 +36,10 @@ public class MapState {
     stateStack.push(initialState);
     initialState.enter();
     eventBus.post(new StateChanged(initialState));
+  }
+
+  public void prepForSave() {
+    rollback();
   }
 
   public void select(Player player) {

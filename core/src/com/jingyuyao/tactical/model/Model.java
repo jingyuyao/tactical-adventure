@@ -24,7 +24,7 @@ public class Model {
     this.mapState = mapState;
   }
 
-  public void newMap(
+  public void loadMap(
       int width,
       int height,
       Iterable<Terrain> terrains,
@@ -40,5 +40,12 @@ public class Model {
       characters.add(enemy);
     }
     mapState.initialize(initialState);
+  }
+
+  /**
+   * Call me before serializing game state
+   */
+  public void prepForSave() {
+    mapState.prepForSave();
   }
 }

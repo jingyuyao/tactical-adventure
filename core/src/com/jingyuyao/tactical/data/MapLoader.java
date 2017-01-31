@@ -64,7 +64,7 @@ public class MapLoader {
 
     Iterable<Character> characters = mapSave.getCharacters();
 
-    model.newMap(
+    model.loadMap(
         width,
         height,
         terrainLoader.createTerrains(terrainLayer, width, height),

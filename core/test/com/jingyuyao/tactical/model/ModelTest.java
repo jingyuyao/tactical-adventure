@@ -49,7 +49,7 @@ public class ModelTest {
 
   @Test
   public void new_map() {
-    model.newMap(10, 5, terrainIterable, playerIterable, enemyIterable, state);
+    model.loadMap(10, 5, terrainIterable, playerIterable, enemyIterable, state);
 
     verify(terrains).initialize(terrainIterable, 10, 5);
     verify(characters).add(player);
