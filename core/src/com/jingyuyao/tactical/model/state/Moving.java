@@ -6,6 +6,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
@@ -19,9 +20,10 @@ class Moving extends AbstractMovementState {
   Moving(
       MapState mapState,
       StateFactory stateFactory,
+      Movements movements,
       @Assisted Player player,
       @Assisted Movement movement) {
-    super(mapState, stateFactory, player);
+    super(mapState, stateFactory, movements, player);
     this.movement = movement;
   }
 

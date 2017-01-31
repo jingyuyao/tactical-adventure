@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -38,7 +39,11 @@ public class MovingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private Movements movements;
+  @Mock
   private Player player;
+  @Mock
+  private Player otherPlayer;
   @Mock
   private Enemy enemy;
   @Mock
@@ -63,6 +68,10 @@ public class MovingTest {
   private ImmutableList<Target> targets;
   @Mock
   private IgnoreInput ignoreInput;
+  @Mock
+  private Moving anotherMoving;
+  @Mock
+  private Movement otherMovement;
 
   private Iterable<Item> itemIterable;
   private Iterable<Weapon> weaponIterable;
@@ -77,7 +86,7 @@ public class MovingTest {
     consumableIterable = ImmutableList.of(consumable);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(mapState, stateFactory, player, movement);
+    moving = new Moving(mapState, stateFactory, movements, player, movement);
   }
 
   @Test
@@ -118,6 +127,29 @@ public class MovingTest {
     moving.select(player);
 
     verify(mapState).back();
+    verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
+  public void select_other_player_not_actionable() {
+    when(otherPlayer.isActionable()).thenReturn(false);
+
+    moving.select(otherPlayer);
+
+    verify(mapState).rollback();
+    verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
+  public void select_other_player_actionable() {
+    when(otherPlayer.isActionable()).thenReturn(true);
+    when(movements.distanceFrom(otherPlayer)).thenReturn(otherMovement);
+    when(stateFactory.createMoving(otherPlayer, otherMovement)).thenReturn(anotherMoving);
+
+    moving.select(otherPlayer);
+
+    verify(mapState).rollback();
+    verify(mapState).goTo(anotherMoving);
     verifyNoMoreInteractions(mapState);
   }
 

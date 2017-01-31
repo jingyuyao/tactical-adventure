@@ -13,6 +13,8 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,11 @@ public class MovedTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private Movements movements;
+  @Mock
   private Player player;
+  @Mock
+  private Player otherPlayer;
   @Mock
   private Enemy enemy;
   @Mock
@@ -47,6 +53,10 @@ public class MovedTest {
   private Consumable consumable;
   @Mock
   private ImmutableList<Target> targets;
+  @Mock
+  private Movement movement;
+  @Mock
+  private Moving moving;
 
   private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
@@ -58,7 +68,7 @@ public class MovedTest {
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
     itemIterable = ImmutableList.of(weapon, consumable);
-    moved = new Moved(mapState, stateFactory, player);
+    moved = new Moved(mapState, stateFactory, movements, player);
   }
 
   @Test
@@ -66,6 +76,29 @@ public class MovedTest {
     moved.select(player);
 
     verify(mapState).back();
+    verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
+  public void select_other_player_not_actionable() {
+    when(otherPlayer.isActionable()).thenReturn(false);
+
+    moved.select(otherPlayer);
+
+    verify(mapState).rollback();
+    verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
+  public void select_other_player_actionable() {
+    when(otherPlayer.isActionable()).thenReturn(true);
+    when(movements.distanceFrom(otherPlayer)).thenReturn(movement);
+    when(stateFactory.createMoving(otherPlayer, movement)).thenReturn(moving);
+
+    moved.select(otherPlayer);
+
+    verify(mapState).rollback();
+    verify(mapState).goTo(moving);
     verifyNoMoreInteractions(mapState);
   }
 
