@@ -53,6 +53,10 @@ public class Characters {
     return Iterables.filter(characterSet, Enemy.class);
   }
 
+  public Iterable<Character> getAll() {
+    return characterSet;
+  }
+
   public Iterable<Character> getAll(final ImmutableSet<Coordinate> coordinates) {
     return Iterables.filter(characterSet, new Predicate<Character>() {
       @Override

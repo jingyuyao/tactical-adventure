@@ -23,12 +23,13 @@
             }
           },
           {
-            "className": "com.jingyuyao.tactical.model.item.DirectionalWeapon",
+            "className": "com.jingyuyao.tactical.model.item.Grenade",
             "data": {
-              "name": "whip",
+              "name": "grenade",
               "usageLeft": 5,
               "attackPower": 3,
-              "distance": 3
+              "distance": 3,
+              "size": 2
             }
           },
           {

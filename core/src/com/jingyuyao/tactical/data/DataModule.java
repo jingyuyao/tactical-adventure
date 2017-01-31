@@ -23,20 +23,21 @@ public class DataModule extends AbstractModule {
   @Provides
   @Singleton
   Gson provideGson(
-      DataSerializer<BasePlayer> basePlayerDataSerializer,
-      DataSerializer<PassiveEnemy> passiveEnemyDataSerializer,
-      DataSerializer<DirectionalWeapon> directionalWeaponDataSerializer,
-      DataSerializer<Grenade> grenadeDataSerializer,
-      DataSerializer<Heal> healDataSerializer
+      GuiceProvider<BasePlayer> basePlayerGuiceProvider,
+      GuiceProvider<PassiveEnemy> passiveEnemyGuiceProvider,
+      GuiceProvider<DirectionalWeapon> directionalWeaponGuiceProvider,
+      GuiceProvider<Grenade> grenadeGuiceProvider,
+      GuiceProvider<Heal> healGuiceProvider
   ) {
     return new GsonBuilder()
-        .registerTypeAdapter(Character.class, new PolymorphicDeserializer<Character>())
-        .registerTypeAdapter(Item.class, new PolymorphicDeserializer<Item>())
-        .registerTypeAdapter(BasePlayer.class, basePlayerDataSerializer)
-        .registerTypeAdapter(PassiveEnemy.class, passiveEnemyDataSerializer)
-        .registerTypeAdapter(DirectionalWeapon.class, directionalWeaponDataSerializer)
-        .registerTypeAdapter(Grenade.class, grenadeDataSerializer)
-        .registerTypeAdapter(Heal.class, healDataSerializer)
+        .registerTypeAdapter(Character.class, new PolymorphicAdapter<Character>())
+        .registerTypeAdapter(Item.class, new PolymorphicAdapter<Item>())
+        .registerTypeAdapter(BasePlayer.class, basePlayerGuiceProvider)
+        .registerTypeAdapter(PassiveEnemy.class, passiveEnemyGuiceProvider)
+        .registerTypeAdapter(DirectionalWeapon.class, directionalWeaponGuiceProvider)
+        .registerTypeAdapter(Grenade.class, grenadeGuiceProvider)
+        .registerTypeAdapter(Heal.class, healGuiceProvider)
+        .setPrettyPrinting()
         .create();
   }
 }
