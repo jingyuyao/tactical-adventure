@@ -7,7 +7,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import com.jingyuyao.tactical.model.map.Movements;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,7 +18,7 @@ public class CharacterModuleTest {
 
   @Bind
   @Mock
-  private TerrainGraphs terrainGraphs;
+  private Movements movements;
   @Bind
   @Mock
   private Characters characters;

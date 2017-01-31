@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class StateModuleTest {
   private Characters characters;
   @Bind
   @Mock
-  private TerrainGraphs terrainGraphs;
+  private Movements movements;
   @Mock
   private Player player;
   @Mock

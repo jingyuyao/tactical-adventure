@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TerrainGraphsTest {
+public class MovementsTest {
 
   private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
   private static final Coordinate BLOCKED_COORDINATE = new Coordinate(12, 12);
@@ -35,11 +35,11 @@ public class TerrainGraphsTest {
   @Mock
   private Character character;
 
-  private TerrainGraphs terrainGraphs;
+  private Movements movements;
 
   @Before
   public void setUp() {
-    terrainGraphs = new TerrainGraphs(characters, terrains, movementFactory);
+    movements = new Movements(characters, terrains, movementFactory);
   }
 
   @Test
@@ -52,10 +52,10 @@ public class TerrainGraphsTest {
     when(cannotPassTerrain.getCoordinate()).thenReturn(DESTINATION);
     when(cannotPassTerrain.canHold(character)).thenReturn(false);
 
-    Function<Terrain, Integer> function = terrainGraphs.createEdgeCostFunction(character);
+    Function<Terrain, Integer> function = movements.createEdgeCostFunction(character);
 
     assertThat(function.apply(terrain)).isEqualTo(123);
-    assertThat(function.apply(blockedTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
-    assertThat(function.apply(cannotPassTerrain)).isEqualTo(TerrainGraphs.BLOCKED);
+    assertThat(function.apply(blockedTerrain)).isEqualTo(Movements.BLOCKED);
+    assertThat(function.apply(cannotPassTerrain)).isEqualTo(Movements.BLOCKED);
   }
 }

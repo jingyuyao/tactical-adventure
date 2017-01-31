@@ -11,7 +11,7 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import com.jingyuyao.tactical.model.map.Movements;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class CharacterModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(TerrainGraphs.class);
+    requireBinding(Movements.class);
     requireBinding(Characters.class);
   }
 

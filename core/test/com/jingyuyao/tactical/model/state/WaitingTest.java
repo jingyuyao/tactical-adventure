@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.List;
 import org.junit.Before;
@@ -29,7 +29,7 @@ public class WaitingTest {
   @Mock
   private Characters characters;
   @Mock
-  private TerrainGraphs terrainGraphs;
+  private Movements movements;
   @Mock
   private Player player;
   @Mock
@@ -47,13 +47,13 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(mapState, stateFactory, characters, terrainGraphs);
+    waiting = new Waiting(mapState, stateFactory, characters, movements);
   }
 
   @Test
   public void select_player_actionable() {
     when(player.isActionable()).thenReturn(true);
-    when(terrainGraphs.distanceFrom(player)).thenReturn(movement);
+    when(movements.distanceFrom(player)).thenReturn(movement);
     when(stateFactory.createMoving(player, movement)).thenReturn(moving);
 
     waiting.select(player);

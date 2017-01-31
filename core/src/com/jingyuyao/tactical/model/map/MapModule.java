@@ -25,7 +25,7 @@ public class MapModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(TerrainGraphs.class);
+    requireBinding(Movements.class);
 
     install(new FactoryModuleBuilder().build(MovementFactory.class));
   }

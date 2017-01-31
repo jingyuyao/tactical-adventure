@@ -20,7 +20,7 @@ public class MapModuleTest {
   private EventBus eventBus;
   @Bind
   @Mock
-  private TerrainGraphs terrainGraphs;
+  private Movements movements;
 
   @Inject
   private Characters characters;

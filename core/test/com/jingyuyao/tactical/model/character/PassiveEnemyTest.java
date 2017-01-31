@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
+import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class PassiveEnemyTest {
   @Mock
   private List<Item> items;
   @Mock
-  private TerrainGraphs terrainGraphs;
+  private Movements movements;
   @Mock
   private Characters characters;
   @Mock
@@ -45,7 +45,7 @@ public class PassiveEnemyTest {
   @Before
   public void setUp() {
     enemy =
-        new PassiveEnemy(CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, NAME,
+        new PassiveEnemy(CHARACTER_COORDINATE, markers, movements, characters, eventBus, NAME,
             MAX_HP, HP, MOVE_DISTANCE, items);
   }
 

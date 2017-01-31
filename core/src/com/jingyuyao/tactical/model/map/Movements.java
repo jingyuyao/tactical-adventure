@@ -26,7 +26,7 @@ import javax.inject.Singleton;
  * Contains methods to produce graphs from the current terrains.
  */
 @Singleton
-public class TerrainGraphs {
+public class Movements {
 
   static final int BLOCKED = -1;
 
@@ -35,7 +35,7 @@ public class TerrainGraphs {
   private final MovementFactory movementFactory;
 
   @Inject
-  TerrainGraphs(Characters characters, Terrains terrains, MovementFactory movementFactory) {
+  Movements(Characters characters, Terrains terrains, MovementFactory movementFactory) {
     this.characters = characters;
     this.terrains = terrains;
     this.movementFactory = movementFactory;
@@ -126,7 +126,7 @@ public class TerrainGraphs {
    * @return A path to {@code target} from the first node in the graph or an empty list if target is
    * not in the graph
    */
-  public ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
+  ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
     Preconditions.checkArgument(graph.nodes().contains(target));
 
     ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
@@ -150,7 +150,7 @@ public class TerrainGraphs {
       @Override
       public Integer apply(Terrain input) {
         if (blocked.contains(input.getCoordinate()) || !input.canHold(character)) {
-          return TerrainGraphs.BLOCKED;
+          return Movements.BLOCKED;
         }
         return input.getMovementPenalty();
       }

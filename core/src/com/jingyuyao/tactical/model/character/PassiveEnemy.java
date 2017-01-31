@@ -16,36 +16,36 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import java.util.List;
 import javax.inject.Inject;
 
 public class PassiveEnemy extends AbstractEnemy {
 
-  private transient final TerrainGraphs terrainGraphs;
+  private transient final Movements movements;
 
   @Inject
   PassiveEnemy(
       @InitialMarkers Multiset<Marker> markers,
       @CharacterEventBus EventBus eventBus,
-      TerrainGraphs terrainGraphs,
+      Movements movements,
       Characters characters) {
     super(markers, eventBus, characters);
-    this.terrainGraphs = terrainGraphs;
+    this.movements = movements;
   }
 
   PassiveEnemy(
-      Coordinate coordinate, Multiset<Marker> markers, TerrainGraphs terrainGraphs,
+      Coordinate coordinate, Multiset<Marker> markers, Movements movements,
       Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
       List<Item> items) {
     super(coordinate, markers, characters, eventBus, name, maxHp, hp, moveDistance, items);
-    this.terrainGraphs = terrainGraphs;
+    this.movements = movements;
   }
 
   @Override
   public ListenableFuture<Void> retaliate() {
-    Movement movement = terrainGraphs.distanceFrom(this);
+    Movement movement = movements.distanceFrom(this);
     Coordinate originalCoordinate = getCoordinate();
 
     for (Coordinate moveCoordinate : movement.getCoordinates()) {
