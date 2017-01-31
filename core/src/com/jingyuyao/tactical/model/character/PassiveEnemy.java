@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
+import com.google.common.graph.Graph;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 public class PassiveEnemy extends AbstractEnemy {
 
   private transient final MovementFactory movementFactory;
+  private transient final TerrainGraphs terrainGraphs;
 
   @Inject
   PassiveEnemy(
@@ -33,23 +35,24 @@ public class PassiveEnemy extends AbstractEnemy {
       TerrainGraphs terrainGraphs,
       Characters characters,
       MovementFactory movementFactory) {
-    super(markers, eventBus, terrainGraphs, characters);
+    super(markers, eventBus, characters);
     this.movementFactory = movementFactory;
+    this.terrainGraphs = terrainGraphs;
   }
 
-  PassiveEnemy(Coordinate coordinate,
-      Multiset<Marker> markers, TerrainGraphs terrainGraphs,
+  PassiveEnemy(
+      Coordinate coordinate, Multiset<Marker> markers, TerrainGraphs terrainGraphs,
       Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
-      List<Item> items,
-      MovementFactory movementFactory) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, name, maxHp, hp, moveDistance,
-        items);
+      List<Item> items, MovementFactory movementFactory) {
+    super(coordinate, markers, characters, eventBus, name, maxHp, hp, moveDistance, items);
     this.movementFactory = movementFactory;
+    this.terrainGraphs = terrainGraphs;
   }
 
   @Override
   public ListenableFuture<Void> retaliate() {
-    Movement movement = movementFactory.create(createMoveGraph());
+    Graph<Coordinate> moveGraph = terrainGraphs.distanceFrom(this);
+    Movement movement = movementFactory.create(moveGraph);
     Coordinate originalCoordinate = getCoordinate();
 
     for (Coordinate moveCoordinate : movement.getCoordinates()) {

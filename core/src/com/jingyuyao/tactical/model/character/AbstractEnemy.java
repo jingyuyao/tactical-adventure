@@ -6,26 +6,19 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 
 abstract class AbstractEnemy extends AbstractCharacter implements Enemy {
 
-  AbstractEnemy(
-      Multiset<Marker> markers,
-      EventBus eventBus,
-      TerrainGraphs terrainGraphs,
-      Characters characters) {
-    super(markers, eventBus, terrainGraphs, characters);
+  AbstractEnemy(Multiset<Marker> markers, EventBus eventBus, Characters characters) {
+    super(markers, eventBus, characters);
   }
 
-  AbstractEnemy(Coordinate coordinate,
-      Multiset<Marker> markers, TerrainGraphs terrainGraphs,
-      Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
-      List<Item> items) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, name, maxHp, hp, moveDistance,
-        items);
+  AbstractEnemy(
+      Coordinate coordinate, Multiset<Marker> markers, Characters characters, EventBus eventBus,
+      String name, int maxHp, int hp, int moveDistance, List<Item> items) {
+    super(coordinate, markers, characters, eventBus, name, maxHp, hp, moveDistance, items);
   }
 
   @Override

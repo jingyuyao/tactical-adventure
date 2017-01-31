@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.graph.Graph;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
@@ -17,6 +16,8 @@ public interface Character extends MapObject {
   String getName();
 
   int getHp();
+
+  int getMoveDistance();
 
   void damageBy(int delta);
 
@@ -41,6 +42,4 @@ public interface Character extends MapObject {
   ListenableFuture<Void> moveAlong(Path path);
 
   void instantMoveTo(Coordinate coordinate);
-
-  Graph<Coordinate> createMoveGraph();
 }

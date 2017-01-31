@@ -1,12 +1,9 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
-import com.google.common.graph.Graph;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -24,16 +21,13 @@ import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 abstract class AbstractCharacter extends AbstractMapObject implements Character {
 
-  private transient final TerrainGraphs terrainGraphs;
   private transient final Characters characters;
   private transient final EventBus eventBus;
   private String name;
@@ -45,20 +39,16 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   AbstractCharacter(
       Multiset<Marker> markers,
       EventBus eventBus,
-      TerrainGraphs terrainGraphs,
       Characters characters) {
     super(markers);
-    this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
   }
 
-  AbstractCharacter(Coordinate coordinate,
-      Multiset<Marker> markers, TerrainGraphs terrainGraphs,
-      Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
-      List<Item> items) {
+  AbstractCharacter(
+      Coordinate coordinate, Multiset<Marker> markers, Characters characters, EventBus eventBus,
+      String name, int maxHp, int hp, int moveDistance, List<Item> items) {
     super(coordinate, markers);
-    this.terrainGraphs = terrainGraphs;
     this.characters = characters;
     this.eventBus = eventBus;
     this.name = name;
@@ -86,6 +76,11 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   @Override
   public int getHp() {
     return hp;
+  }
+
+  @Override
+  public int getMoveDistance() {
+    return moveDistance;
   }
 
   @Override
@@ -172,26 +167,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   public void instantMoveTo(Coordinate newCoordinate) {
     setCoordinate(newCoordinate);
     eventBus.post(new InstantMove(this, newCoordinate));
-  }
-
-  @Override
-  public Graph<Coordinate> createMoveGraph() {
-    return terrainGraphs.distanceFrom(
-        getCoordinate(), moveDistance, createMovementPenaltyFunction());
-  }
-
-  private Function<Terrain, Integer> createMovementPenaltyFunction() {
-    final ImmutableSet<Coordinate> blocked = ImmutableSet.copyOf(characters.coordinates());
-    return new Function<Terrain, Integer>() {
-      @Override
-      public Integer apply(Terrain input) {
-        if (blocked.contains(input.getCoordinate())
-            || !input.canHold(AbstractCharacter.this)) {
-          return TerrainGraphs.BLOCKED;
-        }
-        return input.getMovementPenalty();
-      }
-    };
   }
 
   private void useThenRemoveIfBroken(Item item) {

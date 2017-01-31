@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import javax.inject.Inject;
@@ -21,16 +20,14 @@ public class BasePlayer extends AbstractCharacter implements Player {
   BasePlayer(
       @InitialMarkers Multiset<Marker> markers,
       @CharacterEventBus EventBus eventBus,
-      TerrainGraphs terrainGraphs,
       Characters characters) {
-    super(markers, eventBus, terrainGraphs, characters);
+    super(markers, eventBus, characters);
   }
 
-  BasePlayer(Coordinate coordinate,
-      Multiset<Marker> markers, TerrainGraphs terrainGraphs,
-      Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
-      List<Item> items, boolean actionable) {
-    super(coordinate, markers, terrainGraphs, characters, eventBus, name, maxHp, hp, moveDistance,
+  BasePlayer(
+      Coordinate coordinate, Multiset<Marker> markers, Characters characters, EventBus eventBus,
+      String name, int maxHp, int hp, int moveDistance, List<Item> items, boolean actionable) {
+    super(coordinate, markers, characters, eventBus, name, maxHp, hp, moveDistance,
         items);
     this.actionable = actionable;
   }

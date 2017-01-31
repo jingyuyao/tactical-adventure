@@ -4,12 +4,14 @@ import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.Graph;
 import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,11 +30,18 @@ public class TerrainGraphs {
 
   public static final int BLOCKED = -1;
 
+  private final Characters characters;
   private final Terrains terrains;
 
   @Inject
-  TerrainGraphs(Terrains terrains) {
+  TerrainGraphs(Characters characters, Terrains terrains) {
+    this.characters = characters;
     this.terrains = terrains;
+  }
+
+  public ValueGraph<Coordinate, Integer> distanceFrom(Character character) {
+    return distanceFrom(
+        character.getCoordinate(), character.getMoveDistance(), createEdgeCostFunction(character));
   }
 
   /**
@@ -128,6 +137,19 @@ public class TerrainGraphs {
     }
 
     return builder.build().reverse();
+  }
+
+  Function<Terrain, Integer> createEdgeCostFunction(final Character character) {
+    final ImmutableSet<Coordinate> blocked = ImmutableSet.copyOf(characters.coordinates());
+    return new Function<Terrain, Integer>() {
+      @Override
+      public Integer apply(Terrain input) {
+        if (blocked.contains(input.getCoordinate()) || !input.canHold(character)) {
+          return TerrainGraphs.BLOCKED;
+        }
+        return input.getMovementPenalty();
+      }
+    };
   }
 
   /**

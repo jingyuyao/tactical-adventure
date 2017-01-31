@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -34,8 +33,6 @@ public class BasePlayerTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private TerrainGraphs terrainGraphs;
-  @Mock
   private Characters characters;
   @Mock
   private MapState mapState;
@@ -44,8 +41,8 @@ public class BasePlayerTest {
   @Before
   public void setUp() {
     player =
-        new BasePlayer(CHARACTER_COORDINATE, markers, terrainGraphs, characters, eventBus, NAME,
-            MAX_HP, HP, MOVE_DISTANCE, items, true);
+        new BasePlayer(CHARACTER_COORDINATE, markers, characters, eventBus, NAME, MAX_HP, HP,
+            MOVE_DISTANCE, items, true);
   }
 
   @Test

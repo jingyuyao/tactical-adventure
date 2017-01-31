@@ -1,32 +1,38 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MovementFactory;
+import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import javax.inject.Inject;
 
 public class Waiting extends AbstractState {
 
   private final MovementFactory movementFactory;
   private final Characters characters;
+  private final TerrainGraphs terrainGraphs;
 
   @Inject
   Waiting(
       MapState mapState,
       StateFactory stateFactory,
       MovementFactory movementFactory,
-      Characters characters) {
+      Characters characters,
+      TerrainGraphs terrainGraphs) {
     super(mapState, stateFactory);
     this.movementFactory = movementFactory;
     this.characters = characters;
+    this.terrainGraphs = terrainGraphs;
   }
 
   @Override
   public void select(Player player) {
     if (player.isActionable()) {
-      goTo(
-          getStateFactory().createMoving(player, movementFactory.create(player.createMoveGraph())));
+      Graph<Coordinate> moveGraph = terrainGraphs.distanceFrom(player);
+      goTo(getStateFactory().createMoving(player, movementFactory.create(moveGraph)));
     }
   }
 
