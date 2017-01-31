@@ -67,6 +67,7 @@ public class TacticalAdventure extends Game {
   @Override
   public void dispose() {
     super.dispose();
+    mapSaver.saveMap(AssetModule.TEST_MAP);
     mapScreen.dispose();
     batch.dispose();
     assetManager.dispose();
@@ -74,7 +75,6 @@ public class TacticalAdventure extends Game {
 
   public void setLevel(String mapName) {
     mapLoader.loadMap(mapName);
-    mapSaver.saveMap(mapName);
     setScreen(mapScreen);
     mapController.receiveInput();
   }
