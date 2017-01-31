@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Item;
+import javax.inject.Singleton;
 
 public class DataModule extends AbstractModule {
 
@@ -23,6 +24,8 @@ public class DataModule extends AbstractModule {
   @Provides
   @Singleton
   Gson provideGson(
+      RuntimeTypeAdapterFactory<Character> characterRuntimeTypeAdapterFactory,
+      RuntimeTypeAdapterFactory<Item> itemRuntimeTypeAdapterFactory,
       GuiceProvider<BasePlayer> basePlayerGuiceProvider,
       GuiceProvider<PassiveEnemy> passiveEnemyGuiceProvider,
       GuiceProvider<DirectionalWeapon> directionalWeaponGuiceProvider,
@@ -30,8 +33,8 @@ public class DataModule extends AbstractModule {
       GuiceProvider<Heal> healGuiceProvider
   ) {
     return new GsonBuilder()
-        .registerTypeAdapter(Character.class, new PolymorphicAdapter<Character>())
-        .registerTypeAdapter(Item.class, new PolymorphicAdapter<Item>())
+        .registerTypeAdapterFactory(characterRuntimeTypeAdapterFactory)
+        .registerTypeAdapterFactory(itemRuntimeTypeAdapterFactory)
         .registerTypeAdapter(BasePlayer.class, basePlayerGuiceProvider)
         .registerTypeAdapter(PassiveEnemy.class, passiveEnemyGuiceProvider)
         .registerTypeAdapter(DirectionalWeapon.class, directionalWeaponGuiceProvider)
@@ -39,5 +42,24 @@ public class DataModule extends AbstractModule {
         .registerTypeAdapter(Heal.class, healGuiceProvider)
         .setPrettyPrinting()
         .create();
+  }
+
+  @Provides
+  @Singleton
+  RuntimeTypeAdapterFactory<Character> provideRuntimeCharacterAdapterFactory() {
+    return RuntimeTypeAdapterFactory
+        .of(Character.class)
+        .registerSubtype(BasePlayer.class)
+        .registerSubtype(PassiveEnemy.class);
+  }
+
+  @Provides
+  @Singleton
+  RuntimeTypeAdapterFactory<Item> provideRuntimeItemAdapterFactory() {
+    return RuntimeTypeAdapterFactory
+        .of(Item.class)
+        .registerSubtype(DirectionalWeapon.class)
+        .registerSubtype(Grenade.class)
+        .registerSubtype(Heal.class);
   }
 }

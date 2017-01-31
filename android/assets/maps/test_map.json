@@ -1,47 +1,39 @@
 {
   "characters": [
     {
-      "className": "com.jingyuyao.tactical.model.character.BasePlayer",
-      "data": {
-        "coordinate": {
-          "x": 1,
-          "y": 2
+      "type": "BasePlayer",
+      "coordinate": {
+        "x": 1,
+        "y": 2
+      },
+      "name": "jingyu",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "sword",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
         },
-        "name": "jingyu",
-        "maxHp": 30,
-        "hp": 30,
-        "moveDistance": 4,
-        "actionable": true,
-        "items": [
-          {
-            "className": "com.jingyuyao.tactical.model.item.DirectionalWeapon",
-            "data": {
-              "name": "sword",
-              "usageLeft": 10,
-              "attackPower": 5,
-              "distance": 1
-            }
-          },
-          {
-            "className": "com.jingyuyao.tactical.model.item.Grenade",
-            "data": {
-              "name": "grenade",
-              "usageLeft": 5,
-              "attackPower": 3,
-              "distance": 3,
-              "size": 2
-            }
-          },
-          {
-            "className": "com.jingyuyao.tactical.model.item.Heal",
-            "data": {
-              "name": "pot",
-              "usageLeft": 3,
-              "amount": 5
-            }
-          }
-        ]
-      }
+        {
+          "type": "Grenade",
+          "name": "grenade",
+          "usageLeft": 5,
+          "attackPower": 3,
+          "distance": 3,
+          "size": 2
+        },
+        {
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
+        }
+      ]
     }
   ]
 }
