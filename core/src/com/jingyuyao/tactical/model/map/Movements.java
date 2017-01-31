@@ -69,6 +69,7 @@ public class Movements {
     Queue<ValueNode<Coordinate>> minNodeQueue = new PriorityQueue<ValueNode<Coordinate>>();
 
     pathCostMap.put(startingCoordinate, 0);
+    graph.addNode(startingCoordinate);
     minNodeQueue.add(new ValueNode<Coordinate>(startingCoordinate, 0));
 
     // Dijkstra's algorithm
@@ -111,6 +112,9 @@ public class Movements {
       }
     }
 
+    Preconditions.checkState(
+        graph.predecessors(
+            startingCoordinate).isEmpty(), "Graph does not contain a terminating node");
     Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
     return graph;
   }
