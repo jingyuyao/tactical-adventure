@@ -25,6 +25,8 @@ public class TerrainGraphsTest {
   @Mock
   private Terrains terrains;
   @Mock
+  private MovementFactory movementFactory;
+  @Mock
   private Terrain terrain;
   @Mock
   private Terrain cannotPassTerrain;
@@ -37,7 +39,7 @@ public class TerrainGraphsTest {
 
   @Before
   public void setUp() {
-    terrainGraphs = new TerrainGraphs(characters, terrains);
+    terrainGraphs = new TerrainGraphs(characters, terrains, movementFactory);
   }
 
   @Test

@@ -11,7 +11,6 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -27,9 +26,6 @@ public class StateModuleTest {
   @Mock
   @ModelEventBus
   private EventBus eventBus;
-  @Bind
-  @Mock
-  private MovementFactory movementFactory;
   @Bind
   @Mock
   private Characters characters;

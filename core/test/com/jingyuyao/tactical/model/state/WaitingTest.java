@@ -6,13 +6,10 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.List;
@@ -44,24 +41,19 @@ public class WaitingTest {
   @Mock
   private Retaliating retaliating;
   @Mock
-  private MovementFactory movementFactory;
-  @Mock
   private Movement movement;
-  @Mock
-  private ValueGraph<Coordinate, Integer> moveGraph;
 
   private Waiting waiting;
 
   @Before
   public void setUp() {
-    waiting = new Waiting(mapState, stateFactory, movementFactory, characters, terrainGraphs);
+    waiting = new Waiting(mapState, stateFactory, characters, terrainGraphs);
   }
 
   @Test
   public void select_player_actionable() {
     when(player.isActionable()).thenReturn(true);
-    when(terrainGraphs.distanceFrom(player)).thenReturn(moveGraph);
-    when(movementFactory.create(moveGraph)).thenReturn(movement);
+    when(terrainGraphs.distanceFrom(player)).thenReturn(movement);
     when(stateFactory.createMoving(player, movement)).thenReturn(moving);
 
     waiting.select(player);

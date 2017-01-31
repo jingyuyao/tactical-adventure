@@ -28,20 +28,25 @@ import javax.inject.Singleton;
 @Singleton
 public class TerrainGraphs {
 
-  public static final int BLOCKED = -1;
+  static final int BLOCKED = -1;
 
   private final Characters characters;
   private final Terrains terrains;
+  private final MovementFactory movementFactory;
 
   @Inject
-  TerrainGraphs(Characters characters, Terrains terrains) {
+  TerrainGraphs(Characters characters, Terrains terrains, MovementFactory movementFactory) {
     this.characters = characters;
     this.terrains = terrains;
+    this.movementFactory = movementFactory;
   }
 
-  public ValueGraph<Coordinate, Integer> distanceFrom(Character character) {
-    return distanceFrom(
-        character.getCoordinate(), character.getMoveDistance(), createEdgeCostFunction(character));
+  public Movement distanceFrom(Character character) {
+    return movementFactory.create(
+        distanceFrom(
+            character.getCoordinate(),
+            character.getMoveDistance(),
+            createEdgeCostFunction(character)));
   }
 
   /**

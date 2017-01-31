@@ -7,7 +7,6 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.MovementFactory;
 import com.jingyuyao.tactical.model.map.TerrainGraphs;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +26,6 @@ public class CharacterModuleTest {
   @Mock
   @InitialMarkers
   private Multiset<Marker> markers;
-  @Bind
-  @Mock
-  private MovementFactory movementFactory;
 
   @Test
   public void can_create_module() {
