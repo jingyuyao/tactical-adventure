@@ -28,19 +28,4 @@ public abstract class AbstractMapObject implements MapObject {
   public void setCoordinate(Coordinate newCoordinate) {
     coordinate = newCoordinate;
   }
-
-  @Override
-  public Multiset<Marker> getMarkers() {
-    return markers;
-  }
-
-  @Override
-  public void addMarker(Marker marker) {
-    markers.add(marker);
-  }
-
-  @Override
-  public void removeMarker(Marker marker) {
-    markers.remove(marker);
-  }
 }
