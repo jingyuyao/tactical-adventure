@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.inject.assistedinject.Assisted;
@@ -51,7 +52,12 @@ public class Target {
    */
   public ImmutableSet<Character> getTargetCharacters() {
     // Returns an immutable set since characters can die and we don't want an iteration error
-    return ImmutableSet.copyOf(characters.getAll(targetCoordinates));
+    return ImmutableSet.copyOf(characters.fluent().filter(new Predicate<Character>() {
+      @Override
+      public boolean apply(Character input) {
+        return targetCoordinates.contains(input.getCoordinate());
+      }
+    }));
   }
 
   public void showMarking() {
@@ -69,7 +75,7 @@ public class Target {
     Iterable<MapObject> hitObjects =
         Iterables.<MapObject>concat(
             terrains.getAll(targetCoordinates),
-            characters.getAll(targetCoordinates));
+            getTargetCharacters());
     for (MapObject object : hitObjects) {
       builder.put(object, Marker.HIT);
     }

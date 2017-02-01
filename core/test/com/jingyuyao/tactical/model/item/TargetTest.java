@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
@@ -56,7 +57,9 @@ public class TargetTest {
 
   @Test
   public void get_target_characters() {
-    when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
+    when(characters.fluent()).thenReturn(FluentIterable.of(character));
+    when(character.getCoordinate()).thenReturn(COORDINATE);
+    when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
 
     assertThat(target.getTargetCharacters()).containsExactly(character);
   }
@@ -65,7 +68,9 @@ public class TargetTest {
   public void show_marking() {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
     when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain2));
-    when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
+    when(characters.fluent()).thenReturn(FluentIterable.of(character));
+    when(character.getCoordinate()).thenReturn(COORDINATE);
+    when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
 
     target.showMarking();
 
@@ -88,7 +93,9 @@ public class TargetTest {
   @Test
   public void create_hit_marking() {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
-    when(characters.getAll(targetCoordinates)).thenReturn(ImmutableList.of(character));
+    when(characters.fluent()).thenReturn(FluentIterable.of(character));
+    when(character.getCoordinate()).thenReturn(COORDINATE);
+    when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
 
     Marking hitMarking = target.createHitMarking();
     hitMarking.apply();

@@ -1,9 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
@@ -45,29 +43,20 @@ public class Characters {
     characterSet.remove(character);
   }
 
+  public FluentIterable<Character> fluent() {
+    return FluentIterable.from(characterSet);
+  }
+
   public Iterable<Player> getPlayers() {
-    return Iterables.filter(characterSet, Player.class);
+    return fluent().filter(Player.class);
   }
 
   public Iterable<Enemy> getEnemies() {
-    return Iterables.filter(characterSet, Enemy.class);
-  }
-
-  public Iterable<Character> getAll() {
-    return characterSet;
-  }
-
-  public Iterable<Character> getAll(final ImmutableSet<Coordinate> coordinates) {
-    return Iterables.filter(characterSet, new Predicate<Character>() {
-      @Override
-      public boolean apply(Character input) {
-        return coordinates.contains(input.getCoordinate());
-      }
-    });
+    return fluent().filter(Enemy.class);
   }
 
   public Iterable<Coordinate> coordinates() {
-    return Iterables.transform(characterSet, new Function<Character, Coordinate>() {
+    return fluent().transform(new Function<Character, Coordinate>() {
       @Override
       public Coordinate apply(Character input) {
         return input.getCoordinate();

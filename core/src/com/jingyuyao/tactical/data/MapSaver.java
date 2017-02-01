@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -26,7 +25,7 @@ public class MapSaver {
   public void saveMap(String name) {
     model.prepForSave();
     FileHandle handle = Gdx.files.local(name + ".save.json");
-    MapSave save = new MapSave(ImmutableList.copyOf(characters.getAll()));
+    MapSave save = new MapSave(characters.fluent().toList());
     handle.writeString(gson.toJson(save), false);
   }
 }
