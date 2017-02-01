@@ -9,6 +9,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
+import com.jingyuyao.tactical.model.battle.BattleModule;
 import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.map.MapModule;
@@ -24,6 +25,7 @@ public class ModelModule extends AbstractModule {
   protected void configure() {
     install(new MapModule());
     install(new CharacterModule());
+    install(new BattleModule());
     install(new TerrainModule());
     install(new ItemModule());
     install(new StateModule());
