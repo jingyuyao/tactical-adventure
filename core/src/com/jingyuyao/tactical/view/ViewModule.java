@@ -19,9 +19,13 @@ import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.ActorModule;
+import com.jingyuyao.tactical.view.actor.MapActor;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {
@@ -46,6 +50,12 @@ public class ViewModule extends AbstractModule {
   @Singleton
   Skin provideSkin(AssetManager assetManager) {
     return assetManager.get(AssetModule.SKIN, Skin.class);
+  }
+
+  @Provides
+  @Singleton
+  Map<MapObject, MapActor<?>> provideActorMap() {
+    return new HashMap<MapObject, MapActor<?>>();
   }
 
   @Provides

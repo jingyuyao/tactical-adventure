@@ -11,9 +11,11 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
+import com.jingyuyao.tactical.view.actor.MapActor;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,34 +32,39 @@ public class MapView {
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
   private final Map<String, Sprite> nameSpriteMap;
+  private final Map<MapObject, MapActor<?>> actorMap;
 
   /**
    * A map view contains a stage with all the actors and a way to render them. The background map is
    * backed by a {@link OrthogonalTiledMapRenderer}.
    */
   @Inject
-  MapView(@MapViewStage Stage stage,
+  MapView(
+      @MapViewStage Stage stage,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
-      Map<String, Sprite> nameSpriteMap) {
+      Map<String, Sprite> nameSpriteMap,
+      Map<MapObject, MapActor<?>> actorMap) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
     this.controllerFactory = controllerFactory;
     this.nameSpriteMap = nameSpriteMap;
+    this.actorMap = actorMap;
   }
 
   @Subscribe
   public void addTerrain(AddTerrain addTerrain) {
     Terrain terrain = addTerrain.getObject();
-    stage.addActor(actorFactory.create(terrain, controllerFactory.create(terrain)));
+    addActor(terrain, actorFactory.create(terrain, controllerFactory.create(terrain)));
   }
 
   @Subscribe
   public void addPlayer(AddPlayer addPlayer) {
     Player player = addPlayer.getObject();
-    stage.addActor(
+    addActor(
+        player,
         actorFactory.create(
             player, controllerFactory.create(player), nameSpriteMap.get(player.getName())));
   }
@@ -65,7 +72,8 @@ public class MapView {
   @Subscribe
   public void addEnemy(AddEnemy addEnemy) {
     Enemy enemy = addEnemy.getObject();
-    stage.addActor(
+    addActor(
+        enemy,
         actorFactory.create(
             enemy, controllerFactory.create(enemy), nameSpriteMap.get(enemy.getName())));
   }
@@ -88,5 +96,10 @@ public class MapView {
 
   void dispose() {
     stage.dispose();
+  }
+
+  private void addActor(MapObject object, MapActor<?> actor) {
+    stage.addActor(actor);
+    actorMap.put(object, actor);
   }
 }
