@@ -10,11 +10,6 @@ public interface MapObject {
    */
   void select(MapState mapState);
 
-  /**
-   * Enables the visitor pattern for highlight.
-   */
-  void highlight(MapState mapState);
-
   Coordinate getCoordinate();
 
   void setCoordinate(Coordinate coordinate);

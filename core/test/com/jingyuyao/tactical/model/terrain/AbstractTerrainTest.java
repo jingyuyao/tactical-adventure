@@ -37,13 +37,6 @@ public class AbstractTerrainTest {
     verify(mapState).select(terrain);
   }
 
-  @Test
-  public void highlight() {
-    terrain.highlight(mapState);
-
-    verify(mapState).highlight(terrain);
-  }
-
   private static class TerrainImpl extends AbstractTerrain {
 
     TerrainImpl(Coordinate coordinate, Multiset<Marker> markers) {

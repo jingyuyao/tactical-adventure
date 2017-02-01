@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
 import org.junit.Before;
@@ -71,6 +72,11 @@ public class MapStateTest {
     mapState.select(player);
 
     verify(state1).select(player);
+    verify(player).addMarker(Marker.HIGHLIGHT);
+    verify(eventBus).post(argumentCaptor.capture());
+    HighlightCharacter highlightCharacter =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
+    assertThat(highlightCharacter.getObject()).isSameAs(player);
   }
 
   @Test
@@ -80,6 +86,11 @@ public class MapStateTest {
     mapState.select(enemy);
 
     verify(state1).select(enemy);
+    verify(enemy).addMarker(Marker.HIGHLIGHT);
+    verify(eventBus).post(argumentCaptor.capture());
+    HighlightCharacter highlightCharacter =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
+    assertThat(highlightCharacter.getObject()).isSameAs(enemy);
   }
 
   @Test
@@ -89,26 +100,11 @@ public class MapStateTest {
     mapState.select(terrain);
 
     verify(state1).select(terrain);
-  }
-
-  @Test
-  public void highlight_character() throws Exception {
-    mapState.highlight(player);
-
-    verify(eventBus).post(argumentCaptor.capture());
-    HighlightCharacter highlightCharacter =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
-    assertThat(highlightCharacter.getObject()).isEqualTo(player);
-  }
-
-  @Test
-  public void highlight_terrain() {
-    mapState.highlight(terrain);
-
+    verify(terrain).addMarker(Marker.HIGHLIGHT);
     verify(eventBus).post(argumentCaptor.capture());
     HighlightTerrain highlightTerrain =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightTerrain.class);
-    assertThat(highlightTerrain.getObject()).isEqualTo(terrain);
+    assertThat(highlightTerrain.getObject()).isSameAs(terrain);
   }
 
   @Test

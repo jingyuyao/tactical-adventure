@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.controller;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.assistedinject.Assisted;
@@ -22,12 +21,6 @@ public class MapActorController extends ClickListener {
     this.object = object;
     this.mapState = mapState;
     setTapSquareSize(size / 2f);
-  }
-
-  @Override
-  public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-    super.enter(event, x, y, pointer, fromActor);
-    object.highlight(mapState);
   }
 
   @Override

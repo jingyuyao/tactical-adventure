@@ -79,13 +79,6 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void highlight() {
-    character.highlight(mapState);
-
-    verify(mapState).highlight(character);
-  }
-
-  @Test
   public void register_listener() {
     character.registerListener(listener);
 

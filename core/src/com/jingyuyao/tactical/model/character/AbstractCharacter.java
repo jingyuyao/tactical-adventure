@@ -21,7 +21,6 @@ import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.state.MapState;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -56,11 +55,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
     this.hp = hp;
     this.moveDistance = moveDistance;
     this.items = items;
-  }
-
-  @Override
-  public void highlight(MapState mapState) {
-    mapState.highlight(this);
   }
 
   @Override

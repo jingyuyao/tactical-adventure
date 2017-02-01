@@ -18,11 +18,6 @@ abstract class AbstractTerrain extends AbstractMapObject implements Terrain {
   }
 
   @Override
-  public void highlight(MapState mapState) {
-    mapState.highlight(this);
-  }
-
-  @Override
   public String toString() {
     return this.getClass().getSimpleName();
   }
