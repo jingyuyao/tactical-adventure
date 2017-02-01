@@ -66,8 +66,6 @@ public class SelectingTargetTest {
   public void enter() {
     selectingTarget.enter();
 
-    verify(target1).showMarking();
-    verify(target2).showMarking();
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     ShowTarget showTarget1 =
@@ -82,8 +80,6 @@ public class SelectingTargetTest {
   public void exit() {
     selectingTarget.exit();
 
-    verify(target1).hideMarking();
-    verify(target2).hideMarking();
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     HideTarget hideTarget1 =

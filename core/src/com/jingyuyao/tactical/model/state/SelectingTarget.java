@@ -37,7 +37,6 @@ public class SelectingTarget extends AbstractPlayerState {
   @Override
   public void enter() {
     for (Target target : targets) {
-      target.showMarking();
       eventBus.post(new ShowTarget(target));
     }
   }
@@ -45,7 +44,6 @@ public class SelectingTarget extends AbstractPlayerState {
   @Override
   public void exit() {
     for (Target target : targets) {
-      target.hideMarking();
       eventBus.post(new HideTarget(target));
     }
   }

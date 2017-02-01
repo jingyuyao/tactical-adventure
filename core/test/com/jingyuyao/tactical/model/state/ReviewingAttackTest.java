@@ -67,7 +67,6 @@ public class ReviewingAttackTest {
   public void enter() {
     reviewingAttack.enter();
 
-    verify(target).showMarking();
     verify(eventBus).post(argumentCaptor.capture());
     ShowTarget showTarget = TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowTarget.class);
     assertThat(showTarget.getObject()).isSameAs(target);
@@ -77,7 +76,6 @@ public class ReviewingAttackTest {
   public void exit() {
     reviewingAttack.exit();
 
-    verify(target).hideMarking();
     verify(eventBus).post(argumentCaptor.capture());
     HideTarget hideTarget = TestHelpers.isInstanceOf(argumentCaptor.getValue(), HideTarget.class);
     assertThat(hideTarget.getObject()).isSameAs(target);

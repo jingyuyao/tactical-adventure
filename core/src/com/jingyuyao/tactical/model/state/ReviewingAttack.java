@@ -38,13 +38,11 @@ class ReviewingAttack extends AbstractPlayerState {
 
   @Override
   public void enter() {
-    target.showMarking();
     eventBus.post(new ShowTarget(target));
   }
 
   @Override
   public void exit() {
-    target.hideMarking();
     eventBus.post(new HideTarget(target));
   }
 

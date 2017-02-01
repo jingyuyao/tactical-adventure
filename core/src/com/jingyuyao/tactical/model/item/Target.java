@@ -24,7 +24,6 @@ public class Target {
   private final ImmutableSet<Coordinate> targetCoordinates;
   private final Characters characters;
   private final Terrains terrains;
-  private Marking marking;
 
   @Inject
   Target(
@@ -66,16 +65,6 @@ public class Target {
     return terrains.getAll(targetCoordinates);
   }
 
-  public void showMarking() {
-    marking = createTargetMarking();
-    marking.apply();
-  }
-
-  public void hideMarking() {
-    marking.clear();
-    marking = null;
-  }
-
   public Marking createHitMarking() {
     MarkingBuilder builder = new MarkingBuilder();
     Iterable<MapObject> hitObjects =
@@ -84,20 +73,6 @@ public class Target {
             getTargetCharacters());
     for (MapObject object : hitObjects) {
       builder.put(object, Marker.HIT);
-    }
-    return builder.build();
-  }
-
-  private Marking createTargetMarking() {
-    MarkingBuilder builder = new MarkingBuilder();
-    for (Terrain terrain : terrains.getAll(selectCoordinates)) {
-      builder.put(terrain, Marker.TARGET_SELECT);
-    }
-    for (Terrain terrain : terrains.getAll(targetCoordinates)) {
-      builder.put(terrain, Marker.CAN_ATTACK);
-    }
-    for (Character character : getTargetCharacters()) {
-      builder.put(character, Marker.POTENTIAL_TARGET);
     }
     return builder.build();
   }

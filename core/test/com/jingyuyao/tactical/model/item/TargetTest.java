@@ -79,32 +79,6 @@ public class TargetTest {
   }
 
   @Test
-  public void show_marking() {
-    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
-    when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain2));
-    when(characters.fluent()).thenReturn(FluentIterable.of(character));
-    when(character.getCoordinate()).thenReturn(COORDINATE);
-    when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
-
-    target.showMarking();
-
-    verify(terrain).addMarker(Marker.CAN_ATTACK);
-    verify(terrain2).addMarker(Marker.TARGET_SELECT);
-    verify(character).addMarker(Marker.POTENTIAL_TARGET);
-  }
-
-  @Test
-  public void hide_marking() {
-    show_marking();
-
-    target.hideMarking();
-
-    verify(terrain).removeMarker(Marker.CAN_ATTACK);
-    verify(terrain2).removeMarker(Marker.TARGET_SELECT);
-    verify(character).removeMarker(Marker.POTENTIAL_TARGET);
-  }
-
-  @Test
   public void create_hit_marking() {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
     when(characters.fluent()).thenReturn(FluentIterable.of(character));
