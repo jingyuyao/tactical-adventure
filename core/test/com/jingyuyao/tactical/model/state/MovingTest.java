@@ -100,7 +100,6 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(movement).showMarking();
     verify(eventBus).post(argumentCaptor.capture());
     ShowMovement showMovement =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowMovement.class);
@@ -128,7 +127,6 @@ public class MovingTest {
   public void exit() {
     moving.exit();
 
-    verify(movement).hideMarking();
     verify(eventBus).post(argumentCaptor.capture());
     HideMovement hideMovement =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HideMovement.class);

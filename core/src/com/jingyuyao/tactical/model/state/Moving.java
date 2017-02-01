@@ -37,7 +37,6 @@ class Moving extends AbstractMovementState {
   @Override
   public void enter() {
     super.enter();
-    movement.showMarking();
     eventBus.post(new ShowMovement(movement));
   }
 
@@ -51,7 +50,6 @@ class Moving extends AbstractMovementState {
 
   @Override
   public void exit() {
-    movement.hideMarking();
     eventBus.post(new HideMovement(movement));
   }
 
