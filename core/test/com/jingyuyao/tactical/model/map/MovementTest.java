@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
@@ -57,25 +56,14 @@ public class MovementTest {
   }
 
   @Test
-  public void move_terrains() {
+  public void move_coordinates() {
     assertThat(movement.getCoordinates()).containsExactly(ORIGIN, MOVE1, MOVE2);
   }
 
   @Test
-  public void show_marking() {
+  public void move_terrains() {
     when(terrains.getAll(moveCoordinates)).thenReturn(ImmutableList.of(terrain));
 
-    movement.showMarking();
-
-    verify(terrain).addMarker(Marker.CAN_MOVE_TO);
-  }
-
-  @Test
-  public void hide_marking() {
-    show_marking();
-
-    movement.hideMarking();
-
-    verify(terrain).removeMarker(Marker.CAN_MOVE_TO);
+    assertThat(movement.getTerrains()).containsExactly(terrain);
   }
 }

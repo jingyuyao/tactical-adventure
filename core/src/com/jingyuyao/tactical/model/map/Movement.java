@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.Graph;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Set;
 import javax.inject.Inject;
@@ -16,7 +15,6 @@ public class Movement {
 
   private final Graph<Coordinate> moveGraph;
   private final Terrains terrains;
-  private Marking marking;
 
   @Inject
   Movement(Terrains terrains, @Assisted Graph<Coordinate> moveGraph) {
@@ -49,24 +47,6 @@ public class Movement {
     Preconditions.checkArgument(moveGraph.nodes().contains(coordinate));
 
     return new Path(coordinate, getTrackTo(moveGraph, coordinate));
-  }
-
-  public void showMarking() {
-    marking = createMarking();
-    marking.apply();
-  }
-
-  public void hideMarking() {
-    marking.clear();
-    marking = null;
-  }
-
-  private Marking createMarking() {
-    MarkingBuilder builder = new MarkingBuilder();
-    for (Terrain terrain : terrains.getAll(moveGraph.nodes())) {
-      builder.put(terrain, Marker.CAN_MOVE_TO);
-    }
-    return builder.build();
   }
 
   /**
