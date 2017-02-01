@@ -6,6 +6,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideTarget;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 class ReviewingAttack extends AbstractPlayerState {
 
   private final EventBus eventBus;
+  private final Battle battle;
   private final Weapon weapon;
   private final Target target;
 
@@ -27,11 +29,13 @@ class ReviewingAttack extends AbstractPlayerState {
       MapState mapState,
       StateFactory stateFactory,
       @ModelEventBus EventBus eventBus,
+      Battle battle,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted Target target) {
     super(mapState, stateFactory, player);
     this.eventBus = eventBus;
+    this.battle = battle;
     this.weapon = weapon;
     this.target = target;
   }
@@ -76,7 +80,7 @@ class ReviewingAttack extends AbstractPlayerState {
 
   private void attack() {
     goTo(getStateFactory().createIgnoreInput());
-    Futures.addCallback(getPlayer().attacks(weapon, target), new FutureCallback<Void>() {
+    Futures.addCallback(battle.begin(getPlayer(), weapon, target), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
         finish();
