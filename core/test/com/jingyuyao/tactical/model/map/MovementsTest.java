@@ -4,7 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.FluentIterable;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -44,7 +44,8 @@ public class MovementsTest {
 
   @Test
   public void edge_cost_function() {
-    when(characters.coordinates()).thenReturn(ImmutableList.of(BLOCKED_COORDINATE));
+    when(characters.fluent()).thenReturn(FluentIterable.of(character));
+    when(character.getCoordinate()).thenReturn(BLOCKED_COORDINATE);
     when(terrain.getCoordinate()).thenReturn(DESTINATION);
     when(terrain.canHold(character)).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(123);

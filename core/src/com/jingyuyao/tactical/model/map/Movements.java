@@ -120,16 +120,26 @@ public class Movements {
   }
 
   Function<Terrain, Integer> createEdgeCostFunction(final Character character) {
-    final ImmutableSet<Coordinate> blocked = ImmutableSet.copyOf(characters.coordinates());
+    final ImmutableSet<Coordinate> blockedCoordinates = getBlockedCoordinates();
     return new Function<Terrain, Integer>() {
       @Override
       public Integer apply(Terrain input) {
-        if (blocked.contains(input.getCoordinate()) || !input.canHold(character)) {
+        if (blockedCoordinates.contains(input.getCoordinate()) || !input.canHold(character)) {
           return Movements.BLOCKED;
         }
         return input.getMovementPenalty();
       }
     };
+  }
+
+  private ImmutableSet<Coordinate> getBlockedCoordinates() {
+    return characters.fluent().transform(
+        new Function<Character, Coordinate>() {
+          @Override
+          public Coordinate apply(Character input) {
+            return input.getCoordinate();
+          }
+        }).toSet();
   }
 
   /**

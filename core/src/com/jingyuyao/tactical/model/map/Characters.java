@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.map;
 
-import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
@@ -53,14 +52,5 @@ public class Characters {
 
   public Iterable<Enemy> getEnemies() {
     return fluent().filter(Enemy.class);
-  }
-
-  public Iterable<Coordinate> coordinates() {
-    return fluent().transform(new Function<Character, Coordinate>() {
-      @Override
-      public Coordinate apply(Character input) {
-        return input.getCoordinate();
-      }
-    });
   }
 }

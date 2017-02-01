@@ -75,13 +75,9 @@ public class CharactersTest {
   }
 
   @Test
-  public void coordinates() {
+  public void fluent() {
     when(characterSet.iterator()).thenReturn(characterIterator);
-    when(characterIterator.hasNext()).thenReturn(true, true, false);
-    when(characterIterator.next()).thenReturn(player, enemy);
-    when(player.getCoordinate()).thenReturn(COORDINATE1);
-    when(enemy.getCoordinate()).thenReturn(COORDINATE2);
 
-    assertThat(characters.coordinates()).containsExactly(COORDINATE1, COORDINATE2);
+    assertThat(characters.fluent().iterator()).isSameAs(characterIterator);
   }
 }
