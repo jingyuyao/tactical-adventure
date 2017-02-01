@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
@@ -52,7 +51,7 @@ public class PassiveEnemy extends AbstractEnemy {
       setCoordinate(moveCoordinate);
       for (final Weapon weapon : getWeapons()) {
         for (final Target target : weapon.createTargets(getCoordinate())) {
-          ImmutableSet<Character> targetCharacters = target.getTargetCharacters();
+          Iterable<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?
           if (!Iterables.isEmpty(Iterables.filter(targetCharacters, Enemy.class))) {
             continue;

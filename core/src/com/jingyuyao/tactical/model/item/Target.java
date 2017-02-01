@@ -47,21 +47,17 @@ public class Target {
     return targetCoordinates.contains(coordinate);
   }
 
-  /**
-   * @return a current view of all the characters being targeted
-   */
-  public ImmutableSet<Character> getTargetCharacters() {
-    // Returns an immutable set since characters can die and we don't want an iteration error
-    return ImmutableSet.copyOf(characters.fluent().filter(new Predicate<Character>() {
+  public Iterable<Character> getTargetCharacters() {
+    return characters.fluent().filter(new Predicate<Character>() {
       @Override
       public boolean apply(Character input) {
-        return targetCoordinates.contains(input.getCoordinate());
+        return canTarget(input.getCoordinate());
       }
-    }));
+    });
   }
 
   public void showMarking() {
-    marking = createMarking();
+    marking = createTargetMarking();
     marking.apply();
   }
 
@@ -73,7 +69,7 @@ public class Target {
   public Marking createHitMarking() {
     MarkingBuilder builder = new MarkingBuilder();
     Iterable<MapObject> hitObjects =
-        Iterables.<MapObject>concat(
+        Iterables.concat(
             terrains.getAll(targetCoordinates),
             getTargetCharacters());
     for (MapObject object : hitObjects) {
@@ -82,7 +78,7 @@ public class Target {
     return builder.build();
   }
 
-  private Marking createMarking() {
+  private Marking createTargetMarking() {
     MarkingBuilder builder = new MarkingBuilder();
     for (Terrain terrain : terrains.getAll(selectCoordinates)) {
       builder.put(terrain, Marker.TARGET_SELECT);

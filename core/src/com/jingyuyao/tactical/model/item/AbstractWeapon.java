@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 
@@ -12,7 +13,8 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
 
   @Override
   public void damages(Target target) {
-    for (Character opponent : target.getTargetCharacters()) {
+    // Copy to an immutable set since characters can die and we don't want an iteration error
+    for (Character opponent : ImmutableList.copyOf(target.getTargetCharacters())) {
       opponent.damageBy(attackPower);
     }
   }
