@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -25,16 +25,18 @@ public class Grenade extends AbstractWeapon {
 
   @Override
   public ImmutableList<Target> createTargets(Coordinate from) {
-    Graph<Coordinate> selectCoordinates =
-        movements.distanceFrom(from, distance, new ConstWeight());
-
-    ImmutableList.Builder<Target> builder = ImmutableList.builder();
-    for (Coordinate select : selectCoordinates.nodes()) {
-      Graph<Coordinate> targetCoordinates =
-          movements.distanceFrom(select, size, new ConstWeight());
-      builder.add(targetFactory.create(ImmutableSet.of(select), targetCoordinates.nodes()));
-    }
-    return builder.build();
+    final Function<Terrain, Integer> weightFunction = new ConstWeight();
+    return FluentIterable
+        .from(movements.distanceFrom(from, distance, weightFunction).nodes())
+        .transform(new Function<Coordinate, Target>() {
+          @Override
+          public Target apply(Coordinate input) {
+            return targetFactory.create(
+                ImmutableSet.of(input),
+                movements.distanceFrom(input, size, weightFunction).nodes());
+          }
+        })
+        .toList();
   }
 
   private static class ConstWeight implements Function<Terrain, Integer> {
