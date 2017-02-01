@@ -4,7 +4,6 @@ import com.google.common.collect.Multiset;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -19,9 +18,6 @@ public class CharacterModuleTest {
   @Bind
   @Mock
   private Movements movements;
-  @Bind
-  @Mock
-  private Characters characters;
   @Bind
   @Mock
   @InitialMarkers

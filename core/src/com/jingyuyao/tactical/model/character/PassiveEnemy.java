@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
 import com.jingyuyao.tactical.model.map.Marker;
@@ -28,17 +27,16 @@ public class PassiveEnemy extends AbstractEnemy {
   PassiveEnemy(
       @InitialMarkers Multiset<Marker> markers,
       @CharacterEventBus EventBus eventBus,
-      Movements movements,
-      Characters characters) {
-    super(markers, eventBus, characters);
+      Movements movements) {
+    super(markers, eventBus);
     this.movements = movements;
   }
 
   PassiveEnemy(
       Coordinate coordinate, Multiset<Marker> markers, Movements movements,
-      Characters characters, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
+      EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
       List<Item> items) {
-    super(coordinate, markers, characters, eventBus, name, maxHp, hp, moveDistance, items);
+    super(coordinate, markers, eventBus, name, maxHp, hp, moveDistance, items);
     this.movements = movements;
   }
 

@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
@@ -26,7 +25,6 @@ import java.util.Locale;
 
 abstract class AbstractCharacter extends AbstractMapObject implements Character {
 
-  private transient final Characters characters;
   private transient final EventBus eventBus;
   private String name;
   private int maxHp;
@@ -34,20 +32,15 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   private int moveDistance;
   private List<Item> items;
 
-  AbstractCharacter(
-      Multiset<Marker> markers,
-      EventBus eventBus,
-      Characters characters) {
+  AbstractCharacter(Multiset<Marker> markers, EventBus eventBus) {
     super(markers);
-    this.characters = characters;
     this.eventBus = eventBus;
   }
 
   AbstractCharacter(
-      Coordinate coordinate, Multiset<Marker> markers, Characters characters, EventBus eventBus,
+      Coordinate coordinate, Multiset<Marker> markers, EventBus eventBus,
       String name, int maxHp, int hp, int moveDistance, List<Item> items) {
     super(coordinate, markers);
-    this.characters = characters;
     this.eventBus = eventBus;
     this.name = name;
     this.maxHp = maxHp;

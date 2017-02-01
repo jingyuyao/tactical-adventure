@@ -17,7 +17,6 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
@@ -46,8 +45,6 @@ public class AbstractCharacterTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Characters characters;
-  @Mock
   private Weapon weapon1;
   @Mock
   private Weapon weapon2;
@@ -71,7 +68,7 @@ public class AbstractCharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(CHARACTER_COORDINATE, markers, characters, eventBus, NAME, MAX_HP, HP,
+        new CharacterImpl(CHARACTER_COORDINATE, markers, eventBus, NAME, MAX_HP, HP,
             MOVE_DISTANCE, items);
   }
 
@@ -223,9 +220,9 @@ public class AbstractCharacterTest {
   private static class CharacterImpl extends AbstractCharacter {
 
     CharacterImpl(
-        Coordinate coordinate, Multiset<Marker> markers, Characters characters, EventBus eventBus,
+        Coordinate coordinate, Multiset<Marker> markers, EventBus eventBus,
         String name, int maxHp, int hp, int moveDistance, List<Item> items) {
-      super(coordinate, markers, characters, eventBus, name, maxHp, hp, moveDistance, items);
+      super(coordinate, markers, eventBus, name, maxHp, hp, moveDistance, items);
     }
 
     @Override
