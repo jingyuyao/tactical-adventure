@@ -17,7 +17,7 @@ class SelectingItem extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
+    ImmutableList.Builder<Action> builder = ImmutableList.builder();
     for (Weapon weapon : getPlayer().fluentItems().filter(Weapon.class)) {
       builder.add(this.new SelectWeapon(weapon));
     }

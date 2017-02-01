@@ -117,7 +117,7 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
   }
 
   private ImmutableList<EventListener> popAllListeners() {
-    ImmutableList.Builder<EventListener> builder = new ImmutableList.Builder<EventListener>();
+    ImmutableList.Builder<EventListener> builder = ImmutableList.builder();
     for (EventListener listener : getListeners()) {
       builder.add(listener);
     }

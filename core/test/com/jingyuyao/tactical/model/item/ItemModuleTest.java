@@ -34,6 +34,6 @@ public class ItemModuleTest {
 
   @Test
   public void target_factory() {
-    targetFactory.create(Collections.<Coordinate>emptyList(), Collections.<Coordinate>emptyList());
+    targetFactory.create(Collections.<Coordinate>emptySet(), Collections.<Coordinate>emptySet());
   }
 }

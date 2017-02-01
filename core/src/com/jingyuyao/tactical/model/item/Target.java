@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.map.Marking;
 import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import java.util.Set;
 import javax.inject.Inject;
 
 // TODO: need a method that return a "target info" for this target to be displayed
@@ -27,8 +28,8 @@ public class Target {
 
   @Inject
   Target(
-      @Assisted("select") Iterable<Coordinate> selectCoordinates,
-      @Assisted("target") Iterable<Coordinate> targetCoordinates,
+      @Assisted("select") Set<Coordinate> selectCoordinates,
+      @Assisted("target") Set<Coordinate> targetCoordinates,
       Characters characters,
       Terrains terrains) {
     this.selectCoordinates = ImmutableSet.copyOf(selectCoordinates);

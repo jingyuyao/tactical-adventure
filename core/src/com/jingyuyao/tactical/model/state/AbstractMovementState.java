@@ -30,7 +30,7 @@ abstract class AbstractMovementState extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
+    ImmutableList.Builder<Action> builder = ImmutableList.builder();
     // Show the first weapon and consumable for quick access
     for (Weapon weapon : getPlayer().fluentItems().filter(Weapon.class).limit(1)) {
       builder.add(this.new SelectWeapon(weapon));
