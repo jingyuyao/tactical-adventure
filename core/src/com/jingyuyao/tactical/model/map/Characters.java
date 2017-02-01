@@ -45,12 +45,4 @@ public class Characters {
   public FluentIterable<Character> fluent() {
     return FluentIterable.from(characterSet);
   }
-
-  public Iterable<Player> getPlayers() {
-    return fluent().filter(Player.class);
-  }
-
-  public Iterable<Enemy> getEnemies() {
-    return fluent().filter(Enemy.class);
-  }
 }

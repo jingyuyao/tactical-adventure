@@ -43,7 +43,7 @@ public class Waiting extends AbstractState {
 
     @Override
     public void run() {
-      for (Player player : characters.getPlayers()) {
+      for (Player player : characters.fluent().filter(Player.class)) {
         player.setActionable(true);
       }
       goTo(getStateFactory().createRetaliating());

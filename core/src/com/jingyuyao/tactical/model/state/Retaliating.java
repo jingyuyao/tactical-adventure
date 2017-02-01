@@ -46,7 +46,7 @@ public class Retaliating extends AbstractState {
   private void retaliate() {
     // TODO: does order matter?
     ListenableFuture<Void> currentRetaliation = Futures.immediateFuture(null);
-    for (final Enemy enemy : characters.getEnemies()) {
+    for (final Enemy enemy : characters.fluent().filter(Enemy.class)) {
       // Make enemies retaliate one at a time
       currentRetaliation =
           Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {

@@ -4,9 +4,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.FluentIterable;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -66,7 +67,7 @@ public class RetaliatingTest {
 
   @Test
   public void enter() {
-    when(characters.getEnemies()).thenReturn(ImmutableList.of(enemy, enemy2));
+    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy, enemy2));
     when(enemy.retaliate()).thenReturn(retaliation);
     when(enemy2.retaliate()).thenReturn(retaliation2);
     when(stateFactory.createWaiting()).thenReturn(waiting);
