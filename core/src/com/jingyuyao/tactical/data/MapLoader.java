@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.FluentIterable;
 import com.google.gson.Gson;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
@@ -62,14 +62,14 @@ public class MapLoader {
     FileHandle mapData = Gdx.files.internal(mapName + ".json");
     MapSave mapSave = gson.fromJson(mapData.readString(), MapSave.class);
 
-    Iterable<Character> characters = mapSave.getCharacters();
+    FluentIterable<Character> characters = mapSave.getCharacters();
 
     model.loadMap(
         width,
         height,
         terrainLoader.createTerrains(terrainLayer, width, height),
-        Iterables.filter(characters, Player.class),
-        Iterables.filter(characters, Enemy.class),
+        characters.filter(Player.class),
+        characters.filter(Enemy.class),
         waitingProvider.get());
     mapRenderer.setMap(tiledMap);
   }

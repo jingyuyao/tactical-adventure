@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.common.collect.FluentIterable;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.List;
 
@@ -11,7 +12,7 @@ class MapSave {
     this.characters = characters;
   }
 
-  List<Character> getCharacters() {
-    return characters;
+  FluentIterable<Character> getCharacters() {
+    return FluentIterable.from(characters);
   }
 }
