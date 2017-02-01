@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.inject.assistedinject.Assisted;
@@ -47,7 +48,7 @@ public class Target {
     return targetCoordinates.contains(coordinate);
   }
 
-  public Iterable<Character> getTargetCharacters() {
+  public FluentIterable<Character> getTargetCharacters() {
     return characters.fluent().filter(new Predicate<Character>() {
       @Override
       public boolean apply(Character input) {

@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.collect.Iterables;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AsyncFunction;
@@ -51,14 +51,12 @@ public class PassiveEnemy extends AbstractEnemy {
       setCoordinate(moveCoordinate);
       for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
         for (final Target target : weapon.createTargets(getCoordinate())) {
-          Iterable<Character> targetCharacters = target.getTargetCharacters();
+          FluentIterable<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?
-          if (!Iterables.isEmpty(Iterables.filter(targetCharacters, Enemy.class))) {
+          if (!targetCharacters.filter(Enemy.class).isEmpty()) {
             continue;
           }
-          boolean hasPlayers = !Iterables.isEmpty(Iterables.filter(targetCharacters, Player.class));
-
-          if (hasPlayers) {
+          if (!targetCharacters.filter(Player.class).isEmpty()) {
             setCoordinate(originalCoordinate);
             Path path = movement.pathTo(moveCoordinate);
 
