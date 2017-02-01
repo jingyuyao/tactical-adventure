@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
@@ -10,8 +9,6 @@ import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.Marking;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -79,16 +76,12 @@ public class TargetTest {
   }
 
   @Test
-  public void create_hit_marking() {
-    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
+  public void get_hit_objects() {
     when(characters.fluent()).thenReturn(FluentIterable.of(character));
     when(character.getCoordinate()).thenReturn(COORDINATE);
     when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
+    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain2));
 
-    Marking hitMarking = target.createHitMarking();
-    hitMarking.apply();
-
-    verify(terrain).addMarker(Marker.HIT);
-    verify(character).addMarker(Marker.HIT);
+    assertThat(target.getHitObjects()).containsExactly(character, terrain2);
   }
 }

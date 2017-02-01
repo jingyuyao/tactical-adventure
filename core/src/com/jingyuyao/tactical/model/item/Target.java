@@ -9,9 +9,6 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.Marking;
-import com.jingyuyao.tactical.model.map.Marking.MarkingBuilder;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Set;
@@ -65,15 +62,7 @@ public class Target {
     return terrains.getAll(targetCoordinates);
   }
 
-  public Marking createHitMarking() {
-    MarkingBuilder builder = new MarkingBuilder();
-    Iterable<MapObject> hitObjects =
-        Iterables.concat(
-            terrains.getAll(targetCoordinates),
-            getTargetCharacters());
-    for (MapObject object : hitObjects) {
-      builder.put(object, Marker.HIT);
-    }
-    return builder.build();
+  public Iterable<MapObject> getHitObjects() {
+    return Iterables.concat(terrains.getAll(targetCoordinates), getTargetCharacters());
   }
 }

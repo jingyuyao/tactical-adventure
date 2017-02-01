@@ -23,7 +23,6 @@ import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
-import com.jingyuyao.tactical.model.map.Marking;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
@@ -141,29 +140,27 @@ public class MapView {
 
   @Subscribe
   public void attack(final Attack attack) {
-    final Marking marking = attack.getObject().createHitMarking();
-
-    Runnable showHitMarker = new Runnable() {
+    Runnable show = new Runnable() {
       @Override
       public void run() {
-        marking.apply();
+        showHitMarkers(attack.getObject());
       }
     };
-    Runnable hideHitMarker = new Runnable() {
+    Runnable hide = new Runnable() {
       @Override
       public void run() {
-        marking.clear();
+        hideHitMarkers(attack.getObject());
       }
     };
 
     SequenceAction sequence = Actions.sequence(
-        Actions.run(showHitMarker),
+        Actions.run(show),
         Actions.delay(0.25f),
-        Actions.run(hideHitMarker),
+        Actions.run(hide),
         Actions.delay(0.1f),
-        Actions.run(showHitMarker),
+        Actions.run(show),
         Actions.delay(0.2f),
-        Actions.run(hideHitMarker),
+        Actions.run(hide),
         Actions.run(
             new Runnable() {
               @Override
@@ -197,5 +194,17 @@ public class MapView {
   private void addActor(MapObject object, MapActor<?> actor) {
     stage.addActor(actor);
     actorMap.put(object, actor);
+  }
+
+  private void showHitMarkers(Target target) {
+    for (MapObject object : target.getHitObjects()) {
+      actorMap.get(object).addMarkerSprite(markerSpriteMap.get(Marker.HIT));
+    }
+  }
+
+  private void hideHitMarkers(Target target) {
+    for (MapObject object : target.getHitObjects()) {
+      actorMap.get(object).removeMarkerSprite(markerSpriteMap.get(Marker.HIT));
+    }
   }
 }
