@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.data;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
@@ -18,8 +17,6 @@ import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Item;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -68,36 +65,24 @@ public class DataModule extends AbstractModule {
   @Provides
   @Singleton
   Gson provideGson(
+      Injector injector,
       RuntimeTypeAdapterFactory<Character> characterRuntimeTypeAdapterFactory,
       RuntimeTypeAdapterFactory<Item> itemRuntimeTypeAdapterFactory,
-      @Named("instanceCreatorMap") Map<Class<?>, InstanceCreator<?>> instanceCreatorMap
+      @Named("needCreatorClasses") List<Class<?>> classes
   ) {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     builder.registerTypeAdapterFactory(characterRuntimeTypeAdapterFactory);
     builder.registerTypeAdapterFactory(itemRuntimeTypeAdapterFactory);
-    for (Entry<Class<?>, InstanceCreator<?>> entry : instanceCreatorMap.entrySet()) {
-      builder.registerTypeAdapter(entry.getKey(), entry.getValue());
-    }
-    return builder.create();
-  }
-
-  @Provides
-  @Singleton
-  @Named("instanceCreatorMap")
-  Map<Class<?>, InstanceCreator<?>> provideInstanceCreatorMap(
-      Injector injector,
-      @Named("needCreatorClasses") List<Class<?>> classes) {
-    ImmutableMap.Builder<Class<?>, InstanceCreator<?>> builder = ImmutableMap.builder();
     for (Class<?> clazz : classes) {
       final Provider<?> provider = injector.getProvider(clazz);
-      builder.put(clazz, new InstanceCreator<Object>() {
+      builder.registerTypeAdapter(clazz, new InstanceCreator<Object>() {
         @Override
         public Object createInstance(Type type) {
           return provider.get();
         }
       });
     }
-    return builder.build();
+    return builder.create();
   }
 }
