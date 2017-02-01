@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -35,8 +34,6 @@ public interface Character extends MapObject {
   void useItem(Item item);
 
   ListenableFuture<Void> attacks(Weapon weapon, Target target);
-
-  void consumes(Consumable consumable);
 
   ListenableFuture<Void> moveAlong(Path path);
 

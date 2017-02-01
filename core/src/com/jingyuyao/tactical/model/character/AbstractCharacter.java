@@ -11,7 +11,6 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
-import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -126,13 +125,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
       }
     });
     return future;
-  }
-
-  @Override
-  public void consumes(Consumable consumable) {
-    // TODO: we'll probably need to return a future here when we have animation for consumables
-    consumable.apply(this);
-    useItem(consumable);
   }
 
   @Override

@@ -128,6 +128,26 @@ public class AbstractCharacterTest {
   }
 
   @Test
+  public void use_item() {
+    when(weapon1.getUsageLeft()).thenReturn(1);
+
+    character.useItem(weapon1);
+
+    verify(weapon1).useOnce();
+    assertThat(items).contains(weapon1);
+  }
+
+  @Test
+  public void use_item_broken() {
+    when(weapon1.getUsageLeft()).thenReturn(0);
+
+    character.useItem(weapon1);
+
+    verify(weapon1).useOnce();
+    assertThat(items).doesNotContain(weapon1);
+  }
+
+  @Test
   public void attacks() {
     when(weapon1.getUsageLeft()).thenReturn(1);
 
@@ -165,28 +185,6 @@ public class AbstractCharacterTest {
     verify(weapon1).useOnce();
     assertThat(future.isDone()).isTrue();
     assertThat(items).doesNotContain(weapon1);
-  }
-
-  @Test
-  public void consumes() {
-    when(consumable.getUsageLeft()).thenReturn(1);
-
-    character.consumes(consumable);
-
-    verify(consumable).apply(character);
-    verify(consumable).useOnce();
-    assertThat(items).contains(consumable);
-  }
-
-  @Test
-  public void consumes_break() {
-    when(consumable.getUsageLeft()).thenReturn(0);
-
-    character.consumes(consumable);
-
-    verify(consumable).apply(character);
-    verify(consumable).useOnce();
-    assertThat(items).doesNotContain(consumable);
   }
 
   @Test

@@ -39,8 +39,7 @@ abstract class AbstractPlayerState extends AbstractState {
     public void run() {
       player.quickAccess(weapon);
       goTo(getStateFactory()
-          .createSelectingTarget(
-              getPlayer(), weapon, weapon.createTargets(getPlayer().getCoordinate())));
+          .createSelectingTarget(player, weapon, weapon.createTargets(player.getCoordinate())));
     }
   }
 
@@ -59,8 +58,9 @@ abstract class AbstractPlayerState extends AbstractState {
 
     @Override
     public void run() {
-      getPlayer().quickAccess(consumable);
-      getPlayer().consumes(consumable);
+      player.quickAccess(consumable);
+      consumable.apply(player);
+      player.useItem(consumable);
       finish();
     }
   }

@@ -218,7 +218,8 @@ public class MovingTest {
 
     Action useConsumable = actions.get(1);
     useConsumable.run();
-    verify(player).consumes(consumable);
+    verify(player).useItem(consumable);
+    verify(consumable).apply(player);
     verify(player).setActionable(false);
     verify(player).quickAccess(consumable);
     verify(mapState).branchTo(waiting);
