@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
@@ -28,6 +29,8 @@ public interface Character extends MapObject {
   void removeItem(Item item);
 
   void quickAccess(Item item);
+
+  FluentIterable<Item> fluentItems();
 
   Iterable<Item> getItems();
 

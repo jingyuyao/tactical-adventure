@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
@@ -112,6 +113,11 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
     int itemIndex = items.indexOf(item);
     Preconditions.checkArgument(itemIndex != -1);
     Collections.swap(items, 0, itemIndex);
+  }
+
+  @Override
+  public FluentIterable<Item> fluentItems() {
+    return FluentIterable.from(items);
   }
 
   @Override
