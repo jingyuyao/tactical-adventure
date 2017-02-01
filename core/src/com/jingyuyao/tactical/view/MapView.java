@@ -4,11 +4,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.AddTerrain;
@@ -20,6 +23,7 @@ import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
+import com.jingyuyao.tactical.model.map.Marking;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
@@ -133,6 +137,41 @@ public class MapView {
     for (Terrain terrain : target.getTargetTerrains()) {
       actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.CAN_ATTACK));
     }
+  }
+
+  @Subscribe
+  public void attack(final Attack attack) {
+    final Marking marking = attack.getObject().createHitMarking();
+
+    Runnable showHitMarker = new Runnable() {
+      @Override
+      public void run() {
+        marking.apply();
+      }
+    };
+    Runnable hideHitMarker = new Runnable() {
+      @Override
+      public void run() {
+        marking.clear();
+      }
+    };
+
+    SequenceAction sequence = Actions.sequence(
+        Actions.run(showHitMarker),
+        Actions.delay(0.25f),
+        Actions.run(hideHitMarker),
+        Actions.delay(0.1f),
+        Actions.run(showHitMarker),
+        Actions.delay(0.2f),
+        Actions.run(hideHitMarker),
+        Actions.run(
+            new Runnable() {
+              @Override
+              public void run() {
+                attack.done();
+              }
+            }));
+    stage.addAction(sequence);
   }
 
   void act(float delta) {

@@ -9,11 +9,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marking;
 
 public class CharacterActor<T extends Character> extends MapActor<T> {
 
@@ -64,41 +62,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
               }
             }));
     addAction(moveSequence);
-  }
-
-  @Subscribe
-  public void attacked(final Attack attack) {
-    final Marking marking = attack.getObject().createHitMarking();
-
-    Runnable showHitMarker = new Runnable() {
-      @Override
-      public void run() {
-        marking.apply();
-      }
-    };
-    Runnable hideHitMarker = new Runnable() {
-      @Override
-      public void run() {
-        marking.clear();
-      }
-    };
-
-    SequenceAction sequence = Actions.sequence(
-        Actions.run(showHitMarker),
-        Actions.delay(0.25f),
-        Actions.run(hideHitMarker),
-        Actions.delay(0.1f),
-        Actions.run(showHitMarker),
-        Actions.delay(0.2f),
-        Actions.run(hideHitMarker),
-        Actions.run(
-            new Runnable() {
-              @Override
-              public void run() {
-                attack.done();
-              }
-            }));
-    addAction(sequence);
   }
 
   private SequenceAction getMoveSequence(Iterable<Coordinate> track) {
