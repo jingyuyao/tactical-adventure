@@ -32,6 +32,8 @@ public interface Character extends MapObject {
 
   FluentIterable<Item> fluentItems();
 
+  void useItem(Item item);
+
   ListenableFuture<Void> attacks(Weapon weapon, Target target);
 
   void consumes(Consumable consumable);

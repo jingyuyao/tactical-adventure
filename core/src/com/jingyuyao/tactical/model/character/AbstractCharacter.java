@@ -102,6 +102,14 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   }
 
   @Override
+  public void useItem(Item item) {
+    item.useOnce();
+    if (item.getUsageLeft() == 0) {
+      items.remove(item);
+    }
+  }
+
+  @Override
   public ListenableFuture<Void> attacks(final Weapon weapon, final Target target) {
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Attack(target, future));
@@ -109,7 +117,7 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
       @Override
       public void onSuccess(Void result) {
         weapon.damages(target);
-        useThenRemoveIfBroken(weapon);
+        useItem(weapon);
       }
 
       @Override
@@ -124,7 +132,7 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   public void consumes(Consumable consumable) {
     // TODO: we'll probably need to return a future here when we have animation for consumables
     consumable.apply(this);
-    useThenRemoveIfBroken(consumable);
+    useItem(consumable);
   }
 
   @Override
@@ -139,13 +147,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   public void instantMoveTo(Coordinate newCoordinate) {
     setCoordinate(newCoordinate);
     eventBus.post(new InstantMove(this, newCoordinate));
-  }
-
-  private void useThenRemoveIfBroken(Item item) {
-    item.useOnce();
-    if (item.getUsageLeft() == 0) {
-      items.remove(item);
-    }
   }
 
   @Override
