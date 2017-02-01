@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
+import com.jingyuyao.tactical.model.event.RemoveObject;
 import java.util.Iterator;
 import java.util.Set;
 import org.junit.Before;
@@ -23,9 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CharactersTest {
-
-  private static final Coordinate COORDINATE1 = new Coordinate(0, 1);
-  private static final Coordinate COORDINATE2 = new Coordinate(0, 2);
 
   @Mock
   private EventBus eventBus;
@@ -72,6 +70,10 @@ public class CharactersTest {
     characters.remove(player);
 
     verify(characterSet).remove(player);
+    verify(eventBus).post(argumentCaptor.capture());
+    RemoveObject removeObject =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), RemoveObject.class);
+    assertThat(removeObject.getObject()).isSameAs(player);
   }
 
   @Test

@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
+import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapModule.BackingCharacterSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -40,6 +41,7 @@ public class Characters {
 
   public void remove(Character character) {
     characterSet.remove(character);
+    eventBus.post(new RemoveObject(character));
   }
 
   public FluentIterable<Character> fluent() {

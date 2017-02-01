@@ -11,7 +11,6 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
-import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Marking;
@@ -42,11 +41,6 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
       sprite.draw(batch);
     }
     super.draw(batch, parentAlpha);
-  }
-
-  @Subscribe
-  public void removeSelf(RemoveSelf removeSelf) {
-    remove();
   }
 
   @Subscribe

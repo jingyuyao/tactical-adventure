@@ -13,7 +13,6 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
-import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -57,8 +56,6 @@ public class AbstractCharacterTest {
   @Mock
   private Item newItem;
   @Mock
-  private MapState mapState;
-  @Mock
   private Path path;
   @Mock
   private Target target;
@@ -86,27 +83,23 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void damage_by_not_dead() {
+  public void damage_by() {
     character.damageBy(5);
 
     assertThat(character.getHp()).isEqualTo(HP - 5);
-    verifyZeroInteractions(characters);
-    verifyZeroInteractions(eventBus);
-  }
 
-  @Test
-  public void damage_by_dead() {
-    character.damageBy(11);
+    character.damageBy(1000);
 
     assertThat(character.getHp()).isEqualTo(0);
-    verify(characters).remove(character);
-    verify(eventBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(RemoveSelf.class);
   }
 
   @Test
   public void heal_by() {
-    character.healBy(20);
+    character.healBy(5);
+
+    assertThat(character.getHp()).isEqualTo(HP + 5);
+
+    character.healBy(1000);
 
     assertThat(character.getHp()).isEqualTo(MAX_HP);
   }

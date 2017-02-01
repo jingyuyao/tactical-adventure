@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -11,6 +12,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
@@ -76,6 +78,13 @@ public class MapView {
         enemy,
         actorFactory.create(
             enemy, controllerFactory.create(enemy), nameSpriteMap.get(enemy.getName())));
+  }
+
+  @Subscribe
+  public void removeObject(RemoveObject removeObject) {
+    MapActor actor = actorMap.remove(removeObject.getObject());
+    Preconditions.checkNotNull(actor);
+    actor.remove();
   }
 
   void act(float delta) {

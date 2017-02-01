@@ -11,7 +11,6 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
-import com.jingyuyao.tactical.model.character.event.RemoveSelf;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -80,10 +79,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   @Override
   public void damageBy(int delta) {
     hp = Math.max(hp - delta, 0);
-    if (hp == 0) {
-      characters.remove(this);
-      eventBus.post(new RemoveSelf());
-    }
   }
 
   @Override
