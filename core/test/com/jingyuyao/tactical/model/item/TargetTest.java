@@ -65,6 +65,20 @@ public class TargetTest {
   }
 
   @Test
+  public void get_select_terrains() {
+    when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain));
+
+    assertThat(target.getSelectTerrains()).containsExactly(terrain);
+  }
+
+  @Test
+  public void get_target_terrains() {
+    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain2));
+
+    assertThat(target.getTargetTerrains()).containsExactly(terrain2);
+  }
+
+  @Test
   public void show_marking() {
     when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain));
     when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain2));

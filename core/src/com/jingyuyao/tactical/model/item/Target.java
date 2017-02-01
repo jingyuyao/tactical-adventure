@@ -58,6 +58,14 @@ public class Target {
     });
   }
 
+  public Iterable<Terrain> getSelectTerrains() {
+    return terrains.getAll(selectCoordinates);
+  }
+
+  public Iterable<Terrain> getTargetTerrains() {
+    return terrains.getAll(targetCoordinates);
+  }
+
   public void showMarking() {
     marking = createTargetMarking();
     marking.apply();

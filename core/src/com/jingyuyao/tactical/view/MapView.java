@@ -13,8 +13,11 @@ import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.event.HideMovement;
+import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.event.ShowMovement;
+import com.jingyuyao.tactical.model.event.ShowTarget;
+import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
@@ -107,6 +110,28 @@ public class MapView {
     Movement movement = hideMovement.getObject();
     for (Terrain terrain : movement.getTerrains()) {
       actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.CAN_MOVE_TO));
+    }
+  }
+
+  @Subscribe
+  public void showTarget(ShowTarget showTarget) {
+    Target target = showTarget.getObject();
+    for (Terrain terrain : target.getSelectTerrains()) {
+      actorMap.get(terrain).addMarkerSprite(markerSpriteMap.get(Marker.TARGET_SELECT));
+    }
+    for (Terrain terrain : target.getTargetTerrains()) {
+      actorMap.get(terrain).addMarkerSprite(markerSpriteMap.get(Marker.CAN_ATTACK));
+    }
+  }
+
+  @Subscribe
+  public void hideTarget(HideTarget hideTarget) {
+    Target target = hideTarget.getObject();
+    for (Terrain terrain : target.getSelectTerrains()) {
+      actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.TARGET_SELECT));
+    }
+    for (Terrain terrain : target.getTargetTerrains()) {
+      actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.CAN_ATTACK));
     }
   }
 
