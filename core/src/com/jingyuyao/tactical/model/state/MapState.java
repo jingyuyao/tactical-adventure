@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -8,7 +9,6 @@ import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
@@ -42,21 +42,25 @@ public class MapState {
   }
 
   public void select(Player player) {
-    switchHighlightTo(player);
+    currentHighlight = player;
     eventBus.post(new HighlightCharacter(player));
     stateStack.peek().select(player);
   }
 
   public void select(Enemy enemy) {
-    switchHighlightTo(enemy);
+    currentHighlight = enemy;
     eventBus.post(new HighlightCharacter(enemy));
     stateStack.peek().select(enemy);
   }
 
   public void select(Terrain terrain) {
-    stateStack.peek().select(terrain);
-    switchHighlightTo(terrain);
+    currentHighlight = terrain;
     eventBus.post(new HighlightTerrain(terrain));
+    stateStack.peek().select(terrain);
+  }
+
+  public Optional<MapObject> getCurrentHighlight() {
+    return Optional.fromNullable(currentHighlight);
   }
 
   /**
@@ -113,15 +117,5 @@ public class MapState {
    */
   void pop() {
     stateStack.pop();
-  }
-
-  private void switchHighlightTo(MapObject highlight) {
-    if (currentHighlight != null) {
-      currentHighlight.removeMarker(Marker.HIGHLIGHT);
-    }
-    currentHighlight = highlight;
-    if (currentHighlight != null) {
-      currentHighlight.addMarker(Marker.HIGHLIGHT);
-    }
   }
 }

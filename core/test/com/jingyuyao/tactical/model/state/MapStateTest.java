@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
 import org.junit.Before;
@@ -53,6 +52,7 @@ public class MapStateTest {
   @Before
   public void setUp() {
     mapState = new MapState(eventBus, stateStack);
+    assertThat(mapState.getCurrentHighlight().isPresent()).isFalse();
   }
 
   @Test
@@ -72,11 +72,11 @@ public class MapStateTest {
     mapState.select(player);
 
     verify(state1).select(player);
-    verify(player).addMarker(Marker.HIGHLIGHT);
     verify(eventBus).post(argumentCaptor.capture());
     HighlightCharacter highlightCharacter =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
     assertThat(highlightCharacter.getObject()).isSameAs(player);
+    assertThat(mapState.getCurrentHighlight().get()).isSameAs(player);
   }
 
   @Test
@@ -86,11 +86,11 @@ public class MapStateTest {
     mapState.select(enemy);
 
     verify(state1).select(enemy);
-    verify(enemy).addMarker(Marker.HIGHLIGHT);
     verify(eventBus).post(argumentCaptor.capture());
     HighlightCharacter highlightCharacter =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
     assertThat(highlightCharacter.getObject()).isSameAs(enemy);
+    assertThat(mapState.getCurrentHighlight().get()).isSameAs(enemy);
   }
 
   @Test
@@ -100,11 +100,11 @@ public class MapStateTest {
     mapState.select(terrain);
 
     verify(state1).select(terrain);
-    verify(terrain).addMarker(Marker.HIGHLIGHT);
     verify(eventBus).post(argumentCaptor.capture());
     HighlightTerrain highlightTerrain =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightTerrain.class);
     assertThat(highlightTerrain.getObject()).isSameAs(terrain);
+    assertThat(mapState.getCurrentHighlight().get()).isSameAs(terrain);
   }
 
   @Test

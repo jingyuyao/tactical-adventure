@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.controller.ControllerFactory;
@@ -24,6 +25,7 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
+import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
@@ -46,6 +48,7 @@ public class MapView {
   private final Map<Marker, Sprite> markerSpriteMap;
   private final Map<String, Sprite> nameSpriteMap;
   private final Map<MapObject, MapActor<?>> actorMap;
+  private final MapState mapState;
 
   /**
    * A map view contains a stage with all the actors and a way to render them. The background map is
@@ -59,7 +62,8 @@ public class MapView {
       ControllerFactory controllerFactory,
       Map<Marker, Sprite> markerSpriteMap,
       Map<String, Sprite> nameSpriteMap,
-      Map<MapObject, MapActor<?>> actorMap) {
+      Map<MapObject, MapActor<?>> actorMap,
+      MapState mapState) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
@@ -67,6 +71,7 @@ public class MapView {
     this.markerSpriteMap = markerSpriteMap;
     this.nameSpriteMap = nameSpriteMap;
     this.actorMap = actorMap;
+    this.mapState = mapState;
   }
 
   @Subscribe
@@ -180,6 +185,15 @@ public class MapView {
     mapRenderer.setView((OrthographicCamera) stage.getCamera());
     mapRenderer.render();
     stage.draw();
+    Optional<MapObject> highlightOptional = mapState.getCurrentHighlight();
+    if (highlightOptional.isPresent()) {
+      MapActor actor = actorMap.get(highlightOptional.get());
+      Sprite highlightSprite = markerSpriteMap.get(Marker.HIGHLIGHT);
+      highlightSprite.setBounds(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
+      stage.getBatch().begin();
+      highlightSprite.draw(stage.getBatch());
+      stage.getBatch().end();
+    }
   }
 
   void resize(int width, int height) {
