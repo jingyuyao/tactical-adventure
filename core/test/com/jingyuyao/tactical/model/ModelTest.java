@@ -26,8 +26,6 @@ public class ModelTest {
   @Mock
   private MapState mapState;
   @Mock
-  private Object object;
-  @Mock
   private Iterable<Terrain> terrainIterable;
   @Mock
   private Player player;
