@@ -21,7 +21,7 @@ class SelectingItem extends AbstractPlayerState {
     for (Weapon weapon : getPlayer().fluentItems().filter(Weapon.class)) {
       builder.add(this.new SelectWeapon(weapon));
     }
-    for (Consumable consumable : getPlayer().getConsumables()) {
+    for (Consumable consumable : getPlayer().fluentItems().filter(Consumable.class)) {
       builder.add(this.new UseConsumable(consumable));
     }
     builder.add(this.new Back());

@@ -75,14 +75,12 @@ public class MovingTest {
   private Movement otherMovement;
 
   private FluentIterable<Item> fluentIterable;
-  private Iterable<Consumable> consumableIterable;
   private ListenableFuture<Void> immediateFuture;
   private Moving moving;
 
   @Before
   public void setUp() {
     fluentIterable = FluentIterable.of(weapon, consumable);
-    consumableIterable = ImmutableList.of(consumable);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
     moving = new Moving(mapState, stateFactory, movements, player, movement);
@@ -240,7 +238,6 @@ public class MovingTest {
 
   private ImmutableList<Action> actions_set_up() {
     when(player.fluentItems()).thenReturn(fluentIterable);
-    when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(weapon.createTargets(MOVING_PLAYER_COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);

@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
@@ -118,11 +117,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   @Override
   public FluentIterable<Item> fluentItems() {
     return FluentIterable.from(items);
-  }
-
-  @Override
-  public Iterable<Consumable> getConsumables() {
-    return Iterables.filter(items, Consumable.class);
   }
 
   @Override

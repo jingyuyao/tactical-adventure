@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -32,11 +31,11 @@ abstract class AbstractMovementState extends AbstractPlayerState {
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
-    // Show the first two weapon and consumable for quick access
+    // Show the first weapon and consumable for quick access
     for (Weapon weapon : getPlayer().fluentItems().filter(Weapon.class).limit(1)) {
       builder.add(this.new SelectWeapon(weapon));
     }
-    for (Consumable consumable : Iterables.limit(getPlayer().getConsumables(), 1)) {
+    for (Consumable consumable : getPlayer().fluentItems().filter(Consumable.class).limit(1)) {
       builder.add(this.new UseConsumable(consumable));
     }
     if (!getPlayer().fluentItems().isEmpty()) {

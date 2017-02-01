@@ -60,13 +60,11 @@ public class MovedTest {
   private Moving moving;
 
   private FluentIterable<Item> fluentIterable;
-  private Iterable<Consumable> consumableIterable;
   private Moved moved;
 
   @Before
   public void setUp() {
     fluentIterable = FluentIterable.of(weapon, consumable);
-    consumableIterable = ImmutableList.of(consumable);
     moved = new Moved(mapState, stateFactory, movements, player);
   }
 
@@ -167,7 +165,6 @@ public class MovedTest {
 
   private ImmutableList<Action> actions_set_up() {
     when(player.fluentItems()).thenReturn(fluentIterable);
-    when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(weapon.createTargets(COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);

@@ -140,9 +140,8 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void get_items() {
+  public void fluent_items() {
     assertThat(character.fluentItems()).containsExactly(weapon1, consumable, weapon2).inOrder();
-    assertThat(character.getConsumables()).containsExactly(consumable);
   }
 
   @Test

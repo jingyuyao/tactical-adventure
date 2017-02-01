@@ -47,13 +47,11 @@ public class SelectingItemTest {
   private Waiting waiting;
 
   private FluentIterable<Item> fluentIterable;
-  private Iterable<Consumable> consumableIterable;
   private SelectingItem selectingItem;
 
   @Before
   public void setUp() {
     fluentIterable = FluentIterable.of(weapon, consumable1);
-    consumableIterable = ImmutableList.of(consumable1);
     selectingItem = new SelectingItem(mapState, stateFactory, player);
   }
 
@@ -109,7 +107,6 @@ public class SelectingItemTest {
 
   private ImmutableList<Action> actions_set_up() {
     when(player.fluentItems()).thenReturn(fluentIterable);
-    when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(weapon.createTargets(COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
