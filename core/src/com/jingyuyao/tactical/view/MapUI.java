@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
@@ -34,7 +33,6 @@ public class MapUI {
   private final Label terrainLabel;
   private final Label stateLabel;
   private final VerticalGroup actionButtons;
-  private ImmutableList<Action> currentActions;
 
   @Inject
   MapUI(@MapUiStage Stage stage, Skin skin) {
@@ -101,13 +99,8 @@ public class MapUI {
   public void stateChange(StateChanged stateChanged) {
     State newState = stateChanged.getObject();
     stateLabel.setText(newState.getName());
-    currentActions = newState.getActions();
-    populateButtons();
-  }
-
-  private void populateButtons() {
     actionButtons.clear();
-    for (Action action : currentActions) {
+    for (Action action : newState.getActions()) {
       actionButtons.addActor(createActionButton(action));
     }
   }
