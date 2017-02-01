@@ -38,6 +38,10 @@ public class Movement {
     return moveGraph.nodes();
   }
 
+  public Iterable<Terrain> getTerrains() {
+    return terrains.getAll(moveGraph.nodes());
+  }
+
   /**
    * Get a path to {@code coordinate}.
    */

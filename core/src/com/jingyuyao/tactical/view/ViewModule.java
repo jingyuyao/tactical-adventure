@@ -7,7 +7,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,6 +22,7 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import java.lang.annotation.Retention;
@@ -94,6 +97,28 @@ public class ViewModule extends AbstractModule {
   Viewport provideMapUIViewport() {
     return new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
   }
+
+  @Provides
+  @Singleton
+  Map<Marker, Sprite> provideMarkerSpriteMap(AssetManager assetManager) {
+    Map<Marker, Sprite> markerSpriteMap = new HashMap<Marker, Sprite>();
+    markerSpriteMap.put(
+        Marker.HIGHLIGHT, new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class)));
+    markerSpriteMap.put(
+        Marker.CAN_MOVE_TO, new Sprite(assetManager.get(AssetModule.MOVE, Texture.class)));
+    markerSpriteMap.put(
+        Marker.HIT, new Sprite(assetManager.get(AssetModule.HIT, Texture.class)));
+    markerSpriteMap.put(
+        Marker.CAN_ATTACK, new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class)));
+    markerSpriteMap.put(
+        Marker.POTENTIAL_TARGET,
+        new Sprite(assetManager.get(AssetModule.POTENTIAL_TARGET, Texture.class)));
+    markerSpriteMap.put(
+        Marker.TARGET_SELECT,
+        new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class)));
+    return markerSpriteMap;
+  }
+
 
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})

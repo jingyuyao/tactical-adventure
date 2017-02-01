@@ -12,8 +12,12 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.RemoveObject;
+import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Marker;
+import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
@@ -33,6 +37,7 @@ public class MapView {
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
+  private final Map<Marker, Sprite> markerSpriteMap;
   private final Map<String, Sprite> nameSpriteMap;
   private final Map<MapObject, MapActor<?>> actorMap;
 
@@ -46,12 +51,14 @@ public class MapView {
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
+      Map<Marker, Sprite> markerSpriteMap,
       Map<String, Sprite> nameSpriteMap,
       Map<MapObject, MapActor<?>> actorMap) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
     this.controllerFactory = controllerFactory;
+    this.markerSpriteMap = markerSpriteMap;
     this.nameSpriteMap = nameSpriteMap;
     this.actorMap = actorMap;
   }
@@ -85,6 +92,22 @@ public class MapView {
     MapActor actor = actorMap.remove(removeObject.getObject());
     Preconditions.checkNotNull(actor);
     actor.remove();
+  }
+
+  @Subscribe
+  public void showMovement(ShowMovement showMovement) {
+    Movement movement = showMovement.getObject();
+    for (Terrain terrain : movement.getTerrains()) {
+      actorMap.get(terrain).addMarkerSprite(markerSpriteMap.get(Marker.CAN_MOVE_TO));
+    }
+  }
+
+  @Subscribe
+  public void hideMovement(HideMovement hideMovement) {
+    Movement movement = hideMovement.getObject();
+    for (Terrain terrain : movement.getTerrains()) {
+      actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.CAN_MOVE_TO));
+    }
   }
 
   void act(float delta) {
