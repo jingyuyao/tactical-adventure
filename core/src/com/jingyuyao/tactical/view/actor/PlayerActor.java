@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.google.common.collect.Multiset;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.actor.ActorModule.ActorWorldSize;
-import java.util.Map;
 import javax.inject.Inject;
 
 public class PlayerActor extends CharacterActor<Player> {
@@ -18,9 +17,9 @@ public class PlayerActor extends CharacterActor<Player> {
       @Assisted Player object,
       @Assisted EventListener listener,
       @ActorWorldSize float size,
-      Map<Marker, Sprite> markerSpriteMap,
+      Multiset<Sprite> markerSprites,
       @Assisted Sprite sprite) {
-    super(object, listener, size, markerSpriteMap, sprite);
+    super(object, listener, size, markerSprites, sprite);
   }
 
   @Override

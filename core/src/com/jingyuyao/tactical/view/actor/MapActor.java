@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.MapView;
-import java.util.Map;
 
 /**
  * An {@link Actor} on a {@link MapView}. Draws all {@link Marker} that belongs to {@link MapObject}
@@ -20,11 +20,11 @@ import java.util.Map;
 public class MapActor<T extends MapObject> extends Actor {
 
   private final T object;
-  private final Map<Marker, Sprite> markerSpriteMap;
+  private final Multiset<Sprite> markerSprites;
 
-  MapActor(T object, EventListener listener, float size, Map<Marker, Sprite> markerSpriteMap) {
+  MapActor(T object, EventListener listener, float size, Multiset<Sprite> markerSprites) {
     this.object = object;
-    this.markerSpriteMap = markerSpriteMap;
+    this.markerSprites = markerSprites;
     Coordinate coordinate = object.getCoordinate();
     setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
     addListener(listener);
@@ -35,11 +35,18 @@ public class MapActor<T extends MapObject> extends Actor {
     // We allow actor to retain multiple copies of a marker sprite but we only show one at a time
     // this allows multiple markings to apply and remove the same marker on an actor without
     // worrying about other markings
-    for (Marker marker : object.getMarkers().elementSet()) {
-      Sprite sprite = markerSpriteMap.get(marker);
+    for (Sprite sprite : markerSprites.elementSet()) {
       sprite.setBounds(getX(), getY(), getWidth(), getHeight());
       sprite.draw(batch);
     }
+  }
+
+  public void addMarkerSprite(Sprite sprite) {
+    markerSprites.add(sprite);
+  }
+
+  public void removeMarkerSprite(Sprite sprite) {
+    markerSprites.remove(sprite);
   }
 
   T getObject() {

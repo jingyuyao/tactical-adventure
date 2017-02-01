@@ -6,15 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multiset;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Marking;
-import java.util.Map;
 
 public class CharacterActor<T extends Character> extends MapActor<T> {
 
@@ -26,9 +25,9 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
       T object,
       EventListener listener,
       float size,
-      Map<Marker, Sprite> markerSpriteMap,
+      Multiset<Sprite> markerSprites,
       Sprite sprite) {
-    super(object, listener, size, markerSpriteMap);
+    super(object, listener, size, markerSprites);
     this.sprite = sprite;
     object.registerListener(this);
   }

@@ -8,12 +8,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.model.map.Marker;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -28,24 +29,8 @@ public class ActorModule extends AbstractModule {
   }
 
   @Provides
-  @Singleton
-  Map<Marker, Sprite> provideMarkerSpriteMap(AssetManager assetManager) {
-    Map<Marker, Sprite> markerSpriteMap = new HashMap<Marker, Sprite>();
-    markerSpriteMap.put(
-        Marker.HIGHLIGHT, new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class)));
-    markerSpriteMap.put(
-        Marker.CAN_MOVE_TO, new Sprite(assetManager.get(AssetModule.MOVE, Texture.class)));
-    markerSpriteMap.put(
-        Marker.HIT, new Sprite(assetManager.get(AssetModule.HIT, Texture.class)));
-    markerSpriteMap.put(
-        Marker.CAN_ATTACK, new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class)));
-    markerSpriteMap.put(
-        Marker.POTENTIAL_TARGET,
-        new Sprite(assetManager.get(AssetModule.POTENTIAL_TARGET, Texture.class)));
-    markerSpriteMap.put(
-        Marker.TARGET_SELECT,
-        new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class)));
-    return markerSpriteMap;
+  Multiset<Sprite> provideMarkerSprites() {
+    return HashMultiset.create();
   }
 
   @Provides
