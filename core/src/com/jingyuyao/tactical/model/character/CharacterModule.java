@@ -9,6 +9,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Movements;
 import java.lang.annotation.Retention;
@@ -20,6 +21,7 @@ public class CharacterModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(Battle.class);
     requireBinding(Movements.class);
   }
 

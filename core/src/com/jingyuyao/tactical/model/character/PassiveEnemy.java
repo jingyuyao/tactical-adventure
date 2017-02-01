@@ -6,6 +6,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -21,23 +22,27 @@ import javax.inject.Inject;
 
 public class PassiveEnemy extends AbstractEnemy {
 
-  private transient final Movements movements;
+  private final transient Movements movements;
+  private final transient Battle battle;
 
   @Inject
   PassiveEnemy(
       @InitialMarkers Multiset<Marker> markers,
       @CharacterEventBus EventBus eventBus,
-      Movements movements) {
+      Movements movements,
+      Battle battle) {
     super(markers, eventBus);
     this.movements = movements;
+    this.battle = battle;
   }
 
   PassiveEnemy(
       Coordinate coordinate, Multiset<Marker> markers, Movements movements,
-      EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
+      EventBus eventBus, Battle battle, String name, int maxHp, int hp, int moveDistance,
       List<Item> items) {
     super(coordinate, markers, eventBus, name, maxHp, hp, moveDistance, items);
     this.movements = movements;
+    this.battle = battle;
   }
 
   @Override
@@ -61,7 +66,7 @@ public class PassiveEnemy extends AbstractEnemy {
             return Futures.transformAsync(moveAlong(path), new AsyncFunction<Void, Void>() {
               @Override
               public ListenableFuture<Void> apply(Void input) {
-                return attacks(weapon, target);
+                return battle.begin(PassiveEnemy.this, weapon, target);
               }
             });
           }
