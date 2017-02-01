@@ -60,14 +60,12 @@ public class MovedTest {
   private Moving moving;
 
   private FluentIterable<Item> fluentIterable;
-  private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
   private Moved moved;
 
   @Before
   public void setUp() {
     fluentIterable = FluentIterable.of(weapon, consumable);
-    weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
     moved = new Moved(mapState, stateFactory, movements, player);
   }
@@ -169,7 +167,6 @@ public class MovedTest {
 
   private ImmutableList<Action> actions_set_up() {
     when(player.fluentItems()).thenReturn(fluentIterable);
-    when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(weapon.createTargets(COORDINATE)).thenReturn(targets);

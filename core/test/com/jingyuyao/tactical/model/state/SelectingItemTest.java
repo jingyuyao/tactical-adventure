@@ -4,10 +4,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -44,13 +46,13 @@ public class SelectingItemTest {
   @Mock
   private Waiting waiting;
 
-  private Iterable<Weapon> weaponIterable;
+  private FluentIterable<Item> fluentIterable;
   private Iterable<Consumable> consumableIterable;
   private SelectingItem selectingItem;
 
   @Before
   public void setUp() {
-    weaponIterable = ImmutableList.of(weapon);
+    fluentIterable = FluentIterable.of(weapon, consumable1);
     consumableIterable = ImmutableList.of(consumable1);
     selectingItem = new SelectingItem(mapState, stateFactory, player);
   }
@@ -106,7 +108,7 @@ public class SelectingItemTest {
   }
 
   private ImmutableList<Action> actions_set_up() {
-    when(player.getWeapons()).thenReturn(weaponIterable);
+    when(player.fluentItems()).thenReturn(fluentIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(weapon.createTargets(COORDINATE)).thenReturn(targets);

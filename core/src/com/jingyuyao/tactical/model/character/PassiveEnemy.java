@@ -49,7 +49,7 @@ public class PassiveEnemy extends AbstractEnemy {
 
     for (Coordinate moveCoordinate : movement.getCoordinates()) {
       setCoordinate(moveCoordinate);
-      for (final Weapon weapon : getWeapons()) {
+      for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
         for (final Target target : weapon.createTargets(getCoordinate())) {
           Iterable<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?

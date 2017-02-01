@@ -33,7 +33,7 @@ abstract class AbstractMovementState extends AbstractPlayerState {
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = new ImmutableList.Builder<Action>();
     // Show the first two weapon and consumable for quick access
-    for (Weapon weapon : Iterables.limit(getPlayer().getWeapons(), 1)) {
+    for (Weapon weapon : getPlayer().fluentItems().filter(Weapon.class).limit(1)) {
       builder.add(this.new SelectWeapon(weapon));
     }
     for (Consumable consumable : Iterables.limit(getPlayer().getConsumables(), 1)) {
