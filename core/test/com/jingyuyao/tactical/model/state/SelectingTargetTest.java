@@ -6,8 +6,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.HideTarget;
+import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -15,6 +19,8 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -27,6 +33,8 @@ public class SelectingTargetTest {
   private MapState mapState;
   @Mock
   private StateFactory stateFactory;
+  @Mock
+  private EventBus eventBus;
   @Mock
   private Player player;
   @Mock
@@ -41,6 +49,8 @@ public class SelectingTargetTest {
   private Target target2;
   @Mock
   private ReviewingAttack reviewingAttack;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private ImmutableList<Target> targets;
   private SelectingTarget selectingTarget;
@@ -48,23 +58,40 @@ public class SelectingTargetTest {
   @Before
   public void setUp() {
     targets = ImmutableList.of(target1, target2);
-    selectingTarget = new SelectingTarget(mapState, stateFactory, player, weapon, targets);
+    selectingTarget = new SelectingTarget(mapState, stateFactory, eventBus, player, weapon,
+        targets);
   }
 
   @Test
   public void enter() {
     selectingTarget.enter();
 
-    target1.showMarking();
-    target2.showMarking();
+    verify(target1).showMarking();
+    verify(target2).showMarking();
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues()).hasSize(2);
+    ShowTarget showTarget1 =
+        TestHelpers.isInstanceOf(argumentCaptor.getAllValues().get(0), ShowTarget.class);
+    ShowTarget showTarget2 =
+        TestHelpers.isInstanceOf(argumentCaptor.getAllValues().get(1), ShowTarget.class);
+    assertThat(showTarget1.getObject()).isSameAs(target1);
+    assertThat(showTarget2.getObject()).isSameAs(target2);
   }
 
   @Test
   public void exit() {
     selectingTarget.exit();
 
-    target1.hideMarking();
-    target2.hideMarking();
+    verify(target1).hideMarking();
+    verify(target2).hideMarking();
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues()).hasSize(2);
+    HideTarget hideTarget1 =
+        TestHelpers.isInstanceOf(argumentCaptor.getAllValues().get(0), HideTarget.class);
+    HideTarget hideTarget2 =
+        TestHelpers.isInstanceOf(argumentCaptor.getAllValues().get(1), HideTarget.class);
+    assertThat(hideTarget1.getObject()).isSameAs(target1);
+    assertThat(hideTarget2.getObject()).isSameAs(target2);
   }
 
   @Test

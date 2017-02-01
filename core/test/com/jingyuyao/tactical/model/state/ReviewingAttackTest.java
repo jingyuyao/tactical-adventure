@@ -6,9 +6,13 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.HideTarget;
+import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -16,6 +20,8 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -31,6 +37,8 @@ public class ReviewingAttackTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private EventBus eventBus;
+  @Mock
   private Player attackingPlayer;
   @Mock
   private Weapon weapon;
@@ -44,12 +52,15 @@ public class ReviewingAttackTest {
   private Waiting waiting;
   @Mock
   private IgnoreInput ignoreInput;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private ReviewingAttack reviewingAttack;
 
   @Before
   public void setUp() {
-    reviewingAttack = new ReviewingAttack(mapState, stateFactory, attackingPlayer, weapon, target);
+    reviewingAttack = new ReviewingAttack(mapState, stateFactory, eventBus, attackingPlayer, weapon,
+        target);
   }
 
   @Test
@@ -57,6 +68,9 @@ public class ReviewingAttackTest {
     reviewingAttack.enter();
 
     verify(target).showMarking();
+    verify(eventBus).post(argumentCaptor.capture());
+    ShowTarget showTarget = TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowTarget.class);
+    assertThat(showTarget.getObject()).isSameAs(target);
   }
 
   @Test
@@ -64,6 +78,9 @@ public class ReviewingAttackTest {
     reviewingAttack.exit();
 
     verify(target).hideMarking();
+    verify(eventBus).post(argumentCaptor.capture());
+    HideTarget hideTarget = TestHelpers.isInstanceOf(argumentCaptor.getValue(), HideTarget.class);
+    assertThat(hideTarget.getObject()).isSameAs(target);
   }
 
   @Test

@@ -1,9 +1,13 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.HideMovement;
+import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -13,6 +17,7 @@ import javax.inject.Inject;
 
 class Moving extends AbstractMovementState {
 
+  private final EventBus eventBus;
   private final Movement movement;
   private Coordinate previousCoordinate;
 
@@ -21,9 +26,11 @@ class Moving extends AbstractMovementState {
       MapState mapState,
       StateFactory stateFactory,
       Movements movements,
+      @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Movement movement) {
     super(mapState, stateFactory, movements, player);
+    this.eventBus = eventBus;
     this.movement = movement;
   }
 
@@ -31,6 +38,7 @@ class Moving extends AbstractMovementState {
   public void enter() {
     super.enter();
     movement.showMarking();
+    eventBus.post(new ShowMovement(movement));
   }
 
   @Override
@@ -44,6 +52,7 @@ class Moving extends AbstractMovementState {
   @Override
   public void exit() {
     movement.hideMarking();
+    eventBus.post(new HideMovement(movement));
   }
 
   @Override

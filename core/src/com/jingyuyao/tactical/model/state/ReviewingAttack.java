@@ -1,11 +1,15 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.HideTarget;
+import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -14,6 +18,7 @@ import javax.inject.Inject;
 
 class ReviewingAttack extends AbstractPlayerState {
 
+  private final EventBus eventBus;
   private final Weapon weapon;
   private final Target target;
 
@@ -21,10 +26,12 @@ class ReviewingAttack extends AbstractPlayerState {
   ReviewingAttack(
       MapState mapState,
       StateFactory stateFactory,
+      @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted Target target) {
     super(mapState, stateFactory, player);
+    this.eventBus = eventBus;
     this.weapon = weapon;
     this.target = target;
   }
@@ -32,11 +39,13 @@ class ReviewingAttack extends AbstractPlayerState {
   @Override
   public void enter() {
     target.showMarking();
+    eventBus.post(new ShowTarget(target));
   }
 
   @Override
   public void exit() {
     target.hideMarking();
+    eventBus.post(new HideTarget(target));
   }
 
   @Override

@@ -8,10 +8,14 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.HideMovement;
+import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -24,6 +28,8 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -41,6 +47,8 @@ public class MovingTest {
   private StateFactory stateFactory;
   @Mock
   private Movements movements;
+  @Mock
+  private EventBus eventBus;
   @Mock
   private Player player;
   @Mock
@@ -73,6 +81,8 @@ public class MovingTest {
   private Moving anotherMoving;
   @Mock
   private Movement otherMovement;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private FluentIterable<Item> fluentIterable;
   private ListenableFuture<Void> immediateFuture;
@@ -83,7 +93,7 @@ public class MovingTest {
     fluentIterable = FluentIterable.of(weapon, consumable);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(mapState, stateFactory, movements, player, movement);
+    moving = new Moving(mapState, stateFactory, movements, eventBus, player, movement);
   }
 
   @Test
@@ -91,6 +101,10 @@ public class MovingTest {
     moving.enter();
 
     verify(movement).showMarking();
+    verify(eventBus).post(argumentCaptor.capture());
+    ShowMovement showMovement =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowMovement.class);
+    assertThat(showMovement.getObject()).isSameAs(movement);
   }
 
   @Test
@@ -112,11 +126,13 @@ public class MovingTest {
 
   @Test
   public void exit() {
-    enter();
-
     moving.exit();
 
     verify(movement).hideMarking();
+    verify(eventBus).post(argumentCaptor.capture());
+    HideMovement hideMovement =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HideMovement.class);
+    assertThat(hideMovement.getObject()).isSameAs(movement);
   }
 
   @Test

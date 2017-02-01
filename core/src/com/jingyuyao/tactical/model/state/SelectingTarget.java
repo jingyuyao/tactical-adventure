@@ -1,9 +1,13 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.HideTarget;
+import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -12,6 +16,7 @@ import javax.inject.Inject;
 
 public class SelectingTarget extends AbstractPlayerState {
 
+  private final EventBus eventBus;
   private final Weapon weapon;
   private final ImmutableList<Target> targets;
 
@@ -19,10 +24,12 @@ public class SelectingTarget extends AbstractPlayerState {
   SelectingTarget(
       MapState mapState,
       StateFactory stateFactory,
+      @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
     super(mapState, stateFactory, player);
+    this.eventBus = eventBus;
     this.weapon = weapon;
     this.targets = targets;
   }
@@ -31,6 +38,7 @@ public class SelectingTarget extends AbstractPlayerState {
   public void enter() {
     for (Target target : targets) {
       target.showMarking();
+      eventBus.post(new ShowTarget(target));
     }
   }
 
@@ -38,6 +46,7 @@ public class SelectingTarget extends AbstractPlayerState {
   public void exit() {
     for (Target target : targets) {
       target.hideMarking();
+      eventBus.post(new HideTarget(target));
     }
   }
 
