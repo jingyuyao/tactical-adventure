@@ -4,16 +4,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-import com.jingyuyao.tactical.model.character.event.Attack;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Target;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Marker;
@@ -106,25 +101,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
     if (item.getUsageLeft() == 0) {
       items.remove(item);
     }
-  }
-
-  @Override
-  public ListenableFuture<Void> attacks(final Weapon weapon, final Target target) {
-    SettableFuture<Void> future = SettableFuture.create();
-    eventBus.post(new Attack(target, future));
-    Futures.addCallback(future, new FutureCallback<Void>() {
-      @Override
-      public void onSuccess(Void result) {
-        weapon.damages(target);
-        useItem(weapon);
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-
-      }
-    });
-    return future;
   }
 
   @Override
