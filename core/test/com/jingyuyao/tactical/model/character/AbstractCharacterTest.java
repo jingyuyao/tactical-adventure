@@ -122,7 +122,7 @@ public class AbstractCharacterTest {
   public void add_item() {
     character.addItem(newItem);
 
-    assertThat(character.getItems()).contains(newItem);
+    assertThat(items).contains(newItem);
   }
 
   @Test
@@ -141,7 +141,7 @@ public class AbstractCharacterTest {
 
   @Test
   public void get_items() {
-    assertThat(character.getItems()).containsExactly(weapon1, consumable, weapon2).inOrder();
+    assertThat(character.fluentItems()).containsExactly(weapon1, consumable, weapon2).inOrder();
     assertThat(character.getWeapons()).containsExactly(weapon1, weapon2).inOrder();
     assertThat(character.getConsumables()).containsExactly(consumable);
   }

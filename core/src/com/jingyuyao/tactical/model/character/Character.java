@@ -32,8 +32,6 @@ public interface Character extends MapObject {
 
   FluentIterable<Item> fluentItems();
 
-  Iterable<Item> getItems();
-
   Iterable<Weapon> getWeapons();
 
   Iterable<Consumable> getConsumables();

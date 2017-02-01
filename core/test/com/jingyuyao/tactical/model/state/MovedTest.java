@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -58,16 +59,16 @@ public class MovedTest {
   @Mock
   private Moving moving;
 
+  private FluentIterable<Item> fluentIterable;
   private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
-  private Iterable<Item> itemIterable;
   private Moved moved;
 
   @Before
   public void setUp() {
+    fluentIterable = FluentIterable.of(weapon, consumable);
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
-    itemIterable = ImmutableList.of(weapon, consumable);
     moved = new Moved(mapState, stateFactory, movements, player);
   }
 
@@ -167,7 +168,7 @@ public class MovedTest {
   }
 
   private ImmutableList<Action> actions_set_up() {
-    when(player.getItems()).thenReturn(itemIterable);
+    when(player.fluentItems()).thenReturn(fluentIterable);
     when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(COORDINATE);

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -73,7 +74,7 @@ public class MovingTest {
   @Mock
   private Movement otherMovement;
 
-  private Iterable<Item> itemIterable;
+  private FluentIterable<Item> fluentIterable;
   private Iterable<Weapon> weaponIterable;
   private Iterable<Consumable> consumableIterable;
   private ListenableFuture<Void> immediateFuture;
@@ -81,7 +82,7 @@ public class MovingTest {
 
   @Before
   public void setUp() {
-    itemIterable = ImmutableList.<Item>of(weapon, consumable);
+    fluentIterable = FluentIterable.of(weapon, consumable);
     weaponIterable = ImmutableList.of(weapon);
     consumableIterable = ImmutableList.of(consumable);
     // Futures are too hard to mock correctly
@@ -240,7 +241,7 @@ public class MovingTest {
   }
 
   private ImmutableList<Action> actions_set_up() {
-    when(player.getItems()).thenReturn(itemIterable);
+    when(player.fluentItems()).thenReturn(fluentIterable);
     when(player.getWeapons()).thenReturn(weaponIterable);
     when(player.getConsumables()).thenReturn(consumableIterable);
     when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);

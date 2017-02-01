@@ -39,7 +39,7 @@ abstract class AbstractMovementState extends AbstractPlayerState {
     for (Consumable consumable : Iterables.limit(getPlayer().getConsumables(), 1)) {
       builder.add(this.new UseConsumable(consumable));
     }
-    if (!Iterables.isEmpty(getPlayer().getItems())) {
+    if (!getPlayer().fluentItems().isEmpty()) {
       builder.add(this.new SelectItems());
     }
     builder.add(this.new Wait());

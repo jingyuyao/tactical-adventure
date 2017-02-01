@@ -121,11 +121,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   }
 
   @Override
-  public Iterable<Item> getItems() {
-    return items;
-  }
-
-  @Override
   public Iterable<Weapon> getWeapons() {
     return Iterables.filter(items, Weapon.class);
   }
