@@ -1,19 +1,11 @@
 package com.jingyuyao.tactical.model.state;
 
-import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Target;
-import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -25,8 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MovedTest {
-
-  private static final Coordinate COORDINATE = new Coordinate(0, 0);
 
   @Mock
   private MapState mapState;
@@ -43,26 +33,14 @@ public class MovedTest {
   @Mock
   private Terrain terrain;
   @Mock
-  private SelectingTarget selectingTarget;
-  @Mock
-  private Waiting waiting;
-  @Mock
-  private Weapon weapon;
-  @Mock
-  private Consumable consumable;
-  @Mock
-  private ImmutableList<Target> targets;
-  @Mock
   private Movement movement;
   @Mock
   private Moving moving;
 
-  private FluentIterable<Item> fluentIterable;
   private Moved moved;
 
   @Before
   public void setUp() {
-    fluentIterable = FluentIterable.of(weapon, consumable);
     moved = new Moved(mapState, stateFactory, movements, player);
   }
 
@@ -111,56 +89,5 @@ public class MovedTest {
 
     verify(mapState).back();
     verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_weapon() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    Action selectWeapon = actions.get(0);
-    selectWeapon.run();
-    verify(player).quickAccess(weapon);
-    verify(mapState).goTo(selectingTarget);
-  }
-
-  @Test
-  public void use_consumable() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    Action useConsumable = actions.get(1);
-    useConsumable.run();
-    verify(player).useItem(consumable);
-    verify(consumable).apply(player);
-    verify(player).setActionable(false);
-    verify(player).quickAccess(consumable);
-    verify(mapState).branchTo(waiting);
-  }
-
-  @Test
-  public void wait_action() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    Action wait = actions.get(2);
-    wait.run();
-    verify(player).setActionable(false);
-    verify(mapState).branchTo(waiting);
-  }
-
-  @Test
-  public void back() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    StateHelpers.verifyBack(actions.get(3), mapState);
-  }
-
-  private ImmutableList<Action> actions_set_up() {
-    when(player.fluentItems()).thenReturn(fluentIterable);
-    when(player.getCoordinate()).thenReturn(COORDINATE);
-    when(weapon.createTargets(COORDINATE)).thenReturn(targets);
-    when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-    ImmutableList<Action> actions = moved.getActions();
-    assertThat(actions).hasSize(4);
-    return actions;
   }
 }
