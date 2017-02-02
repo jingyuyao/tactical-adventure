@@ -45,8 +45,6 @@ public class MovedTest {
   @Mock
   private SelectingTarget selectingTarget;
   @Mock
-  private SelectingItem selectingItem;
-  @Mock
   private Waiting waiting;
   @Mock
   private Weapon weapon;
@@ -139,19 +137,10 @@ public class MovedTest {
   }
 
   @Test
-  public void select_items() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    Action useItems = actions.get(2);
-    useItems.run();
-    verify(mapState).goTo(selectingItem);
-  }
-
-  @Test
   public void wait_action() {
     ImmutableList<Action> actions = actions_set_up();
 
-    Action wait = actions.get(3);
+    Action wait = actions.get(2);
     wait.run();
     verify(player).setActionable(false);
     verify(mapState).branchTo(waiting);
@@ -161,7 +150,7 @@ public class MovedTest {
   public void back() {
     ImmutableList<Action> actions = actions_set_up();
 
-    StateHelpers.verifyBack(actions.get(4), mapState);
+    StateHelpers.verifyBack(actions.get(3), mapState);
   }
 
   private ImmutableList<Action> actions_set_up() {
@@ -169,10 +158,9 @@ public class MovedTest {
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(weapon.createTargets(COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
-    when(stateFactory.createSelectingItem(player)).thenReturn(selectingItem);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     ImmutableList<Action> actions = moved.getActions();
-    assertThat(actions).hasSize(5);
+    assertThat(actions).hasSize(4);
     return actions;
   }
 }

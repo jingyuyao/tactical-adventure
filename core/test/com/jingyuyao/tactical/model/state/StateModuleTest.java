@@ -64,7 +64,6 @@ public class StateModuleTest {
     stateFactory.createMoving(player, movement);
     stateFactory.createMoved(player);
     stateFactory.createSelectingTarget(player, weapon, targets);
-    stateFactory.createSelectingItem(player);
     stateFactory.createReviewingAttack(player, weapon, target);
     stateFactory.createRetaliating();
   }

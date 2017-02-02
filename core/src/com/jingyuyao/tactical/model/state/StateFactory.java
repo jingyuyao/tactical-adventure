@@ -19,8 +19,6 @@ interface StateFactory {
 
   Moved createMoved(Player player);
 
-  SelectingItem createSelectingItem(Player player);
-
   SelectingTarget createSelectingTarget(
       Player player, Weapon weapon, ImmutableList<Target> targets);
 
