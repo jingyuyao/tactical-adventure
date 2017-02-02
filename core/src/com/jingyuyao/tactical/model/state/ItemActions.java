@@ -24,7 +24,7 @@ class ItemActions extends AbstractPlayerState {
     for (Consumable consumable : items.filter(Consumable.class)) {
       builder.add(this.new UseConsumable(consumable));
     }
-    builder.add(this.new Wait());
+    builder.add(this.new Finish());
     builder.add(this.new Back());
     return builder.build();
   }
@@ -68,19 +68,6 @@ class ItemActions extends AbstractPlayerState {
       getPlayer().quickAccess(consumable);
       consumable.apply(getPlayer());
       getPlayer().useItem(consumable);
-      finish();
-    }
-  }
-
-  class Wait implements Action {
-
-    @Override
-    public String getText() {
-      return "wait";
-    }
-
-    @Override
-    public void run() {
       finish();
     }
   }
