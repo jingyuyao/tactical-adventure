@@ -50,7 +50,7 @@ class MapMarkings {
   public void showMovement(ShowMovement showMovement) {
     Movement movement = showMovement.getObject();
     for (Terrain terrain : movement.getTerrains()) {
-      actorMap.get(terrain).addMarkerSprite(markerSpriteMap.get(Marker.CAN_MOVE_TO));
+      addMarker(terrain, Marker.CAN_MOVE_TO);
     }
   }
 
@@ -58,7 +58,7 @@ class MapMarkings {
   public void hideMovement(HideMovement hideMovement) {
     Movement movement = hideMovement.getObject();
     for (Terrain terrain : movement.getTerrains()) {
-      actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.CAN_MOVE_TO));
+      removeMarker(terrain, Marker.CAN_MOVE_TO);
     }
   }
 
@@ -66,10 +66,10 @@ class MapMarkings {
   public void showTarget(ShowTarget showTarget) {
     Target target = showTarget.getObject();
     for (Terrain terrain : target.getSelectTerrains()) {
-      actorMap.get(terrain).addMarkerSprite(markerSpriteMap.get(Marker.TARGET_SELECT));
+      addMarker(terrain, Marker.TARGET_SELECT);
     }
     for (Terrain terrain : target.getTargetTerrains()) {
-      actorMap.get(terrain).addMarkerSprite(markerSpriteMap.get(Marker.CAN_ATTACK));
+      addMarker(terrain, Marker.CAN_ATTACK);
     }
   }
 
@@ -77,10 +77,10 @@ class MapMarkings {
   public void hideTarget(HideTarget hideTarget) {
     Target target = hideTarget.getObject();
     for (Terrain terrain : target.getSelectTerrains()) {
-      actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.TARGET_SELECT));
+      removeMarker(terrain, Marker.TARGET_SELECT);
     }
     for (Terrain terrain : target.getTargetTerrains()) {
-      actorMap.get(terrain).removeMarkerSprite(markerSpriteMap.get(Marker.CAN_ATTACK));
+      removeMarker(terrain, Marker.CAN_ATTACK);
     }
   }
 
@@ -89,13 +89,17 @@ class MapMarkings {
     Runnable show = new Runnable() {
       @Override
       public void run() {
-        showHitMarkers(attack.getObject());
+        for (MapObject object : attack.getObject().getHitObjects()) {
+          addMarker(object, Marker.HIT);
+        }
       }
     };
     Runnable hide = new Runnable() {
       @Override
       public void run() {
-        hideHitMarkers(attack.getObject());
+        for (MapObject object : attack.getObject().getHitObjects()) {
+          removeMarker(object, Marker.HIT);
+        }
       }
     };
 
@@ -133,15 +137,11 @@ class MapMarkings {
     }
   }
 
-  private void showHitMarkers(Target target) {
-    for (MapObject object : target.getHitObjects()) {
-      actorMap.get(object).addMarkerSprite(markerSpriteMap.get(Marker.HIT));
-    }
+  private void addMarker(MapObject object, Marker marker) {
+    actorMap.get(object).addMarkerSprite(markerSpriteMap.get(marker));
   }
 
-  private void hideHitMarkers(Target target) {
-    for (MapObject object : target.getHitObjects()) {
-      actorMap.get(object).removeMarkerSprite(markerSpriteMap.get(Marker.HIT));
-    }
+  private void removeMarker(MapObject object, Marker marker) {
+    actorMap.get(object).removeMarkerSprite(markerSpriteMap.get(marker));
   }
 }
