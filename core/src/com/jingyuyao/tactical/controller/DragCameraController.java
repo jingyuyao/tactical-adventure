@@ -35,31 +35,29 @@ class DragCameraController extends InputAdapter {
   @Override
   public boolean touchDragged(int screenX, int screenY, int pointer) {
     if (lastPointer == pointer) {
-      int screenWidth = viewport.getScreenWidth();
-      int screenHeight = viewport.getScreenHeight();
-      float horizontalDragScale = (float) terrains.getWidth() / screenWidth;
-      float verticalDragScale = (float) terrains.getHeight() / screenHeight;
+      float horizontalScale = viewport.getWorldWidth() / viewport.getScreenWidth();
+      float verticalScale = viewport.getWorldHeight() / viewport.getScreenHeight();
 
-      float deltaX = (screenX - lastX) * horizontalDragScale;
-      float deltaY = (screenY - lastY) * verticalDragScale;
+      float deltaWorldX = (screenX - lastX) * horizontalScale;
+      float deltaWorldY = (screenY - lastY) * verticalScale;
 
       Camera camera = viewport.getCamera();
       Vector3 cameraPosition = camera.position;
 
       // world is y-up, screen is y-down
-      float rawNewX = cameraPosition.x - deltaX;
-      float rawNewY = cameraPosition.y + deltaY;
+      float unboundedNewWorldX = cameraPosition.x - deltaWorldX;
+      float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
 
-      float cameraLowerXBound = viewport.getWorldWidth() / 2f;
-      float cameraUpperXBound = terrains.getWidth() - cameraLowerXBound;
-      float cameraLowerYBound = viewport.getWorldHeight() / 2f;
-      float cameraUpperYBound = terrains.getHeight() - cameraLowerYBound;
+      float lowerXBound = viewport.getWorldWidth() / 2f;
+      float upperXBound = terrains.getWidth() - lowerXBound;
+      float lowerYBound = viewport.getWorldHeight() / 2f;
+      float upperYBound = terrains.getHeight() - lowerYBound;
 
-      float boundedNewX = bound(cameraLowerXBound, rawNewX, cameraUpperXBound);
-      float boundedNewY = bound(cameraLowerYBound, rawNewY, cameraUpperYBound);
+      float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
+      float boundedNewWorldY = bound(lowerYBound, unboundedNewWorldY, upperYBound);
 
-      cameraPosition.x = boundedNewX;
-      cameraPosition.y = boundedNewY;
+      cameraPosition.x = boundedNewWorldX;
+      cameraPosition.y = boundedNewWorldY;
       camera.update();
 
       lastX = screenX;
