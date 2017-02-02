@@ -8,6 +8,6 @@ public enum Marker {
   CAN_MOVE_TO,
   CAN_ATTACK,
   HIT,
-  POTENTIAL_TARGET,
+  ACTIVATED,
   TARGET_SELECT,
 }

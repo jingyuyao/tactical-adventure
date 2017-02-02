@@ -21,7 +21,7 @@ public class AssetModule extends AbstractModule {
   public static final String HIT = "sprites/hit.png";
   public static final String ATTACK = "sprites/attack.png";
   public static final String TARGET_SELECT = "sprites/target_select.png";
-  public static final String POTENTIAL_TARGET = "sprites/potential_target.png";
+  public static final String ACTIVATED = "sprites/activated.png";
   public static final String SKIN = "ui/uiskin.json";
   public static final String JINGYU = "sprites/jingyu.png";
   public static final String KEVIN = "sprites/kevin.png";
@@ -52,7 +52,7 @@ public class AssetModule extends AbstractModule {
     manager.load(HIT, Texture.class);
     manager.load(ATTACK, Texture.class);
     manager.load(TARGET_SELECT, Texture.class);
-    manager.load(POTENTIAL_TARGET, Texture.class);
+    manager.load(ACTIVATED, Texture.class);
     manager.load(SKIN, Skin.class);
 
     manager.finishLoading();

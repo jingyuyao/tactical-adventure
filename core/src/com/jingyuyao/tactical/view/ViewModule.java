@@ -118,8 +118,8 @@ public class ViewModule extends AbstractModule {
     markerSpriteMap.put(
         Marker.CAN_ATTACK, new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class)));
     markerSpriteMap.put(
-        Marker.POTENTIAL_TARGET,
-        new Sprite(assetManager.get(AssetModule.POTENTIAL_TARGET, Texture.class)));
+        Marker.ACTIVATED,
+        new Sprite(assetManager.get(AssetModule.ACTIVATED, Texture.class)));
     markerSpriteMap.put(
         Marker.TARGET_SELECT,
         new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class)));

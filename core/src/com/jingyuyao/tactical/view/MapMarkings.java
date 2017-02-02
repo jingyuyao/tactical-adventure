@@ -6,7 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.event.ActivatedCharacter;
 import com.jingyuyao.tactical.model.event.Attack;
+import com.jingyuyao.tactical.model.event.DeactivateCharacter;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.SelectCharacter;
@@ -31,6 +34,7 @@ class MapMarkings {
   private final Map<MapObject, MapActor<?>> actorMap;
   private final Map<Marker, Sprite> markerSpriteMap;
   private MapActor selected;
+  private MapActor activated;
 
   @Inject
   MapMarkings(
@@ -93,6 +97,16 @@ class MapMarkings {
   }
 
   @Subscribe
+  public void activatedCharacter(ActivatedCharacter activatedCharacter) {
+    activateCharacter(activatedCharacter.getObject());
+  }
+
+  @Subscribe
+  public void deactivateCharacter(DeactivateCharacter deactivateCharacter) {
+    deactivateCharacter();
+  }
+
+  @Subscribe
   public void attack(final Attack attack) {
     Runnable show = new Runnable() {
       @Override
@@ -134,18 +148,32 @@ class MapMarkings {
   }
 
   void draw() {
+    batch.begin();
     if (selected != null) {
       Sprite highlightSprite = markerSpriteMap.get(Marker.HIGHLIGHT);
       highlightSprite.setBounds(
           selected.getX(), selected.getY(), selected.getWidth(), selected.getHeight());
-      batch.begin();
       highlightSprite.draw(batch);
-      batch.end();
     }
+    if (activated != null) {
+      Sprite activatedSprite = markerSpriteMap.get(Marker.ACTIVATED);
+      activatedSprite.setBounds(
+          activated.getX(), activated.getY(), activated.getWidth(), activated.getHeight());
+      activatedSprite.draw(batch);
+    }
+    batch.end();
   }
 
   private void setSelected(MapObject object) {
     selected = actorMap.get(object);
+  }
+
+  private void activateCharacter(Character character) {
+    activated = actorMap.get(character);
+  }
+
+  private void deactivateCharacter() {
+    activated = null;
   }
 
   private void addMarker(MapObject object, Marker marker) {
