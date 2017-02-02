@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 class ItemActions extends AbstractPlayerState {
@@ -26,6 +27,49 @@ class ItemActions extends AbstractPlayerState {
     builder.add(this.new Wait());
     builder.add(this.new Back());
     return builder.build();
+  }
+
+  class SelectWeapon implements Action {
+
+    private final Weapon weapon;
+
+    SelectWeapon(Weapon weapon) {
+      this.weapon = weapon;
+    }
+
+    @Override
+    public String getText() {
+      return weapon.toString();
+    }
+
+    @Override
+    public void run() {
+      getPlayer().quickAccess(weapon);
+      ImmutableList<Target> targets = weapon.createTargets(getPlayer().getCoordinate());
+      goTo(getStateFactory().createSelectingTarget(getPlayer(), weapon, targets));
+    }
+  }
+
+  class UseConsumable implements Action {
+
+    private final Consumable consumable;
+
+    UseConsumable(Consumable consumable) {
+      this.consumable = consumable;
+    }
+
+    @Override
+    public String getText() {
+      return consumable.toString();
+    }
+
+    @Override
+    public void run() {
+      getPlayer().quickAccess(consumable);
+      consumable.apply(getPlayer());
+      getPlayer().useItem(consumable);
+      finish();
+    }
   }
 
   class Wait implements Action {
