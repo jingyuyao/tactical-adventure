@@ -77,14 +77,8 @@ public class TerrainsTest {
     assertThat(terrains.getHeight()).isEqualTo(HEIGHT);
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
-    assertThat(
-        TestHelpers.isInstanceOf(
-            argumentCaptor.getAllValues().get(0), AddTerrain.class).getObject())
-        .isSameAs(terrain1);
-    assertThat(
-        TestHelpers.isInstanceOf(
-            argumentCaptor.getAllValues().get(1), AddTerrain.class).getObject())
-        .isSameAs(terrain2);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain1, AddTerrain.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, terrain2, AddTerrain.class);
   }
 
   @Test(expected = IllegalStateException.class)

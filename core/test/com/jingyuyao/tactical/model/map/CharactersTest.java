@@ -51,8 +51,7 @@ public class CharactersTest {
 
     verify(characterSet).add(player);
     verify(eventBus).post(argumentCaptor.capture());
-    assertThat(TestHelpers.isInstanceOf(argumentCaptor.getValue(), AddPlayer.class).getObject())
-        .isSameAs(player);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, AddPlayer.class);
   }
 
   @Test
@@ -61,8 +60,7 @@ public class CharactersTest {
 
     verify(characterSet).add(enemy);
     verify(eventBus).post(argumentCaptor.capture());
-    assertThat(TestHelpers.isInstanceOf(argumentCaptor.getValue(), AddEnemy.class).getObject())
-        .isSameAs(enemy);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, AddEnemy.class);
   }
 
   @Test
@@ -71,9 +69,7 @@ public class CharactersTest {
 
     verify(characterSet).remove(player);
     verify(eventBus).post(argumentCaptor.capture());
-    RemoveObject removeObject =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), RemoveObject.class);
-    assertThat(removeObject.getObject()).isSameAs(player);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, RemoveObject.class);
   }
 
   @Test

@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -61,7 +60,7 @@ public class MapStateTest {
     verify(stateStack).push(state1);
     verify(state1).enter();
     verify(eventBus).post(argumentCaptor.capture());
-    verifyStateChangedTo(argumentCaptor.getValue(), state1);
+    verifyStateChangedTo(state1);
   }
 
   @Test
@@ -72,9 +71,7 @@ public class MapStateTest {
 
     verify(state1).select(player);
     verify(eventBus).post(argumentCaptor.capture());
-    SelectCharacter selectCharacter =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), SelectCharacter.class);
-    assertThat(selectCharacter.getObject()).isSameAs(player);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SelectCharacter.class);
   }
 
   @Test
@@ -85,9 +82,7 @@ public class MapStateTest {
 
     verify(state1).select(enemy);
     verify(eventBus).post(argumentCaptor.capture());
-    SelectCharacter selectCharacter =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), SelectCharacter.class);
-    assertThat(selectCharacter.getObject()).isSameAs(enemy);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, SelectCharacter.class);
   }
 
   @Test
@@ -98,9 +93,7 @@ public class MapStateTest {
 
     verify(state1).select(terrain);
     verify(eventBus).post(argumentCaptor.capture());
-    SelectTerrain selectTerrain =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), SelectTerrain.class);
-    assertThat(selectTerrain.getObject()).isSameAs(terrain);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain, SelectTerrain.class);
   }
 
   @Test
@@ -113,7 +106,7 @@ public class MapStateTest {
     inOrder.verify(state1).exit();
     inOrder.verify(stateStack).push(state2);
     inOrder.verify(eventBus).post(argumentCaptor.capture());
-    verifyStateChangedTo(argumentCaptor.getValue(), state2);
+    verifyStateChangedTo(state2);
     inOrder.verify(state2).enter();
   }
 
@@ -144,7 +137,7 @@ public class MapStateTest {
     inOrder.verify(state1).canceled();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(state1).enter();
-    verifyStateChangedTo(argumentCaptor.getValue(), state1);
+    verifyStateChangedTo(state1);
   }
 
   @Test
@@ -174,7 +167,7 @@ public class MapStateTest {
     inOrder.verify(stateStack).peek();
     inOrder.verify(state2).canceled();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
-    verifyStateChangedTo(argumentCaptor.getValue(), state2);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, state2, StateChanged.class);
     inOrder.verify(state2).enter();
 
     inOrder.verify(stateStack).pop();
@@ -182,7 +175,7 @@ public class MapStateTest {
     inOrder.verify(stateStack).peek();
     inOrder.verify(state1).canceled();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
-    verifyStateChangedTo(argumentCaptor.getValue(), state1);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, state1, StateChanged.class);
     inOrder.verify(state1).enter();
   }
 
@@ -200,7 +193,7 @@ public class MapStateTest {
     inOrder.verify(stateStack).push(state1);
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(state1).enter();
-    verifyStateChangedTo(argumentCaptor.getValue(), state1);
+    verifyStateChangedTo(state1);
   }
 
   @Test
@@ -210,8 +203,7 @@ public class MapStateTest {
     verify(stateStack).pop();
   }
 
-  private void verifyStateChangedTo(Object event, State targetState) {
-    StateChanged stateChanged = TestHelpers.isInstanceOf(event, StateChanged.class);
-    assertThat(stateChanged.getObject()).isEqualTo(targetState);
+  private void verifyStateChangedTo(State targetState) {
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, targetState, StateChanged.class);
   }
 }

@@ -45,8 +45,7 @@ public class BattleTest {
     ListenableFuture<Void> future = battle.begin(attacker, weapon, target);
 
     verify(eventBus).post(argumentCaptor.capture());
-    Attack attack = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Attack.class);
-    assertThat(attack.getObject()).isSameAs(target);
+    Attack attack = TestHelpers.verifyObjectEvent(argumentCaptor, 0, target, Attack.class);
     assertThat(future.isDone()).isFalse();
     verifyZeroInteractions(weapon);
     verifyZeroInteractions(attacker);

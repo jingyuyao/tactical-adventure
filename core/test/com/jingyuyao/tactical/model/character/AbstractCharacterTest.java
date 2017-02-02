@@ -145,7 +145,7 @@ public class AbstractCharacterTest {
 
     assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
-    Move move = TestHelpers.isInstanceOf(argumentCaptor.getValue(), Move.class);
+    Move move = TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, Move.class);
     assertThat(move.getPath()).isSameAs(path);
     assertThat(future.isDone()).isFalse();
 
@@ -160,8 +160,7 @@ public class AbstractCharacterTest {
     assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), InstantMove.class);
-    assertThat(instantMove.getObject()).isSameAs(character);
+        TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);
     assertThat(instantMove.getDestination()).isEqualTo(DESTINATION);
   }
 
