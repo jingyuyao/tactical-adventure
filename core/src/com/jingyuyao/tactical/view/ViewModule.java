@@ -5,7 +5,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -35,8 +34,9 @@ public class ViewModule extends AbstractModule {
 
   private static final int TILE_SIZE = 32; // pixels
   private static final float TILE_TO_WORLD_SCALE = 1f / TILE_SIZE;
-  private static final int VIEWPORT_WORLD_WIDTH = 16;
-  private static final int VIEWPORT_WORLD_HEIGHT = 9;
+  private static final int WORLD_WIDTH = 16;
+  private static final int WORLD_HEIGHT = 9;
+  private static final int UI_WORLD_SCALE = 50;
 
   @Override
   protected void configure() {
@@ -72,7 +72,7 @@ public class ViewModule extends AbstractModule {
   @Singleton
   @MapViewViewport
   Viewport provideMapViewViewport() {
-    return new ExtendViewport(VIEWPORT_WORLD_WIDTH, VIEWPORT_WORLD_HEIGHT);
+    return new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT);
   }
 
   /**
@@ -95,7 +95,7 @@ public class ViewModule extends AbstractModule {
   @Singleton
   @MapUIViewport
   Viewport provideMapUIViewport() {
-    return new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    return new StretchViewport(WORLD_WIDTH * UI_WORLD_SCALE, WORLD_HEIGHT * UI_WORLD_SCALE);
   }
 
   @Provides
