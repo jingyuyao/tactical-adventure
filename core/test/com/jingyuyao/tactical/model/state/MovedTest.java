@@ -3,17 +3,16 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +33,6 @@ public class MovedTest {
   @Mock
   private Player otherPlayer;
   @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
-  @Mock
   private Movement movement;
   @Mock
   private Moving moving;
@@ -57,8 +52,7 @@ public class MovedTest {
   public void select_player() {
     moved.select(player);
 
-    verify(mapState).back();
-    verifyNoMoreInteractions(mapState);
+    verifyZeroInteractions(mapState);
   }
 
   @Test
@@ -81,22 +75,6 @@ public class MovedTest {
 
     verify(mapState).rollback();
     verify(mapState).goTo(moving);
-    verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_enemy() {
-    moved.select(enemy);
-
-    verify(mapState).back();
-    verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_terrain() {
-    moved.select(terrain);
-
-    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 

@@ -56,9 +56,7 @@ class Moving extends BasePlayerState {
 
   @Override
   public void select(Player player) {
-    if (getPlayer().equals(player)) {
-      back();
-    } else {
+    if (!getPlayer().equals(player)) {
       rollback();
       if (player.isActionable()) {
         goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
@@ -83,9 +81,6 @@ class Moving extends BasePlayerState {
 
         }
       });
-    } else {
-      // we will consider clicking outside of movable area to be canceling
-      back();
     }
   }
 }

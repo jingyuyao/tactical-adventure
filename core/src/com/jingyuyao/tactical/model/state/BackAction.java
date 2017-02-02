@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.model.state;
 
 class BackAction implements Action {
 
-  private final AbstractState abstractState;
+  private final BaseState baseState;
 
-  BackAction(AbstractState abstractState) {
-    this.abstractState = abstractState;
+  BackAction(BaseState baseState) {
+    this.baseState = baseState;
   }
 
   @Override
@@ -15,6 +15,6 @@ class BackAction implements Action {
 
   @Override
   public void run() {
-    abstractState.back();
+    baseState.back();
   }
 }

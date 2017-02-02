@@ -88,8 +88,6 @@ class ReviewingAttack extends BasePlayerState {
   private void handleSelection(MapObject object) {
     if (target.canTarget(object.getCoordinate())) {
       attack();
-    } else {
-      back();
     }
   }
 }

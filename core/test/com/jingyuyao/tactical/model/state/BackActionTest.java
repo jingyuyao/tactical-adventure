@@ -11,14 +11,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BackActionTest {
 
   @Mock
-  private AbstractState abstractState;
+  private BaseState baseState;
 
   @Test
   public void run() {
-    BackAction backAction = new BackAction(abstractState);
+    BackAction backAction = new BackAction(baseState);
 
     backAction.run();
 
-    verify(abstractState).back();
+    verify(baseState).back();
   }
 }

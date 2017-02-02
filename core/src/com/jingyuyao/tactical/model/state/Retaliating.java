@@ -1,17 +1,14 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-public class Retaliating extends AbstractState {
+public class Retaliating extends BaseState {
 
   private final Characters characters;
 
@@ -24,23 +21,6 @@ public class Retaliating extends AbstractState {
   @Override
   public void enter() {
     retaliate();
-  }
-
-  @Override
-  public void select(Player player) {
-  }
-
-  @Override
-  public void select(Enemy enemy) {
-  }
-
-  @Override
-  public void select(Terrain terrain) {
-  }
-
-  @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.of();
   }
 
   private void retaliate() {

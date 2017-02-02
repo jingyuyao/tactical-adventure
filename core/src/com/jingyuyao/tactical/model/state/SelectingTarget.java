@@ -75,6 +75,5 @@ public class SelectingTarget extends BasePlayerState {
         return;
       }
     }
-    back();
   }
 }

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
@@ -133,7 +134,7 @@ public class SelectingTargetTest {
     selectingTarget.select(enemy);
     selectingTarget.select(terrain);
 
-    verify(mapState, times(3)).back();
+    verifyZeroInteractions(mapState);
   }
 
   @Test

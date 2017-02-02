@@ -1,15 +1,16 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 
-abstract class AbstractState implements State {
+class BaseState implements State {
 
   private final MapState mapState;
   private final StateFactory stateFactory;
 
-  AbstractState(MapState mapState, StateFactory stateFactory) {
+  BaseState(MapState mapState, StateFactory stateFactory) {
     this.mapState = mapState;
     this.stateFactory = stateFactory;
   }
@@ -33,17 +34,19 @@ abstract class AbstractState implements State {
 
   @Override
   public void select(Player player) {
-    back();
   }
 
   @Override
   public void select(Enemy enemy) {
-    back();
   }
 
   @Override
   public void select(Terrain terrain) {
-    back();
+  }
+
+  @Override
+  public ImmutableList<Action> getActions() {
+    return ImmutableList.of();
   }
 
   StateFactory getStateFactory() {

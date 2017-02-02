@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
 
-public class Waiting extends AbstractState {
+public class Waiting extends BaseState {
 
   private final Characters characters;
   private final Movements movements;

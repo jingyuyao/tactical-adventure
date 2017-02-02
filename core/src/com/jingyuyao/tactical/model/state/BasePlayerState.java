@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-class BasePlayerState extends AbstractState {
+class BasePlayerState extends BaseState {
 
   private final Player player;
 

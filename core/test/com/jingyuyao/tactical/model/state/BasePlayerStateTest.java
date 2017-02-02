@@ -6,11 +6,9 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +31,6 @@ public class BasePlayerStateTest {
   @Mock
   private Consumable consumable;
   @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
-  @Mock
   private State state2;
 
   private BasePlayerState state;
@@ -44,27 +38,6 @@ public class BasePlayerStateTest {
   @Before
   public void setUp() {
     state = new BasePlayerState(mapState, stateFactory, player);
-  }
-
-  @Test
-  public void select_player() {
-    state.select(player);
-
-    verify(mapState).back();
-  }
-
-  @Test
-  public void select_enemy() {
-    state.select(enemy);
-
-    verify(mapState).back();
-  }
-
-  @Test
-  public void select_terrain() {
-    state.select(terrain);
-
-    verify(mapState).back();
   }
 
   @Test

@@ -12,7 +12,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
@@ -51,8 +50,6 @@ public class MovingTest {
   private Player player;
   @Mock
   private Player otherPlayer;
-  @Mock
-  private Enemy enemy;
   @Mock
   private Terrain terrain;
   @Mock
@@ -125,8 +122,7 @@ public class MovingTest {
   public void select_player() {
     moving.select(player);
 
-    verify(mapState).back();
-    verifyNoMoreInteractions(mapState);
+    verifyZeroInteractions(mapState);
   }
 
   @Test
@@ -149,14 +145,6 @@ public class MovingTest {
 
     verify(mapState).rollback();
     verify(mapState).goTo(anotherMoving);
-    verifyNoMoreInteractions(mapState);
-  }
-
-  @Test
-  public void select_enemy() {
-    moving.select(enemy);
-
-    verify(mapState).back();
     verifyNoMoreInteractions(mapState);
   }
 
@@ -186,8 +174,7 @@ public class MovingTest {
 
     moving.select(terrain);
 
-    verify(mapState).back();
-    verifyNoMoreInteractions(mapState);
+    verifyZeroInteractions(mapState);
   }
 
   @Test
