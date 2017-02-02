@@ -63,23 +63,6 @@ class MapUI {
     root.add(actionButtons).right().expand();
   }
 
-  void act(float delta) {
-    stage.act(delta);
-  }
-
-  void draw() {
-    stage.getViewport().apply();
-    stage.draw();
-  }
-
-  void resize(int width, int height) {
-    stage.getViewport().update(width, height);
-  }
-
-  void dispose() {
-    stage.dispose();
-  }
-
   // TODO: need to refresh stats after attack
   @Subscribe
   public void highlightCharacter(HighlightCharacter highlightCharacter) {
@@ -103,6 +86,23 @@ class MapUI {
     for (Action action : newState.getActions()) {
       actionButtons.addActor(createActionButton(action));
     }
+  }
+
+  void act(float delta) {
+    stage.act(delta);
+  }
+
+  void draw() {
+    stage.getViewport().apply();
+    stage.draw();
+  }
+
+  void resize(int width, int height) {
+    stage.getViewport().update(width, height);
+  }
+
+  void dispose() {
+    stage.dispose();
   }
 
   private TextButton createActionButton(final Action action) {
