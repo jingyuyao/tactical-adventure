@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapUI {
+class MapUI {
 
   private final Stage stage;
   private final Skin skin;

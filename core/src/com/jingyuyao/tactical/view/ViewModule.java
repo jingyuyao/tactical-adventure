@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -99,6 +100,13 @@ public class ViewModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @MapMarkingActor
+  Actor provideMapMarkingActor() {
+    return new Actor();
+  }
+
+  @Provides
+  @Singleton
   Map<Marker, Sprite> provideMarkerSpriteMap(AssetManager assetManager) {
     Map<Marker, Sprite> markerSpriteMap = new HashMap<Marker, Sprite>();
     markerSpriteMap.put(
@@ -129,7 +137,7 @@ public class ViewModule extends AbstractModule {
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapUiViewport {
+  @interface MapUiViewport {
 
   }
 
@@ -144,6 +152,13 @@ public class ViewModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface MapViewViewport {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface MapMarkingActor {
 
   }
 }

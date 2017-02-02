@@ -3,7 +3,6 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -16,8 +15,6 @@ import com.jingyuyao.tactical.data.MapSaver;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.MapScreen;
-import com.jingyuyao.tactical.view.MapUI;
-import com.jingyuyao.tactical.view.MapView;
 import com.jingyuyao.tactical.view.ViewModule;
 import javax.inject.Inject;
 
@@ -29,17 +26,11 @@ public class TacticalAdventure extends Game {
   @Inject
   private MapScreen mapScreen;
   @Inject
-  private MapUI mapUI;
-  @Inject
-  private MapView mapView;
-  @Inject
   private MapController mapController;
   @Inject
   private MapLoader mapLoader;
   @Inject
   private MapSaver mapSaver;
-  @Inject
-  private Batch batch;
   @Inject
   private AssetManager assetManager;
 
@@ -53,8 +44,7 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
-    modelEventBus.register(mapUI);
-    modelEventBus.register(mapView);
+    mapScreen.registerTo(modelEventBus);
     modelEventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }
@@ -69,7 +59,6 @@ public class TacticalAdventure extends Game {
     super.dispose();
     mapSaver.saveMap(AssetModule.TEST_MAP);
     mapScreen.dispose();
-    batch.dispose();
     assetManager.dispose();
   }
 
