@@ -64,13 +64,13 @@ public class Movements {
             .allowsSelfLoops(false)
             .nodeOrder(ElementOrder.insertion())
             .build();
-    Set<Coordinate> processedCoordinates = new HashSet<Coordinate>();
-    Map<Coordinate, Integer> pathCostMap = new HashMap<Coordinate, Integer>();
-    Queue<ValueNode<Coordinate>> minNodeQueue = new PriorityQueue<ValueNode<Coordinate>>();
+    Set<Coordinate> processedCoordinates = new HashSet<>();
+    Map<Coordinate, Integer> pathCostMap = new HashMap<>();
+    Queue<ValueNode<Coordinate>> minNodeQueue = new PriorityQueue<>();
 
     pathCostMap.put(startingCoordinate, 0);
     graph.addNode(startingCoordinate);
-    minNodeQueue.add(new ValueNode<Coordinate>(startingCoordinate, 0));
+    minNodeQueue.add(new ValueNode<>(startingCoordinate, 0));
 
     // Dijkstra's algorithm
     while (!minNodeQueue.isEmpty()) {
@@ -96,7 +96,7 @@ public class Movements {
         }
 
         ValueNode<Coordinate> neighborNode =
-            new ValueNode<Coordinate>(neighborCoordinate, pathCost);
+            new ValueNode<>(neighborCoordinate, pathCost);
         if (!pathCostMap.containsKey(neighborCoordinate)) {
           graph.putEdgeValue(minCoordinate, neighborCoordinate, pathCost);
           pathCostMap.put(neighborCoordinate, pathCost);

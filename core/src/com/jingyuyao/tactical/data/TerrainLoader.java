@@ -23,7 +23,7 @@ class TerrainLoader {
   }
 
   Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
-    List<Terrain> terrains = new ArrayList<Terrain>(width * height);
+    List<Terrain> terrains = new ArrayList<>(width * height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
@@ -39,12 +39,13 @@ class TerrainLoader {
     MapProperties tileProperties = cell.getTile().getProperties();
     if (tileProperties.containsKey(TERRAIN_TYPE_KEY)) {
       String type = tileProperties.get(TERRAIN_TYPE_KEY, String.class);
-      if (type.equals("OBSTRUCTED")) {
-        return terrainFactory.createObstructed(coordinate);
-      } else if (type.equals("WATER")) {
-        return terrainFactory.createWater(coordinate);
-      } else {
-        throw new IllegalArgumentException("Unrecognized terrain type: " + type);
+      switch (type) {
+        case "OBSTRUCTED":
+          return terrainFactory.createObstructed(coordinate);
+        case "WATER":
+          return terrainFactory.createWater(coordinate);
+        default:
+          throw new IllegalArgumentException("Unrecognized terrain type: " + type);
       }
     }
     return terrainFactory.createLand(coordinate);

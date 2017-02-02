@@ -34,7 +34,7 @@ public class CharacterModule extends AbstractModule {
   @Provides
   @InitialItems
   List<Item> provideInitialItems() {
-    return new ArrayList<Item>();
+    return new ArrayList<>();
   }
 
   @BindingAnnotation

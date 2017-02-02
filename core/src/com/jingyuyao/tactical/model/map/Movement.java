@@ -61,7 +61,7 @@ public class Movement {
   private ImmutableList<Coordinate> getTrackTo(Graph<Coordinate> graph, Coordinate target) {
     Preconditions.checkArgument(graph.nodes().contains(target));
 
-    ImmutableList.Builder<Coordinate> builder = new ImmutableList.Builder<Coordinate>();
+    ImmutableList.Builder<Coordinate> builder = ImmutableList.builder();
     builder.add(target);
 
     Set<Coordinate> predecessors = graph.predecessors(target);

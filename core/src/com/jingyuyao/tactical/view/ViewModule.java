@@ -58,7 +58,7 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   Map<MapObject, MapActor<?>> provideActorMap() {
-    return new HashMap<MapObject, MapActor<?>>();
+    return new HashMap<>();
   }
 
   @Provides
@@ -108,7 +108,7 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   Map<Marker, Sprite> provideMarkerSpriteMap(AssetManager assetManager) {
-    Map<Marker, Sprite> markerSpriteMap = new HashMap<Marker, Sprite>();
+    Map<Marker, Sprite> markerSpriteMap = new HashMap<>();
     markerSpriteMap.put(
         Marker.HIGHLIGHT, new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class)));
     markerSpriteMap.put(

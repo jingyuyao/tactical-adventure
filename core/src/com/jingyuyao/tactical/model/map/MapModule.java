@@ -32,14 +32,14 @@ public class MapModule extends AbstractModule {
   @Singleton
   @BackingCharacterSet
   Set<Character> provideBackingCharacterSet() {
-    return new HashSet<Character>();
+    return new HashSet<>();
   }
 
   @Provides
   @Singleton
   @BackingTerrainMap
   Map<Coordinate, Terrain> provideBackingTerrainMap() {
-    return new HashMap<Coordinate, Terrain>();
+    return new HashMap<>();
   }
 
   @BindingAnnotation

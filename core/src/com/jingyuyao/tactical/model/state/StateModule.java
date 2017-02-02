@@ -31,7 +31,7 @@ public class StateModule extends AbstractModule {
   @Singleton
   @BackingStateStack
   Deque<State> provideStateStack() {
-    return new LinkedList<State>();
+    return new LinkedList<>();
   }
 
   @BindingAnnotation

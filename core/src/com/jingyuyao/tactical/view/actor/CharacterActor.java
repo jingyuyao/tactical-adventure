@@ -66,8 +66,8 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
 
   private SequenceAction getMoveSequence(Iterable<Coordinate> track) {
     SequenceAction sequence = Actions.sequence();
-    for (Coordinate coordiante : track) {
-      sequence.addAction(Actions.moveTo(coordiante.getX(), coordiante.getY(), TIME_PER_UNIT));
+    for (Coordinate coordinate : track) {
+      sequence.addAction(Actions.moveTo(coordinate.getX(), coordinate.getY(), TIME_PER_UNIT));
     }
     return sequence;
   }

@@ -36,7 +36,7 @@ public class ActorModule extends AbstractModule {
   @Provides
   @Singleton
   Map<String, Sprite> provideNameSpriteMap(AssetManager assetManager) {
-    Map<String, Sprite> nameSpriteMap = new HashMap<String, Sprite>();
+    Map<String, Sprite> nameSpriteMap = new HashMap<>();
     nameSpriteMap.put("jingyu", new Sprite(assetManager.get(AssetModule.JINGYU, Texture.class)));
     nameSpriteMap.put("andrew", new Sprite(assetManager.get(AssetModule.ANDREW, Texture.class)));
     nameSpriteMap.put("kevin", new Sprite(assetManager.get(AssetModule.KEVIN, Texture.class)));
