@@ -5,16 +5,22 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ActivatedCharacter;
+import com.jingyuyao.tactical.model.event.DeactivateCharacter;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,6 +34,8 @@ public class RetaliatingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private EventBus eventBus;
+  @Mock
   private Characters characters;
   @Mock
   private Player player;
@@ -39,6 +47,8 @@ public class RetaliatingTest {
   private Terrain terrain;
   @Mock
   private Waiting waiting;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private ListenableFuture<Void> retaliation;
   private ListenableFuture<Void> retaliation2;
@@ -48,7 +58,7 @@ public class RetaliatingTest {
   public void setUp() {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
-    retaliating = new Retaliating(mapState, stateFactory, characters);
+    retaliating = new Retaliating(mapState, stateFactory, eventBus, characters);
   }
 
   @Test
@@ -74,9 +84,15 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState);
+    InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState, eventBus);
+    inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(enemy).retaliate();
+    inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).retaliate();
+    inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(mapState).branchTo(waiting);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy2, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 2, null, DeactivateCharacter.class);
   }
 }
