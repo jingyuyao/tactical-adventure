@@ -6,10 +6,12 @@ import com.jingyuyao.tactical.model.item.Consumable;
 class UseConsumableAction implements Action {
 
   private final AbstractPlayerState playerState;
+  private final Player player;
   private final Consumable consumable;
 
-  UseConsumableAction(AbstractPlayerState playerState, Consumable consumable) {
+  UseConsumableAction(AbstractPlayerState playerState, Player player, Consumable consumable) {
     this.playerState = playerState;
+    this.player = player;
     this.consumable = consumable;
   }
 
@@ -20,7 +22,6 @@ class UseConsumableAction implements Action {
 
   @Override
   public void run() {
-    Player player = playerState.getPlayer();
     player.quickAccess(consumable);
     consumable.apply(player);
     player.useItem(consumable);

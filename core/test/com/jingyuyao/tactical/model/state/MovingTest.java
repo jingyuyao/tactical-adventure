@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
@@ -15,6 +16,9 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -43,8 +47,6 @@ public class MovingTest {
   @Mock
   private Movements movements;
   @Mock
-  private ItemActionsFactory itemActionsFactory;
-  @Mock
   private EventBus eventBus;
   @Mock
   private Player player;
@@ -69,7 +71,9 @@ public class MovingTest {
   @Mock
   private Movement otherMovement;
   @Mock
-  private Action action;
+  private Weapon weapon;
+  @Mock
+  private Consumable consumable;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -80,8 +84,7 @@ public class MovingTest {
   public void setUp() {
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(mapState, stateFactory, movements, itemActionsFactory, eventBus, player,
-        movement);
+    moving = new Moving(mapState, stateFactory, movements, eventBus, player, movement);
   }
 
   @Test
@@ -192,17 +195,18 @@ public class MovingTest {
 
   @Test
   public void actions_from_factory() {
-    when(itemActionsFactory.create(moving)).thenReturn(ImmutableList.of(action));
+    when(player.fluentItems()).thenReturn(FluentIterable.of(weapon, consumable));
 
     ImmutableList<Action> actions = moving.getActions();
 
-    assertThat(actions).hasSize(3);
-    assertThat(actions.get(0)).isSameAs(action);
+    assertThat(actions).hasSize(4);
+    assertThat(actions.get(0)).isInstanceOf(SelectWeaponAction.class);
+    assertThat(actions.get(1)).isInstanceOf(UseConsumableAction.class);
   }
 
   @Test
   public void action_finish() {
-    when(itemActionsFactory.create(moving)).thenReturn(ImmutableList.<Action>of());
+    when(player.fluentItems()).thenReturn(FluentIterable.<Item>of());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     ImmutableList<Action> actions = moving.getActions();
@@ -217,7 +221,7 @@ public class MovingTest {
 
   @Test
   public void action_back() {
-    when(itemActionsFactory.create(moving)).thenReturn(ImmutableList.<Action>of());
+    when(player.fluentItems()).thenReturn(FluentIterable.<Item>of());
 
     ImmutableList<Action> actions = moving.getActions();
 

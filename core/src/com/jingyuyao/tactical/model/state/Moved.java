@@ -1,8 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
 
@@ -12,18 +16,12 @@ import javax.inject.Inject;
 class Moved extends AbstractPlayerState {
 
   private final Movements movements;
-  private final ItemActionsFactory itemActionsFactory;
 
   @Inject
   Moved(
-      MapState mapState,
-      StateFactory stateFactory,
-      Movements movements,
-      ItemActionsFactory itemActionsFactory,
-      @Assisted Player player) {
+      MapState mapState, StateFactory stateFactory, Movements movements, @Assisted Player player) {
     super(mapState, stateFactory, player);
     this.movements = movements;
-    this.itemActionsFactory = itemActionsFactory;
   }
 
   @Override
@@ -41,7 +39,13 @@ class Moved extends AbstractPlayerState {
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = ImmutableList.builder();
-    builder.addAll(itemActionsFactory.create(this));
+    FluentIterable<Item> items = getPlayer().fluentItems();
+    for (Weapon weapon : items.filter(Weapon.class)) {
+      builder.add(new SelectWeaponAction(this, getStateFactory(), getPlayer(), weapon));
+    }
+    for (Consumable consumable : items.filter(Consumable.class)) {
+      builder.add(new UseConsumableAction(this, getPlayer(), consumable));
+    }
     builder.add(this.new Finish());
     builder.add(this.new Back());
     return builder.build();

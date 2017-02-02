@@ -8,10 +8,15 @@ import com.jingyuyao.tactical.model.item.Weapon;
 class SelectWeaponAction implements Action {
 
   private final AbstractPlayerState playerState;
+  private final StateFactory stateFactory;
+  private final Player player;
   private final Weapon weapon;
 
-  SelectWeaponAction(AbstractPlayerState playerState, Weapon weapon) {
+  SelectWeaponAction(
+      AbstractPlayerState playerState, StateFactory stateFactory, Player player, Weapon weapon) {
     this.playerState = playerState;
+    this.stateFactory = stateFactory;
+    this.player = player;
     this.weapon = weapon;
   }
 
@@ -22,10 +27,8 @@ class SelectWeaponAction implements Action {
 
   @Override
   public void run() {
-    Player player = playerState.getPlayer();
     player.quickAccess(weapon);
     ImmutableList<Target> targets = weapon.createTargets(player.getCoordinate());
-    playerState
-        .goTo(playerState.getStateFactory().createSelectingTarget(player, weapon, targets));
+    playerState.goTo(stateFactory.createSelectingTarget(player, weapon, targets));
   }
 }

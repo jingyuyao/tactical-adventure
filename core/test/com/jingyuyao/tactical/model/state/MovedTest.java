@@ -5,9 +5,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -27,8 +31,6 @@ public class MovedTest {
   @Mock
   private Movements movements;
   @Mock
-  private ItemActionsFactory itemActionsFactory;
-  @Mock
   private Player player;
   @Mock
   private Player otherPlayer;
@@ -43,13 +45,15 @@ public class MovedTest {
   @Mock
   private Waiting waiting;
   @Mock
-  private Action action;
+  private Weapon weapon;
+  @Mock
+  private Consumable consumable;
 
   private Moved moved;
 
   @Before
   public void setUp() {
-    moved = new Moved(mapState, stateFactory, movements, itemActionsFactory, player);
+    moved = new Moved(mapState, stateFactory, movements, player);
   }
 
   @Test
@@ -101,17 +105,18 @@ public class MovedTest {
 
   @Test
   public void actions_from_factory() {
-    when(itemActionsFactory.create(moved)).thenReturn(ImmutableList.of(action));
+    when(player.fluentItems()).thenReturn(FluentIterable.of(weapon, consumable));
 
     ImmutableList<Action> actions = moved.getActions();
 
-    assertThat(actions).hasSize(3);
-    assertThat(actions.get(0)).isSameAs(action);
+    assertThat(actions).hasSize(4);
+    assertThat(actions.get(0)).isInstanceOf(SelectWeaponAction.class);
+    assertThat(actions.get(1)).isInstanceOf(UseConsumableAction.class);
   }
 
   @Test
   public void action_finish() {
-    when(itemActionsFactory.create(moved)).thenReturn(ImmutableList.<Action>of());
+    when(player.fluentItems()).thenReturn(FluentIterable.<Item>of());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     ImmutableList<Action> actions = moved.getActions();
@@ -126,7 +131,7 @@ public class MovedTest {
 
   @Test
   public void action_back() {
-    when(itemActionsFactory.create(moved)).thenReturn(ImmutableList.<Action>of());
+    when(player.fluentItems()).thenReturn(FluentIterable.<Item>of());
 
     ImmutableList<Action> actions = moved.getActions();
 

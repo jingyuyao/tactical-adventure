@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
@@ -9,6 +10,9 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -20,7 +24,6 @@ class Moving extends AbstractPlayerState {
 
   private final EventBus eventBus;
   private final Movements movements;
-  private final ItemActionsFactory itemActionsFactory;
   private final Movement movement;
   private Coordinate previousCoordinate;
 
@@ -29,12 +32,10 @@ class Moving extends AbstractPlayerState {
       MapState mapState,
       StateFactory stateFactory,
       Movements movements,
-      ItemActionsFactory itemActionsFactory,
       @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Movement movement) {
     super(mapState, stateFactory, player);
-    this.itemActionsFactory = itemActionsFactory;
     this.eventBus = eventBus;
     this.movements = movements;
     this.movement = movement;
@@ -96,7 +97,13 @@ class Moving extends AbstractPlayerState {
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = ImmutableList.builder();
-    builder.addAll(itemActionsFactory.create(this));
+    FluentIterable<Item> items = getPlayer().fluentItems();
+    for (Weapon weapon : items.filter(Weapon.class)) {
+      builder.add(new SelectWeaponAction(this, getStateFactory(), getPlayer(), weapon));
+    }
+    for (Consumable consumable : items.filter(Consumable.class)) {
+      builder.add(new UseConsumableAction(this, getPlayer(), consumable));
+    }
     builder.add(this.new Finish());
     builder.add(this.new Back());
     return builder.build();
