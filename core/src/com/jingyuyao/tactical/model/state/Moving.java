@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -15,10 +16,11 @@ import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-class Moving extends ItemActions {
+class Moving extends AbstractPlayerState {
 
   private final EventBus eventBus;
   private final Movements movements;
+  private final ItemActionsFactory itemActionsFactory;
   private final Movement movement;
   private Coordinate previousCoordinate;
 
@@ -27,10 +29,12 @@ class Moving extends ItemActions {
       MapState mapState,
       StateFactory stateFactory,
       Movements movements,
+      ItemActionsFactory itemActionsFactory,
       @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Movement movement) {
     super(mapState, stateFactory, player);
+    this.itemActionsFactory = itemActionsFactory;
     this.eventBus = eventBus;
     this.movements = movements;
     this.movement = movement;
@@ -87,5 +91,14 @@ class Moving extends ItemActions {
       // we will consider clicking outside of movable area to be canceling
       back();
     }
+  }
+
+  @Override
+  public ImmutableList<Action> getActions() {
+    ImmutableList.Builder<Action> builder = ImmutableList.builder();
+    builder.addAll(itemActionsFactory.create(this));
+    builder.add(this.new Finish());
+    builder.add(this.new Back());
+    return builder.build();
   }
 }

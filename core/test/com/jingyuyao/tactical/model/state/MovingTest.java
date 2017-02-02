@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -42,6 +43,8 @@ public class MovingTest {
   @Mock
   private Movements movements;
   @Mock
+  private ItemActionsFactory itemActionsFactory;
+  @Mock
   private EventBus eventBus;
   @Mock
   private Player player;
@@ -62,7 +65,11 @@ public class MovingTest {
   @Mock
   private Moving anotherMoving;
   @Mock
+  private Waiting waiting;
+  @Mock
   private Movement otherMovement;
+  @Mock
+  private Action action;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -73,7 +80,8 @@ public class MovingTest {
   public void setUp() {
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(mapState, stateFactory, movements, eventBus, player, movement);
+    moving = new Moving(mapState, stateFactory, movements, itemActionsFactory, eventBus, player,
+        movement);
   }
 
   @Test
@@ -180,5 +188,43 @@ public class MovingTest {
 
     verify(mapState).back();
     verifyNoMoreInteractions(mapState);
+  }
+
+  @Test
+  public void actions_from_factory() {
+    when(itemActionsFactory.create(moving)).thenReturn(ImmutableList.of(action));
+
+    ImmutableList<Action> actions = moving.getActions();
+
+    assertThat(actions).hasSize(3);
+    assertThat(actions.get(0)).isSameAs(action);
+  }
+
+  @Test
+  public void action_finish() {
+    when(itemActionsFactory.create(moving)).thenReturn(ImmutableList.<Action>of());
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+
+    ImmutableList<Action> actions = moving.getActions();
+
+    assertThat(actions).hasSize(2);
+
+    actions.get(0).run();
+
+    verify(player).setActionable(false);
+    verify(mapState).branchTo(waiting);
+  }
+
+  @Test
+  public void action_back() {
+    when(itemActionsFactory.create(moving)).thenReturn(ImmutableList.<Action>of());
+
+    ImmutableList<Action> actions = moving.getActions();
+
+    assertThat(actions).hasSize(2);
+
+    actions.get(1).run();
+
+    verify(mapState).back();
   }
 }

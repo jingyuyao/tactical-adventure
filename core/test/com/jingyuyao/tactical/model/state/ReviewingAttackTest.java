@@ -175,7 +175,9 @@ public class ReviewingAttackTest {
   public void actions_back() {
     ImmutableList<Action> actions = actionsSetUp();
 
-    StateHelpers.verifyBack(actions.get(1), mapState);
+    actions.get(1).run();
+    verify(mapState).back();
+    verifyNoMoreInteractions(mapState);
   }
 
   private ImmutableList<Action> actionsSetUp() {

@@ -18,12 +18,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItemActionsTest {
+public class ItemActionsFactoryTest {
 
   private static final Coordinate PLAYER_COORDINATE = new Coordinate(101, 101);
 
   @Mock
-  private MapState mapState;
+  private AbstractPlayerState playerState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -36,14 +36,12 @@ public class ItemActionsTest {
   private ImmutableList<Target> targets;
   @Mock
   private SelectingTarget selectingTarget;
-  @Mock
-  private Waiting waiting;
 
-  private ItemActions itemActions;
+  private ItemActionsFactory itemActionsFactory;
 
   @Before
   public void setUp() {
-    itemActions = new ItemActions(mapState, stateFactory, player);
+    itemActionsFactory = new ItemActionsFactory();
   }
 
   @Test
@@ -53,7 +51,7 @@ public class ItemActionsTest {
     Action selectWeapon = actions.get(0);
     selectWeapon.run();
     verify(player).quickAccess(weapon);
-    verify(mapState).goTo(selectingTarget);
+    verify(playerState).goTo(selectingTarget);
   }
 
   @Test
@@ -64,36 +62,19 @@ public class ItemActionsTest {
     useConsumable.run();
     verify(player).useItem(consumable);
     verify(consumable).apply(player);
-    verify(player).setActionable(false);
     verify(player).quickAccess(consumable);
-    verify(mapState).branchTo(waiting);
-  }
-
-  @Test
-  public void wait_action() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    Action wait = actions.get(2);
-    wait.run();
-    verify(player).setActionable(false);
-    verify(mapState).branchTo(waiting);
-  }
-
-  @Test
-  public void back() {
-    ImmutableList<Action> actions = actions_set_up();
-
-    StateHelpers.verifyBack(actions.get(3), mapState);
+    verify(playerState).finish();
   }
 
   private ImmutableList<Action> actions_set_up() {
+    when(playerState.getPlayer()).thenReturn(player);
+    when(playerState.getStateFactory()).thenReturn(stateFactory);
     when(player.fluentItems()).thenReturn(FluentIterable.of(weapon, consumable));
     when(player.getCoordinate()).thenReturn(PLAYER_COORDINATE);
     when(weapon.createTargets(PLAYER_COORDINATE)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-    ImmutableList<Action> actions = itemActions.getActions();
-    assertThat(actions).hasSize(4);
+    ImmutableList<Action> actions = itemActionsFactory.create(playerState);
+    assertThat(actions).hasSize(2);
     return actions;
   }
 }
