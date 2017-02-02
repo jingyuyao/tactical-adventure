@@ -19,17 +19,4 @@ abstract class AbstractPlayerState extends AbstractState {
     player.setActionable(false);
     branchToWait();
   }
-
-  class Finish implements Action {
-
-    @Override
-    public String getText() {
-      return "finish";
-    }
-
-    @Override
-    public void run() {
-      finish();
-    }
-  }
 }

@@ -67,7 +67,7 @@ class ReviewingAttack extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    return ImmutableList.of(this.new Attack(), this.new Back());
+    return ImmutableList.of(this.new Attack(), new BackAction(this));
   }
 
   private void handleSelection(MapObject object) {

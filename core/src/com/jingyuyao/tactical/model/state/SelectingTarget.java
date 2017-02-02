@@ -65,7 +65,7 @@ public class SelectingTarget extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(this.new Back());
+    return ImmutableList.<Action>of(new BackAction(this));
   }
 
   private void handleSelection(MapObject object) {

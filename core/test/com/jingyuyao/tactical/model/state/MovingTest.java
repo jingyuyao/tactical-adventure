@@ -17,7 +17,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
@@ -194,7 +193,7 @@ public class MovingTest {
   }
 
   @Test
-  public void actions_from_factory() {
+  public void actions() {
     when(player.fluentItems()).thenReturn(FluentIterable.of(weapon, consumable));
 
     ImmutableList<Action> actions = moving.getActions();
@@ -202,33 +201,7 @@ public class MovingTest {
     assertThat(actions).hasSize(4);
     assertThat(actions.get(0)).isInstanceOf(SelectWeaponAction.class);
     assertThat(actions.get(1)).isInstanceOf(UseConsumableAction.class);
-  }
-
-  @Test
-  public void action_finish() {
-    when(player.fluentItems()).thenReturn(FluentIterable.<Item>of());
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-
-    ImmutableList<Action> actions = moving.getActions();
-
-    assertThat(actions).hasSize(2);
-
-    actions.get(0).run();
-
-    verify(player).setActionable(false);
-    verify(mapState).branchTo(waiting);
-  }
-
-  @Test
-  public void action_back() {
-    when(player.fluentItems()).thenReturn(FluentIterable.<Item>of());
-
-    ImmutableList<Action> actions = moving.getActions();
-
-    assertThat(actions).hasSize(2);
-
-    actions.get(1).run();
-
-    verify(mapState).back();
+    assertThat(actions.get(2)).isInstanceOf(FinishAction.class);
+    assertThat(actions.get(3)).isInstanceOf(BackAction.class);
   }
 }

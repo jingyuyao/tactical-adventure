@@ -69,17 +69,4 @@ abstract class AbstractState implements State {
   void removeLast() {
     mapState.pop();
   }
-
-  class Back implements Action {
-
-    @Override
-    public String getText() {
-      return "back";
-    }
-
-    @Override
-    public void run() {
-      back();
-    }
-  }
 }

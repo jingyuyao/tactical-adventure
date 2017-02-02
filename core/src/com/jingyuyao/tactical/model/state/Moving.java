@@ -104,8 +104,8 @@ class Moving extends AbstractPlayerState {
     for (Consumable consumable : items.filter(Consumable.class)) {
       builder.add(new UseConsumableAction(this, getPlayer(), consumable));
     }
-    builder.add(this.new Finish());
-    builder.add(this.new Back());
+    builder.add(new FinishAction(this));
+    builder.add(new BackAction(this));
     return builder.build();
   }
 }
