@@ -139,10 +139,8 @@ public class SelectingTargetTest {
   @Test
   public void actions() {
     ImmutableList<Action> actions = selectingTarget.getActions();
+
     assertThat(actions).hasSize(1);
-
-    actions.get(0).run();
-
-    verify(mapState).back();
+    assertThat(actions.get(0)).isInstanceOf(BackAction.class);
   }
 }
