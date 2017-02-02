@@ -144,6 +144,35 @@
       "type": "PassiveEnemy",
       "coordinate": {
         "x": 5,
+        "y": 4
+      },
+      "name": "soldier",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "sword",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        },
+        {
+          "type": "Grenade",
+          "name": "grenade",
+          "usageLeft": 5,
+          "attackPower": 3,
+          "distance": 4,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "type": "PassiveEnemy",
+      "coordinate": {
+        "x": 4,
         "y": 5
       },
       "name": "soldier",
@@ -164,14 +193,37 @@
           "name": "grenade",
           "usageLeft": 5,
           "attackPower": 3,
-          "distance": 3,
-          "size": 2
+          "distance": 4,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "type": "PassiveEnemy",
+      "coordinate": {
+        "x": 5,
+        "y": 6
+      },
+      "name": "soldier",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "sword",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
         },
         {
-          "type": "Heal",
-          "name": "pot",
-          "usageLeft": 3,
-          "amount": 5
+          "type": "Grenade",
+          "name": "grenade",
+          "usageLeft": 5,
+          "attackPower": 3,
+          "distance": 4,
+          "size": 1
         }
       ]
     }
