@@ -10,9 +10,24 @@ import javax.inject.Inject;
  */
 class Moved extends ItemSelectionState {
 
+  private final Movements movements;
+
   @Inject
   Moved(
       MapState mapState, StateFactory stateFactory, Movements movements, @Assisted Player player) {
-    super(mapState, stateFactory, movements, player);
+    super(mapState, stateFactory, player);
+    this.movements = movements;
+  }
+
+  @Override
+  public void select(Player player) {
+    if (getPlayer().equals(player)) {
+      back();
+    } else {
+      rollback();
+      if (player.isActionable()) {
+        goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
+      }
+    }
   }
 }

@@ -18,6 +18,7 @@ import javax.inject.Inject;
 class Moving extends ItemSelectionState {
 
   private final EventBus eventBus;
+  private final Movements movements;
   private final Movement movement;
   private Coordinate previousCoordinate;
 
@@ -29,14 +30,14 @@ class Moving extends ItemSelectionState {
       @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Movement movement) {
-    super(mapState, stateFactory, movements, player);
+    super(mapState, stateFactory, player);
     this.eventBus = eventBus;
+    this.movements = movements;
     this.movement = movement;
   }
 
   @Override
   public void enter() {
-    super.enter();
     eventBus.post(new ShowMovement(movement));
   }
 
@@ -51,6 +52,18 @@ class Moving extends ItemSelectionState {
   @Override
   public void exit() {
     eventBus.post(new HideMovement(movement));
+  }
+
+  @Override
+  public void select(Player player) {
+    if (getPlayer().equals(player)) {
+      back();
+    } else {
+      rollback();
+      if (player.isActionable()) {
+        goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
+      }
+    }
   }
 
   @Override

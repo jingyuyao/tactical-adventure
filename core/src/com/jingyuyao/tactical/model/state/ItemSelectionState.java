@@ -4,28 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Movements;
 
 class ItemSelectionState extends AbstractPlayerState {
 
-  private final Movements movements;
-
-  ItemSelectionState(
-      MapState mapState, StateFactory stateFactory, Movements movements, Player player) {
+  ItemSelectionState(MapState mapState, StateFactory stateFactory, Player player) {
     super(mapState, stateFactory, player);
-    this.movements = movements;
-  }
-
-  @Override
-  public void select(Player player) {
-    if (getPlayer().equals(player)) {
-      back();
-    } else {
-      rollback();
-      if (player.isActionable()) {
-        goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
-      }
-    }
   }
 
   @Override
