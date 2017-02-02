@@ -205,7 +205,7 @@ public class MapStateTest {
 
   @Test
   public void pop() {
-    mapState.pop();
+    mapState.popLast();
 
     verify(stateStack).pop();
   }

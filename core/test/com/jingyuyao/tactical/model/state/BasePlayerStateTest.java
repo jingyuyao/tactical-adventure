@@ -104,9 +104,9 @@ public class BasePlayerStateTest {
 
   @Test
   public void pop() {
-    state.pop();
+    state.popLast();
 
-    verify(mapState).pop();
+    verify(mapState).popLast();
   }
 
   @Test

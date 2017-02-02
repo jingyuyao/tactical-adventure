@@ -105,7 +105,7 @@ public class MapState {
   /**
    * Remove the last state on the stack. Use with caution.
    */
-  void pop() {
+  void popLast() {
     stateStack.pop();
   }
 }

@@ -62,7 +62,7 @@ public class MovingTest {
   @Mock
   private Path path;
   @Mock
-  private IgnoreInput ignoreInput;
+  private Transition transition;
   @Mock
   private Moving anotherMoving;
   @Mock
@@ -167,13 +167,13 @@ public class MovingTest {
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
     when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createMoved(player)).thenReturn(moved);
-    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(player.moveAlong(path)).thenReturn(immediateFuture);
 
     moving.select(terrain);
 
     InOrder inOrder = Mockito.inOrder(player, mapState);
-    inOrder.verify(mapState).goTo(ignoreInput);
+    inOrder.verify(mapState).goTo(transition);
     inOrder.verify(player).moveAlong(path);
     inOrder.verify(mapState).goTo(moved);
     verifyNoMoreInteractions(mapState);

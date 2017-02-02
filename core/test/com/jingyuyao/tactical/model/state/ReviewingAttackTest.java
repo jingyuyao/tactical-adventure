@@ -54,7 +54,7 @@ public class ReviewingAttackTest {
   @Mock
   private Waiting waiting;
   @Mock
-  private IgnoreInput ignoreInput;
+  private Transition transition;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -97,7 +97,7 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_player_can_attack() {
-    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
@@ -121,7 +121,7 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_enemy_can_attack() {
-    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
@@ -145,7 +145,7 @@ public class ReviewingAttackTest {
 
   @Test
   public void select_terrain_can_attack() {
-    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
@@ -159,7 +159,7 @@ public class ReviewingAttackTest {
 
   @Test
   public void attack() {
-    when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
@@ -179,7 +179,7 @@ public class ReviewingAttackTest {
 
   private void verify_attacked() {
     InOrder inOrder = Mockito.inOrder(mapState, weapon, attackingPlayer, battle);
-    inOrder.verify(mapState).goTo(ignoreInput);
+    inOrder.verify(mapState).goTo(transition);
     inOrder.verify(battle).begin(attackingPlayer, weapon, target);
     inOrder.verify(attackingPlayer).setActionable(false);
     inOrder.verify(mapState).branchTo(waiting);

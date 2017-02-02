@@ -8,19 +8,19 @@ import javax.inject.Inject;
 
 /**
  * A {@link State} that doesn't do anything. Useful as an intermediate state to wait for
- * animation to finish.
+ * animation to finish. The original caller is responsible for switching out of this {@link State}.
  */
-class IgnoreInput extends AbstractState {
+class Transition extends AbstractState {
 
   @Inject
-  IgnoreInput(MapState mapState, StateFactory stateFactory) {
+  Transition(MapState mapState, StateFactory stateFactory) {
     super(mapState, stateFactory);
   }
 
   @Override
   public void exit() {
     // This state is temporary, don't keep it on the state stack
-    pop();
+    popLast();
   }
 
   @Override

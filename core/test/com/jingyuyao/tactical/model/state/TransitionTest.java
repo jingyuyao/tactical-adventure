@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IgnoreInputTest {
+public class TransitionTest {
 
   @Mock
   private MapState mapState;
@@ -27,25 +27,25 @@ public class IgnoreInputTest {
   @Mock
   private Terrain terrain;
 
-  private IgnoreInput ignoreInput;
+  private Transition transition;
 
   @Before
   public void setUp() {
-    ignoreInput = new IgnoreInput(mapState, stateFactory);
+    transition = new Transition(mapState, stateFactory);
   }
 
   @Test
   public void exit() {
-    ignoreInput.exit();
+    transition.exit();
 
-    verify(mapState).pop();
+    verify(mapState).popLast();
   }
 
   @Test
   public void selects() {
-    ignoreInput.select(player);
-    ignoreInput.select(enemy);
-    ignoreInput.select(terrain);
+    transition.select(player);
+    transition.select(enemy);
+    transition.select(terrain);
 
     verifyZeroInteractions(mapState);
     verifyZeroInteractions(player);
@@ -55,6 +55,6 @@ public class IgnoreInputTest {
 
   @Test
   public void actions() {
-    assertThat(ignoreInput.getActions()).isEmpty();
+    assertThat(transition.getActions()).isEmpty();
   }
 }

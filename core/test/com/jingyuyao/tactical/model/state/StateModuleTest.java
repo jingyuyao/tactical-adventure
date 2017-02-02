@@ -59,7 +59,7 @@ public class StateModuleTest {
 
   @Test
   public void state_factory() {
-    stateFactory.createIgnoreInput();
+    stateFactory.createTransition();
     stateFactory.createWaiting();
     stateFactory.createMoving(player, movement);
     stateFactory.createMoved(player);

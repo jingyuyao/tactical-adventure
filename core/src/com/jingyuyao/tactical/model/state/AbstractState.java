@@ -66,7 +66,7 @@ abstract class AbstractState implements State {
     mapState.branchTo(stateFactory.createWaiting());
   }
 
-  void pop() {
-    mapState.pop();
+  void popLast() {
+    mapState.popLast();
   }
 }

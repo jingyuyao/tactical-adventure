@@ -71,7 +71,7 @@ class ReviewingAttack extends BasePlayerState {
   }
 
   void attack() {
-    goTo(getStateFactory().createIgnoreInput());
+    goTo(getStateFactory().createTransition());
     Futures.addCallback(battle.begin(getPlayer(), weapon, target), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
