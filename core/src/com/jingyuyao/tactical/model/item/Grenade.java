@@ -35,7 +35,7 @@ public class Grenade extends AbstractWeapon {
           public Target apply(Coordinate input) {
             return targetFactory.create(
                 ImmutableSet.of(input),
-                movements.distanceFrom(input, size, weightFunction).nodes());
+                movements.distanceFrom(input, size - 1, weightFunction).nodes());
           }
         })
         .toList();
