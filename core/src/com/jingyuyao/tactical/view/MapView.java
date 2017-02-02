@@ -23,7 +23,6 @@ import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.terrain.Terrain;

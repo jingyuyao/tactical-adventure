@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.view;
 
 /**
  * Visual marker like for things like move target or danger area

@@ -7,12 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.MapView;
 
 /**
- * An {@link Actor} on a {@link MapView}. Draws all {@link Marker} that belongs to {@link MapObject}
- * in no particular order.
+ * An {@link Actor} on a {@link MapView}.
  *
  * <p>Invariants: - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code
  * mapObject.getY()} after animations

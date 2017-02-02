@@ -22,7 +22,6 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import java.lang.annotation.Retention;
