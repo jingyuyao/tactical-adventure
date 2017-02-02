@@ -52,7 +52,6 @@ public class MapStateTest {
   @Before
   public void setUp() {
     mapState = new MapState(eventBus, stateStack);
-    assertThat(mapState.getCurrentHighlight().isPresent()).isFalse();
   }
 
   @Test
@@ -76,7 +75,6 @@ public class MapStateTest {
     HighlightCharacter highlightCharacter =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
     assertThat(highlightCharacter.getObject()).isSameAs(player);
-    assertThat(mapState.getCurrentHighlight().get()).isSameAs(player);
   }
 
   @Test
@@ -90,7 +88,6 @@ public class MapStateTest {
     HighlightCharacter highlightCharacter =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
     assertThat(highlightCharacter.getObject()).isSameAs(enemy);
-    assertThat(mapState.getCurrentHighlight().get()).isSameAs(enemy);
   }
 
   @Test
@@ -104,7 +101,6 @@ public class MapStateTest {
     HighlightTerrain highlightTerrain =
         TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightTerrain.class);
     assertThat(highlightTerrain.getObject()).isSameAs(terrain);
-    assertThat(mapState.getCurrentHighlight().get()).isSameAs(terrain);
   }
 
   @Test

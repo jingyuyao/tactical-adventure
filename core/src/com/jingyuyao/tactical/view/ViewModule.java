@@ -100,8 +100,8 @@ public class ViewModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapMarkingActor
-  Actor provideMapMarkingActor() {
+  @MapMarkingsActionActor
+  Actor provideMapMarkingsActionActor() {
     return new Actor();
   }
 
@@ -158,7 +158,7 @@ public class ViewModule extends AbstractModule {
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MapMarkingActor {
+  @interface MapMarkingsActionActor {
 
   }
 }

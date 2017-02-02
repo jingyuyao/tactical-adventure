@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.HideTarget;
+import com.jingyuyao.tactical.model.event.HighlightCharacter;
+import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.ViewModule.MapMarkingActor;
+import com.jingyuyao.tactical.view.ViewModule.MapMarkingsActionActor;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import java.util.Map;
 import javax.inject.Inject;
@@ -26,24 +26,32 @@ import javax.inject.Singleton;
 @Singleton
 class MapMarkings {
 
-  private final Actor actor;
+  private final Actor actionActor;
   private final Batch batch;
   private final Map<MapObject, MapActor<?>> actorMap;
   private final Map<Marker, Sprite> markerSpriteMap;
-  private final MapState mapState;
+  private MapActor highlighted;
 
   @Inject
   MapMarkings(
-      @MapMarkingActor Actor actor,
+      @MapMarkingsActionActor Actor actionActor,
       Batch batch,
       Map<MapObject, MapActor<?>> actorMap,
-      Map<Marker, Sprite> markerSpriteMap,
-      MapState mapState) {
-    this.actor = actor;
+      Map<Marker, Sprite> markerSpriteMap) {
+    this.actionActor = actionActor;
     this.batch = batch;
     this.actorMap = actorMap;
     this.markerSpriteMap = markerSpriteMap;
-    this.mapState = mapState;
+  }
+
+  @Subscribe
+  public void highlightCharacter(HighlightCharacter highlightCharacter) {
+    setHighlighted(highlightCharacter.getObject());
+  }
+
+  @Subscribe
+  public void highlightTerrain(HighlightTerrain highlightTerrain) {
+    setHighlighted(highlightTerrain.getObject());
   }
 
   @Subscribe
@@ -118,23 +126,26 @@ class MapMarkings {
                 attack.done();
               }
             }));
-    actor.addAction(sequence);
+    actionActor.addAction(sequence);
   }
 
   void act(float delta) {
-    actor.act(delta);
+    actionActor.act(delta);
   }
 
   void draw() {
-    Optional<MapObject> highlightOptional = mapState.getCurrentHighlight();
-    if (highlightOptional.isPresent()) {
-      MapActor actor = actorMap.get(highlightOptional.get());
+    if (highlighted != null) {
       Sprite highlightSprite = markerSpriteMap.get(Marker.HIGHLIGHT);
-      highlightSprite.setBounds(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
+      highlightSprite.setBounds(
+          highlighted.getX(), highlighted.getY(), highlighted.getWidth(), highlighted.getHeight());
       batch.begin();
       highlightSprite.draw(batch);
       batch.end();
     }
+  }
+
+  private void setHighlighted(MapObject object) {
+    highlighted = actorMap.get(object);
   }
 
   private void addMarker(MapObject object, Marker marker) {

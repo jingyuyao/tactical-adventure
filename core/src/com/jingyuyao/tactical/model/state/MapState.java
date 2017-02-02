@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -8,7 +7,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HighlightCharacter;
 import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
@@ -23,7 +21,6 @@ public class MapState {
 
   private final EventBus eventBus;
   private final Deque<State> stateStack;
-  private MapObject currentHighlight;
 
   @Inject
   public MapState(@ModelEventBus EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
@@ -42,25 +39,18 @@ public class MapState {
   }
 
   public void select(Player player) {
-    currentHighlight = player;
     eventBus.post(new HighlightCharacter(player));
     stateStack.peek().select(player);
   }
 
   public void select(Enemy enemy) {
-    currentHighlight = enemy;
     eventBus.post(new HighlightCharacter(enemy));
     stateStack.peek().select(enemy);
   }
 
   public void select(Terrain terrain) {
-    currentHighlight = terrain;
     eventBus.post(new HighlightTerrain(terrain));
     stateStack.peek().select(terrain);
-  }
-
-  public Optional<MapObject> getCurrentHighlight() {
-    return Optional.fromNullable(currentHighlight);
   }
 
   /**
