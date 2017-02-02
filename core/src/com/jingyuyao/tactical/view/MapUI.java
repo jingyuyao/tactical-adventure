@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -108,11 +107,7 @@ class MapUI {
   private TextButton createActionButton(final Action action) {
     TextButton button = new TextButton(action.getText(), skin);
     button.getLabel().setAlignment(Align.right);
-    button
-        .getLabelCell()
-        .padLeft(10)
-        .padRight(10)
-        .prefHeight(Value.percentHeight(0.10f, root));
+    button.getLabelCell().pad(10);
     button.addListener(
         new ChangeListener() {
           @Override
