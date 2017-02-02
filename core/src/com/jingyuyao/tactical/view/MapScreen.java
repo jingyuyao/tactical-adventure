@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.controller.MapController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,19 +16,36 @@ public class MapScreen extends ScreenAdapter {
   private final MapMarkings mapMarkings;
   private final MapUI mapUI;
   private final Batch batch;
+  private final MapController mapController;
 
   @Inject
-  MapScreen(MapView mapView, MapMarkings mapMarkings, MapUI mapUI, Batch batch) {
+  MapScreen(
+      MapView mapView,
+      MapMarkings mapMarkings,
+      MapUI mapUI,
+      Batch batch,
+      MapController mapController) {
     this.mapView = mapView;
     this.mapMarkings = mapMarkings;
     this.mapUI = mapUI;
     this.batch = batch;
+    this.mapController = mapController;
   }
 
-  public void registerTo(EventBus eventBus) {
+  public void registerListeners(EventBus eventBus) {
     eventBus.register(mapView);
     eventBus.register(mapMarkings);
     eventBus.register(mapUI);
+  }
+
+  @Override
+  public void show() {
+    mapController.receiveInput();
+  }
+
+  @Override
+  public void hide() {
+    mapController.stopReceivingInput();
   }
 
   @Override

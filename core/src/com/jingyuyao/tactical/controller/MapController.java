@@ -27,4 +27,8 @@ public class MapController {
   public void receiveInput() {
     Gdx.input.setInputProcessor(inputMultiplexer);
   }
+
+  public void stopReceivingInput() {
+    Gdx.input.setInputProcessor(null);
+  }
 }

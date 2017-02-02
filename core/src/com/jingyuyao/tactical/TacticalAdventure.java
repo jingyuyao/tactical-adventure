@@ -8,7 +8,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
-import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.data.MapSaver;
@@ -26,8 +25,6 @@ public class TacticalAdventure extends Game {
   @Inject
   private MapScreen mapScreen;
   @Inject
-  private MapController mapController;
-  @Inject
   private MapLoader mapLoader;
   @Inject
   private MapSaver mapSaver;
@@ -44,7 +41,7 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
-    mapScreen.registerTo(modelEventBus);
+    mapScreen.registerListeners(modelEventBus);
     modelEventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }
@@ -65,6 +62,5 @@ public class TacticalAdventure extends Game {
   public void setLevel(String mapName) {
     mapLoader.loadMap(mapName);
     setScreen(mapScreen);
-    mapController.receiveInput();
   }
 }
