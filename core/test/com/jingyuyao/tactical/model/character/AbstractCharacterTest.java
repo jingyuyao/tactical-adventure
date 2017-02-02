@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
@@ -13,10 +12,8 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
@@ -39,8 +36,6 @@ public class AbstractCharacterTest {
   private static final int MOVE_DISTANCE = 3;
 
   @Mock
-  private Multiset<Marker> markers;
-  @Mock
   private EventBus eventBus;
   @Mock
   private Weapon weapon1;
@@ -53,8 +48,6 @@ public class AbstractCharacterTest {
   @Mock
   private Path path;
   @Mock
-  private Target target;
-  @Mock
   private Object listener;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -66,8 +59,7 @@ public class AbstractCharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(CHARACTER_COORDINATE, markers, eventBus, NAME, MAX_HP, HP,
-            MOVE_DISTANCE, items);
+        new CharacterImpl(CHARACTER_COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
@@ -176,9 +168,9 @@ public class AbstractCharacterTest {
   private static class CharacterImpl extends AbstractCharacter {
 
     CharacterImpl(
-        Coordinate coordinate, Multiset<Marker> markers, EventBus eventBus,
-        String name, int maxHp, int hp, int moveDistance, List<Item> items) {
-      super(coordinate, markers, eventBus, name, maxHp, hp, moveDistance, items);
+        Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
+        List<Item> items) {
+      super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
     }
 
     @Override

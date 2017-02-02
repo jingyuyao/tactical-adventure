@@ -2,12 +2,10 @@ package com.jingyuyao.tactical.model.character;
 
 import static org.mockito.Mockito.verify;
 
-import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
@@ -28,8 +26,6 @@ public class PassiveEnemyTest {
   private static final int MOVE_DISTANCE = 3;
 
   @Mock
-  private Multiset<Marker> markers;
-  @Mock
   private EventBus eventBus;
   @Mock
   private List<Item> items;
@@ -45,8 +41,8 @@ public class PassiveEnemyTest {
   @Before
   public void setUp() {
     enemy =
-        new PassiveEnemy(CHARACTER_COORDINATE, markers, movements, eventBus, battle, NAME,
-            MAX_HP, HP, MOVE_DISTANCE, items);
+        new PassiveEnemy(CHARACTER_COORDINATE, movements, eventBus, battle, NAME, MAX_HP, HP,
+            MOVE_DISTANCE, items);
   }
 
   @Test

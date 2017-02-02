@@ -5,8 +5,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
@@ -42,19 +40,6 @@ public class MapModule extends AbstractModule {
   @BackingTerrainMap
   Map<Coordinate, Terrain> provideBackingTerrainMap() {
     return new HashMap<Coordinate, Terrain>();
-  }
-
-  @Provides
-  @InitialMarkers
-  Multiset<Marker> provideMarkers() {
-    return HashMultiset.create();
-  }
-
-  @BindingAnnotation
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  public @interface InitialMarkers {
-
   }
 
   @BindingAnnotation

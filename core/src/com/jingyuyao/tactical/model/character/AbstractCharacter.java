@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
@@ -11,7 +10,6 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Path;
 import java.util.Collections;
 import java.util.List;
@@ -26,15 +24,14 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   private int moveDistance;
   private List<Item> items;
 
-  AbstractCharacter(Multiset<Marker> markers, EventBus eventBus) {
-    super(markers);
+  AbstractCharacter(EventBus eventBus) {
     this.eventBus = eventBus;
   }
 
   AbstractCharacter(
-      Coordinate coordinate, Multiset<Marker> markers, EventBus eventBus,
-      String name, int maxHp, int hp, int moveDistance, List<Item> items) {
-    super(coordinate, markers);
+      Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp, int moveDistance,
+      List<Item> items) {
+    super(coordinate);
     this.eventBus = eventBus;
     this.name = name;
     this.maxHp = maxHp;

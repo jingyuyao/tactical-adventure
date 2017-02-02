@@ -3,11 +3,9 @@ package com.jingyuyao.tactical.model.character;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 
-import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -26,8 +24,6 @@ public class BasePlayerTest {
   private static final int MOVE_DISTANCE = 3;
 
   @Mock
-  private Multiset<Marker> markers;
-  @Mock
   private List<Item> items;
   @Mock
   private EventBus eventBus;
@@ -38,8 +34,8 @@ public class BasePlayerTest {
   @Before
   public void setUp() {
     player =
-        new BasePlayer(CHARACTER_COORDINATE, markers, eventBus, NAME, MAX_HP, HP,
-            MOVE_DISTANCE, items, true);
+        new BasePlayer(CHARACTER_COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items,
+            true);
   }
 
   @Test

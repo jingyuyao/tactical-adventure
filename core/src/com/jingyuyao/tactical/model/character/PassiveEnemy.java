@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Multiset;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
@@ -12,8 +11,6 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.MapModule.InitialMarkers;
-import com.jingyuyao.tactical.model.map.Marker;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
@@ -26,21 +23,16 @@ public class PassiveEnemy extends AbstractEnemy {
   private final transient Battle battle;
 
   @Inject
-  PassiveEnemy(
-      @InitialMarkers Multiset<Marker> markers,
-      @CharacterEventBus EventBus eventBus,
-      Movements movements,
-      Battle battle) {
-    super(markers, eventBus);
+  PassiveEnemy(@CharacterEventBus EventBus eventBus, Movements movements, Battle battle) {
+    super(eventBus);
     this.movements = movements;
     this.battle = battle;
   }
 
   PassiveEnemy(
-      Coordinate coordinate, Multiset<Marker> markers, Movements movements,
-      EventBus eventBus, Battle battle, String name, int maxHp, int hp, int moveDistance,
-      List<Item> items) {
-    super(coordinate, markers, eventBus, name, maxHp, hp, moveDistance, items);
+      Coordinate coordinate, Movements movements, EventBus eventBus, Battle battle, String name,
+      int maxHp, int hp, int moveDistance, List<Item> items) {
+    super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
     this.movements = movements;
     this.battle = battle;
   }
