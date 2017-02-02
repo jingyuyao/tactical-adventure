@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Align;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.HighlightCharacter;
-import com.jingyuyao.tactical.model.event.HighlightTerrain;
+import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
@@ -64,17 +64,17 @@ class MapUI {
 
   // TODO: need to refresh stats after attack
   @Subscribe
-  public void highlightCharacter(HighlightCharacter highlightCharacter) {
+  public void highlightCharacter(SelectCharacter selectCharacter) {
     terrainLabel.setText(null);
-    Character character = highlightCharacter.getObject();
+    Character character = selectCharacter.getObject();
     characterLabel.setText(character.toString());
     characterLabel.setColor(Player.class.isInstance(character) ? Color.GREEN : Color.RED);
   }
 
   @Subscribe
-  public void highlightTerrain(HighlightTerrain highlightTerrain) {
+  public void highlightTerrain(SelectTerrain selectTerrain) {
     characterLabel.setText(null);
-    terrainLabel.setText(highlightTerrain.getObject().toString());
+    terrainLabel.setText(selectTerrain.getObject().toString());
   }
 
   @Subscribe

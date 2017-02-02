@@ -9,8 +9,8 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.HideTarget;
-import com.jingyuyao.tactical.model.event.HighlightCharacter;
-import com.jingyuyao.tactical.model.event.HighlightTerrain;
+import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
@@ -30,7 +30,7 @@ class MapMarkings {
   private final Batch batch;
   private final Map<MapObject, MapActor<?>> actorMap;
   private final Map<Marker, Sprite> markerSpriteMap;
-  private MapActor highlighted;
+  private MapActor selected;
 
   @Inject
   MapMarkings(
@@ -45,13 +45,13 @@ class MapMarkings {
   }
 
   @Subscribe
-  public void highlightCharacter(HighlightCharacter highlightCharacter) {
-    setHighlighted(highlightCharacter.getObject());
+  public void highlightCharacter(SelectCharacter selectCharacter) {
+    setSelected(selectCharacter.getObject());
   }
 
   @Subscribe
-  public void highlightTerrain(HighlightTerrain highlightTerrain) {
-    setHighlighted(highlightTerrain.getObject());
+  public void highlightTerrain(SelectTerrain selectTerrain) {
+    setSelected(selectTerrain.getObject());
   }
 
   @Subscribe
@@ -134,18 +134,18 @@ class MapMarkings {
   }
 
   void draw() {
-    if (highlighted != null) {
+    if (selected != null) {
       Sprite highlightSprite = markerSpriteMap.get(Marker.HIGHLIGHT);
       highlightSprite.setBounds(
-          highlighted.getX(), highlighted.getY(), highlighted.getWidth(), highlighted.getHeight());
+          selected.getX(), selected.getY(), selected.getWidth(), selected.getHeight());
       batch.begin();
       highlightSprite.draw(batch);
       batch.end();
     }
   }
 
-  private void setHighlighted(MapObject object) {
-    highlighted = actorMap.get(object);
+  private void setSelected(MapObject object) {
+    selected = actorMap.get(object);
   }
 
   private void addMarker(MapObject object, Marker marker) {

@@ -11,8 +11,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.HighlightCharacter;
-import com.jingyuyao.tactical.model.event.HighlightTerrain;
+import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
@@ -72,9 +72,9 @@ public class MapStateTest {
 
     verify(state1).select(player);
     verify(eventBus).post(argumentCaptor.capture());
-    HighlightCharacter highlightCharacter =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
-    assertThat(highlightCharacter.getObject()).isSameAs(player);
+    SelectCharacter selectCharacter =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), SelectCharacter.class);
+    assertThat(selectCharacter.getObject()).isSameAs(player);
   }
 
   @Test
@@ -85,9 +85,9 @@ public class MapStateTest {
 
     verify(state1).select(enemy);
     verify(eventBus).post(argumentCaptor.capture());
-    HighlightCharacter highlightCharacter =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightCharacter.class);
-    assertThat(highlightCharacter.getObject()).isSameAs(enemy);
+    SelectCharacter selectCharacter =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), SelectCharacter.class);
+    assertThat(selectCharacter.getObject()).isSameAs(enemy);
   }
 
   @Test
@@ -98,9 +98,9 @@ public class MapStateTest {
 
     verify(state1).select(terrain);
     verify(eventBus).post(argumentCaptor.capture());
-    HighlightTerrain highlightTerrain =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HighlightTerrain.class);
-    assertThat(highlightTerrain.getObject()).isSameAs(terrain);
+    SelectTerrain selectTerrain =
+        TestHelpers.isInstanceOf(argumentCaptor.getValue(), SelectTerrain.class);
+    assertThat(selectTerrain.getObject()).isSameAs(terrain);
   }
 
   @Test
