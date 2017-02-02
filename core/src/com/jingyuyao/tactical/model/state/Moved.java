@@ -8,7 +8,7 @@ import javax.inject.Inject;
 /**
  * Can only perform actions after moving.
  */
-class Moved extends ItemSelectionState {
+class Moved extends ItemActions {
 
   private final Movements movements;
 

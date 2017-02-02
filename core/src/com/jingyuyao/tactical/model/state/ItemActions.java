@@ -5,9 +5,9 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-class ItemSelectionState extends AbstractPlayerState {
+class ItemActions extends AbstractPlayerState {
 
-  ItemSelectionState(MapState mapState, StateFactory stateFactory, Player player) {
+  ItemActions(MapState mapState, StateFactory stateFactory, Player player) {
     super(mapState, stateFactory, player);
   }
 
