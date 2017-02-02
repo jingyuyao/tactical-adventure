@@ -36,7 +36,7 @@ class BasePlayerState extends BaseState {
 
   @Override
   public void exit() {
-    eventBus.post(new DeactivateCharacter(player));
+    eventBus.post(new DeactivateCharacter());
   }
 
   @Override

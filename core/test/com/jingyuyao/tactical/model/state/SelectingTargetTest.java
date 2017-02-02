@@ -80,7 +80,7 @@ public class SelectingTargetTest {
     selectingTarget.exit();
 
     verify(eventBus, times(3)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, target1, HideTarget.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, target2, HideTarget.class);
   }

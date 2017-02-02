@@ -93,6 +93,6 @@ public class RetaliatingTest {
     inOrder.verify(mapState).branchTo(waiting);
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, ActivatedCharacter.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy2, ActivatedCharacter.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, null, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 2, DeactivateCharacter.class);
   }
 }

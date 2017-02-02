@@ -50,7 +50,7 @@ public class Retaliating extends BaseState {
     Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        eventBus.post(new DeactivateCharacter(null));
+        eventBus.post(new DeactivateCharacter());
         branchToWait();
       }
 

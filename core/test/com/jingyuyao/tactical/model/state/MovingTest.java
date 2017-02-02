@@ -116,7 +116,7 @@ public class MovingTest {
     moving.exit();
 
     verify(eventBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, HideMovement.class);
   }
 

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.jingyuyao.tactical.model.event.ModelEvent;
 import com.jingyuyao.tactical.model.event.ObjectEvent;
 import org.mockito.ArgumentCaptor;
 
@@ -28,5 +29,18 @@ public class TestHelpers {
     T casted = clazz.cast(objectAtIndex);
     assertThat(casted.getObject()).isSameAs(target);
     return casted;
+  }
+
+  public static <T extends ModelEvent>
+  T verifyModelEvent(ArgumentCaptor<Object> captor, int index, Class<T> clazz) {
+    Object objectAtIndex = null;
+    try {
+      objectAtIndex = captor.getAllValues().get(index);
+    } catch (IndexOutOfBoundsException ex) {
+      fail();
+    }
+    assertThat(objectAtIndex).isNotNull();
+    assertThat(objectAtIndex).isInstanceOf(clazz);
+    return clazz.cast(objectAtIndex);
   }
 }

@@ -68,7 +68,7 @@ public class BasePlayerStateTest {
     state.exit();
 
     verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
   }
 
   @Test
