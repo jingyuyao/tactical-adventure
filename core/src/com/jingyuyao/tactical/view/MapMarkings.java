@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.character.event.Attack;
+import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.ShowMovement;
