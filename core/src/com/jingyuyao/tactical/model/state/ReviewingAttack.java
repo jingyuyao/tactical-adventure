@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 class ReviewingAttack extends BasePlayerState {
 
-  private final EventBus eventBus;
   private final Battle battle;
   private final Weapon weapon;
   private final Target target;
@@ -33,8 +32,7 @@ class ReviewingAttack extends BasePlayerState {
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted Target target) {
-    super(mapState, stateFactory, player);
-    this.eventBus = eventBus;
+    super(mapState, stateFactory, eventBus, player);
     this.battle = battle;
     this.weapon = weapon;
     this.target = target;
@@ -42,12 +40,14 @@ class ReviewingAttack extends BasePlayerState {
 
   @Override
   public void enter() {
-    eventBus.post(new ShowTarget(target));
+    super.enter();
+    getEventBus().post(new ShowTarget(target));
   }
 
   @Override
   public void exit() {
-    eventBus.post(new HideTarget(target));
+    super.exit();
+    getEventBus().post(new HideTarget(target));
   }
 
   @Override

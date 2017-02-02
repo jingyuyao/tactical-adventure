@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -13,6 +14,8 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ActivatedCharacter;
+import com.jingyuyao.tactical.model.event.DeactivateCharacter;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -85,10 +88,10 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    ShowMovement showMovement =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowMovement.class);
-    assertThat(showMovement.getObject()).isSameAs(movement);
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, ShowMovement.class);
   }
 
   @Test
@@ -112,10 +115,9 @@ public class MovingTest {
   public void exit() {
     moving.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    HideMovement hideMovement =
-        TestHelpers.isInstanceOf(argumentCaptor.getValue(), HideMovement.class);
-    assertThat(hideMovement.getObject()).isSameAs(movement);
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, DeactivateCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, HideMovement.class);
   }
 
   @Test

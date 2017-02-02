@@ -16,7 +16,6 @@ import javax.inject.Inject;
 
 public class SelectingTarget extends BasePlayerState {
 
-  private final EventBus eventBus;
   private final Weapon weapon;
   private final ImmutableList<Target> targets;
 
@@ -28,23 +27,24 @@ public class SelectingTarget extends BasePlayerState {
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
-    super(mapState, stateFactory, player);
-    this.eventBus = eventBus;
+    super(mapState, stateFactory, eventBus, player);
     this.weapon = weapon;
     this.targets = targets;
   }
 
   @Override
   public void enter() {
+    super.enter();
     for (Target target : targets) {
-      eventBus.post(new ShowTarget(target));
+      getEventBus().post(new ShowTarget(target));
     }
   }
 
   @Override
   public void exit() {
+    super.exit();
     for (Target target : targets) {
-      eventBus.post(new HideTarget(target));
+      getEventBus().post(new HideTarget(target));
     }
   }
 

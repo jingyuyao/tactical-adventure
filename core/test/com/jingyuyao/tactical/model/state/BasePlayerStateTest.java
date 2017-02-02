@@ -6,12 +6,18 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ActivatedCharacter;
+import com.jingyuyao.tactical.model.event.DeactivateCharacter;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -23,6 +29,8 @@ public class BasePlayerStateTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private EventBus eventBus;
+  @Mock
   private Player player;
   @Mock
   private Waiting waiting;
@@ -32,17 +40,35 @@ public class BasePlayerStateTest {
   private Consumable consumable;
   @Mock
   private State state2;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private BasePlayerState state;
 
   @Before
   public void setUp() {
-    state = new BasePlayerState(mapState, stateFactory, player);
+    state = new BasePlayerState(mapState, stateFactory, eventBus, player);
   }
 
   @Test
   public void get_state_factory() {
     assertThat(state.getStateFactory()).isSameAs(stateFactory);
+  }
+
+  @Test
+  public void enter() {
+    state.enter();
+
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedCharacter.class);
+  }
+
+  @Test
+  public void exit() {
+    state.exit();
+
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, DeactivateCharacter.class);
   }
 
   @Test

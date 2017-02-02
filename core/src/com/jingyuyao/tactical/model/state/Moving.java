@@ -17,7 +17,6 @@ import javax.inject.Inject;
 
 class Moving extends BasePlayerState {
 
-  private final EventBus eventBus;
   private final Movements movements;
   private final Movement movement;
   private Coordinate previousCoordinate;
@@ -30,15 +29,15 @@ class Moving extends BasePlayerState {
       @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Movement movement) {
-    super(mapState, stateFactory, player);
-    this.eventBus = eventBus;
+    super(mapState, stateFactory, eventBus, player);
     this.movements = movements;
     this.movement = movement;
   }
 
   @Override
   public void enter() {
-    eventBus.post(new ShowMovement(movement));
+    super.enter();
+    getEventBus().post(new ShowMovement(movement));
   }
 
   @Override
@@ -51,7 +50,8 @@ class Moving extends BasePlayerState {
 
   @Override
   public void exit() {
-    eventBus.post(new HideMovement(movement));
+    super.exit();
+    getEventBus().post(new HideMovement(movement));
   }
 
   @Override

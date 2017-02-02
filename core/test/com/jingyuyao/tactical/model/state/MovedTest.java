@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -27,6 +28,8 @@ public class MovedTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private EventBus eventBus;
+  @Mock
   private Movements movements;
   @Mock
   private Player player;
@@ -45,7 +48,7 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    moved = new Moved(mapState, stateFactory, movements, player);
+    moved = new Moved(mapState, stateFactory, eventBus, movements, player);
   }
 
   @Test

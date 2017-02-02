@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
@@ -14,8 +16,12 @@ class Moved extends BasePlayerState {
 
   @Inject
   Moved(
-      MapState mapState, StateFactory stateFactory, Movements movements, @Assisted Player player) {
-    super(mapState, stateFactory, player);
+      MapState mapState,
+      StateFactory stateFactory,
+      @ModelEventBus EventBus eventBus,
+      Movements movements,
+      @Assisted Player player) {
+    super(mapState, stateFactory, eventBus, player);
     this.movements = movements;
   }
 

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -13,6 +14,8 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ActivatedCharacter;
+import com.jingyuyao.tactical.model.event.DeactivateCharacter;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
@@ -72,18 +75,18 @@ public class ReviewingAttackTest {
   public void enter() {
     reviewingAttack.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    ShowTarget showTarget = TestHelpers.isInstanceOf(argumentCaptor.getValue(), ShowTarget.class);
-    assertThat(showTarget.getObject()).isSameAs(target);
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, attackingPlayer, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, ShowTarget.class);
   }
 
   @Test
   public void exit() {
     reviewingAttack.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    HideTarget hideTarget = TestHelpers.isInstanceOf(argumentCaptor.getValue(), HideTarget.class);
-    assertThat(hideTarget.getObject()).isSameAs(target);
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, attackingPlayer, DeactivateCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, HideTarget.class);
   }
 
   @Test

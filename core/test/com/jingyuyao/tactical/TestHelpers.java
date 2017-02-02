@@ -6,11 +6,27 @@ import static org.junit.Assert.fail;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.ObjectEvent;
+import org.mockito.ArgumentCaptor;
 
 /**
  * Contains utility methods suitable for all tests
  */
 public class TestHelpers {
+
+  public static <T extends ObjectEvent<?>>
+  T verifyObjectEvent(ArgumentCaptor<Object> captor, int index, Object target, Class<T> clazz) {
+    Object objectAtIndex = null;
+    try {
+      objectAtIndex = captor.getAllValues().get(index);
+    } catch (IndexOutOfBoundsException ex) {
+      fail();
+    }
+    assertThat(objectAtIndex).isNotNull();
+    T casted = isInstanceOf(objectAtIndex, clazz);
+    assertThat(casted.getObject()).isSameAs(target);
+    return casted;
+  }
 
   /**
    * Assert {@code object} is an instance of {@code clazz} then return the casted instance.
