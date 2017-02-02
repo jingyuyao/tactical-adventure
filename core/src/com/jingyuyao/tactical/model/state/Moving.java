@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -10,9 +8,6 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
-import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -20,7 +15,7 @@ import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-class Moving extends AbstractPlayerState {
+class Moving extends BasePlayerState {
 
   private final EventBus eventBus;
   private final Movements movements;
@@ -92,20 +87,5 @@ class Moving extends AbstractPlayerState {
       // we will consider clicking outside of movable area to be canceling
       back();
     }
-  }
-
-  @Override
-  public ImmutableList<Action> getActions() {
-    ImmutableList.Builder<Action> builder = ImmutableList.builder();
-    FluentIterable<Item> items = getPlayer().fluentItems();
-    for (Weapon weapon : items.filter(Weapon.class)) {
-      builder.add(new SelectWeaponAction(this, getStateFactory(), getPlayer(), weapon));
-    }
-    for (Consumable consumable : items.filter(Consumable.class)) {
-      builder.add(new UseConsumableAction(this, getPlayer(), consumable));
-    }
-    builder.add(new FinishAction(this));
-    builder.add(new BackAction(this));
-    return builder.build();
   }
 }

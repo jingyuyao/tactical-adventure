@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class UseConsumableActionTest {
 
   @Mock
-  private AbstractPlayerState playerState;
+  private BasePlayerState playerState;
   @Mock
   private Consumable consumable;
   @Mock

@@ -42,8 +42,6 @@ public class MovedTest {
   @Mock
   private Moving moving;
   @Mock
-  private Waiting waiting;
-  @Mock
   private Weapon weapon;
   @Mock
   private Consumable consumable;

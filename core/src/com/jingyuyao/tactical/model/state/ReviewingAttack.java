@@ -17,7 +17,7 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-class ReviewingAttack extends AbstractPlayerState {
+class ReviewingAttack extends BasePlayerState {
 
   private final EventBus eventBus;
   private final Battle battle;

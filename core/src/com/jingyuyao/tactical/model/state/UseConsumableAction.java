@@ -5,11 +5,11 @@ import com.jingyuyao.tactical.model.item.Consumable;
 
 class UseConsumableAction implements Action {
 
-  private final AbstractPlayerState playerState;
+  private final BasePlayerState playerState;
   private final Player player;
   private final Consumable consumable;
 
-  UseConsumableAction(AbstractPlayerState playerState, Player player, Consumable consumable) {
+  UseConsumableAction(BasePlayerState playerState, Player player, Consumable consumable) {
     this.playerState = playerState;
     this.player = player;
     this.consumable = consumable;

@@ -19,7 +19,7 @@ public class SelectWeaponActionTest {
   private static final Coordinate PLAYER_COORDINATE = new Coordinate(101, 101);
 
   @Mock
-  private AbstractPlayerState playerState;
+  private BasePlayerState playerState;
   @Mock
   private StateFactory stateFactory;
   @Mock

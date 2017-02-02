@@ -66,8 +66,6 @@ public class MovingTest {
   @Mock
   private Moving anotherMoving;
   @Mock
-  private Waiting waiting;
-  @Mock
   private Movement otherMovement;
   @Mock
   private Weapon weapon;

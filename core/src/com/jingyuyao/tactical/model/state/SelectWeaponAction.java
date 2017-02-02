@@ -7,13 +7,13 @@ import com.jingyuyao.tactical.model.item.Weapon;
 
 class SelectWeaponAction implements Action {
 
-  private final AbstractPlayerState playerState;
+  private final BasePlayerState playerState;
   private final StateFactory stateFactory;
   private final Player player;
   private final Weapon weapon;
 
   SelectWeaponAction(
-      AbstractPlayerState playerState, StateFactory stateFactory, Player player, Weapon weapon) {
+      BasePlayerState playerState, StateFactory stateFactory, Player player, Weapon weapon) {
     this.playerState = playerState;
     this.stateFactory = stateFactory;
     this.player = player;
