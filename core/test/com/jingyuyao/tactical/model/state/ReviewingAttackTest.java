@@ -158,20 +158,23 @@ public class ReviewingAttackTest {
   }
 
   @Test
-  public void actions_attack() {
+  public void attack() {
     when(stateFactory.createIgnoreInput()).thenReturn(ignoreInput);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 
-    ImmutableList<Action> actions = reviewingAttack.getActions();
-    assertThat(actions).hasSize(2);
-    assertThat(actions.get(1)).isInstanceOf(BackAction.class);
-
-    Action attack = actions.get(0);
-    attack.run();
+    reviewingAttack.attack();
 
     verify_attacked();
+  }
+
+  @Test
+  public void actions() {
+    ImmutableList<Action> actions = reviewingAttack.getActions();
+    assertThat(actions).hasSize(2);
+    assertThat(actions.get(0)).isInstanceOf(AttackAction.class);
+    assertThat(actions.get(1)).isInstanceOf(BackAction.class);
   }
 
   private void verify_attacked() {

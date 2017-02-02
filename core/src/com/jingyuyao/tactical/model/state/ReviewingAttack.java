@@ -67,18 +67,10 @@ class ReviewingAttack extends AbstractPlayerState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    return ImmutableList.of(this.new Attack(), new BackAction(this));
+    return ImmutableList.of(new AttackAction(this), new BackAction(this));
   }
 
-  private void handleSelection(MapObject object) {
-    if (target.canTarget(object.getCoordinate())) {
-      attack();
-    } else {
-      back();
-    }
-  }
-
-  private void attack() {
+  void attack() {
     goTo(getStateFactory().createIgnoreInput());
     Futures.addCallback(battle.begin(getPlayer(), weapon, target), new FutureCallback<Void>() {
       @Override
@@ -93,16 +85,11 @@ class ReviewingAttack extends AbstractPlayerState {
     });
   }
 
-  class Attack implements Action {
-
-    @Override
-    public String getText() {
-      return "attack";
-    }
-
-    @Override
-    public void run() {
+  private void handleSelection(MapObject object) {
+    if (target.canTarget(object.getCoordinate())) {
       attack();
+    } else {
+      back();
     }
   }
 }
