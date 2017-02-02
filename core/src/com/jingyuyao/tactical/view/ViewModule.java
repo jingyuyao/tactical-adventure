@@ -86,14 +86,14 @@ public class ViewModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapUiStage
-  Stage provideMapUIStage(@MapUiViewport Viewport viewport, Batch batch) {
+  @MapUIStage
+  Stage provideMapUIStage(@MapUIViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }
 
   @Provides
   @Singleton
-  @MapUiViewport
+  @MapUIViewport
   Viewport provideMapUIViewport() {
     return new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
   }
@@ -130,14 +130,14 @@ public class ViewModule extends AbstractModule {
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapUiStage {
+  public @interface MapUIStage {
 
   }
 
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MapUiViewport {
+  @interface MapUIViewport {
 
   }
 

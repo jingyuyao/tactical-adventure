@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.view.ViewModule.MapUiStage;
+import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,7 +16,7 @@ public class MapController {
   @Inject
   MapController(
       @MapViewStage Stage mapViewStage,
-      @MapUiStage Stage mapUIStage,
+      @MapUIStage Stage mapUIStage,
       DragCameraController dragCameraController) {
     inputMultiplexer = new InputMultiplexer();
     inputMultiplexer.addProcessor(mapUIStage);

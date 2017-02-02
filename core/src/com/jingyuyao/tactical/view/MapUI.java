@@ -19,7 +19,7 @@ import com.jingyuyao.tactical.model.event.HighlightTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
-import com.jingyuyao.tactical.view.ViewModule.MapUiStage;
+import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -35,7 +35,7 @@ class MapUI {
   private final VerticalGroup actionButtons;
 
   @Inject
-  MapUI(@MapUiStage Stage stage, Skin skin) {
+  MapUI(@MapUIStage Stage stage, Skin skin) {
     this.skin = skin;
     this.stage = stage;
 
