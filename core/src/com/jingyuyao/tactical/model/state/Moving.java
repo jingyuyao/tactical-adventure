@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-class Moving extends AbstractMovementState {
+class Moving extends ItemSelectionState {
 
   private final EventBus eventBus;
   private final Movement movement;

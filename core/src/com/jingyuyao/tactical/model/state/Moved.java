@@ -8,7 +8,7 @@ import javax.inject.Inject;
 /**
  * Can only perform actions after moving.
  */
-class Moved extends AbstractMovementState {
+class Moved extends ItemSelectionState {
 
   @Inject
   Moved(

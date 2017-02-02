@@ -6,11 +6,11 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movements;
 
-abstract class AbstractMovementState extends AbstractPlayerState {
+class ItemSelectionState extends AbstractPlayerState {
 
   private final Movements movements;
 
-  AbstractMovementState(
+  ItemSelectionState(
       MapState mapState, StateFactory stateFactory, Movements movements, Player player) {
     super(mapState, stateFactory, player);
     this.movements = movements;
