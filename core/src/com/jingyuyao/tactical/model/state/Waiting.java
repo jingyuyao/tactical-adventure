@@ -31,22 +31,13 @@ public class Waiting extends AbstractState {
 
   @Override
   public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(this.new EndTurn());
+    return ImmutableList.<Action>of(new EndTurnAction(this));
   }
 
-  public class EndTurn implements Action {
-
-    @Override
-    public String getText() {
-      return "end";
+  void endTurn() {
+    for (Player player : characters.fluent().filter(Player.class)) {
+      player.setActionable(true);
     }
-
-    @Override
-    public void run() {
-      for (Player player : characters.fluent().filter(Player.class)) {
-        player.setActionable(true);
-      }
-      goTo(getStateFactory().createRetaliating());
-    }
+    goTo(getStateFactory().createRetaliating());
   }
 }

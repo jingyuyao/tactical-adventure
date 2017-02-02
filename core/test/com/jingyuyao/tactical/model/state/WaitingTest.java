@@ -88,17 +88,21 @@ public class WaitingTest {
   }
 
   @Test
-  public void actions_end_turn() {
+  public void end_turn() {
     when(characters.fluent()).thenReturn(FluentIterable.<Character>of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
-    List<Action> actions = waiting.getActions();
-    assertThat(actions).hasSize(1);
-    Action endTurn = actions.get(0);
-
-    endTurn.run();
+    waiting.endTurn();
 
     verify(player).setActionable(true);
     verify(mapState).goTo(retaliating);
+  }
+
+  @Test
+  public void actions() {
+    List<Action> actions = waiting.getActions();
+
+    assertThat(actions).hasSize(1);
+    assertThat(actions.get(0)).isInstanceOf(EndTurnAction.class);
   }
 }
