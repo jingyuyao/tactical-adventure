@@ -10,7 +10,7 @@ import javax.inject.Inject;
  * A {@link State} that doesn't do anything. Useful as an intermediate state to wait for
  * animation to finish.
  */
-public class IgnoreInput extends AbstractState {
+class IgnoreInput extends AbstractState {
 
   @Inject
   IgnoreInput(MapState mapState, StateFactory stateFactory) {
@@ -20,7 +20,7 @@ public class IgnoreInput extends AbstractState {
   @Override
   public void exit() {
     // This state is temporary, don't keep it on the state stack
-    removeLast();
+    pop();
   }
 
   @Override
