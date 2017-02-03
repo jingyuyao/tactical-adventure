@@ -7,6 +7,7 @@ import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
+import com.jingyuyao.tactical.view.ui.PlayerBurst;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,22 +16,28 @@ class MapUI {
 
   private final Stage stage;
   private final ActionGroup actionGroup;
+  private final PlayerBurst playerBurst;
 
   @Inject
-  MapUI(@MapUIStage Stage stage, ActionGroup actionGroup) {
+  MapUI(
+      @MapUIStage Stage stage,
+      ActionGroup actionGroup,
+      PlayerBurst playerBurst) {
     this.stage = stage;
     this.actionGroup = actionGroup;
+    this.playerBurst = playerBurst;
   }
 
   // TODO: need to refresh stats after attack
   @Subscribe
-  public void highlightCharacter(SelectCharacter selectCharacter) {
-    // TODO: stub
+  public void selectCharacter(SelectCharacter selectCharacter) {
+    playerBurst.setVisible(true);
+    playerBurst.display(selectCharacter.getObject());
   }
 
   @Subscribe
-  public void highlightTerrain(SelectTerrain selectTerrain) {
-    // TODO: stub
+  public void selectTerrain(SelectTerrain selectTerrain) {
+    playerBurst.setVisible(false);
   }
 
   @Subscribe

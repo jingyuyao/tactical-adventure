@@ -56,12 +56,12 @@ class MapMarkings {
   }
 
   @Subscribe
-  public void highlightCharacter(SelectCharacter selectCharacter) {
+  public void selectCharacter(SelectCharacter selectCharacter) {
     selectedActor = actorMap.get(selectCharacter.getObject());
   }
 
   @Subscribe
-  public void highlightTerrain(SelectTerrain selectTerrain) {
+  public void selectTerrain(SelectTerrain selectTerrain) {
     selectedActor = actorMap.get(selectTerrain.getObject());
   }
 
