@@ -9,7 +9,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.state.Action;
 import javax.inject.Inject;
 
-public class ActionButton extends TextButton {
+class ActionButton extends TextButton {
 
   @Inject
   ActionButton(@Assisted final Action action, Skin skin) {

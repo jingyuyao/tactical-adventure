@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -24,6 +23,7 @@ import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.ui.RootTable;
 import com.jingyuyao.tactical.view.ui.UIModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -49,12 +49,6 @@ public class ViewModule extends AbstractModule {
   @Singleton
   Batch provideBatch() {
     return new SpriteBatch();
-  }
-
-  @Provides
-  @Singleton
-  Skin provideSkin(AssetManager assetManager) {
-    return assetManager.get(AssetModule.SKIN, Skin.class);
   }
 
   @Provides
@@ -89,8 +83,10 @@ public class ViewModule extends AbstractModule {
   @Provides
   @Singleton
   @MapUIStage
-  Stage provideMapUIStage(@MapUIViewport Viewport viewport, Batch batch) {
-    return new Stage(viewport, batch);
+  Stage provideMapUIStage(@MapUIViewport Viewport viewport, Batch batch, RootTable rootTable) {
+    Stage stage = new Stage(viewport, batch);
+    stage.addActor(rootTable);
+    return stage;
   }
 
   @Provides
