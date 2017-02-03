@@ -10,7 +10,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectEnemy;
+import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -71,7 +72,7 @@ public class MapStateTest {
 
     verify(state1).select(player);
     verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SelectCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SelectPlayer.class);
   }
 
   @Test
@@ -82,7 +83,7 @@ public class MapStateTest {
 
     verify(state1).select(enemy);
     verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, SelectCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, SelectEnemy.class);
   }
 
   @Test
