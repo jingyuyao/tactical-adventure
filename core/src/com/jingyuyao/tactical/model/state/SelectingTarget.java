@@ -71,7 +71,7 @@ public class SelectingTarget extends BasePlayerState {
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
       if (target.selectedBy(object.getCoordinate())) {
-        goTo(getStateFactory().createReviewingAttack(getPlayer(), weapon, target));
+        goTo(getStateFactory().createBattling(getPlayer(), weapon, target));
         return;
       }
     }

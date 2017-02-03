@@ -51,7 +51,7 @@ public class SelectingTargetTest {
   @Mock
   private Target target2;
   @Mock
-  private ReviewingAttack reviewingAttack;
+  private Battling battling;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -89,33 +89,33 @@ public class SelectingTargetTest {
   public void select_player() {
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(target1.selectedBy(COORDINATE)).thenReturn(true);
-    when(stateFactory.createReviewingAttack(player, weapon, target1)).thenReturn(reviewingAttack);
+    when(stateFactory.createBattling(player, weapon, target1)).thenReturn(battling);
 
     selectingTarget.select(player);
 
-    verify(mapState).goTo(reviewingAttack);
+    verify(mapState).goTo(battling);
   }
 
   @Test
   public void select_enemy() {
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(target2.selectedBy(COORDINATE)).thenReturn(true);
-    when(stateFactory.createReviewingAttack(player, weapon, target2)).thenReturn(reviewingAttack);
+    when(stateFactory.createBattling(player, weapon, target2)).thenReturn(battling);
 
     selectingTarget.select(enemy);
 
-    verify(mapState).goTo(reviewingAttack);
+    verify(mapState).goTo(battling);
   }
 
   @Test
   public void select_terrain() {
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(target2.selectedBy(COORDINATE)).thenReturn(true);
-    when(stateFactory.createReviewingAttack(player, weapon, target2)).thenReturn(reviewingAttack);
+    when(stateFactory.createBattling(player, weapon, target2)).thenReturn(battling);
 
     selectingTarget.select(terrain);
 
-    verify(mapState).goTo(reviewingAttack);
+    verify(mapState).goTo(battling);
   }
 
   @Test

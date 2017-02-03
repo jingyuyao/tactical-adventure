@@ -17,14 +17,14 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-class ReviewingAttack extends BasePlayerState {
+class Battling extends BasePlayerState {
 
   private final Battle battle;
   private final Weapon weapon;
   private final Target target;
 
   @Inject
-  ReviewingAttack(
+  Battling(
       MapState mapState,
       StateFactory stateFactory,
       @ModelEventBus EventBus eventBus,

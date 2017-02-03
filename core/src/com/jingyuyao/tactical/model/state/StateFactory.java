@@ -22,7 +22,7 @@ interface StateFactory {
   SelectingTarget createSelectingTarget(
       Player player, Weapon weapon, ImmutableList<Target> targets);
 
-  ReviewingAttack createReviewingAttack(Player player, Weapon weapon, Target target);
+  Battling createBattling(Player player, Weapon weapon, Target target);
 
   Retaliating createRetaliating();
 }

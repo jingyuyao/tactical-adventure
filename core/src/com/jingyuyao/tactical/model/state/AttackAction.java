@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.model.state;
 
 class AttackAction implements Action {
 
-  private ReviewingAttack reviewingAttack;
+  private Battling battling;
 
-  AttackAction(ReviewingAttack reviewingAttack) {
-    this.reviewingAttack = reviewingAttack;
+  AttackAction(Battling battling) {
+    this.battling = battling;
   }
 
   @Override
@@ -15,6 +15,6 @@ class AttackAction implements Action {
 
   @Override
   public void run() {
-    reviewingAttack.attack();
+    battling.attack();
   }
 }

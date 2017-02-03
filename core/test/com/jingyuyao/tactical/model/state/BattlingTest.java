@@ -33,7 +33,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ReviewingAttackTest {
+public class BattlingTest {
 
   private static final Coordinate COORDINATE = new Coordinate(0, 0);
 
@@ -62,18 +62,18 @@ public class ReviewingAttackTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private ReviewingAttack reviewingAttack;
+  private Battling battling;
 
   @Before
   public void setUp() {
-    reviewingAttack = new ReviewingAttack(mapState, stateFactory, eventBus, battle, attackingPlayer,
+    battling = new Battling(mapState, stateFactory, eventBus, battle, attackingPlayer,
         weapon,
         target);
   }
 
   @Test
   public void enter() {
-    reviewingAttack.enter();
+    battling.enter();
 
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, attackingPlayer, ActivatedCharacter.class);
@@ -82,7 +82,7 @@ public class ReviewingAttackTest {
 
   @Test
   public void exit() {
-    reviewingAttack.exit();
+    battling.exit();
 
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
@@ -94,7 +94,7 @@ public class ReviewingAttackTest {
     when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(false);
 
-    reviewingAttack.select(attackingPlayer);
+    battling.select(attackingPlayer);
 
     verifyZeroInteractions(mapState);
   }
@@ -108,7 +108,7 @@ public class ReviewingAttackTest {
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 
-    reviewingAttack.select(attackingPlayer);
+    battling.select(attackingPlayer);
 
     verify_attacked();
   }
@@ -118,7 +118,7 @@ public class ReviewingAttackTest {
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(false);
 
-    reviewingAttack.select(enemy);
+    battling.select(enemy);
 
     verifyZeroInteractions(mapState);
   }
@@ -132,7 +132,7 @@ public class ReviewingAttackTest {
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 
-    reviewingAttack.select(enemy);
+    battling.select(enemy);
 
     verify_attacked();
   }
@@ -142,7 +142,7 @@ public class ReviewingAttackTest {
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(false);
 
-    reviewingAttack.select(terrain);
+    battling.select(terrain);
 
     verifyZeroInteractions(mapState);
   }
@@ -156,7 +156,7 @@ public class ReviewingAttackTest {
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 
-    reviewingAttack.select(terrain);
+    battling.select(terrain);
 
     verify_attacked();
   }
@@ -168,14 +168,14 @@ public class ReviewingAttackTest {
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 
-    reviewingAttack.attack();
+    battling.attack();
 
     verify_attacked();
   }
 
   @Test
   public void actions() {
-    ImmutableList<Action> actions = reviewingAttack.getActions();
+    ImmutableList<Action> actions = battling.getActions();
     assertThat(actions).hasSize(2);
     assertThat(actions.get(0)).isInstanceOf(AttackAction.class);
     assertThat(actions.get(1)).isInstanceOf(BackAction.class);

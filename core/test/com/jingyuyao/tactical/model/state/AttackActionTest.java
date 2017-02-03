@@ -11,14 +11,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class AttackActionTest {
 
   @Mock
-  private ReviewingAttack reviewingAttack;
+  private Battling battling;
 
   @Test
   public void run() {
-    AttackAction attackAction = new AttackAction(reviewingAttack);
+    AttackAction attackAction = new AttackAction(battling);
 
     attackAction.run();
 
-    verify(reviewingAttack).attack();
+    verify(battling).attack();
   }
 }
