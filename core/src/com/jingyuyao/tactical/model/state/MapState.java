@@ -4,7 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectEnemy;
+import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
@@ -39,12 +40,12 @@ public class MapState {
   }
 
   public void select(Player player) {
-    eventBus.post(new SelectCharacter(player));
+    eventBus.post(new SelectPlayer(player));
     stateStack.peek().select(player);
   }
 
   public void select(Enemy enemy) {
-    eventBus.post(new SelectCharacter(enemy));
+    eventBus.post(new SelectEnemy(enemy));
     stateStack.peek().select(enemy);
   }
 
