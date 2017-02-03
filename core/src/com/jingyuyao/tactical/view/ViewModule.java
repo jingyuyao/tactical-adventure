@@ -110,22 +110,44 @@ public class ViewModule extends AbstractModule {
   Map<Marker, Sprite> provideMarkerSpriteMap(AssetManager assetManager) {
     Map<Marker, Sprite> markerSpriteMap = new HashMap<>();
     markerSpriteMap.put(
-        Marker.HIGHLIGHT, new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class)));
-    markerSpriteMap.put(
         Marker.CAN_MOVE_TO, new Sprite(assetManager.get(AssetModule.MOVE, Texture.class)));
     markerSpriteMap.put(
         Marker.HIT, new Sprite(assetManager.get(AssetModule.HIT, Texture.class)));
     markerSpriteMap.put(
         Marker.CAN_ATTACK, new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class)));
     markerSpriteMap.put(
-        Marker.ACTIVATED,
-        new Sprite(assetManager.get(AssetModule.ACTIVATED, Texture.class)));
-    markerSpriteMap.put(
         Marker.TARGET_SELECT,
         new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class)));
     return markerSpriteMap;
   }
 
+  @Provides
+  @Singleton
+  @HighlightSprite
+  Sprite provideHighlightSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class));
+  }
+
+  @Provides
+  @Singleton
+  @ActivatedCharacterSprite
+  Sprite provideActivatedCharacterSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.ACTIVATED, Texture.class));
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface HighlightSprite {
+
+  }
+
+  @BindingAnnotation
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface ActivatedCharacterSprite {
+
+  }
 
   @BindingAnnotation
   @Target({FIELD, PARAMETER, METHOD})
