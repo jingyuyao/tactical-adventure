@@ -12,7 +12,8 @@ import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.DeactivateCharacter;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.HideTarget;
-import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectEnemy;
+import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.event.ShowTarget;
@@ -56,8 +57,13 @@ class MapMarkings {
   }
 
   @Subscribe
-  public void selectCharacter(SelectCharacter selectCharacter) {
-    selectedActor = actorMap.get(selectCharacter.getObject());
+  public void selectPlayer(SelectPlayer selectPlayer) {
+    selectedActor = actorMap.get(selectPlayer.getObject());
+  }
+
+  @Subscribe
+  public void selectEnemy(SelectEnemy selectEnemy) {
+    selectedActor = actorMap.get(selectEnemy.getObject());
   }
 
   @Subscribe
