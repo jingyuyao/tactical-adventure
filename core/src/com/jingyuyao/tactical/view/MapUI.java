@@ -1,14 +1,11 @@
 package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
@@ -19,6 +16,7 @@ import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.state.Action;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
+import com.jingyuyao.tactical.view.ui.UIFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -32,11 +30,13 @@ class MapUI {
   private final Label terrainLabel;
   private final Label stateLabel;
   private final VerticalGroup actionButtons;
+  private final UIFactory uiFactory;
 
   @Inject
-  MapUI(@MapUIStage Stage stage, Skin skin) {
+  MapUI(@MapUIStage Stage stage, Skin skin, UIFactory uiFactory) {
     this.skin = skin;
     this.stage = stage;
+    this.uiFactory = uiFactory;
 
     // Logical cell layout starts at top left corner
     root = new Table().pad(10);
@@ -83,7 +83,7 @@ class MapUI {
     stateLabel.setText(newState.getName());
     actionButtons.clear();
     for (Action action : newState.getActions()) {
-      actionButtons.addActor(createActionButton(action));
+      actionButtons.addActor(uiFactory.createActionButton(action));
     }
   }
 
@@ -102,19 +102,5 @@ class MapUI {
 
   void dispose() {
     stage.dispose();
-  }
-
-  private TextButton createActionButton(final Action action) {
-    TextButton button = new TextButton(action.getText(), skin);
-    button.getLabel().setAlignment(Align.right);
-    button.getLabelCell().pad(10);
-    button.addListener(
-        new ChangeListener() {
-          @Override
-          public void changed(ChangeEvent event, Actor actor) {
-            action.run();
-          }
-        });
-    return button;
   }
 }

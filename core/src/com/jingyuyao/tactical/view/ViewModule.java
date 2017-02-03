@@ -24,6 +24,7 @@ import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.ui.UIModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class ViewModule extends AbstractModule {
   @Override
   protected void configure() {
     install(new ActorModule());
+    install(new UIModule());
   }
 
   @Provides
