@@ -23,6 +23,7 @@ import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.marking.MarkingModule;
 import com.jingyuyao.tactical.view.ui.RootTable;
 import com.jingyuyao.tactical.view.ui.UIModule;
 import java.lang.annotation.Retention;
@@ -42,6 +43,7 @@ public class ViewModule extends AbstractModule {
   @Override
   protected void configure() {
     install(new ActorModule());
+    install(new MarkingModule());
     install(new UIModule());
   }
 
@@ -101,22 +103,6 @@ public class ViewModule extends AbstractModule {
   @MapMarkingsActionActor
   Actor provideMapMarkingsActionActor() {
     return new Actor();
-  }
-
-  @Provides
-  @Singleton
-  Map<Marker, Sprite> provideMarkerSpriteMap(AssetManager assetManager) {
-    Map<Marker, Sprite> markerSpriteMap = new HashMap<>();
-    markerSpriteMap.put(
-        Marker.CAN_MOVE_TO, new Sprite(assetManager.get(AssetModule.MOVE, Texture.class)));
-    markerSpriteMap.put(
-        Marker.HIT, new Sprite(assetManager.get(AssetModule.HIT, Texture.class)));
-    markerSpriteMap.put(
-        Marker.CAN_ATTACK, new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class)));
-    markerSpriteMap.put(
-        Marker.TARGET_SELECT,
-        new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class)));
-    return markerSpriteMap;
   }
 
   @Provides
