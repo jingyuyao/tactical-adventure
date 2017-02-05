@@ -7,9 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.event.ActivatedCharacter;
+import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.event.Attack;
-import com.jingyuyao.tactical.model.event.DeactivateCharacter;
+import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
+import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
@@ -92,12 +94,22 @@ class MapMarkings {
   }
 
   @Subscribe
-  public void activatedCharacter(ActivatedCharacter activatedCharacter) {
-    activatedActor = actorMap.get(activatedCharacter.getObject());
+  public void activatedPlayer(ActivatedPlayer activatedPlayer) {
+    activatedActor = actorMap.get(activatedPlayer.getObject());
   }
 
   @Subscribe
-  public void deactivateCharacter(DeactivateCharacter deactivateCharacter) {
+  public void activatedEnemy(ActivatedEnemy activatedEnemy) {
+    activatedActor = actorMap.get(activatedEnemy.getObject());
+  }
+
+  @Subscribe
+  public void deactivatePlayer(DeactivatedPlayer deactivatedPlayer) {
+    activatedActor = null;
+  }
+
+  @Subscribe
+  public void deactivateEnemy(DeactivatedEnemy deactivatedEnemy) {
     activatedActor = null;
   }
 

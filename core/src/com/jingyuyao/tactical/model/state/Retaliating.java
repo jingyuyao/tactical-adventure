@@ -7,8 +7,8 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.event.ActivatedCharacter;
-import com.jingyuyao.tactical.model.event.DeactivateCharacter;
+import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
 import com.jingyuyao.tactical.model.map.Characters;
 import javax.inject.Inject;
 
@@ -42,7 +42,7 @@ public class Retaliating extends BaseState {
           Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
             @Override
             public ListenableFuture<Void> apply(Void input) throws Exception {
-              eventBus.post(new ActivatedCharacter(enemy));
+              eventBus.post(new ActivatedEnemy(enemy));
               return enemy.retaliate();
             }
           });
@@ -50,7 +50,7 @@ public class Retaliating extends BaseState {
     Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        eventBus.post(new DeactivateCharacter());
+        eventBus.post(new DeactivatedEnemy());
         branchToWait();
       }
 

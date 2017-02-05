@@ -12,8 +12,8 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedCharacter;
-import com.jingyuyao.tactical.model.event.DeactivateCharacter;
+import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -91,8 +91,8 @@ public class RetaliatingTest {
     inOrder.verify(enemy2).retaliate();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(mapState).branchTo(waiting);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, ActivatedCharacter.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy2, ActivatedCharacter.class);
-    TestHelpers.verifyModelEvent(argumentCaptor, 2, DeactivateCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, ActivatedEnemy.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy2, ActivatedEnemy.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 2, DeactivatedEnemy.class);
   }
 }

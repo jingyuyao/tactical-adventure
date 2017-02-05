@@ -14,8 +14,8 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedCharacter;
-import com.jingyuyao.tactical.model.event.DeactivateCharacter;
+import com.jingyuyao.tactical.model.event.ActivatedPlayer;
+import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
@@ -76,7 +76,7 @@ public class BattlingTest {
     battling.enter();
 
     verify(eventBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, attackingPlayer, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, attackingPlayer, ActivatedPlayer.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, ShowTarget.class);
   }
 
@@ -85,7 +85,7 @@ public class BattlingTest {
     battling.exit();
 
     verify(eventBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivatedPlayer.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, HideTarget.class);
   }
 

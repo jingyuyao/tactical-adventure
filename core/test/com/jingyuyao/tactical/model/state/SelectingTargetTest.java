@@ -11,8 +11,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedCharacter;
-import com.jingyuyao.tactical.model.event.DeactivateCharacter;
+import com.jingyuyao.tactical.model.event.ActivatedPlayer;
+import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
@@ -70,7 +70,7 @@ public class SelectingTargetTest {
     selectingTarget.enter();
 
     verify(eventBus, times(3)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedPlayer.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, target1, ShowTarget.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, target2, ShowTarget.class);
   }
@@ -80,7 +80,7 @@ public class SelectingTargetTest {
     selectingTarget.exit();
 
     verify(eventBus, times(3)).post(argumentCaptor.capture());
-    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivatedPlayer.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, target1, HideTarget.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, target2, HideTarget.class);
   }

@@ -9,8 +9,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedCharacter;
-import com.jingyuyao.tactical.model.event.DeactivateCharacter;
+import com.jingyuyao.tactical.model.event.ActivatedPlayer;
+import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
@@ -60,7 +60,7 @@ public class BasePlayerStateTest {
     state.enter();
 
     verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedPlayer.class);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class BasePlayerStateTest {
     state.exit();
 
     verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivateCharacter.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivatedPlayer.class);
   }
 
   @Test
