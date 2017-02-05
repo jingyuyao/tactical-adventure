@@ -11,5 +11,6 @@ public class EnemyBurst extends CharacterBurst {
   EnemyBurst(Skin skin) {
     super(skin);
     columnLeft();
+    setVisible(false);
   }
 }

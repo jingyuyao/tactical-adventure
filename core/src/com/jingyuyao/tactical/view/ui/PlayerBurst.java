@@ -11,5 +11,6 @@ public class PlayerBurst extends CharacterBurst {
   PlayerBurst(Skin skin) {
     super(skin);
     columnRight();
+    setVisible(false);
   }
 }

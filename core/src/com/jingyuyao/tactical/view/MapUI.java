@@ -2,8 +2,9 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.ActivatedPlayer;
+import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
@@ -35,24 +36,25 @@ class MapUI {
   }
 
   @Subscribe
-  public void selectPlayer(SelectPlayer selectPlayer) {
-    hideAllBursts();
+  public void activatedPlayer(ActivatedPlayer activatedPlayer) {
     playerBurst.setVisible(true);
-    playerBurst.display(selectPlayer.getObject());
+    playerBurst.display(activatedPlayer.getObject());
+  }
+
+  @Subscribe
+  public void deactivatedPlayer(DeactivatedPlayer deactivatedPlayer) {
+    playerBurst.setVisible(false);
   }
 
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
-    // TODO: stub
-    hideAllBursts();
     enemyBurst.setVisible(true);
     enemyBurst.display(selectEnemy.getObject());
   }
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    // TODO: stub
-    hideAllBursts();
+    enemyBurst.setVisible(false);
   }
 
   @Subscribe
@@ -75,10 +77,5 @@ class MapUI {
 
   void dispose() {
     stage.dispose();
-  }
-
-  private void hideAllBursts() {
-    enemyBurst.setVisible(false);
-    playerBurst.setVisible(false);
   }
 }
