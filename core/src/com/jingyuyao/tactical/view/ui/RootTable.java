@@ -10,15 +10,15 @@ public class RootTable extends Table {
   @Inject
   RootTable(
       ActionGroup actionGroup,
-      EnemyBurst enemyBurst,
-      PlayerBurst playerBurst) {
+      SecondaryInfo secondaryInfo,
+      PrimaryInfo primaryInfo) {
     pad(10);
     setFillParent(true);
     setDebug(true);
 
     // row 1
-    add(enemyBurst).top().left();
-    add(playerBurst).top().right();
+    add(secondaryInfo).top().left();
+    add(primaryInfo).top().right();
 
     // row 2
     row();

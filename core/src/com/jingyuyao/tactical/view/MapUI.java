@@ -9,8 +9,8 @@ import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
-import com.jingyuyao.tactical.view.ui.EnemyBurst;
-import com.jingyuyao.tactical.view.ui.PlayerBurst;
+import com.jingyuyao.tactical.view.ui.PrimaryInfo;
+import com.jingyuyao.tactical.view.ui.SecondaryInfo;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -20,41 +20,41 @@ class MapUI {
 
   private final Stage stage;
   private final ActionGroup actionGroup;
-  private final EnemyBurst enemyBurst;
-  private final PlayerBurst playerBurst;
+  private final SecondaryInfo secondaryInfo;
+  private final PrimaryInfo primaryInfo;
 
   @Inject
   MapUI(
       @MapUIStage Stage stage,
       ActionGroup actionGroup,
-      EnemyBurst enemyBurst,
-      PlayerBurst playerBurst) {
+      SecondaryInfo secondaryInfo,
+      PrimaryInfo primaryInfo) {
     this.stage = stage;
     this.actionGroup = actionGroup;
-    this.enemyBurst = enemyBurst;
-    this.playerBurst = playerBurst;
+    this.secondaryInfo = secondaryInfo;
+    this.primaryInfo = primaryInfo;
   }
 
   @Subscribe
   public void activatedPlayer(ActivatedPlayer activatedPlayer) {
-    playerBurst.setVisible(true);
-    playerBurst.display(activatedPlayer.getObject());
+    primaryInfo.setVisible(true);
+    primaryInfo.display(activatedPlayer.getObject());
   }
 
   @Subscribe
   public void deactivatedPlayer(DeactivatedPlayer deactivatedPlayer) {
-    playerBurst.setVisible(false);
+    primaryInfo.setVisible(false);
   }
 
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
-    enemyBurst.setVisible(true);
-    enemyBurst.display(selectEnemy.getObject());
+    secondaryInfo.setVisible(true);
+    secondaryInfo.display(selectEnemy.getObject());
   }
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    enemyBurst.setVisible(false);
+    secondaryInfo.setVisible(false);
   }
 
   @Subscribe

@@ -6,11 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 
-class CharacterBurst extends VerticalGroup {
+class Info extends VerticalGroup {
 
   private final Skin skin;
 
-  CharacterBurst(Skin skin) {
+  Info(Skin skin) {
     this.skin = skin;
   }
 

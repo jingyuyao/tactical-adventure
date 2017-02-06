@@ -5,12 +5,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class EnemyBurst extends CharacterBurst {
+public class PrimaryInfo extends Info {
 
   @Inject
-  EnemyBurst(Skin skin) {
+  PrimaryInfo(Skin skin) {
     super(skin);
-    columnLeft();
+    columnRight();
     setVisible(false);
   }
 }
