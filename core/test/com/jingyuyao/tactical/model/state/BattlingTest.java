@@ -66,7 +66,7 @@ public class BattlingTest {
 
   @Before
   public void setUp() {
-    battling = new Battling(mapState, stateFactory, eventBus, battle, attackingPlayer,
+    battling = new Battling(eventBus, mapState, stateFactory, battle, attackingPlayer,
         weapon,
         target);
   }

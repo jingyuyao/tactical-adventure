@@ -25,9 +25,9 @@ class Battling extends BasePlayerState {
 
   @Inject
   Battling(
+      @ModelEventBus EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      @ModelEventBus EventBus eventBus,
       Battle battle,
       @Assisted Player player,
       @Assisted Weapon weapon,
