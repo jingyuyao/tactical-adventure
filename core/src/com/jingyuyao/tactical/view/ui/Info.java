@@ -15,14 +15,23 @@ class Info extends VerticalGroup {
     this.skin = skin;
   }
 
-  public void display(Character character) {
+  public void display(Character character, Terrain terrain) {
     clear();
-    addActor(new Label(character.getName(), skin));
-    addActor(new Label(String.format(Locale.US, "HP: %d", character.getHp()), skin));
+    addCharacterInfo(character);
+    addTerrainInfo(terrain);
   }
 
   public void display(Terrain terrain) {
     clear();
+    addTerrainInfo(terrain);
+  }
+
+  private void addCharacterInfo(Character character) {
+    addActor(new Label(character.getName(), skin));
+    addActor(new Label(String.format(Locale.US, "HP: %d", character.getHp()), skin));
+  }
+
+  private void addTerrainInfo(Terrain terrain) {
     addActor(new Label(terrain.getClass().getSimpleName(), skin));
     addActor(
         new Label(String.format(Locale.US, "Penalty: %d", terrain.getMovementPenalty()), skin));

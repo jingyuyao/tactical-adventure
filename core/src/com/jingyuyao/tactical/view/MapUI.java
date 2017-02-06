@@ -2,12 +2,14 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
+import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
 import com.jingyuyao.tactical.view.ui.PrimaryInfo;
@@ -19,6 +21,7 @@ import javax.inject.Singleton;
 @Singleton
 class MapUI {
 
+  private final Terrains terrains;
   private final Stage stage;
   private final ActionGroup actionGroup;
   private final SecondaryInfo secondaryInfo;
@@ -26,10 +29,12 @@ class MapUI {
 
   @Inject
   MapUI(
+      Terrains terrains,
       @MapUIStage Stage stage,
       ActionGroup actionGroup,
       SecondaryInfo secondaryInfo,
       PrimaryInfo primaryInfo) {
+    this.terrains = terrains;
     this.stage = stage;
     this.actionGroup = actionGroup;
     this.secondaryInfo = secondaryInfo;
@@ -39,7 +44,8 @@ class MapUI {
   @Subscribe
   public void activatedPlayer(ActivatedPlayer activatedPlayer) {
     primaryInfo.setVisible(true);
-    primaryInfo.display(activatedPlayer.getObject());
+    Character character = activatedPlayer.getObject();
+    primaryInfo.display(character, terrains.get(character.getCoordinate()));
   }
 
   @Subscribe
@@ -55,7 +61,8 @@ class MapUI {
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
     secondaryInfo.setVisible(true);
-    secondaryInfo.display(selectEnemy.getObject());
+    Character character = selectEnemy.getObject();
+    secondaryInfo.display(character, terrains.get(character.getCoordinate()));
   }
 
   @Subscribe

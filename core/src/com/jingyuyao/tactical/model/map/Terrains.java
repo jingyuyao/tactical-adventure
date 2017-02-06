@@ -56,6 +56,10 @@ public class Terrains {
     return terrainMap.containsKey(coordinate);
   }
 
+  public Terrain get(Coordinate coordinate) {
+    return terrainMap.get(coordinate);
+  }
+
   public Iterable<Terrain> getAll(Iterable<Coordinate> coordinates) {
     return Iterables.transform(coordinates, new Function<Coordinate, Terrain>() {
       @Override
