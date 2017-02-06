@@ -7,10 +7,6 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public interface State {
 
-  String getName();
-
-  ImmutableList<Action> getActions();
-
   /**
    * Called when entering this state.
    *
@@ -35,4 +31,9 @@ public interface State {
   void select(Enemy enemy);
 
   void select(Terrain terrain);
+
+  /**
+   * Return the list of {@link Action} can be taken in this state.
+   */
+  ImmutableList<Action> getActions();
 }

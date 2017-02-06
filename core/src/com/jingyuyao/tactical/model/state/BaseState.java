@@ -16,11 +16,6 @@ class BaseState implements State {
   }
 
   @Override
-  public String getName() {
-    return getClass().getSimpleName();
-  }
-
-  @Override
   public void enter() {
   }
 
