@@ -61,7 +61,7 @@ public class SelectingTargetTest {
   @Before
   public void setUp() {
     targets = ImmutableList.of(target1, target2);
-    selectingTarget = new SelectingTarget(mapState, stateFactory, eventBus, player, weapon,
+    selectingTarget = new SelectingTarget(eventBus, mapState, stateFactory, player, weapon,
         targets);
   }
 

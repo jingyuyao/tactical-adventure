@@ -16,9 +16,9 @@ class Moved extends BasePlayerState {
 
   @Inject
   Moved(
+      @ModelEventBus EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      @ModelEventBus EventBus eventBus,
       Movements movements,
       @Assisted Player player) {
     super(eventBus, mapState, stateFactory, player);

@@ -58,7 +58,7 @@ public class RetaliatingTest {
   public void setUp() {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
-    retaliating = new Retaliating(mapState, stateFactory, eventBus, characters);
+    retaliating = new Retaliating(eventBus, mapState, stateFactory, characters);
   }
 
   @Test

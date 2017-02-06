@@ -48,7 +48,7 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    moved = new Moved(mapState, stateFactory, eventBus, movements, player);
+    moved = new Moved(eventBus, mapState, stateFactory, movements, player);
   }
 
   @Test

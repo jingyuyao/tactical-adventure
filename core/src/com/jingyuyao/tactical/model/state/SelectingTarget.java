@@ -21,9 +21,9 @@ public class SelectingTarget extends BasePlayerState {
 
   @Inject
   SelectingTarget(
+      @ModelEventBus EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {

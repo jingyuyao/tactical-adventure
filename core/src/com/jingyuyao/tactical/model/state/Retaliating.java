@@ -19,9 +19,9 @@ public class Retaliating extends BaseState {
 
   @Inject
   Retaliating(
+      @ModelEventBus EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      @ModelEventBus EventBus eventBus,
       Characters characters) {
     super(mapState, stateFactory);
     this.eventBus = eventBus;

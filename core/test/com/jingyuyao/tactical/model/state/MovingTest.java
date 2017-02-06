@@ -81,7 +81,7 @@ public class MovingTest {
   public void setUp() {
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(mapState, stateFactory, movements, eventBus, player, movement);
+    moving = new Moving(eventBus, mapState, stateFactory, movements, player, movement);
   }
 
   @Test
