@@ -47,12 +47,14 @@ injections, all model objects either need a no-args constructor or a Guice injec
 ## Models
 - Model classes should self-contained, it should not reference libgdx, controller or views
 - Receive commands via method invocation from controllers
-- Changes in model are notified to interested components via the observer pattern using EventBus.
+- Changes in model are notified to interested components via the observer pattern using EventBus
+- Only model should fire events
 
 ## Views
 - Only views should hold references to assets
 - Glues model and controller together in the form of Actor
 - Subscribes to various model events to update itself.
+- Should not change the model except to complete future events
 
 ## Controllers
 - Listen to user input
