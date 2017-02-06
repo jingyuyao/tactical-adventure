@@ -11,6 +11,5 @@ public class SecondaryInfo extends Info {
   SecondaryInfo(Skin skin) {
     super(skin);
     columnLeft();
-    setVisible(false);
   }
 }

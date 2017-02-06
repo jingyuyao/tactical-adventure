@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
+import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
@@ -47,6 +48,11 @@ class MapUI {
   }
 
   @Subscribe
+  public void selectPlayer(SelectPlayer selectPlayer) {
+    secondaryInfo.setVisible(false);
+  }
+
+  @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
     secondaryInfo.setVisible(true);
     secondaryInfo.display(selectEnemy.getObject());
@@ -54,7 +60,8 @@ class MapUI {
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    secondaryInfo.setVisible(false);
+    secondaryInfo.setVisible(true);
+    secondaryInfo.display(selectTerrain.getObject());
   }
 
   @Subscribe

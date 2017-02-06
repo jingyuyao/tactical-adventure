@@ -11,6 +11,5 @@ public class PrimaryInfo extends Info {
   PrimaryInfo(Skin skin) {
     super(skin);
     columnRight();
-    setVisible(false);
   }
 }
