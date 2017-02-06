@@ -27,7 +27,7 @@ public class SelectingTarget extends BasePlayerState {
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
-    super(mapState, stateFactory, eventBus, player);
+    super(eventBus, mapState, stateFactory, player);
     this.weapon = weapon;
     this.targets = targets;
   }

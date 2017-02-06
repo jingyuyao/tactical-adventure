@@ -47,7 +47,7 @@ public class BasePlayerStateTest {
 
   @Before
   public void setUp() {
-    state = new BasePlayerState(mapState, stateFactory, eventBus, player);
+    state = new BasePlayerState(eventBus, mapState, stateFactory, player);
   }
 
   @Test

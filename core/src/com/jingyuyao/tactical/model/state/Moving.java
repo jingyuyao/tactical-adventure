@@ -29,7 +29,7 @@ class Moving extends BasePlayerState {
       @ModelEventBus EventBus eventBus,
       @Assisted Player player,
       @Assisted Movement movement) {
-    super(mapState, stateFactory, eventBus, player);
+    super(eventBus, mapState, stateFactory, player);
     this.movements = movements;
     this.movement = movement;
   }

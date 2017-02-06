@@ -32,7 +32,7 @@ class Battling extends BasePlayerState {
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted Target target) {
-    super(mapState, stateFactory, eventBus, player);
+    super(eventBus, mapState, stateFactory, player);
     this.battle = battle;
     this.weapon = weapon;
     this.target = target;
