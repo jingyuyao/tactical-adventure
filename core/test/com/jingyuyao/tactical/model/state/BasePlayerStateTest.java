@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,8 +55,9 @@ public class BasePlayerStateTest {
   public void enter() {
     state.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedPlayer.class);
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(state);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
   }
 
   @Test

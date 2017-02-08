@@ -36,6 +36,13 @@ public class TransitionTest {
   }
 
   @Test
+  public void enter() {
+    transition.enter();
+
+    verify(eventBus).post(transition);
+  }
+
+  @Test
   public void exit() {
     transition.exit();
 

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -9,7 +10,9 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
@@ -17,6 +20,8 @@ import com.jingyuyao.tactical.model.map.Movements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -43,12 +48,23 @@ public class MovedTest {
   private Weapon weapon;
   @Mock
   private Consumable consumable;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private Moved moved;
 
   @Before
   public void setUp() {
     moved = new Moved(eventBus, mapState, stateFactory, movements, player);
+  }
+
+  @Test
+  public void enter() {
+    moved.enter();
+
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(moved);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
   }
 
   @Test

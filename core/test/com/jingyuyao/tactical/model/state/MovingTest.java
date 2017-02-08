@@ -88,10 +88,11 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus, times(3)).post(argumentCaptor.capture());
 
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, ShowMovement.class);
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(moving);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 2, movement, ShowMovement.class);
   }
 
   @Test

@@ -75,9 +75,10 @@ public class BattlingTest {
   public void enter() {
     battling.enter();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, attackingPlayer, ActivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, ShowTarget.class);
+    verify(eventBus, times(3)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(battling);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, attackingPlayer, ActivatedPlayer.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target, ShowTarget.class);
   }
 
   @Test

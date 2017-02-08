@@ -49,6 +49,13 @@ public class WaitingTest {
   }
 
   @Test
+  public void enter() {
+    waiting.enter();
+
+    verify(eventBus).post(waiting);
+  }
+
+  @Test
   public void select_player_actionable() {
     when(player.isActionable()).thenReturn(true);
     when(movements.distanceFrom(player)).thenReturn(movement);

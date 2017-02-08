@@ -18,6 +18,7 @@ class BaseState implements State {
 
   @Override
   public void enter() {
+    eventBus.post(this);
   }
 
   @Override

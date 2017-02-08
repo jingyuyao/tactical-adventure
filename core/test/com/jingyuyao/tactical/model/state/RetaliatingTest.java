@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -85,14 +86,15 @@ public class RetaliatingTest {
     retaliating.enter();
 
     InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState, eventBus);
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
+    inOrder.verify(eventBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).retaliate();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).retaliate();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(mapState).branchTo(waiting);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, ActivatedEnemy.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy2, ActivatedEnemy.class);
-    TestHelpers.verifyModelEvent(argumentCaptor, 2, DeactivatedEnemy.class);
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 3, DeactivatedEnemy.class);
   }
 }

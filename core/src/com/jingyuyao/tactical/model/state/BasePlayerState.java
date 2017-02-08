@@ -27,11 +27,13 @@ class BasePlayerState extends BaseState {
 
   @Override
   public void enter() {
+    super.enter();
     getEventBus().post(new ActivatedPlayer(player));
   }
 
   @Override
   public void exit() {
+    super.exit();
     getEventBus().post(new DeactivatedPlayer());
   }
 

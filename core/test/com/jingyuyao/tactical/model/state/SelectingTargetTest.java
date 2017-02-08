@@ -69,10 +69,11 @@ public class SelectingTargetTest {
   public void enter() {
     selectingTarget.enter();
 
-    verify(eventBus, times(3)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, ActivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target1, ShowTarget.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target2, ShowTarget.class);
+    verify(eventBus, times(4)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(selectingTarget);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target1, ShowTarget.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 3, target2, ShowTarget.class);
   }
 
   @Test

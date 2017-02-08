@@ -30,6 +30,7 @@ public class Retaliating extends BaseState {
 
   @Override
   public void enter() {
+    super.enter();
     retaliate();
   }
 
