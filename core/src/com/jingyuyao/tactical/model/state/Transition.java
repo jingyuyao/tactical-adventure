@@ -9,8 +9,8 @@ import javax.inject.Inject;
 class Transition extends BaseState {
 
   @Inject
-  Transition(MapState mapState, StateFactory stateFactory) {
-    super(mapState, stateFactory);
+  Transition(MapState mapState) {
+    super(mapState);
   }
 
   @Override

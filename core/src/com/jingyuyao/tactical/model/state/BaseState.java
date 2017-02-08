@@ -8,11 +8,9 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 class BaseState implements State {
 
   private final MapState mapState;
-  private final StateFactory stateFactory;
 
-  BaseState(MapState mapState, StateFactory stateFactory) {
+  BaseState(MapState mapState) {
     this.mapState = mapState;
-    this.stateFactory = stateFactory;
   }
 
   @Override

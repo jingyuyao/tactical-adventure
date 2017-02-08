@@ -19,8 +19,6 @@ public class TransitionTest {
   @Mock
   private MapState mapState;
   @Mock
-  private StateFactory stateFactory;
-  @Mock
   private Player player;
   @Mock
   private Enemy enemy;
@@ -31,7 +29,7 @@ public class TransitionTest {
 
   @Before
   public void setUp() {
-    transition = new Transition(mapState, stateFactory);
+    transition = new Transition(mapState);
   }
 
   @Test

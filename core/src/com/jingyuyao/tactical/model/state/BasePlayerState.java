@@ -17,7 +17,7 @@ class BasePlayerState extends BaseState {
   private final Player player;
 
   BasePlayerState(EventBus eventBus, MapState mapState, StateFactory stateFactory, Player player) {
-    super(mapState, stateFactory);
+    super(mapState);
     this.eventBus = eventBus;
     this.stateFactory = stateFactory;
     this.player = player;

@@ -24,7 +24,7 @@ public class Retaliating extends BaseState {
       MapState mapState,
       StateFactory stateFactory,
       Characters characters) {
-    super(mapState, stateFactory);
+    super(mapState);
     this.eventBus = eventBus;
     this.stateFactory = stateFactory;
     this.characters = characters;

@@ -18,7 +18,7 @@ public class Waiting extends BaseState {
       StateFactory stateFactory,
       Characters characters,
       Movements movements) {
-    super(mapState, stateFactory);
+    super(mapState);
     this.stateFactory = stateFactory;
     this.characters = characters;
     this.movements = movements;
