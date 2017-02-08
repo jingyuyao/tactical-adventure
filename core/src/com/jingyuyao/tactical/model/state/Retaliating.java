@@ -15,6 +15,7 @@ import javax.inject.Inject;
 public class Retaliating extends BaseState {
 
   private final EventBus eventBus;
+  private final StateFactory stateFactory;
   private final Characters characters;
 
   @Inject
@@ -25,6 +26,7 @@ public class Retaliating extends BaseState {
       Characters characters) {
     super(mapState, stateFactory);
     this.eventBus = eventBus;
+    this.stateFactory = stateFactory;
     this.characters = characters;
   }
 
@@ -51,7 +53,7 @@ public class Retaliating extends BaseState {
       @Override
       public void onSuccess(Void result) {
         eventBus.post(new DeactivatedEnemy());
-        branchToWait();
+        branchTo(stateFactory.createWaiting());
       }
 
       @Override

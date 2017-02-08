@@ -58,6 +58,6 @@ class BasePlayerState extends BaseState {
 
   void finish() {
     player.setActionable(false);
-    branchToWait();
+    branchTo(stateFactory.createWaiting());
   }
 }

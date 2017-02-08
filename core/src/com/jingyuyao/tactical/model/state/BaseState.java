@@ -56,8 +56,8 @@ class BaseState implements State {
     mapState.rollback();
   }
 
-  void branchToWait() {
-    mapState.branchTo(stateFactory.createWaiting());
+  void branchTo(State state) {
+    mapState.branchTo(state);
   }
 
   void popLast() {

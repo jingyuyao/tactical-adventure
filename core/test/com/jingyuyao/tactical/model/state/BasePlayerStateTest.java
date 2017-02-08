@@ -88,10 +88,8 @@ public class BasePlayerStateTest {
   }
 
   @Test
-  public void branch_to_wait() {
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-
-    state.branchToWait();
+  public void branch_to() {
+    state.branchTo(waiting);
 
     verify(mapState).branchTo(waiting);
   }
