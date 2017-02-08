@@ -1,15 +1,18 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 
 class BaseState implements State {
 
+  private final EventBus eventBus;
   private final MapState mapState;
 
-  BaseState(MapState mapState) {
+  BaseState(EventBus eventBus, MapState mapState) {
+    this.eventBus = eventBus;
     this.mapState = mapState;
   }
 
@@ -40,6 +43,10 @@ class BaseState implements State {
   @Override
   public ImmutableList<Action> getActions() {
     return ImmutableList.of();
+  }
+
+  EventBus getEventBus() {
+    return eventBus;
   }
 
   void goTo(State newState) {

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -21,6 +22,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WaitingTest {
 
+  @Mock
+  private EventBus eventBus;
   @Mock
   private MapState mapState;
   @Mock
@@ -42,7 +45,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(mapState, stateFactory, characters, movements);
+    waiting = new Waiting(eventBus, mapState, stateFactory, characters, movements);
   }
 
   @Test

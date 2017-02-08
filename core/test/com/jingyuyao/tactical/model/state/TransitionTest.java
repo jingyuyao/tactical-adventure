@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -17,6 +18,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class TransitionTest {
 
   @Mock
+  private EventBus eventBus;
+  @Mock
   private MapState mapState;
   @Mock
   private Player player;
@@ -29,7 +32,7 @@ public class TransitionTest {
 
   @Before
   public void setUp() {
-    transition = new Transition(mapState);
+    transition = new Transition(eventBus, mapState);
   }
 
   @Test

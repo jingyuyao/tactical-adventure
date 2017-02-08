@@ -12,19 +12,13 @@ import com.jingyuyao.tactical.model.item.Weapon;
 
 class BasePlayerState extends BaseState {
 
-  private final EventBus eventBus;
   private final StateFactory stateFactory;
   private final Player player;
 
   BasePlayerState(EventBus eventBus, MapState mapState, StateFactory stateFactory, Player player) {
-    super(mapState);
-    this.eventBus = eventBus;
+    super(eventBus, mapState);
     this.stateFactory = stateFactory;
     this.player = player;
-  }
-
-  EventBus getEventBus() {
-    return eventBus;
   }
 
   Player getPlayer() {
@@ -33,12 +27,12 @@ class BasePlayerState extends BaseState {
 
   @Override
   public void enter() {
-    eventBus.post(new ActivatedPlayer(player));
+    getEventBus().post(new ActivatedPlayer(player));
   }
 
   @Override
   public void exit() {
-    eventBus.post(new DeactivatedPlayer());
+    getEventBus().post(new DeactivatedPlayer());
   }
 
   @Override

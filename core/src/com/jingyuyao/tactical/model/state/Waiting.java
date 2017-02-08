@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -14,11 +16,12 @@ public class Waiting extends BaseState {
 
   @Inject
   Waiting(
+      @ModelEventBus EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
       Characters characters,
       Movements movements) {
-    super(mapState);
+    super(eventBus, mapState);
     this.stateFactory = stateFactory;
     this.characters = characters;
     this.movements = movements;

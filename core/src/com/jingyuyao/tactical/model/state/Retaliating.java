@@ -14,7 +14,6 @@ import javax.inject.Inject;
 
 public class Retaliating extends BaseState {
 
-  private final EventBus eventBus;
   private final StateFactory stateFactory;
   private final Characters characters;
 
@@ -24,8 +23,7 @@ public class Retaliating extends BaseState {
       MapState mapState,
       StateFactory stateFactory,
       Characters characters) {
-    super(mapState);
-    this.eventBus = eventBus;
+    super(eventBus, mapState);
     this.stateFactory = stateFactory;
     this.characters = characters;
   }
@@ -44,7 +42,7 @@ public class Retaliating extends BaseState {
           Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
             @Override
             public ListenableFuture<Void> apply(Void input) throws Exception {
-              eventBus.post(new ActivatedEnemy(enemy));
+              getEventBus().post(new ActivatedEnemy(enemy));
               return enemy.retaliate();
             }
           });
@@ -52,7 +50,7 @@ public class Retaliating extends BaseState {
     Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        eventBus.post(new DeactivatedEnemy());
+        getEventBus().post(new DeactivatedEnemy());
         branchTo(stateFactory.createWaiting());
       }
 
