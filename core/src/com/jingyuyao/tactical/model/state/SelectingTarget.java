@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 public class SelectingTarget extends BasePlayerState {
 
+  private final StateFactory stateFactory;
   private final Weapon weapon;
   private final ImmutableList<Target> targets;
 
@@ -28,6 +29,7 @@ public class SelectingTarget extends BasePlayerState {
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
     super(eventBus, mapState, stateFactory, player);
+    this.stateFactory = stateFactory;
     this.weapon = weapon;
     this.targets = targets;
   }
@@ -71,7 +73,7 @@ public class SelectingTarget extends BasePlayerState {
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
       if (target.selectedBy(object.getCoordinate())) {
-        goTo(getStateFactory().createBattling(getPlayer(), weapon, target));
+        goTo(stateFactory.createBattling(getPlayer(), weapon, target));
         return;
       }
     }

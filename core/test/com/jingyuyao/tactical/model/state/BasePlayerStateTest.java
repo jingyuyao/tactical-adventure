@@ -51,11 +51,6 @@ public class BasePlayerStateTest {
   }
 
   @Test
-  public void get_state_factory() {
-    assertThat(state.getStateFactory()).isSameAs(stateFactory);
-  }
-
-  @Test
   public void enter() {
     state.enter();
 

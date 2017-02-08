@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 public class Waiting extends BaseState {
 
+  private final StateFactory stateFactory;
   private final Characters characters;
   private final Movements movements;
 
@@ -18,6 +19,7 @@ public class Waiting extends BaseState {
       Characters characters,
       Movements movements) {
     super(mapState, stateFactory);
+    this.stateFactory = stateFactory;
     this.characters = characters;
     this.movements = movements;
   }
@@ -25,7 +27,7 @@ public class Waiting extends BaseState {
   @Override
   public void select(Player player) {
     if (player.isActionable()) {
-      goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
+      goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
     }
   }
 
@@ -38,6 +40,6 @@ public class Waiting extends BaseState {
     for (Player player : characters.fluent().filter(Player.class)) {
       player.setActionable(true);
     }
-    goTo(getStateFactory().createRetaliating());
+    goTo(stateFactory.createRetaliating());
   }
 }

@@ -13,11 +13,13 @@ import com.jingyuyao.tactical.model.item.Weapon;
 class BasePlayerState extends BaseState {
 
   private final EventBus eventBus;
+  private final StateFactory stateFactory;
   private final Player player;
 
   BasePlayerState(EventBus eventBus, MapState mapState, StateFactory stateFactory, Player player) {
     super(mapState, stateFactory);
     this.eventBus = eventBus;
+    this.stateFactory = stateFactory;
     this.player = player;
   }
 
@@ -44,7 +46,7 @@ class BasePlayerState extends BaseState {
     ImmutableList.Builder<Action> builder = ImmutableList.builder();
     FluentIterable<Item> items = getPlayer().fluentItems();
     for (Weapon weapon : items.filter(Weapon.class)) {
-      builder.add(new SelectWeaponAction(this, getStateFactory(), getPlayer(), weapon));
+      builder.add(new SelectWeaponAction(this, stateFactory, getPlayer(), weapon));
     }
     for (Consumable consumable : items.filter(Consumable.class)) {
       builder.add(new UseConsumableAction(this, getPlayer(), consumable));

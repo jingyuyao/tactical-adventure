@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 class Moving extends BasePlayerState {
 
+  private final StateFactory stateFactory;
   private final Movements movements;
   private final Movement movement;
   private Coordinate previousCoordinate;
@@ -30,6 +31,7 @@ class Moving extends BasePlayerState {
       @Assisted Player player,
       @Assisted Movement movement) {
     super(eventBus, mapState, stateFactory, player);
+    this.stateFactory = stateFactory;
     this.movements = movements;
     this.movement = movement;
   }
@@ -59,7 +61,7 @@ class Moving extends BasePlayerState {
     if (!getPlayer().equals(player)) {
       rollback();
       if (player.isActionable()) {
-        goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
+        goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
       }
     }
   }
@@ -69,11 +71,11 @@ class Moving extends BasePlayerState {
     if (movement.canMoveTo(terrain.getCoordinate())) {
       Path path = movement.pathTo(terrain.getCoordinate());
       previousCoordinate = getPlayer().getCoordinate();
-      goTo(getStateFactory().createTransition());
+      goTo(stateFactory.createTransition());
       Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
         @Override
         public void onSuccess(Void result) {
-          goTo(getStateFactory().createMoved(getPlayer()));
+          goTo(stateFactory.createMoved(getPlayer()));
         }
 
         @Override

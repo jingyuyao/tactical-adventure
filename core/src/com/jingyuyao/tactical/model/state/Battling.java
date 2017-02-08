@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 class Battling extends BasePlayerState {
 
+  private final StateFactory stateFactory;
   private final Battle battle;
   private final Weapon weapon;
   private final Target target;
@@ -33,6 +34,7 @@ class Battling extends BasePlayerState {
       @Assisted Weapon weapon,
       @Assisted Target target) {
     super(eventBus, mapState, stateFactory, player);
+    this.stateFactory = stateFactory;
     this.battle = battle;
     this.weapon = weapon;
     this.target = target;
@@ -71,7 +73,7 @@ class Battling extends BasePlayerState {
   }
 
   void attack() {
-    goTo(getStateFactory().createTransition());
+    goTo(stateFactory.createTransition());
     Futures.addCallback(battle.begin(getPlayer(), weapon, target), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {

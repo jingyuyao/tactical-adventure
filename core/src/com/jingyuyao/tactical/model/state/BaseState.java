@@ -44,10 +44,6 @@ class BaseState implements State {
     return ImmutableList.of();
   }
 
-  StateFactory getStateFactory() {
-    return stateFactory;
-  }
-
   void goTo(State newState) {
     mapState.goTo(newState);
   }

@@ -12,6 +12,7 @@ import javax.inject.Inject;
  */
 class Moved extends BasePlayerState {
 
+  private final StateFactory stateFactory;
   private final Movements movements;
 
   @Inject
@@ -22,6 +23,7 @@ class Moved extends BasePlayerState {
       Movements movements,
       @Assisted Player player) {
     super(eventBus, mapState, stateFactory, player);
+    this.stateFactory = stateFactory;
     this.movements = movements;
   }
 
@@ -30,7 +32,7 @@ class Moved extends BasePlayerState {
     if (!getPlayer().equals(player)) {
       rollback();
       if (player.isActionable()) {
-        goTo(getStateFactory().createMoving(player, movements.distanceFrom(player)));
+        goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
       }
     }
   }
