@@ -6,8 +6,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.HideTarget;
-import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -32,22 +30,6 @@ public class SelectingTarget extends BasePlayerState {
     this.stateFactory = stateFactory;
     this.weapon = weapon;
     this.targets = targets;
-  }
-
-  @Override
-  public void enter() {
-    super.enter();
-    for (Target target : targets) {
-      getEventBus().post(new ShowTarget(target));
-    }
-  }
-
-  @Override
-  public void exit() {
-    super.exit();
-    for (Target target : targets) {
-      getEventBus().post(new HideTarget(target));
-    }
   }
 
   @Override
