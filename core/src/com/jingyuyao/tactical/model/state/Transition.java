@@ -8,7 +8,7 @@ import javax.inject.Inject;
  * A {@link State} that doesn't do anything. Useful as an intermediate state to wait for
  * animation to finish. The original caller is responsible for switching out of this {@link State}.
  */
-class Transition extends BaseState {
+public class Transition extends BaseState {
 
   @Inject
   Transition(@ModelEventBus EventBus eventBus, MapState mapState) {

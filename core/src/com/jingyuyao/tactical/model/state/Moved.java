@@ -10,7 +10,7 @@ import javax.inject.Inject;
 /**
  * Can only perform actions after moving.
  */
-class Moved extends BasePlayerState {
+public class Moved extends BasePlayerState {
 
   private final StateFactory stateFactory;
   private final Movements movements;

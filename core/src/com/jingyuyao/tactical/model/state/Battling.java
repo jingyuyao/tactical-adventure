@@ -17,7 +17,7 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
-class Battling extends BasePlayerState {
+public class Battling extends BasePlayerState {
 
   private final StateFactory stateFactory;
   private final Battle battle;
