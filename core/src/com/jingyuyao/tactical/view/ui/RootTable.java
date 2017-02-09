@@ -12,14 +12,16 @@ public class RootTable extends Table {
       ActionGroup actionGroup,
       CharacterInfo characterInfo,
       TerrainInfo terrainInfo,
-      WeaponInfo weaponInfo) {
+      WeaponInfo weaponInfo,
+      ConsumableInfo consumableInfo) {
     setDebug(true);
     setFillParent(true);
     pad(10);
 
     Table left = new Table().debug();
     left.defaults().top().left();
-    left.add(weaponInfo).expand();
+    left.add(weaponInfo);
+    left.add(consumableInfo).expand();
 
     Table mid = new Table().debug();
 

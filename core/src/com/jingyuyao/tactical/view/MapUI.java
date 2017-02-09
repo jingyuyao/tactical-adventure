@@ -10,9 +10,11 @@ import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
+import com.jingyuyao.tactical.model.state.UsingConsumable;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
 import com.jingyuyao.tactical.view.ui.CharacterInfo;
+import com.jingyuyao.tactical.view.ui.ConsumableInfo;
 import com.jingyuyao.tactical.view.ui.TerrainInfo;
 import com.jingyuyao.tactical.view.ui.WeaponInfo;
 import javax.inject.Inject;
@@ -27,6 +29,7 @@ class MapUI {
   private final CharacterInfo characterInfo;
   private final TerrainInfo terrainInfo;
   private final WeaponInfo weaponInfo;
+  private final ConsumableInfo consumableInfo;
   private final Terrains terrains;
 
   @Inject
@@ -36,10 +39,12 @@ class MapUI {
       CharacterInfo characterInfo,
       TerrainInfo terrainInfo,
       WeaponInfo weaponInfo,
+      ConsumableInfo consumableInfo,
       Terrains terrains) {
     this.stage = stage;
     this.terrainInfo = terrainInfo;
     this.weaponInfo = weaponInfo;
+    this.consumableInfo = consumableInfo;
     this.terrains = terrains;
     this.actionGroup = actionGroup;
     this.characterInfo = characterInfo;
@@ -69,6 +74,11 @@ class MapUI {
   }
 
   @Subscribe
+  public void usingConsumable(UsingConsumable usingConsumable) {
+    consumableInfo.display(usingConsumable.getConsumable());
+  }
+
+  @Subscribe
   public void selectingTarget(SelectingTarget selectingTarget) {
     weaponInfo.display(selectingTarget.getWeapon());
   }
@@ -81,6 +91,7 @@ class MapUI {
   @Subscribe
   public void exitState(ExitState exitState) {
     weaponInfo.clear();
+    consumableInfo.clear();
     actionGroup.clear();
   }
 
