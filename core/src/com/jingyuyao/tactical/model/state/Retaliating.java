@@ -8,7 +8,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
 import com.jingyuyao.tactical.model.map.Characters;
 import javax.inject.Inject;
 
@@ -51,7 +50,6 @@ public class Retaliating extends BaseState {
     Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        getEventBus().post(new DeactivatedEnemy());
         branchTo(stateFactory.createWaiting());
       }
 

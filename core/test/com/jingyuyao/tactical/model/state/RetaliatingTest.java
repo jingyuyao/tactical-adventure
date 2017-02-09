@@ -15,7 +15,6 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -92,12 +91,10 @@ public class RetaliatingTest {
     inOrder.verify(enemy).retaliate();
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).retaliate();
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(mapState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);
-    TestHelpers.verifyModelEvent(argumentCaptor, 3, DeactivatedEnemy.class);
   }
 
   @Test
