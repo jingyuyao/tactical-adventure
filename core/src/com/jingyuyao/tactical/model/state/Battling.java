@@ -9,8 +9,6 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.HideTarget;
-import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -38,18 +36,6 @@ public class Battling extends BasePlayerState {
     this.battle = battle;
     this.weapon = weapon;
     this.target = target;
-  }
-
-  @Override
-  public void enter() {
-    super.enter();
-    getEventBus().post(new ShowTarget(target));
-  }
-
-  @Override
-  public void exit() {
-    super.exit();
-    getEventBus().post(new HideTarget(target));
   }
 
   @Override

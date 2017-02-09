@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -15,8 +14,6 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.HideTarget;
-import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -74,18 +71,16 @@ public class BattlingTest {
   public void enter() {
     battling.enter();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(battling);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, ShowTarget.class);
   }
 
   @Test
   public void exit() {
     battling.exit();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, battling, ExitState.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, HideTarget.class);
   }
 
   @Test
