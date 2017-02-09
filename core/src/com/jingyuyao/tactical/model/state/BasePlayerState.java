@@ -32,7 +32,7 @@ class BasePlayerState extends BaseState implements PlayerState {
       builder.add(new SelectWeaponAction(this, stateFactory, getPlayer(), weapon));
     }
     for (Consumable consumable : items.filter(Consumable.class)) {
-      builder.add(new UseConsumableAction(this, getPlayer(), consumable));
+      builder.add(new SelectConsumableAction(this, stateFactory, getPlayer(), consumable));
     }
     builder.add(new FinishAction(this));
     builder.add(new BackAction(this));

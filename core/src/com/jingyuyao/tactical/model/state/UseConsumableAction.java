@@ -17,7 +17,7 @@ class UseConsumableAction implements Action {
 
   @Override
   public String getText() {
-    return consumable.toString();
+    return "use";
   }
 
   @Override

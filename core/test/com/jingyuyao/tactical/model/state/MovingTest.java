@@ -180,7 +180,7 @@ public class MovingTest {
 
     assertThat(actions).hasSize(4);
     assertThat(actions.get(0)).isInstanceOf(SelectWeaponAction.class);
-    assertThat(actions.get(1)).isInstanceOf(UseConsumableAction.class);
+    assertThat(actions.get(1)).isInstanceOf(SelectConsumableAction.class);
     assertThat(actions.get(2)).isInstanceOf(FinishAction.class);
     assertThat(actions.get(3)).isInstanceOf(BackAction.class);
   }
