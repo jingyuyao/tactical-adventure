@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -14,9 +15,8 @@ class DragCameraController extends InputAdapter {
 
   private final Viewport viewport;
   private final Terrains terrains;
+  private final Vector2 lastTouch = new Vector2();
   private int lastPointer = -1;
-  private int lastX;
-  private int lastY;
 
   @Inject
   DragCameraController(@MapViewViewport Viewport viewport, Terrains terrains) {
@@ -27,8 +27,7 @@ class DragCameraController extends InputAdapter {
   @Override
   public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     lastPointer = pointer;
-    lastX = screenX;
-    lastY = screenY;
+    lastTouch.set(screenX, screenY);
     return false;
   }
 
@@ -38,8 +37,8 @@ class DragCameraController extends InputAdapter {
       float horizontalScale = viewport.getWorldWidth() / viewport.getScreenWidth();
       float verticalScale = viewport.getWorldHeight() / viewport.getScreenHeight();
 
-      float deltaWorldX = (screenX - lastX) * horizontalScale;
-      float deltaWorldY = (screenY - lastY) * verticalScale;
+      float deltaWorldX = (screenX - lastTouch.x) * horizontalScale;
+      float deltaWorldY = (screenY - lastTouch.y) * verticalScale;
 
       Camera camera = viewport.getCamera();
       Vector3 cameraPosition = camera.position;
@@ -60,8 +59,7 @@ class DragCameraController extends InputAdapter {
       cameraPosition.y = boundedNewWorldY;
       camera.update();
 
-      lastX = screenX;
-      lastY = screenY;
+      lastTouch.set(screenX, screenY);
     }
     return false;
   }
