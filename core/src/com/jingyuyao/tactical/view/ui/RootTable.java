@@ -11,20 +11,30 @@ public class RootTable extends Table {
   RootTable(
       ActionGroup actionGroup,
       CharacterInfo characterInfo,
-      TerrainInfo terrainInfo) {
-    pad(10);
-    setFillParent(true);
+      TerrainInfo terrainInfo,
+      WeaponInfo weaponInfo) {
     setDebug(true);
+    setFillParent(true);
+    pad(10);
 
-    // row 1
-    add(characterInfo).top().right();
+    Table left = new Table().debug();
+    left.defaults().top().left();
+    left.add(weaponInfo).expand();
 
-    // row 2
-    row();
-    add(terrainInfo).top().right();
+    Table mid = new Table().debug();
 
-    // row 2
-    row();
-    add(actionGroup).bottom().right().expand();
+    Table right = new Table().debug();
+    right.defaults().top().right();
+    right.add(characterInfo);
+    right.row();
+    right.add(terrainInfo);
+    right.row();
+    right.add(actionGroup).bottom().expand();
+
+    // fill() enables the sub-tables to distribute its own vertical space.
+    // grow() causes the middle column to take up all the horizontal space.
+    add(left).fill();
+    add(mid).grow();
+    add(right).fill();
   }
 }
