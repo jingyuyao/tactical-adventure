@@ -7,7 +7,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
-import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
@@ -32,7 +31,6 @@ public class MapState {
   public void initialize(State initialState) {
     stateStack.push(initialState);
     initialState.enter();
-    eventBus.post(new StateChanged(initialState));
   }
 
   public void prepForSave() {
@@ -60,7 +58,6 @@ public class MapState {
   void goTo(State newState) {
     stateStack.peek().exit();
     stateStack.push(newState);
-    eventBus.post(new StateChanged(newState));
     newState.enter();
   }
 
@@ -73,7 +70,6 @@ public class MapState {
       currentState.exit();
       State lastState = stateStack.peek();
       lastState.canceled();
-      eventBus.post(new StateChanged(lastState));
       lastState.enter();
     }
   }
@@ -87,7 +83,6 @@ public class MapState {
       currentState.exit();
       State lastState = stateStack.peek();
       lastState.canceled();
-      eventBus.post(new StateChanged(lastState));
       lastState.enter();
     }
   }
@@ -99,7 +94,6 @@ public class MapState {
     stateStack.peek().exit();
     stateStack.clear();
     stateStack.push(startingState);
-    eventBus.post(new StateChanged(startingState));
     startingState.enter();
   }
 

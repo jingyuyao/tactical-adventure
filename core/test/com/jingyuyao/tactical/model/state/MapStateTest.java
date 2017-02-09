@@ -13,7 +13,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
-import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
 import org.junit.Before;
@@ -60,8 +59,6 @@ public class MapStateTest {
 
     verify(stateStack).push(state1);
     verify(state1).enter();
-    verify(eventBus).post(argumentCaptor.capture());
-    verifyStateChangedTo(state1);
   }
 
   @Test
@@ -106,8 +103,6 @@ public class MapStateTest {
     InOrder inOrder = inOrder(state1, state2, stateStack, eventBus);
     inOrder.verify(state1).exit();
     inOrder.verify(stateStack).push(state2);
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
-    verifyStateChangedTo(state2);
     inOrder.verify(state2).enter();
   }
 
@@ -136,9 +131,7 @@ public class MapStateTest {
     inOrder.verify(state2).exit();
     inOrder.verify(stateStack).peek();
     inOrder.verify(state1).canceled();
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(state1).enter();
-    verifyStateChangedTo(state1);
   }
 
   @Test
@@ -167,16 +160,12 @@ public class MapStateTest {
     inOrder.verify(state3).exit();
     inOrder.verify(stateStack).peek();
     inOrder.verify(state2).canceled();
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, state2, StateChanged.class);
     inOrder.verify(state2).enter();
 
     inOrder.verify(stateStack).pop();
     inOrder.verify(state2).exit();
     inOrder.verify(stateStack).peek();
     inOrder.verify(state1).canceled();
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, state1, StateChanged.class);
     inOrder.verify(state1).enter();
   }
 
@@ -192,9 +181,7 @@ public class MapStateTest {
     inOrder.verify(state2).exit();
     inOrder.verify(stateStack).clear();
     inOrder.verify(stateStack).push(state1);
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(state1).enter();
-    verifyStateChangedTo(state1);
   }
 
   @Test
@@ -202,9 +189,5 @@ public class MapStateTest {
     mapState.popLast();
 
     verify(stateStack).pop();
-  }
-
-  private void verifyStateChangedTo(State targetState) {
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, targetState, StateChanged.class);
   }
 }
