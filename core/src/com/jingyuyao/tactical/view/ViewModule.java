@@ -29,6 +29,8 @@ import com.jingyuyao.tactical.view.ui.UIModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Singleton;
 
@@ -57,6 +59,12 @@ public class ViewModule extends AbstractModule {
   @Singleton
   Map<MapObject, MapActor<?>> provideActorMap() {
     return new HashMap<>();
+  }
+
+  @Provides
+  @Singleton
+  List<MapActor<?>> provideMarkedActorList() {
+    return new LinkedList<>();
   }
 
   @Provides

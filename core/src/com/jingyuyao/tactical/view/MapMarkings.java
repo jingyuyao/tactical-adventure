@@ -8,23 +8,23 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.event.Attack;
-import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
-import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
-import com.jingyuyao.tactical.model.event.HideMovement;
-import com.jingyuyao.tactical.model.event.HideTarget;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
-import com.jingyuyao.tactical.model.event.ShowMovement;
-import com.jingyuyao.tactical.model.event.ShowTarget;
+import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.state.Battling;
+import com.jingyuyao.tactical.model.state.Moving;
+import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.view.ViewModule.ActivatedCharacterSprite;
 import com.jingyuyao.tactical.view.ViewModule.HighlightSprite;
 import com.jingyuyao.tactical.view.ViewModule.MapMarkingsActionActor;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import com.jingyuyao.tactical.view.marking.MarkingFactory;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
@@ -36,6 +36,7 @@ class MapMarkings {
   private final Actor actionActor;
   private final Batch batch;
   private final Map<MapObject, MapActor<?>> actorMap;
+  private final List<MapActor<?>> markedActorList;
   private final MarkingFactory markingFactory;
   private final Sprite highlightSprite;
   private final Sprite activatedCharacterSprite;
@@ -47,12 +48,14 @@ class MapMarkings {
       @MapMarkingsActionActor Actor actionActor,
       Batch batch,
       Map<MapObject, MapActor<?>> actorMap,
+      List<MapActor<?>> markedActorList,
       MarkingFactory markingFactory,
       @HighlightSprite Sprite highlightSprite,
       @ActivatedCharacterSprite Sprite activatedCharacterSprite) {
     this.actionActor = actionActor;
     this.batch = batch;
     this.actorMap = actorMap;
+    this.markedActorList = markedActorList;
     this.markingFactory = markingFactory;
     this.highlightSprite = highlightSprite;
     this.activatedCharacterSprite = activatedCharacterSprite;
@@ -74,28 +77,25 @@ class MapMarkings {
   }
 
   @Subscribe
-  public void showMovement(ShowMovement showMovement) {
-    show(markingFactory.createMovement(showMovement.getObject()));
+  public void playerState(PlayerState playerState) {
+    activatedActor = actorMap.get(playerState.getPlayer());
   }
 
   @Subscribe
-  public void hideMovement(HideMovement hideMovement) {
-    hide(markingFactory.createMovement(hideMovement.getObject()));
+  public void moving(Moving moving) {
+    show(markingFactory.createMovement(moving.getMovement()));
   }
 
   @Subscribe
-  public void showTarget(ShowTarget showTarget) {
-    show(markingFactory.createTarget(showTarget.getObject()));
+  public void selectingTarget(SelectingTarget selectingTarget) {
+    for (Target target : selectingTarget.getTargets()) {
+      show(markingFactory.createTarget(target));
+    }
   }
 
   @Subscribe
-  public void hideTarget(HideTarget hideTarget) {
-    hide(markingFactory.createTarget(hideTarget.getObject()));
-  }
-
-  @Subscribe
-  public void activatedPlayer(ActivatedPlayer activatedPlayer) {
-    activatedActor = actorMap.get(activatedPlayer.getObject());
+  public void battling(Battling battling) {
+    show(markingFactory.createTarget(battling.getTarget()));
   }
 
   @Subscribe
@@ -104,12 +104,11 @@ class MapMarkings {
   }
 
   @Subscribe
-  public void deactivatePlayer(DeactivatedPlayer deactivatedPlayer) {
-    activatedActor = null;
-  }
-
-  @Subscribe
-  public void deactivateEnemy(DeactivatedEnemy deactivatedEnemy) {
+  public void exitState(ExitState exitState) {
+    for (MapActor actor : markedActorList) {
+      actor.clearMarkerSprites();
+    }
+    markedActorList.clear();
     activatedActor = null;
   }
 
@@ -172,6 +171,7 @@ class MapMarkings {
     for (Entry<MapObject, Sprite> entry : multimap.entries()) {
       MapActor actor = actorMap.get(entry.getKey());
       actor.addMarkerSprite(entry.getValue());
+      markedActorList.add(actor);
     }
   }
 
@@ -179,6 +179,7 @@ class MapMarkings {
     for (Entry<MapObject, Sprite> entry : multimap.entries()) {
       MapActor actor = actorMap.get(entry.getKey());
       actor.removeMarkerSprite(entry.getValue());
+      markedActorList.remove(actor);
     }
   }
 }

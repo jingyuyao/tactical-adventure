@@ -44,6 +44,10 @@ public class MapActor<T extends MapObject> extends Actor {
     markerSprites.remove(sprite);
   }
 
+  public void clearMarkerSprites() {
+    markerSprites.clear();
+  }
+
   T getObject() {
     return object;
   }
