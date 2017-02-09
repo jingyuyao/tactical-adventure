@@ -72,6 +72,10 @@ public class Battling extends BasePlayerState {
     return ImmutableList.of(new AttackAction(this), new BackAction(this));
   }
 
+  public Target getTarget() {
+    return target;
+  }
+
   void attack() {
     goTo(stateFactory.createTransition());
     Futures.addCallback(battle.begin(getPlayer(), weapon, target), new FutureCallback<Void>() {

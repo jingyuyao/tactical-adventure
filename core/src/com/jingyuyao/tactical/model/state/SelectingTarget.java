@@ -70,6 +70,10 @@ public class SelectingTarget extends BasePlayerState {
     return ImmutableList.<Action>of(new BackAction(this));
   }
 
+  public ImmutableList<Target> getTargets() {
+    return targets;
+  }
+
   private void handleSelection(MapObject object) {
     for (Target target : targets) {
       if (target.selectedBy(object.getCoordinate())) {

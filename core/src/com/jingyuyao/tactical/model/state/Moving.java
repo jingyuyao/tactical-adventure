@@ -85,4 +85,8 @@ public class Moving extends BasePlayerState {
       });
     }
   }
+
+  public Movement getMovement() {
+    return movement;
+  }
 }
