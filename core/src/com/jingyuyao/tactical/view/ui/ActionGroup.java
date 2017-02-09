@@ -17,8 +17,7 @@ public class ActionGroup extends VerticalGroup {
     columnRight();
   }
 
-  public void reloadActions(Iterable<Action> actions) {
-    clear();
+  public void loadActions(Iterable<Action> actions) {
     for (Action action : actions) {
       addActor(uiFactory.createActionButton(action));
     }

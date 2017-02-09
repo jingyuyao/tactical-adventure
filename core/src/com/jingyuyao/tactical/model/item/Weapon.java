@@ -10,6 +10,8 @@ import com.jingyuyao.tactical.model.map.Coordinate;
  */
 public interface Weapon extends Item {
 
+  int getAttackPower();
+
   void damages(Target target);
 
   ImmutableList<Target> createTargets(Coordinate from);

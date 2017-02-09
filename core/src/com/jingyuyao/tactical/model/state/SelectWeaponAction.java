@@ -22,7 +22,7 @@ class SelectWeaponAction implements Action {
 
   @Override
   public String getText() {
-    return weapon.toString();
+    return weapon.getName();
   }
 
   @Override
