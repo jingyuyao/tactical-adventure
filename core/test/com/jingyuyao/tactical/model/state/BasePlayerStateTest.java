@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,8 +9,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedPlayer;
-import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -56,18 +53,16 @@ public class BasePlayerStateTest {
   public void enter() {
     state.enter();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(state);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
   }
 
   @Test
   public void exit() {
     state.exit();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, state, ExitState.class);
-    TestHelpers.verifyModelEvent(argumentCaptor, 1, DeactivatedPlayer.class);
   }
 
   @Test

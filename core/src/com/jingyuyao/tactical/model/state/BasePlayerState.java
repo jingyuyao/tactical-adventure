@@ -4,8 +4,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedPlayer;
-import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -24,18 +22,6 @@ class BasePlayerState extends BaseState implements PlayerState {
   @Override
   public Player getPlayer() {
     return player;
-  }
-
-  @Override
-  public void enter() {
-    super.enter();
-    getEventBus().post(new ActivatedPlayer(player));
-  }
-
-  @Override
-  public void exit() {
-    super.exit();
-    getEventBus().post(new DeactivatedPlayer());
   }
 
   @Override

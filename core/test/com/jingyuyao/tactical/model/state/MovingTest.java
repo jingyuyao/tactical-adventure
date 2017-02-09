@@ -14,8 +14,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedPlayer;
-import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.HideMovement;
 import com.jingyuyao.tactical.model.event.ShowMovement;
@@ -89,11 +87,9 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(eventBus, times(3)).post(argumentCaptor.capture());
-
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(moving);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, movement, ShowMovement.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, ShowMovement.class);
   }
 
   @Test
@@ -117,10 +113,9 @@ public class MovingTest {
   public void exit() {
     moving.exit();
 
-    verify(eventBus, times(3)).post(argumentCaptor.capture());
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, moving, ExitState.class);
-    TestHelpers.verifyModelEvent(argumentCaptor, 1, DeactivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, movement, HideMovement.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, HideMovement.class);
   }
 
   @Test

@@ -14,8 +14,6 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.ActivatedPlayer;
-import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.ShowTarget;
@@ -76,20 +74,18 @@ public class BattlingTest {
   public void enter() {
     battling.enter();
 
-    verify(eventBus, times(3)).post(argumentCaptor.capture());
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(battling);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, attackingPlayer, ActivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target, ShowTarget.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, ShowTarget.class);
   }
 
   @Test
   public void exit() {
     battling.exit();
 
-    verify(eventBus, times(3)).post(argumentCaptor.capture());
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, battling, ExitState.class);
-    TestHelpers.verifyModelEvent(argumentCaptor, 1, DeactivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target, HideTarget.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target, HideTarget.class);
   }
 
   @Test
