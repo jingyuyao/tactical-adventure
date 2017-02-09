@@ -21,8 +21,7 @@ public class Heal extends BaseItem implements Consumable {
   }
 
   @Override
-  public String toString() {
-    return String.format(
-        Locale.US, "%s\nHeal(%d) Usg(%d)", getName(), amount, getUsageLeft());
+  public String getEffects() {
+    return String.format(Locale.US, "Heals for %d", amount);
   }
 }
