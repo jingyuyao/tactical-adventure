@@ -8,13 +8,20 @@ import javax.inject.Singleton;
 public class RootTable extends Table {
 
   @Inject
-  RootTable(ActionGroup actionGroup, Info info) {
+  RootTable(
+      ActionGroup actionGroup,
+      CharacterInfo characterInfo,
+      TerrainInfo terrainInfo) {
     pad(10);
     setFillParent(true);
     setDebug(true);
 
     // row 1
-    add(info).top().right();
+    add(characterInfo).top().right();
+
+    // row 2
+    row();
+    add(terrainInfo).top().right();
 
     // row 2
     row();

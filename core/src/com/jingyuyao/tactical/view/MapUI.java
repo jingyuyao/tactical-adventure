@@ -9,7 +9,8 @@ import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
-import com.jingyuyao.tactical.view.ui.Info;
+import com.jingyuyao.tactical.view.ui.CharacterInfo;
+import com.jingyuyao.tactical.view.ui.TerrainInfo;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -19,30 +20,40 @@ class MapUI {
 
   private final Stage stage;
   private final ActionGroup actionGroup;
-  private final Info info;
+  private final CharacterInfo characterInfo;
+  private final TerrainInfo terrainInfo;
   private final Terrains terrains;
 
   @Inject
-  MapUI(@MapUIStage Stage stage, ActionGroup actionGroup, Info info, Terrains terrains) {
+  MapUI(
+      @MapUIStage Stage stage,
+      ActionGroup actionGroup,
+      CharacterInfo characterInfo,
+      TerrainInfo terrainInfo,
+      Terrains terrains) {
     this.stage = stage;
+    this.terrainInfo = terrainInfo;
     this.terrains = terrains;
     this.actionGroup = actionGroup;
-    this.info = info;
+    this.characterInfo = characterInfo;
   }
 
   @Subscribe
   public void selectPlayer(SelectPlayer selectPlayer) {
-    info.display(selectPlayer.getObject(), terrains.get(selectPlayer.getObject().getCoordinate()));
+    characterInfo.display(selectPlayer.getObject());
+    terrainInfo.display(terrains.get(selectPlayer.getObject().getCoordinate()));
   }
 
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
-    info.display(selectEnemy.getObject(), terrains.get(selectEnemy.getObject().getCoordinate()));
+    characterInfo.display(selectEnemy.getObject());
+    terrainInfo.display(terrains.get(selectEnemy.getObject().getCoordinate()));
   }
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    info.display(selectTerrain.getObject());
+    characterInfo.clear();
+    terrainInfo.display(selectTerrain.getObject());
   }
 
   @Subscribe
