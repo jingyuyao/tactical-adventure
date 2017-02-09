@@ -6,13 +6,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Locale;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-class Info extends VerticalGroup {
+@Singleton
+public class Info extends VerticalGroup {
 
   private final Skin skin;
 
+  @Inject
   Info(Skin skin) {
     this.skin = skin;
+    columnRight();
   }
 
   public void display(Character character, Terrain terrain) {
