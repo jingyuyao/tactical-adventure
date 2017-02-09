@@ -2,14 +2,14 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.ActivatedPlayer;
-import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
-import com.jingyuyao.tactical.model.event.StateChanged;
 import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
 import com.jingyuyao.tactical.view.ui.PrimaryInfo;
@@ -42,38 +42,29 @@ class MapUI {
   }
 
   @Subscribe
-  public void activatedPlayer(ActivatedPlayer activatedPlayer) {
-    primaryInfo.setVisible(true);
-    Character character = activatedPlayer.getObject();
-    primaryInfo.display(character, terrains.get(character.getCoordinate()));
-  }
-
-  @Subscribe
-  public void deactivatedPlayer(DeactivatedPlayer deactivatedPlayer) {
-    primaryInfo.setVisible(false);
-  }
-
-  @Subscribe
   public void selectPlayer(SelectPlayer selectPlayer) {
-    secondaryInfo.setVisible(false);
+    displayPlayer(selectPlayer.getObject());
   }
 
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
-    secondaryInfo.setVisible(true);
-    Character character = selectEnemy.getObject();
-    secondaryInfo.display(character, terrains.get(character.getCoordinate()));
+    Enemy enemy = selectEnemy.getObject();
+    secondaryInfo.display(enemy, terrains.get(enemy.getCoordinate()));
   }
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    secondaryInfo.setVisible(true);
     secondaryInfo.display(selectTerrain.getObject());
   }
 
   @Subscribe
-  public void stateChange(StateChanged stateChanged) {
-    actionGroup.reloadActions(stateChanged.getObject().getActions());
+  public void state(State state) {
+    actionGroup.reloadActions(state.getActions());
+  }
+
+  @Subscribe
+  public void playerState(PlayerState playerState) {
+    displayPlayer(playerState.getPlayer());
   }
 
   void act(float delta) {
@@ -91,5 +82,10 @@ class MapUI {
 
   void dispose() {
     stage.dispose();
+  }
+
+  private void displayPlayer(Player player) {
+    primaryInfo.display(player, terrains.get(player.getCoordinate()));
+    secondaryInfo.clear();
   }
 }
