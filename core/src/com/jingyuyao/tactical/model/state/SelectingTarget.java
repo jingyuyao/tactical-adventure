@@ -52,6 +52,10 @@ public class SelectingTarget extends BasePlayerState {
     return ImmutableList.<Action>of(new BackAction(this));
   }
 
+  public Weapon getWeapon() {
+    return weapon;
+  }
+
   public ImmutableList<Target> getTargets() {
     return targets;
   }

@@ -58,6 +58,10 @@ public class Battling extends BasePlayerState {
     return ImmutableList.of(new AttackAction(this), new BackAction(this));
   }
 
+  public Weapon getWeapon() {
+    return weapon;
+  }
+
   public Target getTarget() {
     return target;
   }
