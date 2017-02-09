@@ -27,4 +27,9 @@ public class MapActorController extends ClickListener {
   public void clicked(InputEvent event, float x, float y) {
     object.select(mapState);
   }
+
+  @Override
+  public void touchDragged(InputEvent event, float x, float y, int pointer) {
+    cancel();
+  }
 }
