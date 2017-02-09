@@ -5,12 +5,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -27,6 +31,8 @@ public class TransitionTest {
   private Enemy enemy;
   @Mock
   private Terrain terrain;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private Transition transition;
 
@@ -47,6 +53,8 @@ public class TransitionTest {
     transition.exit();
 
     verify(mapState).popLast();
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, transition, ExitState.class);
   }
 
   @Test

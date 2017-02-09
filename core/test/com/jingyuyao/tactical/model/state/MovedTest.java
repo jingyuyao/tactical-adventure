@@ -13,6 +13,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedPlayer;
+import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Movement;
@@ -65,6 +67,15 @@ public class MovedTest {
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(moved);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, ActivatedPlayer.class);
+  }
+
+  @Test
+  public void exit() {
+    moved.exit();
+
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, moved, ExitState.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 1, DeactivatedPlayer.class);
   }
 
   @Test

@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
@@ -64,8 +65,9 @@ public class BasePlayerStateTest {
   public void exit() {
     state.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivatedPlayer.class);
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, state, ExitState.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 1, DeactivatedPlayer.class);
   }
 
   @Test

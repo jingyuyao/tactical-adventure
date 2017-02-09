@@ -7,8 +7,10 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -16,6 +18,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -40,6 +44,8 @@ public class WaitingTest {
   private Retaliating retaliating;
   @Mock
   private Movement movement;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private Waiting waiting;
 
@@ -53,6 +59,14 @@ public class WaitingTest {
     waiting.enter();
 
     verify(eventBus).post(waiting);
+  }
+
+  @Test
+  public void exit() {
+    waiting.exit();
+
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, waiting, ExitState.class);
   }
 
   @Test

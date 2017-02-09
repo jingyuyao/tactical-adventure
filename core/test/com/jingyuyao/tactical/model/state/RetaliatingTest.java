@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -15,6 +16,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.DeactivatedEnemy;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -96,5 +98,13 @@ public class RetaliatingTest {
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);
     TestHelpers.verifyModelEvent(argumentCaptor, 3, DeactivatedEnemy.class);
+  }
+
+  @Test
+  public void exit() {
+    retaliating.exit();
+
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, retaliating, ExitState.class);
   }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 
 class BaseState implements State {
@@ -27,6 +28,7 @@ class BaseState implements State {
 
   @Override
   public void exit() {
+    eventBus.post(new ExitState(this));
   }
 
   @Override

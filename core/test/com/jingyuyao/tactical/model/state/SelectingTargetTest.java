@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedPlayer;
 import com.jingyuyao.tactical.model.event.DeactivatedPlayer;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.HideTarget;
 import com.jingyuyao.tactical.model.event.ShowTarget;
 import com.jingyuyao.tactical.model.item.Target;
@@ -80,10 +81,11 @@ public class SelectingTargetTest {
   public void exit() {
     selectingTarget.exit();
 
-    verify(eventBus, times(3)).post(argumentCaptor.capture());
-    TestHelpers.verifyModelEvent(argumentCaptor, 0, DeactivatedPlayer.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, target1, HideTarget.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target2, HideTarget.class);
+    verify(eventBus, times(4)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, selectingTarget, ExitState.class);
+    TestHelpers.verifyModelEvent(argumentCaptor, 1, DeactivatedPlayer.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 2, target1, HideTarget.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 3, target2, HideTarget.class);
   }
 
   @Test
