@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-class BasePlayerState extends BaseState {
+class BasePlayerState extends BaseState implements PlayerState {
 
   private final StateFactory stateFactory;
   private final Player player;
@@ -21,7 +21,8 @@ class BasePlayerState extends BaseState {
     this.player = player;
   }
 
-  Player getPlayer() {
+  @Override
+  public Player getPlayer() {
     return player;
   }
 
