@@ -6,8 +6,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.HideMovement;
-import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -37,23 +35,11 @@ public class Moving extends BasePlayerState {
   }
 
   @Override
-  public void enter() {
-    super.enter();
-    getEventBus().post(new ShowMovement(movement));
-  }
-
-  @Override
   public void canceled() {
     if (previousCoordinate != null) {
       getPlayer().instantMoveTo(previousCoordinate);
       previousCoordinate = null;
     }
-  }
-
-  @Override
-  public void exit() {
-    super.exit();
-    getEventBus().post(new HideMovement(movement));
   }
 
   @Override

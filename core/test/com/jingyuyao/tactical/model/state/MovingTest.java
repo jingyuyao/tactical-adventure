@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -15,8 +14,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.HideMovement;
-import com.jingyuyao.tactical.model.event.ShowMovement;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -87,9 +84,8 @@ public class MovingTest {
   public void enter() {
     moving.enter();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(moving);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, ShowMovement.class);
   }
 
   @Test
@@ -113,9 +109,8 @@ public class MovingTest {
   public void exit() {
     moving.exit();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, moving, ExitState.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, movement, HideMovement.class);
   }
 
   @Test
