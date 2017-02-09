@@ -112,6 +112,7 @@ class MapMarkings {
     activatedActor = null;
   }
 
+  // TODO: this is temporary
   @Subscribe
   public void attack(final Attack attack) {
     final Multimap<MapObject, Sprite> hitMap = markingFactory.createHit(attack.getObject());
@@ -119,13 +120,19 @@ class MapMarkings {
     Runnable showAttack = new Runnable() {
       @Override
       public void run() {
-        show(hitMap);
+        for (Entry<MapObject, Sprite> entry : hitMap.entries()) {
+          MapActor actor = actorMap.get(entry.getKey());
+          actor.addMarkerSprite(entry.getValue());
+        }
       }
     };
     Runnable hideAttack = new Runnable() {
       @Override
       public void run() {
-        hide(hitMap);
+        for (Entry<MapObject, Sprite> entry : hitMap.entries()) {
+          MapActor actor = actorMap.get(entry.getKey());
+          actor.removeMarkerSprite(entry.getValue());
+        }
       }
     };
 
@@ -172,14 +179,6 @@ class MapMarkings {
       MapActor actor = actorMap.get(entry.getKey());
       actor.addMarkerSprite(entry.getValue());
       markedActorList.add(actor);
-    }
-  }
-
-  private void hide(Multimap<MapObject, Sprite> multimap) {
-    for (Entry<MapObject, Sprite> entry : multimap.entries()) {
-      MapActor actor = actorMap.get(entry.getKey());
-      actor.removeMarkerSprite(entry.getValue());
-      markedActorList.remove(actor);
     }
   }
 }
