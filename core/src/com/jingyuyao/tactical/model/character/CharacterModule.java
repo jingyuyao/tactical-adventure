@@ -7,7 +7,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
-import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Item;
@@ -16,6 +15,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Qualifier;
 
 public class CharacterModule extends AbstractModule {
 
@@ -37,14 +37,14 @@ public class CharacterModule extends AbstractModule {
     return new ArrayList<>();
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface CharacterEventBus {
 
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface InitialItems {

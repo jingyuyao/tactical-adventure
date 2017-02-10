@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
-import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
@@ -19,6 +18,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 public class ActorModule extends AbstractModule {
@@ -51,7 +51,7 @@ public class ActorModule extends AbstractModule {
     return 1f;
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface ActorWorldSize {

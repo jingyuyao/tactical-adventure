@@ -9,11 +9,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.AbstractModule;
-import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 public class MarkingModule extends AbstractModule {
@@ -51,28 +51,28 @@ public class MarkingModule extends AbstractModule {
     return new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class));
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface Move {
 
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface Hit {
 
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface Attack {
 
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface TargetSelect {

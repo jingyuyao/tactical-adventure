@@ -7,7 +7,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
-import com.google.inject.BindingAnnotation;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.battle.BattleModule;
 import com.jingyuyao.tactical.model.character.CharacterModule;
@@ -17,6 +16,7 @@ import com.jingyuyao.tactical.model.state.StateModule;
 import com.jingyuyao.tactical.model.terrain.TerrainModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 public class ModelModule extends AbstractModule {
@@ -38,7 +38,7 @@ public class ModelModule extends AbstractModule {
     return new EventBus("model");
   }
 
-  @BindingAnnotation
+  @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface ModelEventBus {
