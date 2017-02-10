@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 public interface Action {
 
-  String getText();
+  String getName();
 
   void run();
 }

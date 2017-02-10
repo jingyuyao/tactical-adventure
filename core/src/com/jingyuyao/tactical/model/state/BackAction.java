@@ -9,7 +9,7 @@ class BackAction implements Action {
   }
 
   @Override
-  public String getText() {
+  public String getName() {
     return "back";
   }
 

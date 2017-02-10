@@ -9,7 +9,7 @@ class EndTurnAction implements Action {
   }
 
   @Override
-  public String getText() {
+  public String getName() {
     return "end";
   }
 

@@ -13,7 +13,7 @@ class ActionButton extends TextButton {
 
   @Inject
   ActionButton(@Assisted final Action action, Skin skin) {
-    super(action.getText(), skin);
+    super(action.getName(), skin);
     getLabel().setAlignment(Align.right);
     getLabelCell().pad(10);
     addListener(

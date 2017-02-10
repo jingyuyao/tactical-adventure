@@ -9,7 +9,7 @@ class AttackAction implements Action {
   }
 
   @Override
-  public String getText() {
+  public String getName() {
     return "attack";
   }
 
