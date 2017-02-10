@@ -69,15 +69,15 @@ public class ViewModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapViewStage
-  Stage provideMapViewStage(@MapViewViewport Viewport viewport, Batch batch) {
+  @MapActorsStage
+  Stage provideMapActorsStage(@MapActorsViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }
 
   @Provides
   @Singleton
-  @MapViewViewport
-  Viewport provideMapViewViewport() {
+  @MapActorsViewport
+  Viewport provideMapActorsViewport() {
     return new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT);
   }
 
@@ -158,14 +158,14 @@ public class ViewModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapViewStage {
+  public @interface MapActorsStage {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapViewViewport {
+  public @interface MapActorsViewport {
 
   }
 

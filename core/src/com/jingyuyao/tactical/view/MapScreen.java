@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 @Singleton
 public class MapScreen extends ScreenAdapter {
 
-  private final MapView mapView;
+  private final MapActors mapActors;
   private final MapMarkings mapMarkings;
   private final MapUI mapUI;
   private final Batch batch;
@@ -20,12 +20,12 @@ public class MapScreen extends ScreenAdapter {
 
   @Inject
   MapScreen(
-      MapView mapView,
+      MapActors mapActors,
       MapMarkings mapMarkings,
       MapUI mapUI,
       Batch batch,
       MapController mapController) {
-    this.mapView = mapView;
+    this.mapActors = mapActors;
     this.mapMarkings = mapMarkings;
     this.mapUI = mapUI;
     this.batch = batch;
@@ -33,7 +33,7 @@ public class MapScreen extends ScreenAdapter {
   }
 
   public void registerListeners(EventBus eventBus) {
-    eventBus.register(mapView);
+    eventBus.register(mapActors);
     eventBus.register(mapMarkings);
     eventBus.register(mapUI);
   }
@@ -52,10 +52,10 @@ public class MapScreen extends ScreenAdapter {
   public void render(float delta) {
     mapUI.act(delta);
     mapMarkings.act(delta);
-    mapView.act(delta);
+    mapActors.act(delta);
 
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    mapView.draw();
+    mapActors.draw();
     mapMarkings.draw();
     mapUI.draw();
   }
@@ -63,13 +63,13 @@ public class MapScreen extends ScreenAdapter {
   @Override
   public void resize(int width, int height) {
     // This is very important...
-    mapView.resize(width, height);
+    mapActors.resize(width, height);
     mapUI.resize(width, height);
   }
 
   @Override
   public void dispose() {
-    mapView.dispose();
+    mapActors.dispose();
     mapUI.dispose();
     batch.dispose();
   }

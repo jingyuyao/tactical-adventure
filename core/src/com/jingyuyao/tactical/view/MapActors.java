@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.ViewModule.MapViewStage;
+import com.jingyuyao.tactical.view.ViewModule.MapActorsStage;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import java.util.Map;
@@ -27,7 +27,7 @@ import javax.inject.Singleton;
  * grid).
  */
 @Singleton
-class MapView {
+class MapActors {
 
   private final Stage stage;
   private final OrthogonalTiledMapRenderer mapRenderer;
@@ -41,8 +41,8 @@ class MapView {
    * backed by a {@link OrthogonalTiledMapRenderer}.
    */
   @Inject
-  MapView(
-      @MapViewStage Stage stage,
+  MapActors(
+      @MapActorsStage Stage stage,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,

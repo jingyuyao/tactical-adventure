@@ -52,12 +52,12 @@ public class MapLoader {
     TiledMap tiledMap = assetManager.get(mapName + ".tmx", TiledMap.class);
 
     TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
-    Preconditions.checkNotNull(terrainLayer, "MapView must contain a terrain layer.");
+    Preconditions.checkNotNull(terrainLayer);
 
     int height = terrainLayer.getHeight();
     int width = terrainLayer.getWidth();
-    Preconditions.checkArgument(height > 0, "MapView height must be > 0");
-    Preconditions.checkArgument(width > 0, "MapView width must be > 0");
+    Preconditions.checkArgument(height > 0);
+    Preconditions.checkArgument(width > 0);
 
     FileHandle mapData = Gdx.files.internal(mapName + ".json");
     MapSave mapSave = gson.fromJson(mapData.readString(), MapSave.class);
