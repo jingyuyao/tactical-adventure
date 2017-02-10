@@ -47,6 +47,8 @@ public class BasePlayerStateTest {
   private ImmutableList<Target> targets;
   @Mock
   private SelectingTarget selectingTarget;
+  @Mock
+  private UsingConsumable usingConsumable;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -123,6 +125,16 @@ public class BasePlayerStateTest {
 
     verify(player).quickAccess(weapon);
     verify(mapState).goTo(selectingTarget);
+  }
+
+  @Test
+  public void select_consumable() {
+    when(stateFactory.createUsingConsumable(player, consumable)).thenReturn(usingConsumable);
+
+    state.selectConsumable(consumable);
+
+    verify(player).quickAccess(consumable);
+    verify(mapState).goTo(usingConsumable);
   }
 
   @Test

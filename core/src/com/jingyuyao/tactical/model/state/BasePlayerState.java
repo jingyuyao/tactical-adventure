@@ -33,7 +33,7 @@ class BasePlayerState extends BaseState implements PlayerState {
       builder.add(new SelectWeaponAction(this, weapon));
     }
     for (Consumable consumable : items.filter(Consumable.class)) {
-      builder.add(new SelectConsumableAction(this, stateFactory, getPlayer(), consumable));
+      builder.add(new SelectConsumableAction(this, consumable));
     }
     builder.add(new FinishAction(this));
     builder.add(new BackAction(this));
@@ -44,6 +44,11 @@ class BasePlayerState extends BaseState implements PlayerState {
     player.quickAccess(weapon);
     ImmutableList<Target> targets = weapon.createTargets(player.getCoordinate());
     goTo(stateFactory.createSelectingTarget(player, weapon, targets));
+  }
+
+  void selectConsumable(Consumable consumable) {
+    player.quickAccess(consumable);
+    goTo(stateFactory.createUsingConsumable(player, consumable));
   }
 
   void finish() {
