@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.Battling;
+import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
@@ -19,7 +20,6 @@ import com.jingyuyao.tactical.view.ui.TerrainInfo;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-// TODO: need to refresh stats after attack
 @Singleton
 class MapUI {
 
@@ -66,7 +66,15 @@ class MapUI {
 
   @Subscribe
   public void state(State state) {
+    characterInfo.refresh();
+    itemInfo.refresh();
     actionGroup.loadActions(state.getActions());
+  }
+
+  @Subscribe
+  public void playerState(PlayerState playerState) {
+    characterInfo.display(playerState.getPlayer());
+    terrainInfo.display(terrains.get(playerState.getPlayer().getCoordinate()));
   }
 
   @Subscribe

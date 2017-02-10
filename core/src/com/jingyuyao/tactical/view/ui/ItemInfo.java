@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 public class ItemInfo extends VerticalGroup {
 
   private final Skin skin;
+  private Item current;
 
   @Inject
   ItemInfo(Skin skin) {
@@ -20,10 +21,24 @@ public class ItemInfo extends VerticalGroup {
     columnLeft();
   }
 
+  @Override
+  public void clear() {
+    super.clear();
+    current = null;
+  }
+
   public void display(Item item) {
+    clear();
     Label label = new Label(getLabelString(item), skin);
     label.setAlignment(Align.left);
     addActor(label);
+    current = item;
+  }
+
+  public void refresh() {
+    if (current != null) {
+      display(current);
+    }
   }
 
   private String getLabelString(Item item) {
