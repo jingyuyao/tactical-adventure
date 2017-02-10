@@ -6,6 +6,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 class BasePlayerState extends BaseState implements PlayerState {
@@ -29,7 +30,7 @@ class BasePlayerState extends BaseState implements PlayerState {
     ImmutableList.Builder<Action> builder = ImmutableList.builder();
     FluentIterable<Item> items = getPlayer().fluentItems();
     for (Weapon weapon : items.filter(Weapon.class)) {
-      builder.add(new SelectWeaponAction(this, stateFactory, getPlayer(), weapon));
+      builder.add(new SelectWeaponAction(this, weapon));
     }
     for (Consumable consumable : items.filter(Consumable.class)) {
       builder.add(new SelectConsumableAction(this, stateFactory, getPlayer(), consumable));
@@ -37,6 +38,12 @@ class BasePlayerState extends BaseState implements PlayerState {
     builder.add(new FinishAction(this));
     builder.add(new BackAction(this));
     return builder.build();
+  }
+
+  void selectWeapon(Weapon weapon) {
+    player.quickAccess(weapon);
+    ImmutableList<Target> targets = weapon.createTargets(player.getCoordinate());
+    goTo(stateFactory.createSelectingTarget(player, weapon, targets));
   }
 
   void finish() {
