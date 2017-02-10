@@ -11,6 +11,4 @@ public interface Consumable extends Item {
    * Apply this {@link Item}'s effects to {@code character}.
    */
   void apply(Character character);
-
-  String getEffects();
 }

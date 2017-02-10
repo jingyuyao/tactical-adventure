@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-class BaseItem implements Item {
+abstract class BaseItem implements Item {
 
   private String name;
   private int usageLeft;

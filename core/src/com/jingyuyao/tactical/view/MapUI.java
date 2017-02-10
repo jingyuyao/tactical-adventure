@@ -14,9 +14,8 @@ import com.jingyuyao.tactical.model.state.UsingConsumable;
 import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
 import com.jingyuyao.tactical.view.ui.ActionGroup;
 import com.jingyuyao.tactical.view.ui.CharacterInfo;
-import com.jingyuyao.tactical.view.ui.ConsumableInfo;
+import com.jingyuyao.tactical.view.ui.ItemInfo;
 import com.jingyuyao.tactical.view.ui.TerrainInfo;
-import com.jingyuyao.tactical.view.ui.WeaponInfo;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -28,8 +27,7 @@ class MapUI {
   private final ActionGroup actionGroup;
   private final CharacterInfo characterInfo;
   private final TerrainInfo terrainInfo;
-  private final WeaponInfo weaponInfo;
-  private final ConsumableInfo consumableInfo;
+  private final ItemInfo itemInfo;
   private final Terrains terrains;
 
   @Inject
@@ -38,13 +36,11 @@ class MapUI {
       ActionGroup actionGroup,
       CharacterInfo characterInfo,
       TerrainInfo terrainInfo,
-      WeaponInfo weaponInfo,
-      ConsumableInfo consumableInfo,
+      ItemInfo itemInfo,
       Terrains terrains) {
     this.stage = stage;
     this.terrainInfo = terrainInfo;
-    this.weaponInfo = weaponInfo;
-    this.consumableInfo = consumableInfo;
+    this.itemInfo = itemInfo;
     this.terrains = terrains;
     this.actionGroup = actionGroup;
     this.characterInfo = characterInfo;
@@ -75,23 +71,22 @@ class MapUI {
 
   @Subscribe
   public void usingConsumable(UsingConsumable usingConsumable) {
-    consumableInfo.display(usingConsumable.getConsumable());
+    itemInfo.display(usingConsumable.getConsumable());
   }
 
   @Subscribe
   public void selectingTarget(SelectingTarget selectingTarget) {
-    weaponInfo.display(selectingTarget.getWeapon());
+    itemInfo.display(selectingTarget.getWeapon());
   }
 
   @Subscribe
   public void battling(Battling battling) {
-    weaponInfo.display(battling.getWeapon());
+    itemInfo.display(battling.getWeapon());
   }
 
   @Subscribe
   public void exitState(ExitState exitState) {
-    weaponInfo.clear();
-    consumableInfo.clear();
+    itemInfo.clear();
     actionGroup.clear();
   }
 

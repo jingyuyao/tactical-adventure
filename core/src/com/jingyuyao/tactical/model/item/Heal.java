@@ -16,12 +16,12 @@ public class Heal extends BaseItem implements Consumable {
   }
 
   @Override
-  public void apply(Character character) {
-    character.healBy(amount);
+  public String getDescription() {
+    return String.format(Locale.US, "Heals for %d", amount);
   }
 
   @Override
-  public String getEffects() {
-    return String.format(Locale.US, "Heals for %d", amount);
+  public void apply(Character character) {
+    character.healBy(amount);
   }
 }
