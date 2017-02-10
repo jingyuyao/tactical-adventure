@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
@@ -30,6 +31,8 @@ public class UsingConsumableTest {
   private Player player;
   @Mock
   private Consumable consumable;
+  @Mock
+  private Waiting waiting;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -54,6 +57,19 @@ public class UsingConsumableTest {
 
     verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, usingConsumable, ExitState.class);
+  }
+
+  @Test
+  public void use_consumable() {
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+
+    usingConsumable.use();
+
+    verify(player).quickAccess(consumable);
+    verify(consumable).apply(player);
+    verify(player).useItem(consumable);
+    verify(player).setActionable(false);
+    verify(mapState).branchTo(waiting);
   }
 
   @Test

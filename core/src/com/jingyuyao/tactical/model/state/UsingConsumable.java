@@ -26,12 +26,19 @@ public class UsingConsumable extends BasePlayerState {
   @Override
   public ImmutableList<Action> getActions() {
     return ImmutableList.of(
-        new UseConsumableAction(this, getPlayer(), consumable),
+        new UseConsumableAction(this),
         new BackAction(this)
     );
   }
 
   public Consumable getConsumable() {
     return consumable;
+  }
+
+  void use() {
+    getPlayer().quickAccess(consumable);
+    consumable.apply(getPlayer());
+    getPlayer().useItem(consumable);
+    finish();
   }
 }
