@@ -20,6 +20,7 @@ class CameraController extends InputAdapter {
   private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
   private int lastPointer = -1;
+  private boolean dragged = false;
 
   @Inject
   CameraController(@MapActorsViewport Viewport viewport, Terrains terrains) {
@@ -32,6 +33,7 @@ class CameraController extends InputAdapter {
     lastPointer = pointer;
     initialTouch.set(screenX, screenY);
     lastTouch.set(screenX, screenY);
+    dragged = false;
     return false;
   }
 
@@ -64,14 +66,23 @@ class CameraController extends InputAdapter {
       camera.update();
 
       lastTouch.set(screenX, screenY);
+      calcDragged();
     }
     return false;
   }
 
   boolean isDragged() {
+    return dragged;
+  }
+
+  private void calcDragged() {
     // drag detection must be handled on a InputAdapter level rather than InputListener level
     // since our world moves along with the touch so InputListener always think it is being clicked
-    return initialTouch.dst(lastTouch) > DRAG_SCREEN_DISTANCE_CUTOFF;
+    // once the touch has moved a certain distanced away it is considered dragged even if it moves
+    // back to the original position.
+    if (!dragged) {
+      dragged = initialTouch.dst(lastTouch) > DRAG_SCREEN_DISTANCE_CUTOFF;
+    }
   }
 
   private float bound(float min, float value, float max) {
