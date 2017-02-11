@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view.actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.LinkedHashSet;
@@ -17,12 +16,11 @@ public class MapActor<T extends MapObject> extends Actor {
   private final T object;
   private final LinkedHashSet<Sprite> markers;
 
-  MapActor(T object, EventListener listener, float size, LinkedHashSet<Sprite> markers) {
+  MapActor(T object, float size, LinkedHashSet<Sprite> markers) {
     this.object = object;
     this.markers = markers;
     Coordinate coordinate = object.getCoordinate();
     setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
-    addListener(listener);
   }
 
   @Override

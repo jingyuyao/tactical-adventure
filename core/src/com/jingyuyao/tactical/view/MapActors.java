@@ -59,25 +59,19 @@ class MapActors {
   @Subscribe
   public void addTerrain(AddTerrain addTerrain) {
     Terrain terrain = addTerrain.getObject();
-    addActor(terrain, actorFactory.create(terrain, controllerFactory.create(terrain)));
+    addActor(terrain, actorFactory.create(terrain));
   }
 
   @Subscribe
   public void addPlayer(AddPlayer addPlayer) {
     Player player = addPlayer.getObject();
-    addActor(
-        player,
-        actorFactory.create(
-            player, controllerFactory.create(player), nameSpriteMap.get(player.getName())));
+    addActor(player, actorFactory.create(player, nameSpriteMap.get(player.getName())));
   }
 
   @Subscribe
   public void addEnemy(AddEnemy addEnemy) {
     Enemy enemy = addEnemy.getObject();
-    addActor(
-        enemy,
-        actorFactory.create(
-            enemy, controllerFactory.create(enemy), nameSpriteMap.get(enemy.getName())));
+    addActor(enemy, actorFactory.create(enemy, nameSpriteMap.get(enemy.getName())));
   }
 
   @Subscribe
@@ -108,6 +102,7 @@ class MapActors {
   }
 
   private void addActor(MapObject object, MapActor<?> actor) {
+    actor.addListener(controllerFactory.create(object));
     stage.addActor(actor);
     actorMap.put(object, actor);
   }
