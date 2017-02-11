@@ -24,6 +24,7 @@ import com.jingyuyao.tactical.view.ViewModule.HighlightSprite;
 import com.jingyuyao.tactical.view.ViewModule.MapMarkingsActionActor;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import com.jingyuyao.tactical.view.marking.MarkingFactory;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -105,10 +106,7 @@ class MapMarkings {
 
   @Subscribe
   public void exitState(ExitState exitState) {
-    for (MapActor actor : markedActorList) {
-      actor.clearMarkerSprites();
-    }
-    markedActorList.clear();
+    clearMarked();
     activatedActor = null;
   }
 
@@ -120,19 +118,13 @@ class MapMarkings {
     Runnable showAttack = new Runnable() {
       @Override
       public void run() {
-        for (Entry<MapObject, Sprite> entry : hitMap.entries()) {
-          MapActor actor = actorMap.get(entry.getKey());
-          actor.addMarkerSprite(entry.getValue());
-        }
+        show(hitMap);
       }
     };
     Runnable hideAttack = new Runnable() {
       @Override
       public void run() {
-        for (Entry<MapObject, Sprite> entry : hitMap.entries()) {
-          MapActor actor = actorMap.get(entry.getKey());
-          actor.removeMarkerSprite(entry.getValue());
-        }
+        clearMarked();
       }
     };
 
@@ -175,10 +167,19 @@ class MapMarkings {
   }
 
   private void show(Multimap<MapObject, Sprite> multimap) {
-    for (Entry<MapObject, Sprite> entry : multimap.entries()) {
+    for (Entry<MapObject, Collection<Sprite>> entry : multimap.asMap().entrySet()) {
       MapActor actor = actorMap.get(entry.getKey());
-      actor.addMarkerSprite(entry.getValue());
+      for (Sprite sprite : entry.getValue()) {
+        actor.addMarker(sprite);
+      }
       markedActorList.add(actor);
     }
+  }
+
+  private void clearMarked() {
+    for (MapActor actor : markedActorList) {
+      actor.clearMarkers();
+    }
+    markedActorList.clear();
   }
 }

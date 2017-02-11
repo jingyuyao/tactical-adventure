@@ -6,14 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Multiset;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import java.util.LinkedHashSet;
 
-public class CharacterActor<T extends Character> extends MapActor<T> {
+class CharacterActor<T extends Character> extends MapActor<T> {
 
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 
@@ -23,9 +23,9 @@ public class CharacterActor<T extends Character> extends MapActor<T> {
       T object,
       EventListener listener,
       float size,
-      Multiset<Sprite> markerSprites,
+      LinkedHashSet<Sprite> markers,
       Sprite sprite) {
-    super(object, listener, size, markerSprites);
+    super(object, listener, size, markers);
     this.sprite = sprite;
     object.registerListener(this);
   }

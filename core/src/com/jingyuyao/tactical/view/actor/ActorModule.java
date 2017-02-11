@@ -8,8 +8,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -17,6 +15,7 @@ import com.jingyuyao.tactical.AssetModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
@@ -29,8 +28,9 @@ public class ActorModule extends AbstractModule {
   }
 
   @Provides
-  Multiset<Sprite> provideMarkerSprites() {
-    return HashMultiset.create();
+  @InitialMarkers
+  LinkedHashSet<Sprite> provideInitialMarkers() {
+    return new LinkedHashSet<>();
   }
 
   @Provides
@@ -55,6 +55,13 @@ public class ActorModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface ActorWorldSize {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface InitialMarkers {
 
   }
 }

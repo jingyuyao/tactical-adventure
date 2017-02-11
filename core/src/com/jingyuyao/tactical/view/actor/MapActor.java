@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.google.common.collect.Multiset;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
+import java.util.LinkedHashSet;
 
 /**
  * <p>Invariants: - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code
@@ -15,11 +15,11 @@ import com.jingyuyao.tactical.model.map.MapObject;
 public class MapActor<T extends MapObject> extends Actor {
 
   private final T object;
-  private final Multiset<Sprite> markerSprites;
+  private final LinkedHashSet<Sprite> markers;
 
-  MapActor(T object, EventListener listener, float size, Multiset<Sprite> markerSprites) {
+  MapActor(T object, EventListener listener, float size, LinkedHashSet<Sprite> markers) {
     this.object = object;
-    this.markerSprites = markerSprites;
+    this.markers = markers;
     Coordinate coordinate = object.getCoordinate();
     setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
     addListener(listener);
@@ -27,25 +27,18 @@ public class MapActor<T extends MapObject> extends Actor {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    // We allow actor to retain multiple copies of a marker sprite but we only show one at a time
-    // this allows multiple markings to apply and remove the same marker on an actor without
-    // worrying about other markings
-    for (Sprite sprite : markerSprites.elementSet()) {
+    for (Sprite sprite : markers) {
       sprite.setBounds(getX(), getY(), getWidth(), getHeight());
       sprite.draw(batch);
     }
   }
 
-  public void addMarkerSprite(Sprite sprite) {
-    markerSprites.add(sprite);
+  public void addMarker(Sprite sprite) {
+    markers.add(sprite);
   }
 
-  public void removeMarkerSprite(Sprite sprite) {
-    markerSprites.remove(sprite);
-  }
-
-  public void clearMarkerSprites() {
-    markerSprites.clear();
+  public void clearMarkers() {
+    markers.clear();
   }
 
   T getObject() {
