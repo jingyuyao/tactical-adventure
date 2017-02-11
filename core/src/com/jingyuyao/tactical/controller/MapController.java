@@ -17,10 +17,10 @@ public class MapController {
   MapController(
       @MapActorsStage Stage mapViewStage,
       @MapUIStage Stage mapUIStage,
-      DragCameraController dragCameraController) {
+      CameraController cameraController) {
     inputMultiplexer = new InputMultiplexer();
     inputMultiplexer.addProcessor(mapUIStage);
-    inputMultiplexer.addProcessor(dragCameraController);
+    inputMultiplexer.addProcessor(cameraController);
     inputMultiplexer.addProcessor(mapViewStage);
   }
 

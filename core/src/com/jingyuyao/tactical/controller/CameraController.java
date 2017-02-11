@@ -11,15 +11,18 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class DragCameraController extends InputAdapter {
+class CameraController extends InputAdapter {
+
+  private static final float DRAG_SCREEN_DISTANCE_CUTOFF = 10f;
 
   private final Viewport viewport;
   private final Terrains terrains;
+  private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
   private int lastPointer = -1;
 
   @Inject
-  DragCameraController(@MapActorsViewport Viewport viewport, Terrains terrains) {
+  CameraController(@MapActorsViewport Viewport viewport, Terrains terrains) {
     this.viewport = viewport;
     this.terrains = terrains;
   }
@@ -27,6 +30,7 @@ class DragCameraController extends InputAdapter {
   @Override
   public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     lastPointer = pointer;
+    initialTouch.set(screenX, screenY);
     lastTouch.set(screenX, screenY);
     return false;
   }
@@ -62,6 +66,12 @@ class DragCameraController extends InputAdapter {
       lastTouch.set(screenX, screenY);
     }
     return false;
+  }
+
+  boolean isDragged() {
+    // drag detection must be handled on a InputAdapter level rather than InputListener level
+    // since our world moves along with the touch so InputListener always think it is being clicked
+    return initialTouch.dst(lastTouch) > DRAG_SCREEN_DISTANCE_CUTOFF;
   }
 
   private float bound(float min, float value, float max) {
