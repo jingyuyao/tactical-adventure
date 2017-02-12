@@ -26,7 +26,6 @@ import com.jingyuyao.tactical.view.actor.MapActor;
 import com.jingyuyao.tactical.view.marking.MarkingFactory;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -36,7 +35,7 @@ class MapMarkings {
 
   private final Actor actionActor;
   private final Batch batch;
-  private final Map<MapObject, MapActor<?>> actorMap;
+  private final MapActors mapActors;
   private final List<MapActor<?>> markedActorList;
   private final MarkingFactory markingFactory;
   private final Sprite highlightSprite;
@@ -48,14 +47,14 @@ class MapMarkings {
   MapMarkings(
       @MapMarkingsActionActor Actor actionActor,
       Batch batch,
-      Map<MapObject, MapActor<?>> actorMap,
+      MapActors mapActors,
       List<MapActor<?>> markedActorList,
       MarkingFactory markingFactory,
       @HighlightSprite Sprite highlightSprite,
       @ActivatedCharacterSprite Sprite activatedCharacterSprite) {
     this.actionActor = actionActor;
     this.batch = batch;
-    this.actorMap = actorMap;
+    this.mapActors = mapActors;
     this.markedActorList = markedActorList;
     this.markingFactory = markingFactory;
     this.highlightSprite = highlightSprite;
@@ -64,22 +63,22 @@ class MapMarkings {
 
   @Subscribe
   public void selectPlayer(SelectPlayer selectPlayer) {
-    selectedActor = actorMap.get(selectPlayer.getObject());
+    selectedActor = mapActors.get(selectPlayer.getObject());
   }
 
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
-    selectedActor = actorMap.get(selectEnemy.getObject());
+    selectedActor = mapActors.get(selectEnemy.getObject());
   }
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    selectedActor = actorMap.get(selectTerrain.getObject());
+    selectedActor = mapActors.get(selectTerrain.getObject());
   }
 
   @Subscribe
   public void playerState(PlayerState playerState) {
-    activatedActor = actorMap.get(playerState.getPlayer());
+    activatedActor = mapActors.get(playerState.getPlayer());
   }
 
   @Subscribe
@@ -101,7 +100,7 @@ class MapMarkings {
 
   @Subscribe
   public void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    activatedActor = actorMap.get(activatedEnemy.getObject());
+    activatedActor = mapActors.get(activatedEnemy.getObject());
   }
 
   @Subscribe
@@ -168,7 +167,7 @@ class MapMarkings {
 
   private void show(Multimap<MapObject, Sprite> multimap) {
     for (Entry<MapObject, Collection<Sprite>> entry : multimap.asMap().entrySet()) {
-      MapActor actor = actorMap.get(entry.getKey());
+      MapActor actor = mapActors.get(entry.getKey());
       for (Sprite sprite : entry.getValue()) {
         actor.addMarker(sprite);
       }

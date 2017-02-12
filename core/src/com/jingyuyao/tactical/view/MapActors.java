@@ -81,6 +81,10 @@ class MapActors {
     actor.remove();
   }
 
+  public MapActor get(MapObject object) {
+    return actorMap.get(object);
+  }
+
   void act(float delta) {
     stage.act(delta);
   }
