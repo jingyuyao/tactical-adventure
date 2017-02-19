@@ -21,8 +21,7 @@ import javax.inject.Singleton;
 @Singleton
 public class MapLoader {
 
-  private static final String TERRAIN_LAYER = "terrain";
-
+  private final DataConfig dataConfig;
   private final Model model;
   private final Provider<Waiting> waitingProvider;
   private final Gson gson;
@@ -32,12 +31,14 @@ public class MapLoader {
 
   @Inject
   MapLoader(
+      DataConfig dataConfig,
       Model model,
       Provider<Waiting> waitingProvider,
       Gson gson,
       AssetManager assetManager,
       OrthogonalTiledMapRenderer mapRenderer,
       TerrainLoader terrainLoader) {
+    this.dataConfig = dataConfig;
     this.model = model;
     this.waitingProvider = waitingProvider;
     this.gson = gson;
@@ -51,7 +52,8 @@ public class MapLoader {
     assetManager.finishLoading();
     TiledMap tiledMap = assetManager.get(mapName + ".tmx", TiledMap.class);
 
-    TiledMapTileLayer terrainLayer = (TiledMapTileLayer) tiledMap.getLayers().get(TERRAIN_LAYER);
+    TiledMapTileLayer terrainLayer =
+        (TiledMapTileLayer) tiledMap.getLayers().get(dataConfig.getTerrainLayerKey());
     Preconditions.checkNotNull(terrainLayer);
 
     int height = terrainLayer.getHeight();

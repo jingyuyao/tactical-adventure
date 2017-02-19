@@ -13,12 +13,12 @@ import javax.inject.Singleton;
 @Singleton
 class TerrainLoader {
 
-  private static final String TERRAIN_TYPE_KEY = "type";
-
+  private final DataConfig dataConfig;
   private final TerrainFactory terrainFactory;
 
   @Inject
-  TerrainLoader(TerrainFactory terrainFactory) {
+  TerrainLoader(DataConfig dataConfig, TerrainFactory terrainFactory) {
+    this.dataConfig = dataConfig;
     this.terrainFactory = terrainFactory;
   }
 
@@ -37,8 +37,8 @@ class TerrainLoader {
     Coordinate coordinate = new Coordinate(x, y);
 
     MapProperties tileProperties = cell.getTile().getProperties();
-    if (tileProperties.containsKey(TERRAIN_TYPE_KEY)) {
-      String type = tileProperties.get(TERRAIN_TYPE_KEY, String.class);
+    if (tileProperties.containsKey(dataConfig.getTerrainTypeKey())) {
+      String type = tileProperties.get(dataConfig.getTerrainTypeKey(), String.class);
       switch (type) {
         case "OBSTRUCTED":
           return terrainFactory.createObstructed(coordinate);
