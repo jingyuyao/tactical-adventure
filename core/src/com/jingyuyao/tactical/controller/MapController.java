@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.view.ViewModule.MapActorsStage;
-import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
+import com.jingyuyao.tactical.view.ui.UIModule.MapUIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

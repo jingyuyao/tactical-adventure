@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class CharacterInfo extends VerticalGroup {
+class CharacterInfo extends VerticalGroup {
 
   private final Skin skin;
   private Character current;
@@ -26,14 +26,14 @@ public class CharacterInfo extends VerticalGroup {
     current = null;
   }
 
-  public void display(Character character) {
+  void display(Character character) {
     clear();
     addActor(new Label(character.getName(), skin));
     addActor(new Label(String.format(Locale.US, "HP: %d", character.getHp()), skin));
     current = character;
   }
 
-  public void refresh() {
+  void refresh() {
     if (current != null) {
       display(current);
     }

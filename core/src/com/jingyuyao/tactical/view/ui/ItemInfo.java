@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class ItemInfo extends VerticalGroup {
+class ItemInfo extends VerticalGroup {
 
   private final Skin skin;
   private Item current;
@@ -27,7 +27,7 @@ public class ItemInfo extends VerticalGroup {
     current = null;
   }
 
-  public void display(Item item) {
+  void display(Item item) {
     clear();
     Label label = new Label(getLabelString(item), skin);
     label.setAlignment(Align.left);
@@ -35,7 +35,7 @@ public class ItemInfo extends VerticalGroup {
     current = item;
   }
 
-  public void refresh() {
+  void refresh() {
     if (current != null) {
       display(current);
     }

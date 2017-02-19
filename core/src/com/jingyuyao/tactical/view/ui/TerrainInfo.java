@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class TerrainInfo extends VerticalGroup {
+class TerrainInfo extends VerticalGroup {
 
   private final Skin skin;
 
@@ -19,7 +19,7 @@ public class TerrainInfo extends VerticalGroup {
     columnRight();
   }
 
-  public void display(Terrain terrain) {
+  void display(Terrain terrain) {
     clear();
     addActor(new Label(terrain.getClass().getSimpleName(), skin));
     addActor(

@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class RootTable extends Table {
+class RootTable extends Table {
 
   @Inject
   RootTable(

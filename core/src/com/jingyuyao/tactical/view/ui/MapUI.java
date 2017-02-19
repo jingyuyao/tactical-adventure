@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.Subscribe;
@@ -12,16 +12,12 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
-import com.jingyuyao.tactical.view.ViewModule.MapUIStage;
-import com.jingyuyao.tactical.view.ui.ActionGroup;
-import com.jingyuyao.tactical.view.ui.CharacterInfo;
-import com.jingyuyao.tactical.view.ui.ItemInfo;
-import com.jingyuyao.tactical.view.ui.TerrainInfo;
+import com.jingyuyao.tactical.view.ui.UIModule.MapUIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class MapUI {
+public class MapUI {
 
   private final Stage stage;
   private final ActionGroup actionGroup;
@@ -98,20 +94,20 @@ class MapUI {
     actionGroup.clear();
   }
 
-  void act(float delta) {
+  public void act(float delta) {
     stage.act(delta);
   }
 
-  void draw() {
+  public void draw() {
     stage.getViewport().apply();
     stage.draw();
   }
 
-  void resize(int width, int height) {
+  public void resize(int width, int height) {
     stage.getViewport().update(width, height);
   }
 
-  void dispose() {
+  public void dispose() {
     stage.dispose();
   }
 }
