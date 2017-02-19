@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 
-public class TerrainActor extends MapActor<Terrain> {
+public class TerrainActor extends WorldActor<Terrain> {
 
   @Inject
   TerrainActor(

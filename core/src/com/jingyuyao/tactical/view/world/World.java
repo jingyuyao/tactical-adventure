@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import java.util.Map;
 import javax.inject.Inject;
@@ -34,7 +34,7 @@ public class World {
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
   private final Map<String, Sprite> nameSpriteMap;
-  private final Map<MapObject, MapActor<?>> actorMap;
+  private final Map<MapObject, WorldActor<?>> actorMap;
 
   /**
    * A map view contains a stage with all the actors and a way to render them. The background map is
@@ -47,7 +47,7 @@ public class World {
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
       Map<String, Sprite> nameSpriteMap,
-      Map<MapObject, MapActor<?>> actorMap) {
+      Map<MapObject, WorldActor<?>> actorMap) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
@@ -76,12 +76,12 @@ public class World {
 
   @Subscribe
   public void removeObject(RemoveObject removeObject) {
-    MapActor actor = actorMap.remove(removeObject.getObject());
+    WorldActor actor = actorMap.remove(removeObject.getObject());
     Preconditions.checkNotNull(actor);
     actor.remove();
   }
 
-  public MapActor get(MapObject object) {
+  public WorldActor get(MapObject object) {
     return actorMap.get(object);
   }
 
@@ -105,7 +105,7 @@ public class World {
     stage.dispose();
   }
 
-  private void addActor(MapObject object, MapActor<?> actor) {
+  private void addActor(MapObject object, WorldActor<?> actor) {
     actor.addListener(controllerFactory.create(object));
     stage.addActor(actor);
     actorMap.put(object, actor);

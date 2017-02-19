@@ -19,10 +19,11 @@ import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
-import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.marking.MarkingModule.ActivatedCharacterSprite;
 import com.jingyuyao.tactical.view.marking.MarkingModule.HighlightSprite;
-import com.jingyuyao.tactical.view.marking.MarkingModule.MapMarkingsActionActor;
+import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
+import com.jingyuyao.tactical.view.marking.MarkingModule.WorldMarkingsActor;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.Collection;
 import java.util.List;
@@ -36,19 +37,19 @@ public class WorldMarkings {
   private final Actor actionActor;
   private final Batch batch;
   private final World world;
-  private final List<MapActor<?>> markedActorList;
+  private final List<WorldActor<?>> markedActorList;
   private final MarkingFactory markingFactory;
   private final Sprite highlightSprite;
   private final Sprite activatedCharacterSprite;
-  private MapActor selectedActor;
-  private MapActor activatedActor;
+  private WorldActor selectedActor;
+  private WorldActor activatedActor;
 
   @Inject
   WorldMarkings(
-      @MapMarkingsActionActor Actor actionActor,
+      @WorldMarkingsActor Actor actionActor,
       Batch batch,
       World world,
-      List<MapActor<?>> markedActorList,
+      @MarkedActors List<WorldActor<?>> markedActorList,
       MarkingFactory markingFactory,
       @HighlightSprite Sprite highlightSprite,
       @ActivatedCharacterSprite Sprite activatedCharacterSprite) {
@@ -167,7 +168,7 @@ public class WorldMarkings {
 
   private void show(Multimap<MapObject, Sprite> multimap) {
     for (Entry<MapObject, Collection<Sprite>> entry : multimap.asMap().entrySet()) {
-      MapActor actor = world.get(entry.getKey());
+      WorldActor actor = world.get(entry.getKey());
       for (Sprite sprite : entry.getValue()) {
         actor.addMarker(sprite);
       }
@@ -176,7 +177,7 @@ public class WorldMarkings {
   }
 
   private void clearMarked() {
-    for (MapActor actor : markedActorList) {
+    for (WorldActor actor : markedActorList) {
       actor.clearMarkers();
     }
     markedActorList.clear();

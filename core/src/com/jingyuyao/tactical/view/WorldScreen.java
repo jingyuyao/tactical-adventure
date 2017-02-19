@@ -5,7 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.controller.MapController;
+import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.WorldMarkings;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.World;
@@ -19,7 +19,7 @@ public class WorldScreen extends ScreenAdapter {
   private final WorldMarkings worldMarkings;
   private final WorldUI worldUI;
   private final Batch batch;
-  private final MapController mapController;
+  private final WorldController worldController;
 
   @Inject
   WorldScreen(
@@ -27,12 +27,12 @@ public class WorldScreen extends ScreenAdapter {
       WorldMarkings worldMarkings,
       WorldUI worldUI,
       Batch batch,
-      MapController mapController) {
+      WorldController worldController) {
     this.world = world;
     this.worldMarkings = worldMarkings;
     this.worldUI = worldUI;
     this.batch = batch;
-    this.mapController = mapController;
+    this.worldController = worldController;
   }
 
   public void registerListeners(EventBus eventBus) {
@@ -43,12 +43,12 @@ public class WorldScreen extends ScreenAdapter {
 
   @Override
   public void show() {
-    mapController.receiveInput();
+    worldController.receiveInput();
   }
 
   @Override
   public void hide() {
-    mapController.stopReceivingInput();
+    worldController.stopReceivingInput();
   }
 
   @Override

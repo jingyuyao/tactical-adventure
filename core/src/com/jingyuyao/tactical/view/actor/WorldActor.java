@@ -11,12 +11,12 @@ import java.util.LinkedHashSet;
  * <p>Invariants: - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code
  * mapObject.getY()} after animations
  */
-public class MapActor<T extends MapObject> extends Actor {
+public class WorldActor<T extends MapObject> extends Actor {
 
   private final T object;
   private final LinkedHashSet<Sprite> markers;
 
-  MapActor(T object, float size, LinkedHashSet<Sprite> markers) {
+  WorldActor(T object, float size, LinkedHashSet<Sprite> markers) {
     this.object = object;
     this.markers = markers;
     Coordinate coordinate = object.getCoordinate();

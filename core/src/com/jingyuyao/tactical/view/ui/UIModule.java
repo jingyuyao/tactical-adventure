@@ -39,8 +39,8 @@ public class UIModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapUIStage
-  Stage provideMapUIStage(@MapUIViewport Viewport viewport, Batch batch, RootTable rootTable) {
+  @WorldUIStage
+  Stage provideWorldUIStage(@WorldUIViewport Viewport viewport, Batch batch, RootTable rootTable) {
     Stage stage = new Stage(viewport, batch);
     stage.addActor(rootTable);
     return stage;
@@ -48,22 +48,22 @@ public class UIModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapUIViewport
-  Viewport provideMapUIViewport(UIConfig uiConfig) {
+  @WorldUIViewport
+  Viewport provideWorldUIViewport(UIConfig uiConfig) {
     return new StretchViewport(uiConfig.getUIViewportWidth(), uiConfig.getUIViewportHeight());
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapUIStage {
+  public @interface WorldUIStage {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MapUIViewport {
+  @interface WorldUIViewport {
 
   }
 }

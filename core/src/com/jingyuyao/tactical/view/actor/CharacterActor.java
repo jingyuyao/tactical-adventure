@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import java.util.LinkedHashSet;
 
-class CharacterActor<T extends Character> extends MapActor<T> {
+class CharacterActor<T extends Character> extends WorldActor<T> {
 
   private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
 

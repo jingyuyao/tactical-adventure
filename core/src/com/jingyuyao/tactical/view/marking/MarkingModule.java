@@ -16,7 +16,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.world.World;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -89,14 +89,15 @@ public class MarkingModule extends AbstractModule {
 
   @Provides
   @Singleton
-  List<MapActor<?>> provideMarkedActorList() {
+  @MarkedActors
+  List<WorldActor<?>> provideMarkedActors() {
     return new LinkedList<>();
   }
 
   @Provides
   @Singleton
-  @MapMarkingsActionActor
-  Actor provideMapMarkingsActionActor() {
+  @WorldMarkingsActor
+  Actor provideWorldMarkingsActor() {
     return new Actor();
   }
 
@@ -152,7 +153,14 @@ public class MarkingModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MapMarkingsActionActor {
+  @interface MarkedActors {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface WorldMarkingsActor {
 
   }
 }

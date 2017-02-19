@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
-import com.jingyuyao.tactical.view.ui.UIModule.MapUIStage;
+import com.jingyuyao.tactical.view.ui.UIModule.WorldUIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -28,7 +28,7 @@ public class WorldUI {
 
   @Inject
   WorldUI(
-      @MapUIStage Stage stage,
+      @WorldUIStage Stage stage,
       ActionGroup actionGroup,
       CharacterPanel characterPanel,
       TerrainPanel terrainPanel,

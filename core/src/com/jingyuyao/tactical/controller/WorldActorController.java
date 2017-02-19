@@ -7,14 +7,14 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.MapState;
 import javax.inject.Inject;
 
-public class MapActorController extends InputListener {
+public class WorldActorController extends InputListener {
 
   private final CameraController cameraController;
   private final MapState mapState;
   private final MapObject object;
 
   @Inject
-  MapActorController(
+  WorldActorController(
       MapState mapState, CameraController cameraController, @Assisted MapObject object) {
     this.cameraController = cameraController;
     this.mapState = mapState;

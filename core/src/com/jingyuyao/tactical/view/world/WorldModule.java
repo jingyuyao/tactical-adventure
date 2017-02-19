@@ -17,7 +17,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.actor.WorldActor;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Map<MapObject, MapActor<?>> provideActorMap() {
+  Map<MapObject, WorldActor<?>> provideActorMap() {
     return new HashMap<>();
   }
 
