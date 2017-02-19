@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.view.ui;
 
-import static com.jingyuyao.tactical.view.ViewModule.WORLD_HEIGHT;
-import static com.jingyuyao.tactical.view.ViewModule.WORLD_WIDTH;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -17,6 +15,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
+import com.jingyuyao.tactical.view.actor.ActorModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -52,7 +51,9 @@ public class UIModule extends AbstractModule {
   @Singleton
   @MapUIViewport
   Viewport provideMapUIViewport() {
-    return new StretchViewport(WORLD_WIDTH * UI_WORLD_SCALE, WORLD_HEIGHT * UI_WORLD_SCALE);
+    return new StretchViewport(
+        ActorModule.WORLD_WIDTH * UI_WORLD_SCALE,
+        ActorModule.WORLD_HEIGHT * UI_WORLD_SCALE);
   }
 
 

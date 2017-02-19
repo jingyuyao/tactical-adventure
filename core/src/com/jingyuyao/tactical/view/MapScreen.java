@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.MapController;
+import com.jingyuyao.tactical.view.actor.MapActors;
 import com.jingyuyao.tactical.view.marking.MapMarkings;
 import com.jingyuyao.tactical.view.ui.MapUI;
 import javax.inject.Inject;

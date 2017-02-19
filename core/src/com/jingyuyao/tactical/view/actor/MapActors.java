@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,9 +15,7 @@ import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.ViewModule.MapActorsStage;
-import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.MapActor;
+import com.jingyuyao.tactical.view.actor.ActorModule.MapActorsStage;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -85,23 +83,23 @@ public class MapActors {
     return actorMap.get(object);
   }
 
-  void act(float delta) {
+  public void act(float delta) {
     stage.act(delta);
   }
 
-  void draw() {
+  public void draw() {
     stage.getViewport().apply();
     mapRenderer.setView((OrthographicCamera) stage.getCamera());
     mapRenderer.render();
     stage.draw();
   }
 
-  void resize(int width, int height) {
+  public void resize(int width, int height) {
     // TODO: update camera so we don't show black bars
     stage.getViewport().update(width, height);
   }
 
-  void dispose() {
+  public void dispose() {
     stage.dispose();
   }
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.view.ViewModule.MapActorsViewport;
+import com.jingyuyao.tactical.view.actor.ActorModule.MapActorsViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
