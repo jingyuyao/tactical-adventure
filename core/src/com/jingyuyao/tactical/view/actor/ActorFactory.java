@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world;
+package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.model.character.Enemy;

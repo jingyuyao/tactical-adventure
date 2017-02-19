@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.jingyuyao.tactical.view.actor.WorldModule.MapActorsStage;
 import com.jingyuyao.tactical.view.ui.UIModule.MapUIStage;
-import com.jingyuyao.tactical.view.world.WorldModule.MapActorsStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

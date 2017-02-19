@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world;
+package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.world.WorldModule.MapActorsStage;
+import com.jingyuyao.tactical.view.actor.WorldModule.MapActorsStage;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;

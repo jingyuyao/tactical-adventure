@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.MapController;
+import com.jingyuyao.tactical.view.actor.World;
 import com.jingyuyao.tactical.view.marking.WorldMarkings;
 import com.jingyuyao.tactical.view.ui.WorldUI;
-import com.jingyuyao.tactical.view.world.World;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

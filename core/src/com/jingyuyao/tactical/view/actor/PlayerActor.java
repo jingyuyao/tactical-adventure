@@ -1,12 +1,12 @@
-package com.jingyuyao.tactical.view.world;
+package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.view.world.WorldModule.ActorSize;
-import com.jingyuyao.tactical.view.world.WorldModule.InitialMarkers;
+import com.jingyuyao.tactical.view.actor.WorldModule.ActorSize;
+import com.jingyuyao.tactical.view.actor.WorldModule.InitialMarkers;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 
