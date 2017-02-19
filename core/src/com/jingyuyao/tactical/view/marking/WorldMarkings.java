@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapMarkings {
+public class WorldMarkings {
 
   private final Actor actionActor;
   private final Batch batch;
@@ -44,7 +44,7 @@ public class MapMarkings {
   private MapActor activatedActor;
 
   @Inject
-  MapMarkings(
+  WorldMarkings(
       @MapMarkingsActionActor Actor actionActor,
       Batch batch,
       World world,
