@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.view.marking;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,11 +19,11 @@ import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
-import com.jingyuyao.tactical.view.ViewModule.ActivatedCharacterSprite;
-import com.jingyuyao.tactical.view.ViewModule.HighlightSprite;
-import com.jingyuyao.tactical.view.ViewModule.MapMarkingsActionActor;
+import com.jingyuyao.tactical.view.MapActors;
 import com.jingyuyao.tactical.view.actor.MapActor;
-import com.jingyuyao.tactical.view.marking.MarkingFactory;
+import com.jingyuyao.tactical.view.marking.MarkingModule.ActivatedCharacterSprite;
+import com.jingyuyao.tactical.view.marking.MarkingModule.HighlightSprite;
+import com.jingyuyao.tactical.view.marking.MarkingModule.MapMarkingsActionActor;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class MapMarkings {
+public class MapMarkings {
 
   private final Actor actionActor;
   private final Batch batch;
@@ -144,11 +144,11 @@ class MapMarkings {
     actionActor.addAction(sequence);
   }
 
-  void act(float delta) {
+  public void act(float delta) {
     actionActor.act(delta);
   }
 
-  void draw() {
+  public void draw() {
     batch.begin();
     if (selectedActor != null) {
       highlightSprite.setBounds(

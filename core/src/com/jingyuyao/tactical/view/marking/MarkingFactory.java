@@ -16,7 +16,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 @Singleton
-public class MarkingFactory {
+class MarkingFactory {
 
   private final Provider<Multimap<MapObject, Sprite>> backingMapProvider;
   private final Sprite moveSprite;
@@ -38,7 +38,7 @@ public class MarkingFactory {
     this.hitSprite = hitSprite;
   }
 
-  public Multimap<MapObject, Sprite> createMovement(Movement movement) {
+  Multimap<MapObject, Sprite> createMovement(Movement movement) {
     Multimap<MapObject, Sprite> multimap = backingMapProvider.get();
     for (Terrain terrain : movement.getTerrains()) {
       multimap.put(terrain, moveSprite);
@@ -46,7 +46,7 @@ public class MarkingFactory {
     return multimap;
   }
 
-  public Multimap<MapObject, Sprite> createTarget(Target target) {
+  Multimap<MapObject, Sprite> createTarget(Target target) {
     Multimap<MapObject, Sprite> multimap = backingMapProvider.get();
     for (Terrain terrain : target.getTargetTerrains()) {
       multimap.put(terrain, attackSprite);
@@ -57,7 +57,7 @@ public class MarkingFactory {
     return multimap;
   }
 
-  public Multimap<MapObject, Sprite> createHit(Target target) {
+  Multimap<MapObject, Sprite> createHit(Target target) {
     Multimap<MapObject, Sprite> multimap = backingMapProvider.get();
     for (MapObject object : target.getHitObjects()) {
       multimap.put(object, hitSprite);

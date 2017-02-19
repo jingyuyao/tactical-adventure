@@ -27,7 +27,7 @@ import javax.inject.Singleton;
  * grid).
  */
 @Singleton
-class MapActors {
+public class MapActors {
 
   private final Stage stage;
   private final OrthogonalTiledMapRenderer mapRenderer;
