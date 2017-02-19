@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 
-interface ActorFactory {
+public interface ActorFactory {
 
   TerrainActor create(Terrain terrain);
 

@@ -7,6 +7,7 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.marking.MarkingModule;
 import com.jingyuyao.tactical.view.ui.UIModule;
+import com.jingyuyao.tactical.view.world.WorldModule;
 import javax.inject.Singleton;
 
 public class ViewModule extends AbstractModule {
@@ -16,6 +17,7 @@ public class ViewModule extends AbstractModule {
     install(new ActorModule());
     install(new MarkingModule());
     install(new UIModule());
+    install(new WorldModule());
   }
 
   @Provides

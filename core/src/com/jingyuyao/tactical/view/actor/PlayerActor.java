@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 
-class PlayerActor extends CharacterActor<Player> {
+public class PlayerActor extends CharacterActor<Player> {
 
   @Inject
   PlayerActor(
