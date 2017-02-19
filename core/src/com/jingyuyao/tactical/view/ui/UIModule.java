@@ -15,7 +15,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.view.world.ActorModule;
+import com.jingyuyao.tactical.view.world.WorldModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -52,8 +52,8 @@ public class UIModule extends AbstractModule {
   @MapUIViewport
   Viewport provideMapUIViewport() {
     return new StretchViewport(
-        ActorModule.WORLD_WIDTH * UI_WORLD_SCALE,
-        ActorModule.WORLD_HEIGHT * UI_WORLD_SCALE);
+        WorldModule.WORLD_WIDTH * UI_WORLD_SCALE,
+        WorldModule.WORLD_HEIGHT * UI_WORLD_SCALE);
   }
 
 

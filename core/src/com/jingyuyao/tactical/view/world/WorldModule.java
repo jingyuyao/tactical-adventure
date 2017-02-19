@@ -26,7 +26,7 @@ import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-public class ActorModule extends AbstractModule {
+public class WorldModule extends AbstractModule {
 
   public static final int WORLD_WIDTH = 16;
   public static final int WORLD_HEIGHT = 9;
@@ -86,15 +86,15 @@ public class ActorModule extends AbstractModule {
   }
 
   @Provides
-  @ActorWorldSize
-  float provideActorWorldSize() {
+  @ActorSize
+  float provideActorSize() {
     return 1f;
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface ActorWorldSize {
+  public @interface ActorSize {
 
   }
 

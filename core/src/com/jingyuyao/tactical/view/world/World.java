@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.world.WorldModule.MapActorsStage;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,7 +40,7 @@ public class World {
    */
   @Inject
   World(
-      @ActorModule.MapActorsStage Stage stage,
+      @MapActorsStage Stage stage,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
