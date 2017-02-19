@@ -1,10 +1,10 @@
-package com.jingyuyao.tactical.view.actor;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.actor.ActorModule.ActorWorldSize;
-import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
+import com.jingyuyao.tactical.view.world.ActorModule.ActorWorldSize;
+import com.jingyuyao.tactical.view.world.ActorModule.InitialMarkers;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 

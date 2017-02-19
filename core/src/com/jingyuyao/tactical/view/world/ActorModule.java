@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.actor;
+package com.jingyuyao.tactical.view.world;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

@@ -1,12 +1,10 @@
-package com.jingyuyao.tactical.view.actor;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.view.actor.ActorModule.ActorWorldSize;
-import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 
@@ -15,8 +13,8 @@ class PlayerActor extends CharacterActor<Player> {
   @Inject
   PlayerActor(
       @Assisted Player object,
-      @ActorWorldSize float size,
-      @InitialMarkers LinkedHashSet<Sprite> markers,
+      @ActorModule.ActorWorldSize float size,
+      @ActorModule.InitialMarkers LinkedHashSet<Sprite> markers,
       @Assisted Sprite sprite) {
     super(object, size, markers, sprite);
   }
