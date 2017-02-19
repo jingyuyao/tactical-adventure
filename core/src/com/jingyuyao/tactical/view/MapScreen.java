@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.MapController;
 import com.jingyuyao.tactical.view.marking.MapMarkings;
-import com.jingyuyao.tactical.view.ui.MapUI;
+import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.World;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,7 +17,7 @@ public class MapScreen extends ScreenAdapter {
 
   private final World world;
   private final MapMarkings mapMarkings;
-  private final MapUI mapUI;
+  private final WorldUI worldUI;
   private final Batch batch;
   private final MapController mapController;
 
@@ -25,12 +25,12 @@ public class MapScreen extends ScreenAdapter {
   MapScreen(
       World world,
       MapMarkings mapMarkings,
-      MapUI mapUI,
+      WorldUI worldUI,
       Batch batch,
       MapController mapController) {
     this.world = world;
     this.mapMarkings = mapMarkings;
-    this.mapUI = mapUI;
+    this.worldUI = worldUI;
     this.batch = batch;
     this.mapController = mapController;
   }
@@ -38,7 +38,7 @@ public class MapScreen extends ScreenAdapter {
   public void registerListeners(EventBus eventBus) {
     eventBus.register(world);
     eventBus.register(mapMarkings);
-    eventBus.register(mapUI);
+    eventBus.register(worldUI);
   }
 
   @Override
@@ -53,27 +53,27 @@ public class MapScreen extends ScreenAdapter {
 
   @Override
   public void render(float delta) {
-    mapUI.act(delta);
+    worldUI.act(delta);
     mapMarkings.act(delta);
     world.act(delta);
 
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     world.draw();
     mapMarkings.draw();
-    mapUI.draw();
+    worldUI.draw();
   }
 
   @Override
   public void resize(int width, int height) {
     // This is very important...
     world.resize(width, height);
-    mapUI.resize(width, height);
+    worldUI.resize(width, height);
   }
 
   @Override
   public void dispose() {
     world.dispose();
-    mapUI.dispose();
+    worldUI.dispose();
     batch.dispose();
   }
 }

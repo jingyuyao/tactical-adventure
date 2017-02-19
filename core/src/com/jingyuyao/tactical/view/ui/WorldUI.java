@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapUI {
+public class WorldUI {
 
   private final Stage stage;
   private final ActionGroup actionGroup;
@@ -27,7 +27,7 @@ public class MapUI {
   private final Terrains terrains;
 
   @Inject
-  MapUI(
+  WorldUI(
       @MapUIStage Stage stage,
       ActionGroup actionGroup,
       CharacterInfo characterInfo,
