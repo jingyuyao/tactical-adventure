@@ -13,9 +13,8 @@ import javax.inject.Singleton;
 @Singleton
 class CameraController extends InputAdapter {
 
-  private static final float DRAG_SCREEN_DISTANCE_CUTOFF = 10f;
-
-  private final Viewport viewport;
+  private final ControllerConfig controllerConfig;
+  private final Viewport worldViewport;
   private final Terrains terrains;
   private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
@@ -23,8 +22,10 @@ class CameraController extends InputAdapter {
   private boolean dragged = false;
 
   @Inject
-  CameraController(@WorldViewport Viewport viewport, Terrains terrains) {
-    this.viewport = viewport;
+  CameraController(
+      ControllerConfig controllerConfig, @WorldViewport Viewport worldViewport, Terrains terrains) {
+    this.controllerConfig = controllerConfig;
+    this.worldViewport = worldViewport;
     this.terrains = terrains;
   }
 
@@ -40,22 +41,22 @@ class CameraController extends InputAdapter {
   @Override
   public boolean touchDragged(int screenX, int screenY, int pointer) {
     if (lastPointer == pointer) {
-      float horizontalScale = viewport.getWorldWidth() / viewport.getScreenWidth();
-      float verticalScale = viewport.getWorldHeight() / viewport.getScreenHeight();
+      float horizontalScale = worldViewport.getWorldWidth() / worldViewport.getScreenWidth();
+      float verticalScale = worldViewport.getWorldHeight() / worldViewport.getScreenHeight();
 
       float deltaWorldX = (screenX - lastTouch.x) * horizontalScale;
       float deltaWorldY = (screenY - lastTouch.y) * verticalScale;
 
-      Camera camera = viewport.getCamera();
+      Camera camera = worldViewport.getCamera();
       Vector3 cameraPosition = camera.position;
 
       // world is y-up, screen is y-down
       float unboundedNewWorldX = cameraPosition.x - deltaWorldX;
       float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
 
-      float lowerXBound = viewport.getWorldWidth() / 2f;
+      float lowerXBound = worldViewport.getWorldWidth() / 2f;
       float upperXBound = terrains.getWidth() - lowerXBound;
-      float lowerYBound = viewport.getWorldHeight() / 2f;
+      float lowerYBound = worldViewport.getWorldHeight() / 2f;
       float upperYBound = terrains.getHeight() - lowerYBound;
 
       float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
@@ -81,7 +82,7 @@ class CameraController extends InputAdapter {
     // once the touch has moved a certain distanced away it is considered dragged even if it moves
     // back to the original position.
     if (!dragged) {
-      dragged = initialTouch.dst(lastTouch) > DRAG_SCREEN_DISTANCE_CUTOFF;
+      dragged = initialTouch.dst(lastTouch) > controllerConfig.getDragScreenCutoff();
     }
   }
 
