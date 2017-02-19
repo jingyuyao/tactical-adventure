@@ -9,12 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class TerrainInfo extends VerticalGroup {
+class TerrainPanel extends VerticalGroup {
 
   private final Skin skin;
 
   @Inject
-  TerrainInfo(Skin skin) {
+  TerrainPanel(Skin skin) {
     this.skin = skin;
     columnRight();
   }

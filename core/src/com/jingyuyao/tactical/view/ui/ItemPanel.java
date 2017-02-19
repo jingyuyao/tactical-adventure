@@ -10,13 +10,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class ItemInfo extends VerticalGroup {
+class ItemPanel extends VerticalGroup {
 
   private final Skin skin;
   private Item current;
 
   @Inject
-  ItemInfo(Skin skin) {
+  ItemPanel(Skin skin) {
     this.skin = skin;
     columnLeft();
   }

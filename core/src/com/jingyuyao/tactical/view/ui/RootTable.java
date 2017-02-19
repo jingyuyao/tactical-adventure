@@ -10,24 +10,24 @@ class RootTable extends Table {
   @Inject
   RootTable(
       ActionGroup actionGroup,
-      CharacterInfo characterInfo,
-      TerrainInfo terrainInfo,
-      ItemInfo itemInfo) {
+      CharacterPanel characterPanel,
+      TerrainPanel terrainPanel,
+      ItemPanel itemPanel) {
     setDebug(true);
     setFillParent(true);
     pad(10);
 
     Table left = new Table().debug();
     left.defaults().top().left();
-    left.add(itemInfo).expand();
+    left.add(itemPanel).expand();
 
     Table mid = new Table().debug();
 
     Table right = new Table().debug();
     right.defaults().top().right();
-    right.add(characterInfo);
+    right.add(characterPanel);
     right.row();
-    right.add(terrainInfo);
+    right.add(terrainPanel);
     right.row();
     right.add(actionGroup).bottom().expand();
 

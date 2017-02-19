@@ -9,13 +9,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterInfo extends VerticalGroup {
+class CharacterPanel extends VerticalGroup {
 
   private final Skin skin;
   private Character current;
 
   @Inject
-  CharacterInfo(Skin skin) {
+  CharacterPanel(Skin skin) {
     this.skin = skin;
     columnRight();
   }
