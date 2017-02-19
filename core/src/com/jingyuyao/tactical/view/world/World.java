@@ -17,6 +17,8 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.WorldActor;
+import com.jingyuyao.tactical.view.world.WorldModule.BackingActorMap;
+import com.jingyuyao.tactical.view.world.WorldModule.CharacterSprites;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import java.util.Map;
 import javax.inject.Inject;
@@ -46,8 +48,8 @@ public class World {
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
-      Map<String, Sprite> nameSpriteMap,
-      Map<MapObject, WorldActor<?>> actorMap) {
+      @CharacterSprites Map<String, Sprite> nameSpriteMap,
+      @BackingActorMap Map<MapObject, WorldActor<?>> actorMap) {
     this.stage = stage;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;

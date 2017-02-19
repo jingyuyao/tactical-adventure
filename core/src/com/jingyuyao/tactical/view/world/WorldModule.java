@@ -35,12 +35,6 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Map<MapObject, WorldActor<?>> provideActorMap() {
-    return new HashMap<>();
-  }
-
-  @Provides
-  @Singleton
   @WorldStage
   Stage provideWorldStage(@WorldViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
@@ -62,9 +56,16 @@ public class WorldModule extends AbstractModule {
     return new OrthogonalTiledMapRenderer(null, worldConfig.getTileToWorldScale(), batch);
   }
 
+  @Provides
+  @Singleton
+  @BackingActorMap
+  Map<MapObject, WorldActor<?>> provideActorMap() {
+    return new HashMap<>();
+  }
 
   @Provides
   @Singleton
+  @CharacterSprites
   Map<String, Sprite> provideNameSpriteMap(AssetManager assetManager) {
     Map<String, Sprite> nameSpriteMap = new HashMap<>();
     nameSpriteMap.put("jingyu", new Sprite(assetManager.get(AssetModule.JINGYU, Texture.class)));
@@ -86,6 +87,20 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingActorMap {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface CharacterSprites {
 
   }
 }
