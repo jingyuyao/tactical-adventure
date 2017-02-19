@@ -18,6 +18,7 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.view.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -28,13 +29,11 @@ import javax.inject.Singleton;
 
 public class WorldModule extends AbstractModule {
 
-  public static final int WORLD_WIDTH = 16;
-  public static final int WORLD_HEIGHT = 9;
-  private static final int TILE_SIZE = 32; // pixels
-  private static final float TILE_TO_WORLD_SCALE = 1f / TILE_SIZE;
-
   @Override
   protected void configure() {
+    requireBinding(AssetManager.class);
+    requireBinding(WorldConfig.class);
+
     install(new FactoryModuleBuilder().build(ActorFactory.class));
   }
 
@@ -54,8 +53,8 @@ public class WorldModule extends AbstractModule {
   @Provides
   @Singleton
   @MapActorsViewport
-  Viewport provideMapActorsViewport() {
-    return new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT);
+  Viewport provideMapActorsViewport(WorldConfig worldConfig) {
+    return new ExtendViewport(worldConfig.getWorldWidth(), worldConfig.getWorldHeight());
   }
 
   /**
@@ -63,8 +62,8 @@ public class WorldModule extends AbstractModule {
    */
   @Provides
   @Singleton
-  OrthogonalTiledMapRenderer provideTiledMapRenderer(Batch batch) {
-    return new OrthogonalTiledMapRenderer(null, TILE_TO_WORLD_SCALE, batch);
+  OrthogonalTiledMapRenderer provideTiledMapRenderer(Batch batch, WorldConfig worldConfig) {
+    return new OrthogonalTiledMapRenderer(null, worldConfig.getTileToWorldScale(), batch);
   }
 
   @Provides
@@ -87,14 +86,14 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @ActorSize
-  float provideActorSize() {
-    return 1f;
+  float provideActorSize(WorldConfig worldConfig) {
+    return worldConfig.getActorSize();
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface ActorSize {
+  @interface ActorSize {
 
   }
 

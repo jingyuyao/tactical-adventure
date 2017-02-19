@@ -15,7 +15,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.view.world.WorldModule;
+import com.jingyuyao.tactical.view.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -23,11 +23,10 @@ import javax.inject.Singleton;
 
 public class UIModule extends AbstractModule {
 
-  private static final int UI_WORLD_SCALE = 50;
-
   @Override
   protected void configure() {
     requireBinding(AssetManager.class);
+    requireBinding(WorldConfig.class);
 
     install(new FactoryModuleBuilder().build(UIFactory.class));
   }
@@ -50,10 +49,10 @@ public class UIModule extends AbstractModule {
   @Provides
   @Singleton
   @MapUIViewport
-  Viewport provideMapUIViewport() {
+  Viewport provideMapUIViewport(WorldConfig worldConfig) {
     return new StretchViewport(
-        WorldModule.WORLD_WIDTH * UI_WORLD_SCALE,
-        WorldModule.WORLD_HEIGHT * UI_WORLD_SCALE);
+        worldConfig.getWorldWidth() * worldConfig.getUIScale(),
+        worldConfig.getWorldHeight() * worldConfig.getUIScale());
   }
 
 
