@@ -15,7 +15,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.view.WorldConfig;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -49,12 +49,9 @@ public class UIModule extends AbstractModule {
   @Provides
   @Singleton
   @MapUIViewport
-  Viewport provideMapUIViewport(WorldConfig worldConfig) {
-    return new StretchViewport(
-        worldConfig.getWorldWidth() * worldConfig.getUIScale(),
-        worldConfig.getWorldHeight() * worldConfig.getUIScale());
+  Viewport provideMapUIViewport(UIConfig uiConfig) {
+    return new StretchViewport(uiConfig.getUIViewportWidth(), uiConfig.getUIViewportHeight());
   }
-
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})

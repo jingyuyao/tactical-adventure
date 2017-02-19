@@ -17,7 +17,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.view.WorldConfig;
 import com.jingyuyao.tactical.view.actor.MapActor;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -31,7 +30,7 @@ public class WorldModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(AssetManager.class);
-    requireBinding(WorldConfig.class);
+    requireBinding(Batch.class);
   }
 
   @Provides

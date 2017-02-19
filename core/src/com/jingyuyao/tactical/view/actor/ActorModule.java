@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.jingyuyao.tactical.view.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.LinkedHashSet;
@@ -19,8 +18,6 @@ public class ActorModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(WorldConfig.class);
-
     install(new FactoryModuleBuilder().build(ActorFactory.class));
   }
 
@@ -32,8 +29,8 @@ public class ActorModule extends AbstractModule {
 
   @Provides
   @ActorSize
-  float provideActorSize(WorldConfig worldConfig) {
-    return worldConfig.getActorSize();
+  float provideActorSize(ActorConfig actorConfig) {
+    return actorConfig.getActorSize();
   }
 
   @Qualifier

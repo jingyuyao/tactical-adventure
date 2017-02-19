@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.view.world;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,19 +19,11 @@ public class WorldConfig {
     return 9;
   }
 
-  public float getActorSize() {
-    return 1f;
-  }
-
-  public int getTileSize() {
-    return 32;
-  }
-
-  public float getTileToWorldScale() {
+  float getTileToWorldScale() {
     return 1f / getTileSize();
   }
 
-  public int getUIScale() {
-    return 50;
+  private int getTileSize() {
+    return 32;
   }
 }
