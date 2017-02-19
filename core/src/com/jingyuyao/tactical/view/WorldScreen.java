@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapScreen extends ScreenAdapter {
+public class WorldScreen extends ScreenAdapter {
 
   private final World world;
   private final WorldMarkings worldMarkings;
@@ -22,7 +22,7 @@ public class MapScreen extends ScreenAdapter {
   private final MapController mapController;
 
   @Inject
-  MapScreen(
+  WorldScreen(
       World world,
       WorldMarkings worldMarkings,
       WorldUI worldUI,

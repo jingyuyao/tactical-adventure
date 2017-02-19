@@ -13,8 +13,8 @@ import com.jingyuyao.tactical.data.MapLoader;
 import com.jingyuyao.tactical.data.MapSaver;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.view.MapScreen;
 import com.jingyuyao.tactical.view.ViewModule;
+import com.jingyuyao.tactical.view.WorldScreen;
 import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
@@ -23,7 +23,7 @@ public class TacticalAdventure extends Game {
   @ModelEventBus
   private EventBus modelEventBus;
   @Inject
-  private MapScreen mapScreen;
+  private WorldScreen worldScreen;
   @Inject
   private MapLoader mapLoader;
   @Inject
@@ -41,7 +41,7 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
-    mapScreen.registerListeners(modelEventBus);
+    worldScreen.registerListeners(modelEventBus);
     modelEventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }
@@ -55,12 +55,12 @@ public class TacticalAdventure extends Game {
   public void dispose() {
     super.dispose();
     mapSaver.saveMap(AssetModule.TEST_MAP);
-    mapScreen.dispose();
+    worldScreen.dispose();
     assetManager.dispose();
   }
 
   public void setLevel(String mapName) {
     mapLoader.loadMap(mapName);
-    setScreen(mapScreen);
+    setScreen(worldScreen);
   }
 }
