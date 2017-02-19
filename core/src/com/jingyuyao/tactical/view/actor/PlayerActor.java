@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.view.actor.WorldModule.ActorSize;
-import com.jingyuyao.tactical.view.actor.WorldModule.InitialMarkers;
+import com.jingyuyao.tactical.view.actor.ActorModule.ActorSize;
+import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 
