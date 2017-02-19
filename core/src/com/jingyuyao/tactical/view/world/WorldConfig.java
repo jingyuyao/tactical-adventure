@@ -11,11 +11,11 @@ public class WorldConfig {
 
   }
 
-  public int getWorldWidth() {
+  public int getWorldViewportWidth() {
     return 16;
   }
 
-  public int getWorldHeight() {
+  public int getWorldViewportHeight() {
     return 9;
   }
 

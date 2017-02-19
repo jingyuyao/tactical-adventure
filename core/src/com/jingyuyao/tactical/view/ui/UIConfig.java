@@ -15,11 +15,11 @@ class UIConfig {
   }
 
   int getUIViewportWidth() {
-    return worldConfig.getWorldWidth() * getUIScale();
+    return worldConfig.getWorldViewportWidth() * getUIScale();
   }
 
   int getUIViewportHeight() {
-    return worldConfig.getWorldHeight() * getUIScale();
+    return worldConfig.getWorldViewportHeight() * getUIScale();
   }
 
   private int getUIScale() {

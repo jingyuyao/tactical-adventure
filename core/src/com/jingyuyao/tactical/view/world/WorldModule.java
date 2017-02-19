@@ -44,7 +44,8 @@ public class WorldModule extends AbstractModule {
   @Singleton
   @WorldViewport
   Viewport provideWorldViewport(WorldConfig worldConfig) {
-    return new ExtendViewport(worldConfig.getWorldWidth(), worldConfig.getWorldHeight());
+    return new ExtendViewport(worldConfig.getWorldViewportWidth(),
+        worldConfig.getWorldViewportHeight());
   }
 
   /**
