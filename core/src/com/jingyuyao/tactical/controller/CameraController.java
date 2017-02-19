@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.view.world.WorldModule.MapActorsViewport;
+import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -23,7 +23,7 @@ class CameraController extends InputAdapter {
   private boolean dragged = false;
 
   @Inject
-  CameraController(@MapActorsViewport Viewport viewport, Terrains terrains) {
+  CameraController(@WorldViewport Viewport viewport, Terrains terrains) {
     this.viewport = viewport;
     this.terrains = terrains;
   }

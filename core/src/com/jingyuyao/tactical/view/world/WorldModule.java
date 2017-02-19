@@ -42,15 +42,15 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MapActorsStage
-  Stage provideMapActorsStage(@MapActorsViewport Viewport viewport, Batch batch) {
+  @WorldStage
+  Stage provideWorldStage(@WorldViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }
 
   @Provides
   @Singleton
-  @MapActorsViewport
-  Viewport provideMapActorsViewport(WorldConfig worldConfig) {
+  @WorldViewport
+  Viewport provideWorldViewport(WorldConfig worldConfig) {
     return new ExtendViewport(worldConfig.getWorldWidth(), worldConfig.getWorldHeight());
   }
 
@@ -79,14 +79,14 @@ public class WorldModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapActorsStage {
+  public @interface WorldStage {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface MapActorsViewport {
+  public @interface WorldViewport {
 
   }
 }

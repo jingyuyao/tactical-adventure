@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.view.ui.UIModule.MapUIStage;
-import com.jingyuyao.tactical.view.world.WorldModule.MapActorsStage;
+import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,7 +15,7 @@ public class MapController {
 
   @Inject
   MapController(
-      @MapActorsStage Stage mapViewStage,
+      @WorldStage Stage mapViewStage,
       @MapUIStage Stage mapUIStage,
       CameraController cameraController) {
     inputMultiplexer = new InputMultiplexer();
