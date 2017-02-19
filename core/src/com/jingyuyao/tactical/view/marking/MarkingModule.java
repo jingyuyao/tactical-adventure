@@ -22,6 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.LinkedList;
 import java.util.List;
+import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
@@ -47,48 +48,6 @@ public class MarkingModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @HighlightSprite
-  Sprite provideHighlightSprite(AssetManager assetManager) {
-    return new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class));
-  }
-
-  @Provides
-  @Singleton
-  @ActivatedCharacterSprite
-  Sprite provideActivatedCharacterSprite(AssetManager assetManager) {
-    return new Sprite(assetManager.get(AssetModule.ACTIVATED, Texture.class));
-  }
-
-  @Provides
-  @Singleton
-  @Move
-  Sprite provideMoveSprite(AssetManager assetManager) {
-    return new Sprite(assetManager.get(AssetModule.MOVE, Texture.class));
-  }
-
-  @Provides
-  @Singleton
-  @Hit
-  Sprite provideHitSprite(AssetManager assetManager) {
-    return new Sprite(assetManager.get(AssetModule.HIT, Texture.class));
-  }
-
-  @Provides
-  @Singleton
-  @TargetSelect
-  Sprite provideTargetSelectSprite(AssetManager assetManager) {
-    return new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class));
-  }
-
-  @Provides
-  @Singleton
-  @Attack
-  Sprite provideAttackSprite(AssetManager assetManager) {
-    return new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class));
-  }
-
-  @Provides
-  @Singleton
   @MarkedActors
   List<WorldActor<?>> provideMarkedActors() {
     return new LinkedList<>();
@@ -101,52 +60,52 @@ public class MarkingModule extends AbstractModule {
     return new Actor();
   }
 
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface HighlightSprite {
-
+  @Provides
+  @Singleton
+  @Named("highlight")
+  Sprite provideHighlightSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.HIGHLIGHT, Texture.class));
   }
 
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface ActivatedCharacterSprite {
+  @Provides
+  @Singleton
+  @Named("activatedCharacter")
+  Sprite provideActivatedCharacterSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.ACTIVATED, Texture.class));
+  }
 
+  @Provides
+  @Singleton
+  @Named("move")
+  Sprite provideMoveSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.MOVE, Texture.class));
+  }
+
+  @Provides
+  @Singleton
+  @Named("hit")
+  Sprite provideHitSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.HIT, Texture.class));
+  }
+
+  @Provides
+  @Singleton
+  @Named("targetSelect")
+  Sprite provideTargetSelectSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.TARGET_SELECT, Texture.class));
+  }
+
+  @Provides
+  @Singleton
+  @Named("attack")
+  Sprite provideAttackSprite(AssetManager assetManager) {
+    return new Sprite(assetManager.get(AssetModule.ATTACK, Texture.class));
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface BackingMap {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface Move {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface Hit {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface Attack {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface TargetSelect {
 
   }
 

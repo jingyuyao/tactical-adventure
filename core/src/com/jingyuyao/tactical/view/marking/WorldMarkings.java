@@ -20,8 +20,6 @@ import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.marking.MarkingModule.ActivatedCharacterSprite;
-import com.jingyuyao.tactical.view.marking.MarkingModule.HighlightSprite;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
 import com.jingyuyao.tactical.view.marking.MarkingModule.WorldMarkingsActor;
 import com.jingyuyao.tactical.view.world.World;
@@ -29,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -51,8 +50,8 @@ public class WorldMarkings {
       World world,
       @MarkedActors List<WorldActor<?>> markedActorList,
       MarkingFactory markingFactory,
-      @HighlightSprite Sprite highlightSprite,
-      @ActivatedCharacterSprite Sprite activatedCharacterSprite) {
+      @Named("highlight") Sprite highlightSprite,
+      @Named("activatedCharacter") Sprite activatedCharacterSprite) {
     this.actionActor = actionActor;
     this.batch = batch;
     this.world = world;

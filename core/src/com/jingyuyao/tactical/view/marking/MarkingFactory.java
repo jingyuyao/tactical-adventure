@@ -6,12 +6,9 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.marking.MarkingModule.Attack;
 import com.jingyuyao.tactical.view.marking.MarkingModule.BackingMap;
-import com.jingyuyao.tactical.view.marking.MarkingModule.Hit;
-import com.jingyuyao.tactical.view.marking.MarkingModule.Move;
-import com.jingyuyao.tactical.view.marking.MarkingModule.TargetSelect;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
@@ -27,10 +24,10 @@ class MarkingFactory {
   @Inject
   MarkingFactory(
       @BackingMap Provider<Multimap<MapObject, Sprite>> backingMapProvider,
-      @Move Sprite moveSprite,
-      @Attack Sprite attackSprite,
-      @TargetSelect Sprite targetSelectSprite,
-      @Hit Sprite hitSprite) {
+      @Named("move") Sprite moveSprite,
+      @Named("attack") Sprite attackSprite,
+      @Named("targetSelect") Sprite targetSelectSprite,
+      @Named("hit") Sprite hitSprite) {
     this.backingMapProvider = backingMapProvider;
     this.moveSprite = moveSprite;
     this.attackSprite = attackSprite;
