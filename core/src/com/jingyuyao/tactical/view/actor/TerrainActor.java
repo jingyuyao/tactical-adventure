@@ -16,5 +16,6 @@ class TerrainActor extends MapActor<Terrain> {
       @ActorWorldSize float size,
       @InitialMarkers LinkedHashSet<Sprite> markers) {
     super(object, size, markers);
+    setZIndex(0);
   }
 }

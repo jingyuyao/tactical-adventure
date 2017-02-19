@@ -22,6 +22,7 @@ class CharacterActor<T extends Character> extends MapActor<T> {
   CharacterActor(T object, float size, LinkedHashSet<Sprite> markers, Sprite sprite) {
     super(object, size, markers);
     this.sprite = sprite;
+    setZIndex(1);
     object.registerListener(this);
   }
 
