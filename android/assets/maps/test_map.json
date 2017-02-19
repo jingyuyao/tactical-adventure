@@ -158,14 +158,6 @@
           "usageLeft": 10,
           "attackPower": 5,
           "distance": 1
-        },
-        {
-          "type": "Grenade",
-          "name": "grenade",
-          "usageLeft": 5,
-          "attackPower": 3,
-          "distance": 4,
-          "size": 1
         }
       ]
     },
@@ -187,14 +179,6 @@
           "usageLeft": 10,
           "attackPower": 5,
           "distance": 1
-        },
-        {
-          "type": "Grenade",
-          "name": "grenade",
-          "usageLeft": 5,
-          "attackPower": 3,
-          "distance": 4,
-          "size": 1
         }
       ]
     },
@@ -216,14 +200,6 @@
           "usageLeft": 10,
           "attackPower": 5,
           "distance": 1
-        },
-        {
-          "type": "Grenade",
-          "name": "grenade",
-          "usageLeft": 5,
-          "attackPower": 3,
-          "distance": 4,
-          "size": 1
         }
       ]
     }
