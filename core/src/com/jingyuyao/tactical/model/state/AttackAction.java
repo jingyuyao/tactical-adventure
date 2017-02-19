@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 class AttackAction implements Action {
 
-  private Battling battling;
+  private final Battling battling;
 
   AttackAction(Battling battling) {
     this.battling = battling;

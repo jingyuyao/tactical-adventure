@@ -9,12 +9,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Movements;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Qualifier;
 
 public class CharacterModule extends AbstractModule {
@@ -31,23 +28,10 @@ public class CharacterModule extends AbstractModule {
     return new EventBus("character");
   }
 
-  @Provides
-  @InitialItems
-  List<Item> provideInitialItems() {
-    return new ArrayList<>();
-  }
-
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface CharacterEventBus {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface InitialItems {
 
   }
 }

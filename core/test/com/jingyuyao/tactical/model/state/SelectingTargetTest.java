@@ -51,14 +51,13 @@ public class SelectingTargetTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private ImmutableList<Target> targets;
   private SelectingTarget selectingTarget;
 
   @Before
   public void setUp() {
-    targets = ImmutableList.of(target1, target2);
-    selectingTarget = new SelectingTarget(eventBus, mapState, stateFactory, player, weapon,
-        targets);
+    selectingTarget =
+        new SelectingTarget(
+            eventBus, mapState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
   }
 
   @Test

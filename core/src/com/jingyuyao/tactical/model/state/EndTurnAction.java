@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 class EndTurnAction implements Action {
 
-  private Waiting waiting;
+  private final Waiting waiting;
 
   EndTurnAction(Waiting waiting) {
     this.waiting = waiting;

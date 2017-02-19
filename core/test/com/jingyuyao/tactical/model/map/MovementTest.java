@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+// TODO: test path_to
 @RunWith(MockitoJUnitRunner.class)
 public class MovementTest {
 
@@ -45,14 +46,6 @@ public class MovementTest {
     assertThat(movement.canMoveTo(MOVE1)).isTrue();
     assertThat(movement.canMoveTo(TARGET1)).isFalse();
     assertThat(movement.canMoveTo(NOT_IN_TARGETS)).isFalse();
-  }
-
-  @Test
-  public void path_to() {
-    // TODO: finish me
-//    Path path = movement.pathTo(MOVE1);
-//
-//    assertThat(path.getDestination()).isEqualTo(MOVE1);
   }
 
   @Test

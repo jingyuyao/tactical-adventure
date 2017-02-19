@@ -59,7 +59,7 @@ public class TacticalAdventure extends Game {
     assetManager.dispose();
   }
 
-  public void setLevel(String mapName) {
+  private void setLevel(String mapName) {
     mapLoader.loadMap(mapName);
     setScreen(worldScreen);
   }

@@ -6,7 +6,7 @@ import java.util.List;
 
 class MapSave {
 
-  private List<Character> characters;
+  private final List<Character> characters;
 
   MapSave(List<Character> characters) {
     this.characters = characters;
