@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.MapController;
-import com.jingyuyao.tactical.view.actor.MapActors;
+import com.jingyuyao.tactical.view.actor.World;
 import com.jingyuyao.tactical.view.marking.MapMarkings;
 import com.jingyuyao.tactical.view.ui.MapUI;
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 @Singleton
 public class MapScreen extends ScreenAdapter {
 
-  private final MapActors mapActors;
+  private final World world;
   private final MapMarkings mapMarkings;
   private final MapUI mapUI;
   private final Batch batch;
@@ -23,12 +23,12 @@ public class MapScreen extends ScreenAdapter {
 
   @Inject
   MapScreen(
-      MapActors mapActors,
+      World world,
       MapMarkings mapMarkings,
       MapUI mapUI,
       Batch batch,
       MapController mapController) {
-    this.mapActors = mapActors;
+    this.world = world;
     this.mapMarkings = mapMarkings;
     this.mapUI = mapUI;
     this.batch = batch;
@@ -36,7 +36,7 @@ public class MapScreen extends ScreenAdapter {
   }
 
   public void registerListeners(EventBus eventBus) {
-    eventBus.register(mapActors);
+    eventBus.register(world);
     eventBus.register(mapMarkings);
     eventBus.register(mapUI);
   }
@@ -55,10 +55,10 @@ public class MapScreen extends ScreenAdapter {
   public void render(float delta) {
     mapUI.act(delta);
     mapMarkings.act(delta);
-    mapActors.act(delta);
+    world.act(delta);
 
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    mapActors.draw();
+    world.draw();
     mapMarkings.draw();
     mapUI.draw();
   }
@@ -66,13 +66,13 @@ public class MapScreen extends ScreenAdapter {
   @Override
   public void resize(int width, int height) {
     // This is very important...
-    mapActors.resize(width, height);
+    world.resize(width, height);
     mapUI.resize(width, height);
   }
 
   @Override
   public void dispose() {
-    mapActors.dispose();
+    world.dispose();
     mapUI.dispose();
     batch.dispose();
   }

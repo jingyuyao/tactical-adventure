@@ -25,7 +25,7 @@ import javax.inject.Singleton;
  * grid).
  */
 @Singleton
-public class MapActors {
+public class World {
 
   private final Stage stage;
   private final OrthogonalTiledMapRenderer mapRenderer;
@@ -39,7 +39,7 @@ public class MapActors {
    * backed by a {@link OrthogonalTiledMapRenderer}.
    */
   @Inject
-  MapActors(
+  World(
       @MapActorsStage Stage stage,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,

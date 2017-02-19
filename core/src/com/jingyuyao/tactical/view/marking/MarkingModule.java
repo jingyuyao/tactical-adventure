@@ -17,7 +17,7 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.MapActor;
-import com.jingyuyao.tactical.view.actor.MapActors;
+import com.jingyuyao.tactical.view.actor.World;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ public class MarkingModule extends AbstractModule {
   protected void configure() {
     requireBinding(AssetManager.class);
     requireBinding(Batch.class);
-    requireBinding(MapActors.class);
+    requireBinding(World.class);
   }
 
   /**
