@@ -27,19 +27,6 @@ public class ActorModule extends AbstractModule {
     return new LinkedHashSet<>();
   }
 
-  @Provides
-  @ActorSize
-  float provideActorSize(ActorConfig actorConfig) {
-    return actorConfig.getActorSize();
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface ActorSize {
-
-  }
-
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)

@@ -11,7 +11,11 @@ class ActorConfig {
 
   }
 
-  float getActorSize() {
+  float getActorWorldSize() {
     return 1f;
+  }
+
+  float getMoveTimePerUnit() {
+    return 0.06f;
   }
 }

@@ -14,12 +14,15 @@ import java.util.LinkedHashSet;
 public class WorldActor<T extends MapObject> extends Actor {
 
   private final T object;
+  private final ActorConfig actorConfig;
   private final LinkedHashSet<Sprite> markers;
 
-  WorldActor(T object, float size, LinkedHashSet<Sprite> markers) {
+  WorldActor(T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers) {
     this.object = object;
+    this.actorConfig = actorConfig;
     this.markers = markers;
     Coordinate coordinate = object.getCoordinate();
+    float size = actorConfig.getActorWorldSize();
     setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
   }
 
@@ -41,5 +44,9 @@ public class WorldActor<T extends MapObject> extends Actor {
 
   T getObject() {
     return object;
+  }
+
+  ActorConfig getActorConfig() {
+    return actorConfig;
   }
 }

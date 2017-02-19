@@ -15,12 +15,10 @@ import java.util.LinkedHashSet;
 
 class CharacterActor<T extends Character> extends WorldActor<T> {
 
-  private static final float TIME_PER_UNIT = 0.06f; // time to move across one world unit in seconds
-
   private final Sprite sprite;
 
-  CharacterActor(T object, float size, LinkedHashSet<Sprite> markers, Sprite sprite) {
-    super(object, size, markers);
+  CharacterActor(T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers, Sprite sprite) {
+    super(object, actorConfig, markers);
     this.sprite = sprite;
     setZIndex(1);
     object.registerListener(this);
@@ -63,7 +61,9 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   private SequenceAction getMoveSequence(Iterable<Coordinate> track) {
     SequenceAction sequence = Actions.sequence();
     for (Coordinate coordinate : track) {
-      sequence.addAction(Actions.moveTo(coordinate.getX(), coordinate.getY(), TIME_PER_UNIT));
+      sequence.addAction(
+          Actions.moveTo(
+              coordinate.getX(), coordinate.getY(), getActorConfig().getMoveTimePerUnit()));
     }
     return sequence;
   }
