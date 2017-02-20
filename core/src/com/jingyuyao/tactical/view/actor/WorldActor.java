@@ -7,10 +7,6 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import java.util.LinkedHashSet;
 
-/**
- * <p>Invariants: - getX() and getY() should ultimately match {@code mapObject.getX()} and {@code
- * mapObject.getY()} after animations
- */
 public class WorldActor<T extends MapObject> extends Actor {
 
   private final T object;
