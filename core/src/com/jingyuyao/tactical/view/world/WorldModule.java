@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -31,13 +32,23 @@ public class WorldModule extends AbstractModule {
   protected void configure() {
     requireBinding(AssetManager.class);
     requireBinding(Batch.class);
+
+    bind(Group.class).annotatedWith(CharacterGroup.class).to(Group.class).in(Singleton.class);
+    bind(Group.class).annotatedWith(TerrainGroup.class).to(Group.class).in(Singleton.class);
   }
 
   @Provides
   @Singleton
   @WorldStage
-  Stage provideWorldStage(@WorldViewport Viewport viewport, Batch batch) {
-    return new Stage(viewport, batch);
+  Stage provideWorldStage(
+      Batch batch,
+      @WorldViewport Viewport viewport,
+      @CharacterGroup Group characterGroup,
+      @TerrainGroup Group terrainGroup) {
+    Stage stage = new Stage(viewport, batch);
+    stage.addActor(terrainGroup);
+    stage.addActor(characterGroup);
+    return stage;
   }
 
   @Provides
@@ -88,6 +99,20 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface CharacterGroup {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface TerrainGroup {
 
   }
 

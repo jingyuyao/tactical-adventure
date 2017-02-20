@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.world;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
@@ -18,7 +19,9 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.world.WorldModule.BackingActorMap;
+import com.jingyuyao.tactical.view.world.WorldModule.CharacterGroup;
 import com.jingyuyao.tactical.view.world.WorldModule.CharacterSprites;
+import com.jingyuyao.tactical.view.world.WorldModule.TerrainGroup;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import java.util.Map;
 import javax.inject.Inject;
@@ -32,6 +35,8 @@ import javax.inject.Singleton;
 public class World {
 
   private final Stage stage;
+  private final Group characterGroup;
+  private final Group terrainGroup;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
@@ -45,12 +50,16 @@ public class World {
   @Inject
   World(
       @WorldStage Stage stage,
+      @CharacterGroup Group characterGroup,
+      @TerrainGroup Group terrainGroup,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
       @CharacterSprites Map<String, Sprite> nameSpriteMap,
       @BackingActorMap Map<MapObject, WorldActor<?>> actorMap) {
     this.stage = stage;
+    this.characterGroup = characterGroup;
+    this.terrainGroup = terrainGroup;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
     this.controllerFactory = controllerFactory;
@@ -61,19 +70,21 @@ public class World {
   @Subscribe
   public void addTerrain(AddTerrain addTerrain) {
     Terrain terrain = addTerrain.getObject();
-    addActor(terrain, actorFactory.create(terrain));
+    addActor(terrain, actorFactory.create(terrain), terrainGroup);
   }
 
   @Subscribe
   public void addPlayer(AddPlayer addPlayer) {
     Player player = addPlayer.getObject();
-    addActor(player, actorFactory.create(player, nameSpriteMap.get(player.getName())));
+    Sprite sprite = nameSpriteMap.get(player.getName());
+    addActor(player, actorFactory.create(player, sprite), characterGroup);
   }
 
   @Subscribe
   public void addEnemy(AddEnemy addEnemy) {
     Enemy enemy = addEnemy.getObject();
-    addActor(enemy, actorFactory.create(enemy, nameSpriteMap.get(enemy.getName())));
+    Sprite sprite = nameSpriteMap.get(enemy.getName());
+    addActor(enemy, actorFactory.create(enemy, sprite), characterGroup);
   }
 
   @Subscribe
@@ -107,9 +118,9 @@ public class World {
     stage.dispose();
   }
 
-  private void addActor(MapObject object, WorldActor<?> actor) {
+  private void addActor(MapObject object, WorldActor<?> actor, Group group) {
     actor.addListener(controllerFactory.create(object));
-    stage.addActor(actor);
+    group.addActor(actor);
     actorMap.put(object, actor);
   }
 }

@@ -20,7 +20,6 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   CharacterActor(T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers, Sprite sprite) {
     super(object, actorConfig, markers);
     this.sprite = sprite;
-    setZIndex(1);
     object.registerListener(this);
   }
 

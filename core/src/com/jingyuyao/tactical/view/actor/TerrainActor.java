@@ -15,6 +15,5 @@ public class TerrainActor extends WorldActor<Terrain> {
       ActorConfig actorConfig,
       @InitialMarkers LinkedHashSet<Sprite> markers) {
     super(object, actorConfig, markers);
-    setZIndex(0);
   }
 }
