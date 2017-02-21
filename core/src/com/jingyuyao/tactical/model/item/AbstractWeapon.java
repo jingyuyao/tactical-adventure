@@ -27,6 +27,7 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
     // Convert to an immutable list since characters can die and we don't want an iteration error
     for (Character opponent : target.getTargetCharacters().toList()) {
       opponent.damageBy(attackPower);
+      // TODO: move this to Battle
       if (opponent.getHp() == 0) {
         characters.remove(opponent);
       }
