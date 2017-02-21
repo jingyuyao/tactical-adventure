@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -34,13 +35,12 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   }
 
   @Subscribe
-  public void instantMoveTo(InstantMove instantMove) {
-    Coordinate destination = instantMove.getDestination();
-    setPosition(destination.getX(), destination.getY());
+  public void instantMove(InstantMove instantMove) {
+    updateCoordinate(instantMove.getDestination());
   }
 
   @Subscribe
-  public void moveTo(final Move move) {
+  public void move(final Move move) {
     final ImmutableList<EventListener> listeners = popAllListeners();
     SequenceAction moveSequence = getMoveSequence(move.getPath().getTrack());
     moveSequence.addAction(
@@ -60,11 +60,15 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   private SequenceAction getMoveSequence(Iterable<Coordinate> track) {
     SequenceAction sequence = Actions.sequence();
     for (Coordinate coordinate : track) {
-      sequence.addAction(
-          Actions.moveTo(
-              coordinate.getX(), coordinate.getY(), getActorConfig().getMoveTimePerUnit()));
+      sequence.addAction(createMoveToAction(coordinate));
     }
     return sequence;
+  }
+
+  private Action createMoveToAction(Coordinate coordinate) {
+    float size = getActorConfig().getActorWorldSize();
+    float moveTimePerUnit = getActorConfig().getMoveTimePerUnit();
+    return Actions.moveTo(coordinate.getX() * size, coordinate.getY() * size, moveTimePerUnit);
   }
 
   private ImmutableList<EventListener> popAllListeners() {

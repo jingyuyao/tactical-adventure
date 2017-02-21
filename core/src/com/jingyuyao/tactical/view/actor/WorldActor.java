@@ -17,9 +17,8 @@ public class WorldActor<T extends MapObject> extends Actor {
     this.object = object;
     this.actorConfig = actorConfig;
     this.markers = markers;
-    Coordinate coordinate = object.getCoordinate();
-    float size = actorConfig.getActorWorldSize();
-    setBounds(coordinate.getX() * size, coordinate.getY() * size, size, size);
+    setSize(actorConfig.getActorWorldSize(), actorConfig.getActorWorldSize());
+    updateCoordinate(object.getCoordinate());
   }
 
   @Override
@@ -36,6 +35,12 @@ public class WorldActor<T extends MapObject> extends Actor {
 
   public void clearMarkers() {
     markers.clear();
+  }
+
+  void updateCoordinate(Coordinate coordinate) {
+    setPosition(
+        coordinate.getX() * actorConfig.getActorWorldSize(),
+        coordinate.getY() * actorConfig.getActorWorldSize());
   }
 
   T getObject() {
