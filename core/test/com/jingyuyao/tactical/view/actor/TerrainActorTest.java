@@ -26,7 +26,7 @@ public class TerrainActorTest {
   private LinkedHashSet<Sprite> markers;
 
   @Test
-  public void z_index() {
+  public void creation() {
     when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
