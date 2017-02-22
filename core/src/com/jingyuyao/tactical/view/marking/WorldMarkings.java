@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.google.common.collect.Multimap;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
@@ -19,61 +18,53 @@ import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
-import com.jingyuyao.tactical.view.marking.MarkingModule.WorldMarkingsActor;
+import com.jingyuyao.tactical.view.marking.MarkingModule.MarkingsActor;
 import com.jingyuyao.tactical.view.world.World;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
 public class WorldMarkings {
 
-  private final Actor actionActor;
   private final Batch batch;
   private final World world;
+  private final MarkerSprites markerSprites;
+  private final Actor actionActor;
   private final List<WorldActor<?>> markedActorList;
-  private final MarkingFactory markingFactory;
-  private final Sprite highlightSprite;
-  private final Sprite activatedCharacterSprite;
-  private WorldActor selectedActor;
+  private WorldActor highlightedActor;
   private WorldActor activatedActor;
 
   @Inject
   WorldMarkings(
-      @WorldMarkingsActor Actor actionActor,
       Batch batch,
       World world,
-      @MarkedActors List<WorldActor<?>> markedActorList,
-      MarkingFactory markingFactory,
-      @Named("highlight") Sprite highlightSprite,
-      @Named("activatedCharacter") Sprite activatedCharacterSprite) {
-    this.actionActor = actionActor;
+      MarkerSprites markerSprites,
+      @MarkingsActor Actor actionActor,
+      @MarkedActors List<WorldActor<?>> markedActorList) {
     this.batch = batch;
     this.world = world;
+    this.markerSprites = markerSprites;
+    this.actionActor = actionActor;
     this.markedActorList = markedActorList;
-    this.markingFactory = markingFactory;
-    this.highlightSprite = highlightSprite;
-    this.activatedCharacterSprite = activatedCharacterSprite;
   }
 
   @Subscribe
   public void selectPlayer(SelectPlayer selectPlayer) {
-    selectedActor = world.get(selectPlayer.getObject());
+    highlightedActor = world.get(selectPlayer.getObject());
   }
 
   @Subscribe
   public void selectEnemy(SelectEnemy selectEnemy) {
-    selectedActor = world.get(selectEnemy.getObject());
+    highlightedActor = world.get(selectEnemy.getObject());
   }
 
   @Subscribe
   public void selectTerrain(SelectTerrain selectTerrain) {
-    selectedActor = world.get(selectTerrain.getObject());
+    highlightedActor = world.get(selectTerrain.getObject());
   }
 
   @Subscribe
@@ -82,25 +73,37 @@ public class WorldMarkings {
   }
 
   @Subscribe
+  public void activatedEnemy(ActivatedEnemy activatedEnemy) {
+    activatedActor = world.get(activatedEnemy.getObject());
+  }
+
+  @Subscribe
   public void moving(Moving moving) {
-    show(markingFactory.createMovement(moving.getMovement()));
+    for (Terrain terrain : moving.getMovement().getTerrains()) {
+      mark(terrain, markerSprites.getMove());
+    }
   }
 
   @Subscribe
   public void selectingTarget(SelectingTarget selectingTarget) {
     for (Target target : selectingTarget.getTargets()) {
-      show(markingFactory.createTarget(target));
+      for (Terrain terrain : target.getTargetTerrains()) {
+        mark(terrain, markerSprites.getAttack());
+      }
+      for (Terrain terrain : target.getSelectTerrains()) {
+        mark(terrain, markerSprites.getTargetSelect());
+      }
     }
   }
 
   @Subscribe
   public void battling(Battling battling) {
-    show(markingFactory.createTarget(battling.getTarget()));
-  }
-
-  @Subscribe
-  public void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    activatedActor = world.get(activatedEnemy.getObject());
+    for (Terrain terrain : battling.getTarget().getTargetTerrains()) {
+      mark(terrain, markerSprites.getAttack());
+    }
+    for (Terrain terrain : battling.getTarget().getSelectTerrains()) {
+      mark(terrain, markerSprites.getTargetSelect());
+    }
   }
 
   @Subscribe
@@ -112,12 +115,12 @@ public class WorldMarkings {
   // TODO: this is temporary
   @Subscribe
   public void attack(final Attack attack) {
-    final Multimap<MapObject, Sprite> hitMap = markingFactory.createHit(attack.getObject());
-
     Runnable showAttack = new Runnable() {
       @Override
       public void run() {
-        show(hitMap);
+        for (MapObject object : attack.getObject().getHitObjects()) {
+          mark(object, markerSprites.getHit());
+        }
       }
     };
     Runnable hideAttack = new Runnable() {
@@ -150,29 +153,25 @@ public class WorldMarkings {
 
   public void draw() {
     batch.begin();
-    if (selectedActor != null) {
-      highlightSprite.setBounds(
-          selectedActor.getX(), selectedActor.getY(), selectedActor.getWidth(),
-          selectedActor.getHeight());
-      highlightSprite.draw(batch);
+    if (highlightedActor != null) {
+      markerSprites.getHighlight().setBounds(
+          highlightedActor.getX(), highlightedActor.getY(), highlightedActor.getWidth(),
+          highlightedActor.getHeight());
+      markerSprites.getHighlight().draw(batch);
     }
     if (activatedActor != null) {
-      activatedCharacterSprite.setBounds(
+      markerSprites.getActivated().setBounds(
           activatedActor.getX(), activatedActor.getY(), activatedActor.getWidth(),
           activatedActor.getHeight());
-      activatedCharacterSprite.draw(batch);
+      markerSprites.getActivated().draw(batch);
     }
     batch.end();
   }
 
-  private void show(Multimap<MapObject, Sprite> multimap) {
-    for (Entry<MapObject, Collection<Sprite>> entry : multimap.asMap().entrySet()) {
-      WorldActor actor = world.get(entry.getKey());
-      for (Sprite sprite : entry.getValue()) {
-        actor.addMarker(sprite);
-      }
-      markedActorList.add(actor);
-    }
+  private void mark(MapObject object, Sprite sprite) {
+    WorldActor actor = world.get(object);
+    actor.addMarker(sprite);
+    markedActorList.add(actor);
   }
 
   private void clearMarked() {
