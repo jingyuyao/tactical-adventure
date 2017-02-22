@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.view.util.ViewUtil;
 import java.util.LinkedHashSet;
 
 public class WorldActor<T extends MapObject> extends Actor {
@@ -24,8 +25,7 @@ public class WorldActor<T extends MapObject> extends Actor {
   @Override
   public void draw(Batch batch, float parentAlpha) {
     for (Sprite sprite : markers) {
-      sprite.setBounds(getX(), getY(), getWidth(), getHeight());
-      sprite.draw(batch);
+      ViewUtil.draw(batch, sprite, this);
     }
   }
 

@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.view.util.ViewUtil;
 import java.util.LinkedHashSet;
 
 class CharacterActor<T extends Character> extends WorldActor<T> {
@@ -28,8 +29,7 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   public void draw(Batch batch, float parentAlpha) {
     if (sprite != null) {
       sprite.setColor(getColor());
-      sprite.setBounds(getX(), getY(), getWidth(), getHeight());
-      sprite.draw(batch);
+      ViewUtil.draw(batch, sprite, this);
     }
     super.draw(batch, parentAlpha);
   }

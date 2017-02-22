@@ -22,6 +22,7 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkingsActor;
+import com.jingyuyao.tactical.view.util.ViewUtil;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;
 import javax.inject.Inject;
@@ -154,16 +155,10 @@ public class WorldMarkings {
   public void draw() {
     batch.begin();
     if (highlightedActor != null) {
-      markerSprites.getHighlight().setBounds(
-          highlightedActor.getX(), highlightedActor.getY(), highlightedActor.getWidth(),
-          highlightedActor.getHeight());
-      markerSprites.getHighlight().draw(batch);
+      ViewUtil.draw(batch, markerSprites.getHighlight(), highlightedActor);
     }
     if (activatedActor != null) {
-      markerSprites.getActivated().setBounds(
-          activatedActor.getX(), activatedActor.getY(), activatedActor.getWidth(),
-          activatedActor.getHeight());
-      markerSprites.getActivated().draw(batch);
+      ViewUtil.draw(batch, markerSprites.getActivated(), activatedActor);
     }
     batch.end();
   }
