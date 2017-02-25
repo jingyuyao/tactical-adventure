@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.view.marking.WorldMarkings;
 import com.jingyuyao.tactical.view.ui.UISubscriber;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.World;
+import com.jingyuyao.tactical.view.world.WorldSubscriber;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -22,6 +23,7 @@ public class WorldScreen extends ScreenAdapter {
   private final WorldMarkings worldMarkings;
   private final WorldUI worldUI;
   private final WorldController worldController;
+  private final WorldSubscriber worldSubscriber;
   private final MarkingSubscriber markingSubscriber;
   private final UISubscriber uiSubscriber;
 
@@ -32,6 +34,7 @@ public class WorldScreen extends ScreenAdapter {
       WorldMarkings worldMarkings,
       WorldUI worldUI,
       WorldController worldController,
+      WorldSubscriber worldSubscriber,
       MarkingSubscriber markingSubscriber,
       UISubscriber uiSubscriber) {
     this.batch = batch;
@@ -39,12 +42,13 @@ public class WorldScreen extends ScreenAdapter {
     this.worldMarkings = worldMarkings;
     this.worldUI = worldUI;
     this.worldController = worldController;
+    this.worldSubscriber = worldSubscriber;
     this.markingSubscriber = markingSubscriber;
     this.uiSubscriber = uiSubscriber;
   }
 
   public void registerListeners(EventBus eventBus) {
-    eventBus.register(world);
+    eventBus.register(worldSubscriber);
     eventBus.register(markingSubscriber);
     eventBus.register(uiSubscriber);
   }
