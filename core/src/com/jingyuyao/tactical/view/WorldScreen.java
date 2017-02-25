@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.WorldController;
+import com.jingyuyao.tactical.view.marking.MarkingSubscriber;
 import com.jingyuyao.tactical.view.marking.WorldMarkings;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.World;
@@ -15,29 +16,32 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldScreen extends ScreenAdapter {
 
+  private final Batch batch;
   private final World world;
   private final WorldMarkings worldMarkings;
   private final WorldUI worldUI;
-  private final Batch batch;
   private final WorldController worldController;
+  private final MarkingSubscriber markingSubscriber;
 
   @Inject
   WorldScreen(
+      Batch batch,
       World world,
       WorldMarkings worldMarkings,
       WorldUI worldUI,
-      Batch batch,
-      WorldController worldController) {
+      WorldController worldController,
+      MarkingSubscriber markingSubscriber) {
+    this.batch = batch;
     this.world = world;
     this.worldMarkings = worldMarkings;
     this.worldUI = worldUI;
-    this.batch = batch;
     this.worldController = worldController;
+    this.markingSubscriber = markingSubscriber;
   }
 
   public void registerListeners(EventBus eventBus) {
     eventBus.register(world);
-    eventBus.register(worldMarkings);
+    eventBus.register(markingSubscriber);
     eventBus.register(worldUI);
   }
 
