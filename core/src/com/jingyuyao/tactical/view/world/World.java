@@ -77,7 +77,7 @@ public class World {
     stage.dispose();
   }
 
-  public WorldActor get(MapObject object) {
+  public WorldActor<?> get(MapObject object) {
     return actorMap.get(object);
   }
 

@@ -81,7 +81,7 @@ public class MarkingsTest {
 
   @Test
   public void draw_highlight() {
-    when(world.get(mapObject)).thenReturn(highlightActor);
+    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
     when(markerSprites.getHighlight()).thenReturn(highlightSprite);
 
     markings.highlight(mapObject);
@@ -96,7 +96,7 @@ public class MarkingsTest {
 
   @Test
   public void draw_activated() {
-    when(world.get(mapObject)).thenReturn(activatedActor);
+    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(activatedActor);
     when(markerSprites.getActivated()).thenReturn(activatedSprite);
 
     markings.activate(mapObject);
@@ -111,8 +111,8 @@ public class MarkingsTest {
 
   @Test
   public void draw_highlight_and_activate() {
-    when(world.get(mapObject)).thenReturn(highlightActor);
-    when(world.get(mapObject2)).thenReturn(activatedActor);
+    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
+    Mockito.<WorldActor<?>>when(world.get(mapObject2)).thenReturn(activatedActor);
     when(markerSprites.getHighlight()).thenReturn(highlightSprite);
     when(markerSprites.getActivated()).thenReturn(activatedSprite);
 
@@ -129,7 +129,7 @@ public class MarkingsTest {
 
   @Test
   public void mark() {
-    when(world.get(mapObject)).thenReturn(highlightActor);
+    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
 
     markings.mark(mapObject, highlightSprite);
 
