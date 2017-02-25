@@ -29,16 +29,4 @@ public class TestHelpers {
     assertThat(casted.getObject()).isSameAs(target);
     return casted;
   }
-
-  public static <T> T verifyModelEvent(ArgumentCaptor<Object> captor, int index, Class<T> clazz) {
-    Object objectAtIndex = null;
-    try {
-      objectAtIndex = captor.getAllValues().get(index);
-    } catch (IndexOutOfBoundsException ex) {
-      fail();
-    }
-    assertThat(objectAtIndex).isNotNull();
-    assertThat(objectAtIndex).isInstanceOf(clazz);
-    return clazz.cast(objectAtIndex);
-  }
 }
