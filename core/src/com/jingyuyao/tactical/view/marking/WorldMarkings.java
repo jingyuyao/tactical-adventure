@@ -9,9 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
+import com.jingyuyao.tactical.model.event.SelectObject;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.Battling;
@@ -54,18 +52,8 @@ public class WorldMarkings {
   }
 
   @Subscribe
-  public void selectPlayer(SelectPlayer selectPlayer) {
-    highlightedActor = world.get(selectPlayer.getObject());
-  }
-
-  @Subscribe
-  public void selectEnemy(SelectEnemy selectEnemy) {
-    highlightedActor = world.get(selectEnemy.getObject());
-  }
-
-  @Subscribe
-  public void selectTerrain(SelectTerrain selectTerrain) {
-    highlightedActor = world.get(selectTerrain.getObject());
+  public void selectObject(SelectObject<MapObject> selectObject) {
+    highlightedActor = world.get(selectObject.getObject());
   }
 
   @Subscribe
