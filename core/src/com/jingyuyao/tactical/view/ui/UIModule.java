@@ -40,10 +40,8 @@ public class UIModule extends AbstractModule {
   @Provides
   @Singleton
   @WorldUIStage
-  Stage provideWorldUIStage(@WorldUIViewport Viewport viewport, Batch batch, RootTable rootTable) {
-    Stage stage = new Stage(viewport, batch);
-    stage.addActor(rootTable);
-    return stage;
+  Stage provideWorldUIStage(@WorldUIViewport Viewport viewport, Batch batch) {
+    return new Stage(viewport, batch);
   }
 
   @Provides
