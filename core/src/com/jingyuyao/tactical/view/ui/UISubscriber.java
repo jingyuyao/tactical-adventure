@@ -34,47 +34,47 @@ public class UISubscriber {
   }
 
   @Subscribe
-  public void selectCharacter(SelectCharacter<Character> selectCharacter) {
+  void selectCharacter(SelectCharacter<Character> selectCharacter) {
     characterPanel.display(selectCharacter.getObject());
     terrainPanel.display(terrains.get(selectCharacter.getObject().getCoordinate()));
   }
 
   @Subscribe
-  public void selectTerrain(SelectTerrain selectTerrain) {
+  void selectTerrain(SelectTerrain selectTerrain) {
     characterPanel.clear();
     terrainPanel.display(selectTerrain.getObject());
   }
 
   @Subscribe
-  public void state(State state) {
+  void state(State state) {
     characterPanel.refresh();
     itemPanel.refresh();
     actionGroup.loadActions(state.getActions());
   }
 
   @Subscribe
-  public void playerState(PlayerState playerState) {
+  void playerState(PlayerState playerState) {
     characterPanel.display(playerState.getPlayer());
     terrainPanel.display(terrains.get(playerState.getPlayer().getCoordinate()));
   }
 
   @Subscribe
-  public void usingConsumable(UsingConsumable usingConsumable) {
+  void usingConsumable(UsingConsumable usingConsumable) {
     itemPanel.display(usingConsumable.getConsumable());
   }
 
   @Subscribe
-  public void selectingTarget(SelectingTarget selectingTarget) {
+  void selectingTarget(SelectingTarget selectingTarget) {
     itemPanel.display(selectingTarget.getWeapon());
   }
 
   @Subscribe
-  public void battling(Battling battling) {
+  void battling(Battling battling) {
     itemPanel.display(battling.getWeapon());
   }
 
   @Subscribe
-  public void exitState(ExitState exitState) {
+  void exitState(ExitState exitState) {
     itemPanel.clear();
     actionGroup.clear();
   }

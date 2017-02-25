@@ -35,12 +35,12 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   }
 
   @Subscribe
-  public void instantMove(InstantMove instantMove) {
+  void instantMove(InstantMove instantMove) {
     updateCoordinate(instantMove.getDestination());
   }
 
   @Subscribe
-  public void move(final Move move) {
+  void move(final Move move) {
     final ImmutableList<EventListener> listeners = popAllListeners();
     SequenceAction moveSequence = getMoveSequence(move.getPath().getTrack());
     moveSequence.addAction(

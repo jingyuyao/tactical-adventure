@@ -49,17 +49,17 @@ public class TacticalAdventure extends Game {
     setLevel(AssetModule.TEST_MAP);
   }
 
-  @Subscribe
-  public void logDeadEvent(DeadEvent deadEvent) {
-    Gdx.app.log("DeadEvent", deadEvent.getEvent().toString());
-  }
-
   @Override
   public void dispose() {
     super.dispose();
     mapSaver.saveMap(AssetModule.TEST_MAP);
     worldScreen.dispose();
     assetManager.dispose();
+  }
+
+  @Subscribe
+  void logDeadEvent(DeadEvent deadEvent) {
+    Gdx.app.log("DeadEvent", deadEvent.getEvent().toString());
   }
 
   private void setLevel(String mapName) {

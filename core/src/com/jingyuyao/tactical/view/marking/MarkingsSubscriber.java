@@ -30,48 +30,48 @@ public class MarkingsSubscriber {
   }
 
   @Subscribe
-  public void selectObject(SelectObject<MapObject> selectObject) {
+  void selectObject(SelectObject<MapObject> selectObject) {
     markings.highlight(selectObject.getObject());
   }
 
   @Subscribe
-  public void playerState(PlayerState playerState) {
+  void playerState(PlayerState playerState) {
     markings.activate(playerState.getPlayer());
   }
 
   @Subscribe
-  public void activatedEnemy(ActivatedEnemy activatedEnemy) {
+  void activatedEnemy(ActivatedEnemy activatedEnemy) {
     markings.activate(activatedEnemy.getObject());
   }
 
   @Subscribe
-  public void moving(Moving moving) {
+  void moving(Moving moving) {
     for (Terrain terrain : moving.getMovement().getTerrains()) {
       markings.mark(terrain, markerSprites.getMove());
     }
   }
 
   @Subscribe
-  public void selectingTarget(SelectingTarget selectingTarget) {
+  void selectingTarget(SelectingTarget selectingTarget) {
     for (Target target : selectingTarget.getTargets()) {
       markTarget(target);
     }
   }
 
   @Subscribe
-  public void battling(Battling battling) {
+  void battling(Battling battling) {
     markTarget(battling.getTarget());
   }
 
   @Subscribe
-  public void exitState(ExitState exitState) {
+  void exitState(ExitState exitState) {
     markings.clearMarked();
     markings.activate(null);
   }
 
   // TODO: this is temporary
   @Subscribe
-  public void attack(final Attack attack) {
+  void attack(final Attack attack) {
     Runnable showAttack = new Runnable() {
       @Override
       public void run() {

@@ -19,22 +19,22 @@ public class WorldSubscriber {
   }
 
   @Subscribe
-  public void addTerrain(AddTerrain addTerrain) {
+  void addTerrain(AddTerrain addTerrain) {
     world.add(addTerrain.getObject());
   }
 
   @Subscribe
-  public void addPlayer(AddPlayer addPlayer) {
+  void addPlayer(AddPlayer addPlayer) {
     world.add(addPlayer.getObject());
   }
 
   @Subscribe
-  public void addEnemy(AddEnemy addEnemy) {
+  void addEnemy(AddEnemy addEnemy) {
     world.add(addEnemy.getObject());
   }
 
   @Subscribe
-  public void removeObject(RemoveObject removeObject) {
+  void removeObject(RemoveObject removeObject) {
     world.remove(removeObject.getObject());
   }
 }
