@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.SelectCharacter;
+import com.jingyuyao.tactical.model.event.SelectEnemy;
+import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.Battling;
@@ -34,9 +34,15 @@ public class UISubscriber {
   }
 
   @Subscribe
-  void selectCharacter(SelectCharacter<Character> selectCharacter) {
-    characterPanel.display(selectCharacter.getObject());
-    terrainPanel.display(terrains.get(selectCharacter.getObject().getCoordinate()));
+  void selectPlayer(SelectPlayer selectPlayer) {
+    characterPanel.display(selectPlayer.getObject());
+    terrainPanel.display(terrains.get(selectPlayer.getObject().getCoordinate()));
+  }
+
+  @Subscribe
+  void selectEnemy(SelectEnemy selectEnemy) {
+    characterPanel.display(selectEnemy.getObject());
+    terrainPanel.display(terrains.get(selectEnemy.getObject().getCoordinate()));
   }
 
   @Subscribe
