@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.ViewModule;
 import com.jingyuyao.tactical.view.WorldScreen;
+import com.jingyuyao.tactical.view.WorldScreenSubscribers;
 import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
@@ -24,6 +25,8 @@ public class TacticalAdventure extends Game {
   private EventBus modelEventBus;
   @Inject
   private WorldScreen worldScreen;
+  @Inject
+  private WorldScreenSubscribers worldScreenSubscribers;
   @Inject
   private MapLoader mapLoader;
   @Inject
@@ -41,7 +44,7 @@ public class TacticalAdventure extends Game {
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
-    worldScreen.registerListeners(modelEventBus);
+    worldScreenSubscribers.register(modelEventBus);
     modelEventBus.register(this);
     setLevel(AssetModule.TEST_MAP);
   }

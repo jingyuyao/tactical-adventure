@@ -4,14 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.marking.MarkingSubscriber;
 import com.jingyuyao.tactical.view.marking.WorldMarkings;
-import com.jingyuyao.tactical.view.ui.UISubscriber;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.World;
-import com.jingyuyao.tactical.view.world.WorldSubscriber;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -23,9 +19,6 @@ public class WorldScreen extends ScreenAdapter {
   private final WorldMarkings worldMarkings;
   private final WorldUI worldUI;
   private final WorldController worldController;
-  private final WorldSubscriber worldSubscriber;
-  private final MarkingSubscriber markingSubscriber;
-  private final UISubscriber uiSubscriber;
 
   @Inject
   WorldScreen(
@@ -33,24 +26,12 @@ public class WorldScreen extends ScreenAdapter {
       World world,
       WorldMarkings worldMarkings,
       WorldUI worldUI,
-      WorldController worldController,
-      WorldSubscriber worldSubscriber,
-      MarkingSubscriber markingSubscriber,
-      UISubscriber uiSubscriber) {
+      WorldController worldController) {
     this.batch = batch;
     this.world = world;
     this.worldMarkings = worldMarkings;
     this.worldUI = worldUI;
     this.worldController = worldController;
-    this.worldSubscriber = worldSubscriber;
-    this.markingSubscriber = markingSubscriber;
-    this.uiSubscriber = uiSubscriber;
-  }
-
-  public void registerListeners(EventBus eventBus) {
-    eventBus.register(worldSubscriber);
-    eventBus.register(markingSubscriber);
-    eventBus.register(uiSubscriber);
   }
 
   @Override
