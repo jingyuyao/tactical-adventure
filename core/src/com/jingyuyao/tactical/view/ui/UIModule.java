@@ -29,7 +29,7 @@ public class UIModule extends AbstractModule {
     requireBinding(AssetManager.class);
     requireBinding(Batch.class);
     requireBinding(WorldConfig.class);
-    requireBinding(Terrains.class); // TODO: remove me
+    requireBinding(Terrains.class);
 
     install(new FactoryModuleBuilder().build(UIFactory.class));
   }
