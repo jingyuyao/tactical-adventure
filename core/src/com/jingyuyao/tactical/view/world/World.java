@@ -55,6 +55,8 @@ public class World {
     this.actorFactory = actorFactory;
     this.controllerFactory = controllerFactory;
     this.characterSprites = characterSprites;
+    stage.addActor(terrainGroup);
+    stage.addActor(characterGroup);
   }
 
   public void act(float delta) {

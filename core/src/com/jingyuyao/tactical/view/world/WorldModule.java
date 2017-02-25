@@ -17,7 +17,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.AssetModule;
+import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -32,6 +34,8 @@ public class WorldModule extends AbstractModule {
   protected void configure() {
     requireBinding(AssetManager.class);
     requireBinding(Batch.class);
+    requireBinding(ControllerFactory.class);
+    requireBinding(ActorFactory.class);
 
     bind(Group.class).annotatedWith(CharacterGroup.class).to(Group.class).in(Singleton.class);
     bind(Group.class).annotatedWith(TerrainGroup.class).to(Group.class).in(Singleton.class);
@@ -40,15 +44,8 @@ public class WorldModule extends AbstractModule {
   @Provides
   @Singleton
   @WorldStage
-  Stage provideWorldStage(
-      Batch batch,
-      @WorldViewport Viewport viewport,
-      @CharacterGroup Group characterGroup,
-      @TerrainGroup Group terrainGroup) {
-    Stage stage = new Stage(viewport, batch);
-    stage.addActor(terrainGroup);
-    stage.addActor(characterGroup);
-    return stage;
+  Stage provideWorldStage(Batch batch, @WorldViewport Viewport viewport) {
+    return new Stage(viewport, batch);
   }
 
   @Provides

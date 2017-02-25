@@ -105,6 +105,10 @@ project(":core") {
             // We can't allow that as it includes AOP which doesn't work on Android.
             exclude module: "guice"
         }
+        // We mock what we can but we need to run some libGdx for real during testing
+        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        // Need the DLLs from gdx-platform to initialize headless backend
+        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         testCompile("com.google.inject.extensions:guice-testlib:$guiceVersion") {
             // see above
             exclude module: "guice"

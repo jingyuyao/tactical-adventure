@@ -83,6 +83,9 @@ public class WorldTest {
   public void setUp() {
     world = new World(stage, characterGroup, terrainGroup, actorMap, mapRenderer, actorFactory,
         controllerFactory, characterSprites);
+    InOrder inOrder = Mockito.inOrder(stage);
+    inOrder.verify(stage).addActor(terrainGroup);
+    inOrder.verify(stage).addActor(characterGroup);
   }
 
   @Test
