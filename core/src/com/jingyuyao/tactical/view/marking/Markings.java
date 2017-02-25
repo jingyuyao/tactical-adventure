@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldMarkings {
+public class Markings {
 
   private final Batch batch;
   private final World world;
@@ -26,7 +26,7 @@ public class WorldMarkings {
   private WorldActor activatedActor;
 
   @Inject
-  WorldMarkings(
+  Markings(
       Batch batch,
       World world,
       MarkerSprites markerSprites,

@@ -18,36 +18,36 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MarkingSubscriber {
+public class MarkingsSubscriber {
 
-  private final WorldMarkings worldMarkings;
+  private final Markings markings;
   private final MarkerSprites markerSprites;
 
   @Inject
-  MarkingSubscriber(WorldMarkings worldMarkings, MarkerSprites markerSprites) {
-    this.worldMarkings = worldMarkings;
+  MarkingsSubscriber(Markings markings, MarkerSprites markerSprites) {
+    this.markings = markings;
     this.markerSprites = markerSprites;
   }
 
   @Subscribe
   public void selectObject(SelectObject<MapObject> selectObject) {
-    worldMarkings.highlight(selectObject.getObject());
+    markings.highlight(selectObject.getObject());
   }
 
   @Subscribe
   public void playerState(PlayerState playerState) {
-    worldMarkings.activate(playerState.getPlayer());
+    markings.activate(playerState.getPlayer());
   }
 
   @Subscribe
   public void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    worldMarkings.activate(activatedEnemy.getObject());
+    markings.activate(activatedEnemy.getObject());
   }
 
   @Subscribe
   public void moving(Moving moving) {
     for (Terrain terrain : moving.getMovement().getTerrains()) {
-      worldMarkings.mark(terrain, markerSprites.getMove());
+      markings.mark(terrain, markerSprites.getMove());
     }
   }
 
@@ -55,10 +55,10 @@ public class MarkingSubscriber {
   public void selectingTarget(SelectingTarget selectingTarget) {
     for (Target target : selectingTarget.getTargets()) {
       for (Terrain terrain : target.getTargetTerrains()) {
-        worldMarkings.mark(terrain, markerSprites.getAttack());
+        markings.mark(terrain, markerSprites.getAttack());
       }
       for (Terrain terrain : target.getSelectTerrains()) {
-        worldMarkings.mark(terrain, markerSprites.getTargetSelect());
+        markings.mark(terrain, markerSprites.getTargetSelect());
       }
     }
   }
@@ -66,17 +66,17 @@ public class MarkingSubscriber {
   @Subscribe
   public void battling(Battling battling) {
     for (Terrain terrain : battling.getTarget().getTargetTerrains()) {
-      worldMarkings.mark(terrain, markerSprites.getAttack());
+      markings.mark(terrain, markerSprites.getAttack());
     }
     for (Terrain terrain : battling.getTarget().getSelectTerrains()) {
-      worldMarkings.mark(terrain, markerSprites.getTargetSelect());
+      markings.mark(terrain, markerSprites.getTargetSelect());
     }
   }
 
   @Subscribe
   public void exitState(ExitState exitState) {
-    worldMarkings.clearMarked();
-    worldMarkings.activate(null);
+    markings.clearMarked();
+    markings.activate(null);
   }
 
   // TODO: this is temporary
@@ -86,14 +86,14 @@ public class MarkingSubscriber {
       @Override
       public void run() {
         for (MapObject object : attack.getObject().getHitObjects()) {
-          worldMarkings.mark(object, markerSprites.getHit());
+          markings.mark(object, markerSprites.getHit());
         }
       }
     };
     Runnable hideAttack = new Runnable() {
       @Override
       public void run() {
-        worldMarkings.clearMarked();
+        markings.clearMarked();
       }
     };
 
@@ -111,6 +111,6 @@ public class MarkingSubscriber {
             attack.done();
           }
         }));
-    worldMarkings.addAction(sequence);
+    markings.addAction(sequence);
   }
 }

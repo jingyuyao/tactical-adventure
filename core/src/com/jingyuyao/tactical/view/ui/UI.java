@@ -6,12 +6,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldUI {
+public class UI {
 
   private final Stage stage;
 
   @Inject
-  WorldUI(@WorldUIStage Stage stage, RootTable rootTable) {
+  UI(@WorldUIStage Stage stage, RootTable rootTable) {
     this.stage = stage;
     stage.addActor(rootTable);
   }
