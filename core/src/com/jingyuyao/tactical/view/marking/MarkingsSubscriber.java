@@ -54,23 +54,13 @@ public class MarkingsSubscriber {
   @Subscribe
   public void selectingTarget(SelectingTarget selectingTarget) {
     for (Target target : selectingTarget.getTargets()) {
-      for (Terrain terrain : target.getTargetTerrains()) {
-        markings.mark(terrain, markerSprites.getAttack());
-      }
-      for (Terrain terrain : target.getSelectTerrains()) {
-        markings.mark(terrain, markerSprites.getTargetSelect());
-      }
+      markTarget(target);
     }
   }
 
   @Subscribe
   public void battling(Battling battling) {
-    for (Terrain terrain : battling.getTarget().getTargetTerrains()) {
-      markings.mark(terrain, markerSprites.getAttack());
-    }
-    for (Terrain terrain : battling.getTarget().getSelectTerrains()) {
-      markings.mark(terrain, markerSprites.getTargetSelect());
-    }
+    markTarget(battling.getTarget());
   }
 
   @Subscribe
@@ -112,5 +102,14 @@ public class MarkingsSubscriber {
           }
         }));
     markings.addAction(sequence);
+  }
+
+  private void markTarget(Target target) {
+    for (Terrain terrain : target.getTargetTerrains()) {
+      markings.mark(terrain, markerSprites.getAttack());
+    }
+    for (Terrain terrain : target.getSelectTerrains()) {
+      markings.mark(terrain, markerSprites.getTargetSelect());
+    }
   }
 }
