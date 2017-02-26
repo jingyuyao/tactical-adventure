@@ -14,7 +14,6 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.AssetModule;
-import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -36,9 +35,6 @@ public class UIModuleTest {
   @Bind
   @Mock
   private WorldConfig worldConfig;
-  @Bind
-  @Mock
-  private Terrains terrains;
   @Mock
   private Skin skin;
   @Mock

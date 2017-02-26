@@ -5,7 +5,6 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
-import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
@@ -21,28 +20,27 @@ public class UISubscriber {
   private final CharacterPanel characterPanel;
   private final TerrainPanel terrainPanel;
   private final ItemPanel itemPanel;
-  private final Terrains terrains;
 
   @Inject
-  UISubscriber(ActionGroup actionGroup, CharacterPanel characterPanel,
-      TerrainPanel terrainPanel, ItemPanel itemPanel, Terrains terrains) {
+  UISubscriber(
+      ActionGroup actionGroup, CharacterPanel characterPanel, TerrainPanel terrainPanel,
+      ItemPanel itemPanel) {
     this.actionGroup = actionGroup;
     this.characterPanel = characterPanel;
     this.terrainPanel = terrainPanel;
     this.itemPanel = itemPanel;
-    this.terrains = terrains;
   }
 
   @Subscribe
   void selectPlayer(SelectPlayer selectPlayer) {
     characterPanel.display(selectPlayer.getObject());
-    terrainPanel.display(terrains.get(selectPlayer.getObject().getCoordinate()));
+    terrainPanel.display(selectPlayer.getObject().getTerrain());
   }
 
   @Subscribe
   void selectEnemy(SelectEnemy selectEnemy) {
     characterPanel.display(selectEnemy.getObject());
-    terrainPanel.display(terrains.get(selectEnemy.getObject().getCoordinate()));
+    terrainPanel.display(selectEnemy.getObject().getTerrain());
   }
 
   @Subscribe
@@ -61,7 +59,7 @@ public class UISubscriber {
   @Subscribe
   void playerState(PlayerState playerState) {
     characterPanel.display(playerState.getPlayer());
-    terrainPanel.display(terrains.get(playerState.getPlayer().getCoordinate()));
+    terrainPanel.display(playerState.getPlayer().getTerrain());
   }
 
   @Subscribe
