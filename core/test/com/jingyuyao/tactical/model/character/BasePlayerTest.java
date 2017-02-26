@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.MapState;
 import java.util.List;
 import org.junit.Before;
@@ -28,14 +29,16 @@ public class BasePlayerTest {
   @Mock
   private EventBus eventBus;
   @Mock
+  private Terrains terrains;
+  @Mock
   private MapState mapState;
   private Player player;
 
   @Before
   public void setUp() {
     player =
-        new BasePlayer(CHARACTER_COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items,
-            true);
+        new BasePlayer(
+            CHARACTER_COORDINATE, eventBus, terrains, NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
   }
 
   @Test

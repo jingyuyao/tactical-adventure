@@ -10,6 +10,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.map.Movements;
+import com.jingyuyao.tactical.model.map.Terrains;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -20,6 +21,7 @@ public class CharacterModule extends AbstractModule {
   protected void configure() {
     requireBinding(Battle.class);
     requireBinding(Movements.class);
+    requireBinding(Terrains.class);
   }
 
   @Provides

@@ -5,6 +5,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.map.Movements;
+import com.jingyuyao.tactical.model.map.Terrains;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,6 +14,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CharacterModuleTest {
 
+  @Bind
+  @Mock
+  private Terrains terrains;
   @Bind
   @Mock
   private Movements movements;

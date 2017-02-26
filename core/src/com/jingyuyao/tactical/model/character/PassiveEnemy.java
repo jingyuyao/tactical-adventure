@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -23,16 +24,17 @@ public class PassiveEnemy extends AbstractEnemy {
   private final transient Battle battle;
 
   @Inject
-  PassiveEnemy(@CharacterEventBus EventBus eventBus, Movements movements, Battle battle) {
-    super(eventBus);
+  PassiveEnemy(
+      @CharacterEventBus EventBus eventBus, Terrains terrains, Movements movements, Battle battle) {
+    super(eventBus, terrains);
     this.movements = movements;
     this.battle = battle;
   }
 
   PassiveEnemy(
-      Coordinate coordinate, Movements movements, EventBus eventBus, Battle battle, String name,
-      int maxHp, int hp, int moveDistance, List<Item> items) {
-    super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
+      Coordinate coordinate, Terrains terrains, Movements movements, EventBus eventBus,
+      Battle battle, String name, int maxHp, int hp, int moveDistance, List<Item> items) {
+    super(coordinate, eventBus, terrains, name, maxHp, hp, moveDistance, items);
     this.movements = movements;
     this.battle = battle;
   }
