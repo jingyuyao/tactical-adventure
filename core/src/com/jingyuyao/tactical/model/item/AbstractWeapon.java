@@ -18,8 +18,7 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
 
   @Override
   public void damages(Target target) {
-    // Convert to an immutable list since characters can die and we don't want an iteration error
-    for (Character opponent : target.getTargetCharacters().toList()) {
+    for (Character opponent : target.getTargetCharacters()) {
       opponent.damageBy(attackPower);
     }
   }
