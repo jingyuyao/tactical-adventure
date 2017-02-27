@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkingsActor;
+import com.jingyuyao.tactical.view.resource.MarkerSprites;
 import com.jingyuyao.tactical.view.util.ViewUtil;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;

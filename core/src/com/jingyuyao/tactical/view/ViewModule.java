@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.marking.MarkingModule;
+import com.jingyuyao.tactical.view.resource.ResourceModule;
 import com.jingyuyao.tactical.view.ui.UIModule;
 import com.jingyuyao.tactical.view.world.WorldModule;
 import javax.inject.Singleton;
@@ -21,6 +22,7 @@ public class ViewModule extends AbstractModule {
     requireBinding(WorldController.class);
     requireBinding(ControllerFactory.class);
 
+    install(new ResourceModule());
     install(new ActorModule());
     install(new MarkingModule());
     install(new UIModule());

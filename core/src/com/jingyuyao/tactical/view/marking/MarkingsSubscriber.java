@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.resource.MarkerSprites;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

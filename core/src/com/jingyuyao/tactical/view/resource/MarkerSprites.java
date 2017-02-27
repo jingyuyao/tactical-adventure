@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.marking;
+package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class MarkerSprites {
+public class MarkerSprites {
 
   private final Sprite highlight;
   private final Sprite activated;
@@ -25,27 +25,27 @@ class MarkerSprites {
     attack = textureAtlas.createSprite("marking/attack");
   }
 
-  Sprite getHighlight() {
+  public Sprite getHighlight() {
     return highlight;
   }
 
-  Sprite getActivated() {
+  public Sprite getActivated() {
     return activated;
   }
 
-  Sprite getMove() {
+  public Sprite getMove() {
     return move;
   }
 
-  Sprite getHit() {
+  public Sprite getHit() {
     return hit;
   }
 
-  Sprite getTargetSelect() {
+  public Sprite getTargetSelect() {
     return targetSelect;
   }
 
-  Sprite getAttack() {
+  public Sprite getAttack() {
     return attack;
   }
 }
