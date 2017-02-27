@@ -3,6 +3,7 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,6 +16,7 @@ import javax.inject.Singleton;
  */
 public class AssetModule extends AbstractModule {
 
+  public static final String TEXTURE_ATLAS = "packed/texture.atlas";
   public static final String TEST_MAP = "maps/test_map";
   public static final String HIGHLIGHT = "sprites/highlight.png";
   public static final String MOVE = "sprites/move.png";
@@ -42,6 +44,7 @@ public class AssetModule extends AbstractModule {
     manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
     // Assets
+    manager.load(TEXTURE_ATLAS, TextureAtlas.class);
     manager.load(JINGYU, Texture.class);
     manager.load(KEVIN, Texture.class);
     manager.load(ANDREW, Texture.class);
