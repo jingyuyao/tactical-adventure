@@ -111,6 +111,6 @@ public class World {
   }
 
   private MyAnimation getAnimation(String characterName) {
-    return animations.get("character/" + characterName);
+    return animations.getCharacter(characterName);
   }
 }

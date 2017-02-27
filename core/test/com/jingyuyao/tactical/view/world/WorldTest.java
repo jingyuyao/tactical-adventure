@@ -136,7 +136,7 @@ public class WorldTest {
 
   @Test
   public void add_player() {
-    when(animations.get("character/" + NAME)).thenReturn(myAnimation);
+    when(animations.getCharacter(NAME)).thenReturn(myAnimation);
     when(player.getName()).thenReturn(NAME);
     when(actorFactory.create(player, myAnimation)).thenReturn(playerActor);
     when(controllerFactory.create(player)).thenReturn(controller);
@@ -151,7 +151,7 @@ public class WorldTest {
 
   @Test
   public void add_enemy() {
-    when(animations.get("character/" + NAME)).thenReturn(myAnimation);
+    when(animations.getCharacter(NAME)).thenReturn(myAnimation);
     when(enemy.getName()).thenReturn(NAME);
     when(actorFactory.create(enemy, myAnimation)).thenReturn(enemyActor);
     when(controllerFactory.create(enemy)).thenReturn(controller);

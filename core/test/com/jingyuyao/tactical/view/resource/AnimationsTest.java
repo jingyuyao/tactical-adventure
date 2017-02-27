@@ -22,8 +22,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AnimationsTest {
 
+  private static final String CHARACTER_ASSET_PREFIX = "character/";
   private static final String KEY = "character/me";
 
+  @Mock
+  private ResourceConfig resourceConfig;
   @Mock
   private Map<String, MyAnimation> animationMap;
   @Mock
@@ -41,28 +44,30 @@ public class AnimationsTest {
 
   @Before
   public void setUp() {
-    animations = new Animations(animationMap, textureAtlas, myAnimationFactory);
+    animations = new Animations(resourceConfig, animationMap, textureAtlas, myAnimationFactory);
   }
 
   @Test
   public void get_empty() {
-    when(animationMap.containsKey(KEY)).thenReturn(false);
-    when(textureAtlas.findRegions(KEY)).thenReturn(textureRegions);
+    when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
+    when(animationMap.containsKey(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(false);
+    when(textureAtlas.findRegions(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(textureRegions);
 
-    MyAnimation animation = animations.get(KEY);
+    MyAnimation animation = animations.getCharacter(KEY);
 
-    verify(animationMap).put(eq(KEY), animationCaptor.capture());
+    verify(animationMap).put(eq(CHARACTER_ASSET_PREFIX + KEY), animationCaptor.capture());
     assertThat(animationCaptor.getValue()).isSameAs(animation);
   }
 
   @Test
   public void get_not_empty() {
-    when(animationMap.containsKey(KEY)).thenReturn(true);
-    when(animationMap.get(KEY)).thenReturn(mockAnimation);
+    when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
+    when(animationMap.containsKey(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(true);
+    when(animationMap.get(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(mockAnimation);
 
-    assertThat(animations.get(KEY)).isSameAs(mockAnimation);
-    verify(animationMap).containsKey(KEY);
-    verify(animationMap).get(KEY);
+    assertThat(animations.getCharacter(KEY)).isSameAs(mockAnimation);
+    verify(animationMap).containsKey(CHARACTER_ASSET_PREFIX + KEY);
+    verify(animationMap).get(CHARACTER_ASSET_PREFIX + KEY);
     verifyNoMoreInteractions(animationMap);
     verifyZeroInteractions(textureAtlas);
   }

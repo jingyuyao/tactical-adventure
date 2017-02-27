@@ -14,4 +14,8 @@ class ResourceConfig {
   float getFrameDuration() {
     return 0.2f;
   }
+
+  String getCharacterAssetPrefix() {
+    return "character/";
+  }
 }
