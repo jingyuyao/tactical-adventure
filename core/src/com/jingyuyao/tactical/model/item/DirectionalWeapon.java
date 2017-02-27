@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Directions;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -20,8 +19,7 @@ public class DirectionalWeapon extends AbstractWeapon {
   private int distance;
 
   @Inject
-  DirectionalWeapon(Characters characters, Terrains terrains, TargetFactory targetFactory) {
-    super(characters);
+  DirectionalWeapon(Terrains terrains, TargetFactory targetFactory) {
     this.terrains = terrains;
     this.targetFactory = targetFactory;
   }

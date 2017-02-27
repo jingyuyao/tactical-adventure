@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Characters;
 import java.util.Locale;
 
 /**
@@ -10,12 +9,7 @@ import java.util.Locale;
 // TODO: test me
 abstract class AbstractWeapon extends BaseItem implements Weapon {
 
-  private final transient Characters characters;
   private int attackPower;
-
-  AbstractWeapon(Characters characters) {
-    this.characters = characters;
-  }
 
   @Override
   public String getDescription() {
@@ -27,10 +21,6 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
     // Convert to an immutable list since characters can die and we don't want an iteration error
     for (Character opponent : target.getTargetCharacters().toList()) {
       opponent.damageBy(attackPower);
-      // TODO: move this to Battle
-      if (opponent.getHp() == 0) {
-        characters.remove(opponent);
-      }
     }
   }
 

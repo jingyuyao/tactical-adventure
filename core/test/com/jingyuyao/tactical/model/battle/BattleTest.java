@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Characters;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,8 @@ public class BattleTest {
   @Mock
   private EventBus eventBus;
   @Mock
+  private Characters characters;
+  @Mock
   private Character attacker;
   @Mock
   private Weapon weapon;
@@ -37,7 +40,7 @@ public class BattleTest {
 
   @Before
   public void setUp() {
-    battle = new Battle(eventBus);
+    battle = new Battle(eventBus, characters);
   }
 
   @Test
@@ -52,7 +55,8 @@ public class BattleTest {
 
     attack.done();
     assertThat(future.isDone()).isTrue();
-    verify(weapon).damages(target);
     verify(attacker).useItem(weapon);
+    verify(weapon).damages(target);
+    verify(characters).removeDead();
   }
 }

@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapModule.BackingCharacterSet;
+import java.util.Iterator;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,9 +40,14 @@ public class Characters {
     eventBus.post(new AddEnemy(enemy));
   }
 
-  public void remove(Character character) {
-    characterSet.remove(character);
-    eventBus.post(new RemoveObject(character));
+  public void removeDead() {
+    for (Iterator<Character> iterator = characterSet.iterator(); iterator.hasNext(); ) {
+      Character character = iterator.next();
+      if (character.getHp() == 0) {
+        iterator.remove();
+        eventBus.post(new RemoveObject(character));
+      }
+    }
   }
 
   public FluentIterable<Character> fluent() {

@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -19,8 +18,7 @@ public class Grenade extends AbstractWeapon {
   private int size;
 
   @Inject
-  Grenade(Characters characters, Movements movements, TargetFactory targetFactory) {
-    super(characters);
+  Grenade(Movements movements, TargetFactory targetFactory) {
     this.movements = movements;
     this.targetFactory = targetFactory;
   }

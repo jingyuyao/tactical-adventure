@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Characters;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -17,10 +18,12 @@ import javax.inject.Singleton;
 public class Battle {
 
   private final EventBus eventBus;
+  private final Characters characters;
 
   @Inject
-  Battle(@ModelEventBus EventBus eventBus) {
+  Battle(@ModelEventBus EventBus eventBus, Characters characters) {
     this.eventBus = eventBus;
+    this.characters = characters;
   }
 
   public ListenableFuture<Void> begin(
@@ -30,8 +33,9 @@ public class Battle {
     Futures.addCallback(future, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        weapon.damages(target);
         attacker.useItem(weapon);
+        weapon.damages(target);
+        characters.removeDead();
       }
 
       @Override
