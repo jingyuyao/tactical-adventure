@@ -7,11 +7,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import java.util.Map;
 import org.junit.Before;
@@ -26,49 +23,36 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class AnimationsTest {
 
   private static final String KEY = "character/me";
-  private static final float DURATION = 0.2f;
 
   @Mock
-  private ResourceConfig resourceConfig;
-  @Mock
-  private Map<String, Animation<TextureRegion>> animationMap;
+  private Map<String, MyAnimation> animationMap;
   @Mock
   private TextureAtlas textureAtlas;
   @Mock
-  private Animation<TextureRegion> mockAnimation;
+  private MyAnimationFactory myAnimationFactory;
+  @Mock
+  private MyAnimation mockAnimation;
   @Mock
   private Array<AtlasRegion> textureRegions;
   @Captor
-  private ArgumentCaptor<Animation<TextureRegion>> animationCaptor;
+  private ArgumentCaptor<MyAnimation> animationCaptor;
 
   private Animations animations;
 
   @Before
   public void setUp() {
-    animations = new Animations(resourceConfig, animationMap, textureAtlas);
-
-    assertThat(animations.getStateTime()).isEqualTo(0f);
-  }
-
-  @Test
-  public void advance_time() {
-    animations.advanceStateTime(12f);
-
-    assertThat(animations.getStateTime()).isEqualTo(12f);
+    animations = new Animations(animationMap, textureAtlas, myAnimationFactory);
   }
 
   @Test
   public void get_empty() {
     when(animationMap.containsKey(KEY)).thenReturn(false);
     when(textureAtlas.findRegions(KEY)).thenReturn(textureRegions);
-    when(resourceConfig.getFrameDuration()).thenReturn(DURATION);
 
-    Animation<TextureRegion> animation = animations.get(KEY);
+    MyAnimation animation = animations.get(KEY);
 
     verify(animationMap).put(eq(KEY), animationCaptor.capture());
     assertThat(animationCaptor.getValue()).isSameAs(animation);
-    assertThat(animation.getFrameDuration()).isEqualTo(DURATION);
-    assertThat(animation.getPlayMode()).isEqualTo(PlayMode.LOOP);
   }
 
   @Test
@@ -81,6 +65,5 @@ public class AnimationsTest {
     verify(animationMap).get(KEY);
     verifyNoMoreInteractions(animationMap);
     verifyZeroInteractions(textureAtlas);
-    verifyZeroInteractions(resourceConfig);
   }
 }

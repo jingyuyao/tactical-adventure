@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class ResourceModule extends AbstractModule {
   protected void configure() {
     requireBinding(TextureAtlas.class);
 
-    bind(MarkerSprites.class);
+    install(new FactoryModuleBuilder().build(MyAnimationFactory.class));
   }
 
   @Provides
