@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.ControllerFactory;
@@ -19,6 +20,7 @@ public class ViewModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(AssetManager.class);
+    requireBinding(TextureAtlas.class);
     requireBinding(WorldController.class);
     requireBinding(ControllerFactory.class);
 

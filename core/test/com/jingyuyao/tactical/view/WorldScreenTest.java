@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.Markings;
+import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.ui.UI;
 import com.jingyuyao.tactical.view.world.World;
 import org.junit.Before;
@@ -29,6 +30,8 @@ public class WorldScreenTest {
   @Mock
   private UI ui;
   @Mock
+  private Animations animations;
+  @Mock
   private WorldController worldController;
   @Mock
   private GL20 gl20;
@@ -37,7 +40,7 @@ public class WorldScreenTest {
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(batch, world, markings, ui, worldController);
+    worldScreen = new WorldScreen(batch, world, markings, ui, animations, worldController);
     Gdx.gl = gl20;
   }
 
@@ -59,10 +62,11 @@ public class WorldScreenTest {
   public void render() {
     worldScreen.render(10f);
 
-    InOrder inOrder = Mockito.inOrder(world, markings, ui, gl20);
+    InOrder inOrder = Mockito.inOrder(world, markings, ui, animations, gl20);
     inOrder.verify(ui).act(10f);
     inOrder.verify(markings).act(10f);
     inOrder.verify(world).act(10f);
+    inOrder.verify(animations).advanceStateTime(10f);
     inOrder.verify(gl20).glClear(GL20.GL_COLOR_BUFFER_BIT);
     inOrder.verify(world).draw();
     inOrder.verify(markings).draw();

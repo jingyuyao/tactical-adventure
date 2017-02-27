@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.Markings;
+import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.ui.UI;
 import com.jingyuyao.tactical.view.world.World;
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ public class WorldScreen extends ScreenAdapter {
   private final World world;
   private final Markings markings;
   private final UI ui;
+  private final Animations animations;
   private final WorldController worldController;
 
   @Inject
@@ -26,11 +28,13 @@ public class WorldScreen extends ScreenAdapter {
       World world,
       Markings markings,
       UI ui,
+      Animations animations,
       WorldController worldController) {
     this.batch = batch;
     this.world = world;
     this.markings = markings;
     this.ui = ui;
+    this.animations = animations;
     this.worldController = worldController;
   }
 
@@ -49,6 +53,7 @@ public class WorldScreen extends ScreenAdapter {
     ui.act(delta);
     markings.act(delta);
     world.act(delta);
+    animations.advanceStateTime(delta);
 
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     world.draw();
