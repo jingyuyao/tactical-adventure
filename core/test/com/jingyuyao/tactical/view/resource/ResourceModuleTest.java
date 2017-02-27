@@ -19,6 +19,10 @@ public class ResourceModuleTest {
 
   @Inject
   private MarkerSprites markerSprites;
+  @Inject
+  private Animations animations;
+  @Inject
+  private AnimationTime animationTime;
 
   @Test
   public void can_create_module() {

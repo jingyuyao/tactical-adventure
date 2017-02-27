@@ -6,7 +6,7 @@
         "x": 1,
         "y": 2
       },
-      "name": "jingyu",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -41,7 +41,7 @@
         "x": 3,
         "y": 2
       },
-      "name": "ben",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -76,7 +76,7 @@
         "x": 2,
         "y": 3
       },
-      "name": "kevin",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -111,7 +111,7 @@
         "x": 2,
         "y": 1
       },
-      "name": "andrew",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -146,7 +146,7 @@
         "x": 5,
         "y": 4
       },
-      "name": "soldier",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -167,7 +167,7 @@
         "x": 4,
         "y": 5
       },
-      "name": "soldier",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -188,7 +188,7 @@
         "x": 5,
         "y": 6
       },
-      "name": "soldier",
+      "name": "stick",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,

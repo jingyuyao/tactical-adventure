@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,9 +15,10 @@ import com.jingyuyao.tactical.view.actor.EnemyActor;
 import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
+import com.jingyuyao.tactical.view.resource.Animations;
+import com.jingyuyao.tactical.view.resource.MyAnimation;
 import com.jingyuyao.tactical.view.world.WorldModule.BackingActorMap;
 import com.jingyuyao.tactical.view.world.WorldModule.CharacterGroup;
-import com.jingyuyao.tactical.view.world.WorldModule.CharacterSprites;
 import com.jingyuyao.tactical.view.world.WorldModule.TerrainGroup;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class World {
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
-  private final Map<String, Sprite> characterSprites;
+  private final Animations animations;
 
   @Inject
   World(
@@ -46,7 +46,7 @@ public class World {
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
-      @CharacterSprites Map<String, Sprite> characterSprites) {
+      Animations animations) {
     this.stage = stage;
     this.characterGroup = characterGroup;
     this.terrainGroup = terrainGroup;
@@ -54,7 +54,7 @@ public class World {
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
     this.controllerFactory = controllerFactory;
-    this.characterSprites = characterSprites;
+    this.animations = animations;
     stage.addActor(terrainGroup);
     stage.addActor(characterGroup);
   }
@@ -84,14 +84,12 @@ public class World {
   }
 
   void add(Player player) {
-    Sprite sprite = characterSprites.get(player.getName());
-    PlayerActor actor = actorFactory.create(player, sprite);
+    PlayerActor actor = actorFactory.create(player, getAnimation(player.getName()));
     addActor(player, actor, characterGroup);
   }
 
   void add(Enemy enemy) {
-    Sprite sprite = characterSprites.get(enemy.getName());
-    EnemyActor actor = actorFactory.create(enemy, sprite);
+    EnemyActor actor = actorFactory.create(enemy, getAnimation(enemy.getName()));
     addActor(enemy, actor, characterGroup);
   }
 
@@ -110,5 +108,9 @@ public class World {
     actor.addListener(controllerFactory.create(object));
     group.addActor(actor);
     actorMap.put(object, actor);
+  }
+
+  private MyAnimation getAnimation(String characterName) {
+    return animations.get("character/" + characterName);
   }
 }

@@ -1,9 +1,5 @@
 package com.jingyuyao.tactical.view.world;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.headless.HeadlessNativesLoader;
@@ -16,6 +12,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
+import com.jingyuyao.tactical.view.resource.Animations;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,6 +36,9 @@ public class WorldModuleTest {
   @Bind
   @Mock
   private ActorFactory actorFactory;
+  @Bind
+  @Mock
+  private Animations animations;
   @Mock
   private GL20 gl20;
   @Mock
@@ -58,7 +58,6 @@ public class WorldModuleTest {
   public void setUp() {
     Gdx.graphics = new MockGraphics();
     Gdx.gl = gl20;
-    when(assetManager.get(anyString(), eq(Texture.class))).thenReturn(texture);
   }
 
   @Test

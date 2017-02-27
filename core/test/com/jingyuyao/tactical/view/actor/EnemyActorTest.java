@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.view.resource.MyAnimation;
 import java.util.LinkedHashSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,14 +30,14 @@ public class EnemyActorTest {
   @Mock
   private LinkedHashSet<Sprite> markers;
   @Mock
-  private Sprite sprite;
+  private MyAnimation myAnimation;
 
   @Test
   public void creation() {
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    EnemyActor enemyActor = new EnemyActor(enemy, actorConfig, markers, sprite);
+    EnemyActor enemyActor = new EnemyActor(enemy, actorConfig, markers, myAnimation);
 
     assertThat(enemyActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(enemyActor.getY()).isEqualTo(INITIAL_WORLD_Y);

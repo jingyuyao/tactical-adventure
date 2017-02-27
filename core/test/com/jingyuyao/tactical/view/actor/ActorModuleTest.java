@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
+import com.jingyuyao.tactical.view.resource.MyAnimation;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -30,7 +31,7 @@ public class ActorModuleTest {
   @Mock
   private Enemy enemy;
   @Mock
-  private Sprite sprite;
+  private MyAnimation myAnimation;
 
   @Inject
   private ActorFactory actorFactory;
@@ -53,8 +54,8 @@ public class ActorModuleTest {
     when(enemy.getCoordinate()).thenReturn(COORDINATE);
 
     actorFactory.create(terrain);
-    actorFactory.create(enemy, sprite);
-    actorFactory.create(player, sprite);
+    actorFactory.create(enemy, myAnimation);
+    actorFactory.create(player, myAnimation);
   }
 
   @Test

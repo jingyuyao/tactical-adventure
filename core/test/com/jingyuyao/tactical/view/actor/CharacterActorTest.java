@@ -5,8 +5,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
@@ -14,6 +16,7 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.view.resource.MyAnimation;
 import java.util.LinkedHashSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +44,9 @@ public class CharacterActorTest {
   @Mock
   private LinkedHashSet<Sprite> markers;
   @Mock
-  private Sprite sprite;
+  private MyAnimation myAnimation;
+  @Mock
+  private TextureRegion textureRegion;
   @Mock
   private Batch batch;
   @Mock
@@ -64,7 +69,7 @@ public class CharacterActorTest {
     when(character.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    characterActor = new CharacterActor<>(character, actorConfig, markers, sprite);
+    characterActor = new CharacterActor<>(character, actorConfig, markers, myAnimation);
 
     assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
@@ -76,16 +81,18 @@ public class CharacterActorTest {
   @Test
   public void draw() {
     when(markers.iterator()).thenReturn(ImmutableList.of(mSprite1, mSprite2).iterator());
+    when(myAnimation.getCurrentFrame()).thenReturn(textureRegion);
 
     characterActor.draw(batch, 0);
 
-    InOrder inOrder = Mockito.inOrder(sprite, mSprite1, mSprite2);
+    InOrder inOrder = Mockito.inOrder(batch, mSprite1, mSprite2);
+    inOrder.verify(batch).setColor(characterActor.getColor());
     inOrder
-        .verify(sprite)
-        .setBounds(
-            characterActor.getX(), characterActor.getY(), characterActor.getWidth(),
-            characterActor.getHeight());
-    inOrder.verify(sprite).draw(batch);
+        .verify(batch)
+        .draw(
+            textureRegion, characterActor.getX(), characterActor.getY(),
+            characterActor.getWidth(), characterActor.getHeight());
+    inOrder.verify(batch).setColor(Color.WHITE);
     inOrder
         .verify(mSprite1)
         .setBounds(

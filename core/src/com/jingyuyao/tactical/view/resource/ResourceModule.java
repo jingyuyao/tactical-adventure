@@ -5,9 +5,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -30,7 +28,7 @@ public class ResourceModule extends AbstractModule {
   @Provides
   @Singleton
   @BackingAnimationMap
-  Map<String, Animation<TextureRegion>> provideBackingAnimationMap() {
+  Map<String, MyAnimation> provideBackingAnimationMap() {
     return new HashMap<>();
   }
 

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +21,8 @@ import com.jingyuyao.tactical.view.actor.EnemyActor;
 import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
+import com.jingyuyao.tactical.view.resource.Animations;
+import com.jingyuyao.tactical.view.resource.MyAnimation;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class WorldTest {
   @Mock
   private ControllerFactory controllerFactory;
   @Mock
-  private Map<String, Sprite> characterSprites;
+  private Animations animations;
   @Mock
   private Viewport viewport;
   @Mock
@@ -61,7 +62,7 @@ public class WorldTest {
   @Mock
   private WorldActor<?> worldActor;
   @Mock
-  private Sprite sprite;
+  private MyAnimation myAnimation;
   @Mock
   private Player player;
   @Mock
@@ -82,7 +83,7 @@ public class WorldTest {
   @Before
   public void setUp() {
     world = new World(stage, characterGroup, terrainGroup, actorMap, mapRenderer, actorFactory,
-        controllerFactory, characterSprites);
+        controllerFactory, animations);
     InOrder inOrder = Mockito.inOrder(stage);
     inOrder.verify(stage).addActor(terrainGroup);
     inOrder.verify(stage).addActor(characterGroup);
@@ -135,9 +136,9 @@ public class WorldTest {
 
   @Test
   public void add_player() {
-    when(characterSprites.get(NAME)).thenReturn(sprite);
+    when(animations.get("character/" + NAME)).thenReturn(myAnimation);
     when(player.getName()).thenReturn(NAME);
-    when(actorFactory.create(player, sprite)).thenReturn(playerActor);
+    when(actorFactory.create(player, myAnimation)).thenReturn(playerActor);
     when(controllerFactory.create(player)).thenReturn(controller);
 
     world.add(player);
@@ -150,9 +151,9 @@ public class WorldTest {
 
   @Test
   public void add_enemy() {
-    when(characterSprites.get(NAME)).thenReturn(sprite);
+    when(animations.get("character/" + NAME)).thenReturn(myAnimation);
     when(enemy.getName()).thenReturn(NAME);
-    when(actorFactory.create(enemy, sprite)).thenReturn(enemyActor);
+    when(actorFactory.create(enemy, myAnimation)).thenReturn(enemyActor);
     when(controllerFactory.create(enemy)).thenReturn(controller);
 
     world.add(enemy);

@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.view;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Gdx;
@@ -66,7 +64,6 @@ public class ViewModuleTest {
     Gdx.graphics = new MockGraphics();
     Gdx.files = new HeadlessFiles();
     Gdx.gl = gl20;
-    when(assetManager.get(anyString(), eq(Texture.class))).thenReturn(texture);
     when(assetManager.get(AssetModule.SKIN, Skin.class)).thenReturn(skin);
   }
 

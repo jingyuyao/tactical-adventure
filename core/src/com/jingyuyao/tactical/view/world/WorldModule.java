@@ -6,9 +6,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,11 +14,11 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.WorldActor;
+import com.jingyuyao.tactical.view.resource.Animations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -36,6 +34,7 @@ public class WorldModule extends AbstractModule {
     requireBinding(Batch.class);
     requireBinding(ControllerFactory.class);
     requireBinding(ActorFactory.class);
+    requireBinding(Animations.class);
 
     bind(Group.class).annotatedWith(CharacterGroup.class).to(Group.class).in(Singleton.class);
     bind(Group.class).annotatedWith(TerrainGroup.class).to(Group.class).in(Singleton.class);
@@ -72,19 +71,6 @@ public class WorldModule extends AbstractModule {
     return new HashMap<>();
   }
 
-  @Provides
-  @Singleton
-  @CharacterSprites
-  Map<String, Sprite> provideNameSpriteMap(AssetManager assetManager) {
-    Map<String, Sprite> nameSpriteMap = new HashMap<>();
-    nameSpriteMap.put("jingyu", new Sprite(assetManager.get(AssetModule.JINGYU, Texture.class)));
-    nameSpriteMap.put("andrew", new Sprite(assetManager.get(AssetModule.ANDREW, Texture.class)));
-    nameSpriteMap.put("kevin", new Sprite(assetManager.get(AssetModule.KEVIN, Texture.class)));
-    nameSpriteMap.put("ben", new Sprite(assetManager.get(AssetModule.BEN, Texture.class)));
-    nameSpriteMap.put("soldier", new Sprite(assetManager.get(AssetModule.SOLDIER, Texture.class)));
-    return nameSpriteMap;
-  }
-
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
@@ -117,13 +103,6 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface BackingActorMap {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface CharacterSprites {
 
   }
 }
