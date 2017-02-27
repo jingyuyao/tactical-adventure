@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.tools;
 
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 
+// TODO: separate packed by level + default
 public class TexturePackerRunner {
 
   private static final String INPUT_DIR = "android/assets/unpacked/";
