@@ -1,9 +1,7 @@
 package com.jingyuyao.tactical.view.marking;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.jingyuyao.tactical.AssetModule;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,17 +16,13 @@ class MarkerSprites {
   private final Sprite attack;
 
   @Inject
-  MarkerSprites(AssetManager assetManager) {
-    highlight = newSprite(assetManager, AssetModule.HIGHLIGHT);
-    activated = newSprite(assetManager, AssetModule.ACTIVATED);
-    move = newSprite(assetManager, AssetModule.MOVE);
-    hit = newSprite(assetManager, AssetModule.HIT);
-    targetSelect = newSprite(assetManager, AssetModule.TARGET_SELECT);
-    attack = newSprite(assetManager, AssetModule.ATTACK);
-  }
-
-  private static Sprite newSprite(AssetManager assetManager, String name) {
-    return new Sprite(assetManager.get(name, Texture.class));
+  MarkerSprites(TextureAtlas textureAtlas) {
+    highlight = textureAtlas.createSprite("marking/highlight");
+    activated = textureAtlas.createSprite("marking/activated");
+    move = textureAtlas.createSprite("marking/move");
+    hit = textureAtlas.createSprite("marking/hit");
+    targetSelect = textureAtlas.createSprite("marking/target_select");
+    attack = textureAtlas.createSprite("marking/attack");
   }
 
   Sprite getHighlight() {
