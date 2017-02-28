@@ -14,10 +14,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MyAnimationTest {
 
-  private static final float DURATION = 0.2f;
+  private static final int FPS = 5;
 
-  @Mock
-  private ResourceConfig resourceConfig;
   @Mock
   private AnimationTime animationTime;
   @Mock
@@ -25,17 +23,15 @@ public class MyAnimationTest {
   @Mock
   private AtlasRegion region2;
 
-  private Array<AtlasRegion> regions;
   private MyAnimation myAnimation;
 
   @Before
   public void setUp() {
-    when(resourceConfig.getFrameDuration()).thenReturn(DURATION);
-    regions = new Array<>();
+    Array<AtlasRegion> regions = new Array<>();
     regions.add(region1);
     regions.add(region2);
 
-    myAnimation = new MyAnimation(resourceConfig, animationTime, regions);
+    myAnimation = new MyAnimation(FPS, regions, animationTime);
   }
 
   @Test

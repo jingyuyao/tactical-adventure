@@ -11,8 +11,8 @@ class ResourceConfig {
 
   }
 
-  float getFrameDuration() {
-    return 0.2f;
+  int getCharacterIdleFPS() {
+    return 5;
   }
 
   String getCharacterAssetPrefix() {

@@ -24,6 +24,7 @@ public class AnimationsTest {
 
   private static final String CHARACTER_ASSET_PREFIX = "character/";
   private static final String KEY = "character/me";
+  private static final int CHARACTER_IDLE_FPS = 5;
 
   @Mock
   private ResourceConfig resourceConfig;
@@ -50,13 +51,16 @@ public class AnimationsTest {
   @Test
   public void get_empty() {
     when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
+    when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(animationMap.containsKey(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(textureRegions);
+    when(myAnimationFactory.create(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
 
     MyAnimation animation = animations.getCharacter(KEY);
 
     verify(animationMap).put(eq(CHARACTER_ASSET_PREFIX + KEY), animationCaptor.capture());
-    assertThat(animationCaptor.getValue()).isSameAs(animation);
+    assertThat(animationCaptor.getValue()).isSameAs(mockAnimation);
+    assertThat(animation).isSameAs(mockAnimation);
   }
 
   @Test

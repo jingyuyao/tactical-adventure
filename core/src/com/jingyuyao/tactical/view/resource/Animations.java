@@ -34,13 +34,13 @@ public class Animations {
     if (animationMap.containsKey(assetPath)) {
       return animationMap.get(assetPath);
     } else {
-      MyAnimation animation = createAnimation(assetPath);
+      MyAnimation animation = createAnimation(resourceConfig.getCharacterIdleFPS(), assetPath);
       animationMap.put(assetPath, animation);
       return animation;
     }
   }
 
-  private MyAnimation createAnimation(String assetPath) {
-    return myAnimationFactory.create(textureAtlas.findRegions(assetPath));
+  private MyAnimation createAnimation(int fps, String assetPath) {
+    return myAnimationFactory.create(fps, textureAtlas.findRegions(assetPath));
   }
 }

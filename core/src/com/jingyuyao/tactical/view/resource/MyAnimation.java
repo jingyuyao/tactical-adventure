@@ -1,30 +1,31 @@
 package com.jingyuyao.tactical.view.resource;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
 import javax.inject.Inject;
 
-public class MyAnimation {
+public class MyAnimation extends AbstractAnimation {
 
-  private final Animation<TextureRegion> animation;
   private final AnimationTime animationTime;
 
   @Inject
   MyAnimation(
-      ResourceConfig resourceConfig,
-      AnimationTime animationTime,
-      @Assisted Array<? extends TextureRegion> keyFrames) {
-    Preconditions.checkNotNull(keyFrames);
-    Preconditions.checkArgument(keyFrames.size > 0, "did you forget to pack textures?");
-    this.animation = new Animation<>(resourceConfig.getFrameDuration(), keyFrames, PlayMode.LOOP);
+      @Assisted int fps,
+      @Assisted Array<? extends TextureRegion> keyFrames,
+      AnimationTime animationTime) {
+    super(fps, keyFrames);
     this.animationTime = animationTime;
   }
 
-  public TextureRegion getCurrentFrame() {
-    return animation.getKeyFrame(animationTime.getStateTime());
+  @Override
+  PlayMode getPlayMode() {
+    return PlayMode.LOOP;
+  }
+
+  @Override
+  float getStateTime() {
+    return animationTime.getStateTime();
   }
 }

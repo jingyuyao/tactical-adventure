@@ -5,5 +5,5 @@ import com.badlogic.gdx.utils.Array;
 
 interface MyAnimationFactory {
 
-  MyAnimation create(Array<? extends TextureRegion> regions);
+  MyAnimation create(int fps, Array<? extends TextureRegion> regions);
 }
