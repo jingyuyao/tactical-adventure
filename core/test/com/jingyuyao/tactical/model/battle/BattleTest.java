@@ -49,6 +49,7 @@ public class BattleTest {
 
     verify(eventBus).post(argumentCaptor.capture());
     Attack attack = TestHelpers.verifyObjectEvent(argumentCaptor, 0, target, Attack.class);
+    assertThat(attack.getWeapon()).isSameAs(weapon);
     assertThat(future.isDone()).isFalse();
     verifyZeroInteractions(weapon);
     verifyZeroInteractions(attacker);

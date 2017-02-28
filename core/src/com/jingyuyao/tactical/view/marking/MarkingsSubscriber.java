@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.view.marking;
 
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -16,7 +16,9 @@ import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -25,11 +27,13 @@ public class MarkingsSubscriber {
 
   private final Markings markings;
   private final MarkerSprites markerSprites;
+  private final Animations animations;
 
   @Inject
-  MarkingsSubscriber(Markings markings, MarkerSprites markerSprites) {
+  MarkingsSubscriber(Markings markings, MarkerSprites markerSprites, Animations animations) {
     this.markings = markings;
     this.markerSprites = markerSprites;
+    this.animations = animations;
   }
 
   @Subscribe
@@ -82,39 +86,23 @@ public class MarkingsSubscriber {
     markings.activate(null);
   }
 
-  // TODO: this is temporary
   @Subscribe
   void attack(final Attack attack) {
-    Runnable showAttack = new Runnable() {
+    SingleAnimation animation = animations.getWeapon(attack.getWeapon().getName());
+    Futures.addCallback(animation.getFuture(), new FutureCallback<Void>() {
       @Override
-      public void run() {
-        for (MapObject object : attack.getObject().getHitObjects()) {
-          markings.mark(object, markerSprites.getHit());
-        }
+      public void onSuccess(Void result) {
+        attack.done();
       }
-    };
-    Runnable hideAttack = new Runnable() {
-      @Override
-      public void run() {
-        markings.clearMarked();
-      }
-    };
 
-    SequenceAction sequence = Actions.sequence(
-        Actions.run(showAttack),
-        Actions.delay(0.25f),
-        Actions.run(hideAttack),
-        Actions.delay(0.1f),
-        Actions.run(showAttack),
-        Actions.delay(0.2f),
-        Actions.run(hideAttack),
-        Actions.run(new Runnable() {
-          @Override
-          public void run() {
-            attack.done();
-          }
-        }));
-    markings.addAction(sequence);
+      @Override
+      public void onFailure(Throwable t) {
+
+      }
+    });
+    for (MapObject object : attack.getObject().getHitObjects()) {
+      markings.addSingleAnimation(object, animation);
+    }
   }
 
   private void markTarget(Target target) {

@@ -29,7 +29,7 @@ public class Battle {
   public ListenableFuture<Void> begin(
       final Character attacker, final Weapon weapon, final Target target) {
     SettableFuture<Void> future = SettableFuture.create();
-    eventBus.post(new Attack(target, future));
+    eventBus.post(new Attack(target, weapon, future));
     Futures.addCallback(future, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {

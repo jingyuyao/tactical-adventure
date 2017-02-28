@@ -64,7 +64,6 @@ public class WorldScreenTest {
 
     InOrder inOrder = Mockito.inOrder(world, markings, ui, animationTime, gl20);
     inOrder.verify(ui).act(10f);
-    inOrder.verify(markings).act(10f);
     inOrder.verify(world).act(10f);
     inOrder.verify(animationTime).advanceStateTime(10f);
     inOrder.verify(gl20).glClear(GL20.GL_COLOR_BUFFER_BIT);

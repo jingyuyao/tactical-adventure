@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.view.resource.Animations;
+import com.jingyuyao.tactical.view.resource.MarkerSprites;
 import com.jingyuyao.tactical.view.world.World;
 import javax.inject.Inject;
 import org.junit.Test;
@@ -20,6 +22,12 @@ public class MarkingModuleTest {
   @Bind
   @Mock
   private Batch batch;
+  @Bind
+  @Mock
+  private Animations animations;
+  @Bind
+  @Mock
+  private MarkerSprites markerSprites;
 
   @Inject
   private Markings markings;

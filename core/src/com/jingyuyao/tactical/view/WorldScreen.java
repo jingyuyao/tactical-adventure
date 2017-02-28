@@ -51,7 +51,6 @@ public class WorldScreen extends ScreenAdapter {
   @Override
   public void render(float delta) {
     ui.act(delta);
-    markings.act(delta);
     world.act(delta);
     animationTime.advanceStateTime(delta);
 

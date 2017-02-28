@@ -1,25 +1,32 @@
 package com.jingyuyao.tactical.view.marking;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.item.Target;
+import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +38,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MarkingsSubscriberTest {
 
+  private static final String WEAPON_NAME = "axe";
+
   @Mock
   private Markings markings;
   @Mock
   private MarkerSprites markerSprites;
+  @Mock
+  private Animations animations;
   @Mock
   private Player player;
   @Mock
@@ -69,12 +80,20 @@ public class MarkingsSubscriberTest {
   private Sprite sprite1;
   @Mock
   private Sprite sprite2;
+  @Mock
+  private Attack attack;
+  @Mock
+  private MapObject mapObject;
+  @Mock
+  private Weapon weapon;
+  @Mock
+  private SingleAnimation singleAnimation;
 
   private MarkingsSubscriber subscriber;
 
   @Before
   public void setUp() {
-    subscriber = new MarkingsSubscriber(markings, markerSprites);
+    subscriber = new MarkingsSubscriber(markings, markerSprites, animations);
   }
 
   @Test
@@ -161,6 +180,28 @@ public class MarkingsSubscriberTest {
     InOrder inOrder = Mockito.inOrder(markings);
     inOrder.verify(markings).mark(terrain, sprite1);
     inOrder.verify(markings).mark(terrain2, sprite2);
+  }
+
+  @Test
+  public void attack() {
+    SettableFuture<Void> future = SettableFuture.create();
+    when(attack.getWeapon()).thenReturn(weapon);
+    when(attack.getObject()).thenReturn(target);
+    when(target.getHitObjects()).thenReturn(ImmutableList.of(mapObject));
+    when(weapon.getName()).thenReturn(WEAPON_NAME);
+    when(animations.getWeapon(WEAPON_NAME)).thenReturn(singleAnimation);
+    when(singleAnimation.getFuture()).thenReturn(future);
+
+    subscriber.attack(attack);
+
+    markings.addSingleAnimation(mapObject, singleAnimation);
+    verify(attack).getWeapon();
+    verify(attack).getObject();
+    verifyNoMoreInteractions(attack);
+
+    future.set(null);
+
+    verify(attack).done();
   }
 
   @Test

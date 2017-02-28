@@ -6,11 +6,14 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.view.actor.WorldActor;
+import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.world.World;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -23,6 +26,7 @@ public class MarkingModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(Animations.class);
     requireBinding(MarkerSprites.class);
     requireBinding(Batch.class);
     requireBinding(World.class);
@@ -37,9 +41,9 @@ public class MarkingModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @MarkingsActor
-  Actor provideMarkingsActor() {
-    return new Actor();
+  @InProgressAnimationsMap
+  Multimap<WorldActor<?>, SingleAnimation> provideInProgressAnimationsMap() {
+    return HashMultimap.create();
   }
 
   @Qualifier
@@ -52,7 +56,7 @@ public class MarkingModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MarkingsActor {
+  @interface InProgressAnimationsMap {
 
   }
 }
