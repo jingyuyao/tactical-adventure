@@ -18,4 +18,12 @@ class ResourceConfig {
   String getCharacterAssetPrefix() {
     return "character/";
   }
+
+  int getWeaponFPS() {
+    return 10;
+  }
+
+  String getWeaponAssetPrefix() {
+    return "weapon/";
+  }
 }

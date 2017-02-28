@@ -25,7 +25,11 @@ public class AnimationsTest {
   private static final String CHARACTER_ASSET_PREFIX = "character/";
   private static final String CHARACTER_NAME = "me";
   private static final String CHARACTER_ASSET = CHARACTER_ASSET_PREFIX + CHARACTER_NAME;
+  private static final String WEAPON_ASSET_PREFIX = "weapon/";
+  private static final String WEAPON_NAME = "sword";
+  private static final String WEAPON_ASSET = WEAPON_ASSET_PREFIX + WEAPON_NAME;
   private static final int CHARACTER_IDLE_FPS = 5;
+  private static final int WEAPON_FPS = 10;
 
   @Mock
   private ResourceConfig resourceConfig;
@@ -38,7 +42,9 @@ public class AnimationsTest {
   @Mock
   private Map<String, Array<AtlasRegion>> atlasRegionsCache;
   @Mock
-  private LoopAnimation mockAnimation;
+  private LoopAnimation mockLoopAnimation;
+  @Mock
+  private SingleAnimation mockSingleAnimation;
   @Mock
   private Array<AtlasRegion> textureRegions;
   @Captor
@@ -56,50 +62,82 @@ public class AnimationsTest {
   }
 
   @Test
-  public void get_loop_empty_no_regions() {
+  public void get_character_empty_no_regions() {
     when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
     when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(atlasRegionsCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET)).thenReturn(textureRegions);
-    when(animationFactory.createLoop(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
+    when(animationFactory.createLoop(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(
+        mockLoopAnimation);
 
     LoopAnimation animation = animations.getCharacter(CHARACTER_NAME);
 
     verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
     verify(atlasRegionsCache).put(eq(CHARACTER_ASSET), atlasRegionsCaptor.capture());
-    assertThat(animationCaptor.getValue()).isSameAs(mockAnimation);
+    assertThat(animationCaptor.getValue()).isSameAs(mockLoopAnimation);
     assertThat(atlasRegionsCaptor.getValue()).isSameAs(textureRegions);
-    assertThat(animation).isSameAs(mockAnimation);
+    assertThat(animation).isSameAs(mockLoopAnimation);
   }
 
   @Test
-  public void get_loop_empty_has_regions() {
+  public void get_character_empty_has_regions() {
     when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
     when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(atlasRegionsCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
     when(atlasRegionsCache.get(CHARACTER_ASSET)).thenReturn(textureRegions);
-    when(animationFactory.createLoop(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
+    when(animationFactory.createLoop(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(
+        mockLoopAnimation);
 
     LoopAnimation animation = animations.getCharacter(CHARACTER_NAME);
 
     verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
     verifyZeroInteractions(textureAtlas);
-    assertThat(animationCaptor.getValue()).isSameAs(mockAnimation);
-    assertThat(animation).isSameAs(mockAnimation);
+    assertThat(animationCaptor.getValue()).isSameAs(mockLoopAnimation);
+    assertThat(animation).isSameAs(mockLoopAnimation);
   }
 
   @Test
-  public void get_not_empty() {
+  public void get_character_not_empty() {
     when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(loopAnimationCache.containsKey(CHARACTER_ASSET_PREFIX + CHARACTER_NAME)).thenReturn(true);
-    when(loopAnimationCache.get(CHARACTER_ASSET_PREFIX + CHARACTER_NAME)).thenReturn(mockAnimation);
+    when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
+    when(loopAnimationCache.get(CHARACTER_ASSET)).thenReturn(mockLoopAnimation);
 
-    assertThat(animations.getCharacter(CHARACTER_NAME)).isSameAs(mockAnimation);
-    verify(loopAnimationCache).containsKey(CHARACTER_ASSET_PREFIX + CHARACTER_NAME);
-    verify(loopAnimationCache).get(CHARACTER_ASSET_PREFIX + CHARACTER_NAME);
+    assertThat(animations.getCharacter(CHARACTER_NAME)).isSameAs(mockLoopAnimation);
+    verify(loopAnimationCache).containsKey(CHARACTER_ASSET);
+    verify(loopAnimationCache).get(CHARACTER_ASSET);
     verifyNoMoreInteractions(loopAnimationCache);
     verifyZeroInteractions(textureAtlas);
+  }
+
+  @Test
+  public void get_weapon_no_regions() {
+    when(resourceConfig.getWeaponAssetPrefix()).thenReturn(WEAPON_ASSET_PREFIX);
+    when(resourceConfig.getWeaponFPS()).thenReturn(WEAPON_FPS);
+    when(atlasRegionsCache.containsKey(WEAPON_ASSET)).thenReturn(false);
+    when(textureAtlas.findRegions(WEAPON_ASSET)).thenReturn(textureRegions);
+    when(animationFactory.createSingle(WEAPON_FPS, textureRegions)).thenReturn(mockSingleAnimation);
+
+    SingleAnimation animation = animations.getWeapon(WEAPON_NAME);
+
+    verify(atlasRegionsCache).put(eq(WEAPON_ASSET), atlasRegionsCaptor.capture());
+    assertThat(atlasRegionsCaptor.getValue()).isSameAs(textureRegions);
+    assertThat(animation).isSameAs(mockSingleAnimation);
+  }
+
+  @Test
+  public void get_weapon_has_region() {
+    when(resourceConfig.getWeaponAssetPrefix()).thenReturn(WEAPON_ASSET_PREFIX);
+    when(resourceConfig.getWeaponFPS()).thenReturn(WEAPON_FPS);
+    when(atlasRegionsCache.containsKey(WEAPON_ASSET)).thenReturn(true);
+    when(atlasRegionsCache.get(WEAPON_ASSET)).thenReturn(textureRegions);
+
+    when(animationFactory.createSingle(WEAPON_FPS, textureRegions)).thenReturn(mockSingleAnimation);
+
+    SingleAnimation animation = animations.getWeapon(WEAPON_NAME);
+
+    verifyZeroInteractions(textureAtlas);
+    assertThat(animation).isSameAs(mockSingleAnimation);
   }
 }

@@ -6,4 +6,6 @@ import com.badlogic.gdx.utils.Array;
 interface AnimationFactory {
 
   LoopAnimation createLoop(int fps, Array<? extends TextureRegion> regions);
+
+  SingleAnimation createSingle(int fps, Array<? extends TextureRegion> regions);
 }

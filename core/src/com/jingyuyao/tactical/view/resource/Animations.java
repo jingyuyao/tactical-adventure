@@ -38,6 +38,16 @@ public class Animations {
         resourceConfig.getCharacterAssetPrefix() + characterName);
   }
 
+  public SingleAnimation getWeapon(String weaponName) {
+    return getSingle(
+        resourceConfig.getWeaponFPS(),
+        resourceConfig.getWeaponAssetPrefix() + weaponName);
+  }
+
+  private SingleAnimation getSingle(int fps, String assetPath) {
+    return animationFactory.createSingle(fps, getAtlasRegions(assetPath));
+  }
+
   private LoopAnimation getLoop(int fps, String assetPath) {
     if (loopAnimationCache.containsKey(assetPath)) {
       return loopAnimationCache.get(assetPath);
@@ -56,13 +66,13 @@ public class Animations {
     if (atlasRegionsCache.containsKey(assetPath)) {
       return atlasRegionsCache.get(assetPath);
     } else {
-      Array<AtlasRegion> regions = createRegions(assetPath);
+      Array<AtlasRegion> regions = createAtlasRegions(assetPath);
       atlasRegionsCache.put(assetPath, regions);
       return regions;
     }
   }
 
-  private Array<AtlasRegion> createRegions(String assetPath) {
+  private Array<AtlasRegion> createAtlasRegions(String assetPath) {
     return textureAtlas.findRegions(assetPath);
   }
 }
