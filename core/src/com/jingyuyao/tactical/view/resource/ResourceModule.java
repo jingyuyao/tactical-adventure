@@ -7,7 +7,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -33,7 +35,14 @@ public class ResourceModule extends AbstractModule {
   @Provides
   @Singleton
   @LoopAnimationCache
-  Map<String, LoopAnimation> provideBackingAnimationMap() {
+  Map<String, LoopAnimation> provideLoopAnimationCache() {
+    return new HashMap<>();
+  }
+
+  @Provides
+  @Singleton
+  @AtlasRegionsCache
+  Map<String, Array<AtlasRegion>> provideAtlasRegionCache() {
     return new HashMap<>();
   }
 
@@ -57,6 +66,13 @@ public class ResourceModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface LoopAnimationCache {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface AtlasRegionsCache {
 
   }
 }

@@ -1,6 +1,9 @@
 package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Array;
+import com.jingyuyao.tactical.view.resource.ResourceModule.AtlasRegionsCache;
 import com.jingyuyao.tactical.view.resource.ResourceModule.LoopAnimationCache;
 import java.util.Map;
 import javax.inject.Inject;
@@ -13,17 +16,20 @@ public class Animations {
   private final TextureAtlas textureAtlas;
   private final AnimationFactory animationFactory;
   private final Map<String, LoopAnimation> loopAnimationCache;
+  private final Map<String, Array<AtlasRegion>> atlasRegionsCache;
 
   @Inject
   Animations(
       ResourceConfig resourceConfig,
       TextureAtlas textureAtlas,
       AnimationFactory animationFactory,
-      @LoopAnimationCache Map<String, LoopAnimation> loopAnimationCache) {
+      @LoopAnimationCache Map<String, LoopAnimation> loopAnimationCache,
+      @AtlasRegionsCache Map<String, Array<AtlasRegion>> atlasRegionsCache) {
     this.resourceConfig = resourceConfig;
     this.loopAnimationCache = loopAnimationCache;
     this.textureAtlas = textureAtlas;
     this.animationFactory = animationFactory;
+    this.atlasRegionsCache = atlasRegionsCache;
   }
 
   public LoopAnimation getCharacter(String characterName) {
@@ -43,6 +49,20 @@ public class Animations {
   }
 
   private LoopAnimation createLoop(int fps, String assetPath) {
-    return animationFactory.createLoop(fps, textureAtlas.findRegions(assetPath));
+    return animationFactory.createLoop(fps, getAtlasRegions(assetPath));
+  }
+
+  private Array<AtlasRegion> getAtlasRegions(String assetPath) {
+    if (atlasRegionsCache.containsKey(assetPath)) {
+      return atlasRegionsCache.get(assetPath);
+    } else {
+      Array<AtlasRegion> regions = createRegions(assetPath);
+      atlasRegionsCache.put(assetPath, regions);
+      return regions;
+    }
+  }
+
+  private Array<AtlasRegion> createRegions(String assetPath) {
+    return textureAtlas.findRegions(assetPath);
   }
 }
