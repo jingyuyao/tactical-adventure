@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -48,6 +49,13 @@ public class ResourceModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @AnimationBus
+  EventBus provideAnimationBus() {
+    return new EventBus();
+  }
+
+  @Provides
+  @Singleton
   TextureAtlas provideTextureAtlas(AssetManager assetManager) {
     assetManager.load(TEXTURE_ATLAS, TextureAtlas.class);
     assetManager.finishLoading();
@@ -73,6 +81,13 @@ public class ResourceModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface AtlasRegionsCache {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface AnimationBus {
 
   }
 }

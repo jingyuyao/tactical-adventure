@@ -20,6 +20,10 @@ abstract class AbstractAnimation {
     return animation.getKeyFrame(getStateTime());
   }
 
+  Animation<TextureRegion> getAnimation() {
+    return animation;
+  }
+
   abstract PlayMode getPlayMode();
 
   abstract float getStateTime();
