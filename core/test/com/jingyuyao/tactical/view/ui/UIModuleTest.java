@@ -1,9 +1,6 @@
 package com.jingyuyao.tactical.view.ui;
 
-import static org.mockito.Mockito.when;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.headless.HeadlessFiles;
 import com.badlogic.gdx.backends.headless.HeadlessNativesLoader;
 import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
@@ -13,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.AssetModule;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -28,15 +24,13 @@ public class UIModuleTest {
 
   @Bind
   @Mock
-  private AssetManager assetManager;
+  private Skin skin;
   @Bind
   @Mock
   private Batch batch;
   @Bind
   @Mock
   private WorldConfig worldConfig;
-  @Mock
-  private Skin skin;
   @Mock
   private GL20 gl20;
 
@@ -52,7 +46,6 @@ public class UIModuleTest {
 
   @Before
   public void setUp() {
-    when(assetManager.get(AssetModule.SKIN, Skin.class)).thenReturn(skin);
     Gdx.graphics = new MockGraphics();
     Gdx.files = new HeadlessFiles();
     Gdx.gl = gl20;
