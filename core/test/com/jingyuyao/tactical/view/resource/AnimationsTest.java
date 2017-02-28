@@ -29,11 +29,11 @@ public class AnimationsTest {
   @Mock
   private ResourceConfig resourceConfig;
   @Mock
-  private Map<String, LoopAnimation> animationMap;
-  @Mock
   private TextureAtlas textureAtlas;
   @Mock
   private AnimationFactory animationFactory;
+  @Mock
+  private Map<String, LoopAnimation> animationMap;
   @Mock
   private LoopAnimation mockAnimation;
   @Mock
@@ -45,7 +45,7 @@ public class AnimationsTest {
 
   @Before
   public void setUp() {
-    animations = new Animations(resourceConfig, animationMap, textureAtlas, animationFactory);
+    animations = new Animations(resourceConfig, textureAtlas, animationFactory, animationMap);
   }
 
   @Test
@@ -54,7 +54,7 @@ public class AnimationsTest {
     when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(animationMap.containsKey(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(textureRegions);
-    when(animationFactory.create(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
+    when(animationFactory.createLoop(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
 
     LoopAnimation animation = animations.getCharacter(KEY);
 

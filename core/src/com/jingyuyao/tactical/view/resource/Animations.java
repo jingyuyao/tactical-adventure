@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.jingyuyao.tactical.view.resource.ResourceModule.BackingAnimationMap;
+import com.jingyuyao.tactical.view.resource.ResourceModule.LoopAnimationCache;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -10,37 +10,39 @@ import javax.inject.Singleton;
 public class Animations {
 
   private final ResourceConfig resourceConfig;
-  private final Map<String, LoopAnimation> animationMap;
   private final TextureAtlas textureAtlas;
   private final AnimationFactory animationFactory;
+  private final Map<String, LoopAnimation> loopAnimationCache;
 
   @Inject
   Animations(
       ResourceConfig resourceConfig,
-      @BackingAnimationMap Map<String, LoopAnimation> animationMap,
       TextureAtlas textureAtlas,
-      AnimationFactory animationFactory) {
+      AnimationFactory animationFactory,
+      @LoopAnimationCache Map<String, LoopAnimation> loopAnimationCache) {
     this.resourceConfig = resourceConfig;
-    this.animationMap = animationMap;
+    this.loopAnimationCache = loopAnimationCache;
     this.textureAtlas = textureAtlas;
     this.animationFactory = animationFactory;
   }
 
   public LoopAnimation getCharacter(String characterName) {
-    return getFromAssetName(resourceConfig.getCharacterAssetPrefix() + characterName);
+    return getLoop(
+        resourceConfig.getCharacterIdleFPS(),
+        resourceConfig.getCharacterAssetPrefix() + characterName);
   }
 
-  private LoopAnimation getFromAssetName(String assetPath) {
-    if (animationMap.containsKey(assetPath)) {
-      return animationMap.get(assetPath);
+  private LoopAnimation getLoop(int fps, String assetPath) {
+    if (loopAnimationCache.containsKey(assetPath)) {
+      return loopAnimationCache.get(assetPath);
     } else {
-      LoopAnimation animation = createAnimation(resourceConfig.getCharacterIdleFPS(), assetPath);
-      animationMap.put(assetPath, animation);
+      LoopAnimation animation = createLoop(fps, assetPath);
+      loopAnimationCache.put(assetPath, animation);
       return animation;
     }
   }
 
-  private LoopAnimation createAnimation(int fps, String assetPath) {
-    return animationFactory.create(fps, textureAtlas.findRegions(assetPath));
+  private LoopAnimation createLoop(int fps, String assetPath) {
+    return animationFactory.createLoop(fps, textureAtlas.findRegions(assetPath));
   }
 }

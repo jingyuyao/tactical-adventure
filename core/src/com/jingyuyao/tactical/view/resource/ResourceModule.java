@@ -32,7 +32,7 @@ public class ResourceModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @BackingAnimationMap
+  @LoopAnimationCache
   Map<String, LoopAnimation> provideBackingAnimationMap() {
     return new HashMap<>();
   }
@@ -56,7 +56,7 @@ public class ResourceModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingAnimationMap {
+  @interface LoopAnimationCache {
 
   }
 }
