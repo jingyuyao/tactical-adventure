@@ -10,37 +10,37 @@ import javax.inject.Singleton;
 public class Animations {
 
   private final ResourceConfig resourceConfig;
-  private final Map<String, MyAnimation> animationMap;
+  private final Map<String, LoopAnimation> animationMap;
   private final TextureAtlas textureAtlas;
-  private final MyAnimationFactory myAnimationFactory;
+  private final AnimationFactory animationFactory;
 
   @Inject
   Animations(
       ResourceConfig resourceConfig,
-      @BackingAnimationMap Map<String, MyAnimation> animationMap,
+      @BackingAnimationMap Map<String, LoopAnimation> animationMap,
       TextureAtlas textureAtlas,
-      MyAnimationFactory myAnimationFactory) {
+      AnimationFactory animationFactory) {
     this.resourceConfig = resourceConfig;
     this.animationMap = animationMap;
     this.textureAtlas = textureAtlas;
-    this.myAnimationFactory = myAnimationFactory;
+    this.animationFactory = animationFactory;
   }
 
-  public MyAnimation getCharacter(String characterName) {
+  public LoopAnimation getCharacter(String characterName) {
     return getFromAssetName(resourceConfig.getCharacterAssetPrefix() + characterName);
   }
 
-  private MyAnimation getFromAssetName(String assetPath) {
+  private LoopAnimation getFromAssetName(String assetPath) {
     if (animationMap.containsKey(assetPath)) {
       return animationMap.get(assetPath);
     } else {
-      MyAnimation animation = createAnimation(resourceConfig.getCharacterIdleFPS(), assetPath);
+      LoopAnimation animation = createAnimation(resourceConfig.getCharacterIdleFPS(), assetPath);
       animationMap.put(assetPath, animation);
       return animation;
     }
   }
 
-  private MyAnimation createAnimation(int fps, String assetPath) {
-    return myAnimationFactory.create(fps, textureAtlas.findRegions(assetPath));
+  private LoopAnimation createAnimation(int fps, String assetPath) {
+    return animationFactory.create(fps, textureAtlas.findRegions(assetPath));
   }
 }

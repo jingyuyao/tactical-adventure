@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.view.resource.MyAnimation;
+import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import java.util.LinkedHashSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class PlayerActorTest {
   @Mock
   private LinkedHashSet<Sprite> markers;
   @Mock
-  private MyAnimation myAnimation;
+  private LoopAnimation loopAnimation;
   @Mock
   private TextureRegion textureRegion;
   @Mock
@@ -53,7 +53,7 @@ public class PlayerActorTest {
     when(player.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    playerActor = new PlayerActor(player, actorConfig, markers, myAnimation);
+    playerActor = new PlayerActor(player, actorConfig, markers, loopAnimation);
 
     assertThat(playerActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(playerActor.getY()).isEqualTo(INITIAL_WORLD_Y);
@@ -66,7 +66,7 @@ public class PlayerActorTest {
   public void draw_actionable() {
     when(markers.iterator()).thenReturn(ImmutableList.of(mSprite1, mSprite2).iterator());
     when(player.isActionable()).thenReturn(true);
-    when(myAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(loopAnimation.getCurrentFrame()).thenReturn(textureRegion);
 
     playerActor.draw(batch, 0);
 
@@ -97,7 +97,7 @@ public class PlayerActorTest {
   public void draw_not_actionable() {
     when(markers.iterator()).thenReturn(ImmutableList.of(mSprite1, mSprite2).iterator());
     when(player.isActionable()).thenReturn(false);
-    when(myAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(loopAnimation.getCurrentFrame()).thenReturn(textureRegion);
 
     playerActor.draw(batch, 0);
 

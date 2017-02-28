@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.resource;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
-interface MyAnimationFactory {
+interface AnimationFactory {
 
-  MyAnimation create(int fps, Array<? extends TextureRegion> regions);
+  LoopAnimation create(int fps, Array<? extends TextureRegion> regions);
 }

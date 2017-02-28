@@ -22,7 +22,7 @@ import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.MyAnimation;
+import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class WorldTest {
   @Mock
   private WorldActor<?> worldActor;
   @Mock
-  private MyAnimation myAnimation;
+  private LoopAnimation loopAnimation;
   @Mock
   private Player player;
   @Mock
@@ -136,9 +136,9 @@ public class WorldTest {
 
   @Test
   public void add_player() {
-    when(animations.getCharacter(NAME)).thenReturn(myAnimation);
+    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
     when(player.getName()).thenReturn(NAME);
-    when(actorFactory.create(player, myAnimation)).thenReturn(playerActor);
+    when(actorFactory.create(player, loopAnimation)).thenReturn(playerActor);
     when(controllerFactory.create(player)).thenReturn(controller);
 
     world.add(player);
@@ -151,9 +151,9 @@ public class WorldTest {
 
   @Test
   public void add_enemy() {
-    when(animations.getCharacter(NAME)).thenReturn(myAnimation);
+    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
     when(enemy.getName()).thenReturn(NAME);
-    when(actorFactory.create(enemy, myAnimation)).thenReturn(enemyActor);
+    when(actorFactory.create(enemy, loopAnimation)).thenReturn(enemyActor);
     when(controllerFactory.create(enemy)).thenReturn(controller);
 
     world.add(enemy);

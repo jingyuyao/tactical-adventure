@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.MyAnimation;
+import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.world.WorldModule.BackingActorMap;
 import com.jingyuyao.tactical.view.world.WorldModule.CharacterGroup;
 import com.jingyuyao.tactical.view.world.WorldModule.TerrainGroup;
@@ -110,7 +110,7 @@ public class World {
     actorMap.put(object, actor);
   }
 
-  private MyAnimation getAnimation(String characterName) {
+  private LoopAnimation getAnimation(String characterName) {
     return animations.getCharacter(characterName);
   }
 }

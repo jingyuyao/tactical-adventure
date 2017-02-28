@@ -13,25 +13,26 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.view.resource.MyAnimation;
+import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.util.ViewUtil;
 import java.util.LinkedHashSet;
 
 class CharacterActor<T extends Character> extends WorldActor<T> {
 
-  private final MyAnimation myAnimation;
+  private final LoopAnimation loopAnimation;
 
   CharacterActor(
-      T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers, MyAnimation myAnimation) {
+      T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers,
+      LoopAnimation loopAnimation) {
     super(object, actorConfig, markers);
-    this.myAnimation = myAnimation;
+    this.loopAnimation = loopAnimation;
     object.registerListener(this);
   }
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
     batch.setColor(getColor());
-    ViewUtil.draw(batch, myAnimation.getCurrentFrame(), this);
+    ViewUtil.draw(batch, loopAnimation.getCurrentFrame(), this);
     batch.setColor(Color.WHITE);
     super.draw(batch, parentAlpha);
   }

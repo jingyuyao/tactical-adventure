@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.view.resource.MyAnimation;
+import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import java.util.LinkedHashSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class CharacterActorTest {
   @Mock
   private LinkedHashSet<Sprite> markers;
   @Mock
-  private MyAnimation myAnimation;
+  private LoopAnimation loopAnimation;
   @Mock
   private TextureRegion textureRegion;
   @Mock
@@ -69,7 +69,7 @@ public class CharacterActorTest {
     when(character.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    characterActor = new CharacterActor<>(character, actorConfig, markers, myAnimation);
+    characterActor = new CharacterActor<>(character, actorConfig, markers, loopAnimation);
 
     assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
@@ -81,7 +81,7 @@ public class CharacterActorTest {
   @Test
   public void draw() {
     when(markers.iterator()).thenReturn(ImmutableList.of(mSprite1, mSprite2).iterator());
-    when(myAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(loopAnimation.getCurrentFrame()).thenReturn(textureRegion);
 
     characterActor.draw(batch, 0);
 

@@ -27,13 +27,13 @@ public class ResourceModule extends AbstractModule {
   protected void configure() {
     requireBinding(AssetManager.class);
 
-    install(new FactoryModuleBuilder().build(MyAnimationFactory.class));
+    install(new FactoryModuleBuilder().build(AnimationFactory.class));
   }
 
   @Provides
   @Singleton
   @BackingAnimationMap
-  Map<String, MyAnimation> provideBackingAnimationMap() {
+  Map<String, LoopAnimation> provideBackingAnimationMap() {
     return new HashMap<>();
   }
 

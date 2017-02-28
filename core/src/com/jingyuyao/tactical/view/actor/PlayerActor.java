@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
-import com.jingyuyao.tactical.view.resource.MyAnimation;
+import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import java.util.LinkedHashSet;
 import javax.inject.Inject;
 
@@ -17,8 +17,8 @@ public class PlayerActor extends CharacterActor<Player> {
       @Assisted Player object,
       ActorConfig actorConfig,
       @InitialMarkers LinkedHashSet<Sprite> markers,
-      @Assisted MyAnimation myAnimation) {
-    super(object, actorConfig, markers, myAnimation);
+      @Assisted LoopAnimation loopAnimation) {
+    super(object, actorConfig, markers, loopAnimation);
   }
 
   @Override

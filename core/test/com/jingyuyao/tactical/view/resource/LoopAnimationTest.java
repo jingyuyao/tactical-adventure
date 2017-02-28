@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MyAnimationTest {
+public class LoopAnimationTest {
 
   private static final int FPS = 5;
 
@@ -23,7 +23,7 @@ public class MyAnimationTest {
   @Mock
   private AtlasRegion region2;
 
-  private MyAnimation myAnimation;
+  private LoopAnimation loopAnimation;
 
   @Before
   public void setUp() {
@@ -31,27 +31,27 @@ public class MyAnimationTest {
     regions.add(region1);
     regions.add(region2);
 
-    myAnimation = new MyAnimation(FPS, regions, animationTime);
+    loopAnimation = new LoopAnimation(FPS, regions, animationTime);
   }
 
   @Test
   public void get_current_frame_1() {
     when(animationTime.getStateTime()).thenReturn(0.1f);
 
-    assertThat(myAnimation.getCurrentFrame()).isSameAs(region1);
+    assertThat(loopAnimation.getCurrentFrame()).isSameAs(region1);
   }
 
   @Test
   public void get_current_frame_2() {
     when(animationTime.getStateTime()).thenReturn(0.3f);
 
-    assertThat(myAnimation.getCurrentFrame()).isSameAs(region2);
+    assertThat(loopAnimation.getCurrentFrame()).isSameAs(region2);
   }
 
   @Test
   public void get_current_frame_loopback() {
     when(animationTime.getStateTime()).thenReturn(0.5f);
 
-    assertThat(myAnimation.getCurrentFrame()).isSameAs(region1);
+    assertThat(loopAnimation.getCurrentFrame()).isSameAs(region1);
   }
 }

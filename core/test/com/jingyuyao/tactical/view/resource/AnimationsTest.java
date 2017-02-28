@@ -29,23 +29,23 @@ public class AnimationsTest {
   @Mock
   private ResourceConfig resourceConfig;
   @Mock
-  private Map<String, MyAnimation> animationMap;
+  private Map<String, LoopAnimation> animationMap;
   @Mock
   private TextureAtlas textureAtlas;
   @Mock
-  private MyAnimationFactory myAnimationFactory;
+  private AnimationFactory animationFactory;
   @Mock
-  private MyAnimation mockAnimation;
+  private LoopAnimation mockAnimation;
   @Mock
   private Array<AtlasRegion> textureRegions;
   @Captor
-  private ArgumentCaptor<MyAnimation> animationCaptor;
+  private ArgumentCaptor<LoopAnimation> animationCaptor;
 
   private Animations animations;
 
   @Before
   public void setUp() {
-    animations = new Animations(resourceConfig, animationMap, textureAtlas, myAnimationFactory);
+    animations = new Animations(resourceConfig, animationMap, textureAtlas, animationFactory);
   }
 
   @Test
@@ -54,9 +54,9 @@ public class AnimationsTest {
     when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(animationMap.containsKey(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET_PREFIX + KEY)).thenReturn(textureRegions);
-    when(myAnimationFactory.create(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
+    when(animationFactory.create(CHARACTER_IDLE_FPS, textureRegions)).thenReturn(mockAnimation);
 
-    MyAnimation animation = animations.getCharacter(KEY);
+    LoopAnimation animation = animations.getCharacter(KEY);
 
     verify(animationMap).put(eq(CHARACTER_ASSET_PREFIX + KEY), animationCaptor.capture());
     assertThat(animationCaptor.getValue()).isSameAs(mockAnimation);
