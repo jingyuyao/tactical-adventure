@@ -6,7 +6,7 @@
         "x": 1,
         "y": 2
       },
-      "name": "stick",
+      "name": "dance",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -76,7 +76,7 @@
         "x": 2,
         "y": 3
       },
-      "name": "stick",
+      "name": "dance",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -167,7 +167,7 @@
         "x": 4,
         "y": 5
       },
-      "name": "stick",
+      "name": "dance",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,
@@ -188,7 +188,7 @@
         "x": 5,
         "y": 6
       },
-      "name": "stick",
+      "name": "dance",
       "maxHp": 30,
       "hp": 30,
       "moveDistance": 4,

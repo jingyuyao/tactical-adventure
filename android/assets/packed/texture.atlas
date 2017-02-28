@@ -48,34 +48,62 @@ marking/target_select
   index: -1
 
 texture2.png
-size: 128,64
+size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-character/stick
+character/dance
   rotate: false
   xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-character/stick
+character/dance
   rotate: false
   xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-character/stick
+character/dance
   rotate: false
-  xy: 36, 2
+  xy: 70, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+character/dance
+  rotate: false
+  xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 character/stick
   rotate: false
-  xy: 70, 2
+  xy: 104, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+character/stick
+  rotate: false
+  xy: 138, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+character/stick
+  rotate: false
+  xy: 138, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+character/stick
+  rotate: false
+  xy: 172, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
