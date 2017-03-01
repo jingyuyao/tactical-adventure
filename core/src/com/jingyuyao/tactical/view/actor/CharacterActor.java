@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
-import com.jingyuyao.tactical.view.util.ViewUtil;
 import java.util.LinkedHashSet;
 
 class CharacterActor<T extends Character> extends WorldActor<T> {
@@ -32,7 +31,7 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   @Override
   public void draw(Batch batch, float parentAlpha) {
     batch.setColor(getColor());
-    ViewUtil.draw(batch, loopAnimation.getCurrentFrame(), this);
+    loopAnimation.getCurrentFrame().draw(batch, this);
     batch.setColor(Color.WHITE);
     super.draw(batch, parentAlpha);
   }

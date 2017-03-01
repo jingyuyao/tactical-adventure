@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
@@ -54,7 +53,7 @@ public class MarkingsTest {
   @Mock
   private SingleAnimation singleAnimation;
   @Mock
-  private TextureRegion textureRegion;
+  private WorldTexture animationFrame;
 
   private Multimap<WorldActor<?>, SingleAnimation> animationsMap;
   private Markings markings;
@@ -97,22 +96,18 @@ public class MarkingsTest {
     Mockito.<WorldActor<?>>when(world.get(mapObject2)).thenReturn(activatedActor);
     when(markers.getHighlight()).thenReturn(highlightTexture);
     when(markers.getActivated()).thenReturn(activatedTexture);
-    when(singleAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(singleAnimation.getCurrentFrame()).thenReturn(animationFrame);
     animationsMap.put(worldActor, singleAnimation);
 
     markings.highlight(mapObject);
     markings.activate(mapObject2);
     markings.draw();
 
-    InOrder inOrder = Mockito.inOrder(batch, highlightTexture, activatedTexture);
+    InOrder inOrder = Mockito.inOrder(batch, animationFrame, highlightTexture, activatedTexture);
     inOrder.verify(batch).begin();
     inOrder.verify(highlightTexture).draw(batch, highlightActor);
     inOrder.verify(activatedTexture).draw(batch, activatedActor);
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, worldActor.getX(), worldActor.getY(),
-            worldActor.getWidth(), worldActor.getHeight());
+    inOrder.verify(animationFrame).draw(batch, worldActor);
     inOrder.verify(batch).end();
   }
 

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Coordinate;
@@ -38,7 +37,7 @@ public class PlayerActorTest {
   @Mock
   private LoopAnimation loopAnimation;
   @Mock
-  private TextureRegion textureRegion;
+  private WorldTexture animationFrame;
   @Mock
   private Batch batch;
   @Mock
@@ -66,18 +65,14 @@ public class PlayerActorTest {
   public void draw_actionable() {
     when(markers.iterator()).thenReturn(ImmutableList.of(texture1, texture2).iterator());
     when(player.isActionable()).thenReturn(true);
-    when(loopAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(loopAnimation.getCurrentFrame()).thenReturn(animationFrame);
 
     playerActor.draw(batch, 0);
 
     assertThat(playerActor.getColor()).isEqualTo(Color.WHITE);
-    InOrder inOrder = Mockito.inOrder(batch, texture1, texture2);
+    InOrder inOrder = Mockito.inOrder(batch, animationFrame, texture1, texture2);
     inOrder.verify(batch).setColor(playerActor.getColor());
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, playerActor.getX(), playerActor.getY(),
-            playerActor.getWidth(), playerActor.getHeight());
+    inOrder.verify(animationFrame).draw(batch, playerActor);
     inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(texture1).draw(batch, playerActor);
     inOrder.verify(texture2).draw(batch, playerActor);
@@ -87,18 +82,14 @@ public class PlayerActorTest {
   public void draw_not_actionable() {
     when(markers.iterator()).thenReturn(ImmutableList.of(texture1, texture2).iterator());
     when(player.isActionable()).thenReturn(false);
-    when(loopAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(loopAnimation.getCurrentFrame()).thenReturn(animationFrame);
 
     playerActor.draw(batch, 0);
 
     assertThat(playerActor.getColor()).isEqualTo(Color.GRAY);
-    InOrder inOrder = Mockito.inOrder(batch, texture1, texture2);
+    InOrder inOrder = Mockito.inOrder(batch, animationFrame, texture1, texture2);
     inOrder.verify(batch).setColor(playerActor.getColor());
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, playerActor.getX(), playerActor.getY(),
-            playerActor.getWidth(), playerActor.getHeight());
+    inOrder.verify(animationFrame).draw(batch, playerActor);
     inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(texture1).draw(batch, playerActor);
     inOrder.verify(texture2).draw(batch, playerActor);

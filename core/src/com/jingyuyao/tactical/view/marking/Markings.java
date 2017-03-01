@@ -11,7 +11,6 @@ import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
-import com.jingyuyao.tactical.view.util.ViewUtil;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;
 import java.util.Map.Entry;
@@ -48,9 +47,8 @@ public class Markings {
     markers.getHighlight().draw(batch, highlightedActor);
     markers.getActivated().draw(batch, activatedActor);
     for (Entry<WorldActor<?>, SingleAnimation> entry : animationsMap.entries()) {
-      // TODO: need a way to draw an animation that is only position dependent of parent
-      // maybe pass animation directly into draw() and poll some meta data out of it
-      ViewUtil.draw(batch, entry.getValue().getCurrentFrame(), entry.getKey());
+      WorldTexture worldTexture = entry.getValue().getCurrentFrame();
+      worldTexture.draw(batch, entry.getKey());
     }
     batch.end();
   }

@@ -5,8 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.utils.Array;
 import com.google.common.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +20,9 @@ public class SingleAnimationTest {
   @Mock
   private EventBus animationBus;
   @Mock
-  private AtlasRegion region1;
+  private WorldTexture texture1;
   @Mock
-  private AtlasRegion region2;
+  private WorldTexture texture2;
   @Mock
   private AdvanceTime advanceTime;
 
@@ -32,11 +30,8 @@ public class SingleAnimationTest {
 
   @Before
   public void setUp() {
-    Array<AtlasRegion> regions = new Array<>();
-    regions.add(region1);
-    regions.add(region2);
-
-    singleAnimation = new SingleAnimation(FPS, regions, animationBus);
+    singleAnimation = new SingleAnimation(FPS, new WorldTexture[]{texture1, texture2},
+        animationBus);
 
     verify(animationBus).register(singleAnimation);
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
@@ -49,7 +44,7 @@ public class SingleAnimationTest {
     singleAnimation.advanceTime(advanceTime);
 
     assertThat(singleAnimation.getStateTime()).isEqualTo(0.5f);
-    assertThat(singleAnimation.getCurrentFrame()).isSameAs(region1);
+    assertThat(singleAnimation.getCurrentFrame()).isSameAs(texture1);
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
     verifyNoMoreInteractions(animationBus);
   }
@@ -61,7 +56,7 @@ public class SingleAnimationTest {
     singleAnimation.advanceTime(advanceTime);
 
     assertThat(singleAnimation.getStateTime()).isEqualTo(1.5f);
-    assertThat(singleAnimation.getCurrentFrame()).isSameAs(region2);
+    assertThat(singleAnimation.getCurrentFrame()).isSameAs(texture2);
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
     verifyNoMoreInteractions(animationBus);
   }

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
@@ -46,7 +45,7 @@ public class CharacterActorTest {
   @Mock
   private LoopAnimation loopAnimation;
   @Mock
-  private TextureRegion textureRegion;
+  private WorldTexture animationFrame;
   @Mock
   private Batch batch;
   @Mock
@@ -81,17 +80,13 @@ public class CharacterActorTest {
   @Test
   public void draw() {
     when(markers.iterator()).thenReturn(ImmutableList.of(texture1, texture2).iterator());
-    when(loopAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(loopAnimation.getCurrentFrame()).thenReturn(animationFrame);
 
     characterActor.draw(batch, 0);
 
-    InOrder inOrder = Mockito.inOrder(batch, texture1, texture2);
+    InOrder inOrder = Mockito.inOrder(batch, animationFrame, texture1, texture2);
     inOrder.verify(batch).setColor(characterActor.getColor());
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, characterActor.getX(), characterActor.getY(),
-            characterActor.getWidth(), characterActor.getHeight());
+    inOrder.verify(animationFrame).draw(batch, characterActor);
     inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(texture1).draw(batch, characterActor);
     inOrder.verify(texture2).draw(batch, characterActor);

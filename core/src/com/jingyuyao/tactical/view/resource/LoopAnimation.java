@@ -1,8 +1,6 @@
 package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.google.inject.assistedinject.Assisted;
 import javax.inject.Inject;
 
@@ -13,7 +11,7 @@ public class LoopAnimation extends AbstractAnimation {
   @Inject
   LoopAnimation(
       @Assisted int fps,
-      @Assisted Array<? extends TextureRegion> keyFrames,
+      @Assisted WorldTexture[] keyFrames,
       AnimationTime animationTime) {
     super(fps, keyFrames);
     this.animationTime = animationTime;

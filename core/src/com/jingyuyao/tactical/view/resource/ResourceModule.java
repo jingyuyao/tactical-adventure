@@ -7,9 +7,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -47,8 +45,8 @@ public class ResourceModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @AtlasRegionsCache
-  Map<String, Array<AtlasRegion>> provideAtlasRegionCache() {
+  @WorldTextureCache
+  Map<String, WorldTexture[]> provideWorldTextureCache() {
     return new HashMap<>();
   }
 
@@ -85,7 +83,7 @@ public class ResourceModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface AtlasRegionsCache {
+  @interface WorldTextureCache {
 
   }
 
