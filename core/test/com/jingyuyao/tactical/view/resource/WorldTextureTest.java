@@ -1,10 +1,12 @@
 package com.jingyuyao.tactical.view.resource;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import org.junit.Test;
@@ -27,6 +29,8 @@ public class WorldTextureTest {
   private ActorConfig actorConfig;
   @Mock
   private Batch batch;
+  @Mock
+  private Actor actor;
 
   private WorldTexture worldTexture;
 
@@ -41,6 +45,34 @@ public class WorldTextureTest {
     worldTexture.draw(batch, 2f, 3f);
 
     verify(batch).draw(textureRegion, 1.5f, 2.5f, 2 * ACTOR_SIZE, 2 * ACTOR_SIZE);
+  }
+
+  @Test
+  public void draw_actor() {
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_SIZE);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_SIZE);
+    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
+    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
+    when(actor.getX()).thenReturn(2f);
+    when(actor.getY()).thenReturn(3f);
+
+    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    worldTexture.draw(batch, actor);
+
+    verify(batch).draw(textureRegion, 1.5f, 2.5f, 2 * ACTOR_SIZE, 2 * ACTOR_SIZE);
+  }
+
+  @Test
+  public void draw_actor_null() {
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_SIZE);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_SIZE);
+    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
+    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
+
+    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    worldTexture.draw(batch, null);
+
+    verifyZeroInteractions(batch);
   }
 
   @Test

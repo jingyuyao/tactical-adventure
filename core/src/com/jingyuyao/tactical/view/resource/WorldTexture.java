@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
@@ -26,5 +27,11 @@ public class WorldTexture {
 
   public void draw(Batch batch, float x, float y) {
     batch.draw(textureRegion, x - worldOffset, y - worldOffset, worldSize, worldSize);
+  }
+
+  public void draw(Batch batch, Actor actor) {
+    if (actor != null) {
+      draw(batch, actor.getX(), actor.getY());
+    }
   }
 }

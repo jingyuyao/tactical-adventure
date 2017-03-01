@@ -8,28 +8,28 @@ import javax.inject.Singleton;
 @Singleton
 public class MarkerSprites {
 
-  private final Sprite highlight;
-  private final Sprite activated;
+  private final WorldTexture highlight;
+  private final WorldTexture activated;
   private final Sprite move;
   private final Sprite hit;
   private final Sprite targetSelect;
   private final Sprite attack;
 
   @Inject
-  MarkerSprites(TextureAtlas textureAtlas) {
-    highlight = textureAtlas.createSprite("marking/highlight");
-    activated = textureAtlas.createSprite("marking/activated");
+  MarkerSprites(TextureAtlas textureAtlas, TextureFactory textureFactory) {
+    highlight = textureFactory.create(textureAtlas.findRegion("marking/highlight"));
+    activated = textureFactory.create(textureAtlas.findRegion("marking/activated"));
     move = textureAtlas.createSprite("marking/move");
     hit = textureAtlas.createSprite("marking/hit");
     targetSelect = textureAtlas.createSprite("marking/target_select");
     attack = textureAtlas.createSprite("marking/attack");
   }
 
-  public Sprite getHighlight() {
+  public WorldTexture getHighlight() {
     return highlight;
   }
 
-  public Sprite getActivated() {
+  public WorldTexture getActivated() {
     return activated;
   }
 

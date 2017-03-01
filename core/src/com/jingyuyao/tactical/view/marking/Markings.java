@@ -45,12 +45,8 @@ public class Markings {
 
   public void draw() {
     batch.begin();
-    if (highlightedActor != null) {
-      ViewUtil.draw(batch, markerSprites.getHighlight(), highlightedActor);
-    }
-    if (activatedActor != null) {
-      ViewUtil.draw(batch, markerSprites.getActivated(), activatedActor);
-    }
+    markerSprites.getHighlight().draw(batch, highlightedActor);
+    markerSprites.getActivated().draw(batch, activatedActor);
     for (Entry<WorldActor<?>, SingleAnimation> entry : animationsMap.entries()) {
       // TODO: need a way to draw an animation that is only position dependent of parent
       // maybe pass animation directly into draw() and poll some meta data out of it

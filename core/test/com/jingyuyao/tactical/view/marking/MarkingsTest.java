@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.view.marking;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,6 +16,7 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.MarkerSprites;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;
 import org.junit.Before;
@@ -49,9 +49,11 @@ public class MarkingsTest {
   @Mock
   private WorldActor<?> activatedActor;
   @Mock
-  private Sprite highlightSprite;
+  private WorldTexture highlightSprite;
   @Mock
-  private Sprite activatedSprite;
+  private WorldTexture activatedSprite;
+  @Mock
+  private Sprite sprite;
   @Mock
   private SingleAnimation singleAnimation;
   @Mock
@@ -93,62 +95,6 @@ public class MarkingsTest {
   }
 
   @Test
-  public void draw_nothing() {
-    markings.draw();
-
-    verify(batch).begin();
-    verify(batch).end();
-    verifyZeroInteractions(markerSprites);
-  }
-
-  @Test
-  public void draw_highlight() {
-    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
-    when(markerSprites.getHighlight()).thenReturn(highlightSprite);
-
-    markings.highlight(mapObject);
-    markings.draw();
-
-    InOrder inOrder = Mockito.inOrder(batch, highlightSprite);
-    inOrder.verify(batch).begin();
-    inOrder.verify(highlightSprite).draw(batch);
-    inOrder.verify(batch).end();
-    verifyZeroInteractions(activatedSprite);
-  }
-
-  @Test
-  public void draw_activated() {
-    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(activatedActor);
-    when(markerSprites.getActivated()).thenReturn(activatedSprite);
-
-    markings.activate(mapObject);
-    markings.draw();
-
-    InOrder inOrder = Mockito.inOrder(batch, activatedSprite);
-    inOrder.verify(batch).begin();
-    inOrder.verify(activatedSprite).draw(batch);
-    inOrder.verify(batch).end();
-    verifyZeroInteractions(highlightSprite);
-  }
-
-  @Test
-  public void draw_animations() {
-    when(singleAnimation.getCurrentFrame()).thenReturn(textureRegion);
-    animationsMap.put(worldActor, singleAnimation);
-
-    markings.draw();
-
-    InOrder inOrder = Mockito.inOrder(batch);
-    inOrder.verify(batch).begin();
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, worldActor.getX(), worldActor.getY(),
-            worldActor.getWidth(), worldActor.getHeight());
-    inOrder.verify(batch).end();
-  }
-
-  @Test
   public void draw_highlight_and_activate_and_animation() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
     Mockito.<WorldActor<?>>when(world.get(mapObject2)).thenReturn(activatedActor);
@@ -163,8 +109,8 @@ public class MarkingsTest {
 
     InOrder inOrder = Mockito.inOrder(batch, highlightSprite, activatedSprite);
     inOrder.verify(batch).begin();
-    inOrder.verify(highlightSprite).draw(batch);
-    inOrder.verify(activatedSprite).draw(batch);
+    inOrder.verify(highlightSprite).draw(batch, highlightActor);
+    inOrder.verify(activatedSprite).draw(batch, activatedActor);
     inOrder
         .verify(batch)
         .draw(
@@ -177,9 +123,9 @@ public class MarkingsTest {
   public void mark() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
 
-    markings.mark(mapObject, highlightSprite);
+    markings.mark(mapObject, sprite);
 
-    verify(highlightActor).addMarker(highlightSprite);
+    verify(highlightActor).addMarker(sprite);
     verify(markedActors).add(highlightActor);
   }
 
