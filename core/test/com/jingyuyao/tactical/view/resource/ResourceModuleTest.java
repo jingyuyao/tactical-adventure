@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.view.actor.ActorConfig;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,12 @@ public class ResourceModuleTest {
   @Bind
   @Mock
   private AssetManager assetManager;
+  @Bind
+  @Mock
+  private ActorConfig actorConfig;
+  @Bind
+  @Mock
+  private WorldConfig worldConfig;
   @Mock
   private TextureAtlas textureAtlas;
   @Mock
@@ -37,6 +45,10 @@ public class ResourceModuleTest {
   private Skin provideSkin;
   @Inject
   private TextureAtlas provideTextureAtlas;
+  @Inject
+  private AnimationFactory animationFactory;
+  @Inject
+  private TextureFactory textureFactory;
 
   @Before
   public void setUp() {

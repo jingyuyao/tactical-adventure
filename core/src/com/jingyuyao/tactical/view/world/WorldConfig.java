@@ -19,11 +19,11 @@ public class WorldConfig {
     return 9;
   }
 
-  float getTileToWorldScale() {
-    return 1f / getTileSize();
+  public int getTileSize() {
+    return 32;
   }
 
-  private int getTileSize() {
-    return 32;
+  float getTileToWorldScale() {
+    return 1f / getTileSize();
   }
 }
