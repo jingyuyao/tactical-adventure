@@ -20,6 +20,14 @@
           "distance": 1
         },
         {
+          "type": "Grenade",
+          "name": "bomb",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 3,
+          "size": 2
+        },
+        {
           "type": "Heal",
           "name": "pot",
           "usageLeft": 3,

@@ -187,14 +187,14 @@ public class MarkingsSubscriberTest {
     SettableFuture<Void> future = SettableFuture.create();
     when(attack.getWeapon()).thenReturn(weapon);
     when(attack.getObject()).thenReturn(target);
-    when(target.getHitObjects()).thenReturn(ImmutableList.of(mapObject));
+    when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain));
     when(weapon.getName()).thenReturn(WEAPON_NAME);
     when(animations.getWeapon(WEAPON_NAME)).thenReturn(singleAnimation);
     when(singleAnimation.getFuture()).thenReturn(future);
 
     subscriber.attack(attack);
 
-    markings.addSingleAnimation(mapObject, singleAnimation);
+    markings.addSingleAnimation(terrain, singleAnimation);
     verify(attack).getWeapon();
     verify(attack).getObject();
     verifyNoMoreInteractions(attack);

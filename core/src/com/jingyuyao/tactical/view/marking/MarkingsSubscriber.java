@@ -100,7 +100,9 @@ public class MarkingsSubscriber {
 
       }
     });
-    for (MapObject object : attack.getObject().getHitObjects()) {
+    // TODO: need a way to distinguish on animation on select tile or an animation for every target
+    // tile
+    for (MapObject object : attack.getObject().getSelectTerrains()) {
       markings.addSingleAnimation(object, animation);
     }
   }
