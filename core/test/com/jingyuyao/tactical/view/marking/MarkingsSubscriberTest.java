@@ -24,7 +24,7 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class MarkingsSubscriberTest {
   @Mock
   private Markings markings;
   @Mock
-  private MarkerSprites markerSprites;
+  private Markers markers;
   @Mock
   private Animations animations;
   @Mock
@@ -93,7 +93,7 @@ public class MarkingsSubscriberTest {
 
   @Before
   public void setUp() {
-    subscriber = new MarkingsSubscriber(markings, markerSprites, animations);
+    subscriber = new MarkingsSubscriber(markings, markers, animations);
   }
 
   @Test
@@ -145,7 +145,7 @@ public class MarkingsSubscriberTest {
   public void moving() {
     when(moving.getMovement()).thenReturn(movement);
     when(movement.getTerrains()).thenReturn(ImmutableList.of(terrain));
-    when(markerSprites.getMove()).thenReturn(texture1);
+    when(markers.getMove()).thenReturn(texture1);
 
     subscriber.moving(moving);
 
@@ -157,8 +157,8 @@ public class MarkingsSubscriberTest {
     when(selectingTarget.getTargets()).thenReturn(ImmutableList.of(target));
     when(target.getTargetTerrains()).thenReturn(ImmutableList.of(terrain));
     when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain2));
-    when(markerSprites.getAttack()).thenReturn(texture1);
-    when(markerSprites.getTargetSelect()).thenReturn(texture2);
+    when(markers.getAttack()).thenReturn(texture1);
+    when(markers.getTargetSelect()).thenReturn(texture2);
 
     subscriber.selectingTarget(selectingTarget);
 
@@ -172,8 +172,8 @@ public class MarkingsSubscriberTest {
     when(battling.getTarget()).thenReturn(target);
     when(target.getTargetTerrains()).thenReturn(ImmutableList.of(terrain));
     when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain2));
-    when(markerSprites.getAttack()).thenReturn(texture1);
-    when(markerSprites.getTargetSelect()).thenReturn(texture2);
+    when(markers.getAttack()).thenReturn(texture1);
+    when(markers.getTargetSelect()).thenReturn(texture2);
 
     subscriber.battling(battling);
 

@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MarkerSprites {
+public class Markers {
 
   private final WorldTexture highlight;
   private final WorldTexture activated;
@@ -14,7 +14,7 @@ public class MarkerSprites {
   private final WorldTexture attack;
 
   @Inject
-  MarkerSprites(TextureAtlas textureAtlas, TextureFactory textureFactory) {
+  Markers(TextureAtlas textureAtlas, TextureFactory textureFactory) {
     highlight = textureFactory.create(textureAtlas.findRegion("marking/highlight"));
     activated = textureFactory.create(textureAtlas.findRegion("marking/activated"));
     move = textureFactory.create(textureAtlas.findRegion("marking/move"));

@@ -5,7 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.world.World;
 import javax.inject.Inject;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class MarkingModuleTest {
   private Animations animations;
   @Bind
   @Mock
-  private MarkerSprites markerSprites;
+  private Markers markers;
 
   @Inject
   private Markings markings;

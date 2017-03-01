@@ -13,7 +13,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.world.World;
@@ -34,7 +34,7 @@ public class MarkingsTest {
   @Mock
   private World world;
   @Mock
-  private MarkerSprites markerSprites;
+  private Markers markers;
   @Mock
   private List<WorldActor<?>> markedActors;
   @Mock
@@ -62,7 +62,7 @@ public class MarkingsTest {
   @Before
   public void setUp() {
     animationsMap = HashMultimap.create();
-    markings = new Markings(batch, world, markerSprites, animationsMap, markedActors);
+    markings = new Markings(batch, world, markers, animationsMap, markedActors);
   }
 
   @Test
@@ -95,8 +95,8 @@ public class MarkingsTest {
   public void draw_highlight_and_activate_and_animation() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
     Mockito.<WorldActor<?>>when(world.get(mapObject2)).thenReturn(activatedActor);
-    when(markerSprites.getHighlight()).thenReturn(highlightTexture);
-    when(markerSprites.getActivated()).thenReturn(activatedTexture);
+    when(markers.getHighlight()).thenReturn(highlightTexture);
+    when(markers.getActivated()).thenReturn(activatedTexture);
     when(singleAnimation.getCurrentFrame()).thenReturn(textureRegion);
     animationsMap.put(worldActor, singleAnimation);
 

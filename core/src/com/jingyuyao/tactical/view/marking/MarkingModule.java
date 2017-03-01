@@ -12,7 +12,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.world.World;
 import java.lang.annotation.Retention;
@@ -27,7 +27,7 @@ public class MarkingModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(Animations.class);
-    requireBinding(MarkerSprites.class);
+    requireBinding(Markers.class);
     requireBinding(Batch.class);
     requireBinding(World.class);
   }

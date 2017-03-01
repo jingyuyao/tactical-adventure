@@ -28,7 +28,7 @@ public class ResourceModuleTest {
   private WorldConfig worldConfig;
 
   @Inject
-  private MarkerSprites markerSprites;
+  private Markers markers;
   @Inject
   private Animations animations;
   @Inject
