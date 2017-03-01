@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -49,11 +48,9 @@ public class MarkingsTest {
   @Mock
   private WorldActor<?> activatedActor;
   @Mock
-  private WorldTexture highlightSprite;
+  private WorldTexture highlightTexture;
   @Mock
-  private WorldTexture activatedSprite;
-  @Mock
-  private Sprite sprite;
+  private WorldTexture activatedTexture;
   @Mock
   private SingleAnimation singleAnimation;
   @Mock
@@ -98,8 +95,8 @@ public class MarkingsTest {
   public void draw_highlight_and_activate_and_animation() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
     Mockito.<WorldActor<?>>when(world.get(mapObject2)).thenReturn(activatedActor);
-    when(markerSprites.getHighlight()).thenReturn(highlightSprite);
-    when(markerSprites.getActivated()).thenReturn(activatedSprite);
+    when(markerSprites.getHighlight()).thenReturn(highlightTexture);
+    when(markerSprites.getActivated()).thenReturn(activatedTexture);
     when(singleAnimation.getCurrentFrame()).thenReturn(textureRegion);
     animationsMap.put(worldActor, singleAnimation);
 
@@ -107,10 +104,10 @@ public class MarkingsTest {
     markings.activate(mapObject2);
     markings.draw();
 
-    InOrder inOrder = Mockito.inOrder(batch, highlightSprite, activatedSprite);
+    InOrder inOrder = Mockito.inOrder(batch, highlightTexture, activatedTexture);
     inOrder.verify(batch).begin();
-    inOrder.verify(highlightSprite).draw(batch, highlightActor);
-    inOrder.verify(activatedSprite).draw(batch, activatedActor);
+    inOrder.verify(highlightTexture).draw(batch, highlightActor);
+    inOrder.verify(activatedTexture).draw(batch, activatedActor);
     inOrder
         .verify(batch)
         .draw(
@@ -123,9 +120,9 @@ public class MarkingsTest {
   public void mark() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
 
-    markings.mark(mapObject, sprite);
+    markings.mark(mapObject, highlightTexture);
 
-    verify(highlightActor).addMarker(sprite);
+    verify(highlightActor).addMarker(highlightTexture);
     verify(markedActors).add(highlightActor);
   }
 

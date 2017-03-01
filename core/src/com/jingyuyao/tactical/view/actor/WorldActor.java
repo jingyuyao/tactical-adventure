@@ -1,20 +1,19 @@
 package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.view.util.ViewUtil;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 
 public class WorldActor<T extends MapObject> extends Actor {
 
   private final T object;
   private final ActorConfig actorConfig;
-  private final LinkedHashSet<Sprite> markers;
+  private final LinkedHashSet<WorldTexture> markers;
 
-  WorldActor(T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers) {
+  WorldActor(T object, ActorConfig actorConfig, LinkedHashSet<WorldTexture> markers) {
     this.object = object;
     this.actorConfig = actorConfig;
     this.markers = markers;
@@ -24,13 +23,13 @@ public class WorldActor<T extends MapObject> extends Actor {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    for (Sprite sprite : markers) {
-      ViewUtil.draw(batch, sprite, this);
+    for (WorldTexture worldTexture : markers) {
+      worldTexture.draw(batch, this);
     }
   }
 
-  public void addMarker(Sprite sprite) {
-    markers.add(sprite);
+  public void addMarker(WorldTexture worldTexture) {
+    markers.add(worldTexture);
   }
 
   public void clearMarkers() {

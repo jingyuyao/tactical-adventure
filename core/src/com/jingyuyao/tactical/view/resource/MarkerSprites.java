@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.view.resource;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -10,19 +9,17 @@ public class MarkerSprites {
 
   private final WorldTexture highlight;
   private final WorldTexture activated;
-  private final Sprite move;
-  private final Sprite hit;
-  private final Sprite targetSelect;
-  private final Sprite attack;
+  private final WorldTexture move;
+  private final WorldTexture targetSelect;
+  private final WorldTexture attack;
 
   @Inject
   MarkerSprites(TextureAtlas textureAtlas, TextureFactory textureFactory) {
     highlight = textureFactory.create(textureAtlas.findRegion("marking/highlight"));
     activated = textureFactory.create(textureAtlas.findRegion("marking/activated"));
-    move = textureAtlas.createSprite("marking/move");
-    hit = textureAtlas.createSprite("marking/hit");
-    targetSelect = textureAtlas.createSprite("marking/target_select");
-    attack = textureAtlas.createSprite("marking/attack");
+    move = textureFactory.create(textureAtlas.findRegion("marking/move"));
+    targetSelect = textureFactory.create(textureAtlas.findRegion("marking/target_select"));
+    attack = textureFactory.create(textureAtlas.findRegion("marking/attack"));
   }
 
   public WorldTexture getHighlight() {
@@ -33,19 +30,15 @@ public class MarkerSprites {
     return activated;
   }
 
-  public Sprite getMove() {
+  public WorldTexture getMove() {
     return move;
   }
 
-  public Sprite getHit() {
-    return hit;
-  }
-
-  public Sprite getTargetSelect() {
+  public WorldTexture getTargetSelect() {
     return targetSelect;
   }
 
-  public Sprite getAttack() {
+  public WorldTexture getAttack() {
     return attack;
   }
 }

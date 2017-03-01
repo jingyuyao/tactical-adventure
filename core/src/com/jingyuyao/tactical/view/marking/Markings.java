@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.marking;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -11,6 +10,7 @@ import com.jingyuyao.tactical.view.marking.MarkingModule.InProgressAnimationsMap
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
 import com.jingyuyao.tactical.view.resource.MarkerSprites;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.util.ViewUtil;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;
@@ -79,9 +79,9 @@ public class Markings {
     });
   }
 
-  void mark(MapObject object, Sprite sprite) {
+  void mark(MapObject object, WorldTexture worldTexture) {
     WorldActor actor = world.get(object);
-    actor.addMarker(sprite);
+    actor.addMarker(worldTexture);
     markedActors.add(actor);
   }
 

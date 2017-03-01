@@ -4,7 +4,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -27,6 +26,7 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.MarkerSprites;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,9 +77,9 @@ public class MarkingsSubscriberTest {
   @Mock
   private Target target;
   @Mock
-  private Sprite sprite1;
+  private WorldTexture texture1;
   @Mock
-  private Sprite sprite2;
+  private WorldTexture texture2;
   @Mock
   private Attack attack;
   @Mock
@@ -145,11 +145,11 @@ public class MarkingsSubscriberTest {
   public void moving() {
     when(moving.getMovement()).thenReturn(movement);
     when(movement.getTerrains()).thenReturn(ImmutableList.of(terrain));
-    when(markerSprites.getMove()).thenReturn(sprite1);
+    when(markerSprites.getMove()).thenReturn(texture1);
 
     subscriber.moving(moving);
 
-    verify(markings).mark(terrain, sprite1);
+    verify(markings).mark(terrain, texture1);
   }
 
   @Test
@@ -157,14 +157,14 @@ public class MarkingsSubscriberTest {
     when(selectingTarget.getTargets()).thenReturn(ImmutableList.of(target));
     when(target.getTargetTerrains()).thenReturn(ImmutableList.of(terrain));
     when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain2));
-    when(markerSprites.getAttack()).thenReturn(sprite1);
-    when(markerSprites.getTargetSelect()).thenReturn(sprite2);
+    when(markerSprites.getAttack()).thenReturn(texture1);
+    when(markerSprites.getTargetSelect()).thenReturn(texture2);
 
     subscriber.selectingTarget(selectingTarget);
 
     InOrder inOrder = Mockito.inOrder(markings);
-    inOrder.verify(markings).mark(terrain, sprite1);
-    inOrder.verify(markings).mark(terrain2, sprite2);
+    inOrder.verify(markings).mark(terrain, texture1);
+    inOrder.verify(markings).mark(terrain2, texture2);
   }
 
   @Test
@@ -172,14 +172,14 @@ public class MarkingsSubscriberTest {
     when(battling.getTarget()).thenReturn(target);
     when(target.getTargetTerrains()).thenReturn(ImmutableList.of(terrain));
     when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain2));
-    when(markerSprites.getAttack()).thenReturn(sprite1);
-    when(markerSprites.getTargetSelect()).thenReturn(sprite2);
+    when(markerSprites.getAttack()).thenReturn(texture1);
+    when(markerSprites.getTargetSelect()).thenReturn(texture2);
 
     subscriber.battling(battling);
 
     InOrder inOrder = Mockito.inOrder(markings);
-    inOrder.verify(markings).mark(terrain, sprite1);
-    inOrder.verify(markings).mark(terrain2, sprite2);
+    inOrder.verify(markings).mark(terrain, texture1);
+    inOrder.verify(markings).mark(terrain2, texture2);
   }
 
   @Test

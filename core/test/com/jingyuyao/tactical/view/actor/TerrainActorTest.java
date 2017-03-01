@@ -3,9 +3,9 @@ package com.jingyuyao.tactical.view.actor;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ public class TerrainActorTest {
   @Mock
   private ActorConfig actorConfig;
   @Mock
-  private LinkedHashSet<Sprite> markers;
+  private LinkedHashSet<WorldTexture> markers;
 
   @Test
   public void creation() {
