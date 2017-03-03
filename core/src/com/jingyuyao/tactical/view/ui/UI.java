@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.view.ui.UIModule.WorldUIStage;
+import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -11,7 +11,7 @@ public class UI {
   private final Stage stage;
 
   @Inject
-  UI(@WorldUIStage Stage stage, RootTable rootTable) {
+  UI(@UIStage Stage stage, RootTable rootTable) {
     this.stage = stage;
     stage.addActor(rootTable);
   }

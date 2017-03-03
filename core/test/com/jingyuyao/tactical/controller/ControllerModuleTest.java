@@ -8,7 +8,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.SelectionHandler;
-import com.jingyuyao.tactical.view.ui.UIModule.WorldUIStage;
+import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
@@ -32,7 +32,7 @@ public class ControllerModuleTest {
   private Stage worldStage;
   @Bind
   @Mock
-  @WorldUIStage
+  @UIStage
   private Stage uiStage;
   @Bind
   @Mock

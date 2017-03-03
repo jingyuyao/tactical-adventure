@@ -30,29 +30,29 @@ public class UIModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @WorldUIStage
-  Stage provideWorldUIStage(@WorldUIViewport Viewport viewport, Batch batch) {
+  @UIStage
+  Stage provideUIStage(@UIViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }
 
   @Provides
   @Singleton
-  @WorldUIViewport
-  Viewport provideWorldUIViewport(UIConfig uiConfig) {
+  @UIViewport
+  Viewport provideUIViewport(UIConfig uiConfig) {
     return new StretchViewport(uiConfig.getUIViewportWidth(), uiConfig.getUIViewportHeight());
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface WorldUIStage {
+  public @interface UIStage {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface WorldUIViewport {
+  @interface UIViewport {
 
   }
 }
