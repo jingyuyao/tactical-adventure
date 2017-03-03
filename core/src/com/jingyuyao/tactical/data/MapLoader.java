@@ -56,20 +56,13 @@ public class MapLoader {
         (TiledMapTileLayer) tiledMap.getLayers().get(dataConfig.getTerrainLayerKey());
     Preconditions.checkNotNull(terrainLayer);
 
-    int height = terrainLayer.getHeight();
-    int width = terrainLayer.getWidth();
-    Preconditions.checkArgument(height > 0);
-    Preconditions.checkArgument(width > 0);
-
     FileHandle mapData = Gdx.files.internal(mapName + ".json");
     MapSave mapSave = gson.fromJson(mapData.readString(), MapSave.class);
 
     FluentIterable<Character> characters = mapSave.getCharacters();
 
     model.loadMap(
-        width,
-        height,
-        terrainLoader.createTerrains(terrainLayer, width, height),
+        terrainLoader.createTerrains(terrainLayer),
         characters.filter(Player.class),
         characters.filter(Enemy.class),
         waitingProvider.get());

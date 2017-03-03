@@ -1,17 +1,16 @@
 package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,17 +23,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TerrainsTest {
 
-  private static final int WIDTH = 2;
-  private static final int HEIGHT = 1;
   private static final Coordinate COORDINATE1 = new Coordinate(0, 0);
-  private static final Coordinate COORDINATE2 = new Coordinate(1, 0);
+  private static final Coordinate COORDINATE2 = new Coordinate(10, 11);
 
   @Mock
   private EventBus eventBus;
   @Mock
   private Map<Coordinate, Terrain> terrainMap;
-  @Mock
-  private List<Terrain> terrainList;
   @Mock
   private Terrain terrain1;
   @Mock
@@ -43,12 +38,6 @@ public class TerrainsTest {
   private Terrain terrain3;
   @Mock
   private Terrain terrain4;
-  @Mock
-  private Iterator<Terrain> terrainIterator;
-  @Mock
-  private Iterable<Coordinate> coordinateIterable;
-  @Mock
-  private Iterator<Coordinate> coordinateIterator;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -60,33 +49,24 @@ public class TerrainsTest {
   }
 
   @Test
-  public void initialize() {
-    when(terrainList.iterator()).thenReturn(terrainIterator);
-    when(terrainIterator.hasNext()).thenReturn(true, true, false);
-    when(terrainIterator.next()).thenReturn(terrain1, terrain2);
-    when(terrain1.getCoordinate()).thenReturn(COORDINATE1);
+  public void add() {
     when(terrain2.getCoordinate()).thenReturn(COORDINATE2);
 
-    terrains.initialize(terrainList, WIDTH, HEIGHT);
+    terrains.add(terrain2);
 
-    verify(terrainMap).put(COORDINATE1, terrain1);
     verify(terrainMap).put(COORDINATE2, terrain2);
-    assertThat(terrains.getWidth()).isEqualTo(WIDTH);
-    assertThat(terrains.getHeight()).isEqualTo(HEIGHT);
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues()).hasSize(2);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain1, AddTerrain.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, terrain2, AddTerrain.class);
+    assertThat(terrains.getMaxWidth()).isEqualTo(COORDINATE2.getX());
+    assertThat(terrains.getMaxHeight()).isEqualTo(COORDINATE2.getY());
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain2, AddTerrain.class);
   }
 
   @Test
   public void getAll() {
     when(terrainMap.get(COORDINATE1)).thenReturn(terrain1);
     when(terrainMap.get(COORDINATE2)).thenReturn(terrain2);
-    when(coordinateIterable.iterator()).thenReturn(coordinateIterator);
-    when(coordinateIterator.next()).thenReturn(COORDINATE1, COORDINATE2);
 
-    Iterable<Terrain> result = terrains.getAll(coordinateIterable);
+    Iterable<Terrain> result = terrains.getAll(ImmutableList.of(COORDINATE1, COORDINATE2));
     Iterator<Terrain> resultIterator = result.iterator();
     assertThat(resultIterator.next()).isSameAs(terrain1);
     assertThat(resultIterator.next()).isSameAs(terrain2);

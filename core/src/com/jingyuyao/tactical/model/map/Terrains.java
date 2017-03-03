@@ -23,8 +23,8 @@ public class Terrains {
   private final EventBus eventBus;
   // We rely on coordinates' hashing invariant
   private final Map<Coordinate, Terrain> terrainMap;
-  private int width;
-  private int height;
+  private int maxWidth;
+  private int maxHeight;
 
   @Inject
   Terrains(
@@ -34,21 +34,19 @@ public class Terrains {
     this.terrainMap = terrainMap;
   }
 
-  public void initialize(Iterable<Terrain> terrains, int width, int height) {
-    for (Terrain terrain : terrains) {
-      terrainMap.put(terrain.getCoordinate(), terrain);
-      eventBus.post(new AddTerrain(terrain));
-    }
-    this.width = width;
-    this.height = height;
+  public void add(Terrain terrain) {
+    terrainMap.put(terrain.getCoordinate(), terrain);
+    eventBus.post(new AddTerrain(terrain));
+    maxWidth = Math.max(maxWidth, terrain.getCoordinate().getX());
+    maxHeight = Math.max(maxHeight, terrain.getCoordinate().getY());
   }
 
-  public int getWidth() {
-    return width;
+  public int getMaxWidth() {
+    return maxWidth;
   }
 
-  public int getHeight() {
-    return height;
+  public int getMaxHeight() {
+    return maxHeight;
   }
 
   public boolean contains(Coordinate coordinate) {

@@ -26,7 +26,7 @@ public class ModelTest {
   @Mock
   private MapState mapState;
   @Mock
-  private Iterable<Terrain> terrainIterable;
+  private Terrain terrain;
   @Mock
   private Player player;
   @Mock
@@ -34,22 +34,19 @@ public class ModelTest {
   @Mock
   private State state;
 
-  private Iterable<Player> playerIterable;
-  private Iterable<Enemy> enemyIterable;
   private Model model;
 
   @Before
   public void setUp() {
-    playerIterable = ImmutableList.of(player);
-    enemyIterable = ImmutableList.of(enemy);
     model = new Model(characters, terrains, mapState);
   }
 
   @Test
   public void new_map() {
-    model.loadMap(10, 5, terrainIterable, playerIterable, enemyIterable, state);
+    model.loadMap(
+        ImmutableList.of(terrain), ImmutableList.of(player), ImmutableList.of(enemy), state);
 
-    verify(terrains).initialize(terrainIterable, 10, 5);
+    verify(terrains).add(terrain);
     verify(characters).add(player);
     verify(characters).add(enemy);
     verify(mapState).initialize(state);

@@ -55,9 +55,9 @@ class CameraController extends InputAdapter {
       float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
 
       float lowerXBound = worldViewport.getWorldWidth() / 2f;
-      float upperXBound = terrains.getWidth() - lowerXBound;
+      float upperXBound = terrains.getMaxWidth() - lowerXBound;
       float lowerYBound = worldViewport.getWorldHeight() / 2f;
-      float upperYBound = terrains.getHeight() - lowerYBound;
+      float upperYBound = terrains.getMaxHeight() - lowerYBound;
 
       float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
       float boundedNewWorldY = bound(lowerYBound, unboundedNewWorldY, upperYBound);

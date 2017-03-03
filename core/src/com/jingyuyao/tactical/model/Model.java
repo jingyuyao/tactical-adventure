@@ -25,14 +25,14 @@ public class Model {
   }
 
   public void loadMap(
-      int width,
-      int height,
       Iterable<Terrain> terrains,
       Iterable<Player> players,
       Iterable<Enemy> enemies,
       State initialState) {
-    this.terrains.initialize(terrains, width, height);
-    // Characters must be added after terrain so they get hit by touch input
+    // TODO: reset model
+    for (Terrain terrain : terrains) {
+      this.terrains.add(terrain);
+    }
     for (Player player : players) {
       characters.add(player);
     }

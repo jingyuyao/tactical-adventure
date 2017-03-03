@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.terrain.TerrainFactory;
@@ -22,10 +23,12 @@ class TerrainLoader {
     this.terrainFactory = terrainFactory;
   }
 
-  Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer, int width, int height) {
-    List<Terrain> terrains = new ArrayList<>(width * height);
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
+  Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer) {
+    Preconditions.checkArgument(terrainLayer.getWidth() > 0);
+    Preconditions.checkArgument(terrainLayer.getHeight() > 0);
+    List<Terrain> terrains = new ArrayList<>(terrainLayer.getWidth() * terrainLayer.getHeight());
+    for (int y = 0; y < terrainLayer.getHeight(); y++) {
+      for (int x = 0; x < terrainLayer.getWidth(); x++) {
         TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
         terrains.add(createTerrain(x, y, cell));
       }
