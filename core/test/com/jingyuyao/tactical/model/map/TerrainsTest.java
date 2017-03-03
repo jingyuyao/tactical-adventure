@@ -66,8 +66,6 @@ public class TerrainsTest {
     when(terrainIterator.next()).thenReturn(terrain1, terrain2);
     when(terrain1.getCoordinate()).thenReturn(COORDINATE1);
     when(terrain2.getCoordinate()).thenReturn(COORDINATE2);
-    when(terrainMap.containsKey(COORDINATE1)).thenReturn(true);
-    when(terrainMap.containsKey(COORDINATE2)).thenReturn(true);
 
     terrains.initialize(terrainList, WIDTH, HEIGHT);
 
@@ -79,17 +77,6 @@ public class TerrainsTest {
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain1, AddTerrain.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, terrain2, AddTerrain.class);
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void initialize_not_fully_populated() {
-    when(terrainList.iterator()).thenReturn(terrainIterator);
-    when(terrainIterator.hasNext()).thenReturn(true, false);
-    when(terrainIterator.next()).thenReturn(terrain1);
-    when(terrain1.getCoordinate()).thenReturn(COORDINATE1);
-    when(terrainMap.containsKey(COORDINATE1)).thenReturn(true);
-
-    terrains.initialize(terrainList, WIDTH, HEIGHT);
   }
 
   @Test

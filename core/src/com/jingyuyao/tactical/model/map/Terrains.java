@@ -41,7 +41,6 @@ public class Terrains {
     }
     this.width = width;
     this.height = height;
-    validateRectangular();
   }
 
   public int getWidth() {
@@ -69,7 +68,7 @@ public class Terrains {
     });
   }
 
-  public Iterable<Terrain> getNeighbors(final Coordinate from) {
+  Iterable<Terrain> getNeighbors(final Coordinate from) {
     return FluentIterable
         .from(Directions.ALL)
         .transform(new Function<Coordinate, Coordinate>() {
@@ -90,15 +89,5 @@ public class Terrains {
             return terrainMap.get(input);
           }
         });
-  }
-
-  private void validateRectangular() throws IllegalStateException {
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        if (!terrainMap.containsKey(new Coordinate(x, y))) {
-          throw new IllegalStateException("Terrains is not fully populated");
-        }
-      }
-    }
   }
 }
