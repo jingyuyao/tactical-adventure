@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class PassiveEnemyTest {
   @Mock
   private Movements movements;
   @Mock
-  private MapState mapState;
+  private SelectionHandler selectionHandler;
   @Mock
   private Battle battle;
 
@@ -51,8 +51,8 @@ public class PassiveEnemyTest {
 
   @Test
   public void select() {
-    enemy.select(mapState);
+    enemy.select(selectionHandler);
 
-    verify(mapState).select(enemy);
+    verify(selectionHandler).select(enemy);
   }
 }

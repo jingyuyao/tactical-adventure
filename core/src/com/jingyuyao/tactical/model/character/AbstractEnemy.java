@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 
 abstract class AbstractEnemy extends AbstractCharacter implements Enemy {
@@ -20,7 +20,7 @@ abstract class AbstractEnemy extends AbstractCharacter implements Enemy {
   }
 
   @Override
-  public void select(MapState mapState) {
-    mapState.select(this);
+  public void select(SelectionHandler selectionHandler) {
+    selectionHandler.select(this);
   }
 }

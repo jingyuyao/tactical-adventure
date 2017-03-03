@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,8 @@ public class BasePlayerTest {
   @Mock
   private Terrains terrains;
   @Mock
-  private MapState mapState;
+  private SelectionHandler selectionHandler;
+
   private Player player;
 
   @Before
@@ -43,9 +44,9 @@ public class BasePlayerTest {
 
   @Test
   public void select() {
-    player.select(mapState);
+    player.select(selectionHandler);
 
-    verify(mapState).select(player);
+    verify(selectionHandler).select(player);
   }
 
   @Test

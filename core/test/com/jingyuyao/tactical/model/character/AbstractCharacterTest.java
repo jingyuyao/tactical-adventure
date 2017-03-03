@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.List;
 import org.junit.Before;
@@ -187,7 +187,7 @@ public class AbstractCharacterTest {
     }
 
     @Override
-    public void select(MapState mapState) {
+    public void select(SelectionHandler selectionHandler) {
 
     }
   }

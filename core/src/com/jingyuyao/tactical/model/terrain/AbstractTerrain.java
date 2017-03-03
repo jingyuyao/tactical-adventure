@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.terrain;
 
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 
 abstract class AbstractTerrain extends AbstractMapObject implements Terrain {
 
@@ -11,8 +11,8 @@ abstract class AbstractTerrain extends AbstractMapObject implements Terrain {
   }
 
   @Override
-  public void select(MapState mapState) {
-    mapState.select(this);
+  public void select(SelectionHandler selectionHandler) {
+    selectionHandler.select(this);
   }
 
   @Override

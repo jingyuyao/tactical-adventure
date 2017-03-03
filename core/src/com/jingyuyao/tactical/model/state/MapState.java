@@ -17,7 +17,7 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState {
+public class MapState implements SelectionHandler {
 
   private final EventBus eventBus;
   private final Deque<State> stateStack;
@@ -37,16 +37,19 @@ public class MapState {
     rollback();
   }
 
+  @Override
   public void select(Player player) {
     eventBus.post(new SelectPlayer(player));
     stateStack.peek().select(player);
   }
 
+  @Override
   public void select(Enemy enemy) {
     eventBus.post(new SelectEnemy(enemy));
     stateStack.peek().select(enemy);
   }
 
+  @Override
   public void select(Terrain terrain) {
     eventBus.post(new SelectTerrain(terrain));
     stateStack.peek().select(terrain);
