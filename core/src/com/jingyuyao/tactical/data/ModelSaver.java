@@ -26,7 +26,7 @@ public class ModelSaver {
 
   public void saveMap(String mapName) {
     model.prepForSave();
-    FileHandle handle = Gdx.files.local(dataConfig.getMapSaveFileName(mapName));
+    FileHandle handle = Gdx.files.local(dataConfig.getCharactersSaveFileName(mapName));
     CharactersSave save = new CharactersSave(characters.fluent().toList());
     handle.writeString(gson.toJson(save), false);
   }
