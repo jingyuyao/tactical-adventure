@@ -43,8 +43,7 @@ public class ModelTest {
 
   @Test
   public void new_map() {
-    model.loadMap(
-        ImmutableList.of(terrain), ImmutableList.of(player), ImmutableList.of(enemy), state);
+    model.loadMap(ImmutableList.of(terrain), ImmutableList.of(player, enemy), state);
 
     verify(terrains).add(terrain);
     verify(characters).add(player);

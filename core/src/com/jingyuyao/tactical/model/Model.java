@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.FluentIterable;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -25,18 +27,18 @@ public class Model {
   }
 
   public void loadMap(
-      Iterable<Terrain> terrains,
-      Iterable<Player> players,
-      Iterable<Enemy> enemies,
+      Iterable<Terrain> newTerrains,
+      Iterable<Character> newCharacters,
       State initialState) {
     // TODO: reset model
-    for (Terrain terrain : terrains) {
-      this.terrains.add(terrain);
+    for (Terrain terrain : newTerrains) {
+      terrains.add(terrain);
     }
-    for (Player player : players) {
+    FluentIterable<Character> fluentCharacters = FluentIterable.from(newCharacters);
+    for (Player player : fluentCharacters.filter(Player.class)) {
       characters.add(player);
     }
-    for (Enemy enemy : enemies) {
+    for (Enemy enemy : fluentCharacters.filter(Enemy.class)) {
       characters.add(enemy);
     }
     mapState.initialize(initialState);
