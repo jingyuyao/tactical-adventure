@@ -25,7 +25,7 @@ public class DataModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(MapLoader.class);
+    bind(ModelLoader.class);
   }
 
   @Provides

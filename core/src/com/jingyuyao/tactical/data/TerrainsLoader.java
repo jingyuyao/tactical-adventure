@@ -1,7 +1,10 @@
 package com.jingyuyao.tactical.data;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -12,18 +15,39 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class TerrainLoader {
+class TerrainsLoader {
 
   private final DataConfig dataConfig;
   private final TerrainFactory terrainFactory;
+  private final AssetManager assetManager;
+  private final OrthogonalTiledMapRenderer tiledMapRenderer;
 
   @Inject
-  TerrainLoader(DataConfig dataConfig, TerrainFactory terrainFactory) {
+  TerrainsLoader(
+      DataConfig dataConfig,
+      TerrainFactory terrainFactory,
+      AssetManager assetManager,
+      OrthogonalTiledMapRenderer tiledMapRenderer) {
     this.dataConfig = dataConfig;
     this.terrainFactory = terrainFactory;
+    this.assetManager = assetManager;
+    this.tiledMapRenderer = tiledMapRenderer;
   }
 
-  Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer) {
+  Iterable<Terrain> loadTerrains(String mapName) {
+    String fileName = dataConfig.getTerrainsFileName(mapName);
+    assetManager.load(fileName, TiledMap.class);
+    assetManager.finishLoadingAsset(fileName);
+    TiledMap tiledMap = assetManager.get(fileName);
+    tiledMapRenderer.setMap(tiledMap);
+
+    TiledMapTileLayer terrainLayer =
+        (TiledMapTileLayer) tiledMap.getLayers().get(dataConfig.getTerrainLayerKey());
+    return createTerrains(terrainLayer);
+  }
+
+  private Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer) {
+    Preconditions.checkNotNull(terrainLayer);
     Preconditions.checkArgument(terrainLayer.getWidth() > 0);
     Preconditions.checkArgument(terrainLayer.getHeight() > 0);
     List<Terrain> terrains = new ArrayList<>(terrainLayer.getWidth() * terrainLayer.getHeight());

@@ -13,8 +13,6 @@ import javax.inject.Singleton;
  */
 public class AssetModule extends AbstractModule {
 
-  public static final String TEST_MAP = "maps/test_map";
-
   @Override
   protected void configure() {
   }
