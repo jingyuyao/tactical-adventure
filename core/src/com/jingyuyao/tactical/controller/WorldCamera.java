@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CameraController extends InputAdapter {
+class WorldCamera extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
   private final Viewport worldViewport;
@@ -22,7 +22,7 @@ class CameraController extends InputAdapter {
   private boolean dragged = false;
 
   @Inject
-  CameraController(
+  WorldCamera(
       ControllerConfig controllerConfig, @WorldViewport Viewport worldViewport, Terrains terrains) {
     this.controllerConfig = controllerConfig;
     this.worldViewport = worldViewport;

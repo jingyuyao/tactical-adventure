@@ -9,16 +9,16 @@ import javax.inject.Inject;
 
 public class WorldActorController extends InputListener {
 
-  private final CameraController cameraController;
+  private final WorldCamera worldCamera;
   private final SelectionHandler selectionHandler;
   private final MapObject object;
 
   @Inject
   WorldActorController(
       SelectionHandler selectionHandler,
-      CameraController cameraController,
+      WorldCamera worldCamera,
       @Assisted MapObject object) {
-    this.cameraController = cameraController;
+    this.worldCamera = worldCamera;
     this.selectionHandler = selectionHandler;
     this.object = object;
   }
@@ -30,7 +30,7 @@ public class WorldActorController extends InputListener {
 
   @Override
   public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-    if (!cameraController.isDragged()) {
+    if (!worldCamera.isDragged()) {
       object.select(selectionHandler);
     }
   }

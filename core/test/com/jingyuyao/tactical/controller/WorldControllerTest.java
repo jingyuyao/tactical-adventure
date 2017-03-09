@@ -25,7 +25,7 @@ public class WorldControllerTest {
   @Mock
   private Stage uiStage;
   @Mock
-  private CameraController cameraController;
+  private WorldCamera worldCamera;
   @Mock
   private Input input;
   @Captor
@@ -35,7 +35,7 @@ public class WorldControllerTest {
 
   @Before
   public void setUp() {
-    worldController = new WorldController(worldStage, uiStage, cameraController);
+    worldController = new WorldController(worldStage, uiStage, worldCamera);
     Gdx.input = input;
   }
 
@@ -47,7 +47,7 @@ public class WorldControllerTest {
     assertThat(inputProcessorCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
     InputMultiplexer multiplexer = (InputMultiplexer) inputProcessorCaptor.getValue();
     Array<InputProcessor> processors = multiplexer.getProcessors();
-    assertThat(processors).containsExactly(uiStage, cameraController, worldStage).inOrder();
+    assertThat(processors).containsExactly(uiStage, worldCamera, worldStage).inOrder();
   }
 
   @Test

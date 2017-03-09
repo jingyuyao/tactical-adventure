@@ -20,7 +20,7 @@ public class WorldActorControllerTest {
   @Mock
   private SelectionHandler selectionHandler;
   @Mock
-  private CameraController cameraController;
+  private WorldCamera worldCamera;
   @Mock
   private MapObject mapObject;
   @Mock
@@ -30,7 +30,7 @@ public class WorldActorControllerTest {
 
   @Before
   public void setUp() {
-    worldActorController = new WorldActorController(selectionHandler, cameraController, mapObject);
+    worldActorController = new WorldActorController(selectionHandler, worldCamera, mapObject);
   }
 
   @Test
@@ -40,7 +40,7 @@ public class WorldActorControllerTest {
 
   @Test
   public void touch_up_dragged() {
-    when(cameraController.isDragged()).thenReturn(true);
+    when(worldCamera.isDragged()).thenReturn(true);
 
     worldActorController.touchUp(inputEvent, 0, 0, 0, 0);
 
@@ -49,7 +49,7 @@ public class WorldActorControllerTest {
 
   @Test
   public void touch_up_not_dragged() {
-    when(cameraController.isDragged()).thenReturn(false);
+    when(worldCamera.isDragged()).thenReturn(false);
 
     worldActorController.touchUp(inputEvent, 0, 0, 0, 0);
 

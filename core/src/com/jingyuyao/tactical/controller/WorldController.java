@@ -17,10 +17,10 @@ public class WorldController {
   WorldController(
       @WorldStage Stage mapViewStage,
       @UIStage Stage mapUIStage,
-      CameraController cameraController) {
+      WorldCamera worldCamera) {
     inputMultiplexer = new InputMultiplexer();
     inputMultiplexer.addProcessor(mapUIStage);
-    inputMultiplexer.addProcessor(cameraController);
+    inputMultiplexer.addProcessor(worldCamera);
     inputMultiplexer.addProcessor(mapViewStage);
   }
 
