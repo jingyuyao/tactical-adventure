@@ -7,6 +7,7 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
+import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
@@ -33,6 +34,9 @@ public class Waiting extends BaseState {
   @Override
   public void enter() {
     super.enter();
+    if (Iterables.isEmpty(characters.fluent().filter(Player.class))) {
+      post(new LevelFailed());
+    }
     if (Iterables.isEmpty(characters.fluent().filter(Enemy.class))) {
       post(new LevelComplete());
     }

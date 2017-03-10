@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
+import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -62,7 +63,7 @@ public class WaitingTest {
 
   @Test
   public void enter_not_complete() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy));
+    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy, player));
 
     waiting.enter();
 
@@ -72,7 +73,7 @@ public class WaitingTest {
 
   @Test
   public void enter_level_complete() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of());
+    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(player));
 
     waiting.enter();
 
@@ -80,6 +81,18 @@ public class WaitingTest {
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelComplete.class);
+  }
+
+  @Test
+  public void enter_level_failed() {
+    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy));
+
+    waiting.enter();
+
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues()).hasSize(2);
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelFailed.class);
   }
 
   @Test

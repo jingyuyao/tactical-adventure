@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.ModelSaver;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.event.LevelComplete;
+import com.jingyuyao.tactical.model.event.LevelFailed;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -25,6 +26,13 @@ class GameSubscriber {
 
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
+    modelSaver.removeSave(TacticalAdventure.TEST_MAP);
+    model.reset();
+    game.setLevel(TacticalAdventure.TEST_MAP);
+  }
+
+  @Subscribe
+  void levelFailed(LevelFailed levelFailed) {
     modelSaver.removeSave(TacticalAdventure.TEST_MAP);
     model.reset();
     game.setLevel(TacticalAdventure.TEST_MAP);
