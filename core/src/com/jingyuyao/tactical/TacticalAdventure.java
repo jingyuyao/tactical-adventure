@@ -52,9 +52,14 @@ public class TacticalAdventure extends Game {
   }
 
   @Override
+  public void pause() {
+    super.pause();
+    modelSaver.saveMap(TEST_MAP);
+  }
+
+  @Override
   public void dispose() {
     super.dispose();
-    modelSaver.saveMap(TEST_MAP);
     worldScreen.dispose();
     assetManager.dispose();
   }
