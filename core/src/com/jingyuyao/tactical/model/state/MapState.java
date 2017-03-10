@@ -56,6 +56,7 @@ public class MapState implements SelectionHandler {
   }
 
   public void reset() {
+    stateStack.peek().exit();
     stateStack.clear();
   }
 

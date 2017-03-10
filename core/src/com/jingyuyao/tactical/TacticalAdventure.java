@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
 
-  private static final String TEST_MAP = "test_map";
+  static final String TEST_MAP = "test_map";
 
   @Inject
   @ModelEventBus
@@ -54,7 +54,6 @@ public class TacticalAdventure extends Game {
   @Override
   public void dispose() {
     super.dispose();
-    modelSaver.saveMap(TEST_MAP);
     worldScreen.dispose();
     assetManager.dispose();
   }
