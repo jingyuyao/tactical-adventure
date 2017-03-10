@@ -50,6 +50,13 @@ public class Characters {
     }
   }
 
+  public void reset() {
+    for (Character character : characterSet) {
+      eventBus.post(new RemoveObject(character));
+    }
+    characterSet.clear();
+  }
+
   public FluentIterable<Character> fluent() {
     return FluentIterable.from(characterSet);
   }

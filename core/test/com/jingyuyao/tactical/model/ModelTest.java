@@ -50,4 +50,13 @@ public class ModelTest {
     verify(characters).add(enemy);
     verify(mapState).initialize(state);
   }
+
+  @Test
+  public void reset() {
+    model.reset();
+
+    characters.reset();
+    terrains.reset();
+    mapState.reset();
+  }
 }

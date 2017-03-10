@@ -44,6 +44,12 @@ public class Model {
     mapState.initialize(initialState);
   }
 
+  public void reset() {
+    characters.reset();
+    terrains.reset();
+    mapState.reset();
+  }
+
   /**
    * Call me before serializing game state
    */

@@ -7,6 +7,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapModule.BackingTerrainMap;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Map;
@@ -64,6 +65,13 @@ public class Terrains {
         return terrainMap.get(input);
       }
     });
+  }
+
+  public void reset() {
+    for (Terrain terrain : terrainMap.values()) {
+      eventBus.post(new RemoveObject(terrain));
+    }
+    terrainMap.clear();
   }
 
   Iterable<Terrain> getNeighbors(final Coordinate from) {

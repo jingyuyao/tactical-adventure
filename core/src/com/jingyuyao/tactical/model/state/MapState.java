@@ -28,15 +28,6 @@ public class MapState implements SelectionHandler {
     this.stateStack = stateStack;
   }
 
-  public void initialize(State initialState) {
-    stateStack.push(initialState);
-    initialState.enter();
-  }
-
-  public void prepForSave() {
-    rollback();
-  }
-
   @Override
   public void select(Player player) {
     eventBus.post(new SelectPlayer(player));
@@ -53,6 +44,19 @@ public class MapState implements SelectionHandler {
   public void select(Terrain terrain) {
     eventBus.post(new SelectTerrain(terrain));
     stateStack.peek().select(terrain);
+  }
+
+  public void initialize(State initialState) {
+    stateStack.push(initialState);
+    initialState.enter();
+  }
+
+  public void prepForSave() {
+    rollback();
+  }
+
+  public void reset() {
+    stateStack.clear();
   }
 
   /**

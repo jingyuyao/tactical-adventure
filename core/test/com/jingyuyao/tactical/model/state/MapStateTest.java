@@ -62,6 +62,13 @@ public class MapStateTest {
   }
 
   @Test
+  public void reset() {
+    mapState.reset();
+
+    verify(stateStack).clear();
+  }
+
+  @Test
   public void selectPlayer() throws Exception {
     when(stateStack.peek()).thenReturn(state1);
 
