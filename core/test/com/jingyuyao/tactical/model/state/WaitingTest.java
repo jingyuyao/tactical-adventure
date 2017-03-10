@@ -1,7 +1,9 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -9,8 +11,10 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -39,6 +43,8 @@ public class WaitingTest {
   @Mock
   private Player player;
   @Mock
+  private Enemy enemy;
+  @Mock
   private Moving moving;
   @Mock
   private Retaliating retaliating;
@@ -55,10 +61,25 @@ public class WaitingTest {
   }
 
   @Test
-  public void enter() {
+  public void enter_not_complete() {
+    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy));
+
     waiting.enter();
 
     verify(eventBus).post(waiting);
+    verifyNoMoreInteractions(eventBus);
+  }
+
+  @Test
+  public void enter_level_complete() {
+    when(characters.fluent()).thenReturn(FluentIterable.<Character>of());
+
+    waiting.enter();
+
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues()).hasSize(2);
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelComplete.class);
   }
 
   @Test
