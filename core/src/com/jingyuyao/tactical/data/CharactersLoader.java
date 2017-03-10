@@ -20,7 +20,11 @@ class CharactersLoader {
   }
 
   Iterable<Character> loadCharacters(String mapName) {
-    FileHandle mapData = Gdx.files.internal(dataConfig.getCharactersFileName(mapName));
+    FileHandle mapData = Gdx.files.local(dataConfig.getCharactersSaveFileName(mapName));
+    if (!mapData.exists()) {
+      mapData = Gdx.files.internal(dataConfig.getCharactersFileName(mapName));
+    }
+
     CharactersSave charactersSave = gson.fromJson(mapData.readString(), CharactersSave.class);
     return charactersSave.getCharacters();
   }

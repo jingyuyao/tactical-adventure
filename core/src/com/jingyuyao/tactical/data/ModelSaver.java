@@ -30,4 +30,9 @@ public class ModelSaver {
     CharactersSave save = new CharactersSave(characters.fluent().toList());
     handle.writeString(gson.toJson(save), false);
   }
+
+  public void removeSave(String mapName) {
+    FileHandle handle = Gdx.files.local(dataConfig.getCharactersSaveFileName(mapName));
+    handle.delete();
+  }
 }
