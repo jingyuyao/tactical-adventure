@@ -13,7 +13,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import javax.inject.Singleton;
 
-public class MockAssetModule extends AbstractModule {
+public class MockGameModule extends AbstractModule {
 
   @Override
   protected void configure() {

@@ -1,11 +1,8 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
@@ -26,6 +23,8 @@ public class TacticalAdventure extends Game {
   @ModelEventBus
   private EventBus modelEventBus;
   @Inject
+  private GameSubscriber gameSubscriber;
+  @Inject
   private WorldScreen worldScreen;
   @Inject
   private WorldScreenSubscribers worldScreenSubscribers;
@@ -40,14 +39,15 @@ public class TacticalAdventure extends Game {
   public void create() {
     Guice
         .createInjector(
-            new AssetModule(),
+            new GameModule(this),
             new ModelModule(),
             new DataModule(),
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
+
+    modelEventBus.register(gameSubscriber);
     worldScreenSubscribers.register(modelEventBus);
-    modelEventBus.register(this);
     setLevel(TEST_MAP);
   }
 
@@ -59,12 +59,7 @@ public class TacticalAdventure extends Game {
     assetManager.dispose();
   }
 
-  @Subscribe
-  void logDeadEvent(DeadEvent deadEvent) {
-    Gdx.app.log("DeadEvent", deadEvent.getEvent().toString());
-  }
-
-  private void setLevel(String mapName) {
+  void setLevel(String mapName) {
     modelLoader.loadMap(mapName);
     setScreen(worldScreen);
   }

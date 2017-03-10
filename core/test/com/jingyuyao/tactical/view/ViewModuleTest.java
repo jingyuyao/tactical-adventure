@@ -11,7 +11,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.google.inject.util.Modules;
-import com.jingyuyao.tactical.MockAssetModule;
+import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.controller.WorldController;
 import javax.inject.Inject;
@@ -58,7 +58,7 @@ public class ViewModuleTest {
     Guice
         .createInjector(
             BoundFieldModule.of(this),
-            new MockAssetModule(),
+            new MockGameModule(),
             Modules.override(new ViewModule()).with(
                 new AbstractModule() {
                   @Override

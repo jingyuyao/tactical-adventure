@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.MockAssetModule;
+import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import javax.inject.Inject;
@@ -52,7 +52,7 @@ public class ResourceModuleTest {
   public void can_create_module() {
     Guice
         .createInjector(
-            BoundFieldModule.of(this), new MockAssetModule(), new ResourceModule())
+            BoundFieldModule.of(this), new MockGameModule(), new ResourceModule())
         .injectMembers(this);
   }
 }
