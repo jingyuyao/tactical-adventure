@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model;
 
+import com.google.common.collect.FluentIterable;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Characters;
@@ -25,21 +27,27 @@ public class Model {
   }
 
   public void loadMap(
-      int width,
-      int height,
-      Iterable<Terrain> terrains,
-      Iterable<Player> players,
-      Iterable<Enemy> enemies,
+      Iterable<Terrain> newTerrains,
+      Iterable<Character> newCharacters,
       State initialState) {
-    this.terrains.initialize(terrains, width, height);
-    // Characters must be added after terrain so they get hit by touch input
-    for (Player player : players) {
+    // TODO: reset model
+    for (Terrain terrain : newTerrains) {
+      terrains.add(terrain);
+    }
+    FluentIterable<Character> fluentCharacters = FluentIterable.from(newCharacters);
+    for (Player player : fluentCharacters.filter(Player.class)) {
       characters.add(player);
     }
-    for (Enemy enemy : enemies) {
+    for (Enemy enemy : fluentCharacters.filter(Enemy.class)) {
       characters.add(enemy);
     }
     mapState.initialize(initialState);
+  }
+
+  public void reset() {
+    characters.reset();
+    terrains.reset();
+    mapState.reset();
   }
 
   /**

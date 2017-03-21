@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -14,7 +13,7 @@ import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
-import com.jingyuyao.tactical.view.util.ViewUtil;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 
 class CharacterActor<T extends Character> extends WorldActor<T> {
@@ -22,7 +21,7 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   private final LoopAnimation loopAnimation;
 
   CharacterActor(
-      T object, ActorConfig actorConfig, LinkedHashSet<Sprite> markers,
+      T object, ActorConfig actorConfig, LinkedHashSet<WorldTexture> markers,
       LoopAnimation loopAnimation) {
     super(object, actorConfig, markers);
     this.loopAnimation = loopAnimation;
@@ -32,7 +31,7 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   @Override
   public void draw(Batch batch, float parentAlpha) {
     batch.setColor(getColor());
-    ViewUtil.draw(batch, loopAnimation.getCurrentFrame(), this);
+    loopAnimation.getCurrentFrame().draw(batch, this);
     batch.setColor(Color.WHITE);
     super.draw(batch, parentAlpha);
   }

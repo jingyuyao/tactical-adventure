@@ -19,7 +19,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "tactical-adventure"
-        gdxVersion = '1.9.5'
+        gdxVersion = '1.9.6'
         roboVMVersion = '2.3.0'
         guavaVersion = '20.0'
         gsonVersion = '2.8.0'

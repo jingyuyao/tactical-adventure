@@ -4,14 +4,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class ActorConfig {
+public class ActorConfig {
 
   @Inject
   ActorConfig() {
 
   }
 
-  float getActorWorldSize() {
+  public float getActorWorldSize() {
     return 1f;
   }
 

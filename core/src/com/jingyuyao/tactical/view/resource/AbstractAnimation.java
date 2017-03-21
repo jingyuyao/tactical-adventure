@@ -2,25 +2,24 @@ package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.google.common.base.Preconditions;
 
 abstract class AbstractAnimation {
 
-  private final Animation<TextureRegion> animation;
+  private final Animation<WorldTexture> animation;
 
-  AbstractAnimation(int fps, Array<? extends TextureRegion> keyFrames) {
+  AbstractAnimation(int fps, WorldTexture[] keyFrames) {
     Preconditions.checkNotNull(keyFrames);
-    Preconditions.checkArgument(keyFrames.size > 0, "did you forget to pack textures?");
-    this.animation = new Animation<>(1f / fps, keyFrames, getPlayMode());
+    Preconditions.checkArgument(keyFrames.length > 0, "did you forget to pack textures?");
+    this.animation = new Animation<>(1f / fps, keyFrames);
+    this.animation.setPlayMode(getPlayMode());
   }
 
-  public TextureRegion getCurrentFrame() {
+  public WorldTexture getCurrentFrame() {
     return animation.getKeyFrame(getStateTime());
   }
 
-  Animation<TextureRegion> getAnimation() {
+  Animation<WorldTexture> getAnimation() {
     return animation;
   }
 

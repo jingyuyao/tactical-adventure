@@ -11,6 +11,18 @@ class DataConfig {
 
   }
 
+  String getCharactersFileName(String mapName) {
+    return String.format("maps/%s.json", mapName);
+  }
+
+  String getCharactersSaveFileName(String mapName) {
+    return String.format("maps/%s.save.json", mapName);
+  }
+
+  String getTerrainsFileName(String mapName) {
+    return String.format("maps/%s.tmx", mapName);
+  }
+
   String getTerrainLayerKey() {
     return "terrain";
   }

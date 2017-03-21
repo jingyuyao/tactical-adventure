@@ -2,12 +2,9 @@ package com.jingyuyao.tactical.view.marking;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
@@ -15,8 +12,9 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;
 import org.junit.Before;
@@ -35,7 +33,7 @@ public class MarkingsTest {
   @Mock
   private World world;
   @Mock
-  private MarkerSprites markerSprites;
+  private Markers markers;
   @Mock
   private List<WorldActor<?>> markedActors;
   @Mock
@@ -49,13 +47,13 @@ public class MarkingsTest {
   @Mock
   private WorldActor<?> activatedActor;
   @Mock
-  private Sprite highlightSprite;
+  private WorldTexture highlightTexture;
   @Mock
-  private Sprite activatedSprite;
+  private WorldTexture activatedTexture;
   @Mock
   private SingleAnimation singleAnimation;
   @Mock
-  private TextureRegion textureRegion;
+  private WorldTexture animationFrame;
 
   private Multimap<WorldActor<?>, SingleAnimation> animationsMap;
   private Markings markings;
@@ -63,7 +61,7 @@ public class MarkingsTest {
   @Before
   public void setUp() {
     animationsMap = HashMultimap.create();
-    markings = new Markings(batch, world, markerSprites, animationsMap, markedActors);
+    markings = new Markings(batch, world, markers, animationsMap, markedActors);
   }
 
   @Test
@@ -93,83 +91,23 @@ public class MarkingsTest {
   }
 
   @Test
-  public void draw_nothing() {
-    markings.draw();
-
-    verify(batch).begin();
-    verify(batch).end();
-    verifyZeroInteractions(markerSprites);
-  }
-
-  @Test
-  public void draw_highlight() {
-    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
-    when(markerSprites.getHighlight()).thenReturn(highlightSprite);
-
-    markings.highlight(mapObject);
-    markings.draw();
-
-    InOrder inOrder = Mockito.inOrder(batch, highlightSprite);
-    inOrder.verify(batch).begin();
-    inOrder.verify(highlightSprite).draw(batch);
-    inOrder.verify(batch).end();
-    verifyZeroInteractions(activatedSprite);
-  }
-
-  @Test
-  public void draw_activated() {
-    Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(activatedActor);
-    when(markerSprites.getActivated()).thenReturn(activatedSprite);
-
-    markings.activate(mapObject);
-    markings.draw();
-
-    InOrder inOrder = Mockito.inOrder(batch, activatedSprite);
-    inOrder.verify(batch).begin();
-    inOrder.verify(activatedSprite).draw(batch);
-    inOrder.verify(batch).end();
-    verifyZeroInteractions(highlightSprite);
-  }
-
-  @Test
-  public void draw_animations() {
-    when(singleAnimation.getCurrentFrame()).thenReturn(textureRegion);
-    animationsMap.put(worldActor, singleAnimation);
-
-    markings.draw();
-
-    InOrder inOrder = Mockito.inOrder(batch);
-    inOrder.verify(batch).begin();
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, worldActor.getX(), worldActor.getY(),
-            worldActor.getWidth(), worldActor.getHeight());
-    inOrder.verify(batch).end();
-  }
-
-  @Test
   public void draw_highlight_and_activate_and_animation() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
     Mockito.<WorldActor<?>>when(world.get(mapObject2)).thenReturn(activatedActor);
-    when(markerSprites.getHighlight()).thenReturn(highlightSprite);
-    when(markerSprites.getActivated()).thenReturn(activatedSprite);
-    when(singleAnimation.getCurrentFrame()).thenReturn(textureRegion);
+    when(markers.getHighlight()).thenReturn(highlightTexture);
+    when(markers.getActivated()).thenReturn(activatedTexture);
+    when(singleAnimation.getCurrentFrame()).thenReturn(animationFrame);
     animationsMap.put(worldActor, singleAnimation);
 
     markings.highlight(mapObject);
     markings.activate(mapObject2);
     markings.draw();
 
-    InOrder inOrder = Mockito.inOrder(batch, highlightSprite, activatedSprite);
+    InOrder inOrder = Mockito.inOrder(batch, animationFrame, highlightTexture, activatedTexture);
     inOrder.verify(batch).begin();
-    inOrder.verify(highlightSprite).draw(batch);
-    inOrder.verify(activatedSprite).draw(batch);
-    inOrder
-        .verify(batch)
-        .draw(
-            textureRegion, worldActor.getX(), worldActor.getY(),
-            worldActor.getWidth(), worldActor.getHeight());
+    inOrder.verify(highlightTexture).draw(batch, highlightActor);
+    inOrder.verify(activatedTexture).draw(batch, activatedActor);
+    inOrder.verify(animationFrame).draw(batch, worldActor);
     inOrder.verify(batch).end();
   }
 
@@ -177,9 +115,9 @@ public class MarkingsTest {
   public void mark() {
     Mockito.<WorldActor<?>>when(world.get(mapObject)).thenReturn(highlightActor);
 
-    markings.mark(mapObject, highlightSprite);
+    markings.mark(mapObject, highlightTexture);
 
-    verify(highlightActor).addMarker(highlightSprite);
+    verify(highlightActor).addMarker(highlightTexture);
     verify(markedActors).add(highlightActor);
   }
 

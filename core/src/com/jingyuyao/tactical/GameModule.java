@@ -11,12 +11,17 @@ import javax.inject.Singleton;
 /**
  * Contain all asset names and function to load them into an {@link AssetManager}
  */
-public class AssetModule extends AbstractModule {
+class GameModule extends AbstractModule {
 
-  public static final String TEST_MAP = "maps/test_map";
+  private final TacticalAdventure game;
+
+  GameModule(TacticalAdventure game) {
+    this.game = game;
+  }
 
   @Override
   protected void configure() {
+    bind(TacticalAdventure.class).toInstance(game);
   }
 
   @Provides

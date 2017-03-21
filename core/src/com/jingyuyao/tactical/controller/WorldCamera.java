@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CameraController extends InputAdapter {
+class WorldCamera extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
   private final Viewport worldViewport;
@@ -22,7 +22,7 @@ class CameraController extends InputAdapter {
   private boolean dragged = false;
 
   @Inject
-  CameraController(
+  WorldCamera(
       ControllerConfig controllerConfig, @WorldViewport Viewport worldViewport, Terrains terrains) {
     this.controllerConfig = controllerConfig;
     this.worldViewport = worldViewport;
@@ -55,9 +55,9 @@ class CameraController extends InputAdapter {
       float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
 
       float lowerXBound = worldViewport.getWorldWidth() / 2f;
-      float upperXBound = terrains.getWidth() - lowerXBound;
+      float upperXBound = terrains.getMaxWidth() - lowerXBound;
       float lowerYBound = worldViewport.getWorldHeight() / 2f;
-      float upperYBound = terrains.getHeight() - lowerYBound;
+      float upperYBound = terrains.getMaxHeight() - lowerYBound;
 
       float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
       float boundedNewWorldY = bound(lowerYBound, unboundedNewWorldY, upperYBound);

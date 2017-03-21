@@ -9,23 +9,30 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MapSaver {
+public class ModelSaver {
 
+  private final DataConfig dataConfig;
   private final Gson gson;
   private final Model model;
   private final Characters characters;
 
   @Inject
-  MapSaver(Gson gson, Model model, Characters characters) {
+  ModelSaver(DataConfig dataConfig, Gson gson, Model model, Characters characters) {
+    this.dataConfig = dataConfig;
     this.gson = gson;
     this.model = model;
     this.characters = characters;
   }
 
-  public void saveMap(String name) {
+  public void saveMap(String mapName) {
     model.prepForSave();
-    FileHandle handle = Gdx.files.local(name + ".save.json");
-    MapSave save = new MapSave(characters.fluent().toList());
+    FileHandle handle = Gdx.files.local(dataConfig.getCharactersSaveFileName(mapName));
+    CharactersSave save = new CharactersSave(characters.fluent().toList());
     handle.writeString(gson.toJson(save), false);
+  }
+
+  public void removeSave(String mapName) {
+    FileHandle handle = Gdx.files.local(dataConfig.getCharactersSaveFileName(mapName));
+    handle.delete();
   }
 }

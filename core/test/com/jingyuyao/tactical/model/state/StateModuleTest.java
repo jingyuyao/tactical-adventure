@@ -54,6 +54,8 @@ public class StateModuleTest {
   private StateFactory stateFactory;
   @Inject
   private MapState mapState;
+  @Inject
+  private SelectionHandler selectionHandler;
 
   @Before
   public void setUp() {

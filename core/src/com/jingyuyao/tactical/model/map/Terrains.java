@@ -7,6 +7,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.map.MapModule.BackingTerrainMap;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Map;
@@ -23,8 +24,8 @@ public class Terrains {
   private final EventBus eventBus;
   // We rely on coordinates' hashing invariant
   private final Map<Coordinate, Terrain> terrainMap;
-  private int width;
-  private int height;
+  private int maxWidth;
+  private int maxHeight;
 
   @Inject
   Terrains(
@@ -34,22 +35,19 @@ public class Terrains {
     this.terrainMap = terrainMap;
   }
 
-  public void initialize(Iterable<Terrain> terrains, int width, int height) {
-    for (Terrain terrain : terrains) {
-      terrainMap.put(terrain.getCoordinate(), terrain);
-      eventBus.post(new AddTerrain(terrain));
-    }
-    this.width = width;
-    this.height = height;
-    validateRectangular();
+  public void add(Terrain terrain) {
+    terrainMap.put(terrain.getCoordinate(), terrain);
+    eventBus.post(new AddTerrain(terrain));
+    maxWidth = Math.max(maxWidth, terrain.getCoordinate().getX());
+    maxHeight = Math.max(maxHeight, terrain.getCoordinate().getY());
   }
 
-  public int getWidth() {
-    return width;
+  public int getMaxWidth() {
+    return maxWidth;
   }
 
-  public int getHeight() {
-    return height;
+  public int getMaxHeight() {
+    return maxHeight;
   }
 
   public boolean contains(Coordinate coordinate) {
@@ -69,7 +67,14 @@ public class Terrains {
     });
   }
 
-  public Iterable<Terrain> getNeighbors(final Coordinate from) {
+  public void reset() {
+    for (Terrain terrain : terrainMap.values()) {
+      eventBus.post(new RemoveObject(terrain));
+    }
+    terrainMap.clear();
+  }
+
+  Iterable<Terrain> getNeighbors(final Coordinate from) {
     return FluentIterable
         .from(Directions.ALL)
         .transform(new Function<Coordinate, Coordinate>() {
@@ -90,15 +95,5 @@ public class Terrains {
             return terrainMap.get(input);
           }
         });
-  }
-
-  private void validateRectangular() throws IllegalStateException {
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        if (!terrainMap.containsKey(new Coordinate(x, y))) {
-          throw new IllegalStateException("Terrains is not fully populated");
-        }
-      }
-    }
   }
 }

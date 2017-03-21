@@ -5,10 +5,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +29,11 @@ public class WorldActorTest {
   @Mock
   private ActorConfig actorConfig;
   @Mock
-  private LinkedHashSet<Sprite> markers;
+  private LinkedHashSet<WorldTexture> markers;
   @Mock
-  private Sprite sprite1;
+  private WorldTexture texture1;
   @Mock
-  private Sprite sprite2;
+  private WorldTexture texture2;
   @Mock
   private Batch batch;
 
@@ -54,28 +54,20 @@ public class WorldActorTest {
 
   @Test
   public void draw() {
-    when(markers.iterator()).thenReturn(ImmutableList.of(sprite1, sprite2).iterator());
+    when(markers.iterator()).thenReturn(ImmutableList.of(texture1, texture2).iterator());
 
     worldActor.draw(batch, 0);
 
-    InOrder inOrder = Mockito.inOrder(sprite1, sprite2);
-    inOrder
-        .verify(sprite1)
-        .setBounds(
-            worldActor.getX(), worldActor.getY(), worldActor.getWidth(), worldActor.getHeight());
-    inOrder.verify(sprite1).draw(batch);
-    inOrder
-        .verify(sprite2)
-        .setBounds(
-            worldActor.getX(), worldActor.getY(), worldActor.getWidth(), worldActor.getHeight());
-    inOrder.verify(sprite2).draw(batch);
+    InOrder inOrder = Mockito.inOrder(texture1, texture2);
+    inOrder.verify(texture1).draw(batch, worldActor);
+    inOrder.verify(texture2).draw(batch, worldActor);
   }
 
   @Test
   public void add_marker() {
-    worldActor.addMarker(sprite1);
+    worldActor.addMarker(texture1);
 
-    verify(markers).add(sprite1);
+    verify(markers).add(texture1);
   }
 
   @Test

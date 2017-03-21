@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.controller.ControllerFactory;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.MapObject;
@@ -84,12 +85,12 @@ public class World {
   }
 
   void add(Player player) {
-    PlayerActor actor = actorFactory.create(player, getAnimation(player.getName()));
+    PlayerActor actor = actorFactory.create(player, getAnimation(player));
     addActor(player, actor, characterGroup);
   }
 
   void add(Enemy enemy) {
-    EnemyActor actor = actorFactory.create(enemy, getAnimation(enemy.getName()));
+    EnemyActor actor = actorFactory.create(enemy, getAnimation(enemy));
     addActor(enemy, actor, characterGroup);
   }
 
@@ -110,7 +111,7 @@ public class World {
     actorMap.put(object, actor);
   }
 
-  private LoopAnimation getAnimation(String characterName) {
-    return animations.getCharacter(characterName);
+  private LoopAnimation getAnimation(Character character) {
+    return animations.getCharacter(character.getName());
   }
 }

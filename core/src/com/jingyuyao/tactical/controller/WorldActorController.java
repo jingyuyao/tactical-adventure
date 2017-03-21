@@ -4,20 +4,22 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 import javax.inject.Inject;
 
 public class WorldActorController extends InputListener {
 
-  private final CameraController cameraController;
-  private final MapState mapState;
+  private final WorldCamera worldCamera;
+  private final SelectionHandler selectionHandler;
   private final MapObject object;
 
   @Inject
   WorldActorController(
-      MapState mapState, CameraController cameraController, @Assisted MapObject object) {
-    this.cameraController = cameraController;
-    this.mapState = mapState;
+      SelectionHandler selectionHandler,
+      WorldCamera worldCamera,
+      @Assisted MapObject object) {
+    this.worldCamera = worldCamera;
+    this.selectionHandler = selectionHandler;
     this.object = object;
   }
 
@@ -28,8 +30,8 @@ public class WorldActorController extends InputListener {
 
   @Override
   public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-    if (!cameraController.isDragged()) {
-      object.select(mapState);
+    if (!worldCamera.isDragged()) {
+      object.select(selectionHandler);
     }
   }
 }

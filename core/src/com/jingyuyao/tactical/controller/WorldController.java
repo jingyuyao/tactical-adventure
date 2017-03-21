@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.view.ui.UIModule.WorldUIStage;
+import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,11 +16,11 @@ public class WorldController {
   @Inject
   WorldController(
       @WorldStage Stage mapViewStage,
-      @WorldUIStage Stage mapUIStage,
-      CameraController cameraController) {
+      @UIStage Stage mapUIStage,
+      WorldCamera worldCamera) {
     inputMultiplexer = new InputMultiplexer();
     inputMultiplexer.addProcessor(mapUIStage);
-    inputMultiplexer.addProcessor(cameraController);
+    inputMultiplexer.addProcessor(worldCamera);
     inputMultiplexer.addProcessor(mapViewStage);
   }
 

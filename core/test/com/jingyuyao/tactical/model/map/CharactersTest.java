@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,7 +13,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.AddEnemy;
 import com.jingyuyao.tactical.model.event.AddPlayer;
 import com.jingyuyao.tactical.model.event.RemoveObject;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class CharactersTest {
 
   @Before
   public void setUp() {
-    characterSet = new HashSet<>();
+    characterSet = new LinkedHashSet<>(); // preserves insertion order for testing
     characters = new Characters(eventBus, characterSet);
   }
 
@@ -73,5 +74,17 @@ public class CharactersTest {
     assertThat(characterSet).containsExactly(enemy);
     verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, RemoveObject.class);
+  }
+
+  @Test
+  public void reset() {
+    characterSet.add(player);
+    characterSet.add(enemy);
+
+    characters.reset();
+
+    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, RemoveObject.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, RemoveObject.class);
   }
 }

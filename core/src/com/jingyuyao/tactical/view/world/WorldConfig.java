@@ -11,19 +11,19 @@ public class WorldConfig {
 
   }
 
-  public int getWorldViewportWidth() {
+  public int getTileSize() {
+    return 32;
+  }
+
+  int getWorldViewportWidth() {
     return 16;
   }
 
-  public int getWorldViewportHeight() {
+  int getWorldViewportHeight() {
     return 9;
   }
 
   float getTileToWorldScale() {
     return 1f / getTileSize();
-  }
-
-  private int getTileSize() {
-    return 32;
   }
 }

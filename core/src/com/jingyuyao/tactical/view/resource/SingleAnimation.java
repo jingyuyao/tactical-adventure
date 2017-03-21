@@ -1,8 +1,6 @@
 package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -20,7 +18,7 @@ public class SingleAnimation extends AbstractAnimation {
   @Inject
   SingleAnimation(
       @Assisted int fps,
-      @Assisted Array<? extends TextureRegion> keyFrames,
+      @Assisted WorldTexture[] keyFrames,
       @AnimationBus EventBus animationBus) {
     super(fps, keyFrames);
     this.animationBus = animationBus;

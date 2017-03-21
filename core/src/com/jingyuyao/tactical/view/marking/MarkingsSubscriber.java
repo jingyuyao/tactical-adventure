@@ -17,7 +17,7 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,13 +26,13 @@ import javax.inject.Singleton;
 public class MarkingsSubscriber {
 
   private final Markings markings;
-  private final MarkerSprites markerSprites;
+  private final Markers markers;
   private final Animations animations;
 
   @Inject
-  MarkingsSubscriber(Markings markings, MarkerSprites markerSprites, Animations animations) {
+  MarkingsSubscriber(Markings markings, Markers markers, Animations animations) {
     this.markings = markings;
-    this.markerSprites = markerSprites;
+    this.markers = markers;
     this.animations = animations;
   }
 
@@ -64,7 +64,7 @@ public class MarkingsSubscriber {
   @Subscribe
   void moving(Moving moving) {
     for (Terrain terrain : moving.getMovement().getTerrains()) {
-      markings.mark(terrain, markerSprites.getMove());
+      markings.mark(terrain, markers.getMove());
     }
   }
 
@@ -100,17 +100,19 @@ public class MarkingsSubscriber {
 
       }
     });
-    for (MapObject object : attack.getObject().getHitObjects()) {
+    // TODO: need a way to distinguish on animation on select tile or an animation for every target
+    // tile
+    for (MapObject object : attack.getObject().getSelectTerrains()) {
       markings.addSingleAnimation(object, animation);
     }
   }
 
   private void markTarget(Target target) {
     for (Terrain terrain : target.getTargetTerrains()) {
-      markings.mark(terrain, markerSprites.getAttack());
+      markings.mark(terrain, markers.getAttack());
     }
     for (Terrain terrain : target.getSelectTerrains()) {
-      markings.mark(terrain, markerSprites.getTargetSelect());
+      markings.mark(terrain, markers.getTargetSelect());
     }
   }
 }

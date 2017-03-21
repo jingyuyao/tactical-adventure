@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.jingyuyao.tactical.view.world.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -25,36 +24,35 @@ public class UIModule extends AbstractModule {
   protected void configure() {
     requireBinding(Batch.class);
     requireBinding(Skin.class);
-    requireBinding(WorldConfig.class);
 
     install(new FactoryModuleBuilder().build(UIFactory.class));
   }
 
   @Provides
   @Singleton
-  @WorldUIStage
-  Stage provideWorldUIStage(@WorldUIViewport Viewport viewport, Batch batch) {
+  @UIStage
+  Stage provideUIStage(@UIViewport Viewport viewport, Batch batch) {
     return new Stage(viewport, batch);
   }
 
   @Provides
   @Singleton
-  @WorldUIViewport
-  Viewport provideWorldUIViewport(UIConfig uiConfig) {
+  @UIViewport
+  Viewport provideUIViewport(UIConfig uiConfig) {
     return new StretchViewport(uiConfig.getUIViewportWidth(), uiConfig.getUIViewportHeight());
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface WorldUIStage {
+  public @interface UIStage {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface WorldUIViewport {
+  @interface UIViewport {
 
   }
 }

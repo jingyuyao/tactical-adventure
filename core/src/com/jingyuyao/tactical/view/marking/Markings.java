@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.marking;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -9,9 +8,9 @@ import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.marking.MarkingModule.InProgressAnimationsMap;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
-import com.jingyuyao.tactical.view.resource.MarkerSprites;
+import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
-import com.jingyuyao.tactical.view.util.ViewUtil;
+import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.world.World;
 import java.util.List;
 import java.util.Map.Entry;
@@ -23,7 +22,7 @@ public class Markings {
 
   private final Batch batch;
   private final World world;
-  private final MarkerSprites markerSprites;
+  private final Markers markers;
   private final Multimap<WorldActor<?>, SingleAnimation> animationsMap;
   private final List<WorldActor<?>> markedActors;
   private WorldActor highlightedActor;
@@ -33,28 +32,23 @@ public class Markings {
   Markings(
       Batch batch,
       World world,
-      MarkerSprites markerSprites,
+      Markers markers,
       @InProgressAnimationsMap Multimap<WorldActor<?>, SingleAnimation> animationsMap,
       @MarkedActors List<WorldActor<?>> markedActors) {
     this.batch = batch;
     this.world = world;
-    this.markerSprites = markerSprites;
+    this.markers = markers;
     this.animationsMap = animationsMap;
     this.markedActors = markedActors;
   }
 
   public void draw() {
     batch.begin();
-    if (highlightedActor != null) {
-      ViewUtil.draw(batch, markerSprites.getHighlight(), highlightedActor);
-    }
-    if (activatedActor != null) {
-      ViewUtil.draw(batch, markerSprites.getActivated(), activatedActor);
-    }
+    markers.getHighlight().draw(batch, highlightedActor);
+    markers.getActivated().draw(batch, activatedActor);
     for (Entry<WorldActor<?>, SingleAnimation> entry : animationsMap.entries()) {
-      // TODO: need a way to draw an animation that is only position dependent of parent
-      // maybe pass animation directly into draw() and poll some meta data out of it
-      ViewUtil.draw(batch, entry.getValue().getCurrentFrame(), entry.getKey());
+      WorldTexture worldTexture = entry.getValue().getCurrentFrame();
+      worldTexture.draw(batch, entry.getKey());
     }
     batch.end();
   }
@@ -83,9 +77,9 @@ public class Markings {
     });
   }
 
-  void mark(MapObject object, Sprite sprite) {
+  void mark(MapObject object, WorldTexture worldTexture) {
     WorldActor actor = world.get(object);
-    actor.addMarker(sprite);
+    actor.addMarker(worldTexture);
     markedActors.add(actor);
   }
 

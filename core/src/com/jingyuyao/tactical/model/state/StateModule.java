@@ -29,6 +29,7 @@ public class StateModule extends AbstractModule {
     requireBinding(Characters.class);
 
     install(new FactoryModuleBuilder().build(StateFactory.class));
+    bind(SelectionHandler.class).to(MapState.class);
   }
 
   @Provides

@@ -42,7 +42,7 @@ public class Retaliating extends BaseState {
           Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
             @Override
             public ListenableFuture<Void> apply(Void input) throws Exception {
-              getEventBus().post(new ActivatedEnemy(enemy));
+              post(new ActivatedEnemy(enemy));
               return enemy.retaliate();
             }
           });

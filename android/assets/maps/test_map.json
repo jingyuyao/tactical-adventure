@@ -20,6 +20,14 @@
           "distance": 1
         },
         {
+          "type": "Grenade",
+          "name": "bomb",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 3,
+          "size": 2
+        },
+        {
           "type": "Heal",
           "name": "pot",
           "usageLeft": 3,
@@ -115,8 +123,8 @@
         "y": 4
       },
       "name": "stick",
-      "maxHp": 30,
-      "hp": 30,
+      "maxHp": 5,
+      "hp": 5,
       "moveDistance": 4,
       "actionable": true,
       "items": [
@@ -136,8 +144,8 @@
         "y": 5
       },
       "name": "dance",
-      "maxHp": 30,
-      "hp": 30,
+      "maxHp": 5,
+      "hp": 5,
       "moveDistance": 4,
       "actionable": true,
       "items": [
@@ -157,8 +165,8 @@
         "y": 6
       },
       "name": "dance",
-      "maxHp": 30,
-      "hp": 30,
+      "maxHp": 5,
+      "hp": 5,
       "moveDistance": 4,
       "actionable": true,
       "items": [

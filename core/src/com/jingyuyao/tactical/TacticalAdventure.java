@@ -1,16 +1,13 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
-import com.jingyuyao.tactical.data.MapLoader;
-import com.jingyuyao.tactical.data.MapSaver;
+import com.jingyuyao.tactical.data.ModelLoader;
+import com.jingyuyao.tactical.data.ModelSaver;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.ViewModule;
@@ -20,17 +17,21 @@ import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
 
+  static final String TEST_MAP = "test_map";
+
   @Inject
   @ModelEventBus
   private EventBus modelEventBus;
+  @Inject
+  private GameSubscriber gameSubscriber;
   @Inject
   private WorldScreen worldScreen;
   @Inject
   private WorldScreenSubscribers worldScreenSubscribers;
   @Inject
-  private MapLoader mapLoader;
+  private ModelLoader modelLoader;
   @Inject
-  private MapSaver mapSaver;
+  private ModelSaver modelSaver;
   @Inject
   private AssetManager assetManager;
 
@@ -38,32 +39,33 @@ public class TacticalAdventure extends Game {
   public void create() {
     Guice
         .createInjector(
-            new AssetModule(),
+            new GameModule(this),
             new ModelModule(),
             new DataModule(),
             new ViewModule(),
             new ControllerModule())
         .injectMembers(this);
+
+    modelEventBus.register(gameSubscriber);
     worldScreenSubscribers.register(modelEventBus);
-    modelEventBus.register(this);
-    setLevel(AssetModule.TEST_MAP);
+    setLevel(TEST_MAP);
+  }
+
+  @Override
+  public void pause() {
+    super.pause();
+    modelSaver.saveMap(TEST_MAP);
   }
 
   @Override
   public void dispose() {
     super.dispose();
-    mapSaver.saveMap(AssetModule.TEST_MAP);
     worldScreen.dispose();
     assetManager.dispose();
   }
 
-  @Subscribe
-  void logDeadEvent(DeadEvent deadEvent) {
-    Gdx.app.log("DeadEvent", deadEvent.getEvent().toString());
-  }
-
-  private void setLevel(String mapName) {
-    mapLoader.loadMap(mapName);
+  void setLevel(String mapName) {
+    modelLoader.loadMap(mapName);
     setScreen(worldScreen);
   }
 }

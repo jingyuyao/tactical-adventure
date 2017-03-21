@@ -7,13 +7,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.view.actor.ActorConfig;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -29,8 +29,11 @@ public class ResourceModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(AssetManager.class);
+    requireBinding(ActorConfig.class);
+    requireBinding(WorldConfig.class);
 
     install(new FactoryModuleBuilder().build(AnimationFactory.class));
+    install(new FactoryModuleBuilder().build(TextureFactory.class));
   }
 
   @Provides
@@ -42,8 +45,8 @@ public class ResourceModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @AtlasRegionsCache
-  Map<String, Array<AtlasRegion>> provideAtlasRegionCache() {
+  @WorldTextureCache
+  Map<String, WorldTexture[]> provideWorldTextureCache() {
     return new HashMap<>();
   }
 
@@ -80,7 +83,7 @@ public class ResourceModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface AtlasRegionsCache {
+  @interface WorldTextureCache {
 
   }
 

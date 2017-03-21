@@ -48,8 +48,8 @@ class BaseState implements State {
     return ImmutableList.of();
   }
 
-  EventBus getEventBus() {
-    return eventBus;
+  void post(Object event) {
+    eventBus.post(event);
   }
 
   void goTo(State newState) {

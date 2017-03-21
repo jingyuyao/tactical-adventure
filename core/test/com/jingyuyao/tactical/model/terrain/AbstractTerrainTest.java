@@ -4,7 +4,7 @@ import static org.mockito.Mockito.verify;
 
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.state.MapState;
+import com.jingyuyao.tactical.model.state.SelectionHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ public class AbstractTerrainTest {
   private static final Coordinate COORDINATE = new Coordinate(0, 0);
 
   @Mock
-  private MapState mapState;
+  private SelectionHandler selectionHandler;
 
   private Terrain terrain;
 
@@ -28,9 +28,9 @@ public class AbstractTerrainTest {
 
   @Test
   public void select() {
-    terrain.select(mapState);
+    terrain.select(selectionHandler);
 
-    verify(mapState).select(terrain);
+    verify(selectionHandler).select(terrain);
   }
 
   private static class TerrainImpl extends AbstractTerrain {
