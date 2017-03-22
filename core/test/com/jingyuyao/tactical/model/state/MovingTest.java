@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -45,6 +46,8 @@ public class MovingTest {
   private Movements movements;
   @Mock
   private EventBus eventBus;
+  @Mock
+  private Cell cell;
   @Mock
   private Player player;
   @Mock
@@ -116,16 +119,21 @@ public class MovingTest {
 
   @Test
   public void select_player() {
-    moving.select(player);
+    when(cell.hasCharacter()).thenReturn(true);
+    when(cell.getCharacter()).thenReturn(player);
+
+    moving.select(cell);
 
     verifyZeroInteractions(mapState);
   }
 
   @Test
   public void select_other_player_not_actionable() {
+    when(cell.hasCharacter()).thenReturn(true);
+    when(cell.getCharacter()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(false);
 
-    moving.select(otherPlayer);
+    moving.select(cell);
 
     verify(mapState).rollback();
     verifyNoMoreInteractions(mapState);
@@ -133,11 +141,13 @@ public class MovingTest {
 
   @Test
   public void select_other_player_actionable() {
+    when(cell.hasCharacter()).thenReturn(true);
+    when(cell.getCharacter()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
     when(movements.distanceFrom(otherPlayer)).thenReturn(otherMovement);
     when(stateFactory.createMoving(otherPlayer, otherMovement)).thenReturn(anotherMoving);
 
-    moving.select(otherPlayer);
+    moving.select(cell);
 
     verify(mapState).rollback();
     verify(mapState).goTo(anotherMoving);
@@ -146,7 +156,8 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
+    when(cell.hasCharacter()).thenReturn(false);
+    when(cell.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.getStartingCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
@@ -154,7 +165,7 @@ public class MovingTest {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(player.moveAlong(path)).thenReturn(immediateFuture);
 
-    moving.select(terrain);
+    moving.select(cell);
 
     InOrder inOrder = Mockito.inOrder(player, mapState);
     inOrder.verify(mapState).goTo(transition);
@@ -165,10 +176,11 @@ public class MovingTest {
 
   @Test
   public void select_terrain_cannot_move() {
-    when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
+    when(cell.hasCharacter()).thenReturn(false);
+    when(cell.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
 
-    moving.select(terrain);
+    moving.select(cell);
 
     verifyZeroInteractions(mapState);
   }

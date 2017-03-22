@@ -6,10 +6,10 @@ import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 
 public class Moving extends BasePlayerState {
@@ -38,31 +38,33 @@ public class Moving extends BasePlayerState {
   }
 
   @Override
-  public void select(Player player) {
-    if (!getPlayer().equals(player)) {
-      rollback();
-      if (player.isActionable()) {
-        goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
+  public void select(Cell cell) {
+    if (cell.hasCharacter()) {
+      if (cell.getCharacter() instanceof Player) {
+        Player player = (Player) cell.getCharacter();
+        if (!player.equals(getPlayer())) {
+          rollback();
+          if (player.isActionable()) {
+            goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
+          }
+        }
       }
-    }
-  }
+    } else {
+      if (movement.canMoveTo(cell.getCoordinate())) {
+        Path path = movement.pathTo(cell.getCoordinate());
+        goTo(stateFactory.createTransition());
+        Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
+          @Override
+          public void onSuccess(Void result) {
+            goTo(stateFactory.createMoved(getPlayer()));
+          }
 
-  @Override
-  public void select(Terrain terrain) {
-    if (movement.canMoveTo(terrain.getCoordinate())) {
-      Path path = movement.pathTo(terrain.getCoordinate());
-      goTo(stateFactory.createTransition());
-      Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
-        @Override
-        public void onSuccess(Void result) {
-          goTo(stateFactory.createMoved(getPlayer()));
-        }
+          @Override
+          public void onFailure(Throwable t) {
 
-        @Override
-        public void onFailure(Throwable t) {
-
-        }
-      });
+          }
+        });
+      }
     }
   }
 
