@@ -2,11 +2,8 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 
 class BaseState implements State {
 
@@ -34,18 +31,6 @@ class BaseState implements State {
 
   @Override
   public void select(Cell cell) {
-  }
-
-  @Override
-  public void select(Player player) {
-  }
-
-  @Override
-  public void select(Enemy enemy) {
-  }
-
-  @Override
-  public void select(Terrain terrain) {
   }
 
   @Override

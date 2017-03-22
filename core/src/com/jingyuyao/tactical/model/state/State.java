@@ -1,10 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public interface State {
 
@@ -28,12 +25,6 @@ public interface State {
   void exit();
 
   void select(Cell cell);
-
-  void select(Player player);
-
-  void select(Enemy enemy);
-
-  void select(Terrain terrain);
 
   /**
    * Return the list of {@link Action} can be taken in this state.
