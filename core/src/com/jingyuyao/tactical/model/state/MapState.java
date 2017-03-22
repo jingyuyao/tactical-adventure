@@ -63,7 +63,7 @@ public class MapState implements SelectionHandler {
   }
 
   public void select(Coordinate coordinate, Cell cell) {
-    // TODO: stateStack.peek().select(coordinate, cell);
+    stateStack.peek().select(coordinate, cell);
   }
 
   /**

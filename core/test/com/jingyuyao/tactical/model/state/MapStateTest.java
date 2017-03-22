@@ -13,6 +13,8 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
+import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
 import org.junit.Before;
@@ -26,6 +28,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MapStateTest {
+
+  private static final Coordinate COORDINATE = new Coordinate(10, 10);
 
   @Mock
   private EventBus eventBus;
@@ -43,6 +47,8 @@ public class MapStateTest {
   private Enemy enemy;
   @Mock
   private Terrain terrain;
+  @Mock
+  private Cell cell;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -69,6 +75,15 @@ public class MapStateTest {
 
     verify(state1).exit();
     verify(stateStack).clear();
+  }
+
+  @Test
+  public void select_cell() {
+    when(stateStack.peek()).thenReturn(state1);
+
+    mapState.select(COORDINATE, cell);
+
+    verify(state1).select(COORDINATE, cell);
   }
 
   @Test
