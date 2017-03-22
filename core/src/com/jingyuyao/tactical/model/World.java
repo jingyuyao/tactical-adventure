@@ -4,6 +4,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelModule.BackingCellMap;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldLoad;
@@ -15,7 +17,10 @@ import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class World {
 
   private final EventBus worldEventBus;
@@ -24,7 +29,11 @@ public class World {
   private int maxHeight;
   private int maxWidth;
 
-  public World(EventBus worldEventBus, MapState mapState, Map<Coordinate, Cell> cellMap) {
+  @Inject
+  World(
+      @ModelEventBus EventBus worldEventBus,
+      MapState mapState,
+      @BackingCellMap Map<Coordinate, Cell> cellMap) {
     this.worldEventBus = worldEventBus;
     this.mapState = mapState;
     this.cellMap = cellMap;
