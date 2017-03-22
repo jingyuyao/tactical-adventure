@@ -9,6 +9,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movements;
@@ -26,6 +27,7 @@ public class StateModule extends AbstractModule {
     requireBinding(EventBus.class);
     requireBinding(Battle.class);
     requireBinding(Movements.class);
+    requireBinding(World.class);
     requireBinding(Characters.class);
 
     install(new FactoryModuleBuilder().build(StateFactory.class));
