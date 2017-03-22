@@ -7,12 +7,10 @@ import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.map.Cell;
 import javax.inject.Inject;
 
 public class Battling extends BasePlayerState {
@@ -39,18 +37,10 @@ public class Battling extends BasePlayerState {
   }
 
   @Override
-  public void select(Player player) {
-    handleSelection(player);
-  }
-
-  @Override
-  public void select(Enemy enemy) {
-    handleSelection(enemy);
-  }
-
-  @Override
-  public void select(Terrain terrain) {
-    handleSelection(terrain);
+  public void select(Cell cell) {
+    if (target.canTarget(cell.getCoordinate())) {
+      attack();
+    }
   }
 
   @Override
@@ -79,11 +69,5 @@ public class Battling extends BasePlayerState {
 
       }
     });
-  }
-
-  private void handleSelection(MapObject object) {
-    if (target.canTarget(object.getCoordinate())) {
-      attack();
-    }
   }
 }

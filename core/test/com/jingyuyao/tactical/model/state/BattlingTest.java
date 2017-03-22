@@ -11,13 +11,12 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,9 +47,7 @@ public class BattlingTest {
   @Mock
   private Target target;
   @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
+  private Cell cell;
   @Mock
   private Waiting waiting;
   @Mock
@@ -84,73 +81,25 @@ public class BattlingTest {
   }
 
   @Test
-  public void select_player_cannot_attack() {
-    when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
+  public void select_cannot_attack() {
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(false);
 
-    battling.select(attackingPlayer);
+    battling.select(cell);
 
     verifyZeroInteractions(mapState);
   }
 
   @Test
-  public void select_player_can_attack() {
+  public void select_can_attack() {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(attackingPlayer.getCoordinate()).thenReturn(COORDINATE);
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
     when(target.canTarget(COORDINATE)).thenReturn(true);
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 
-    battling.select(attackingPlayer);
-
-    verify_attacked();
-  }
-
-  @Test
-  public void select_enemy_cannot_attack() {
-    when(enemy.getCoordinate()).thenReturn(COORDINATE);
-    when(target.canTarget(COORDINATE)).thenReturn(false);
-
-    battling.select(enemy);
-
-    verifyZeroInteractions(mapState);
-  }
-
-  @Test
-  public void select_enemy_can_attack() {
-    when(stateFactory.createTransition()).thenReturn(transition);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(enemy.getCoordinate()).thenReturn(COORDINATE);
-    when(target.canTarget(COORDINATE)).thenReturn(true);
-    when(battle.begin(attackingPlayer, weapon, target))
-        .thenReturn(Futures.<Void>immediateFuture(null));
-
-    battling.select(enemy);
-
-    verify_attacked();
-  }
-
-  @Test
-  public void select_terrain_cannot_attack() {
-    when(terrain.getCoordinate()).thenReturn(COORDINATE);
-    when(target.canTarget(COORDINATE)).thenReturn(false);
-
-    battling.select(terrain);
-
-    verifyZeroInteractions(mapState);
-  }
-
-  @Test
-  public void select_terrain_can_attack() {
-    when(stateFactory.createTransition()).thenReturn(transition);
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(terrain.getCoordinate()).thenReturn(COORDINATE);
-    when(target.canTarget(COORDINATE)).thenReturn(true);
-    when(battle.begin(attackingPlayer, weapon, target))
-        .thenReturn(Futures.<Void>immediateFuture(null));
-
-    battling.select(terrain);
+    battling.select(cell);
 
     verify_attacked();
   }
