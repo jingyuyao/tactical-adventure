@@ -13,11 +13,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,13 +39,11 @@ public class RetaliatingTest {
   @Mock
   private Characters characters;
   @Mock
-  private Player player;
+  private Cell cell;
   @Mock
   private Enemy enemy;
   @Mock
   private Enemy enemy2;
-  @Mock
-  private Terrain terrain;
   @Mock
   private Waiting waiting;
   @Captor
@@ -64,10 +61,8 @@ public class RetaliatingTest {
   }
 
   @Test
-  public void selects() {
-    retaliating.select(player);
-    retaliating.select(enemy);
-    retaliating.select(terrain);
+  public void select() {
+    retaliating.select(cell);
 
     verifyZeroInteractions(mapState);
   }
