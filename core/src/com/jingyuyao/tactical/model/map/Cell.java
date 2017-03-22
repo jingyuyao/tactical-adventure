@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.map;
 
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public class Cell {
@@ -32,5 +33,13 @@ public class Cell {
 
   public void setCharacter(Character character) {
     this.character = character;
+  }
+
+  public boolean hasPlayer() {
+    return hasCharacter() && character instanceof Player;
+  }
+
+  public Player getPlayer() {
+    return (Player) character;
   }
 }

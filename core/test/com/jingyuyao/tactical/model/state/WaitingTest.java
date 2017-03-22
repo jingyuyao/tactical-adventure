@@ -111,8 +111,8 @@ public class WaitingTest {
     when(player.isActionable()).thenReturn(true);
     when(movements.distanceFrom(player)).thenReturn(movement);
     when(stateFactory.createMoving(player, movement)).thenReturn(moving);
-    when(cell.hasCharacter()).thenReturn(true);
-    when(cell.getCharacter()).thenReturn(player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
 
     waiting.select(cell);
 
@@ -123,8 +123,8 @@ public class WaitingTest {
   @Test
   public void select_player_not_actionable() {
     when(player.isActionable()).thenReturn(false);
-    when(cell.hasCharacter()).thenReturn(true);
-    when(cell.getCharacter()).thenReturn(player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
 
     waiting.select(cell);
 

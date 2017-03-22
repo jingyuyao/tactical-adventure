@@ -39,14 +39,12 @@ public class Moving extends BasePlayerState {
 
   @Override
   public void select(Cell cell) {
-    if (cell.hasCharacter()) {
-      if (cell.getCharacter() instanceof Player) {
-        Player player = (Player) cell.getCharacter();
-        if (!player.equals(getPlayer())) {
-          rollback();
-          if (player.isActionable()) {
-            goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
-          }
+    if (cell.hasPlayer()) {
+      Player player = cell.getPlayer();
+      if (!player.equals(getPlayer())) {
+        rollback();
+        if (player.isActionable()) {
+          goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
         }
       }
     } else {

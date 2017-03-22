@@ -119,8 +119,8 @@ public class MovingTest {
 
   @Test
   public void select_player() {
-    when(cell.hasCharacter()).thenReturn(true);
-    when(cell.getCharacter()).thenReturn(player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
 
     moving.select(cell);
 
@@ -129,8 +129,8 @@ public class MovingTest {
 
   @Test
   public void select_other_player_not_actionable() {
-    when(cell.hasCharacter()).thenReturn(true);
-    when(cell.getCharacter()).thenReturn(otherPlayer);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(false);
 
     moving.select(cell);
@@ -141,8 +141,8 @@ public class MovingTest {
 
   @Test
   public void select_other_player_actionable() {
-    when(cell.hasCharacter()).thenReturn(true);
-    when(cell.getCharacter()).thenReturn(otherPlayer);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
     when(movements.distanceFrom(otherPlayer)).thenReturn(otherMovement);
     when(stateFactory.createMoving(otherPlayer, otherMovement)).thenReturn(anotherMoving);
@@ -156,7 +156,7 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(cell.hasCharacter()).thenReturn(false);
+    when(cell.hasPlayer()).thenReturn(false);
     when(cell.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.getStartingCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
@@ -176,7 +176,7 @@ public class MovingTest {
 
   @Test
   public void select_terrain_cannot_move() {
-    when(cell.hasCharacter()).thenReturn(false);
+    when(cell.hasPlayer()).thenReturn(false);
     when(cell.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
 
