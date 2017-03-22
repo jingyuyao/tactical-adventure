@@ -8,13 +8,12 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +34,9 @@ public class SelectingTargetTest {
   @Mock
   private EventBus eventBus;
   @Mock
+  private Cell cell;
+  @Mock
   private Player player;
-  @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
   @Mock
   private Weapon weapon;
   @Mock
@@ -77,47 +74,21 @@ public class SelectingTargetTest {
   }
 
   @Test
-  public void select_player() {
-    when(player.getCoordinate()).thenReturn(COORDINATE);
+  public void select_target() {
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
     when(target1.selectedBy(COORDINATE)).thenReturn(true);
     when(stateFactory.createBattling(player, weapon, target1)).thenReturn(battling);
 
-    selectingTarget.select(player);
-
-    verify(mapState).goTo(battling);
-  }
-
-  @Test
-  public void select_enemy() {
-    when(enemy.getCoordinate()).thenReturn(COORDINATE);
-    when(target2.selectedBy(COORDINATE)).thenReturn(true);
-    when(stateFactory.createBattling(player, weapon, target2)).thenReturn(battling);
-
-    selectingTarget.select(enemy);
-
-    verify(mapState).goTo(battling);
-  }
-
-  @Test
-  public void select_terrain() {
-    when(terrain.getCoordinate()).thenReturn(COORDINATE);
-    when(target2.selectedBy(COORDINATE)).thenReturn(true);
-    when(stateFactory.createBattling(player, weapon, target2)).thenReturn(battling);
-
-    selectingTarget.select(terrain);
+    selectingTarget.select(cell);
 
     verify(mapState).goTo(battling);
   }
 
   @Test
   public void select_no_select() {
-    when(player.getCoordinate()).thenReturn(COORDINATE);
-    when(enemy.getCoordinate()).thenReturn(COORDINATE);
-    when(terrain.getCoordinate()).thenReturn(COORDINATE);
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
 
-    selectingTarget.select(player);
-    selectingTarget.select(enemy);
-    selectingTarget.select(terrain);
+    selectingTarget.select(cell);
 
     verifyZeroInteractions(mapState);
   }
