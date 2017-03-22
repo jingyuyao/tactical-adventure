@@ -4,9 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -31,20 +28,17 @@ public class MapState implements SelectionHandler {
 
   @Override
   public void select(Player player) {
-    eventBus.post(new SelectPlayer(player));
-    stateStack.peek().select(player);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void select(Enemy enemy) {
-    eventBus.post(new SelectEnemy(enemy));
-    stateStack.peek().select(enemy);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void select(Terrain terrain) {
-    eventBus.post(new SelectTerrain(terrain));
-    stateStack.peek().select(terrain);
+    throw new UnsupportedOperationException();
   }
 
   public void initialize(State initialState) {

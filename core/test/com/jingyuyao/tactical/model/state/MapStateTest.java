@@ -7,12 +7,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
@@ -84,40 +80,7 @@ public class MapStateTest {
   }
 
   @Test
-  public void selectPlayer() throws Exception {
-    when(stateStack.peek()).thenReturn(state1);
-
-    mapState.select(player);
-
-    verify(state1).select(player);
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SelectPlayer.class);
-  }
-
-  @Test
-  public void selectEnemy() throws Exception {
-    when(stateStack.peek()).thenReturn(state1);
-
-    mapState.select(enemy);
-
-    verify(state1).select(enemy);
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, SelectEnemy.class);
-  }
-
-  @Test
-  public void selectTerrain() throws Exception {
-    when(stateStack.peek()).thenReturn(state1);
-
-    mapState.select(terrain);
-
-    verify(state1).select(terrain);
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain, SelectTerrain.class);
-  }
-
-  @Test
-  public void go_to() throws Exception {
+  public void go_to() {
     when(stateStack.peek()).thenReturn(state1);
 
     mapState.goTo(state2);
@@ -129,7 +92,7 @@ public class MapStateTest {
   }
 
   @Test
-  public void back_nothing() throws Exception {
+  public void back_nothing() {
     when(stateStack.size()).thenReturn(1);
 
     mapState.back();
@@ -140,7 +103,7 @@ public class MapStateTest {
   }
 
   @Test
-  public void back() throws Exception {
+  public void back() {
     when(stateStack.size()).thenReturn(2);
     when(stateStack.pop()).thenReturn(state2);
     when(stateStack.peek()).thenReturn(state1);
@@ -157,7 +120,7 @@ public class MapStateTest {
   }
 
   @Test
-  public void rollback_nothing() throws Exception {
+  public void rollback_nothing() {
     when(stateStack.size()).thenReturn(1);
 
     mapState.rollback();
@@ -168,7 +131,7 @@ public class MapStateTest {
   }
 
   @Test
-  public void rollback() throws Exception {
+  public void rollback() {
     when(stateStack.size()).thenReturn(3, 2, 1);
     when(stateStack.pop()).thenReturn(state3, state2);
     when(stateStack.peek()).thenReturn(state2, state1);
@@ -192,7 +155,7 @@ public class MapStateTest {
   }
 
   @Test
-  public void newStack() throws Exception {
+  public void newStack() {
     when(stateStack.peek()).thenReturn(state2);
 
     mapState.branchTo(state1);
