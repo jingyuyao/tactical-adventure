@@ -22,6 +22,10 @@ public class Movement {
     this.moveGraph = moveGraph;
   }
 
+  public Coordinate getStartingCoordinate() {
+    return moveGraph.nodes().iterator().next();
+  }
+
   /**
    * Can move to {@code coordinate}.
    */

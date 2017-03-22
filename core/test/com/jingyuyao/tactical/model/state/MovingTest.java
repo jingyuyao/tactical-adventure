@@ -90,16 +90,17 @@ public class MovingTest {
 
   @Test
   public void canceled_nothing() {
+    when(movement.getStartingCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
+
     moving.canceled();
 
-    verifyZeroInteractions(player);
+    verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
   }
 
   @Test
   public void canceled_terrain_move() {
     select_terrain_can_move();
 
-    moving.canceled();
     moving.canceled();
 
     verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
@@ -146,9 +147,9 @@ public class MovingTest {
   @Test
   public void select_terrain_can_move() {
     when(terrain.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
+    when(movement.getStartingCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
     when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
-    when(player.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
     when(stateFactory.createMoved(player)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
     when(player.moveAlong(path)).thenReturn(immediateFuture);

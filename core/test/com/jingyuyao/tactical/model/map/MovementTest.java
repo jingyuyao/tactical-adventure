@@ -42,6 +42,11 @@ public class MovementTest {
   }
 
   @Test
+  public void starting_coordinate() {
+    assertThat(movement.getStartingCoordinate()).isSameAs(ORIGIN);
+  }
+
+  @Test
   public void can_move_to() {
     assertThat(movement.canMoveTo(MOVE1)).isTrue();
     assertThat(movement.canMoveTo(TARGET1)).isFalse();

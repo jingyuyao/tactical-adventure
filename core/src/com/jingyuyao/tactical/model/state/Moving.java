@@ -6,7 +6,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
@@ -18,7 +17,6 @@ public class Moving extends BasePlayerState {
   private final StateFactory stateFactory;
   private final Movements movements;
   private final Movement movement;
-  private Coordinate previousCoordinate;
 
   @Inject
   Moving(
@@ -36,10 +34,7 @@ public class Moving extends BasePlayerState {
 
   @Override
   public void canceled() {
-    if (previousCoordinate != null) {
-      getPlayer().instantMoveTo(previousCoordinate);
-      previousCoordinate = null;
-    }
+    getPlayer().instantMoveTo(movement.getStartingCoordinate());
   }
 
   @Override
@@ -56,7 +51,6 @@ public class Moving extends BasePlayerState {
   public void select(Terrain terrain) {
     if (movement.canMoveTo(terrain.getCoordinate())) {
       Path path = movement.pathTo(terrain.getCoordinate());
-      previousCoordinate = getPlayer().getCoordinate();
       goTo(stateFactory.createTransition());
       Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
         @Override
