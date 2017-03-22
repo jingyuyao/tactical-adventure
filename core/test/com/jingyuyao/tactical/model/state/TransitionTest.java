@@ -6,10 +6,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.map.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +24,7 @@ public class TransitionTest {
   @Mock
   private MapState mapState;
   @Mock
-  private Player player;
-  @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
+  private Cell cell;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -58,15 +52,10 @@ public class TransitionTest {
   }
 
   @Test
-  public void selects() {
-    transition.select(player);
-    transition.select(enemy);
-    transition.select(terrain);
+  public void select() {
+    transition.select(cell);
 
     verifyZeroInteractions(mapState);
-    verifyZeroInteractions(player);
-    verifyZeroInteractions(enemy);
-    verifyZeroInteractions(terrain);
   }
 
   @Test
