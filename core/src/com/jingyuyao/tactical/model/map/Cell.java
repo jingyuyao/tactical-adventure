@@ -5,19 +5,21 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public class Cell {
 
-  private Terrain terrain;
+  private final Coordinate coordinate;
+  private final Terrain terrain;
   private Character character;
 
-  public boolean hasTerrain() {
-    return terrain != null;
+  public Cell(Coordinate coordinate, Terrain terrain) {
+    this.coordinate = coordinate;
+    this.terrain = terrain;
+  }
+
+  public Coordinate getCoordinate() {
+    return coordinate;
   }
 
   public Terrain getTerrain() {
     return terrain;
-  }
-
-  public void setTerrain(Terrain terrain) {
-    this.terrain = terrain;
   }
 
   public boolean hasCharacter() {

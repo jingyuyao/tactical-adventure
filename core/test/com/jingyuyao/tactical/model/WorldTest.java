@@ -4,9 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
@@ -18,6 +16,7 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +44,8 @@ public class WorldTest {
   @Mock
   private Waiting waiting;
   @Mock
+  private Cell temp;
+  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
@@ -63,131 +64,100 @@ public class WorldTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private BiMap<Coordinate, Cell> cellBiMap;
+  private Map<Coordinate, Cell> cellMap;
   private World world;
 
   @Before
   public void setUp() {
-    cellBiMap = HashBiMap.create();
-    world = new World(worldEventBus, mapState, cellBiMap);
+    cellMap = new HashMap<>();
+    world = new World(worldEventBus, mapState, cellMap);
+
+    when(cell1.getCoordinate()).thenReturn(COORDINATE1);
+    when(cell2.getCoordinate()).thenReturn(COORDINATE2);
+    when(cell3.getCoordinate()).thenReturn(COORDINATE3);
+    when(cell4.getCoordinate()).thenReturn(COORDINATE4);
+    when(cell1.hasCharacter()).thenReturn(true);
+    when(cell2.hasCharacter()).thenReturn(true);
+    when(cell1.getCharacter()).thenReturn(character1);
+    when(cell2.getCharacter()).thenReturn(character2);
+    when(cell1.getTerrain()).thenReturn(terrain1);
+    when(cell2.getTerrain()).thenReturn(terrain2);
   }
 
   @Test
   public void load() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(COORDINATE1, cell1, COORDINATE2, cell2);
+    Iterable<Cell> list = ImmutableList.of(cell1, cell2);
+    world.load(waiting, list);
 
-    world.load(waiting, map);
-
-    assertThat(cellBiMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
+    assertThat(cellMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
     assertThat(world.getMaxHeight()).isEqualTo(COORDINATE1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
     verify(mapState).initialize(waiting);
     verify(worldEventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, map, WorldLoad.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, list, WorldLoad.class);
   }
 
   @Test
   public void reset() {
-    cellBiMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE1, cell1);
 
     world.reset();
 
-    assertThat(cellBiMap).isEmpty();
+    assertThat(cellMap).isEmpty();
     verify(worldEventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(WorldReset.class);
   }
 
   @Test
-  public void get_coordinate() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(COORDINATE1, cell1, COORDINATE2, cell2);
-
-    world.load(waiting, map);
-
-    assertThat(world.getCoordinate(cell1)).isEqualTo(COORDINATE1);
-    assertThat(world.getCoordinate(cell2)).isEqualTo(COORDINATE2);
-  }
-
-  @Test
   public void get_characters() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(COORDINATE1, cell1, COORDINATE2, cell2);
-    when(cell1.hasCharacter()).thenReturn(true);
-    when(cell1.getCharacter()).thenReturn(character1);
-    when(cell2.hasCharacter()).thenReturn(true);
-    when(cell2.getCharacter()).thenReturn(character2);
-
-    world.load(waiting, map);
+    world.load(waiting, ImmutableList.of(cell1, cell2));
 
     assertThat(world.getCharacters()).containsExactly(character1, character2);
   }
 
   @Test
   public void get_terrains() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(COORDINATE1, cell1, COORDINATE2, cell2);
-    when(cell1.hasTerrain()).thenReturn(true);
-    when(cell1.getTerrain()).thenReturn(terrain1);
-    when(cell2.hasTerrain()).thenReturn(true);
-    when(cell2.getTerrain()).thenReturn(terrain2);
-
-    world.load(waiting, map);
+    world.load(waiting, ImmutableList.of(cell1, cell2));
 
     assertThat(world.getTerrains()).containsExactly(terrain1, terrain2);
   }
 
   @Test
   public void no_neighbor() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(COORDINATE1, cell1, COORDINATE2, cell2);
+    when(temp.getCoordinate()).thenReturn(NO_NEIGHBOR);
 
-    world.load(waiting, map);
+    world.load(waiting, ImmutableList.of(cell1, cell2));
 
-    assertThat(world.getNeighbors(NO_NEIGHBOR)).isEmpty();
+    assertThat(world.getNeighbors(temp)).isEmpty();
   }
 
   @Test
   public void get_neighbors_some() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(COORDINATE1, cell1, COORDINATE2, cell2);
+    when(temp.getCoordinate()).thenReturn(TWO_NEIGHBOR);
 
-    world.load(waiting, map);
+    world.load(waiting, ImmutableList.of(cell1, cell2));
 
-    assertThat(world.getNeighbors(TWO_NEIGHBOR)).containsExactly(cell1, cell2);
+    assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2);
   }
 
   @Test
   public void all_neighbors() {
-    Map<Coordinate, Cell> map = ImmutableMap.of(
-        COORDINATE1, cell1,
-        COORDINATE2, cell2,
-        COORDINATE3, cell3,
-        COORDINATE4, cell4
-    );
+    when(temp.getCoordinate()).thenReturn(FOUR_NEIGHBOR);
 
-    world.load(waiting, map);
+    world.load(waiting, ImmutableList.of(cell1, cell2, cell3, cell4));
 
-    assertThat(world.getNeighbors(FOUR_NEIGHBOR)).containsExactly(cell1, cell2, cell3, cell4);
+    assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2, cell3, cell4);
   }
 
   @Test
   public void select() {
-    cellBiMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE1, cell1);
 
     world.select(cell1);
 
-    verify(mapState).select(COORDINATE1, cell1);
+    verify(mapState).select(cell1);
     verify(worldEventBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(SelectCell.class);
-    SelectCell selectCell = (SelectCell) argumentCaptor.getValue();
-    assertThat(selectCell.getCell()).isSameAs(cell1);
-    assertThat(selectCell.getCoordinate()).isEqualTo(COORDINATE1);
-  }
-
-  @Test
-  public void move_character() {
-    when(cell1.hasCharacter()).thenReturn(true);
-    when(cell2.hasCharacter()).thenReturn(false);
-    when(cell1.getCharacter()).thenReturn(character1);
-
-    world.moveCharacter(cell1, cell2);
-
-    verify(cell2).setCharacter(character1);
-    verify(cell1).setCharacter(null);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell1, SelectCell.class);
   }
 }

@@ -6,7 +6,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 
 class BaseState implements State {
@@ -34,7 +33,7 @@ class BaseState implements State {
   }
 
   @Override
-  public void select(Coordinate coordinate, Cell cell) {
+  public void select(Cell cell) {
   }
 
   @Override

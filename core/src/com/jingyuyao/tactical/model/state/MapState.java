@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
@@ -62,8 +61,8 @@ public class MapState implements SelectionHandler {
     stateStack.clear();
   }
 
-  public void select(Coordinate coordinate, Cell cell) {
-    stateStack.peek().select(coordinate, cell);
+  public void select(Cell cell) {
+    stateStack.peek().select(cell);
   }
 
   /**

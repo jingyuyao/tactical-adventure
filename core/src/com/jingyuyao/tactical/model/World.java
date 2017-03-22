@@ -1,9 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.BiMap;
 import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Character;
@@ -17,20 +15,19 @@ import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class World {
 
   private final EventBus worldEventBus;
   private final MapState mapState;
-  private final BiMap<Coordinate, Cell> cellBiMap;
+  private final Map<Coordinate, Cell> cellMap;
   private int maxHeight;
   private int maxWidth;
 
-  public World(EventBus worldEventBus, MapState mapState, BiMap<Coordinate, Cell> cellBiMap) {
+  public World(EventBus worldEventBus, MapState mapState, Map<Coordinate, Cell> cellMap) {
     this.worldEventBus = worldEventBus;
     this.mapState = mapState;
-    this.cellBiMap = cellBiMap;
+    this.cellMap = cellMap;
   }
 
   public int getMaxHeight() {
@@ -41,12 +38,8 @@ public class World {
     return maxWidth;
   }
 
-  public Coordinate getCoordinate(Cell cell) {
-    return cellBiMap.inverse().get(cell);
-  }
-
   public FluentIterable<Character> getCharacters() {
-    return FluentIterable.from(cellBiMap.values())
+    return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
@@ -62,13 +55,7 @@ public class World {
   }
 
   public FluentIterable<Terrain> getTerrains() {
-    return FluentIterable.from(cellBiMap.values())
-        .filter(new Predicate<Cell>() {
-          @Override
-          public boolean apply(Cell input) {
-            return input.hasTerrain();
-          }
-        })
+    return FluentIterable.from(cellMap.values())
         .transform(new Function<Cell, Terrain>() {
           @Override
           public Terrain apply(Cell input) {
@@ -77,54 +64,48 @@ public class World {
         });
   }
 
-  public Iterable<Cell> getNeighbors(final Coordinate from) {
+  public Iterable<Cell> getNeighbors(final Cell from) {
     return FluentIterable
         .from(Directions.ALL)
         .transform(new Function<Coordinate, Coordinate>() {
           @Override
           public Coordinate apply(Coordinate input) {
-            return from.offsetBy(input);
+            return from.getCoordinate().offsetBy(input);
           }
         })
         .filter(new Predicate<Coordinate>() {
           @Override
           public boolean apply(Coordinate input) {
-            return cellBiMap.containsKey(input);
+            return cellMap.containsKey(input);
           }
         })
         .transform(new Function<Coordinate, Cell>() {
           @Override
           public Cell apply(Coordinate input) {
-            return cellBiMap.get(input);
+            return cellMap.get(input);
           }
         });
   }
 
-  public void load(State initialState, Map<Coordinate, Cell> cellMap) {
-    for (Entry<Coordinate, Cell> entry : cellMap.entrySet()) {
-      cellBiMap.put(entry.getKey(), entry.getValue());
-      maxWidth = Math.max(maxWidth, entry.getKey().getX() + 1);
-      maxHeight = Math.max(maxHeight, entry.getKey().getY() + 1);
+  public void load(State initialState, Iterable<Cell> cells) {
+    for (Cell cell : cells) {
+      Coordinate coordinate = cell.getCoordinate();
+      cellMap.put(coordinate, cell);
+      // index is zero based
+      maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
+      maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
     }
     mapState.initialize(initialState);
-    worldEventBus.post(new WorldLoad(cellMap));
+    worldEventBus.post(new WorldLoad(cells));
   }
 
   public void reset() {
-    cellBiMap.clear();
+    cellMap.clear();
     worldEventBus.post(new WorldReset());
   }
 
   public void select(Cell cell) {
-    Coordinate cellCoordinate = getCoordinate(cell);
-    worldEventBus.post(new SelectCell(cellCoordinate, cell));
-    mapState.select(cellCoordinate, cell);
-  }
-
-  public void moveCharacter(Cell from, Cell to) {
-    Preconditions.checkArgument(from.hasCharacter());
-    Preconditions.checkArgument(!to.hasCharacter());
-    to.setCharacter(from.getCharacter());
-    from.setCharacter(null);
+    worldEventBus.post(new SelectCell(cell));
+    mapState.select(cell);
   }
 }
