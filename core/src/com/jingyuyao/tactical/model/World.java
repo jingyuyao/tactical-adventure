@@ -47,6 +47,10 @@ public class World {
     return maxWidth;
   }
 
+  public Cell getCell(Coordinate coordinate) {
+    return cellMap.get(coordinate);
+  }
+
   public FluentIterable<Character> getCharacters() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {

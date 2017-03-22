@@ -109,6 +109,13 @@ public class WorldTest {
   }
 
   @Test
+  public void get_cell() {
+    cellMap.put(COORDINATE1, cell1);
+
+    assertThat(world.getCell(COORDINATE1)).isSameAs(cell1);
+  }
+
+  @Test
   public void get_characters() {
     world.load(waiting, ImmutableList.of(cell1, cell2));
 
