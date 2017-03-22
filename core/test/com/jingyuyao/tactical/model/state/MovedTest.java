@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import org.junit.Before;
@@ -35,6 +36,8 @@ public class MovedTest {
   private EventBus eventBus;
   @Mock
   private Movements movements;
+  @Mock
+  private Cell cell;
   @Mock
   private Player player;
   @Mock
@@ -75,16 +78,21 @@ public class MovedTest {
 
   @Test
   public void select_player() {
-    moved.select(player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+
+    moved.select(cell);
 
     verifyZeroInteractions(mapState);
   }
 
   @Test
   public void select_other_player_not_actionable() {
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(false);
 
-    moved.select(otherPlayer);
+    moved.select(cell);
 
     verify(mapState).rollback();
     verifyNoMoreInteractions(mapState);
@@ -92,11 +100,13 @@ public class MovedTest {
 
   @Test
   public void select_other_player_actionable() {
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
     when(movements.distanceFrom(otherPlayer)).thenReturn(movement);
     when(stateFactory.createMoving(otherPlayer, movement)).thenReturn(moving);
 
-    moved.select(otherPlayer);
+    moved.select(cell);
 
     verify(mapState).rollback();
     verify(mapState).goTo(moving);
