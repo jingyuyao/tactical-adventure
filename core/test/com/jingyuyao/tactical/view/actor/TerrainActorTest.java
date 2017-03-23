@@ -27,10 +27,9 @@ public class TerrainActorTest {
 
   @Test
   public void creation() {
-    when(terrain.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    TerrainActor terrainActor = new TerrainActor(terrain, actorConfig, markers);
+    TerrainActor terrainActor = new TerrainActor(terrain, COORDINATE, actorConfig, markers);
 
     assertThat(terrainActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
     assertThat(terrainActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);

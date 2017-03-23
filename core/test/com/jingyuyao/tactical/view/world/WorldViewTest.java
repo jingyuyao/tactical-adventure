@@ -10,13 +10,16 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jingyuyao.tactical.controller.CellController;
 import com.jingyuyao.tactical.controller.ControllerFactory;
-import com.jingyuyao.tactical.controller.WorldActorController;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
+import com.jingyuyao.tactical.view.actor.CellActor;
 import com.jingyuyao.tactical.view.actor.EnemyActor;
 import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
@@ -35,10 +38,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldViewTest {
 
+  private static final Coordinate COORDINATE = new Coordinate(10, 10);
   private static final String NAME = "popcorn";
 
   @Mock
   private Stage stage;
+  @Mock
+  private Group cellGroup;
   @Mock
   private Group characterGroup;
   @Mock
@@ -51,6 +57,8 @@ public class WorldViewTest {
   private ActorFactory actorFactory;
   @Mock
   private ControllerFactory controllerFactory;
+  @Mock
+  private CellController cellController;
   @Mock
   private Animations animations;
   @Mock
@@ -76,13 +84,15 @@ public class WorldViewTest {
   @Mock
   private TerrainActor terrainActor;
   @Mock
-  private WorldActorController controller;
+  private CellActor cellActor;
+  @Mock
+  private Cell cell;
 
   private WorldView worldView;
 
   @Before
   public void setUp() {
-    worldView = new WorldView(stage, characterGroup, terrainGroup, actorMap, mapRenderer,
+    worldView = new WorldView(stage, cellGroup, characterGroup, terrainGroup, actorMap, mapRenderer,
         actorFactory,
         controllerFactory, animations);
     InOrder inOrder = Mockito.inOrder(stage);
@@ -128,6 +138,15 @@ public class WorldViewTest {
   }
 
   @Test
+  public void reset() {
+    worldView.reset();
+
+    verify(cellGroup).clear();
+    verify(characterGroup).clear();
+    verify(terrainGroup).clear();
+  }
+
+  @Test
   public void get() {
     // black magic to qualify return type as wildcard
     Mockito.<WorldActor<?>>when(actorMap.get(mapObject)).thenReturn(worldActor);
@@ -136,15 +155,60 @@ public class WorldViewTest {
   }
 
   @Test
+  public void add_cell_player() {
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+    when(cell.getTerrain()).thenReturn(terrain);
+    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
+    when(player.getName()).thenReturn(NAME);
+    when(actorFactory.create(player, COORDINATE, loopAnimation)).thenReturn(playerActor);
+    when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
+    when(actorFactory.create(cell, COORDINATE)).thenReturn(cellActor);
+    when(controllerFactory.create(cell)).thenReturn(cellController);
+
+    worldView.add(cell);
+
+    verify(characterGroup).addActor(playerActor);
+    verify(actorMap).put(player, playerActor);
+    verify(terrainGroup).addActor(terrainActor);
+    verify(actorMap).put(terrain, terrainActor);
+    verify(cellGroup).addActor(cellActor);
+    verify(cellActor).addListener(cellController);
+  }
+
+  @Test
+  public void add_cell_enemy() {
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
+    when(cell.hasPlayer()).thenReturn(false);
+    when(cell.hasEnemy()).thenReturn(true);
+    when(cell.getEnemy()).thenReturn(enemy);
+    when(cell.getTerrain()).thenReturn(terrain);
+    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
+    when(enemy.getName()).thenReturn(NAME);
+    when(actorFactory.create(enemy, COORDINATE, loopAnimation)).thenReturn(enemyActor);
+    when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
+    when(actorFactory.create(cell, COORDINATE)).thenReturn(cellActor);
+    when(controllerFactory.create(cell)).thenReturn(cellController);
+
+    worldView.add(cell);
+
+    verify(characterGroup).addActor(enemyActor);
+    verify(actorMap).put(enemy, enemyActor);
+    verify(terrainGroup).addActor(terrainActor);
+    verify(actorMap).put(terrain, terrainActor);
+    verify(cellGroup).addActor(cellActor);
+    verify(cellActor).addListener(cellController);
+  }
+
+  @Test
   public void add_player() {
     when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
     when(player.getName()).thenReturn(NAME);
-    when(actorFactory.create(player, loopAnimation)).thenReturn(playerActor);
-    when(controllerFactory.create(player)).thenReturn(controller);
+    when(actorFactory.create(player, COORDINATE, loopAnimation)).thenReturn(playerActor);
 
-    worldView.add(player);
+    worldView.add(COORDINATE, player);
 
-    verify(playerActor).addListener(controller);
     verify(characterGroup).addActor(playerActor);
     verify(actorMap).put(player, playerActor);
     verifyZeroInteractions(terrainGroup);
@@ -154,12 +218,10 @@ public class WorldViewTest {
   public void add_enemy() {
     when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
     when(enemy.getName()).thenReturn(NAME);
-    when(actorFactory.create(enemy, loopAnimation)).thenReturn(enemyActor);
-    when(controllerFactory.create(enemy)).thenReturn(controller);
+    when(actorFactory.create(enemy, COORDINATE, loopAnimation)).thenReturn(enemyActor);
 
-    worldView.add(enemy);
+    worldView.add(COORDINATE, enemy);
 
-    verify(enemyActor).addListener(controller);
     verify(characterGroup).addActor(enemyActor);
     verify(actorMap).put(enemy, enemyActor);
     verifyZeroInteractions(terrainGroup);
@@ -167,12 +229,10 @@ public class WorldViewTest {
 
   @Test
   public void add_terrain() {
-    when(actorFactory.create(terrain)).thenReturn(terrainActor);
-    when(controllerFactory.create(terrain)).thenReturn(controller);
+    when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
 
-    worldView.add(terrain);
+    worldView.add(COORDINATE, terrain);
 
-    verify(terrainActor).addListener(controller);
     verify(terrainGroup).addActor(terrainActor);
     verify(actorMap).put(terrain, terrainActor);
     verifyZeroInteractions(characterGroup);

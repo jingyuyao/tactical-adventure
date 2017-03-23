@@ -49,10 +49,9 @@ public class PlayerActorTest {
 
   @Before
   public void setUp() {
-    when(player.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    playerActor = new PlayerActor(player, actorConfig, markers, loopAnimation);
+    playerActor = new PlayerActor(player, COORDINATE, actorConfig, markers, loopAnimation);
 
     assertThat(playerActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(playerActor.getY()).isEqualTo(INITIAL_WORLD_Y);

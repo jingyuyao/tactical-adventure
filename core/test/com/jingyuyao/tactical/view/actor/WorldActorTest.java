@@ -41,10 +41,9 @@ public class WorldActorTest {
 
   @Before
   public void setUp() {
-    when(mapObject.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    worldActor = new WorldActor<>(mapObject, actorConfig, markers);
+    worldActor = new WorldActor<>(mapObject, COORDINATE, actorConfig, markers);
 
     assertThat(worldActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
     assertThat(worldActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);

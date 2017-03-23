@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.controller;
 
-import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Cell;
 
 public interface ControllerFactory {
 
-  WorldActorController create(MapObject object);
+  CellController create(Cell cell);
 }

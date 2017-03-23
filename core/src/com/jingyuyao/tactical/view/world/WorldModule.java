@@ -36,6 +36,7 @@ public class WorldModule extends AbstractModule {
     requireBinding(ActorFactory.class);
     requireBinding(Animations.class);
 
+    bind(Group.class).annotatedWith(CellGroup.class).to(Group.class).in(Singleton.class);
     bind(Group.class).annotatedWith(CharacterGroup.class).to(Group.class).in(Singleton.class);
     bind(Group.class).annotatedWith(TerrainGroup.class).to(Group.class).in(Singleton.class);
   }
@@ -82,6 +83,13 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface CellGroup {
 
   }
 

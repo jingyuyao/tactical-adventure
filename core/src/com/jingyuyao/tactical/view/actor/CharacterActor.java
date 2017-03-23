@@ -22,9 +22,12 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   private final LoopAnimation loopAnimation;
 
   CharacterActor(
-      T object, ActorConfig actorConfig, LinkedHashSet<WorldTexture> markers,
+      T object,
+      Coordinate initialCoordinate,
+      ActorConfig actorConfig,
+      LinkedHashSet<WorldTexture> markers,
       LoopAnimation loopAnimation) {
-    super(object, actorConfig, markers);
+    super(object, initialCoordinate, actorConfig, markers);
     this.loopAnimation = loopAnimation;
     object.registerListener(this);
   }

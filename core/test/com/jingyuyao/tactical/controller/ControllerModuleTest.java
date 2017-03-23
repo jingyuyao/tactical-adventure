@@ -6,7 +6,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.World;
-import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.SelectionHandler;
 import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
@@ -39,7 +39,7 @@ public class ControllerModuleTest {
   @WorldViewport
   private Viewport worldViewport;
   @Mock
-  private MapObject mapObject;
+  private Cell cell;
 
   @Inject
   private WorldController worldController;
@@ -49,6 +49,6 @@ public class ControllerModuleTest {
   @Test
   public void can_create_module() {
     Guice.createInjector(BoundFieldModule.of(this), new ControllerModule()).injectMembers(this);
-    controllerFactory.create(mapObject);
+    controllerFactory.create(cell);
   }
 }

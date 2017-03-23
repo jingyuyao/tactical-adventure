@@ -70,10 +70,10 @@ public class CharacterActorTest {
 
   @Before
   public void setUp() {
-    when(character.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    characterActor = new CharacterActor<>(character, actorConfig, markers, loopAnimation);
+    characterActor = new CharacterActor<>(
+        character, COORDINATE, actorConfig, markers, loopAnimation);
 
     assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);

@@ -2,14 +2,18 @@ package com.jingyuyao.tactical.view.actor;
 
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
 
 public interface ActorFactory {
 
-  TerrainActor create(Terrain terrain);
+  CellActor create(Cell cell, Coordinate initialCoordinate);
 
-  PlayerActor create(Player player, LoopAnimation loopAnimation);
+  TerrainActor create(Terrain terrain, Coordinate initialCoordinate);
 
-  EnemyActor create(Enemy enemy, LoopAnimation loopAnimation);
+  PlayerActor create(Player player, Coordinate initialCoordinate, LoopAnimation loopAnimation);
+
+  EnemyActor create(Enemy enemy, Coordinate initialCoordinate, LoopAnimation loopAnimation);
 }

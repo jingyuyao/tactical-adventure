@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.view.actor;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
@@ -31,6 +31,8 @@ public class ActorModuleTest {
   @Mock
   private Enemy enemy;
   @Mock
+  private Cell cell;
+  @Mock
   private LoopAnimation loopAnimation;
 
   @Inject
@@ -49,13 +51,10 @@ public class ActorModuleTest {
 
   @Test
   public void actor_factory() {
-    when(terrain.getCoordinate()).thenReturn(COORDINATE);
-    when(player.getCoordinate()).thenReturn(COORDINATE);
-    when(enemy.getCoordinate()).thenReturn(COORDINATE);
-
-    actorFactory.create(terrain);
-    actorFactory.create(enemy, loopAnimation);
-    actorFactory.create(player, loopAnimation);
+    actorFactory.create(cell, COORDINATE);
+    actorFactory.create(terrain, COORDINATE);
+    actorFactory.create(enemy, COORDINATE, loopAnimation);
+    actorFactory.create(player, COORDINATE, loopAnimation);
   }
 
   @Test

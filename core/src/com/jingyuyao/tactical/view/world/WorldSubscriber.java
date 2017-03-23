@@ -1,10 +1,10 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.event.AddEnemy;
-import com.jingyuyao.tactical.model.event.AddPlayer;
-import com.jingyuyao.tactical.model.event.AddTerrain;
 import com.jingyuyao.tactical.model.event.RemoveObject;
+import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.map.Cell;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -19,18 +19,15 @@ public class WorldSubscriber {
   }
 
   @Subscribe
-  void addTerrain(AddTerrain addTerrain) {
-    worldView.add(addTerrain.getObject());
+  void worldLoad(WorldLoad worldLoad) {
+    for (Cell cell : worldLoad.getObject()) {
+      worldView.add(cell);
+    }
   }
 
   @Subscribe
-  void addPlayer(AddPlayer addPlayer) {
-    worldView.add(addPlayer.getObject());
-  }
-
-  @Subscribe
-  void addEnemy(AddEnemy addEnemy) {
-    worldView.add(addEnemy.getObject());
+  void worldReset(WorldReset worldReset) {
+    worldView.reset();
   }
 
   @Subscribe

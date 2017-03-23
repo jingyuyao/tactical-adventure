@@ -3,14 +3,12 @@ package com.jingyuyao.tactical.view.world;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.AddEnemy;
-import com.jingyuyao.tactical.model.event.AddPlayer;
-import com.jingyuyao.tactical.model.event.AddTerrain;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.event.RemoveObject;
+import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,21 +21,15 @@ public class WorldSubscriberTest {
   @Mock
   private WorldView worldView;
   @Mock
-  private AddTerrain addTerrain;
+  private WorldLoad worldLoad;
   @Mock
-  private AddPlayer addPlayer;
-  @Mock
-  private AddEnemy addEnemy;
+  private WorldReset worldReset;
   @Mock
   private RemoveObject removeObject;
   @Mock
-  private Terrain terrain;
-  @Mock
-  private Player player;
-  @Mock
-  private Enemy enemy;
-  @Mock
   private MapObject mapObject;
+  @Mock
+  private Cell cell;
 
   private WorldSubscriber subscriber;
 
@@ -47,30 +39,19 @@ public class WorldSubscriberTest {
   }
 
   @Test
-  public void add_terrain() {
-    when(addTerrain.getObject()).thenReturn(terrain);
+  public void world_load() {
+    when(worldLoad.getObject()).thenReturn(ImmutableList.of(cell));
 
-    subscriber.addTerrain(addTerrain);
+    subscriber.worldLoad(worldLoad);
 
-    verify(worldView).add(terrain);
+    verify(worldView).add(cell);
   }
 
   @Test
-  public void add_player() {
-    when(addPlayer.getObject()).thenReturn(player);
+  public void world_reset() {
+    subscriber.worldReset(worldReset);
 
-    subscriber.addPlayer(addPlayer);
-
-    verify(worldView).add(player);
-  }
-
-  @Test
-  public void add_enemy() {
-    when(addEnemy.getObject()).thenReturn(enemy);
-
-    subscriber.addEnemy(addEnemy);
-
-    verify(worldView).add(enemy);
+    verify(worldView).reset();
   }
 
   @Test

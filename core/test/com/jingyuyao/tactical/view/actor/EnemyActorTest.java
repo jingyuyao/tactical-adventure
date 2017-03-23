@@ -34,10 +34,9 @@ public class EnemyActorTest {
 
   @Test
   public void creation() {
-    when(enemy.getCoordinate()).thenReturn(COORDINATE);
     when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    EnemyActor enemyActor = new EnemyActor(enemy, actorConfig, markers, loopAnimation);
+    EnemyActor enemyActor = new EnemyActor(enemy, COORDINATE, actorConfig, markers, loopAnimation);
 
     assertThat(enemyActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(enemyActor.getY()).isEqualTo(INITIAL_WORLD_Y);
