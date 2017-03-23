@@ -102,8 +102,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
 
   @Override
   public ListenableFuture<Void> moveAlong(Path path) {
-    // TODO: fix me!
-    setCoordinate(path.getDestination().getCoordinate());
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Move(this, future, path));
     return future;
@@ -111,7 +109,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
 
   @Override
   public void instantMoveTo(Coordinate newCoordinate) {
-    setCoordinate(newCoordinate);
     eventBus.post(new InstantMove(this, newCoordinate));
   }
 

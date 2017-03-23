@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.character;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 
 abstract class AbstractEnemy extends AbstractCharacter implements Enemy {
@@ -16,10 +15,5 @@ abstract class AbstractEnemy extends AbstractCharacter implements Enemy {
       Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp,
       int moveDistance, List<Item> items) {
     super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
-  }
-
-  @Override
-  public void select(SelectionHandler selectionHandler) {
-    selectionHandler.select(this);
   }
 }

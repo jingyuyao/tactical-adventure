@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
@@ -35,13 +34,6 @@ public class BasePlayerTest {
   @Before
   public void setUp() {
     player = new BasePlayer(COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
-  }
-
-  @Test
-  public void select() {
-    player.select(selectionHandler);
-
-    verify(selectionHandler).select(player);
   }
 
   @Test

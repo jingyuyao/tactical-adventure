@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -142,12 +141,8 @@ public class AbstractCharacterTest {
 
   @Test
   public void move_along() {
-    when(cell.getCoordinate()).thenReturn(DESTINATION);
-    when(path.getDestination()).thenReturn(cell);
-
     ListenableFuture<Void> future = character.moveAlong(path);
 
-    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     Move move = TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, Move.class);
     assertThat(move.getPath()).isSameAs(path);
@@ -161,7 +156,6 @@ public class AbstractCharacterTest {
   public void instant_move() {
     character.instantMoveTo(DESTINATION);
 
-    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
         TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);
@@ -174,11 +168,6 @@ public class AbstractCharacterTest {
         Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp,
         int moveDistance, List<Item> items) {
       super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
-    }
-
-    @Override
-    public void select(SelectionHandler selectionHandler) {
-
     }
   }
 }
