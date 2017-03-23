@@ -6,13 +6,10 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public interface Character extends MapObject {
 
   void registerListener(Object listener);
-
-  Terrain getTerrain();
 
   String getName();
 

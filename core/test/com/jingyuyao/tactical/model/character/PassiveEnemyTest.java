@@ -7,7 +7,6 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 import org.junit.Before;
@@ -20,7 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 // TODO: test retaliation
 public class PassiveEnemyTest {
 
-  private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
+  private static final Coordinate COORDINATE = new Coordinate(100, 100);
   private static final String NAME = "yo";
   private static final int MAX_HP = 20;
   private static final int HP = 10;
@@ -28,8 +27,6 @@ public class PassiveEnemyTest {
 
   @Mock
   private EventBus eventBus;
-  @Mock
-  private Terrains terrains;
   @Mock
   private List<Item> items;
   @Mock
@@ -45,8 +42,7 @@ public class PassiveEnemyTest {
   public void setUp() {
     enemy =
         new PassiveEnemy(
-            CHARACTER_COORDINATE, terrains, movements, eventBus, battle, NAME, MAX_HP, HP,
-            MOVE_DISTANCE, items);
+            COORDINATE, movements, eventBus, battle, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test

@@ -11,8 +11,6 @@ import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -20,24 +18,21 @@ import java.util.Locale;
 abstract class AbstractCharacter extends AbstractMapObject implements Character {
 
   private transient final EventBus eventBus;
-  private transient final Terrains terrains;
   private String name;
   private int maxHp;
   private int hp;
   private int moveDistance;
   private List<Item> items;
 
-  AbstractCharacter(EventBus eventBus, Terrains terrains) {
+  AbstractCharacter(EventBus eventBus) {
     this.eventBus = eventBus;
-    this.terrains = terrains;
   }
 
   AbstractCharacter(
-      Coordinate coordinate, EventBus eventBus, Terrains terrains, String name, int maxHp, int hp,
+      Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp,
       int moveDistance, List<Item> items) {
     super(coordinate);
     this.eventBus = eventBus;
-    this.terrains = terrains;
     this.name = name;
     this.maxHp = maxHp;
     this.hp = hp;
@@ -48,11 +43,6 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   @Override
   public void registerListener(Object listener) {
     eventBus.register(listener);
-  }
-
-  @Override
-  public Terrain getTerrain() {
-    return terrains.get(getCoordinate());
   }
 
   @Override

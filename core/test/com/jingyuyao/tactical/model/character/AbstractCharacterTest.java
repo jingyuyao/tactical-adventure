@@ -16,9 +16,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Terrains;
 import com.jingyuyao.tactical.model.state.SelectionHandler;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +39,6 @@ public class AbstractCharacterTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Terrains terrains;
-  @Mock
   private Weapon weapon1;
   @Mock
   private Weapon weapon2;
@@ -55,8 +51,6 @@ public class AbstractCharacterTest {
   @Mock
   private Object listener;
   @Mock
-  private Terrain terrain;
-  @Mock
   private Cell cell;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -68,8 +62,7 @@ public class AbstractCharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(
-            CHARACTER_COORDINATE, eventBus, terrains, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
+        new CharacterImpl(CHARACTER_COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
@@ -77,13 +70,6 @@ public class AbstractCharacterTest {
     character.registerListener(listener);
 
     verify(eventBus).register(listener);
-  }
-
-  @Test
-  public void get_terrain() {
-    when(terrains.get(CHARACTER_COORDINATE)).thenReturn(terrain);
-
-    assertThat(character.getTerrain()).isSameAs(terrain);
   }
 
   @Test
@@ -185,9 +171,9 @@ public class AbstractCharacterTest {
   private static class CharacterImpl extends AbstractCharacter {
 
     CharacterImpl(
-        Coordinate coordinate, EventBus eventBus, Terrains terrains, String name, int maxHp, int hp,
+        Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp,
         int moveDistance, List<Item> items) {
-      super(coordinate, eventBus, terrains, name, maxHp, hp, moveDistance, items);
+      super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
     }
 
     @Override
