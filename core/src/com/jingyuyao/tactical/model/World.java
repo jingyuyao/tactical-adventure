@@ -7,6 +7,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.BackingCellMap;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -120,5 +121,17 @@ public class World {
   public void select(Cell cell) {
     worldEventBus.post(new SelectCell(cell));
     mapState.select(cell);
+  }
+
+  public void removeDeadCharacters() {
+    for (Cell cell : cellMap.values()) {
+      if (cell.hasCharacter()) {
+        Character character = cell.getCharacter();
+        if (character.getHp() == 0) {
+          cell.setCharacter(null);
+          worldEventBus.post(new RemoveObject(character));
+        }
+      }
+    }
   }
 }
