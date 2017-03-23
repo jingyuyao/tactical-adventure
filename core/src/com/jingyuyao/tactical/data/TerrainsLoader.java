@@ -6,12 +6,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Land;
 import com.jingyuyao.tactical.model.terrain.Obstructed;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.terrain.Water;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -32,7 +33,7 @@ class TerrainsLoader {
     this.tiledMapRenderer = tiledMapRenderer;
   }
 
-  Iterable<Terrain> loadTerrains(String mapName) {
+  Map<Coordinate, Terrain> loadTerrains(String mapName) {
     String fileName = dataConfig.getTerrainsFileName(mapName);
     assetManager.load(fileName, TiledMap.class);
     assetManager.finishLoadingAsset(fileName);
@@ -44,18 +45,19 @@ class TerrainsLoader {
     return createTerrains(terrainLayer);
   }
 
-  private Iterable<Terrain> createTerrains(TiledMapTileLayer terrainLayer) {
+  private Map<Coordinate, Terrain> createTerrains(TiledMapTileLayer terrainLayer) {
     Preconditions.checkNotNull(terrainLayer);
     Preconditions.checkArgument(terrainLayer.getWidth() > 0);
     Preconditions.checkArgument(terrainLayer.getHeight() > 0);
-    List<Terrain> terrains = new ArrayList<>(terrainLayer.getWidth() * terrainLayer.getHeight());
+
+    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     for (int y = 0; y < terrainLayer.getHeight(); y++) {
       for (int x = 0; x < terrainLayer.getWidth(); x++) {
         TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-        terrains.add(createTerrain(cell));
+        terrainMap.put(new Coordinate(x, y), createTerrain(cell));
       }
     }
-    return terrains;
+    return terrainMap;
   }
 
   private Terrain createTerrain(TiledMapTileLayer.Cell cell) {

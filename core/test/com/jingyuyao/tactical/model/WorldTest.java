@@ -82,8 +82,6 @@ public class WorldTest {
     when(cell2.hasCharacter()).thenReturn(true);
     when(cell1.getCharacter()).thenReturn(character1);
     when(cell2.getCharacter()).thenReturn(character2);
-    when(cell1.getTerrain()).thenReturn(terrain1);
-    when(cell2.getTerrain()).thenReturn(terrain2);
   }
 
   @Test
@@ -97,6 +95,13 @@ public class WorldTest {
     verify(mapState).initialize(waiting);
     verify(worldEventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, list, WorldLoad.class);
+  }
+
+  @Test
+  public void prep_for_save() {
+    world.prepForSave();
+
+    verify(mapState).prepForSave();
   }
 
   @Test
@@ -126,17 +131,18 @@ public class WorldTest {
   }
 
   @Test
+  public void get_cells() {
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
+
+    assertThat(world.getCells()).containsExactly(cell1, cell2);
+  }
+
+  @Test
   public void get_characters() {
     world.load(waiting, ImmutableList.of(cell1, cell2));
 
     assertThat(world.getCharacters()).containsExactly(character1, character2);
-  }
-
-  @Test
-  public void get_terrains() {
-    world.load(waiting, ImmutableList.of(cell1, cell2));
-
-    assertThat(world.getTerrains()).containsExactly(terrain1, terrain2);
   }
 
   @Test

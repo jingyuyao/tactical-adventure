@@ -1,17 +1,18 @@
 package com.jingyuyao.tactical.data;
 
 import com.jingyuyao.tactical.model.character.Character;
-import java.util.List;
+import com.jingyuyao.tactical.model.map.Coordinate;
+import java.util.Map;
 
 class CharactersSave {
 
-  private final List<Character> characters;
+  private final Map<Coordinate, Character> characters;
 
-  CharactersSave(List<Character> characters) {
+  CharactersSave(Map<Coordinate, Character> characters) {
     this.characters = characters;
   }
 
-  Iterable<Character> getCharacters() {
+  Map<Coordinate, Character> getCharacters() {
     return characters;
   }
 }

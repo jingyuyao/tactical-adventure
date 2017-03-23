@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Directions;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -56,6 +55,10 @@ public class World {
     return cellMap.get(coordinate);
   }
 
+  public FluentIterable<Cell> getCells() {
+    return FluentIterable.from(cellMap.values());
+  }
+
   public FluentIterable<Character> getCharacters() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
@@ -68,16 +71,6 @@ public class World {
           @Override
           public Character apply(Cell input) {
             return input.getCharacter();
-          }
-        });
-  }
-
-  public FluentIterable<Terrain> getTerrains() {
-    return FluentIterable.from(cellMap.values())
-        .transform(new Function<Cell, Terrain>() {
-          @Override
-          public Terrain apply(Cell input) {
-            return input.getTerrain();
           }
         });
   }
@@ -115,6 +108,10 @@ public class World {
     }
     mapState.initialize(initialState);
     worldEventBus.post(new WorldLoad(cells));
+  }
+
+  public void prepForSave() {
+    mapState.prepForSave();
   }
 
   public void reset() {

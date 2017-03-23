@@ -25,10 +25,6 @@ public class MapModuleTest {
 
   @Inject
   private Movements movements;
-  @Inject
-  private Characters characters;
-  @Inject
-  private Terrains terrains;
 
   @Test
   public void can_create_module() {

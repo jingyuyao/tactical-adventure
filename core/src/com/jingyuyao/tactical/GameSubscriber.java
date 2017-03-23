@@ -3,8 +3,8 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.data.ModelSaver;
-import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.data.WorldSaver;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import javax.inject.Inject;
@@ -14,27 +14,27 @@ import javax.inject.Singleton;
 class GameSubscriber {
 
   private final TacticalAdventure game;
-  private final Model model;
-  private final ModelSaver modelSaver;
+  private final World world;
+  private final WorldSaver worldSaver;
 
   @Inject
-  GameSubscriber(TacticalAdventure game, Model model, ModelSaver modelSaver) {
+  GameSubscriber(TacticalAdventure game, World world, WorldSaver worldSaver) {
     this.game = game;
-    this.model = model;
-    this.modelSaver = modelSaver;
+    this.world = world;
+    this.worldSaver = worldSaver;
   }
 
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
-    modelSaver.removeSave(TacticalAdventure.TEST_MAP);
-    model.reset();
+    worldSaver.removeSave(TacticalAdventure.TEST_MAP);
+    world.reset();
     game.setLevel(TacticalAdventure.TEST_MAP);
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
-    modelSaver.removeSave(TacticalAdventure.TEST_MAP);
-    model.reset();
+    worldSaver.removeSave(TacticalAdventure.TEST_MAP);
+    world.reset();
     game.setLevel(TacticalAdventure.TEST_MAP);
   }
 
