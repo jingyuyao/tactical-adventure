@@ -1,10 +1,8 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.map.MapObject;
+public class RemoveObject extends ObjectEvent<Object> {
 
-public class RemoveObject extends ObjectEvent<MapObject> {
-
-  public RemoveObject(MapObject object) {
+  public RemoveObject(Object object) {
     super(object);
   }
 }

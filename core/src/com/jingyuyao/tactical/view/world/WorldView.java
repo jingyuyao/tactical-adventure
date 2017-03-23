@@ -11,7 +11,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.CellActor;
@@ -37,7 +36,7 @@ public class WorldView {
   private final Group cellGroup;
   private final Group characterGroup;
   private final Group terrainGroup;
-  private final Map<MapObject, WorldActor<?>> actorMap;
+  private final Map<Object, WorldActor<?>> actorMap;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
   private final ControllerFactory controllerFactory;
@@ -49,7 +48,7 @@ public class WorldView {
       @CellGroup Group cellGroup,
       @CharacterGroup Group characterGroup,
       @TerrainGroup Group terrainGroup,
-      @BackingActorMap Map<MapObject, WorldActor<?>> actorMap,
+      @BackingActorMap Map<Object, WorldActor<?>> actorMap,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
       ControllerFactory controllerFactory,
@@ -94,7 +93,7 @@ public class WorldView {
     terrainGroup.clear();
   }
 
-  public WorldActor<?> get(MapObject object) {
+  public WorldActor<?> get(Object object) {
     return actorMap.get(object);
   }
 
@@ -126,13 +125,13 @@ public class WorldView {
     addActor(terrain, actor, terrainGroup);
   }
 
-  void remove(MapObject object) {
+  void remove(Object object) {
     Preconditions.checkArgument(actorMap.containsKey(object));
     WorldActor actor = actorMap.remove(object);
     actor.remove();
   }
 
-  private void addActor(MapObject object, WorldActor<?> actor, Group group) {
+  private void addActor(Object object, WorldActor<?> actor, Group group) {
     group.addActor(actor);
     actorMap.put(object, actor);
   }

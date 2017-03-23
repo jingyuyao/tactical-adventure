@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.CellActor;
@@ -50,7 +49,7 @@ public class WorldViewTest {
   @Mock
   private Group terrainGroup;
   @Mock
-  private Map<MapObject, WorldActor<?>> actorMap;
+  private Map<Object, WorldActor<?>> actorMap;
   @Mock
   private OrthogonalTiledMapRenderer mapRenderer;
   @Mock
@@ -66,7 +65,7 @@ public class WorldViewTest {
   @Mock
   private OrthographicCamera camera;
   @Mock
-  private MapObject mapObject;
+  private Object object;
   @Mock
   private WorldActor<?> worldActor;
   @Mock
@@ -149,9 +148,9 @@ public class WorldViewTest {
   @Test
   public void get() {
     // black magic to qualify return type as wildcard
-    Mockito.<WorldActor<?>>when(actorMap.get(mapObject)).thenReturn(worldActor);
+    Mockito.<WorldActor<?>>when(actorMap.get(object)).thenReturn(worldActor);
 
-    assertThat(worldView.get(mapObject)).isSameAs(worldActor);
+    assertThat(worldView.get(object)).isSameAs(worldActor);
   }
 
   @Test
@@ -240,19 +239,19 @@ public class WorldViewTest {
 
   @Test
   public void remove() {
-    when(actorMap.containsKey(mapObject)).thenReturn(true);
-    Mockito.<WorldActor<?>>when(actorMap.remove(mapObject)).thenReturn(worldActor);
+    when(actorMap.containsKey(object)).thenReturn(true);
+    Mockito.<WorldActor<?>>when(actorMap.remove(object)).thenReturn(worldActor);
 
-    worldView.remove(mapObject);
+    worldView.remove(object);
 
-    verify(actorMap).remove(mapObject);
+    verify(actorMap).remove(object);
     verify(worldActor).remove();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void remove_not_found() {
-    when(actorMap.containsKey(mapObject)).thenReturn(false);
+    when(actorMap.containsKey(object)).thenReturn(false);
 
-    worldView.remove(mapObject);
+    worldView.remove(object);
   }
 }

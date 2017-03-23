@@ -6,7 +6,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movements;
 import java.util.List;
 import javax.inject.Inject;
@@ -25,9 +24,9 @@ public class PassiveEnemy extends AbstractEnemy {
   }
 
   PassiveEnemy(
-      Coordinate coordinate, Movements movements, EventBus eventBus,
-      Battle battle, String name, int maxHp, int hp, int moveDistance, List<Item> items) {
-    super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
+      Movements movements, EventBus eventBus, Battle battle, String name, int maxHp, int hp,
+      int moveDistance, List<Item> items) {
+    super(eventBus, name, maxHp, hp, moveDistance, items);
     this.movements = movements;
     this.battle = battle;
   }

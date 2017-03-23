@@ -21,7 +21,6 @@ import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.state.Waiting;
-import com.jingyuyao.tactical.model.terrain.TerrainFactory;
 import java.lang.reflect.Type;
 import java.util.List;
 import javax.inject.Named;
@@ -34,7 +33,6 @@ public class DataModule extends AbstractModule {
   protected void configure() {
     requireBinding(Model.class);
     requireBinding(Characters.class);
-    requireBinding(TerrainFactory.class);
     requireBinding(new Key<Provider<Waiting>>() {
     });
     requireBinding(AssetManager.class);

@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.MapObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,7 @@ public class WorldSubscriberTest {
   @Mock
   private RemoveObject removeObject;
   @Mock
-  private MapObject mapObject;
+  private Object object;
   @Mock
   private Cell cell;
 
@@ -56,10 +55,10 @@ public class WorldSubscriberTest {
 
   @Test
   public void remove_object() {
-    when(removeObject.getObject()).thenReturn(mapObject);
+    when(removeObject.getObject()).thenReturn(object);
 
     subscriber.removeObject(removeObject);
 
-    verify(worldView).remove(mapObject);
+    verify(worldView).remove(object);
   }
 }

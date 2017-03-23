@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 import org.junit.Before;
@@ -16,7 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BasePlayerTest {
 
-  private static final Coordinate COORDINATE = new Coordinate(100, 100);
   private static final String NAME = "yo";
   private static final int MAX_HP = 20;
   private static final int HP = 10;
@@ -33,7 +31,7 @@ public class BasePlayerTest {
 
   @Before
   public void setUp() {
-    player = new BasePlayer(COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
+    player = new BasePlayer(eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
   }
 
   @Test

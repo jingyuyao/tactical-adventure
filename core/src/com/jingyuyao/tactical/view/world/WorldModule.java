@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.ControllerFactory;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Animations;
@@ -68,7 +67,7 @@ public class WorldModule extends AbstractModule {
   @Provides
   @Singleton
   @BackingActorMap
-  Map<MapObject, WorldActor<?>> provideActorMap() {
+  Map<Object, WorldActor<?>> provideActorMap() {
     return new HashMap<>();
   }
 

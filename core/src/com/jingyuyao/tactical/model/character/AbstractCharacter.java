@@ -8,14 +8,13 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.AbstractMapObject;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-abstract class AbstractCharacter extends AbstractMapObject implements Character {
+abstract class AbstractCharacter implements Character {
 
   private transient final EventBus eventBus;
   private String name;
@@ -29,9 +28,7 @@ abstract class AbstractCharacter extends AbstractMapObject implements Character 
   }
 
   AbstractCharacter(
-      Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp,
-      int moveDistance, List<Item> items) {
-    super(coordinate);
+      EventBus eventBus, String name, int maxHp, int hp, int moveDistance, List<Item> items) {
     this.eventBus = eventBus;
     this.name = name;
     this.maxHp = maxHp;

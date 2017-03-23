@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
@@ -37,9 +36,9 @@ public class MarkingsTest {
   @Mock
   private List<WorldActor<?>> markedActors;
   @Mock
-  private MapObject mapObject;
+  private Object object;
   @Mock
-  private MapObject mapObject2;
+  private Object object2;
   @Mock
   private WorldActor<?> worldActor;
   @Mock
@@ -68,9 +67,9 @@ public class MarkingsTest {
   public void add_single_animation() {
     ListenableFuture<Void> future = SettableFuture.create();
     when(singleAnimation.getFuture()).thenReturn(future);
-    Mockito.<WorldActor<?>>when(worldView.get(mapObject)).thenReturn(worldActor);
+    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(worldActor);
 
-    markings.addSingleAnimation(mapObject, singleAnimation);
+    markings.addSingleAnimation(object, singleAnimation);
 
     assertThat(animationsMap).containsEntry(worldActor, singleAnimation);
   }
@@ -79,9 +78,9 @@ public class MarkingsTest {
   public void add_single_animation_finished() {
     SettableFuture<Void> future = SettableFuture.create();
     when(singleAnimation.getFuture()).thenReturn(future);
-    Mockito.<WorldActor<?>>when(worldView.get(mapObject)).thenReturn(worldActor);
+    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(worldActor);
 
-    markings.addSingleAnimation(mapObject, singleAnimation);
+    markings.addSingleAnimation(object, singleAnimation);
 
     assertThat(animationsMap).containsEntry(worldActor, singleAnimation);
 
@@ -92,15 +91,15 @@ public class MarkingsTest {
 
   @Test
   public void draw_highlight_and_activate_and_animation() {
-    Mockito.<WorldActor<?>>when(worldView.get(mapObject)).thenReturn(highlightActor);
-    Mockito.<WorldActor<?>>when(worldView.get(mapObject2)).thenReturn(activatedActor);
+    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(highlightActor);
+    Mockito.<WorldActor<?>>when(worldView.get(object2)).thenReturn(activatedActor);
     when(markers.getHighlight()).thenReturn(highlightTexture);
     when(markers.getActivated()).thenReturn(activatedTexture);
     when(singleAnimation.getCurrentFrame()).thenReturn(animationFrame);
     animationsMap.put(worldActor, singleAnimation);
 
-    markings.highlight(mapObject);
-    markings.activate(mapObject2);
+    markings.highlight(object);
+    markings.activate(object2);
     markings.draw();
 
     InOrder inOrder = Mockito.inOrder(batch, animationFrame, highlightTexture, activatedTexture);
@@ -113,9 +112,9 @@ public class MarkingsTest {
 
   @Test
   public void mark() {
-    Mockito.<WorldActor<?>>when(worldView.get(mapObject)).thenReturn(highlightActor);
+    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(highlightActor);
 
-    markings.mark(mapObject, highlightTexture);
+    markings.mark(object, highlightTexture);
 
     verify(highlightActor).addMarker(highlightTexture);
     verify(markedActors).add(highlightActor);

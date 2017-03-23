@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.marking.MarkingModule.InProgressAnimationsMap;
 import com.jingyuyao.tactical.view.marking.MarkingModule.MarkedActors;
@@ -53,15 +52,15 @@ public class Markings {
     batch.end();
   }
 
-  void highlight(MapObject object) {
+  void highlight(Object object) {
     highlightedActor = worldView.get(object);
   }
 
-  void activate(MapObject object) {
+  void activate(Object object) {
     activatedActor = worldView.get(object);
   }
 
-  void addSingleAnimation(MapObject object, final SingleAnimation singleAnimation) {
+  void addSingleAnimation(Object object, final SingleAnimation singleAnimation) {
     final WorldActor<?> actor = worldView.get(object);
     animationsMap.put(actor, singleAnimation);
     Futures.addCallback(singleAnimation.getFuture(), new FutureCallback<Void>() {
@@ -77,7 +76,7 @@ public class Markings {
     });
   }
 
-  void mark(MapObject object, WorldTexture worldTexture) {
+  void mark(Object object, WorldTexture worldTexture) {
     WorldActor actor = worldView.get(object);
     actor.addMarker(worldTexture);
     markedActors.add(actor);

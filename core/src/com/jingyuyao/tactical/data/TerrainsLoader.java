@@ -6,9 +6,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.terrain.Land;
+import com.jingyuyao.tactical.model.terrain.Obstructed;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.terrain.TerrainFactory;
+import com.jingyuyao.tactical.model.terrain.Water;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -18,18 +19,15 @@ import javax.inject.Singleton;
 class TerrainsLoader {
 
   private final DataConfig dataConfig;
-  private final TerrainFactory terrainFactory;
   private final AssetManager assetManager;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
 
   @Inject
   TerrainsLoader(
       DataConfig dataConfig,
-      TerrainFactory terrainFactory,
       AssetManager assetManager,
       OrthogonalTiledMapRenderer tiledMapRenderer) {
     this.dataConfig = dataConfig;
-    this.terrainFactory = terrainFactory;
     this.assetManager = assetManager;
     this.tiledMapRenderer = tiledMapRenderer;
   }
@@ -54,27 +52,25 @@ class TerrainsLoader {
     for (int y = 0; y < terrainLayer.getHeight(); y++) {
       for (int x = 0; x < terrainLayer.getWidth(); x++) {
         TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-        terrains.add(createTerrain(x, y, cell));
+        terrains.add(createTerrain(cell));
       }
     }
     return terrains;
   }
 
-  private Terrain createTerrain(int x, int y, TiledMapTileLayer.Cell cell) {
-    Coordinate coordinate = new Coordinate(x, y);
-
+  private Terrain createTerrain(TiledMapTileLayer.Cell cell) {
     MapProperties tileProperties = cell.getTile().getProperties();
     if (tileProperties.containsKey(dataConfig.getTerrainTypeKey())) {
       String type = tileProperties.get(dataConfig.getTerrainTypeKey(), String.class);
       switch (type) {
         case "OBSTRUCTED":
-          return terrainFactory.createObstructed(coordinate);
+          return new Obstructed();
         case "WATER":
-          return terrainFactory.createWater(coordinate);
+          return new Water();
         default:
           throw new IllegalArgumentException("Unrecognized terrain type: " + type);
       }
     }
-    return terrainFactory.createLand(coordinate);
+    return new Land();
   }
 }

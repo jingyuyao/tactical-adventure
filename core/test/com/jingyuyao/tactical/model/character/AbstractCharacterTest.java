@@ -28,7 +28,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCharacterTest {
 
-  private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
   private static final Coordinate DESTINATION = new Coordinate(50, 50);
   private static final String NAME = "yo";
   private static final int MAX_HP = 20;
@@ -61,7 +60,7 @@ public class AbstractCharacterTest {
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
     character =
-        new CharacterImpl(CHARACTER_COORDINATE, eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
+        new CharacterImpl(eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
@@ -165,9 +164,8 @@ public class AbstractCharacterTest {
   private static class CharacterImpl extends AbstractCharacter {
 
     CharacterImpl(
-        Coordinate coordinate, EventBus eventBus, String name, int maxHp, int hp,
-        int moveDistance, List<Item> items) {
-      super(coordinate, eventBus, name, maxHp, hp, moveDistance, items);
+        EventBus eventBus, String name, int maxHp, int hp, int moveDistance, List<Item> items) {
+      super(eventBus, name, maxHp, hp, moveDistance, items);
     }
   }
 }
