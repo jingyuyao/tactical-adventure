@@ -12,7 +12,6 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
@@ -32,9 +31,6 @@ public class StateModuleTest {
   @Bind
   @Mock
   private World world;
-  @Bind
-  @Mock
-  private Characters characters;
   @Bind
   @Mock
   private Battle battle;

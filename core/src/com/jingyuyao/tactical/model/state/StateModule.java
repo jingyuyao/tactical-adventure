@@ -11,7 +11,6 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.map.Characters;
 import com.jingyuyao.tactical.model.map.Movements;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -28,7 +27,6 @@ public class StateModule extends AbstractModule {
     requireBinding(Battle.class);
     requireBinding(Movements.class);
     requireBinding(World.class);
-    requireBinding(Characters.class);
 
     install(new FactoryModuleBuilder().build(StateFactory.class));
     bind(SelectionHandler.class).to(MapState.class);
