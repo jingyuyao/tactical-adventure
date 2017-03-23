@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrains;
@@ -55,6 +56,8 @@ public class AbstractCharacterTest {
   private Object listener;
   @Mock
   private Terrain terrain;
+  @Mock
+  private Cell cell;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -153,7 +156,8 @@ public class AbstractCharacterTest {
 
   @Test
   public void move_along() {
-    when(path.getDestination()).thenReturn(DESTINATION);
+    when(cell.getCoordinate()).thenReturn(DESTINATION);
+    when(path.getDestination()).thenReturn(cell);
 
     ListenableFuture<Void> future = character.moveAlong(path);
 

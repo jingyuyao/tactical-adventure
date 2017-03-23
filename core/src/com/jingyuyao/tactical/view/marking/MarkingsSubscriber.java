@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.event.SelectEnemy;
 import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.item.Target;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
@@ -63,8 +64,8 @@ public class MarkingsSubscriber {
 
   @Subscribe
   void moving(Moving moving) {
-    for (Terrain terrain : moving.getMovement().getTerrains()) {
-      markings.mark(terrain, markers.getMove());
+    for (Cell cell : moving.getMovement().getCells()) {
+      markings.mark(cell.getTerrain(), markers.getMove());
     }
   }
 

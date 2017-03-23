@@ -21,7 +21,6 @@ import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +35,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class MovingTest {
 
   private static final Coordinate MOVING_PLAYER_COORDINATE = new Coordinate(0, 1);
-  private static final Coordinate TERRAIN_COORDINATE = new Coordinate(0, 2);
 
   @Mock
   private MapState mapState;
@@ -49,11 +47,11 @@ public class MovingTest {
   @Mock
   private Cell cell;
   @Mock
+  private Cell cell2;
+  @Mock
   private Player player;
   @Mock
   private Player otherPlayer;
-  @Mock
-  private Terrain terrain;
   @Mock
   private Moved moved;
   @Mock
@@ -93,7 +91,8 @@ public class MovingTest {
 
   @Test
   public void canceled_nothing() {
-    when(movement.getStartingCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
+    when(cell.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
+    when(movement.getStartingCell()).thenReturn(cell);
 
     moving.canceled();
 
@@ -102,6 +101,8 @@ public class MovingTest {
 
   @Test
   public void canceled_terrain_move() {
+    when(cell2.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
+    when(movement.getStartingCell()).thenReturn(cell2);
     select_terrain_can_move();
 
     moving.canceled();
@@ -144,7 +145,7 @@ public class MovingTest {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
-    when(movements.distanceFrom(otherPlayer)).thenReturn(otherMovement);
+    when(movements.distanceFrom(cell)).thenReturn(otherMovement);
     when(stateFactory.createMoving(otherPlayer, otherMovement)).thenReturn(anotherMoving);
 
     moving.select(cell);
@@ -157,10 +158,8 @@ public class MovingTest {
   @Test
   public void select_terrain_can_move() {
     when(cell.hasPlayer()).thenReturn(false);
-    when(cell.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
-    when(movement.getStartingCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
-    when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(true);
-    when(movement.pathTo(TERRAIN_COORDINATE)).thenReturn(path);
+    when(movement.canMoveTo(cell)).thenReturn(true);
+    when(movement.pathTo(cell)).thenReturn(path);
     when(stateFactory.createMoved(player)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
     when(player.moveAlong(path)).thenReturn(immediateFuture);
@@ -177,8 +176,7 @@ public class MovingTest {
   @Test
   public void select_terrain_cannot_move() {
     when(cell.hasPlayer()).thenReturn(false);
-    when(cell.getCoordinate()).thenReturn(TERRAIN_COORDINATE);
-    when(movement.canMoveTo(TERRAIN_COORDINATE)).thenReturn(false);
+    when(movement.canMoveTo(cell)).thenReturn(false);
 
     moving.select(cell);
 

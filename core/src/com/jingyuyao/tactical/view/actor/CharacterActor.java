@@ -11,6 +11,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
@@ -59,10 +60,10 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
     addAction(moveSequence);
   }
 
-  private SequenceAction getMoveSequence(Iterable<Coordinate> track) {
+  private SequenceAction getMoveSequence(Iterable<Cell> track) {
     SequenceAction sequence = Actions.sequence();
-    for (Coordinate coordinate : track) {
-      sequence.addAction(createMoveToAction(coordinate));
+    for (Cell cell : track) {
+      sequence.addAction(createMoveToAction(cell.getCoordinate()));
     }
     return sequence;
   }

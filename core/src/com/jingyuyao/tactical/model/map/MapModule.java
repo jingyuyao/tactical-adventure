@@ -8,6 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.lang.annotation.Retention;
@@ -23,7 +24,7 @@ public class MapModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(Movements.class);
+    requireBinding(World.class);
 
     install(new FactoryModuleBuilder().build(MovementFactory.class));
   }

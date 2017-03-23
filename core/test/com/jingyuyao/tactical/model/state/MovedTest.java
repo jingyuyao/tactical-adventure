@@ -103,7 +103,7 @@ public class MovedTest {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
-    when(movements.distanceFrom(otherPlayer)).thenReturn(movement);
+    when(movements.distanceFrom(cell)).thenReturn(movement);
     when(stateFactory.createMoving(otherPlayer, movement)).thenReturn(moving);
 
     moved.select(cell);

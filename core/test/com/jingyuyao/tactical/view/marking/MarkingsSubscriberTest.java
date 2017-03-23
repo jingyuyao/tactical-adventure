@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
@@ -83,7 +83,7 @@ public class MarkingsSubscriberTest {
   @Mock
   private Attack attack;
   @Mock
-  private MapObject mapObject;
+  private Cell cell;
   @Mock
   private Weapon weapon;
   @Mock
@@ -143,8 +143,9 @@ public class MarkingsSubscriberTest {
 
   @Test
   public void moving() {
+    when(cell.getTerrain()).thenReturn(terrain);
     when(moving.getMovement()).thenReturn(movement);
-    when(movement.getTerrains()).thenReturn(ImmutableList.of(terrain));
+    when(movement.getCells()).thenReturn(ImmutableList.of(cell));
     when(markers.getMove()).thenReturn(texture1);
 
     subscriber.moving(moving);

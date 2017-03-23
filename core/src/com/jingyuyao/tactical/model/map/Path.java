@@ -5,20 +5,20 @@ import com.google.common.collect.ImmutableList;
 
 public class Path {
 
-  private final Coordinate destination;
-  private final ImmutableList<Coordinate> track;
+  private final Cell destination;
+  private final ImmutableList<Cell> track;
 
-  Path(Coordinate destination, ImmutableList<Coordinate> track) {
+  Path(Cell destination, ImmutableList<Cell> track) {
     Preconditions.checkArgument(!track.isEmpty());
     this.destination = destination;
     this.track = track;
   }
 
-  public ImmutableList<Coordinate> getTrack() {
+  public ImmutableList<Cell> getTrack() {
     return track;
   }
 
-  public Coordinate getDestination() {
+  public Cell getDestination() {
     return destination;
   }
 }

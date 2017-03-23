@@ -34,7 +34,8 @@ public class Moving extends BasePlayerState {
 
   @Override
   public void canceled() {
-    getPlayer().instantMoveTo(movement.getStartingCoordinate());
+    // TODO: fix me!
+    getPlayer().instantMoveTo(movement.getStartingCell().getCoordinate());
   }
 
   @Override
@@ -44,12 +45,12 @@ public class Moving extends BasePlayerState {
       if (!player.equals(getPlayer())) {
         rollback();
         if (player.isActionable()) {
-          goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
+          goTo(stateFactory.createMoving(player, movements.distanceFrom(cell)));
         }
       }
     } else {
-      if (movement.canMoveTo(cell.getCoordinate())) {
-        Path path = movement.pathTo(cell.getCoordinate());
+      if (movement.canMoveTo(cell)) {
+        Path path = movement.pathTo(cell);
         goTo(stateFactory.createTransition());
         Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
           @Override

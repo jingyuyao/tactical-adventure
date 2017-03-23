@@ -35,7 +35,7 @@ public class Moved extends BasePlayerState {
       if (!getPlayer().equals(player)) {
         rollback();
         if (player.isActionable()) {
-          goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
+          goTo(stateFactory.createMoving(player, movements.distanceFrom(cell)));
         }
       }
     }

@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
@@ -60,6 +61,10 @@ public class CharacterActorTest {
   private Move move;
   @Mock
   private Path path;
+  @Mock
+  private Cell cell1;
+  @Mock
+  private Cell cell2;
 
   private CharacterActor<Character> characterActor;
 
@@ -104,8 +109,10 @@ public class CharacterActorTest {
 
   @Test
   public void move() {
+    when(cell1.getCoordinate()).thenReturn(TRACK1);
+    when(cell2.getCoordinate()).thenReturn(DESTINATION);
     when(move.getPath()).thenReturn(path);
-    when(path.getTrack()).thenReturn(ImmutableList.of(TRACK1, DESTINATION));
+    when(path.getTrack()).thenReturn(ImmutableList.of(cell1, cell2));
     when(actorConfig.getMoveTimePerUnit()).thenReturn(MOVE_TIME_PER_UNIT);
     characterActor.addListener(listener);
 

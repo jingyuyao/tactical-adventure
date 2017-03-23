@@ -1,19 +1,13 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.item.Target;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.map.Terrains;
 import java.util.List;
 import javax.inject.Inject;
@@ -41,33 +35,35 @@ public class PassiveEnemy extends AbstractEnemy {
 
   @Override
   public ListenableFuture<Void> retaliate() {
-    Movement movement = movements.distanceFrom(this);
-    Coordinate originalCoordinate = getCoordinate();
-
-    for (Coordinate moveCoordinate : movement.getCoordinates()) {
-      setCoordinate(moveCoordinate);
-      for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
-        for (final Target target : weapon.createTargets(getCoordinate())) {
-          FluentIterable<Character> targetCharacters = target.getTargetCharacters();
-          // Don't hit friendly characters?
-          if (!targetCharacters.filter(Enemy.class).isEmpty()) {
-            continue;
-          }
-          if (!targetCharacters.filter(Player.class).isEmpty()) {
-            setCoordinate(originalCoordinate);
-            Path path = movement.pathTo(moveCoordinate);
-
-            return Futures.transformAsync(moveAlong(path), new AsyncFunction<Void, Void>() {
-              @Override
-              public ListenableFuture<Void> apply(Void input) {
-                return battle.begin(PassiveEnemy.this, weapon, target);
-              }
-            });
-          }
-        }
-      }
-    }
-    setCoordinate(originalCoordinate);
+    // TODO: fix me!
+//    Movement movement = movements.distanceFrom(this);
+//    Coordinate originalCoordinate = getCoordinate();
+//
+//    for (Coordinate moveCoordinate : movement.getCoordinates()) {
+//      setCoordinate(moveCoordinate);
+//      for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
+//        for (final Target target : weapon.createTargets(getCoordinate())) {
+//          FluentIterable<Character> targetCharacters = target.getTargetCharacters();
+//          // Don't hit friendly characters?
+//          if (!targetCharacters.filter(Enemy.class).isEmpty()) {
+//            continue;
+//          }
+//          if (!targetCharacters.filter(Player.class).isEmpty()) {
+//            setCoordinate(originalCoordinate);
+//            Path path = movement.pathTo(moveCoordinate);
+//
+//            return Futures.transformAsync(moveAlong(path), new AsyncFunction<Void, Void>() {
+//              @Override
+//              public ListenableFuture<Void> apply(Void input) {
+//                return battle.begin(PassiveEnemy.this, weapon, target);
+//              }
+//            });
+//          }
+//        }
+//      }
+//    }
+//    setCoordinate(originalCoordinate);
+//    return Futures.immediateFuture(null);
     return Futures.immediateFuture(null);
   }
 }

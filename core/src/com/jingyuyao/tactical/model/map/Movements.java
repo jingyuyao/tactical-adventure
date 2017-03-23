@@ -3,12 +3,12 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.ElementOrder;
 import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
@@ -28,63 +28,65 @@ public class Movements {
 
   static final int BLOCKED = -1;
 
-  private final Characters characters;
-  private final Terrains terrains;
+  private final World world;
   private final MovementFactory movementFactory;
 
   @Inject
-  Movements(Characters characters, Terrains terrains, MovementFactory movementFactory) {
-    this.characters = characters;
-    this.terrains = terrains;
+  Movements(World world, MovementFactory movementFactory) {
+    this.world = world;
     this.movementFactory = movementFactory;
   }
 
-  public Movement distanceFrom(Character character) {
+  /**
+   * Create a {@link Movement} for the {@link Character} in a {@link Cell}.
+   */
+  public Movement distanceFrom(Cell cell) {
+    Preconditions.checkArgument(cell.hasCharacter());
+    Character character = cell.getCharacter();
     return movementFactory.create(
         distanceFrom(
-            character.getCoordinate(),
+            cell,
             character.getMoveDistance(),
             createEdgeCostFunction(character)));
   }
 
   /**
-   * Creates a directed, acyclic graph starting at {@code startingCoordinate} that contains all
+   * Creates a directed, acyclic graph starting at {@code startingCell} that contains all
    * reachable nodes whose total path cost (sum of all edge weights from the start to the current
    * node) is less or equal to {@code distance}. Inbound edge costs comes from {@code
    * edgeCosFunction}.
    *
    * @param distance Maximum distance for the path between initial location to any other object
    * @param edgeCostFunction The function to obtain the incoming edge cost for a particular {@link
-   * Coordinate}. All incoming edge cost for a {@link Coordinate} is assumed to be the same.
+   * Cell}. All incoming edge cost for a {@link Cell} is assumed to be the same.
    */
-  public ValueGraph<Coordinate, Integer> distanceFrom(
-      Coordinate startingCoordinate, int distance, Function<Terrain, Integer> edgeCostFunction) {
-    MutableValueGraph<Coordinate, Integer> graph =
+  public ValueGraph<Cell, Integer> distanceFrom(
+      Cell startingCell, int distance, Function<Cell, Integer> edgeCostFunction) {
+    MutableValueGraph<Cell, Integer> graph =
         ValueGraphBuilder.directed()
             .allowsSelfLoops(false)
             .nodeOrder(ElementOrder.insertion())
             .build();
-    Set<Coordinate> processedCoordinates = new HashSet<>();
-    Map<Coordinate, Integer> pathCostMap = new HashMap<>();
-    Queue<ValueNode<Coordinate>> minNodeQueue = new PriorityQueue<>();
+    Set<Cell> processedCells = new HashSet<>();
+    Map<Cell, Integer> pathCostMap = new HashMap<>();
+    Queue<ValueNode<Cell>> minNodeQueue = new PriorityQueue<>();
 
-    pathCostMap.put(startingCoordinate, 0);
-    graph.addNode(startingCoordinate);
-    minNodeQueue.add(new ValueNode<>(startingCoordinate, 0));
+    pathCostMap.put(startingCell, 0);
+    graph.addNode(startingCell);
+    minNodeQueue.add(new ValueNode<>(startingCell, 0));
 
     // Dijkstra's algorithm
     while (!minNodeQueue.isEmpty()) {
-      ValueNode<Coordinate> minNode = minNodeQueue.poll();
-      Coordinate minCoordinate = minNode.getObject();
-      processedCoordinates.add(minCoordinate);
+      ValueNode<Cell> minNode = minNodeQueue.poll();
+      Cell minCell = minNode.getObject();
+      processedCells.add(minCell);
 
-      for (Terrain neighborTerrain : terrains.getNeighbors(minCoordinate)) {
-        Coordinate neighborCoordinate = neighborTerrain.getCoordinate();
-        if (processedCoordinates.contains(neighborCoordinate)) {
+      for (Cell neighborCell : world.getNeighbors(minCell)) {
+        if (processedCells.contains(neighborCell)) {
           continue;
         }
 
-        Integer edgeCost = edgeCostFunction.apply(neighborTerrain);
+        Integer edgeCost = edgeCostFunction.apply(neighborCell);
         Preconditions.checkNotNull(edgeCost);
         if (edgeCost == BLOCKED) {
           continue;
@@ -95,17 +97,16 @@ public class Movements {
           continue;
         }
 
-        ValueNode<Coordinate> neighborNode =
-            new ValueNode<>(neighborCoordinate, pathCost);
-        if (!pathCostMap.containsKey(neighborCoordinate)) {
-          graph.putEdgeValue(minCoordinate, neighborCoordinate, pathCost);
-          pathCostMap.put(neighborCoordinate, pathCost);
-        } else if (pathCost < pathCostMap.get(neighborCoordinate)) {
+        ValueNode<Cell> neighborNode = new ValueNode<>(neighborCell, pathCost);
+        if (!pathCostMap.containsKey(neighborCell)) {
+          graph.putEdgeValue(minCell, neighborCell, pathCost);
+          pathCostMap.put(neighborCell, pathCost);
+        } else if (pathCost < pathCostMap.get(neighborCell)) {
           // Remove neighbor from graph so that (minNode, neighbor) is the only edge
-          graph.removeNode(neighborCoordinate);
-          graph.putEdgeValue(minCoordinate, neighborCoordinate, pathCost);
+          graph.removeNode(neighborCell);
+          graph.putEdgeValue(minCell, neighborCell, pathCost);
           // Adjust path cost of the current neighbor
-          pathCostMap.put(neighborCoordinate, pathCost);
+          pathCostMap.put(neighborCell, pathCost);
           minNodeQueue.remove(neighborNode);
         }
         minNodeQueue.add(neighborNode);
@@ -114,32 +115,22 @@ public class Movements {
 
     Preconditions.checkState(
         graph.predecessors(
-            startingCoordinate).isEmpty(), "Graph does not contain a terminating node");
+            startingCell).isEmpty(), "Graph does not contain a terminating node");
     Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
     return graph;
   }
 
-  Function<Terrain, Integer> createEdgeCostFunction(final Character character) {
-    final ImmutableSet<Coordinate> blockedCoordinates = getBlockedCoordinates();
-    return new Function<Terrain, Integer>() {
+  Function<Cell, Integer> createEdgeCostFunction(final Character character) {
+    return new Function<Cell, Integer>() {
       @Override
-      public Integer apply(Terrain input) {
-        if (blockedCoordinates.contains(input.getCoordinate()) || !input.canHold(character)) {
+      public Integer apply(Cell input) {
+        Terrain terrain = input.getTerrain();
+        if (input.hasCharacter() || !terrain.canHold(character)) {
           return Movements.BLOCKED;
         }
-        return input.getMovementPenalty();
+        return terrain.getMovementPenalty();
       }
     };
-  }
-
-  private ImmutableSet<Coordinate> getBlockedCoordinates() {
-    return characters.fluent().transform(
-        new Function<Character, Coordinate>() {
-          @Override
-          public Coordinate apply(Character input) {
-            return input.getCoordinate();
-          }
-        }).toSet();
   }
 
   /**
