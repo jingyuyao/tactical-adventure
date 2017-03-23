@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +28,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BattlingTest {
-
-  private static final Coordinate COORDINATE = new Coordinate(0, 0);
 
   @Mock
   private MapState mapState;
@@ -82,8 +79,7 @@ public class BattlingTest {
 
   @Test
   public void select_cannot_attack() {
-    when(cell.getCoordinate()).thenReturn(COORDINATE);
-    when(target.canTarget(COORDINATE)).thenReturn(false);
+    when(target.canTarget(cell)).thenReturn(false);
 
     battling.select(cell);
 
@@ -94,8 +90,7 @@ public class BattlingTest {
   public void select_can_attack() {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(cell.getCoordinate()).thenReturn(COORDINATE);
-    when(target.canTarget(COORDINATE)).thenReturn(true);
+    when(target.canTarget(cell)).thenReturn(true);
     when(battle.begin(attackingPlayer, weapon, target))
         .thenReturn(Futures.<Void>immediateFuture(null));
 

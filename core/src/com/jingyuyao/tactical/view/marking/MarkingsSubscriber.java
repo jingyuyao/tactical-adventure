@@ -11,12 +11,10 @@ import com.jingyuyao.tactical.model.event.SelectPlayer;
 import com.jingyuyao.tactical.model.event.SelectTerrain;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
@@ -103,17 +101,17 @@ public class MarkingsSubscriber {
     });
     // TODO: need a way to distinguish on animation on select tile or an animation for every target
     // tile
-    for (MapObject object : attack.getObject().getSelectTerrains()) {
-      markings.addSingleAnimation(object, animation);
+    for (Cell cell : attack.getObject().getSelectCells()) {
+      markings.addSingleAnimation(cell.getTerrain(), animation);
     }
   }
 
   private void markTarget(Target target) {
-    for (Terrain terrain : target.getTargetTerrains()) {
-      markings.mark(terrain, markers.getAttack());
+    for (Cell cell : target.getTargetCells()) {
+      markings.mark(cell.getTerrain(), markers.getAttack());
     }
-    for (Terrain terrain : target.getSelectTerrains()) {
-      markings.mark(terrain, markers.getTargetSelect());
+    for (Cell cell : target.getSelectCells()) {
+      markings.mark(cell.getTerrain(), markers.getTargetSelect());
     }
   }
 }

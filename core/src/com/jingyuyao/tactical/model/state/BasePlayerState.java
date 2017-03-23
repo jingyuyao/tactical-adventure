@@ -42,7 +42,8 @@ class BasePlayerState extends BaseState implements PlayerState {
 
   void selectWeapon(Weapon weapon) {
     player.quickAccess(weapon);
-    ImmutableList<Target> targets = weapon.createTargets(player.getCoordinate());
+    // TODO: fix me!
+    ImmutableList<Target> targets = weapon.createTargets(null);
     goTo(stateFactory.createSelectingTarget(player, weapon, targets));
   }
 

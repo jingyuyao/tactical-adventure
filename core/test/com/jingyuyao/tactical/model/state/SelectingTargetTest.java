@@ -13,7 +13,6 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +23,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SelectingTargetTest {
-
-  private static final Coordinate COORDINATE = new Coordinate(0, 1);
 
   @Mock
   private MapState mapState;
@@ -75,8 +72,7 @@ public class SelectingTargetTest {
 
   @Test
   public void select_target() {
-    when(cell.getCoordinate()).thenReturn(COORDINATE);
-    when(target1.selectedBy(COORDINATE)).thenReturn(true);
+    when(target1.selectedBy(cell)).thenReturn(true);
     when(stateFactory.createBattling(player, weapon, target1)).thenReturn(battling);
 
     selectingTarget.select(cell);
@@ -86,8 +82,6 @@ public class SelectingTargetTest {
 
   @Test
   public void select_no_select() {
-    when(cell.getCoordinate()).thenReturn(COORDINATE);
-
     selectingTarget.select(cell);
 
     verifyZeroInteractions(mapState);

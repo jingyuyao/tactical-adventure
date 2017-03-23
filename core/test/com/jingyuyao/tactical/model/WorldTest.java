@@ -111,6 +111,14 @@ public class WorldTest {
   }
 
   @Test
+  public void has_coordinate() {
+    cellMap.put(COORDINATE1, cell1);
+
+    assertThat(world.hasCoordinate(COORDINATE1)).isTrue();
+    assertThat(world.hasCoordinate(COORDINATE2)).isFalse();
+  }
+
+  @Test
   public void get_cell() {
     cellMap.put(COORDINATE1, cell1);
 

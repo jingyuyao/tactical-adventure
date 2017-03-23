@@ -38,7 +38,7 @@ public class Battling extends BasePlayerState {
 
   @Override
   public void select(Cell cell) {
-    if (target.canTarget(cell.getCoordinate())) {
+    if (target.canTarget(cell)) {
       attack();
     }
   }

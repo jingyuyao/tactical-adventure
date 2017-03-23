@@ -3,14 +3,9 @@ package com.jingyuyao.tactical.model.item;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.map.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,68 +15,41 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TargetTest {
 
-  private static final Coordinate COORDINATE = new Coordinate(10, 10);
-
   @Mock
-  private ImmutableSet<Coordinate> selectCoordinates;
+  private Cell cell1;
   @Mock
-  private ImmutableSet<Coordinate> targetCoordinates;
-  @Mock
-  private Characters characters;
-  @Mock
-  private Terrains terrains;
+  private Cell cell2;
   @Mock
   private Character character;
-  @Mock
-  private Terrain terrain;
-  @Mock
-  private Terrain terrain2;
 
   private Target target;
 
   @Before
   public void setUp() {
-    target = new Target(selectCoordinates, targetCoordinates, characters, terrains);
+    when(cell1.hasCharacter()).thenReturn(false);
+    when(cell2.hasCharacter()).thenReturn(true);
+    when(cell2.getCharacter()).thenReturn(character);
+    target = new Target(ImmutableSet.of(cell1), ImmutableSet.of(cell1, cell2));
   }
 
   @Test
   public void selected_by() {
-    when(selectCoordinates.contains(COORDINATE)).thenReturn(true, false);
-
-    assertThat(target.selectedBy(COORDINATE)).isTrue();
-    assertThat(target.selectedBy(COORDINATE)).isFalse();
+    assertThat(target.selectedBy(cell1)).isTrue();
+    assertThat(target.selectedBy(cell2)).isFalse();
   }
 
   @Test
   public void get_target_characters() {
-    when(characters.fluent()).thenReturn(FluentIterable.of(character));
-    when(character.getCoordinate()).thenReturn(COORDINATE);
-    when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
-
     assertThat(target.getTargetCharacters()).containsExactly(character);
   }
 
   @Test
-  public void get_select_terrains() {
-    when(terrains.getAll(selectCoordinates)).thenReturn(ImmutableList.of(terrain));
-
-    assertThat(target.getSelectTerrains()).containsExactly(terrain);
+  public void get_select_cells() {
+    assertThat(target.getSelectCells()).containsExactly(cell1);
   }
 
   @Test
   public void get_target_terrains() {
-    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain2));
-
-    assertThat(target.getTargetTerrains()).containsExactly(terrain2);
-  }
-
-  @Test
-  public void get_hit_objects() {
-    when(characters.fluent()).thenReturn(FluentIterable.of(character));
-    when(character.getCoordinate()).thenReturn(COORDINATE);
-    when(targetCoordinates.contains(COORDINATE)).thenReturn(true);
-    when(terrains.getAll(targetCoordinates)).thenReturn(ImmutableList.of(terrain2));
-
-    assertThat(target.getHitObjects()).containsExactly(character, terrain2);
+    assertThat(target.getTargetCells()).containsExactly(cell1, cell2);
   }
 }

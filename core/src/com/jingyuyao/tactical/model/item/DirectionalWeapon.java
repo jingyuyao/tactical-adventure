@@ -3,9 +3,10 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.jingyuyao.tactical.model.World;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Directions;
-import com.jingyuyao.tactical.model.map.Terrains;
 import javax.inject.Inject;
 
 /**
@@ -14,18 +15,16 @@ import javax.inject.Inject;
 // TODO: test me
 public class DirectionalWeapon extends AbstractWeapon {
 
-  private transient final Terrains terrains;
-  private transient final TargetFactory targetFactory;
+  private transient final World world;
   private int distance;
 
   @Inject
-  DirectionalWeapon(Terrains terrains, TargetFactory targetFactory) {
-    this.terrains = terrains;
-    this.targetFactory = targetFactory;
+  DirectionalWeapon(World world) {
+    this.world = world;
   }
 
   @Override
-  public ImmutableList<Target> createTargets(Coordinate from) {
+  public ImmutableList<Target> createTargets(Cell from) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Coordinate direction : Directions.ALL) {
       Optional<Target> targetOptional = createTarget(from, direction);
@@ -36,24 +35,23 @@ public class DirectionalWeapon extends AbstractWeapon {
     return builder.build();
   }
 
-  private Optional<Target> createTarget(Coordinate from, Coordinate direction) {
-    Coordinate current = from.offsetBy(direction);
-    ImmutableSet<Coordinate> selectCoordinates = ImmutableSet.of(current);
+  private Optional<Target> createTarget(Cell from, Coordinate direction) {
+    Coordinate current = from.getCoordinate().offsetBy(direction);
+    ImmutableSet<Cell> selectCells = ImmutableSet.of(world.getCell(current));
     int leftOverDistance = distance;
 
-    ImmutableSet.Builder<Coordinate> targetBuilder = ImmutableSet.builder();
-    while (leftOverDistance > 0 && terrains.contains(current)) {
-      targetBuilder.add(current);
+    ImmutableSet.Builder<Cell> targetBuilder = ImmutableSet.builder();
+    while (leftOverDistance > 0 && world.hasCoordinate(current)) {
+      targetBuilder.add(world.getCell(current));
       current = current.offsetBy(direction);
       leftOverDistance--;
     }
 
-    final ImmutableSet<Coordinate> targetCoordinates = targetBuilder.build();
-    if (targetCoordinates.isEmpty()) {
+    final ImmutableSet<Cell> targetCells = targetBuilder.build();
+    if (targetCells.isEmpty()) {
       return Optional.absent();
     }
 
-    return Optional.of(
-        targetFactory.create(selectCoordinates, targetCoordinates));
+    return Optional.of(new Target(selectCells, targetCells));
   }
 }

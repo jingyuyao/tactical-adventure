@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Cell;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status. Not a {@link Consumable}
@@ -14,5 +14,5 @@ public interface Weapon extends Item {
 
   void damages(Target target);
 
-  ImmutableList<Target> createTargets(Coordinate from);
+  ImmutableList<Target> createTargets(Cell from);
 }

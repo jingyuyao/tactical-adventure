@@ -33,7 +33,7 @@ public class SelectingTarget extends BasePlayerState {
   @Override
   public void select(Cell cell) {
     for (Target target : targets) {
-      if (target.selectedBy(cell.getCoordinate())) {
+      if (target.selectedBy(cell)) {
         goTo(stateFactory.createBattling(getPlayer(), weapon, target));
         return;
       }

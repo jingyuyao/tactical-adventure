@@ -85,6 +85,8 @@ public class MarkingsSubscriberTest {
   @Mock
   private Cell cell;
   @Mock
+  private Cell cell2;
+  @Mock
   private Weapon weapon;
   @Mock
   private SingleAnimation singleAnimation;
@@ -156,8 +158,10 @@ public class MarkingsSubscriberTest {
   @Test
   public void selecting_target() {
     when(selectingTarget.getTargets()).thenReturn(ImmutableList.of(target));
-    when(target.getTargetTerrains()).thenReturn(ImmutableList.of(terrain));
-    when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain2));
+    when(target.getTargetCells()).thenReturn(ImmutableList.of(cell));
+    when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
+    when(cell.getTerrain()).thenReturn(terrain);
+    when(cell2.getTerrain()).thenReturn(terrain2);
     when(markers.getAttack()).thenReturn(texture1);
     when(markers.getTargetSelect()).thenReturn(texture2);
 
@@ -171,8 +175,10 @@ public class MarkingsSubscriberTest {
   @Test
   public void battling() {
     when(battling.getTarget()).thenReturn(target);
-    when(target.getTargetTerrains()).thenReturn(ImmutableList.of(terrain));
-    when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain2));
+    when(target.getTargetCells()).thenReturn(ImmutableList.of(cell));
+    when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
+    when(cell.getTerrain()).thenReturn(terrain);
+    when(cell2.getTerrain()).thenReturn(terrain2);
     when(markers.getAttack()).thenReturn(texture1);
     when(markers.getTargetSelect()).thenReturn(texture2);
 
@@ -188,7 +194,7 @@ public class MarkingsSubscriberTest {
     SettableFuture<Void> future = SettableFuture.create();
     when(attack.getWeapon()).thenReturn(weapon);
     when(attack.getObject()).thenReturn(target);
-    when(target.getSelectTerrains()).thenReturn(ImmutableList.of(terrain));
+    when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
     when(weapon.getName()).thenReturn(WEAPON_NAME);
     when(animations.getWeapon(WEAPON_NAME)).thenReturn(singleAnimation);
     when(singleAnimation.getFuture()).thenReturn(future);

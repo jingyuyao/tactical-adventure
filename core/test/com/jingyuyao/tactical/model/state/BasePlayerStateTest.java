@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,8 @@ public class BasePlayerStateTest {
   private StateFactory stateFactory;
   @Mock
   private EventBus eventBus;
+  @Mock
+  private Cell cell;
   @Mock
   private Player player;
   @Mock
@@ -117,8 +120,7 @@ public class BasePlayerStateTest {
 
   @Test
   public void select_weapon() {
-    when(player.getCoordinate()).thenReturn(PLAYER_COORDINATE);
-    when(weapon.createTargets(PLAYER_COORDINATE)).thenReturn(targets);
+    when(weapon.createTargets(cell)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
 
     state.selectWeapon(weapon);
