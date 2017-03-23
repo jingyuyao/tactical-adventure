@@ -4,11 +4,11 @@ import com.jingyuyao.tactical.model.item.Weapon;
 
 class SelectWeaponAction implements Action {
 
-  private final BasePlayerState playerState;
+  private final PlayerActionState playerActionState;
   private final Weapon weapon;
 
-  SelectWeaponAction(BasePlayerState playerState, Weapon weapon) {
-    this.playerState = playerState;
+  SelectWeaponAction(PlayerActionState playerActionState, Weapon weapon) {
+    this.playerActionState = playerActionState;
     this.weapon = weapon;
   }
 
@@ -19,6 +19,6 @@ class SelectWeaponAction implements Action {
 
   @Override
   public void run() {
-    playerState.selectWeapon(weapon);
+    playerActionState.selectWeapon(weapon);
   }
 }

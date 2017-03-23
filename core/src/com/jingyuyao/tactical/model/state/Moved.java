@@ -11,9 +11,8 @@ import javax.inject.Inject;
 /**
  * Can only perform actions after moving.
  */
-public class Moved extends BasePlayerState {
+public class Moved extends PlayerActionState {
 
-  private final StateFactory stateFactory;
   private final Movements movements;
 
   @Inject
@@ -22,9 +21,8 @@ public class Moved extends BasePlayerState {
       MapState mapState,
       StateFactory stateFactory,
       Movements movements,
-      @Assisted Player player) {
-    super(eventBus, mapState, stateFactory, player);
-    this.stateFactory = stateFactory;
+      @Assisted Cell cell) {
+    super(eventBus, mapState, stateFactory, cell);
     this.movements = movements;
   }
 
@@ -35,7 +33,7 @@ public class Moved extends BasePlayerState {
       if (!getPlayer().equals(player)) {
         rollback();
         if (player.isActionable()) {
-          goTo(stateFactory.createMoving(player, movements.distanceFrom(cell)));
+          goTo(getStateFactory().createMoving(cell, movements.distanceFrom(cell)));
         }
       }
     }

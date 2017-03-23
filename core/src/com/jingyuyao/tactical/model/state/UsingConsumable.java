@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import javax.inject.Inject;
 
-public class UsingConsumable extends BasePlayerState {
+public class UsingConsumable extends AbstractPlayerState {
 
   private final Consumable consumable;
 

@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
@@ -12,6 +14,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
@@ -37,6 +40,8 @@ public class StateModuleTest {
   @Bind
   @Mock
   private Movements movements;
+  @Mock
+  private Cell cell;
   @Mock
   private Player player;
   @Mock
@@ -64,10 +69,13 @@ public class StateModuleTest {
 
   @Test
   public void state_factory() {
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+
     stateFactory.createTransition();
     stateFactory.createWaiting();
-    stateFactory.createMoving(player, movement);
-    stateFactory.createMoved(player);
+    stateFactory.createMoving(cell, movement);
+    stateFactory.createMoved(cell);
     stateFactory.createSelectingTarget(player, weapon, targets);
     stateFactory.createUsingConsumable(player, consumable);
     stateFactory.createBattling(player, weapon, target);

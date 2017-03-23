@@ -12,16 +12,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SelectWeaponActionTest {
 
   @Mock
-  private BasePlayerState playerState;
+  private PlayerActionState playerActionState;
   @Mock
   private Weapon weapon;
 
   @Test
   public void run() {
-    SelectWeaponAction selectWeaponAction = new SelectWeaponAction(playerState, weapon);
+    SelectWeaponAction selectWeaponAction = new SelectWeaponAction(playerActionState, weapon);
 
     selectWeaponAction.run();
 
-    verify(playerState).selectWeapon(weapon);
+    verify(playerActionState).selectWeapon(weapon);
   }
 }

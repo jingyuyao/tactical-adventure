@@ -51,7 +51,7 @@ public class Waiting extends BaseState {
     if (cell.hasPlayer()) {
       Player player = cell.getPlayer();
       if (player.isActionable()) {
-        goTo(stateFactory.createMoving(player, movements.distanceFrom(cell)));
+        goTo(stateFactory.createMoving(cell, movements.distanceFrom(cell)));
       }
     }
   }

@@ -110,13 +110,13 @@ public class WaitingTest {
   public void select_player_actionable() {
     when(player.isActionable()).thenReturn(true);
     when(movements.distanceFrom(cell)).thenReturn(movement);
-    when(stateFactory.createMoving(player, movement)).thenReturn(moving);
+    when(stateFactory.createMoving(cell, movement)).thenReturn(moving);
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(player);
 
     waiting.select(cell);
 
-    verify(stateFactory).createMoving(player, movement);
+    verify(stateFactory).createMoving(cell, movement);
     verify(mapState).goTo(moving);
   }
 

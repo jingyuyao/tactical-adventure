@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.model.state;
 
 class FinishAction implements Action {
 
-  private final BasePlayerState playerState;
+  private final AbstractPlayerState playerState;
 
-  FinishAction(BasePlayerState playerState) {
+  FinishAction(AbstractPlayerState playerState) {
     this.playerState = playerState;
   }
 

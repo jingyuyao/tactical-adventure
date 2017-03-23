@@ -39,6 +39,8 @@ public class MovedTest {
   @Mock
   private Cell cell;
   @Mock
+  private Cell cell2;
+  @Mock
   private Player player;
   @Mock
   private Player otherPlayer;
@@ -57,7 +59,9 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    moved = new Moved(eventBus, mapState, stateFactory, movements, player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+    moved = new Moved(eventBus, mapState, stateFactory, movements, cell);
   }
 
   @Test
@@ -100,13 +104,13 @@ public class MovedTest {
 
   @Test
   public void select_other_player_actionable() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(otherPlayer);
+    when(cell2.hasPlayer()).thenReturn(true);
+    when(cell2.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
-    when(movements.distanceFrom(cell)).thenReturn(movement);
-    when(stateFactory.createMoving(otherPlayer, movement)).thenReturn(moving);
+    when(movements.distanceFrom(cell2)).thenReturn(movement);
+    when(stateFactory.createMoving(cell2, movement)).thenReturn(moving);
 
-    moved.select(cell);
+    moved.select(cell2);
 
     verify(mapState).rollback();
     verify(mapState).goTo(moving);

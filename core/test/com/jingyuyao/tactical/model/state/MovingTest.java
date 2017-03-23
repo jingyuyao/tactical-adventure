@@ -76,9 +76,11 @@ public class MovingTest {
 
   @Before
   public void setUp() {
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(eventBus, mapState, stateFactory, movements, player, movement);
+    moving = new Moving(eventBus, mapState, stateFactory, movements, cell, movement);
   }
 
   @Test
@@ -142,13 +144,13 @@ public class MovingTest {
 
   @Test
   public void select_other_player_actionable() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(otherPlayer);
+    when(cell2.hasPlayer()).thenReturn(true);
+    when(cell2.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
-    when(movements.distanceFrom(cell)).thenReturn(otherMovement);
-    when(stateFactory.createMoving(otherPlayer, otherMovement)).thenReturn(anotherMoving);
+    when(movements.distanceFrom(cell2)).thenReturn(otherMovement);
+    when(stateFactory.createMoving(cell2, otherMovement)).thenReturn(anotherMoving);
 
-    moving.select(cell);
+    moving.select(cell2);
 
     verify(mapState).rollback();
     verify(mapState).goTo(anotherMoving);
@@ -157,14 +159,14 @@ public class MovingTest {
 
   @Test
   public void select_terrain_can_move() {
-    when(cell.hasPlayer()).thenReturn(false);
-    when(movement.canMoveTo(cell)).thenReturn(true);
-    when(movement.pathTo(cell)).thenReturn(path);
-    when(stateFactory.createMoved(player)).thenReturn(moved);
+    when(cell2.hasPlayer()).thenReturn(false);
+    when(movement.canMoveTo(cell2)).thenReturn(true);
+    when(movement.pathTo(cell2)).thenReturn(path);
+    when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
     when(player.moveAlong(path)).thenReturn(immediateFuture);
 
-    moving.select(cell);
+    moving.select(cell2);
 
     InOrder inOrder = Mockito.inOrder(player, mapState);
     inOrder.verify(mapState).goTo(transition);
@@ -175,10 +177,10 @@ public class MovingTest {
 
   @Test
   public void select_terrain_cannot_move() {
-    when(cell.hasPlayer()).thenReturn(false);
-    when(movement.canMoveTo(cell)).thenReturn(false);
+    when(cell2.hasPlayer()).thenReturn(false);
+    when(movement.canMoveTo(cell2)).thenReturn(false);
 
-    moving.select(cell);
+    moving.select(cell2);
 
     verifyZeroInteractions(mapState);
   }

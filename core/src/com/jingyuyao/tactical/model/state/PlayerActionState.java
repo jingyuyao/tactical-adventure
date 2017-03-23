@@ -1,28 +1,27 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 
-class BasePlayerState extends BaseState implements PlayerState {
+class PlayerActionState extends AbstractPlayerState {
 
-  private final StateFactory stateFactory;
-  private final Player player;
+  private final Cell cell;
 
-  BasePlayerState(EventBus eventBus, MapState mapState, StateFactory stateFactory, Player player) {
-    super(eventBus, mapState);
-    this.stateFactory = stateFactory;
-    this.player = player;
-  }
-
-  @Override
-  public Player getPlayer() {
-    return player;
+  PlayerActionState(
+      EventBus eventBus,
+      MapState mapState,
+      StateFactory stateFactory,
+      Cell cell) {
+    super(eventBus, mapState, stateFactory, cell.getPlayer());
+    Preconditions.checkArgument(cell.hasPlayer());
+    this.cell = cell;
   }
 
   @Override
@@ -41,19 +40,13 @@ class BasePlayerState extends BaseState implements PlayerState {
   }
 
   void selectWeapon(Weapon weapon) {
-    player.quickAccess(weapon);
-    // TODO: fix me!
-    ImmutableList<Target> targets = weapon.createTargets(null);
-    goTo(stateFactory.createSelectingTarget(player, weapon, targets));
+    getPlayer().quickAccess(weapon);
+    ImmutableList<Target> targets = weapon.createTargets(cell);
+    goTo(getStateFactory().createSelectingTarget(getPlayer(), weapon, targets));
   }
 
   void selectConsumable(Consumable consumable) {
-    player.quickAccess(consumable);
-    goTo(stateFactory.createUsingConsumable(player, consumable));
-  }
-
-  void finish() {
-    player.setActionable(false);
-    branchTo(stateFactory.createWaiting());
+    getPlayer().quickAccess(consumable);
+    goTo(getStateFactory().createUsingConsumable(getPlayer(), consumable));
   }
 }

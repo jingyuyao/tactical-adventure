@@ -10,9 +10,8 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
 import javax.inject.Inject;
 
-public class SelectingTarget extends BasePlayerState {
+public class SelectingTarget extends AbstractPlayerState {
 
-  private final StateFactory stateFactory;
   private final Weapon weapon;
   private final ImmutableList<Target> targets;
 
@@ -25,7 +24,6 @@ public class SelectingTarget extends BasePlayerState {
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
     super(eventBus, mapState, stateFactory, player);
-    this.stateFactory = stateFactory;
     this.weapon = weapon;
     this.targets = targets;
   }
@@ -34,7 +32,7 @@ public class SelectingTarget extends BasePlayerState {
   public void select(Cell cell) {
     for (Target target : targets) {
       if (target.selectedBy(cell)) {
-        goTo(stateFactory.createBattling(getPlayer(), weapon, target));
+        goTo(getStateFactory().createBattling(getPlayer(), weapon, target));
         return;
       }
     }

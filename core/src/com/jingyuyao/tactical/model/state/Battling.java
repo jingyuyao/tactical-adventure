@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
 import javax.inject.Inject;
 
-public class Battling extends BasePlayerState {
+public class Battling extends AbstractPlayerState {
 
   private final StateFactory stateFactory;
   private final Battle battle;

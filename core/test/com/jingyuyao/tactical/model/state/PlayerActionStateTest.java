@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BasePlayerStateTest {
-
-  private static final Coordinate PLAYER_COORDINATE = new Coordinate(101, 101);
+public class PlayerActionStateTest {
 
   @Mock
   private MapState mapState;
@@ -55,11 +52,19 @@ public class BasePlayerStateTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private BasePlayerState state;
+  private PlayerActionState state;
 
   @Before
   public void setUp() {
-    state = new BasePlayerState(eventBus, mapState, stateFactory, player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+    state = new PlayerActionState(eventBus, mapState, stateFactory, cell);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void setUp_no_player() {
+    when(cell.hasPlayer()).thenReturn(false);
+    state = new PlayerActionState(eventBus, mapState, stateFactory, cell);
   }
 
   @Test
@@ -161,4 +166,5 @@ public class BasePlayerStateTest {
     assertThat(actions.get(2)).isInstanceOf(FinishAction.class);
     assertThat(actions.get(3)).isInstanceOf(BackAction.class);
   }
+
 }

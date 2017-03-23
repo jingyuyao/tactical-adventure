@@ -12,9 +12,8 @@ import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
 import javax.inject.Inject;
 
-public class Moving extends BasePlayerState {
+public class Moving extends PlayerActionState {
 
-  private final StateFactory stateFactory;
   private final Movements movements;
   private final Movement movement;
 
@@ -24,10 +23,9 @@ public class Moving extends BasePlayerState {
       MapState mapState,
       StateFactory stateFactory,
       Movements movements,
-      @Assisted Player player,
+      @Assisted Cell cell,
       @Assisted Movement movement) {
-    super(eventBus, mapState, stateFactory, player);
-    this.stateFactory = stateFactory;
+    super(eventBus, mapState, stateFactory, cell);
     this.movements = movements;
     this.movement = movement;
   }
@@ -39,23 +37,23 @@ public class Moving extends BasePlayerState {
   }
 
   @Override
-  public void select(Cell cell) {
+  public void select(final Cell cell) {
     if (cell.hasPlayer()) {
       Player player = cell.getPlayer();
       if (!player.equals(getPlayer())) {
         rollback();
         if (player.isActionable()) {
-          goTo(stateFactory.createMoving(player, movements.distanceFrom(cell)));
+          goTo(getStateFactory().createMoving(cell, movements.distanceFrom(cell)));
         }
       }
     } else {
       if (movement.canMoveTo(cell)) {
         Path path = movement.pathTo(cell);
-        goTo(stateFactory.createTransition());
+        goTo(getStateFactory().createTransition());
         Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
           @Override
           public void onSuccess(Void result) {
-            goTo(stateFactory.createMoved(getPlayer()));
+            goTo(getStateFactory().createMoved(cell));
           }
 
           @Override
