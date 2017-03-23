@@ -11,12 +11,12 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Characters;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public class RetaliatingTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private Characters characters;
+  private World world;
   @Mock
   private Cell cell;
   @Mock
@@ -57,7 +57,7 @@ public class RetaliatingTest {
   public void setUp() {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
-    retaliating = new Retaliating(eventBus, mapState, stateFactory, characters);
+    retaliating = new Retaliating(eventBus, mapState, stateFactory, world);
   }
 
   @Test
@@ -74,7 +74,7 @@ public class RetaliatingTest {
 
   @Test
   public void enter() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy, enemy2));
+    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(enemy, enemy2));
     when(enemy.retaliate()).thenReturn(retaliation);
     when(enemy2.retaliate()).thenReturn(retaliation2);
     when(stateFactory.createWaiting()).thenReturn(waiting);
