@@ -33,7 +33,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WorldTest {
+public class WorldViewTest {
 
   private static final String NAME = "popcorn";
 
@@ -78,11 +78,12 @@ public class WorldTest {
   @Mock
   private WorldActorController controller;
 
-  private World world;
+  private WorldView worldView;
 
   @Before
   public void setUp() {
-    world = new World(stage, characterGroup, terrainGroup, actorMap, mapRenderer, actorFactory,
+    worldView = new WorldView(stage, characterGroup, terrainGroup, actorMap, mapRenderer,
+        actorFactory,
         controllerFactory, animations);
     InOrder inOrder = Mockito.inOrder(stage);
     inOrder.verify(stage).addActor(terrainGroup);
@@ -91,7 +92,7 @@ public class WorldTest {
 
   @Test
   public void act() {
-    world.act(10f);
+    worldView.act(10f);
 
     verify(stage).act(10f);
   }
@@ -101,7 +102,7 @@ public class WorldTest {
     when(stage.getCamera()).thenReturn(camera);
     when(stage.getViewport()).thenReturn(viewport);
 
-    world.draw();
+    worldView.draw();
 
     InOrder inOrder = Mockito.inOrder(stage, viewport, camera, mapRenderer);
     inOrder.verify(viewport).apply();
@@ -114,14 +115,14 @@ public class WorldTest {
   public void resize() {
     when(stage.getViewport()).thenReturn(viewport);
 
-    world.resize(10, 15);
+    worldView.resize(10, 15);
 
     verify(viewport).update(10, 15);
   }
 
   @Test
   public void dispose() {
-    world.dispose();
+    worldView.dispose();
 
     verify(stage).dispose();
   }
@@ -131,7 +132,7 @@ public class WorldTest {
     // black magic to qualify return type as wildcard
     Mockito.<WorldActor<?>>when(actorMap.get(mapObject)).thenReturn(worldActor);
 
-    assertThat(world.get(mapObject)).isSameAs(worldActor);
+    assertThat(worldView.get(mapObject)).isSameAs(worldActor);
   }
 
   @Test
@@ -141,7 +142,7 @@ public class WorldTest {
     when(actorFactory.create(player, loopAnimation)).thenReturn(playerActor);
     when(controllerFactory.create(player)).thenReturn(controller);
 
-    world.add(player);
+    worldView.add(player);
 
     verify(playerActor).addListener(controller);
     verify(characterGroup).addActor(playerActor);
@@ -156,7 +157,7 @@ public class WorldTest {
     when(actorFactory.create(enemy, loopAnimation)).thenReturn(enemyActor);
     when(controllerFactory.create(enemy)).thenReturn(controller);
 
-    world.add(enemy);
+    worldView.add(enemy);
 
     verify(enemyActor).addListener(controller);
     verify(characterGroup).addActor(enemyActor);
@@ -169,7 +170,7 @@ public class WorldTest {
     when(actorFactory.create(terrain)).thenReturn(terrainActor);
     when(controllerFactory.create(terrain)).thenReturn(controller);
 
-    world.add(terrain);
+    worldView.add(terrain);
 
     verify(terrainActor).addListener(controller);
     verify(terrainGroup).addActor(terrainActor);
@@ -182,7 +183,7 @@ public class WorldTest {
     when(actorMap.containsKey(mapObject)).thenReturn(true);
     Mockito.<WorldActor<?>>when(actorMap.remove(mapObject)).thenReturn(worldActor);
 
-    world.remove(mapObject);
+    worldView.remove(mapObject);
 
     verify(actorMap).remove(mapObject);
     verify(worldActor).remove();
@@ -192,6 +193,6 @@ public class WorldTest {
   public void remove_not_found() {
     when(actorMap.containsKey(mapObject)).thenReturn(false);
 
-    world.remove(mapObject);
+    worldView.remove(mapObject);
   }
 }

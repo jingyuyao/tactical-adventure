@@ -45,7 +45,7 @@ public class WorldModuleTest {
   private Texture texture;
 
   @Inject
-  private World world;
+  private WorldView worldView;
   @Inject
   private WorldSubscriber worldSubscriber;
 

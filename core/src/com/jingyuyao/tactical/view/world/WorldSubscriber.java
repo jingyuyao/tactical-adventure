@@ -11,30 +11,30 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldSubscriber {
 
-  private final World world;
+  private final WorldView worldView;
 
   @Inject
-  WorldSubscriber(World world) {
-    this.world = world;
+  WorldSubscriber(WorldView worldView) {
+    this.worldView = worldView;
   }
 
   @Subscribe
   void addTerrain(AddTerrain addTerrain) {
-    world.add(addTerrain.getObject());
+    worldView.add(addTerrain.getObject());
   }
 
   @Subscribe
   void addPlayer(AddPlayer addPlayer) {
-    world.add(addPlayer.getObject());
+    worldView.add(addPlayer.getObject());
   }
 
   @Subscribe
   void addEnemy(AddEnemy addEnemy) {
-    world.add(addEnemy.getObject());
+    worldView.add(addEnemy.getObject());
   }
 
   @Subscribe
   void removeObject(RemoveObject removeObject) {
-    world.remove(removeObject.getObject());
+    worldView.remove(removeObject.getObject());
   }
 }

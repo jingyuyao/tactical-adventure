@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class World {
+public class WorldView {
 
   private final Stage stage;
   private final Group characterGroup;
@@ -39,7 +39,7 @@ public class World {
   private final Animations animations;
 
   @Inject
-  World(
+  WorldView(
       @WorldStage Stage stage,
       @CharacterGroup Group characterGroup,
       @TerrainGroup Group terrainGroup,

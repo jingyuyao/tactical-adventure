@@ -21,7 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldSubscriberTest {
 
   @Mock
-  private World world;
+  private WorldView worldView;
   @Mock
   private AddTerrain addTerrain;
   @Mock
@@ -43,7 +43,7 @@ public class WorldSubscriberTest {
 
   @Before
   public void setUp() {
-    subscriber = new WorldSubscriber(world);
+    subscriber = new WorldSubscriber(worldView);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class WorldSubscriberTest {
 
     subscriber.addTerrain(addTerrain);
 
-    verify(world).add(terrain);
+    verify(worldView).add(terrain);
   }
 
   @Test
@@ -61,7 +61,7 @@ public class WorldSubscriberTest {
 
     subscriber.addPlayer(addPlayer);
 
-    verify(world).add(player);
+    verify(worldView).add(player);
   }
 
   @Test
@@ -70,7 +70,7 @@ public class WorldSubscriberTest {
 
     subscriber.addEnemy(addEnemy);
 
-    verify(world).add(enemy);
+    verify(worldView).add(enemy);
   }
 
   @Test
@@ -79,6 +79,6 @@ public class WorldSubscriberTest {
 
     subscriber.removeObject(removeObject);
 
-    verify(world).remove(mapObject);
+    verify(worldView).remove(mapObject);
   }
 }

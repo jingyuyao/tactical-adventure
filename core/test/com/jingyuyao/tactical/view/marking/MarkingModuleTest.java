@@ -6,7 +6,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.Markers;
-import com.jingyuyao.tactical.view.world.World;
+import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ public class MarkingModuleTest {
 
   @Bind
   @Mock
-  private World world;
+  private WorldView worldView;
   @Bind
   @Mock
   private Batch batch;

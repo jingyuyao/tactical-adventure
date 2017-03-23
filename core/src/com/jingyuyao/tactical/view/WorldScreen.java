@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.Markings;
 import com.jingyuyao.tactical.view.resource.AnimationTime;
 import com.jingyuyao.tactical.view.ui.UI;
-import com.jingyuyao.tactical.view.world.World;
+import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 public class WorldScreen extends ScreenAdapter {
 
   private final Batch batch;
-  private final World world;
+  private final WorldView worldView;
   private final Markings markings;
   private final UI ui;
   private final AnimationTime animationTime;
@@ -25,13 +25,13 @@ public class WorldScreen extends ScreenAdapter {
   @Inject
   WorldScreen(
       Batch batch,
-      World world,
+      WorldView worldView,
       Markings markings,
       UI ui,
       AnimationTime animationTime,
       WorldController worldController) {
     this.batch = batch;
-    this.world = world;
+    this.worldView = worldView;
     this.markings = markings;
     this.ui = ui;
     this.animationTime = animationTime;
@@ -51,11 +51,11 @@ public class WorldScreen extends ScreenAdapter {
   @Override
   public void render(float delta) {
     ui.act(delta);
-    world.act(delta);
+    worldView.act(delta);
     animationTime.advanceStateTime(delta);
 
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    world.draw();
+    worldView.draw();
     markings.draw();
     ui.draw();
   }
@@ -63,13 +63,13 @@ public class WorldScreen extends ScreenAdapter {
   @Override
   public void resize(int width, int height) {
     // This is very important...
-    world.resize(width, height);
+    worldView.resize(width, height);
     ui.resize(width, height);
   }
 
   @Override
   public void dispose() {
-    world.dispose();
+    worldView.dispose();
     ui.dispose();
     batch.dispose();
   }
