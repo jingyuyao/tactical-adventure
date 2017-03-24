@@ -129,7 +129,7 @@ public class World {
       if (cell.hasCharacter()) {
         Character character = cell.getCharacter();
         if (character.getHp() == 0) {
-          cell.setCharacter(null);
+          cell.removeCharacter();
           worldEventBus.post(new RemoveObject(character));
         }
       }

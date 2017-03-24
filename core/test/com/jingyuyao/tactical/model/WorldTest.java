@@ -192,8 +192,8 @@ public class WorldTest {
 
     world.removeDeadCharacters();
 
-    verify(cell1).setCharacter(null);
-    verify(cell2, never()).setCharacter(null);
+    verify(cell1).removeCharacter();
+    verify(cell2, never()).removeCharacter();
     verify(worldEventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, character1, RemoveObject.class);
   }

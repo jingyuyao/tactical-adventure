@@ -44,7 +44,14 @@ public class Cell {
   }
 
   public void setCharacter(Character character) {
+    Preconditions.checkState(!hasCharacter());
+    Preconditions.checkNotNull(character);
     this.character = character;
+  }
+
+  public void removeCharacter() {
+    Preconditions.checkState(hasCharacter());
+    this.character = null;
   }
 
   public boolean hasPlayer() {
@@ -64,9 +71,7 @@ public class Cell {
   }
 
   public void moveCharacterTo(Cell cell) {
-    Preconditions.checkState(hasCharacter());
-    Preconditions.checkArgument(!cell.hasCharacter());
     cell.setCharacter(character);
-    setCharacter(null);
+    removeCharacter();
   }
 }
