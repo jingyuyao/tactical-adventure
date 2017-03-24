@@ -29,12 +29,10 @@ public class Movements {
   static final int BLOCKED = -1;
 
   private final World world;
-  private final MovementFactory movementFactory;
 
   @Inject
-  Movements(World world, MovementFactory movementFactory) {
+  Movements(World world) {
     this.world = world;
-    this.movementFactory = movementFactory;
   }
 
   /**
@@ -43,7 +41,7 @@ public class Movements {
   public Movement distanceFrom(Cell cell) {
     Preconditions.checkArgument(cell.hasCharacter());
     Character character = cell.getCharacter();
-    return movementFactory.create(
+    return new Movement(
         distanceFrom(
             cell,
             character.getMoveDistance(),

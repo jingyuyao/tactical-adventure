@@ -3,10 +3,7 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.Graph;
-import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.World;
 import java.util.Set;
-import javax.inject.Inject;
 
 /**
  * A snapshot of all the things a character currently can target or move to on the map.
@@ -14,11 +11,8 @@ import javax.inject.Inject;
 public class Movement {
 
   private final Graph<Cell> moveGraph;
-  private final World world;
 
-  @Inject
-  Movement(World world, @Assisted Graph<Cell> moveGraph) {
-    this.world = world;
+  Movement(Graph<Cell> moveGraph) {
     this.moveGraph = moveGraph;
   }
 

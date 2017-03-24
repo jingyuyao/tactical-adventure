@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.World;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MovementTest {
 
-  @Mock
-  private World world;
   @Mock
   private Graph<Cell> graph;
   @Mock
@@ -34,7 +31,7 @@ public class MovementTest {
   @Before
   public void setUp() {
     when(graph.nodes()).thenReturn(ImmutableSet.of(origin, move1, move2));
-    movement = new Movement(world, graph);
+    movement = new Movement(graph);
   }
 
   @Test

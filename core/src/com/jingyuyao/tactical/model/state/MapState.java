@@ -1,12 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,30 +10,13 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState implements SelectionHandler {
+public class MapState {
 
-  private final EventBus eventBus;
   private final Deque<State> stateStack;
 
   @Inject
-  public MapState(@ModelEventBus EventBus eventBus, @BackingStateStack Deque<State> stateStack) {
-    this.eventBus = eventBus;
+  public MapState(@BackingStateStack Deque<State> stateStack) {
     this.stateStack = stateStack;
-  }
-
-  @Override
-  public void select(Player player) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void select(Enemy enemy) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void select(Terrain terrain) {
-    throw new UnsupportedOperationException();
   }
 
   public void initialize(State initialState) {

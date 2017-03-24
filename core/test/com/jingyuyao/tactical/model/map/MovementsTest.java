@@ -19,8 +19,6 @@ public class MovementsTest {
   @Mock
   private World world;
   @Mock
-  private MovementFactory movementFactory;
-  @Mock
   private Cell cell;
   @Mock
   private Terrain terrain;
@@ -31,7 +29,7 @@ public class MovementsTest {
 
   @Before
   public void setUp() {
-    movements = new Movements(world, movementFactory);
+    movements = new Movements(world);
   }
 
   @Test

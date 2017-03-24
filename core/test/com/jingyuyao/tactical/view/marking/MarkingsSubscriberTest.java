@@ -11,9 +11,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
+import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
@@ -55,11 +53,7 @@ public class MarkingsSubscriberTest {
   @Mock
   private Terrain terrain2;
   @Mock
-  private SelectPlayer selectPlayer;
-  @Mock
-  private SelectEnemy selectEnemy;
-  @Mock
-  private SelectTerrain selectTerrain;
+  private SelectCell selectCell;
   @Mock
   private PlayerState playerState;
   @Mock
@@ -99,28 +93,11 @@ public class MarkingsSubscriberTest {
   }
 
   @Test
-  public void select_player() {
-    when(selectPlayer.getObject()).thenReturn(player);
+  public void select_cell() {
+    when(selectCell.getObject()).thenReturn(cell);
+    when(cell.getTerrain()).thenReturn(terrain);
 
-    subscriber.selectPlayer(selectPlayer);
-
-    verify(markings).highlight(player);
-  }
-
-  @Test
-  public void select_enemy() {
-    when(selectEnemy.getObject()).thenReturn(enemy);
-
-    subscriber.selectEnemy(selectEnemy);
-
-    verify(markings).highlight(enemy);
-  }
-
-  @Test
-  public void select_terrain() {
-    when(selectTerrain.getObject()).thenReturn(terrain);
-
-    subscriber.selectTerrain(selectTerrain);
+    subscriber.selectCell(selectCell);
 
     verify(markings).highlight(terrain);
   }

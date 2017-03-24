@@ -66,7 +66,7 @@ public class WaitingTest {
 
   @Test
   public void enter_not_complete() {
-    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(enemy, player));
+    when(world.getCharacters()).thenReturn(FluentIterable.of(enemy, player));
 
     waiting.enter();
 

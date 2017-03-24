@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.state.SelectionHandler;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +23,6 @@ public class BasePlayerTest {
   private List<Item> items;
   @Mock
   private EventBus eventBus;
-  @Mock
-  private SelectionHandler selectionHandler;
 
   private Player player;
 

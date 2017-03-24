@@ -3,20 +3,13 @@ package com.jingyuyao.tactical.model.state;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Deque;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -24,8 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStateTest {
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private Deque<State> stateStack;
   @Mock
@@ -35,21 +26,13 @@ public class MapStateTest {
   @Mock
   private State state3;
   @Mock
-  private Player player;
-  @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
-  @Mock
   private Cell cell;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
 
   private MapState mapState;
 
   @Before
   public void setUp() {
-    mapState = new MapState(eventBus, stateStack);
+    mapState = new MapState(stateStack);
   }
 
   @Test
@@ -85,7 +68,7 @@ public class MapStateTest {
 
     mapState.goTo(state2);
 
-    InOrder inOrder = inOrder(state1, state2, stateStack, eventBus);
+    InOrder inOrder = inOrder(state1, state2, stateStack);
     inOrder.verify(state1).exit();
     inOrder.verify(stateStack).push(state2);
     inOrder.verify(state2).enter();
@@ -99,7 +82,6 @@ public class MapStateTest {
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
-    verifyZeroInteractions(eventBus);
   }
 
   @Test
@@ -110,7 +92,7 @@ public class MapStateTest {
 
     mapState.back();
 
-    InOrder inOrder = inOrder(stateStack, state2, state1, eventBus);
+    InOrder inOrder = inOrder(stateStack, state2, state1);
 
     inOrder.verify(stateStack).pop();
     inOrder.verify(state2).exit();
@@ -127,7 +109,6 @@ public class MapStateTest {
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
-    verifyZeroInteractions(eventBus);
   }
 
   @Test
@@ -138,7 +119,7 @@ public class MapStateTest {
 
     mapState.rollback();
 
-    InOrder inOrder = inOrder(stateStack, state3, state2, state1, eventBus);
+    InOrder inOrder = inOrder(stateStack, state3, state2, state1);
 
     // oh boy...
     inOrder.verify(stateStack).pop();
@@ -160,7 +141,7 @@ public class MapStateTest {
 
     mapState.branchTo(state1);
 
-    InOrder inOrder = inOrder(stateStack, state1, state2, eventBus);
+    InOrder inOrder = inOrder(stateStack, state1, state2);
 
     inOrder.verify(stateStack).peek();
     inOrder.verify(state2).exit();

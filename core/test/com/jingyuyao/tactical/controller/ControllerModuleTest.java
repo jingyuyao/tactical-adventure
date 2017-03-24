@@ -7,7 +7,6 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.state.SelectionHandler;
 import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
@@ -20,9 +19,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ControllerModuleTest {
 
-  @Bind
-  @Mock
-  private SelectionHandler selectionHandler;
   @Bind
   @Mock
   private World world;
