@@ -8,7 +8,7 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Path;
 import java.util.Collections;
 import java.util.List;
@@ -99,14 +99,27 @@ abstract class AbstractCharacter implements Character {
 
   @Override
   public ListenableFuture<Void> moveAlong(Path path) {
+    Cell from = path.getOrigin();
+    Cell to = path.getDestination();
+    Preconditions.checkArgument(from.hasCharacter());
+    Preconditions.checkArgument(from.getCharacter().equals(this));
+    Preconditions.checkArgument(!to.hasCharacter());
+    to.setCharacter(this);
+    from.setCharacter(null);
+
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Move(this, future, path));
     return future;
   }
 
   @Override
-  public void instantMoveTo(Coordinate newCoordinate) {
-    eventBus.post(new InstantMove(this, newCoordinate));
+  public void instantMoveTo(Cell from, Cell to) {
+    Preconditions.checkArgument(from.hasCharacter());
+    Preconditions.checkArgument(from.getCharacter().equals(this));
+    Preconditions.checkArgument(!to.hasCharacter());
+    to.setCharacter(this);
+    from.setCharacter(null);
+    eventBus.post(new InstantMove(this, to));
   }
 
   @Override

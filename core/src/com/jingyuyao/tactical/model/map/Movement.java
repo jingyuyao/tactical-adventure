@@ -43,7 +43,7 @@ public class Movement {
   public Path pathTo(Cell cell) {
     Preconditions.checkArgument(moveGraph.nodes().contains(cell));
 
-    return new Path(cell, getTrackTo(moveGraph, cell));
+    return new Path(getTrackTo(moveGraph, cell));
   }
 
   /**

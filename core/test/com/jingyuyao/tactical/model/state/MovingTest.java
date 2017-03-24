@@ -17,7 +17,6 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import com.jingyuyao.tactical.model.map.Path;
@@ -33,8 +32,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MovingTest {
-
-  private static final Coordinate MOVING_PLAYER_COORDINATE = new Coordinate(0, 1);
 
   @Mock
   private MapState mapState;
@@ -93,23 +90,19 @@ public class MovingTest {
 
   @Test
   public void canceled_nothing() {
-    when(cell.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
-    when(movement.getStartingCell()).thenReturn(cell);
-
     moving.canceled();
 
-    verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
+    verifyZeroInteractions(player);
   }
 
   @Test
-  public void canceled_terrain_move() {
-    when(cell2.getCoordinate()).thenReturn(MOVING_PLAYER_COORDINATE);
-    when(movement.getStartingCell()).thenReturn(cell2);
-    select_terrain_can_move();
+  public void canceled_move() {
+    when(movement.getStartingCell()).thenReturn(cell);
+    select_can_move();
 
     moving.canceled();
 
-    verify(player).instantMoveTo(MOVING_PLAYER_COORDINATE);
+    verify(player).instantMoveTo(cell2, cell);
   }
 
   @Test
@@ -158,7 +151,7 @@ public class MovingTest {
   }
 
   @Test
-  public void select_terrain_can_move() {
+  public void select_can_move() {
     when(cell2.hasPlayer()).thenReturn(false);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
@@ -176,7 +169,7 @@ public class MovingTest {
   }
 
   @Test
-  public void select_terrain_cannot_move() {
+  public void select_cannot_move() {
     when(cell2.hasPlayer()).thenReturn(false);
     when(movement.canMoveTo(cell2)).thenReturn(false);
 

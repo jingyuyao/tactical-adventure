@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import java.util.List;
 import org.junit.Before;
@@ -28,7 +27,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCharacterTest {
 
-  private static final Coordinate DESTINATION = new Coordinate(50, 50);
   private static final String NAME = "yo";
   private static final int MAX_HP = 20;
   private static final int HP = 10;
@@ -49,7 +47,9 @@ public class AbstractCharacterTest {
   @Mock
   private Object listener;
   @Mock
-  private Cell cell;
+  private Cell from;
+  @Mock
+  private Cell to;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -140,6 +140,12 @@ public class AbstractCharacterTest {
 
   @Test
   public void move_along() {
+    when(from.hasCharacter()).thenReturn(true);
+    when(from.getCharacter()).thenReturn(character);
+    when(to.hasCharacter()).thenReturn(false);
+    when(path.getOrigin()).thenReturn(from);
+    when(path.getDestination()).thenReturn(to);
+
     ListenableFuture<Void> future = character.moveAlong(path);
 
     verify(eventBus).post(argumentCaptor.capture());
@@ -149,16 +155,22 @@ public class AbstractCharacterTest {
 
     move.done();
     assertThat(future.isDone()).isTrue();
+    verify(to).setCharacter(character);
+    verify(from).setCharacter(null);
   }
 
   @Test
   public void instant_move() {
-    character.instantMoveTo(DESTINATION);
+    when(from.hasCharacter()).thenReturn(true);
+    when(from.getCharacter()).thenReturn(character);
+    when(to.hasCharacter()).thenReturn(false);
+
+    character.instantMoveTo(from, to);
 
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
         TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);
-    assertThat(instantMove.getDestination()).isEqualTo(DESTINATION);
+    assertThat(instantMove.getDestination()).isEqualTo(to);
   }
 
   private static class CharacterImpl extends AbstractCharacter {

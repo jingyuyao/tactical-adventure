@@ -5,12 +5,10 @@ import com.google.common.collect.ImmutableList;
 
 public class Path {
 
-  private final Cell destination;
   private final ImmutableList<Cell> track;
 
-  Path(Cell destination, ImmutableList<Cell> track) {
+  Path(ImmutableList<Cell> track) {
     Preconditions.checkArgument(!track.isEmpty());
-    this.destination = destination;
     this.track = track;
   }
 
@@ -18,7 +16,11 @@ public class Path {
     return track;
   }
 
+  public Cell getOrigin() {
+    return track.get(0);
+  }
+
   public Cell getDestination() {
-    return destination;
+    return track.get(track.size() - 1);
   }
 }

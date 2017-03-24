@@ -99,7 +99,8 @@ public class CharacterActorTest {
 
   @Test
   public void instant_move() {
-    when(instantMove.getDestination()).thenReturn(DESTINATION);
+    when(cell1.getCoordinate()).thenReturn(DESTINATION);
+    when(instantMove.getDestination()).thenReturn(cell1);
 
     characterActor.instantMove(instantMove);
 

@@ -16,6 +16,7 @@ public class Moving extends PlayerActionState {
 
   private final Movements movements;
   private final Movement movement;
+  private Cell prevMove;
 
   @Inject
   Moving(
@@ -32,8 +33,9 @@ public class Moving extends PlayerActionState {
 
   @Override
   public void canceled() {
-    // TODO: fix me!
-    getPlayer().instantMoveTo(movement.getStartingCell().getCoordinate());
+    if (prevMove != null) {
+      getPlayer().instantMoveTo(prevMove, movement.getStartingCell());
+    }
   }
 
   @Override
@@ -49,6 +51,7 @@ public class Moving extends PlayerActionState {
     } else {
       if (movement.canMoveTo(cell)) {
         Path path = movement.pathTo(cell);
+        prevMove = cell;
         goTo(getStateFactory().createTransition());
         Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
           @Override

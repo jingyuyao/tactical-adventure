@@ -42,7 +42,7 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
 
   @Subscribe
   void instantMove(InstantMove instantMove) {
-    updateCoordinate(instantMove.getDestination());
+    updateCoordinate(instantMove.getDestination().getCoordinate());
   }
 
   @Subscribe
