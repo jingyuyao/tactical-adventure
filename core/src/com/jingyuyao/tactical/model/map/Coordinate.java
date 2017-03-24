@@ -49,10 +49,4 @@ public final class Coordinate {
   public int hashCode() {
     return Objects.hashCode(getX(), getY());
   }
-
-  @Override
-  public String toString() {
-    // Used for serialization, do not change
-    return x + "," + y;
-  }
 }

@@ -82,6 +82,7 @@ public class DataModule extends AbstractModule {
   ) {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
+    builder.enableComplexMapKeySerialization();
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapterFactory(characterRuntimeTypeAdapterFactory);
     builder.registerTypeAdapterFactory(itemRuntimeTypeAdapterFactory);
