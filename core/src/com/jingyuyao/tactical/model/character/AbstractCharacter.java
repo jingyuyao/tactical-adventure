@@ -99,13 +99,7 @@ abstract class AbstractCharacter implements Character {
 
   @Override
   public ListenableFuture<Void> moveAlong(Path path) {
-    Cell from = path.getOrigin();
-    Cell to = path.getDestination();
-    Preconditions.checkArgument(from.hasCharacter());
-    Preconditions.checkArgument(from.getCharacter().equals(this));
-    Preconditions.checkArgument(!to.hasCharacter());
-    to.setCharacter(this);
-    from.setCharacter(null);
+    path.getOrigin().moveCharacterTo(path.getDestination());
 
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Move(this, future, path));
@@ -114,11 +108,7 @@ abstract class AbstractCharacter implements Character {
 
   @Override
   public void instantMoveTo(Cell from, Cell to) {
-    Preconditions.checkArgument(from.hasCharacter());
-    Preconditions.checkArgument(from.getCharacter().equals(this));
-    Preconditions.checkArgument(!to.hasCharacter());
-    to.setCharacter(this);
-    from.setCharacter(null);
+    from.moveCharacterTo(to);
     eventBus.post(new InstantMove(this, to));
   }
 

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.map;
 
+import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -50,5 +51,12 @@ public class Cell {
 
   public Enemy getEnemy() {
     return (Enemy) character;
+  }
+
+  public void moveCharacterTo(Cell cell) {
+    Preconditions.checkState(hasCharacter());
+    Preconditions.checkArgument(!cell.hasCharacter());
+    cell.setCharacter(character);
+    setCharacter(null);
   }
 }

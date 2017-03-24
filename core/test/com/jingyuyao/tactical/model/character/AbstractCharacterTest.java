@@ -140,9 +140,6 @@ public class AbstractCharacterTest {
 
   @Test
   public void move_along() {
-    when(from.hasCharacter()).thenReturn(true);
-    when(from.getCharacter()).thenReturn(character);
-    when(to.hasCharacter()).thenReturn(false);
     when(path.getOrigin()).thenReturn(from);
     when(path.getDestination()).thenReturn(to);
 
@@ -155,18 +152,14 @@ public class AbstractCharacterTest {
 
     move.done();
     assertThat(future.isDone()).isTrue();
-    verify(to).setCharacter(character);
-    verify(from).setCharacter(null);
+    verify(from).moveCharacterTo(to);
   }
 
   @Test
   public void instant_move() {
-    when(from.hasCharacter()).thenReturn(true);
-    when(from.getCharacter()).thenReturn(character);
-    when(to.hasCharacter()).thenReturn(false);
-
     character.instantMoveTo(from, to);
 
+    verify(from).moveCharacterTo(to);
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
         TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);
