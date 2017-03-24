@@ -24,6 +24,8 @@ public class MapModuleTest {
   private World world;
 
   @Inject
+  private CellFactory cellFactory;
+  @Inject
   private Movements movements;
 
   @Test

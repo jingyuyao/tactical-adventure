@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -17,6 +18,8 @@ public class CellTest {
   private static final Coordinate COORDINATE = new Coordinate(2, 3);
 
   @Mock
+  private EventBus cellEventBus;
+  @Mock
   private Terrain terrain;
   @Mock
   private Player player;
@@ -27,7 +30,7 @@ public class CellTest {
 
   @Before
   public void setUp() {
-    cell = new Cell(COORDINATE, terrain);
+    cell = new Cell(cellEventBus, COORDINATE, terrain);
     assertThat(cell.getCoordinate()).isEqualTo(COORDINATE);
     assertThat(cell.getTerrain()).isSameAs(terrain);
     assertThat(cell.hasCharacter()).isFalse();
@@ -57,7 +60,7 @@ public class CellTest {
 
   @Test
   public void move_character() {
-    Cell other = new Cell(COORDINATE, terrain);
+    Cell other = new Cell(cellEventBus, COORDINATE, terrain);
     cell.setCharacter(player);
 
     cell.moveCharacterTo(other);
