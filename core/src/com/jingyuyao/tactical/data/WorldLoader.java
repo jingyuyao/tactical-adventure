@@ -56,7 +56,7 @@ public class WorldLoader {
       if (cell.hasCharacter()) {
         throw new IllegalArgumentException("Character occupying same space as another");
       }
-      cell.setCharacter(entry.getValue());
+      cell.spawnCharacter(entry.getValue());
     }
 
     world.load(waitingProvider.get(), cellMap.values());

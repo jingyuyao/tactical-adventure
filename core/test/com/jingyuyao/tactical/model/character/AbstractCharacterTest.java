@@ -152,14 +152,14 @@ public class AbstractCharacterTest {
 
     move.done();
     assertThat(future.isDone()).isTrue();
-    verify(from).moveCharacterTo(to);
+    verify(from).instantMoveCharacter(to);
   }
 
   @Test
   public void instant_move() {
     character.instantMoveTo(from, to);
 
-    verify(from).moveCharacterTo(to);
+    verify(from).instantMoveCharacter(to);
     verify(eventBus).post(argumentCaptor.capture());
     InstantMove instantMove =
         TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);

@@ -99,7 +99,7 @@ abstract class AbstractCharacter implements Character {
 
   @Override
   public ListenableFuture<Void> moveAlong(Path path) {
-    path.getOrigin().moveCharacterTo(path.getDestination());
+    path.getOrigin().instantMoveCharacter(path.getDestination());
 
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new Move(this, future, path));
@@ -108,7 +108,7 @@ abstract class AbstractCharacter implements Character {
 
   @Override
   public void instantMoveTo(Cell from, Cell to) {
-    from.moveCharacterTo(to);
+    from.instantMoveCharacter(to);
     eventBus.post(new InstantMove(this, to));
   }
 
