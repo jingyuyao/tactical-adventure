@@ -34,7 +34,7 @@ public class Moving extends PlayerActionState {
   @Override
   public void canceled() {
     if (prevMove != null) {
-      getPlayer().instantMoveTo(prevMove, movement.getStartingCell());
+      prevMove.instantMoveCharacter(movement.getStartingCell());
     }
   }
 
@@ -53,17 +53,18 @@ public class Moving extends PlayerActionState {
         Path path = movement.pathTo(cell);
         prevMove = cell;
         goTo(getStateFactory().createTransition());
-        Futures.addCallback(getPlayer().moveAlong(path), new FutureCallback<Void>() {
-          @Override
-          public void onSuccess(Void result) {
-            goTo(getStateFactory().createMoved(cell));
-          }
+        Futures.addCallback(movement.getStartingCell().moveCharacter(path),
+            new FutureCallback<Void>() {
+              @Override
+              public void onSuccess(Void result) {
+                goTo(getStateFactory().createMoved(cell));
+              }
 
-          @Override
-          public void onFailure(Throwable t) {
+              @Override
+              public void onFailure(Throwable t) {
 
-          }
-        });
+              }
+            });
       }
     }
   }

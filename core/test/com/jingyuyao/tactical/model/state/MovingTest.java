@@ -97,12 +97,11 @@ public class MovingTest {
 
   @Test
   public void canceled_move() {
-    when(movement.getStartingCell()).thenReturn(cell);
     select_can_move();
 
     moving.canceled();
 
-    verify(player).instantMoveTo(cell2, cell);
+    verify(cell2).instantMoveCharacter(cell);
   }
 
   @Test
@@ -153,17 +152,18 @@ public class MovingTest {
   @Test
   public void select_can_move() {
     when(cell2.hasPlayer()).thenReturn(false);
+    when(movement.getStartingCell()).thenReturn(cell);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
-    when(player.moveAlong(path)).thenReturn(immediateFuture);
+    when(cell.moveCharacter(path)).thenReturn(immediateFuture);
 
     moving.select(cell2);
 
-    InOrder inOrder = Mockito.inOrder(player, mapState);
+    InOrder inOrder = Mockito.inOrder(player, cell, mapState);
     inOrder.verify(mapState).goTo(transition);
-    inOrder.verify(player).moveAlong(path);
+    inOrder.verify(cell).moveCharacter(path);
     inOrder.verify(mapState).goTo(moved);
     verifyNoMoreInteractions(mapState);
   }
