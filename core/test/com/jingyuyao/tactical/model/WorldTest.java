@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -9,7 +8,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -181,20 +179,5 @@ public class WorldTest {
     verify(mapState).select(cell1);
     verify(worldEventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell1, SelectCell.class);
-  }
-
-  @Test
-  public void remove_dead_characters() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-    when(character1.getHp()).thenReturn(0);
-    when(character2.getHp()).thenReturn(100);
-
-    world.removeDeadCharacters();
-
-    verify(cell1).removeCharacter();
-    verify(cell2, never()).removeCharacter();
-    verify(worldEventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, character1, RemoveObject.class);
   }
 }
