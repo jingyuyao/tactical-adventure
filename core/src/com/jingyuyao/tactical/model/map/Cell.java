@@ -69,24 +69,24 @@ public class Cell {
     Preconditions.checkState(!hasCharacter());
     Preconditions.checkNotNull(character);
 
+    eventBus.post(new SpawnCharacter(character));
     this.character = character;
-    eventBus.post(new SpawnCharacter());
   }
 
   public void removeCharacter() {
     Preconditions.checkState(hasCharacter());
 
+    eventBus.post(new RemoveCharacter(character));
     this.character = null;
-    eventBus.post(new RemoveCharacter());
   }
 
   public void instantMoveCharacter(Cell cell) {
     Preconditions.checkState(hasCharacter());
     Preconditions.checkArgument(!cell.hasCharacter());
 
+    eventBus.post(new InstantMoveCharacter(character, cell));
     cell.character = character;
     character = null;
-    eventBus.post(new InstantMoveCharacter(cell));
   }
 
   public ListenableFuture<Void> moveCharacter(Path path) {
@@ -94,10 +94,10 @@ public class Cell {
     Preconditions.checkArgument(path.getOrigin().equals(this));
     Preconditions.checkArgument(!path.getDestination().hasCharacter());
 
+    SettableFuture<Void> future = SettableFuture.create();
+    eventBus.post(new MoveCharacter(character, path, future));
     path.getDestination().character = character;
     character = null;
-    SettableFuture<Void> future = SettableFuture.create();
-    eventBus.post(new MoveCharacter(path, future));
     return future;
   }
 }

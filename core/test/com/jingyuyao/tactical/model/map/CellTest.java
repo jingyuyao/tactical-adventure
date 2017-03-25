@@ -62,7 +62,7 @@ public class CellTest {
     assertThat(cell.getPlayer()).isSameAs(player);
     assertThat(cell.hasEnemy()).isFalse();
     verify(eventBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(SpawnCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SpawnCharacter.class);
   }
 
   @Test
@@ -74,7 +74,7 @@ public class CellTest {
     assertThat(cell.getEnemy()).isSameAs(enemy);
     assertThat(cell.hasPlayer()).isFalse();
     verify(eventBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(SpawnCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, SpawnCharacter.class);
   }
 
   @Test
@@ -83,8 +83,8 @@ public class CellTest {
     cell.removeCharacter();
 
     verify(eventBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues().get(0)).isInstanceOf(SpawnCharacter.class);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(RemoveCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SpawnCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, RemoveCharacter.class);
   }
 
   @Test
@@ -98,8 +98,8 @@ public class CellTest {
     assertThat(other.hasCharacter()).isTrue();
     assertThat(other.getCharacter()).isSameAs(player);
     verify(eventBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues().get(0)).isInstanceOf(SpawnCharacter.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, other, InstantMoveCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SpawnCharacter.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(InstantMoveCharacter.class);
   }
 
   @Test
@@ -115,7 +115,7 @@ public class CellTest {
     assertThat(other.hasCharacter()).isTrue();
     assertThat(other.getCharacter()).isSameAs(player);
     verify(eventBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues().get(0)).isInstanceOf(SpawnCharacter.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, path, MoveCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SpawnCharacter.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(MoveCharacter.class);
   }
 }
