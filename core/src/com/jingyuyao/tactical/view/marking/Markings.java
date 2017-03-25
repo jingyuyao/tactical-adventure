@@ -22,8 +22,8 @@ public class Markings {
   private final Batch batch;
   private final WorldView worldView;
   private final Markers markers;
-  private final Multimap<WorldActor<?>, SingleAnimation> animationsMap;
-  private final List<WorldActor<?>> markedActors;
+  private final Multimap<WorldActor, SingleAnimation> animationsMap;
+  private final List<WorldActor> markedActors;
   private WorldActor highlightedActor;
   private WorldActor activatedActor;
 
@@ -32,8 +32,8 @@ public class Markings {
       Batch batch,
       WorldView worldView,
       Markers markers,
-      @InProgressAnimationsMap Multimap<WorldActor<?>, SingleAnimation> animationsMap,
-      @MarkedActors List<WorldActor<?>> markedActors) {
+      @InProgressAnimationsMap Multimap<WorldActor, SingleAnimation> animationsMap,
+      @MarkedActors List<WorldActor> markedActors) {
     this.batch = batch;
     this.worldView = worldView;
     this.markers = markers;
@@ -45,7 +45,7 @@ public class Markings {
     batch.begin();
     markers.getHighlight().draw(batch, highlightedActor);
     markers.getActivated().draw(batch, activatedActor);
-    for (Entry<WorldActor<?>, SingleAnimation> entry : animationsMap.entries()) {
+    for (Entry<WorldActor, SingleAnimation> entry : animationsMap.entries()) {
       WorldTexture worldTexture = entry.getValue().getCurrentFrame();
       worldTexture.draw(batch, entry.getKey());
     }
@@ -61,7 +61,7 @@ public class Markings {
   }
 
   void addSingleAnimation(Object object, final SingleAnimation singleAnimation) {
-    final WorldActor<?> actor = worldView.get(object);
+    final WorldActor actor = worldView.get(object);
     animationsMap.put(actor, singleAnimation);
     Futures.addCallback(singleAnimation.getFuture(), new FutureCallback<Void>() {
       @Override

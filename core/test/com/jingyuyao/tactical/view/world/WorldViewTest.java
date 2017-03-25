@@ -17,12 +17,8 @@ import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.EnemyActor;
-import com.jingyuyao.tactical.view.actor.PlayerActor;
-import com.jingyuyao.tactical.view.actor.TerrainActor;
+import com.jingyuyao.tactical.view.actor.CharacterActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +32,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldViewTest {
 
   private static final Coordinate COORDINATE = new Coordinate(10, 10);
-  private static final String NAME = "popcorn";
 
   @Mock
   private Stage stage;
@@ -47,13 +42,11 @@ public class WorldViewTest {
   @Mock
   private Group terrainGroup;
   @Mock
-  private Map<Object, WorldActor<?>> actorMap;
+  private Map<Object, WorldActor> actorMap;
   @Mock
   private OrthogonalTiledMapRenderer mapRenderer;
   @Mock
   private ActorFactory actorFactory;
-  @Mock
-  private Animations animations;
   @Mock
   private Viewport viewport;
   @Mock
@@ -61,21 +54,15 @@ public class WorldViewTest {
   @Mock
   private Object object;
   @Mock
-  private WorldActor<?> worldActor;
-  @Mock
-  private LoopAnimation loopAnimation;
+  private WorldActor worldActor;
   @Mock
   private Player player;
   @Mock
-  private PlayerActor playerActor;
-  @Mock
   private Enemy enemy;
-  @Mock
-  private EnemyActor enemyActor;
   @Mock
   private Terrain terrain;
   @Mock
-  private TerrainActor terrainActor;
+  private CharacterActor characterActor;
   @Mock
   private Actor cellActor;
   @Mock
@@ -85,11 +72,13 @@ public class WorldViewTest {
 
   @Before
   public void setUp() {
-    worldView = new WorldView(stage, cellGroup, characterGroup, terrainGroup, actorMap, mapRenderer,
-        actorFactory, animations);
+    worldView =
+        new WorldView(
+            stage, cellGroup, characterGroup, terrainGroup, actorMap, mapRenderer, actorFactory);
     InOrder inOrder = Mockito.inOrder(stage);
     inOrder.verify(stage).addActor(terrainGroup);
     inOrder.verify(stage).addActor(characterGroup);
+    inOrder.verify(stage).addActor(cellGroup);
   }
 
   @Test
@@ -141,7 +130,7 @@ public class WorldViewTest {
   @Test
   public void get() {
     // black magic to qualify return type as wildcard
-    Mockito.<WorldActor<?>>when(actorMap.get(object)).thenReturn(worldActor);
+    when(actorMap.get(object)).thenReturn(worldActor);
 
     assertThat(worldView.get(object)).isSameAs(worldActor);
   }
@@ -152,18 +141,16 @@ public class WorldViewTest {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(player);
     when(cell.getTerrain()).thenReturn(terrain);
-    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
-    when(player.getName()).thenReturn(NAME);
-    when(actorFactory.create(player, COORDINATE, loopAnimation)).thenReturn(playerActor);
-    when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
+    when(actorFactory.create(player, COORDINATE)).thenReturn(characterActor);
+    when(actorFactory.create(COORDINATE)).thenReturn(worldActor);
     when(actorFactory.create(cell)).thenReturn(cellActor);
 
     worldView.add(cell);
 
-    verify(characterGroup).addActor(playerActor);
-    verify(actorMap).put(player, playerActor);
-    verify(terrainGroup).addActor(terrainActor);
-    verify(actorMap).put(terrain, terrainActor);
+    verify(characterGroup).addActor(characterActor);
+    verify(actorMap).put(player, characterActor);
+    verify(terrainGroup).addActor(worldActor);
+    verify(actorMap).put(terrain, worldActor);
     verify(cellGroup).addActor(cellActor);
   }
 
@@ -174,62 +161,56 @@ public class WorldViewTest {
     when(cell.hasEnemy()).thenReturn(true);
     when(cell.getEnemy()).thenReturn(enemy);
     when(cell.getTerrain()).thenReturn(terrain);
-    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
-    when(enemy.getName()).thenReturn(NAME);
-    when(actorFactory.create(enemy, COORDINATE, loopAnimation)).thenReturn(enemyActor);
-    when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
+    when(actorFactory.create(enemy, COORDINATE)).thenReturn(characterActor);
+    when(actorFactory.create(COORDINATE)).thenReturn(worldActor);
     when(actorFactory.create(cell)).thenReturn(cellActor);
 
     worldView.add(cell);
 
-    verify(characterGroup).addActor(enemyActor);
-    verify(actorMap).put(enemy, enemyActor);
-    verify(terrainGroup).addActor(terrainActor);
-    verify(actorMap).put(terrain, terrainActor);
+    verify(characterGroup).addActor(characterActor);
+    verify(actorMap).put(enemy, characterActor);
+    verify(terrainGroup).addActor(worldActor);
+    verify(actorMap).put(terrain, worldActor);
     verify(cellGroup).addActor(cellActor);
   }
 
   @Test
   public void add_player() {
-    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
-    when(player.getName()).thenReturn(NAME);
-    when(actorFactory.create(player, COORDINATE, loopAnimation)).thenReturn(playerActor);
+    when(actorFactory.create(player, COORDINATE)).thenReturn(characterActor);
 
     worldView.add(COORDINATE, player);
 
-    verify(characterGroup).addActor(playerActor);
-    verify(actorMap).put(player, playerActor);
+    verify(characterGroup).addActor(characterActor);
+    verify(actorMap).put(player, characterActor);
     verifyZeroInteractions(terrainGroup);
   }
 
   @Test
   public void add_enemy() {
-    when(animations.getCharacter(NAME)).thenReturn(loopAnimation);
-    when(enemy.getName()).thenReturn(NAME);
-    when(actorFactory.create(enemy, COORDINATE, loopAnimation)).thenReturn(enemyActor);
+    when(actorFactory.create(enemy, COORDINATE)).thenReturn(characterActor);
 
     worldView.add(COORDINATE, enemy);
 
-    verify(characterGroup).addActor(enemyActor);
-    verify(actorMap).put(enemy, enemyActor);
+    verify(characterGroup).addActor(characterActor);
+    verify(actorMap).put(enemy, characterActor);
     verifyZeroInteractions(terrainGroup);
   }
 
   @Test
   public void add_terrain() {
-    when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
+    when(actorFactory.create(COORDINATE)).thenReturn(worldActor);
 
     worldView.add(COORDINATE, terrain);
 
-    verify(terrainGroup).addActor(terrainActor);
-    verify(actorMap).put(terrain, terrainActor);
+    verify(terrainGroup).addActor(worldActor);
+    verify(actorMap).put(terrain, worldActor);
     verifyZeroInteractions(characterGroup);
   }
 
   @Test
   public void remove() {
     when(actorMap.containsKey(object)).thenReturn(true);
-    Mockito.<WorldActor<?>>when(actorMap.remove(object)).thenReturn(worldActor);
+    when(actorMap.remove(object)).thenReturn(worldActor);
 
     worldView.remove(object);
 

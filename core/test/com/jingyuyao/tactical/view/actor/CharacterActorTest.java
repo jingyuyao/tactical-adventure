@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Cell;
@@ -38,10 +37,6 @@ public class CharacterActorTest {
   private static final float MOVE_TIME_PER_UNIT = 1f;
 
   @Mock
-  private Character character;
-  @Mock
-  private ActorConfig actorConfig;
-  @Mock
   private LinkedHashSet<WorldTexture> markers;
   @Mock
   private LoopAnimation loopAnimation;
@@ -66,20 +61,13 @@ public class CharacterActorTest {
   @Mock
   private Cell cell2;
 
-  private CharacterActor<Character> characterActor;
+  private CharacterActor characterActor;
 
   @Before
   public void setUp() {
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
-
-    characterActor = new CharacterActor<>(
-        character, COORDINATE, actorConfig, markers, loopAnimation);
-
-    assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
-    assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
-    assertThat(characterActor.getWidth()).isEqualTo(ACTOR_SIZE);
-    assertThat(characterActor.getHeight()).isEqualTo(ACTOR_SIZE);
-    verify(character).registerListener(characterActor);
+    characterActor = new CharacterActor(MOVE_TIME_PER_UNIT, markers, loopAnimation);
+    characterActor.setSize(ACTOR_SIZE, ACTOR_SIZE);
+    characterActor.setPosition(INITIAL_WORLD_X, INITIAL_WORLD_Y);
   }
 
   @Test
@@ -114,7 +102,6 @@ public class CharacterActorTest {
     when(cell2.getCoordinate()).thenReturn(DESTINATION);
     when(move.getPath()).thenReturn(path);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell1, cell2));
-    when(actorConfig.getMoveTimePerUnit()).thenReturn(MOVE_TIME_PER_UNIT);
     characterActor.addListener(listener);
 
     characterActor.move(move);

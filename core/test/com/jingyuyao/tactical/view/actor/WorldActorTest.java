@@ -24,10 +24,6 @@ public class WorldActorTest {
   private static final float ACTOR_SIZE = 10f;
 
   @Mock
-  private Object object;
-  @Mock
-  private ActorConfig actorConfig;
-  @Mock
   private LinkedHashSet<WorldTexture> markers;
   @Mock
   private WorldTexture texture1;
@@ -36,18 +32,13 @@ public class WorldActorTest {
   @Mock
   private Batch batch;
 
-  private WorldActor<Object> worldActor;
+  private WorldActor worldActor;
 
   @Before
   public void setUp() {
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
+    worldActor = new WorldActor(markers);
 
-    worldActor = new WorldActor<>(object, COORDINATE, actorConfig, markers);
-
-    assertThat(worldActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
-    assertThat(worldActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);
-    assertThat(worldActor.getWidth()).isEqualTo(ACTOR_SIZE);
-    assertThat(worldActor.getHeight()).isEqualTo(ACTOR_SIZE);
+    worldActor.setSize(ACTOR_SIZE, ACTOR_SIZE);
   }
 
   @Test
@@ -73,5 +64,13 @@ public class WorldActorTest {
     worldActor.clearMarkers();
 
     markers.clear();
+  }
+
+  @Test
+  public void update_coordinate() {
+    worldActor.updateCoordinate(COORDINATE);
+
+    assertThat(worldActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
+    assertThat(worldActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);
   }
 }

@@ -5,19 +5,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.EnemyActor;
-import com.jingyuyao.tactical.view.actor.PlayerActor;
-import com.jingyuyao.tactical.view.actor.TerrainActor;
+import com.jingyuyao.tactical.view.actor.CharacterActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.world.WorldModule.BackingActorMap;
 import com.jingyuyao.tactical.view.world.WorldModule.CellGroup;
 import com.jingyuyao.tactical.view.world.WorldModule.CharacterGroup;
@@ -34,10 +29,9 @@ public class WorldView {
   private final Group cellGroup;
   private final Group characterGroup;
   private final Group terrainGroup;
-  private final Map<Object, WorldActor<?>> actorMap;
+  private final Map<Object, WorldActor> actorMap;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
-  private final Animations animations;
 
   @Inject
   WorldView(
@@ -45,10 +39,9 @@ public class WorldView {
       @CellGroup Group cellGroup,
       @CharacterGroup Group characterGroup,
       @TerrainGroup Group terrainGroup,
-      @BackingActorMap Map<Object, WorldActor<?>> actorMap,
+      @BackingActorMap Map<Object, WorldActor> actorMap,
       OrthogonalTiledMapRenderer mapRenderer,
-      ActorFactory actorFactory,
-      Animations animations) {
+      ActorFactory actorFactory) {
     this.stage = stage;
     this.cellGroup = cellGroup;
     this.characterGroup = characterGroup;
@@ -56,7 +49,6 @@ public class WorldView {
     this.actorMap = actorMap;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
-    this.animations = animations;
     stage.addActor(terrainGroup);
     stage.addActor(characterGroup);
     stage.addActor(cellGroup);
@@ -88,7 +80,7 @@ public class WorldView {
     terrainGroup.clear();
   }
 
-  public WorldActor<?> get(Object object) {
+  public WorldActor get(Object object) {
     return actorMap.get(object);
   }
 
@@ -104,17 +96,17 @@ public class WorldView {
   }
 
   void add(Coordinate coordinate, Player player) {
-    PlayerActor actor = actorFactory.create(player, coordinate, getAnimation(player));
+    CharacterActor actor = actorFactory.create(player, coordinate);
     addActor(player, actor, characterGroup);
   }
 
   void add(Coordinate coordinate, Enemy enemy) {
-    EnemyActor actor = actorFactory.create(enemy, coordinate, getAnimation(enemy));
+    CharacterActor actor = actorFactory.create(enemy, coordinate);
     addActor(enemy, actor, characterGroup);
   }
 
   void add(Coordinate coordinate, Terrain terrain) {
-    TerrainActor actor = actorFactory.create(terrain, coordinate);
+    WorldActor actor = actorFactory.create(coordinate);
     addActor(terrain, actor, terrainGroup);
   }
 
@@ -124,12 +116,8 @@ public class WorldView {
     actor.remove();
   }
 
-  private void addActor(Object object, WorldActor<?> actor, Group group) {
+  private void addActor(Object object, WorldActor actor, Group group) {
     group.addActor(actor);
     actorMap.put(object, actor);
-  }
-
-  private LoopAnimation getAnimation(Character character) {
-    return animations.getCharacter(character.getName());
   }
 }

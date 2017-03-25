@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.event.InstantMove;
 import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.map.Cell;
@@ -17,19 +16,18 @@ import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 
-class CharacterActor<T extends Character> extends WorldActor<T> {
+public class CharacterActor extends WorldActor {
 
+  private final float moveTimePerUnit;
   private final LoopAnimation loopAnimation;
 
   CharacterActor(
-      T object,
-      Coordinate initialCoordinate,
-      ActorConfig actorConfig,
+      float moveTimePerUnit,
       LinkedHashSet<WorldTexture> markers,
       LoopAnimation loopAnimation) {
-    super(object, initialCoordinate, actorConfig, markers);
+    super(markers);
+    this.moveTimePerUnit = moveTimePerUnit;
     this.loopAnimation = loopAnimation;
-    object.registerListener(this);
   }
 
   @Override
@@ -72,9 +70,8 @@ class CharacterActor<T extends Character> extends WorldActor<T> {
   }
 
   private Action createMoveToAction(Coordinate coordinate) {
-    float size = getActorConfig().getActorWorldSize();
-    float moveTimePerUnit = getActorConfig().getMoveTimePerUnit();
-    return Actions.moveTo(coordinate.getX() * size, coordinate.getY() * size, moveTimePerUnit);
+    return Actions.moveTo(
+        coordinate.getX() * getWidth(), coordinate.getY() * getHeight(), moveTimePerUnit);
   }
 
   private ImmutableList<EventListener> popAllListeners() {

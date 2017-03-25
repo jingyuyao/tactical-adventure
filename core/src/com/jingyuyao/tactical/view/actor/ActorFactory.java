@@ -1,12 +1,13 @@
 package com.jingyuyao.tactical.view.actor;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.controller.ControllerFactory;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
@@ -41,24 +42,36 @@ public class ActorFactory {
     return actor;
   }
 
-  public TerrainActor create(Terrain terrain, Coordinate initialCoordinate) {
-    return new TerrainActor(terrain, initialCoordinate, actorConfig, markersProvider.get());
+  public WorldActor create(Coordinate initialCoordinate) {
+    WorldActor actor = new WorldActor(markersProvider.get());
+    setSizeAndPosition(initialCoordinate, actor);
+    return actor;
   }
 
-  public PlayerActor create(
-      Player player, Coordinate initialCoordinate, LoopAnimation loopAnimation) {
-    return new PlayerActor(
-        player, initialCoordinate, actorConfig, markersProvider.get(), loopAnimation);
+  public CharacterActor create(Player player, Coordinate initialCoordinate) {
+    CharacterActor actor =
+        new PlayerActor(
+            player, actorConfig.getMoveTimePerUnit(), markersProvider.get(), getAnimation(player));
+    setSizeAndPosition(initialCoordinate, actor);
+    return actor;
   }
 
-  public EnemyActor create(Enemy enemy, Coordinate initialCoordinate, LoopAnimation loopAnimation) {
-    return new EnemyActor(
-        enemy, initialCoordinate, actorConfig, markersProvider.get(), loopAnimation);
+  public CharacterActor create(Enemy enemy, Coordinate initialCoordinate) {
+    CharacterActor actor =
+        new CharacterActor(
+            actorConfig.getMoveTimePerUnit(), markersProvider.get(), getAnimation(enemy));
+    setSizeAndPosition(initialCoordinate, actor);
+    actor.setColor(Color.RED);
+    return actor;
   }
 
   private void setSizeAndPosition(Coordinate coordinate, Actor actor) {
     float size = actorConfig.getActorWorldSize();
     actor.setSize(size, size);
     actor.setPosition(coordinate.getX() * size, coordinate.getY() * size);
+  }
+
+  private LoopAnimation getAnimation(Character character) {
+    return animations.getCharacter(character.getName());
   }
 }

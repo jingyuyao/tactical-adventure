@@ -34,17 +34,17 @@ public class MarkingsTest {
   @Mock
   private Markers markers;
   @Mock
-  private List<WorldActor<?>> markedActors;
+  private List<WorldActor> markedActors;
   @Mock
   private Object object;
   @Mock
   private Object object2;
   @Mock
-  private WorldActor<?> worldActor;
+  private WorldActor worldActor;
   @Mock
-  private WorldActor<?> highlightActor;
+  private WorldActor highlightActor;
   @Mock
-  private WorldActor<?> activatedActor;
+  private WorldActor activatedActor;
   @Mock
   private WorldTexture highlightTexture;
   @Mock
@@ -54,7 +54,7 @@ public class MarkingsTest {
   @Mock
   private WorldTexture animationFrame;
 
-  private Multimap<WorldActor<?>, SingleAnimation> animationsMap;
+  private Multimap<WorldActor, SingleAnimation> animationsMap;
   private Markings markings;
 
   @Before
@@ -67,7 +67,7 @@ public class MarkingsTest {
   public void add_single_animation() {
     ListenableFuture<Void> future = SettableFuture.create();
     when(singleAnimation.getFuture()).thenReturn(future);
-    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(worldActor);
+    when(worldView.get(object)).thenReturn(worldActor);
 
     markings.addSingleAnimation(object, singleAnimation);
 
@@ -78,7 +78,7 @@ public class MarkingsTest {
   public void add_single_animation_finished() {
     SettableFuture<Void> future = SettableFuture.create();
     when(singleAnimation.getFuture()).thenReturn(future);
-    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(worldActor);
+    when(worldView.get(object)).thenReturn(worldActor);
 
     markings.addSingleAnimation(object, singleAnimation);
 
@@ -91,8 +91,8 @@ public class MarkingsTest {
 
   @Test
   public void draw_highlight_and_activate_and_animation() {
-    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(highlightActor);
-    Mockito.<WorldActor<?>>when(worldView.get(object2)).thenReturn(activatedActor);
+    when(worldView.get(object)).thenReturn(highlightActor);
+    when(worldView.get(object2)).thenReturn(activatedActor);
     when(markers.getHighlight()).thenReturn(highlightTexture);
     when(markers.getActivated()).thenReturn(activatedTexture);
     when(singleAnimation.getCurrentFrame()).thenReturn(animationFrame);
@@ -112,7 +112,7 @@ public class MarkingsTest {
 
   @Test
   public void mark() {
-    Mockito.<WorldActor<?>>when(worldView.get(object)).thenReturn(highlightActor);
+    when(worldView.get(object)).thenReturn(highlightActor);
 
     markings.mark(object, highlightTexture);
 

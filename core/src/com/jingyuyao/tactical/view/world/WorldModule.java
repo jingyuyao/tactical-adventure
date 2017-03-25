@@ -67,7 +67,7 @@ public class WorldModule extends AbstractModule {
   @Provides
   @Singleton
   @BackingActorMap
-  Map<Object, WorldActor<?>> provideActorMap() {
+  Map<Object, WorldActor> provideActorMap() {
     return new HashMap<>();
   }
 

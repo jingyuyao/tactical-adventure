@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.actor;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
@@ -27,11 +26,10 @@ public class PlayerActorTest {
   private static final float ACTOR_SIZE = 10f;
   private static final float INITIAL_WORLD_X = COORDINATE.getX() * ACTOR_SIZE;
   private static final float INITIAL_WORLD_Y = COORDINATE.getY() * ACTOR_SIZE;
+  private static final float MOVE_TIME_PER_UNIT = 2f;
 
   @Mock
   private Player player;
-  @Mock
-  private ActorConfig actorConfig;
   @Mock
   private LinkedHashSet<WorldTexture> markers;
   @Mock
@@ -49,15 +47,10 @@ public class PlayerActorTest {
 
   @Before
   public void setUp() {
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
+    playerActor = new PlayerActor(player, MOVE_TIME_PER_UNIT, markers, loopAnimation);
 
-    playerActor = new PlayerActor(player, COORDINATE, actorConfig, markers, loopAnimation);
-
-    assertThat(playerActor.getX()).isEqualTo(INITIAL_WORLD_X);
-    assertThat(playerActor.getY()).isEqualTo(INITIAL_WORLD_Y);
-    assertThat(playerActor.getWidth()).isEqualTo(ACTOR_SIZE);
-    assertThat(playerActor.getHeight()).isEqualTo(ACTOR_SIZE);
-    verify(player).registerListener(playerActor);
+    playerActor.setSize(ACTOR_SIZE, ACTOR_SIZE);
+    playerActor.setPosition(INITIAL_WORLD_X, INITIAL_WORLD_Y);
   }
 
   @Test

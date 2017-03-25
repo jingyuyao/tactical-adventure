@@ -35,14 +35,14 @@ public class MarkingModule extends AbstractModule {
   @Provides
   @Singleton
   @MarkedActors
-  List<WorldActor<?>> provideMarkedActors() {
+  List<WorldActor> provideMarkedActors() {
     return new LinkedList<>();
   }
 
   @Provides
   @Singleton
   @InProgressAnimationsMap
-  Multimap<WorldActor<?>, SingleAnimation> provideInProgressAnimationsMap() {
+  Multimap<WorldActor, SingleAnimation> provideInProgressAnimationsMap() {
     return HashMultimap.create();
   }
 
