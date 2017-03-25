@@ -50,11 +50,6 @@ public class DirectionalWeapon extends AbstractWeapon {
       leftOverDistance--;
     }
 
-    final ImmutableSet<Cell> targetCells = targetBuilder.build();
-    if (targetCells.isEmpty()) {
-      return Optional.absent();
-    }
-
-    return Optional.of(new Target(selectCells, targetCells));
+    return Optional.of(new Target(selectCells, targetBuilder.build()));
   }
 }
