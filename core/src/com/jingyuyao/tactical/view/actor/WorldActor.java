@@ -29,7 +29,7 @@ public class WorldActor extends Actor {
     markers.clear();
   }
 
-  void updateCoordinate(Coordinate coordinate) {
+  public void updateCoordinate(Coordinate coordinate) {
     setPosition(coordinate.getX() * getWidth(), coordinate.getY() * getHeight());
   }
 }

@@ -1,16 +1,14 @@
 package com.jingyuyao.tactical.view.actor;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.event.InstantMove;
-import com.jingyuyao.tactical.model.character.event.Move;
+import com.jingyuyao.tactical.model.event.FutureEvent;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
@@ -49,13 +47,9 @@ public class CharacterActorTest {
   @Mock
   private WorldTexture texture2;
   @Mock
-  private InstantMove instantMove;
-  @Mock
-  private EventListener listener;
-  @Mock
-  private Move move;
-  @Mock
   private Path path;
+  @Mock
+  private FutureEvent<?> event;
   @Mock
   private Cell cell1;
   @Mock
@@ -86,44 +80,28 @@ public class CharacterActorTest {
   }
 
   @Test
-  public void instant_move() {
-    when(cell1.getCoordinate()).thenReturn(DESTINATION);
-    when(instantMove.getDestination()).thenReturn(cell1);
-
-    characterActor.instantMove(instantMove);
-
-    assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
-    assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
-  }
-
-  @Test
   public void move() {
     when(cell1.getCoordinate()).thenReturn(TRACK1);
     when(cell2.getCoordinate()).thenReturn(DESTINATION);
-    when(move.getPath()).thenReturn(path);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell1, cell2));
-    characterActor.addListener(listener);
 
-    characterActor.move(move);
+    characterActor.move(path, event);
 
-    verify(move, times(0)).done();
-    assertThat(characterActor.getListeners()).isEmpty();
+    verify(event, never()).done();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
 
     characterActor.act(MOVE_TIME_PER_UNIT);
 
-    verify(move, times(0)).done();
-    assertThat(characterActor.getListeners()).isEmpty();
+    verify(event, never()).done();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(TRACK1.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(TRACK1.getY() * ACTOR_SIZE);
 
     characterActor.act(MOVE_TIME_PER_UNIT);
 
-    verify(move, times(0)).done();
-    assertThat(characterActor.getListeners()).isEmpty();
+    verify(event, never()).done();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
@@ -131,8 +109,7 @@ public class CharacterActorTest {
     // Triggers end of sequence actions
     characterActor.act(0f);
 
-    verify(move).done();
-    assertThat(characterActor.getListeners()).containsExactly(listener);
+    verify(event).done();
     assertThat(characterActor.getActions()).isEmpty();
     assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
