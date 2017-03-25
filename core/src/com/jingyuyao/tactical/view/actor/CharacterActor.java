@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.jingyuyao.tactical.model.event.FutureEvent;
+import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
@@ -35,14 +35,14 @@ public class CharacterActor extends WorldActor {
     super.draw(batch, parentAlpha);
   }
 
-  public void move(Path path, final FutureEvent<?> event) {
+  public void moveAlong(Path path, final SettableFuture<Void> future) {
     SequenceAction moveSequence = getMoveSequence(path.getTrack());
     moveSequence.addAction(
         Actions.run(
             new Runnable() {
               @Override
               public void run() {
-                event.done();
+                future.set(null);
               }
             }));
     addAction(moveSequence);

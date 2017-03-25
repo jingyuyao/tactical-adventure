@@ -69,8 +69,8 @@ public class Cell {
     Preconditions.checkState(!hasCharacter());
     Preconditions.checkNotNull(character);
 
-    eventBus.post(new SpawnCharacter(character));
     this.character = character;
+    eventBus.post(new SpawnCharacter(this));
   }
 
   public void removeCharacter() {

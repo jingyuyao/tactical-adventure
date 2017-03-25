@@ -68,7 +68,7 @@ public class WorldActorTest {
 
   @Test
   public void update_coordinate() {
-    worldActor.updateCoordinate(COORDINATE);
+    worldActor.moveTo(COORDINATE);
 
     assertThat(worldActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
     assertThat(worldActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);

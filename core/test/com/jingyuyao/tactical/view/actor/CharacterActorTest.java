@@ -1,14 +1,12 @@
 package com.jingyuyao.tactical.view.actor;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.event.FutureEvent;
+import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
@@ -49,8 +47,6 @@ public class CharacterActorTest {
   @Mock
   private Path path;
   @Mock
-  private FutureEvent<?> event;
-  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
@@ -81,27 +77,28 @@ public class CharacterActorTest {
 
   @Test
   public void move() {
+    SettableFuture<Void> future = SettableFuture.create();
     when(cell1.getCoordinate()).thenReturn(TRACK1);
     when(cell2.getCoordinate()).thenReturn(DESTINATION);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell1, cell2));
 
-    characterActor.move(path, event);
+    characterActor.moveAlong(path, future);
 
-    verify(event, never()).done();
+    assertThat(future.isDone()).isFalse();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
 
     characterActor.act(MOVE_TIME_PER_UNIT);
 
-    verify(event, never()).done();
+    assertThat(future.isDone()).isFalse();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(TRACK1.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(TRACK1.getY() * ACTOR_SIZE);
 
     characterActor.act(MOVE_TIME_PER_UNIT);
 
-    verify(event, never()).done();
+    assertThat(future.isDone()).isFalse();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
@@ -109,7 +106,7 @@ public class CharacterActorTest {
     // Triggers end of sequence actions
     characterActor.act(0f);
 
-    verify(event).done();
+    assertThat(future.isDone()).isTrue();
     assertThat(characterActor.getActions()).isEmpty();
     assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
