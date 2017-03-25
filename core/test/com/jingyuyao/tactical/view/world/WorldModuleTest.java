@@ -10,9 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.resource.Animations;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -32,13 +30,7 @@ public class WorldModuleTest {
   private Batch batch;
   @Bind
   @Mock
-  private ControllerFactory controllerFactory;
-  @Bind
-  @Mock
   private ActorFactory actorFactory;
-  @Bind
-  @Mock
-  private Animations animations;
   @Mock
   private GL20 gl20;
   @Mock

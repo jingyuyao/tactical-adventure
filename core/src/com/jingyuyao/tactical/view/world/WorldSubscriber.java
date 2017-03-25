@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.event.RemoveObject;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
@@ -22,16 +21,12 @@ public class WorldSubscriber {
   void worldLoad(WorldLoad worldLoad) {
     for (Cell cell : worldLoad.getObject()) {
       worldView.add(cell);
+      worldView.add(cell.getCoordinate(), cell.getTerrain());
     }
   }
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
     worldView.reset();
-  }
-
-  @Subscribe
-  void removeObject(RemoveObject removeObject) {
-    worldView.remove(removeObject.getObject());
   }
 }

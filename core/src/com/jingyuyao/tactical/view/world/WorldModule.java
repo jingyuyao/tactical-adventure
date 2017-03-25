@@ -8,16 +8,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
+import com.google.inject.Key;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.controller.ControllerFactory;
+import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
+import com.jingyuyao.tactical.view.actor.CharacterActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.resource.Animations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -31,13 +34,14 @@ public class WorldModule extends AbstractModule {
   protected void configure() {
     requireBinding(AssetManager.class);
     requireBinding(Batch.class);
-    requireBinding(ControllerFactory.class);
     requireBinding(ActorFactory.class);
-    requireBinding(Animations.class);
 
-    bind(Group.class).annotatedWith(CellGroup.class).to(Group.class).in(Singleton.class);
-    bind(Group.class).annotatedWith(CharacterGroup.class).to(Group.class).in(Singleton.class);
-    bind(Group.class).annotatedWith(TerrainGroup.class).to(Group.class).in(Singleton.class);
+    bind(new Key<Map<Terrain, WorldActor>>() {
+    }).toInstance(new HashMap<Terrain, WorldActor>());
+    bind(new Key<Map<Character, CharacterActor>>() {
+    }).toInstance(new HashMap<Character, CharacterActor>());
+    bind(new Key<Map<Cell, Actor>>() {
+    }).toInstance(new HashMap<Cell, Actor>());
   }
 
   @Provides
@@ -64,13 +68,6 @@ public class WorldModule extends AbstractModule {
     return new OrthogonalTiledMapRenderer(null, worldConfig.getTileToWorldScale(), batch);
   }
 
-  @Provides
-  @Singleton
-  @BackingActorMap
-  Map<Object, WorldActor> provideActorMap() {
-    return new HashMap<>();
-  }
-
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
@@ -82,34 +79,6 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface CellGroup {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface CharacterGroup {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface TerrainGroup {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface BackingActorMap {
 
   }
 }

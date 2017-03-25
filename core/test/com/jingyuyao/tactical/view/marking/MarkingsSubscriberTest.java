@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -21,10 +22,13 @@ import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.actor.CharacterActor;
+import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
+import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,11 +43,17 @@ public class MarkingsSubscriberTest {
   private static final String WEAPON_NAME = "axe";
 
   @Mock
+  private WorldView worldView;
+  @Mock
   private Markings markings;
   @Mock
   private Markers markers;
   @Mock
   private Animations animations;
+  @Mock
+  private Cell cell;
+  @Mock
+  private Cell cell2;
   @Mock
   private Player player;
   @Mock
@@ -77,59 +87,66 @@ public class MarkingsSubscriberTest {
   @Mock
   private Attack attack;
   @Mock
-  private Cell cell;
-  @Mock
-  private Cell cell2;
-  @Mock
   private Weapon weapon;
   @Mock
   private SingleAnimation singleAnimation;
+  @Mock
+  private Actor actor;
+  @Mock
+  private WorldActor worldActor;
+  @Mock
+  private WorldActor worldActor2;
+  @Mock
+  private CharacterActor characterActor;
 
   private MarkingsSubscriber subscriber;
 
   @Before
   public void setUp() {
-    subscriber = new MarkingsSubscriber(markings, markers, animations);
+    subscriber = new MarkingsSubscriber(worldView, markings, markers, animations);
   }
 
   @Test
   public void select_cell() {
+    when(worldView.get(cell)).thenReturn(actor);
     when(selectCell.getObject()).thenReturn(cell);
-    when(cell.getTerrain()).thenReturn(terrain);
 
     subscriber.selectCell(selectCell);
 
-    verify(markings).highlight(terrain);
+    verify(markings).highlight(actor);
   }
 
   @Test
   public void player_state() {
+    when(worldView.get(player)).thenReturn(characterActor);
     when(playerState.getPlayer()).thenReturn(player);
 
     subscriber.playerState(playerState);
 
-    verify(markings).activate(player);
+    verify(markings).activate(characterActor);
   }
 
   @Test
   public void activated_enemy() {
+    when(worldView.get(enemy)).thenReturn(characterActor);
     when(activatedEnemy.getObject()).thenReturn(enemy);
 
     subscriber.activatedEnemy(activatedEnemy);
 
-    verify(markings).activate(enemy);
+    verify(markings).activate(characterActor);
   }
 
   @Test
   public void moving() {
     when(cell.getTerrain()).thenReturn(terrain);
+    when(worldView.get(terrain)).thenReturn(worldActor);
     when(moving.getMovement()).thenReturn(movement);
     when(movement.getCells()).thenReturn(ImmutableList.of(cell));
     when(markers.getMove()).thenReturn(texture1);
 
     subscriber.moving(moving);
 
-    verify(markings).mark(terrain, texture1);
+    verify(markings).mark(worldActor, texture1);
   }
 
   @Test
@@ -139,14 +156,16 @@ public class MarkingsSubscriberTest {
     when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
     when(cell.getTerrain()).thenReturn(terrain);
     when(cell2.getTerrain()).thenReturn(terrain2);
+    when(worldView.get(terrain)).thenReturn(worldActor);
+    when(worldView.get(terrain2)).thenReturn(worldActor2);
     when(markers.getAttack()).thenReturn(texture1);
     when(markers.getTargetSelect()).thenReturn(texture2);
 
     subscriber.selectingTarget(selectingTarget);
 
     InOrder inOrder = Mockito.inOrder(markings);
-    inOrder.verify(markings).mark(terrain, texture1);
-    inOrder.verify(markings).mark(terrain2, texture2);
+    inOrder.verify(markings).mark(worldActor, texture1);
+    inOrder.verify(markings).mark(worldActor2, texture2);
   }
 
   @Test
@@ -156,14 +175,16 @@ public class MarkingsSubscriberTest {
     when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
     when(cell.getTerrain()).thenReturn(terrain);
     when(cell2.getTerrain()).thenReturn(terrain2);
+    when(worldView.get(terrain)).thenReturn(worldActor);
+    when(worldView.get(terrain2)).thenReturn(worldActor2);
     when(markers.getAttack()).thenReturn(texture1);
     when(markers.getTargetSelect()).thenReturn(texture2);
 
     subscriber.battling(battling);
 
     InOrder inOrder = Mockito.inOrder(markings);
-    inOrder.verify(markings).mark(terrain, texture1);
-    inOrder.verify(markings).mark(terrain2, texture2);
+    inOrder.verify(markings).mark(worldActor, texture1);
+    inOrder.verify(markings).mark(worldActor2, texture2);
   }
 
   @Test
@@ -172,13 +193,15 @@ public class MarkingsSubscriberTest {
     when(attack.getWeapon()).thenReturn(weapon);
     when(attack.getObject()).thenReturn(target);
     when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
+    when(cell2.getTerrain()).thenReturn(terrain);
+    when(worldView.get(terrain)).thenReturn(worldActor);
     when(weapon.getName()).thenReturn(WEAPON_NAME);
     when(animations.getWeapon(WEAPON_NAME)).thenReturn(singleAnimation);
     when(singleAnimation.getFuture()).thenReturn(future);
 
     subscriber.attack(attack);
 
-    markings.addSingleAnimation(terrain, singleAnimation);
+    markings.addSingleAnimation(worldActor, singleAnimation);
     verify(attack).getWeapon();
     verify(attack).getObject();
     verifyNoMoreInteractions(attack);
