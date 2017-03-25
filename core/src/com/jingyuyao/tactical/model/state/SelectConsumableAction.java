@@ -4,11 +4,11 @@ import com.jingyuyao.tactical.model.item.Consumable;
 
 class SelectConsumableAction implements Action {
 
-  private final BasePlayerState playerState;
+  private final PlayerActionState playerActionState;
   private final Consumable consumable;
 
-  SelectConsumableAction(BasePlayerState playerState, Consumable consumable) {
-    this.playerState = playerState;
+  SelectConsumableAction(PlayerActionState playerActionState, Consumable consumable) {
+    this.playerActionState = playerActionState;
     this.consumable = consumable;
   }
 
@@ -19,6 +19,6 @@ class SelectConsumableAction implements Action {
 
   @Override
   public void run() {
-    playerState.selectConsumable(consumable);
+    playerActionState.selectConsumable(consumable);
   }
 }

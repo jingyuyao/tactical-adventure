@@ -1,11 +1,7 @@
 {
-  "characters": [
-    {
+  "characters": {
+    "1,2": {
       "type": "BasePlayer",
-      "coordinate": {
-        "x": 1,
-        "y": 2
-      },
       "name": "dance",
       "maxHp": 30,
       "hp": 30,
@@ -35,12 +31,8 @@
         }
       ]
     },
-    {
+    "3,2": {
       "type": "BasePlayer",
-      "coordinate": {
-        "x": 3,
-        "y": 2
-      },
       "name": "stick",
       "maxHp": 30,
       "hp": 30,
@@ -62,12 +54,8 @@
         }
       ]
     },
-    {
+    "2,3": {
       "type": "BasePlayer",
-      "coordinate": {
-        "x": 2,
-        "y": 3
-      },
       "name": "dance",
       "maxHp": 30,
       "hp": 30,
@@ -89,12 +77,8 @@
         }
       ]
     },
-    {
+    "2,1": {
       "type": "BasePlayer",
-      "coordinate": {
-        "x": 2,
-        "y": 1
-      },
       "name": "stick",
       "maxHp": 30,
       "hp": 30,
@@ -116,12 +100,8 @@
         }
       ]
     },
-    {
+    "5,4": {
       "type": "PassiveEnemy",
-      "coordinate": {
-        "x": 5,
-        "y": 4
-      },
       "name": "stick",
       "maxHp": 5,
       "hp": 5,
@@ -137,12 +117,8 @@
         }
       ]
     },
-    {
+    "4,5": {
       "type": "PassiveEnemy",
-      "coordinate": {
-        "x": 4,
-        "y": 5
-      },
       "name": "dance",
       "maxHp": 5,
       "hp": 5,
@@ -158,12 +134,8 @@
         }
       ]
     },
-    {
+    "5,6": {
       "type": "PassiveEnemy",
-      "coordinate": {
-        "x": 5,
-        "y": 6
-      },
       "name": "dance",
       "maxHp": 5,
       "hp": 5,
@@ -179,5 +151,5 @@
         }
       ]
     }
-  ]
+  }
 }

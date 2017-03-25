@@ -23,8 +23,8 @@ import javax.inject.Singleton;
 
 public class ResourceModule extends AbstractModule {
 
-  public static final String TEXTURE_ATLAS = "packed/texture.atlas";
-  public static final String SKIN = "ui/uiskin.json";
+  private static final String TEXTURE_ATLAS = "packed/texture.atlas";
+  private static final String SKIN = "ui/uiskin.json";
 
   @Override
   protected void configure() {

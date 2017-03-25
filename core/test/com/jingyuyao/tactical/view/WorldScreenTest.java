@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.Markings;
 import com.jingyuyao.tactical.view.resource.AnimationTime;
 import com.jingyuyao.tactical.view.ui.UI;
-import com.jingyuyao.tactical.view.world.World;
+import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ public class WorldScreenTest {
   @Mock
   private Batch batch;
   @Mock
-  private World world;
+  private WorldView worldView;
   @Mock
   private Markings markings;
   @Mock
@@ -40,7 +40,7 @@ public class WorldScreenTest {
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(batch, world, markings, ui, animationTime, worldController);
+    worldScreen = new WorldScreen(batch, worldView, markings, ui, animationTime, worldController);
     Gdx.gl = gl20;
   }
 
@@ -62,12 +62,12 @@ public class WorldScreenTest {
   public void render() {
     worldScreen.render(10f);
 
-    InOrder inOrder = Mockito.inOrder(world, markings, ui, animationTime, gl20);
+    InOrder inOrder = Mockito.inOrder(worldView, markings, ui, animationTime, gl20);
     inOrder.verify(ui).act(10f);
-    inOrder.verify(world).act(10f);
+    inOrder.verify(worldView).act(10f);
     inOrder.verify(animationTime).advanceStateTime(10f);
     inOrder.verify(gl20).glClear(GL20.GL_COLOR_BUFFER_BIT);
-    inOrder.verify(world).draw();
+    inOrder.verify(worldView).draw();
     inOrder.verify(markings).draw();
     inOrder.verify(ui).draw();
   }
@@ -76,7 +76,7 @@ public class WorldScreenTest {
   public void resize() {
     worldScreen.resize(20, 30);
 
-    verify(world).resize(20, 30);
+    verify(worldView).resize(20, 30);
     verify(ui).resize(20, 30);
   }
 
@@ -84,7 +84,7 @@ public class WorldScreenTest {
   public void dispose() {
     worldScreen.dispose();
 
-    verify(world).dispose();
+    verify(worldView).dispose();
     verify(ui).dispose();
     verify(batch).dispose();
   }

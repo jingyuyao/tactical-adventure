@@ -3,12 +3,8 @@ package com.jingyuyao.tactical.model.item;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.map.Characters;
-import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Terrains;
-import java.util.Collections;
-import javax.inject.Inject;
-import org.junit.Before;
+import com.jingyuyao.tactical.model.World;
+import com.jingyuyao.tactical.model.map.Movements;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -19,21 +15,14 @@ public class ItemModuleTest {
 
   @Bind
   @Mock
-  private Characters characters;
+  private World world;
   @Bind
   @Mock
-  private Terrains terrains;
-
-  @Inject
-  private TargetFactory targetFactory;
-
-  @Before
-  public void setUp() {
-    Guice.createInjector(BoundFieldModule.of(this), new ItemModule()).injectMembers(this);
-  }
+  private Movements movements;
 
   @Test
-  public void target_factory() {
-    targetFactory.create(Collections.<Coordinate>emptySet(), Collections.<Coordinate>emptySet());
+  public void can_create_module() {
+    // Ma! I don't do shit!
+    Guice.createInjector(BoundFieldModule.of(this), new ItemModule()).injectMembers(this);
   }
 }

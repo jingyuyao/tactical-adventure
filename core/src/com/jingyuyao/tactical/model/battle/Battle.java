@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Cell;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,12 +18,10 @@ import javax.inject.Singleton;
 public class Battle {
 
   private final EventBus eventBus;
-  private final Characters characters;
 
   @Inject
-  Battle(@ModelEventBus EventBus eventBus, Characters characters) {
+  Battle(@ModelEventBus EventBus eventBus) {
     this.eventBus = eventBus;
-    this.characters = characters;
   }
 
   public ListenableFuture<Void> begin(
@@ -35,7 +33,11 @@ public class Battle {
       public void onSuccess(Void result) {
         attacker.useItem(weapon);
         weapon.damages(target);
-        characters.removeDead();
+        for (Cell cell : target.getTargetCells()) {
+          if (cell.hasCharacter() && cell.getCharacter().getHp() == 0) {
+            cell.removeCharacter();
+          }
+        }
       }
 
       @Override

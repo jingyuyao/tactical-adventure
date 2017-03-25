@@ -10,13 +10,14 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
-import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import java.util.List;
@@ -38,9 +39,11 @@ public class WaitingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private Characters characters;
+  private World world;
   @Mock
   private Movements movements;
+  @Mock
+  private Cell cell;
   @Mock
   private Player player;
   @Mock
@@ -58,12 +61,12 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(eventBus, mapState, stateFactory, characters, movements);
+    waiting = new Waiting(eventBus, mapState, stateFactory, world, movements);
   }
 
   @Test
   public void enter_not_complete() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy, player));
+    when(world.getCharacters()).thenReturn(FluentIterable.of(enemy, player));
 
     waiting.enter();
 
@@ -73,7 +76,7 @@ public class WaitingTest {
 
   @Test
   public void enter_level_complete() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(player));
+    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(player));
 
     waiting.enter();
 
@@ -85,7 +88,7 @@ public class WaitingTest {
 
   @Test
   public void enter_level_failed() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(enemy));
+    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(enemy));
 
     waiting.enter();
 
@@ -106,20 +109,24 @@ public class WaitingTest {
   @Test
   public void select_player_actionable() {
     when(player.isActionable()).thenReturn(true);
-    when(movements.distanceFrom(player)).thenReturn(movement);
-    when(stateFactory.createMoving(player, movement)).thenReturn(moving);
+    when(movements.distanceFrom(cell)).thenReturn(movement);
+    when(stateFactory.createMoving(cell, movement)).thenReturn(moving);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
 
-    waiting.select(player);
+    waiting.select(cell);
 
-    verify(stateFactory).createMoving(player, movement);
+    verify(stateFactory).createMoving(cell, movement);
     verify(mapState).goTo(moving);
   }
 
   @Test
   public void select_player_not_actionable() {
     when(player.isActionable()).thenReturn(false);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
 
-    waiting.select(player);
+    waiting.select(cell);
 
     verifyZeroInteractions(stateFactory);
     verifyZeroInteractions(mapState);
@@ -127,7 +134,7 @@ public class WaitingTest {
 
   @Test
   public void end_turn() {
-    when(characters.fluent()).thenReturn(FluentIterable.<Character>of(player));
+    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
     waiting.endTurn();

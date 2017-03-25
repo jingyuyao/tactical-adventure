@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.MapObject;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 import org.junit.Before;
@@ -25,10 +24,6 @@ public class WorldActorTest {
   private static final float ACTOR_SIZE = 10f;
 
   @Mock
-  private MapObject mapObject;
-  @Mock
-  private ActorConfig actorConfig;
-  @Mock
   private LinkedHashSet<WorldTexture> markers;
   @Mock
   private WorldTexture texture1;
@@ -37,19 +32,13 @@ public class WorldActorTest {
   @Mock
   private Batch batch;
 
-  private WorldActor<MapObject> worldActor;
+  private WorldActor worldActor;
 
   @Before
   public void setUp() {
-    when(mapObject.getCoordinate()).thenReturn(COORDINATE);
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
+    worldActor = new WorldActor(markers);
 
-    worldActor = new WorldActor<>(mapObject, actorConfig, markers);
-
-    assertThat(worldActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
-    assertThat(worldActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);
-    assertThat(worldActor.getWidth()).isEqualTo(ACTOR_SIZE);
-    assertThat(worldActor.getHeight()).isEqualTo(ACTOR_SIZE);
+    worldActor.setSize(ACTOR_SIZE, ACTOR_SIZE);
   }
 
   @Test
@@ -75,5 +64,13 @@ public class WorldActorTest {
     worldActor.clearMarkers();
 
     markers.clear();
+  }
+
+  @Test
+  public void update_coordinate() {
+    worldActor.moveTo(COORDINATE);
+
+    assertThat(worldActor.getX()).isEqualTo(COORDINATE.getX() * ACTOR_SIZE);
+    assertThat(worldActor.getY()).isEqualTo(COORDINATE.getY() * ACTOR_SIZE);
   }
 }

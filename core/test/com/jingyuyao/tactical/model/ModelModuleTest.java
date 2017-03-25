@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ModelModuleTest {
 
   @Inject
-  private Model model;
+  private World world;
 
   @Test
   public void can_create_module() {

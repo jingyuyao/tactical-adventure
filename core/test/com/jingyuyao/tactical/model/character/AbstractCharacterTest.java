@@ -5,42 +5,24 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.event.InstantMove;
-import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Path;
-import com.jingyuyao.tactical.model.map.Terrains;
-import com.jingyuyao.tactical.model.state.SelectionHandler;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCharacterTest {
 
-  private static final Coordinate CHARACTER_COORDINATE = new Coordinate(100, 100);
-  private static final Coordinate DESTINATION = new Coordinate(50, 50);
   private static final String NAME = "yo";
   private static final int MAX_HP = 20;
   private static final int HP = 10;
   private static final int MOVE_DISTANCE = 3;
 
-  @Mock
-  private EventBus eventBus;
-  @Mock
-  private Terrains terrains;
   @Mock
   private Weapon weapon1;
   @Mock
@@ -49,14 +31,6 @@ public class AbstractCharacterTest {
   private Consumable consumable;
   @Mock
   private Item newItem;
-  @Mock
-  private Path path;
-  @Mock
-  private Object listener;
-  @Mock
-  private Terrain terrain;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
 
   private List<Item> items;
   private Character character;
@@ -64,23 +38,7 @@ public class AbstractCharacterTest {
   @Before
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
-    character =
-        new CharacterImpl(
-            CHARACTER_COORDINATE, eventBus, terrains, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
-  }
-
-  @Test
-  public void register_listener() {
-    character.registerListener(listener);
-
-    verify(eventBus).register(listener);
-  }
-
-  @Test
-  public void get_terrain() {
-    when(terrains.get(CHARACTER_COORDINATE)).thenReturn(terrain);
-
-    assertThat(character.getTerrain()).isSameAs(terrain);
+    character = new CharacterImpl(NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
@@ -151,44 +109,10 @@ public class AbstractCharacterTest {
     assertThat(items).doesNotContain(weapon1);
   }
 
-  @Test
-  public void move_along() {
-    when(path.getDestination()).thenReturn(DESTINATION);
-
-    ListenableFuture<Void> future = character.moveAlong(path);
-
-    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
-    verify(eventBus).post(argumentCaptor.capture());
-    Move move = TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, Move.class);
-    assertThat(move.getPath()).isSameAs(path);
-    assertThat(future.isDone()).isFalse();
-
-    move.done();
-    assertThat(future.isDone()).isTrue();
-  }
-
-  @Test
-  public void instant_move() {
-    character.instantMoveTo(DESTINATION);
-
-    assertThat(character.getCoordinate()).isEqualTo(DESTINATION);
-    verify(eventBus).post(argumentCaptor.capture());
-    InstantMove instantMove =
-        TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);
-    assertThat(instantMove.getDestination()).isEqualTo(DESTINATION);
-  }
-
   private static class CharacterImpl extends AbstractCharacter {
 
-    CharacterImpl(
-        Coordinate coordinate, EventBus eventBus, Terrains terrains, String name, int maxHp, int hp,
-        int moveDistance, List<Item> items) {
-      super(coordinate, eventBus, terrains, name, maxHp, hp, moveDistance, items);
-    }
-
-    @Override
-    public void select(SelectionHandler selectionHandler) {
-
+    CharacterImpl(String name, int maxHp, int hp, int moveDistance, List<Item> items) {
+      super(name, maxHp, hp, moveDistance, items);
     }
   }
 }

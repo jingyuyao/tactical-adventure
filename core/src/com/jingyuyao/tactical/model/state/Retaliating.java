@@ -1,56 +1,59 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Cell;
 import javax.inject.Inject;
 
 public class Retaliating extends BaseState {
 
   private final StateFactory stateFactory;
-  private final Characters characters;
+  private final World world;
 
   @Inject
   Retaliating(
       @ModelEventBus EventBus eventBus,
       MapState mapState,
       StateFactory stateFactory,
-      Characters characters) {
+      World world) {
     super(eventBus, mapState);
     this.stateFactory = stateFactory;
-    this.characters = characters;
+    this.world = world;
   }
 
   @Override
   public void enter() {
     super.enter();
-    retaliate();
+    // Warning: must filter cells here so that we don't call retaliate on the same enemy
+    // multiples times after they moved
+    retaliate(world.getCells().filter(new Predicate<Cell>() {
+      @Override
+      public boolean apply(Cell input) {
+        return input.hasEnemy();
+      }
+    }).toList(), 0);
   }
 
-  private void retaliate() {
-    // TODO: does order matter?
-    ListenableFuture<Void> currentRetaliation = Futures.immediateFuture(null);
-    for (final Enemy enemy : characters.fluent().filter(Enemy.class)) {
-      // Make enemies retaliate one at a time
-      currentRetaliation =
-          Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
-            @Override
-            public ListenableFuture<Void> apply(Void input) throws Exception {
-              post(new ActivatedEnemy(enemy));
-              return enemy.retaliate();
-            }
-          });
+  private void retaliate(final ImmutableList<Cell> cells, final int i) {
+    if (i == cells.size()) {
+      branchTo(stateFactory.createWaiting());
+      return;
     }
-    Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
+
+    Cell cell = cells.get(i);
+    Enemy enemy = cell.getEnemy();
+    post(new ActivatedEnemy(enemy));
+    Futures.addCallback(enemy.retaliate(cell), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        branchTo(stateFactory.createWaiting());
+        retaliate(cells, i + 1);
       }
 
       @Override

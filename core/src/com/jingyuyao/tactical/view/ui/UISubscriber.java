@@ -2,9 +2,9 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
+import com.jingyuyao.tactical.model.event.SelectCell;
+import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
@@ -32,21 +32,15 @@ public class UISubscriber {
   }
 
   @Subscribe
-  void selectPlayer(SelectPlayer selectPlayer) {
-    characterPanel.display(selectPlayer.getObject());
-    terrainPanel.display(selectPlayer.getObject().getTerrain());
-  }
-
-  @Subscribe
-  void selectEnemy(SelectEnemy selectEnemy) {
-    characterPanel.display(selectEnemy.getObject());
-    terrainPanel.display(selectEnemy.getObject().getTerrain());
-  }
-
-  @Subscribe
-  void selectTerrain(SelectTerrain selectTerrain) {
-    characterPanel.clear();
-    terrainPanel.display(selectTerrain.getObject());
+  void selectCell(SelectCell selectCell) {
+    Cell cell = selectCell.getObject();
+    if (cell.hasCharacter()) {
+      characterPanel.display(cell.getCharacter());
+      terrainPanel.display(cell.getTerrain());
+    } else {
+      characterPanel.clear();
+      terrainPanel.display(cell.getTerrain());
+    }
   }
 
   @Subscribe
@@ -59,7 +53,7 @@ public class UISubscriber {
   @Subscribe
   void playerState(PlayerState playerState) {
     characterPanel.display(playerState.getPlayer());
-    terrainPanel.display(playerState.getPlayer().getTerrain());
+    // TODO: somehow show terrain? Use player action state?
   }
 
   @Subscribe
@@ -81,5 +75,13 @@ public class UISubscriber {
   void exitState(ExitState exitState) {
     itemPanel.clear();
     actionGroup.clear();
+  }
+
+  @Subscribe
+  void worldReset(WorldReset worldReset) {
+    characterPanel.clear();
+    itemPanel.clear();
+    actionGroup.clear();
+    terrainPanel.clear();
   }
 }

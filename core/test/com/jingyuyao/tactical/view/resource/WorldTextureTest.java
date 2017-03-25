@@ -17,9 +17,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldTextureTest {
 
-  private static int TEXTURE_SIZE = 10;
-  private static int TILE_SIZE = 5;
-  private static float ACTOR_SIZE = 1f;
+  private static final int TEXTURE_SIZE = 10;
+  private static final int TILE_SIZE = 5;
+  private static final float ACTOR_SIZE = 1f;
 
   @Mock
   private TextureRegion textureRegion;

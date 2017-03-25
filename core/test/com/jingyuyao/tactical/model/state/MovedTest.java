@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 import com.jingyuyao.tactical.model.map.Movements;
 import org.junit.Before;
@@ -36,6 +37,10 @@ public class MovedTest {
   @Mock
   private Movements movements;
   @Mock
+  private Cell cell;
+  @Mock
+  private Cell cell2;
+  @Mock
   private Player player;
   @Mock
   private Player otherPlayer;
@@ -54,7 +59,9 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    moved = new Moved(eventBus, mapState, stateFactory, movements, player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+    moved = new Moved(eventBus, mapState, stateFactory, movements, cell);
   }
 
   @Test
@@ -75,16 +82,21 @@ public class MovedTest {
 
   @Test
   public void select_player() {
-    moved.select(player);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+
+    moved.select(cell);
 
     verifyZeroInteractions(mapState);
   }
 
   @Test
   public void select_other_player_not_actionable() {
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(false);
 
-    moved.select(otherPlayer);
+    moved.select(cell);
 
     verify(mapState).rollback();
     verifyNoMoreInteractions(mapState);
@@ -92,11 +104,13 @@ public class MovedTest {
 
   @Test
   public void select_other_player_actionable() {
+    when(cell2.hasPlayer()).thenReturn(true);
+    when(cell2.getPlayer()).thenReturn(otherPlayer);
     when(otherPlayer.isActionable()).thenReturn(true);
-    when(movements.distanceFrom(otherPlayer)).thenReturn(movement);
-    when(stateFactory.createMoving(otherPlayer, movement)).thenReturn(moving);
+    when(movements.distanceFrom(cell2)).thenReturn(movement);
+    when(stateFactory.createMoving(cell2, movement)).thenReturn(moving);
 
-    moved.select(otherPlayer);
+    moved.select(cell2);
 
     verify(mapState).rollback();
     verify(mapState).goTo(moving);

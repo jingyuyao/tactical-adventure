@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movement;
 
 /**
@@ -16,9 +17,9 @@ interface StateFactory {
 
   Waiting createWaiting();
 
-  Moving createMoving(Player player, Movement movement);
+  Moving createMoving(Cell cell, Movement movement);
 
-  Moved createMoved(Player player);
+  Moved createMoved(Cell cell);
 
   SelectingTarget createSelectingTarget(
       Player player, Weapon weapon, ImmutableList<Target> targets);

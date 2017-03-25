@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.view.actor.WorldActor;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
-import com.jingyuyao.tactical.view.world.World;
+import com.jingyuyao.tactical.view.world.WorldView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.LinkedList;
@@ -29,20 +29,20 @@ public class MarkingModule extends AbstractModule {
     requireBinding(Animations.class);
     requireBinding(Markers.class);
     requireBinding(Batch.class);
-    requireBinding(World.class);
+    requireBinding(WorldView.class);
   }
 
   @Provides
   @Singleton
   @MarkedActors
-  List<WorldActor<?>> provideMarkedActors() {
+  List<WorldActor> provideMarkedActors() {
     return new LinkedList<>();
   }
 
   @Provides
   @Singleton
   @InProgressAnimationsMap
-  Multimap<WorldActor<?>, SingleAnimation> provideInProgressAnimationsMap() {
+  Multimap<WorldActor, SingleAnimation> provideInProgressAnimationsMap() {
     return HashMultimap.create();
   }
 

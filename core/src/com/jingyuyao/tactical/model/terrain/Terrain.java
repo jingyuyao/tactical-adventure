@@ -1,9 +1,8 @@
 package com.jingyuyao.tactical.model.terrain;
 
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.MapObject;
 
-public interface Terrain extends MapObject {
+public interface Terrain {
 
   boolean canHold(Character character);
 

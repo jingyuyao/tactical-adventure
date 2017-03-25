@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
@@ -19,9 +19,8 @@ import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.map.Characters;
+import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.state.Waiting;
-import com.jingyuyao.tactical.model.terrain.TerrainFactory;
 import java.lang.reflect.Type;
 import java.util.List;
 import javax.inject.Named;
@@ -32,9 +31,7 @@ public class DataModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(Model.class);
-    requireBinding(Characters.class);
-    requireBinding(TerrainFactory.class);
+    requireBinding(World.class);
     requireBinding(new Key<Provider<Waiting>>() {
     });
     requireBinding(AssetManager.class);
@@ -68,7 +65,6 @@ public class DataModule extends AbstractModule {
   List<Class<?>> provideNeedCreatorClasses() {
     // Add model classes that requires Guice injection here
     return ImmutableList.of(
-        BasePlayer.class,
         PassiveEnemy.class,
         DirectionalWeapon.class,
         Grenade.class
@@ -85,6 +81,8 @@ public class DataModule extends AbstractModule {
   ) {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
+    builder.enableComplexMapKeySerialization();
+    builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapterFactory(characterRuntimeTypeAdapterFactory);
     builder.registerTypeAdapterFactory(itemRuntimeTypeAdapterFactory);
     for (Class<?> clazz : classes) {

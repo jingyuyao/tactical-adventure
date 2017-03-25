@@ -11,7 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class FinishActionTest {
 
   @Mock
-  private BasePlayerState playerState;
+  private AbstractPlayerState playerState;
 
   @Test
   public void run() {

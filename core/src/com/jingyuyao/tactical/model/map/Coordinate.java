@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.map;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 /**
@@ -49,10 +48,5 @@ public final class Coordinate {
   @Override
   public int hashCode() {
     return Objects.hashCode(getX(), getY());
-  }
-
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("x", x).add("y", y).toString();
   }
 }

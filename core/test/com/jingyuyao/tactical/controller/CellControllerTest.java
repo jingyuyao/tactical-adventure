@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.jingyuyao.tactical.model.map.MapObject;
-import com.jingyuyao.tactical.model.state.SelectionHandler;
+import com.jingyuyao.tactical.model.World;
+import com.jingyuyao.tactical.model.map.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,44 +15,44 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WorldActorControllerTest {
+public class CellControllerTest {
 
-  @Mock
-  private SelectionHandler selectionHandler;
   @Mock
   private WorldCamera worldCamera;
   @Mock
-  private MapObject mapObject;
+  private World world;
+  @Mock
+  private Cell cell;
   @Mock
   private InputEvent inputEvent;
 
-  private WorldActorController worldActorController;
+  private CellController cellController;
 
   @Before
   public void setUp() {
-    worldActorController = new WorldActorController(selectionHandler, worldCamera, mapObject);
+    cellController = new CellController(worldCamera, world, cell);
   }
 
   @Test
   public void touch_down() {
-    assertThat(worldActorController.touchDown(inputEvent, 0, 0, 0, 0)).isTrue();
+    assertThat(cellController.touchDown(inputEvent, 0, 0, 0, 0)).isTrue();
   }
 
   @Test
   public void touch_up_dragged() {
     when(worldCamera.isDragged()).thenReturn(true);
 
-    worldActorController.touchUp(inputEvent, 0, 0, 0, 0);
+    cellController.touchUp(inputEvent, 0, 0, 0, 0);
 
-    verifyZeroInteractions(mapObject);
+    verifyZeroInteractions(world);
   }
 
   @Test
   public void touch_up_not_dragged() {
     when(worldCamera.isDragged()).thenReturn(false);
 
-    worldActorController.touchUp(inputEvent, 0, 0, 0, 0);
+    cellController.touchUp(inputEvent, 0, 0, 0, 0);
 
-    verify(mapObject).select(selectionHandler);
+    verify(world).select(cell);
   }
 }

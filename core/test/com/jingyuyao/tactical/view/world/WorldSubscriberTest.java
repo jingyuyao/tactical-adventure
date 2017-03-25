@@ -3,14 +3,22 @@ package com.jingyuyao.tactical.view.world;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.SettableFuture;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.AddEnemy;
-import com.jingyuyao.tactical.model.event.AddPlayer;
-import com.jingyuyao.tactical.model.event.AddTerrain;
-import com.jingyuyao.tactical.model.event.RemoveObject;
-import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
+import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.view.actor.CharacterActor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,65 +28,118 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldSubscriberTest {
 
+  private static final Coordinate COORDINATE = new Coordinate(2, 2);
+
   @Mock
-  private World world;
+  private WorldView worldView;
   @Mock
-  private AddTerrain addTerrain;
+  private WorldLoad worldLoad;
   @Mock
-  private AddPlayer addPlayer;
+  private WorldReset worldReset;
   @Mock
-  private AddEnemy addEnemy;
+  private SpawnCharacter spawnCharacter;
   @Mock
-  private RemoveObject removeObject;
+  private RemoveCharacter removeCharacter;
   @Mock
-  private Terrain terrain;
+  private InstantMoveCharacter instantMoveCharacter;
+  @Mock
+  private MoveCharacter moveCharacter;
+  @Mock
+  private Cell cell;
+  @Mock
+  private Character character;
   @Mock
   private Player player;
   @Mock
   private Enemy enemy;
   @Mock
-  private MapObject mapObject;
+  private Terrain terrain;
+  @Mock
+  private Path path;
+  @Mock
+  private CharacterActor characterActor;
 
   private WorldSubscriber subscriber;
 
   @Before
   public void setUp() {
-    subscriber = new WorldSubscriber(world);
+    subscriber = new WorldSubscriber(worldView);
   }
 
   @Test
-  public void add_terrain() {
-    when(addTerrain.getObject()).thenReturn(terrain);
+  public void world_load() {
+    when(worldLoad.getObject()).thenReturn(ImmutableList.of(cell));
+    when(cell.getTerrain()).thenReturn(terrain);
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
 
-    subscriber.addTerrain(addTerrain);
+    subscriber.worldLoad(worldLoad);
 
-    verify(world).add(terrain);
+    verify(worldView).add(cell);
+    verify(worldView).add(COORDINATE, terrain);
   }
 
   @Test
-  public void add_player() {
-    when(addPlayer.getObject()).thenReturn(player);
+  public void world_reset() {
+    subscriber.worldReset(worldReset);
 
-    subscriber.addPlayer(addPlayer);
-
-    verify(world).add(player);
+    verify(worldView).reset();
   }
 
   @Test
-  public void add_enemy() {
-    when(addEnemy.getObject()).thenReturn(enemy);
+  public void spawn_player() {
+    when(spawnCharacter.getObject()).thenReturn(cell);
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
 
-    subscriber.addEnemy(addEnemy);
+    subscriber.spawnCharacter(spawnCharacter);
 
-    verify(world).add(enemy);
+    verify(worldView).add(COORDINATE, player);
   }
 
   @Test
-  public void remove_object() {
-    when(removeObject.getObject()).thenReturn(mapObject);
+  public void spawn_enemy() {
+    when(spawnCharacter.getObject()).thenReturn(cell);
+    when(cell.hasEnemy()).thenReturn(true);
+    when(cell.getEnemy()).thenReturn(enemy);
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
 
-    subscriber.removeObject(removeObject);
+    subscriber.spawnCharacter(spawnCharacter);
 
-    verify(world).remove(mapObject);
+    verify(worldView).add(COORDINATE, enemy);
+  }
+
+  @Test
+  public void remove_character() {
+    when(removeCharacter.getObject()).thenReturn(character);
+
+    subscriber.removeCharacter(removeCharacter);
+
+    verify(worldView).remove(character);
+  }
+
+  @Test
+  public void instant_move_character() {
+    when(instantMoveCharacter.getCharacter()).thenReturn(character);
+    when(instantMoveCharacter.getDestination()).thenReturn(cell);
+    when(cell.getCoordinate()).thenReturn(COORDINATE);
+    when(worldView.get(character)).thenReturn(characterActor);
+
+    subscriber.instantMoveCharacter(instantMoveCharacter);
+
+    verify(characterActor).moveTo(COORDINATE);
+  }
+
+  @Test
+  public void move_character() {
+    SettableFuture<Void> future = SettableFuture.create();
+    when(moveCharacter.getCharacter()).thenReturn(character);
+    when(moveCharacter.getPath()).thenReturn(path);
+    when(moveCharacter.getFuture()).thenReturn(future);
+    when(worldView.get(character)).thenReturn(characterActor);
+
+    subscriber.moveCharacter(moveCharacter);
+
+    verify(characterActor).moveAlong(path, future);
   }
 }

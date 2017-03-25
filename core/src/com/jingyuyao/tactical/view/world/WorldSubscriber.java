@@ -1,40 +1,66 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.event.AddEnemy;
-import com.jingyuyao.tactical.model.event.AddPlayer;
-import com.jingyuyao.tactical.model.event.AddTerrain;
-import com.jingyuyao.tactical.model.event.RemoveObject;
+import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
+import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.view.actor.CharacterActor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class WorldSubscriber {
 
-  private final World world;
+  private final WorldView worldView;
 
   @Inject
-  WorldSubscriber(World world) {
-    this.world = world;
+  WorldSubscriber(WorldView worldView) {
+    this.worldView = worldView;
   }
 
   @Subscribe
-  void addTerrain(AddTerrain addTerrain) {
-    world.add(addTerrain.getObject());
+  void worldLoad(WorldLoad worldLoad) {
+    for (Cell cell : worldLoad.getObject()) {
+      worldView.add(cell);
+      worldView.add(cell.getCoordinate(), cell.getTerrain());
+    }
   }
 
   @Subscribe
-  void addPlayer(AddPlayer addPlayer) {
-    world.add(addPlayer.getObject());
+  void worldReset(WorldReset worldReset) {
+    worldView.reset();
   }
 
   @Subscribe
-  void addEnemy(AddEnemy addEnemy) {
-    world.add(addEnemy.getObject());
+  void spawnCharacter(SpawnCharacter spawnCharacter) {
+    Cell cell = spawnCharacter.getObject();
+    Coordinate coordinate = cell.getCoordinate();
+    if (cell.hasPlayer()) {
+      worldView.add(coordinate, cell.getPlayer());
+    } else if (cell.hasEnemy()) {
+      worldView.add(coordinate, cell.getEnemy());
+    }
   }
 
   @Subscribe
-  void removeObject(RemoveObject removeObject) {
-    world.remove(removeObject.getObject());
+  void removeCharacter(RemoveCharacter removeCharacter) {
+    worldView.remove(removeCharacter.getObject());
+  }
+
+  @Subscribe
+  void instantMoveCharacter(InstantMoveCharacter instantMoveCharacter) {
+    CharacterActor actor = worldView.get(instantMoveCharacter.getCharacter());
+    actor.moveTo(instantMoveCharacter.getDestination().getCoordinate());
+  }
+
+  @Subscribe
+  void moveCharacter(MoveCharacter moveCharacter) {
+    CharacterActor actor = worldView.get(moveCharacter.getCharacter());
+    actor.moveAlong(moveCharacter.getPath(), moveCharacter.getFuture());
   }
 }

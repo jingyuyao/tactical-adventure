@@ -4,15 +4,15 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Movements;
 import javax.inject.Inject;
 
 /**
  * Can only perform actions after moving.
  */
-public class Moved extends BasePlayerState {
+public class Moved extends PlayerActionState {
 
-  private final StateFactory stateFactory;
   private final Movements movements;
 
   @Inject
@@ -21,18 +21,20 @@ public class Moved extends BasePlayerState {
       MapState mapState,
       StateFactory stateFactory,
       Movements movements,
-      @Assisted Player player) {
-    super(eventBus, mapState, stateFactory, player);
-    this.stateFactory = stateFactory;
+      @Assisted Cell cell) {
+    super(eventBus, mapState, stateFactory, cell);
     this.movements = movements;
   }
 
   @Override
-  public void select(Player player) {
-    if (!getPlayer().equals(player)) {
-      rollback();
-      if (player.isActionable()) {
-        goTo(stateFactory.createMoving(player, movements.distanceFrom(player)));
+  public void select(Cell cell) {
+    if (cell.hasPlayer()) {
+      Player player = cell.getPlayer();
+      if (!getPlayer().equals(player)) {
+        rollback();
+        if (player.isActionable()) {
+          goTo(getStateFactory().createMoving(cell, movements.distanceFrom(cell)));
+        }
       }
     }
   }

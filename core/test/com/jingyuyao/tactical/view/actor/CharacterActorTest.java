@@ -1,17 +1,13 @@
 package com.jingyuyao.tactical.view.actor;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.event.InstantMove;
-import com.jingyuyao.tactical.model.character.event.Move;
+import com.google.common.util.concurrent.SettableFuture;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Path;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
@@ -37,10 +33,6 @@ public class CharacterActorTest {
   private static final float MOVE_TIME_PER_UNIT = 1f;
 
   @Mock
-  private Character character;
-  @Mock
-  private ActorConfig actorConfig;
-  @Mock
   private LinkedHashSet<WorldTexture> markers;
   @Mock
   private LoopAnimation loopAnimation;
@@ -53,28 +45,19 @@ public class CharacterActorTest {
   @Mock
   private WorldTexture texture2;
   @Mock
-  private InstantMove instantMove;
-  @Mock
-  private EventListener listener;
-  @Mock
-  private Move move;
-  @Mock
   private Path path;
+  @Mock
+  private Cell cell1;
+  @Mock
+  private Cell cell2;
 
-  private CharacterActor<Character> characterActor;
+  private CharacterActor characterActor;
 
   @Before
   public void setUp() {
-    when(character.getCoordinate()).thenReturn(COORDINATE);
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
-
-    characterActor = new CharacterActor<>(character, actorConfig, markers, loopAnimation);
-
-    assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
-    assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
-    assertThat(characterActor.getWidth()).isEqualTo(ACTOR_SIZE);
-    assertThat(characterActor.getHeight()).isEqualTo(ACTOR_SIZE);
-    verify(character).registerListener(characterActor);
+    characterActor = new CharacterActor(MOVE_TIME_PER_UNIT, markers, loopAnimation);
+    characterActor.setSize(ACTOR_SIZE, ACTOR_SIZE);
+    characterActor.setPosition(INITIAL_WORLD_X, INITIAL_WORLD_Y);
   }
 
   @Test
@@ -93,42 +76,29 @@ public class CharacterActorTest {
   }
 
   @Test
-  public void instant_move() {
-    when(instantMove.getDestination()).thenReturn(DESTINATION);
-
-    characterActor.instantMove(instantMove);
-
-    assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
-    assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
-  }
-
-  @Test
   public void move() {
-    when(move.getPath()).thenReturn(path);
-    when(path.getTrack()).thenReturn(ImmutableList.of(TRACK1, DESTINATION));
-    when(actorConfig.getMoveTimePerUnit()).thenReturn(MOVE_TIME_PER_UNIT);
-    characterActor.addListener(listener);
+    SettableFuture<Void> future = SettableFuture.create();
+    when(cell1.getCoordinate()).thenReturn(TRACK1);
+    when(cell2.getCoordinate()).thenReturn(DESTINATION);
+    when(path.getTrack()).thenReturn(ImmutableList.of(cell1, cell2));
 
-    characterActor.move(move);
+    characterActor.moveAlong(path, future);
 
-    verify(move, times(0)).done();
-    assertThat(characterActor.getListeners()).isEmpty();
+    assertThat(future.isDone()).isFalse();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(INITIAL_WORLD_X);
     assertThat(characterActor.getY()).isEqualTo(INITIAL_WORLD_Y);
 
     characterActor.act(MOVE_TIME_PER_UNIT);
 
-    verify(move, times(0)).done();
-    assertThat(characterActor.getListeners()).isEmpty();
+    assertThat(future.isDone()).isFalse();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(TRACK1.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(TRACK1.getY() * ACTOR_SIZE);
 
     characterActor.act(MOVE_TIME_PER_UNIT);
 
-    verify(move, times(0)).done();
-    assertThat(characterActor.getListeners()).isEmpty();
+    assertThat(future.isDone()).isFalse();
     assertThat(characterActor.getActions()).hasSize(1);
     assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);
@@ -136,8 +106,7 @@ public class CharacterActorTest {
     // Triggers end of sequence actions
     characterActor.act(0f);
 
-    verify(move).done();
-    assertThat(characterActor.getListeners()).containsExactly(listener);
+    assertThat(future.isDone()).isTrue();
     assertThat(characterActor.getActions()).isEmpty();
     assertThat(characterActor.getX()).isEqualTo(DESTINATION.getX() * ACTOR_SIZE);
     assertThat(characterActor.getY()).isEqualTo(DESTINATION.getY() * ACTOR_SIZE);

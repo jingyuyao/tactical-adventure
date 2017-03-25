@@ -3,23 +3,13 @@ package com.jingyuyao.tactical.model.state;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
-import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.map.Cell;
 import java.util.Deque;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -27,8 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStateTest {
 
-  @Mock
-  private EventBus eventBus;
   @Mock
   private Deque<State> stateStack;
   @Mock
@@ -38,19 +26,13 @@ public class MapStateTest {
   @Mock
   private State state3;
   @Mock
-  private Player player;
-  @Mock
-  private Enemy enemy;
-  @Mock
-  private Terrain terrain;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
+  private Cell cell;
 
   private MapState mapState;
 
   @Before
   public void setUp() {
-    mapState = new MapState(eventBus, stateStack);
+    mapState = new MapState(stateStack);
   }
 
   @Test
@@ -72,70 +54,45 @@ public class MapStateTest {
   }
 
   @Test
-  public void selectPlayer() throws Exception {
+  public void select_cell() {
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.select(player);
+    mapState.select(cell);
 
-    verify(state1).select(player);
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, player, SelectPlayer.class);
+    verify(state1).select(cell);
   }
 
   @Test
-  public void selectEnemy() throws Exception {
-    when(stateStack.peek()).thenReturn(state1);
-
-    mapState.select(enemy);
-
-    verify(state1).select(enemy);
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, enemy, SelectEnemy.class);
-  }
-
-  @Test
-  public void selectTerrain() throws Exception {
-    when(stateStack.peek()).thenReturn(state1);
-
-    mapState.select(terrain);
-
-    verify(state1).select(terrain);
-    verify(eventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, terrain, SelectTerrain.class);
-  }
-
-  @Test
-  public void go_to() throws Exception {
+  public void go_to() {
     when(stateStack.peek()).thenReturn(state1);
 
     mapState.goTo(state2);
 
-    InOrder inOrder = inOrder(state1, state2, stateStack, eventBus);
+    InOrder inOrder = inOrder(state1, state2, stateStack);
     inOrder.verify(state1).exit();
     inOrder.verify(stateStack).push(state2);
     inOrder.verify(state2).enter();
   }
 
   @Test
-  public void back_nothing() throws Exception {
+  public void back_nothing() {
     when(stateStack.size()).thenReturn(1);
 
     mapState.back();
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
-    verifyZeroInteractions(eventBus);
   }
 
   @Test
-  public void back() throws Exception {
+  public void back() {
     when(stateStack.size()).thenReturn(2);
     when(stateStack.pop()).thenReturn(state2);
     when(stateStack.peek()).thenReturn(state1);
 
     mapState.back();
 
-    InOrder inOrder = inOrder(stateStack, state2, state1, eventBus);
+    InOrder inOrder = inOrder(stateStack, state2, state1);
 
     inOrder.verify(stateStack).pop();
     inOrder.verify(state2).exit();
@@ -145,25 +102,24 @@ public class MapStateTest {
   }
 
   @Test
-  public void rollback_nothing() throws Exception {
+  public void rollback_nothing() {
     when(stateStack.size()).thenReturn(1);
 
     mapState.rollback();
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
-    verifyZeroInteractions(eventBus);
   }
 
   @Test
-  public void rollback() throws Exception {
+  public void rollback() {
     when(stateStack.size()).thenReturn(3, 2, 1);
     when(stateStack.pop()).thenReturn(state3, state2);
     when(stateStack.peek()).thenReturn(state2, state1);
 
     mapState.rollback();
 
-    InOrder inOrder = inOrder(stateStack, state3, state2, state1, eventBus);
+    InOrder inOrder = inOrder(stateStack, state3, state2, state1);
 
     // oh boy...
     inOrder.verify(stateStack).pop();
@@ -180,12 +136,12 @@ public class MapStateTest {
   }
 
   @Test
-  public void newStack() throws Exception {
+  public void newStack() {
     when(stateStack.peek()).thenReturn(state2);
 
     mapState.branchTo(state1);
 
-    InOrder inOrder = inOrder(stateStack, state1, state2, eventBus);
+    InOrder inOrder = inOrder(stateStack, state1, state2);
 
     inOrder.verify(stateStack).peek();
     inOrder.verify(state2).exit();

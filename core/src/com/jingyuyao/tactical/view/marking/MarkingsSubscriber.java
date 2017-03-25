@@ -3,68 +3,64 @@ package com.jingyuyao.tactical.view.marking;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.SelectEnemy;
-import com.jingyuyao.tactical.model.event.SelectPlayer;
-import com.jingyuyao.tactical.model.event.SelectTerrain;
+import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.item.Target;
-import com.jingyuyao.tactical.model.map.MapObject;
+import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class MarkingsSubscriber {
 
+  private final WorldView worldView;
   private final Markings markings;
   private final Markers markers;
   private final Animations animations;
 
   @Inject
-  MarkingsSubscriber(Markings markings, Markers markers, Animations animations) {
+  MarkingsSubscriber(
+      WorldView worldView, Markings markings, Markers markers, Animations animations) {
+    this.worldView = worldView;
     this.markings = markings;
     this.markers = markers;
     this.animations = animations;
   }
 
   @Subscribe
-  void selectPlayer(SelectPlayer selectPlayer) {
-    markings.highlight(selectPlayer.getObject());
-  }
-
-  @Subscribe
-  void selectEnemy(SelectEnemy selectEnemy) {
-    markings.highlight(selectEnemy.getObject());
-  }
-
-  @Subscribe
-  void selectTerrain(SelectTerrain selectTerrain) {
-    markings.highlight(selectTerrain.getObject());
+  void selectCell(SelectCell selectCell) {
+    Cell cell = selectCell.getObject();
+    markings.highlight(worldView.get(cell));
   }
 
   @Subscribe
   void playerState(PlayerState playerState) {
-    markings.activate(playerState.getPlayer());
+    Player player = playerState.getPlayer();
+    markings.activate(worldView.get(player));
   }
 
   @Subscribe
   void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    markings.activate(activatedEnemy.getObject());
+    Enemy enemy = activatedEnemy.getObject();
+    markings.activate(worldView.get(enemy));
   }
 
   @Subscribe
   void moving(Moving moving) {
-    for (Terrain terrain : moving.getMovement().getTerrains()) {
-      markings.mark(terrain, markers.getMove());
+    for (Cell cell : moving.getMovement().getCells()) {
+      markings.mark(worldView.get(cell.getTerrain()), markers.getMove());
     }
   }
 
@@ -102,17 +98,17 @@ public class MarkingsSubscriber {
     });
     // TODO: need a way to distinguish on animation on select tile or an animation for every target
     // tile
-    for (MapObject object : attack.getObject().getSelectTerrains()) {
-      markings.addSingleAnimation(object, animation);
+    for (Cell cell : attack.getObject().getSelectCells()) {
+      markings.addSingleAnimation(worldView.get(cell.getTerrain()), animation);
     }
   }
 
   private void markTarget(Target target) {
-    for (Terrain terrain : target.getTargetTerrains()) {
-      markings.mark(terrain, markers.getAttack());
+    for (Cell cell : target.getTargetCells()) {
+      markings.mark(worldView.get(cell.getTerrain()), markers.getAttack());
     }
-    for (Terrain terrain : target.getSelectTerrains()) {
-      markings.mark(terrain, markers.getTargetSelect());
+    for (Cell cell : target.getSelectCells()) {
+      markings.mark(worldView.get(cell.getTerrain()), markers.getTargetSelect());
     }
   }
 }

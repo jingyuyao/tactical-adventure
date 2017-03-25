@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jingyuyao.tactical.model.map.Terrains;
+import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,7 +15,7 @@ class WorldCamera extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
   private final Viewport worldViewport;
-  private final Terrains terrains;
+  private final World world;
   private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
   private int lastPointer = -1;
@@ -23,10 +23,10 @@ class WorldCamera extends InputAdapter {
 
   @Inject
   WorldCamera(
-      ControllerConfig controllerConfig, @WorldViewport Viewport worldViewport, Terrains terrains) {
+      ControllerConfig controllerConfig, @WorldViewport Viewport worldViewport, World world) {
     this.controllerConfig = controllerConfig;
     this.worldViewport = worldViewport;
-    this.terrains = terrains;
+    this.world = world;
   }
 
   @Override
@@ -55,9 +55,9 @@ class WorldCamera extends InputAdapter {
       float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
 
       float lowerXBound = worldViewport.getWorldWidth() / 2f;
-      float upperXBound = terrains.getMaxWidth() - lowerXBound;
+      float upperXBound = world.getMaxWidth() - lowerXBound;
       float lowerYBound = worldViewport.getWorldHeight() / 2f;
-      float upperYBound = terrains.getMaxHeight() - lowerYBound;
+      float upperYBound = world.getMaxHeight() - lowerYBound;
 
       float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
       float boundedNewWorldY = bound(lowerYBound, unboundedNewWorldY, upperYBound);
