@@ -10,10 +10,10 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.event.InstantMoveCharacter;
-import com.jingyuyao.tactical.model.map.event.MoveCharacter;
-import com.jingyuyao.tactical.model.map.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.map.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
+import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 

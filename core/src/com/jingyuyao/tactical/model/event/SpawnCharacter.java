@@ -1,6 +1,5 @@
-package com.jingyuyao.tactical.model.map.event;
+package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.event.ObjectEvent;
 import com.jingyuyao.tactical.model.map.Cell;
 
 public class SpawnCharacter extends ObjectEvent<Cell> {

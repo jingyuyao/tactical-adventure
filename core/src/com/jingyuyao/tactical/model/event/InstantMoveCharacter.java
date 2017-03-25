@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map.event;
+package com.jingyuyao.tactical.model.event;
 
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Cell;

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map.event;
+package com.jingyuyao.tactical.model.event;
 
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Character;

@@ -1,14 +1,14 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
+import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.RemoveCharacter;
+import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.event.InstantMoveCharacter;
-import com.jingyuyao.tactical.model.map.event.MoveCharacter;
-import com.jingyuyao.tactical.model.map.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.map.event.SpawnCharacter;
 import com.jingyuyao.tactical.view.actor.CharacterActor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
