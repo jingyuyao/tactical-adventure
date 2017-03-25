@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.World;
@@ -38,10 +38,10 @@ public class Waiting extends BaseState {
   public void enter() {
     super.enter();
     FluentIterable<Character> characters = world.getCharacters();
-    if (Iterables.isEmpty(characters.filter(Player.class))) {
+    if (!characters.anyMatch(Predicates.instanceOf(Player.class))) {
       post(new LevelFailed());
     }
-    if (Iterables.isEmpty(characters.filter(Enemy.class))) {
+    if (!characters.anyMatch(Predicates.instanceOf(Enemy.class))) {
       post(new LevelComplete());
     }
   }

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
@@ -42,10 +43,10 @@ public class PassiveEnemy extends AbstractEnemy {
         for (final Target target : weapon.createTargets(moveCell)) {
           FluentIterable<Character> targetCharacters = target.getTargetCharacters();
           // Don't hit friendly characters?
-          if (!targetCharacters.filter(Enemy.class).isEmpty()) {
+          if (targetCharacters.anyMatch(Predicates.instanceOf(Enemy.class))) {
             continue;
           }
-          if (!targetCharacters.filter(Player.class).isEmpty()) {
+          if (targetCharacters.anyMatch(Predicates.instanceOf(Player.class))) {
             Path path = movement.pathTo(moveCell);
 
             return Futures
