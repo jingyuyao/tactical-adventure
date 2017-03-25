@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
+import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.PlayerState;
@@ -74,5 +75,13 @@ public class UISubscriber {
   void exitState(ExitState exitState) {
     itemPanel.clear();
     actionGroup.clear();
+  }
+
+  @Subscribe
+  void worldReset(WorldReset worldReset) {
+    characterPanel.clear();
+    itemPanel.clear();
+    actionGroup.clear();
+    terrainPanel.clear();
   }
 }
