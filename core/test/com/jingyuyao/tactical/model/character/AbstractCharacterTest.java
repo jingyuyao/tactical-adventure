@@ -5,22 +5,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.event.InstantMove;
-import com.jingyuyao.tactical.model.character.event.Move;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Path;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -33,8 +24,6 @@ public class AbstractCharacterTest {
   private static final int MOVE_DISTANCE = 3;
 
   @Mock
-  private EventBus eventBus;
-  @Mock
   private Weapon weapon1;
   @Mock
   private Weapon weapon2;
@@ -42,16 +31,6 @@ public class AbstractCharacterTest {
   private Consumable consumable;
   @Mock
   private Item newItem;
-  @Mock
-  private Path path;
-  @Mock
-  private Object listener;
-  @Mock
-  private Cell from;
-  @Mock
-  private Cell to;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
 
   private List<Item> items;
   private Character character;
@@ -59,15 +38,7 @@ public class AbstractCharacterTest {
   @Before
   public void setUp() {
     items = Lists.newArrayList(weapon1, consumable, weapon2);
-    character =
-        new CharacterImpl(eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items);
-  }
-
-  @Test
-  public void register_listener() {
-    character.registerListener(listener);
-
-    verify(eventBus).register(listener);
+    character = new CharacterImpl(NAME, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
@@ -138,39 +109,10 @@ public class AbstractCharacterTest {
     assertThat(items).doesNotContain(weapon1);
   }
 
-  @Test
-  public void move_along() {
-    when(path.getOrigin()).thenReturn(from);
-    when(path.getDestination()).thenReturn(to);
-
-    ListenableFuture<Void> future = character.moveAlong(path);
-
-    verify(eventBus).post(argumentCaptor.capture());
-    Move move = TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, Move.class);
-    assertThat(move.getPath()).isSameAs(path);
-    assertThat(future.isDone()).isFalse();
-
-    move.done();
-    assertThat(future.isDone()).isTrue();
-    verify(from).instantMoveCharacter(to);
-  }
-
-  @Test
-  public void instant_move() {
-    character.instantMoveTo(from, to);
-
-    verify(from).instantMoveCharacter(to);
-    verify(eventBus).post(argumentCaptor.capture());
-    InstantMove instantMove =
-        TestHelpers.verifyObjectEvent(argumentCaptor, 0, character, InstantMove.class);
-    assertThat(instantMove.getDestination()).isEqualTo(to);
-  }
-
   private static class CharacterImpl extends AbstractCharacter {
 
-    CharacterImpl(
-        EventBus eventBus, String name, int maxHp, int hp, int moveDistance, List<Item> items) {
-      super(eventBus, name, maxHp, hp, moveDistance, items);
+    CharacterImpl(String name, int maxHp, int hp, int moveDistance, List<Item> items) {
+      super(name, maxHp, hp, moveDistance, items);
     }
   }
 }

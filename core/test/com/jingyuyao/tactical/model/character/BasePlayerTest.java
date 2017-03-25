@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import java.util.List;
 import org.junit.Before;
@@ -21,14 +20,12 @@ public class BasePlayerTest {
 
   @Mock
   private List<Item> items;
-  @Mock
-  private EventBus eventBus;
 
   private Player player;
 
   @Before
   public void setUp() {
-    player = new BasePlayer(eventBus, NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
+    player = new BasePlayer(NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
   }
 
   @Test

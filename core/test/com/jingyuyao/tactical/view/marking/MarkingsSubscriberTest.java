@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.marking;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -202,9 +202,7 @@ public class MarkingsSubscriberTest {
     subscriber.attack(attack);
 
     markings.addSingleAnimation(worldActor, singleAnimation);
-    verify(attack).getWeapon();
-    verify(attack).getObject();
-    verifyNoMoreInteractions(attack);
+    verify(attack, never()).done();
 
     future.set(null);
 

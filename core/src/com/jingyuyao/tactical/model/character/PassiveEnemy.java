@@ -1,10 +1,8 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.character.CharacterModule.CharacterEventBus;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.map.Movements;
 import java.util.List;
@@ -16,17 +14,15 @@ public class PassiveEnemy extends AbstractEnemy {
   private final transient Battle battle;
 
   @Inject
-  PassiveEnemy(
-      @CharacterEventBus EventBus eventBus, Movements movements, Battle battle) {
-    super(eventBus);
+  PassiveEnemy(Movements movements, Battle battle) {
     this.movements = movements;
     this.battle = battle;
   }
 
   PassiveEnemy(
-      Movements movements, EventBus eventBus, Battle battle, String name, int maxHp, int hp,
-      int moveDistance, List<Item> items) {
-    super(eventBus, name, maxHp, hp, moveDistance, items);
+      Movements movements, Battle battle, String name, int maxHp, int hp, int moveDistance,
+      List<Item> items) {
+    super(name, maxHp, hp, moveDistance, items);
     this.movements = movements;
     this.battle = battle;
   }
