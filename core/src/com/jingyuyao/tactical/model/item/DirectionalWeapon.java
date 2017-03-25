@@ -37,6 +37,9 @@ public class DirectionalWeapon extends AbstractWeapon {
 
   private Optional<Target> createTarget(Cell from, Coordinate direction) {
     Coordinate current = from.getCoordinate().offsetBy(direction);
+    if (!world.hasCoordinate(current)) {
+      return Optional.absent();
+    }
     ImmutableSet<Cell> selectCells = ImmutableSet.of(world.getCell(current));
     int leftOverDistance = distance;
 

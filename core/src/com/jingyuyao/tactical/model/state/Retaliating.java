@@ -1,12 +1,9 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -33,36 +30,27 @@ public class Retaliating extends BaseState {
   @Override
   public void enter() {
     super.enter();
-    retaliate();
+    retaliate(world.getCells().toList(), 0);
   }
 
-  private void retaliate() {
-    ImmutableList<Cell> enemyCells = world.getCells().filter(new Predicate<Cell>() {
-      @Override
-      public boolean apply(Cell input) {
-        return input.hasEnemy();
-      }
-    }).toList();
-
-    // TODO: does order matter?
-    ListenableFuture<Void> currentRetaliation = Futures.immediateFuture(null);
-    for (final Cell cell : enemyCells) {
-      final Enemy enemy = cell.getEnemy();
-      // Make enemies retaliate one at a time
-      currentRetaliation =
-          Futures.transformAsync(currentRetaliation, new AsyncFunction<Void, Void>() {
-            @Override
-            public ListenableFuture<Void> apply(Void input) throws Exception {
-              post(new ActivatedEnemy(enemy));
-              return enemy.retaliate(cell);
-            }
-          });
+  private void retaliate(final ImmutableList<Cell> cells, final int i) {
+    if (i == cells.size()) {
+      branchTo(stateFactory.createWaiting());
+      return;
     }
 
-    Futures.addCallback(currentRetaliation, new FutureCallback<Void>() {
+    Cell cell = cells.get(i);
+    if (!cell.hasEnemy()) {
+      retaliate(cells, i + 1);
+      return;
+    }
+
+    Enemy enemy = cell.getEnemy();
+    post(new ActivatedEnemy(enemy));
+    Futures.addCallback(enemy.retaliate(cell), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        branchTo(stateFactory.createWaiting());
+        retaliate(cells, i + 1);
       }
 
       @Override
