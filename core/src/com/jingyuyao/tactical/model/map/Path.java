@@ -3,6 +3,9 @@ package com.jingyuyao.tactical.model.map;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Path to move in the world grid. Track begins includes both the starting and ending {@link Cell}.
+ */
 public class Path {
 
   private final ImmutableList<Cell> track;

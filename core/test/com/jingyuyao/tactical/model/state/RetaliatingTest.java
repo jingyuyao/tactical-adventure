@@ -12,7 +12,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.World;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -40,6 +39,8 @@ public class RetaliatingTest {
   private World world;
   @Mock
   private Cell cell;
+  @Mock
+  private Cell cell2;
   @Mock
   private Enemy enemy;
   @Mock
@@ -74,18 +75,22 @@ public class RetaliatingTest {
 
   @Test
   public void enter() {
-    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(enemy, enemy2));
-    when(enemy.retaliate()).thenReturn(retaliation);
-    when(enemy2.retaliate()).thenReturn(retaliation2);
+    when(world.getCells()).thenReturn(FluentIterable.of(cell, cell2));
+    when(cell.hasEnemy()).thenReturn(true);
+    when(cell2.hasEnemy()).thenReturn(true);
+    when(cell.getEnemy()).thenReturn(enemy);
+    when(cell2.getEnemy()).thenReturn(enemy2);
+    when(enemy.retaliate(cell)).thenReturn(retaliation);
+    when(enemy2.retaliate(cell2)).thenReturn(retaliation2);
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     retaliating.enter();
 
     InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState, eventBus);
     inOrder.verify(eventBus, times(2)).post(argumentCaptor.capture());
-    inOrder.verify(enemy).retaliate();
+    inOrder.verify(enemy).retaliate(cell);
     inOrder.verify(eventBus).post(argumentCaptor.capture());
-    inOrder.verify(enemy2).retaliate();
+    inOrder.verify(enemy2).retaliate(cell2);
     inOrder.verify(mapState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);

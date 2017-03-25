@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.inject.assistedinject.Assisted;
@@ -80,19 +81,30 @@ public class Cell {
     this.character = null;
   }
 
-  public void instantMoveCharacter(Cell cell) {
+  public void instantMoveCharacter(Cell destination) {
     Preconditions.checkState(hasCharacter());
-    Preconditions.checkArgument(!cell.hasCharacter());
 
-    eventBus.post(new InstantMoveCharacter(character, cell));
-    cell.character = character;
+    if (destination.equals(this)) {
+      return;
+    }
+
+    Preconditions.checkArgument(!destination.hasCharacter());
+
+    eventBus.post(new InstantMoveCharacter(character, destination));
+    destination.character = character;
     character = null;
   }
 
   public ListenableFuture<Void> moveCharacter(Path path) {
     Preconditions.checkState(hasCharacter());
     Preconditions.checkArgument(path.getOrigin().equals(this));
-    Preconditions.checkArgument(!path.getDestination().hasCharacter());
+
+    Cell destination = path.getDestination();
+    if (destination.equals(this)) {
+      return Futures.immediateFuture(null);
+    }
+
+    Preconditions.checkArgument(!destination.hasCharacter());
 
     SettableFuture<Void> future = SettableFuture.create();
     eventBus.post(new MoveCharacter(character, path, future));

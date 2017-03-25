@@ -64,7 +64,8 @@ public class DataModule extends AbstractModule {
   @Named("needCreatorClasses")
   List<Class<?>> provideNeedCreatorClasses() {
     // Add model classes that requires Guice injection here
-    return ImmutableList.<Class<?>>of(
+    return ImmutableList.of(
+        PassiveEnemy.class,
         DirectionalWeapon.class,
         Grenade.class
     );

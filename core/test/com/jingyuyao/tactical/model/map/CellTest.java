@@ -103,6 +103,18 @@ public class CellTest {
   }
 
   @Test
+  public void instant_move_same_cell() {
+    cell.spawnCharacter(player);
+
+    cell.instantMoveCharacter(cell);
+
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
+    assertThat(cell.hasCharacter()).isTrue();
+    assertThat(cell.getPlayer()).isSameAs(player);
+  }
+
+  @Test
   public void move_character() {
     Cell other = new Cell(eventBus, COORDINATE, terrain);
     cell.spawnCharacter(player);
@@ -111,11 +123,27 @@ public class CellTest {
 
     ListenableFuture<Void> future = cell.moveCharacter(path);
 
+    assertThat(future.isDone()).isFalse();
     assertThat(cell.hasCharacter()).isFalse();
     assertThat(other.hasCharacter()).isTrue();
     assertThat(other.getCharacter()).isSameAs(player);
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(MoveCharacter.class);
+  }
+
+  @Test
+  public void move_character_same_cell() {
+    cell.spawnCharacter(player);
+    when(path.getOrigin()).thenReturn(cell);
+    when(path.getDestination()).thenReturn(cell);
+
+    ListenableFuture<Void> future = cell.moveCharacter(path);
+
+    assertThat(future.isDone()).isTrue();
+    verify(eventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
+    assertThat(cell.hasCharacter()).isTrue();
+    assertThat(cell.getPlayer()).isSameAs(player);
   }
 }
