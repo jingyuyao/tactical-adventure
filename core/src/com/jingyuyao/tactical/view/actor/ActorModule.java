@@ -7,7 +7,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -18,7 +17,6 @@ public class ActorModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new FactoryModuleBuilder().build(ActorFactory.class));
   }
 
   @Provides
