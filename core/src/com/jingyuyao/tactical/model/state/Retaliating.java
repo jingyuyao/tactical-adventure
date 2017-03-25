@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
@@ -30,7 +31,14 @@ public class Retaliating extends BaseState {
   @Override
   public void enter() {
     super.enter();
-    retaliate(world.getCells().toList(), 0);
+    // Warning: must filter cells here so that we don't call retaliate on the same enemy
+    // multiples times after they moved
+    retaliate(world.getCells().filter(new Predicate<Cell>() {
+      @Override
+      public boolean apply(Cell input) {
+        return input.hasEnemy();
+      }
+    }).toList(), 0);
   }
 
   private void retaliate(final ImmutableList<Cell> cells, final int i) {
@@ -40,11 +48,6 @@ public class Retaliating extends BaseState {
     }
 
     Cell cell = cells.get(i);
-    if (!cell.hasEnemy()) {
-      retaliate(cells, i + 1);
-      return;
-    }
-
     Enemy enemy = cell.getEnemy();
     post(new ActivatedEnemy(enemy));
     Futures.addCallback(enemy.retaliate(cell), new FutureCallback<Void>() {
