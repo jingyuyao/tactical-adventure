@@ -5,10 +5,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.MapModule.CellEventBus;
 import com.jingyuyao.tactical.model.map.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.map.event.MoveCharacter;
 import com.jingyuyao.tactical.model.map.event.RemoveCharacter;
@@ -18,17 +18,17 @@ import javax.inject.Inject;
 
 public class Cell {
 
-  private final EventBus cellEventBus;
+  private final EventBus eventBus;
   private final Coordinate coordinate;
   private final Terrain terrain;
   private Character character;
 
   @Inject
   Cell(
-      @CellEventBus EventBus cellEventBus,
+      @ModelEventBus EventBus eventBus,
       @Assisted Coordinate coordinate,
       @Assisted Terrain terrain) {
-    this.cellEventBus = cellEventBus;
+    this.eventBus = eventBus;
     this.coordinate = coordinate;
     this.terrain = terrain;
   }
@@ -70,14 +70,14 @@ public class Cell {
     Preconditions.checkNotNull(character);
 
     this.character = character;
-    cellEventBus.post(new SpawnCharacter());
+    eventBus.post(new SpawnCharacter());
   }
 
   public void removeCharacter() {
     Preconditions.checkState(hasCharacter());
 
     this.character = null;
-    cellEventBus.post(new RemoveCharacter());
+    eventBus.post(new RemoveCharacter());
   }
 
   public void instantMoveCharacter(Cell cell) {
@@ -86,7 +86,7 @@ public class Cell {
 
     cell.character = character;
     character = null;
-    cellEventBus.post(new InstantMoveCharacter(cell));
+    eventBus.post(new InstantMoveCharacter(cell));
   }
 
   public ListenableFuture<Void> moveCharacter(Path path) {
@@ -97,7 +97,7 @@ public class Cell {
     path.getDestination().character = character;
     character = null;
     SettableFuture<Void> future = SettableFuture.create();
-    cellEventBus.post(new MoveCharacter(path, future));
+    eventBus.post(new MoveCharacter(path, future));
     return future;
   }
 }
