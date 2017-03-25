@@ -5,7 +5,6 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.World;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,9 +18,6 @@ public class BattleModuleTest {
   @Mock
   @ModelEventBus
   private EventBus eventBus;
-  @Bind
-  @Mock
-  private World world;
 
   @Inject
   private Battle battle;
