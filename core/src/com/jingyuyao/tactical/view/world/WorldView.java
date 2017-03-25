@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -13,7 +12,6 @@ import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.CellActor;
 import com.jingyuyao.tactical.view.actor.EnemyActor;
 import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
@@ -39,7 +37,6 @@ public class WorldView {
   private final Map<Object, WorldActor<?>> actorMap;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final ActorFactory actorFactory;
-  private final ControllerFactory controllerFactory;
   private final Animations animations;
 
   @Inject
@@ -51,7 +48,6 @@ public class WorldView {
       @BackingActorMap Map<Object, WorldActor<?>> actorMap,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory,
-      ControllerFactory controllerFactory,
       Animations animations) {
     this.stage = stage;
     this.cellGroup = cellGroup;
@@ -60,7 +56,6 @@ public class WorldView {
     this.actorMap = actorMap;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
-    this.controllerFactory = controllerFactory;
     this.animations = animations;
     stage.addActor(terrainGroup);
     stage.addActor(characterGroup);
@@ -105,9 +100,7 @@ public class WorldView {
       add(coordinate, cell.getEnemy());
     }
     add(coordinate, cell.getTerrain());
-    CellActor cellActor = actorFactory.create(cell, cell.getCoordinate());
-    cellActor.addListener(controllerFactory.create(cell));
-    cellGroup.addActor(cellActor);
+    cellGroup.addActor(actorFactory.create(cell));
   }
 
   void add(Coordinate coordinate, Player player) {

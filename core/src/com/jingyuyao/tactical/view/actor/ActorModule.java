@@ -7,6 +7,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.jingyuyao.tactical.controller.ControllerFactory;
+import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -17,6 +19,8 @@ public class ActorModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(ControllerFactory.class);
+    requireBinding(Animations.class);
   }
 
   @Provides

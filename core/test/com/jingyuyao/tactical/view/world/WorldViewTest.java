@@ -7,18 +7,16 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jingyuyao.tactical.controller.CellController;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.CellActor;
 import com.jingyuyao.tactical.view.actor.EnemyActor;
 import com.jingyuyao.tactical.view.actor.PlayerActor;
 import com.jingyuyao.tactical.view.actor.TerrainActor;
@@ -55,10 +53,6 @@ public class WorldViewTest {
   @Mock
   private ActorFactory actorFactory;
   @Mock
-  private ControllerFactory controllerFactory;
-  @Mock
-  private CellController cellController;
-  @Mock
   private Animations animations;
   @Mock
   private Viewport viewport;
@@ -83,7 +77,7 @@ public class WorldViewTest {
   @Mock
   private TerrainActor terrainActor;
   @Mock
-  private CellActor cellActor;
+  private Actor cellActor;
   @Mock
   private Cell cell;
 
@@ -92,8 +86,7 @@ public class WorldViewTest {
   @Before
   public void setUp() {
     worldView = new WorldView(stage, cellGroup, characterGroup, terrainGroup, actorMap, mapRenderer,
-        actorFactory,
-        controllerFactory, animations);
+        actorFactory, animations);
     InOrder inOrder = Mockito.inOrder(stage);
     inOrder.verify(stage).addActor(terrainGroup);
     inOrder.verify(stage).addActor(characterGroup);
@@ -163,8 +156,7 @@ public class WorldViewTest {
     when(player.getName()).thenReturn(NAME);
     when(actorFactory.create(player, COORDINATE, loopAnimation)).thenReturn(playerActor);
     when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
-    when(actorFactory.create(cell, COORDINATE)).thenReturn(cellActor);
-    when(controllerFactory.create(cell)).thenReturn(cellController);
+    when(actorFactory.create(cell)).thenReturn(cellActor);
 
     worldView.add(cell);
 
@@ -173,7 +165,6 @@ public class WorldViewTest {
     verify(terrainGroup).addActor(terrainActor);
     verify(actorMap).put(terrain, terrainActor);
     verify(cellGroup).addActor(cellActor);
-    verify(cellActor).addListener(cellController);
   }
 
   @Test
@@ -187,8 +178,7 @@ public class WorldViewTest {
     when(enemy.getName()).thenReturn(NAME);
     when(actorFactory.create(enemy, COORDINATE, loopAnimation)).thenReturn(enemyActor);
     when(actorFactory.create(terrain, COORDINATE)).thenReturn(terrainActor);
-    when(actorFactory.create(cell, COORDINATE)).thenReturn(cellActor);
-    when(controllerFactory.create(cell)).thenReturn(cellController);
+    when(actorFactory.create(cell)).thenReturn(cellActor);
 
     worldView.add(cell);
 
@@ -197,7 +187,6 @@ public class WorldViewTest {
     verify(terrainGroup).addActor(terrainActor);
     verify(actorMap).put(terrain, terrainActor);
     verify(cellGroup).addActor(cellActor);
-    verify(cellActor).addListener(cellController);
   }
 
   @Test
