@@ -11,6 +11,14 @@ class DataConfig {
 
   }
 
+  String getStartSaveFileName() {
+    return "main.json";
+  }
+
+  String getMainSaveFileName() {
+    return "main.save.json";
+  }
+
   String getCharactersFileName(String mapName) {
     return String.format("maps/%s.json", mapName);
   }
