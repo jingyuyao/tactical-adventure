@@ -23,6 +23,10 @@ class DataConfig {
     return "levels/" + level + ".level.json";
   }
 
+  String getLevelMapFileName(int level) {
+    return "levels/" + level + ".level.tmx";
+  }
+
   String getCharactersFileName(String mapName) {
     return String.format("maps/%s.json", mapName);
   }
