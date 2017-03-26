@@ -47,14 +47,6 @@ public class World {
     return maxWidth;
   }
 
-  public boolean hasCoordinate(Coordinate coordinate) {
-    return cellMap.containsKey(coordinate);
-  }
-
-  public Cell getCell(Coordinate coordinate) {
-    return cellMap.get(coordinate);
-  }
-
   public FluentIterable<Cell> getCells() {
     return FluentIterable.from(cellMap.values());
   }
