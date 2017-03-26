@@ -1,10 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.map.Cell;
 import java.util.Set;
 
@@ -33,21 +29,4 @@ public class Target {
   public Iterable<Cell> getTargetCells() {
     return targetCells;
   }
-
-  public FluentIterable<Character> getTargetCharacters() {
-    return FluentIterable.from(targetCells)
-        .filter(new Predicate<Cell>() {
-          @Override
-          public boolean apply(Cell input) {
-            return input.hasCharacter();
-          }
-        })
-        .transform(new Function<Cell, Character>() {
-          @Override
-          public Character apply(Cell input) {
-            return input.getCharacter();
-          }
-        });
-  }
-
 }
