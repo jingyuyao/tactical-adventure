@@ -7,16 +7,11 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Direction;
-import com.jingyuyao.tactical.model.state.MapState;
-import com.jingyuyao.tactical.model.state.Waiting;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
@@ -41,10 +36,6 @@ public class WorldTest {
   @Mock
   private EventBus worldEventBus;
   @Mock
-  private MapState mapState;
-  @Mock
-  private Waiting waiting;
-  @Mock
   private Cell temp;
   @Mock
   private Cell cell1;
@@ -54,14 +45,6 @@ public class WorldTest {
   private Cell cell3;
   @Mock
   private Cell cell4;
-  @Mock
-  private Terrain terrain1;
-  @Mock
-  private Terrain terrain2;
-  @Mock
-  private Character character1;
-  @Mock
-  private Character character2;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -71,7 +54,7 @@ public class WorldTest {
   @Before
   public void setUp() {
     cellMap = new HashMap<>();
-    world = new World(worldEventBus, mapState, cellMap);
+    world = new World(worldEventBus, cellMap);
 
     when(cell1.getCoordinate()).thenReturn(COORDINATE1);
     when(cell2.getCoordinate()).thenReturn(COORDINATE2);
@@ -84,21 +67,13 @@ public class WorldTest {
   @Test
   public void load() {
     Iterable<Cell> list = ImmutableList.of(cell1, cell2);
-    world.load(waiting, list);
+    world.load(list);
 
     assertThat(cellMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
     assertThat(world.getMaxHeight()).isEqualTo(COORDINATE1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
-    verify(mapState).initialize(waiting);
     verify(worldEventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, list, WorldLoad.class);
-  }
-
-  @Test
-  public void prep_for_save() {
-    world.prepForSave();
-
-    verify(mapState).prepForSave();
   }
 
   @Test
@@ -134,7 +109,7 @@ public class WorldTest {
   public void no_neighbor() {
     when(temp.getCoordinate()).thenReturn(NO_NEIGHBOR);
 
-    world.load(waiting, ImmutableList.of(cell1, cell2));
+    world.load(ImmutableList.of(cell1, cell2));
 
     assertThat(world.getNeighbors(temp)).isEmpty();
   }
@@ -143,7 +118,7 @@ public class WorldTest {
   public void get_neighbors_some() {
     when(temp.getCoordinate()).thenReturn(TWO_NEIGHBOR);
 
-    world.load(waiting, ImmutableList.of(cell1, cell2));
+    world.load(ImmutableList.of(cell1, cell2));
 
     assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2);
   }
@@ -152,7 +127,7 @@ public class WorldTest {
   public void all_neighbors() {
     when(temp.getCoordinate()).thenReturn(FOUR_NEIGHBOR);
 
-    world.load(waiting, ImmutableList.of(cell1, cell2, cell3, cell4));
+    world.load(ImmutableList.of(cell1, cell2, cell3, cell4));
 
     assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2, cell3, cell4);
   }
@@ -166,16 +141,5 @@ public class WorldTest {
 
     assertThat(world.getNeighbor(temp, Direction.UP)).hasValue(cell1);
     assertThat(world.getNeighbor(temp, Direction.DOWN)).isAbsent();
-  }
-
-  @Test
-  public void select() {
-    cellMap.put(COORDINATE1, cell1);
-
-    world.select(cell1);
-
-    verify(mapState).select(cell1);
-    verify(worldEventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell1, SelectCell.class);
   }
 }
