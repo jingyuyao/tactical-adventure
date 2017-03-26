@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MapModuleTest {
+public class WorldModuleTest {
 
   @Bind
   @Mock
@@ -28,6 +28,6 @@ public class MapModuleTest {
 
   @Test
   public void can_create_module() {
-    Guice.createInjector(BoundFieldModule.of(this), new MapModule()).injectMembers(this);
+    Guice.createInjector(BoundFieldModule.of(this), new WorldModule()).injectMembers(this);
   }
 }

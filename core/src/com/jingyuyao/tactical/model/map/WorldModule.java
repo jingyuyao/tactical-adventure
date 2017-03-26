@@ -16,7 +16,7 @@ import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-public class MapModule extends AbstractModule {
+public class WorldModule extends AbstractModule {
 
   @Override
   protected void configure() {
