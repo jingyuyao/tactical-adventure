@@ -3,16 +3,16 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 
 class BaseState implements State {
 
   private final EventBus eventBus;
-  private final MapState mapState;
+  private final WorldState worldState;
 
-  BaseState(EventBus eventBus, MapState mapState) {
+  BaseState(EventBus eventBus, WorldState worldState) {
     this.eventBus = eventBus;
-    this.mapState = mapState;
+    this.worldState = worldState;
   }
 
   @Override
@@ -43,22 +43,22 @@ class BaseState implements State {
   }
 
   void goTo(State newState) {
-    mapState.goTo(newState);
+    worldState.goTo(newState);
   }
 
   void back() {
-    mapState.back();
+    worldState.back();
   }
 
   void rollback() {
-    mapState.rollback();
+    worldState.rollback();
   }
 
   void branchTo(State state) {
-    mapState.branchTo(state);
+    worldState.branchTo(state);
   }
 
   void popLast() {
-    mapState.popLast();
+    worldState.popLast();
   }
 }

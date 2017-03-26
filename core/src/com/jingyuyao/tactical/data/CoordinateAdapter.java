@@ -4,7 +4,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import java.io.IOException;
 
 class CoordinateAdapter extends TypeAdapter<Coordinate> {

@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 
 public interface State {
 

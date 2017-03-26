@@ -11,15 +11,11 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.battle.BattleModule;
 import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.MapModule;
 import com.jingyuyao.tactical.model.state.StateModule;
 import com.jingyuyao.tactical.model.terrain.TerrainModule;
+import com.jingyuyao.tactical.model.world.WorldModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
@@ -27,7 +23,7 @@ public class ModelModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new MapModule());
+    install(new WorldModule());
     install(new CharacterModule());
     install(new BattleModule());
     install(new TerrainModule());
@@ -42,24 +38,10 @@ public class ModelModule extends AbstractModule {
     return new EventBus("model");
   }
 
-  @Provides
-  @Singleton
-  @BackingCellMap
-  Map<Coordinate, Cell> provideBackingCellMap() {
-    return new HashMap<>();
-  }
-
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface ModelEventBus {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface BackingCellMap {
 
   }
 }

@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.jingyuyao.tactical.model.World;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ public class CellControllerTest {
   @Mock
   private WorldCamera worldCamera;
   @Mock
-  private World world;
+  private Model model;
   @Mock
   private Cell cell;
   @Mock
@@ -30,7 +30,7 @@ public class CellControllerTest {
 
   @Before
   public void setUp() {
-    cellController = new CellController(worldCamera, world, cell);
+    cellController = new CellController(worldCamera, model, cell);
   }
 
   @Test
@@ -44,7 +44,7 @@ public class CellControllerTest {
 
     cellController.touchUp(inputEvent, 0, 0, 0, 0);
 
-    verifyZeroInteractions(world);
+    verifyZeroInteractions(model);
   }
 
   @Test
@@ -53,6 +53,6 @@ public class CellControllerTest {
 
     cellController.touchUp(inputEvent, 0, 0, 0, 0);
 
-    verify(world).select(cell);
+    verify(model).select(cell);
   }
 }

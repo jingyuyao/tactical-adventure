@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
 public class SelectingTarget extends AbstractPlayerState {
@@ -18,12 +18,12 @@ public class SelectingTarget extends AbstractPlayerState {
   @Inject
   SelectingTarget(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
-    super(eventBus, mapState, stateFactory, player);
+    super(eventBus, worldState, stateFactory, player);
     this.weapon = weapon;
     this.targets = targets;
   }

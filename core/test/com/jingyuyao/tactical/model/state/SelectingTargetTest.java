@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SelectingTargetTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -51,7 +51,7 @@ public class SelectingTargetTest {
   public void setUp() {
     selectingTarget =
         new SelectingTarget(
-            eventBus, mapState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
+            eventBus, worldState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
   }
 
   @Test
@@ -77,14 +77,14 @@ public class SelectingTargetTest {
 
     selectingTarget.select(cell);
 
-    verify(mapState).goTo(battling);
+    verify(worldState).goTo(battling);
   }
 
   @Test
   public void select_no_select() {
     selectingTarget.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test

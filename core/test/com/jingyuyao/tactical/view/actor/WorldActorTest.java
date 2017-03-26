@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 import org.junit.Before;

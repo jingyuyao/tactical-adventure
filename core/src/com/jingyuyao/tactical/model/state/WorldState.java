@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
+import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Deque;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -10,12 +10,12 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState {
+public class WorldState {
 
   private final Deque<State> stateStack;
 
   @Inject
-  public MapState(@BackingStateStack Deque<State> stateStack) {
+  public WorldState(@BackingStateStack Deque<State> stateStack) {
     this.stateStack = stateStack;
   }
 

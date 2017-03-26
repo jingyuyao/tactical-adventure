@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class PlayerActionStateTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -58,13 +58,13 @@ public class PlayerActionStateTest {
   public void setUp() {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(player);
-    state = new PlayerActionState(eventBus, mapState, stateFactory, cell);
+    state = new PlayerActionState(eventBus, worldState, stateFactory, cell);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void setUp_no_player() {
     when(cell.hasPlayer()).thenReturn(false);
-    state = new PlayerActionState(eventBus, mapState, stateFactory, cell);
+    state = new PlayerActionState(eventBus, worldState, stateFactory, cell);
   }
 
   @Test
@@ -87,35 +87,35 @@ public class PlayerActionStateTest {
   public void go_to() {
     state.goTo(state2);
 
-    verify(mapState).goTo(state2);
+    verify(worldState).goTo(state2);
   }
 
   @Test
   public void back() {
     state.back();
 
-    verify(mapState).back();
+    verify(worldState).back();
   }
 
   @Test
   public void roll_back() {
     state.rollback();
 
-    verify(mapState).rollback();
+    verify(worldState).rollback();
   }
 
   @Test
   public void branch_to() {
     state.branchTo(waiting);
 
-    verify(mapState).branchTo(waiting);
+    verify(worldState).branchTo(waiting);
   }
 
   @Test
   public void pop() {
     state.popLast();
 
-    verify(mapState).popLast();
+    verify(worldState).popLast();
   }
 
   @Test
@@ -131,7 +131,7 @@ public class PlayerActionStateTest {
     state.selectWeapon(weapon);
 
     verify(player).quickAccess(weapon);
-    verify(mapState).goTo(selectingTarget);
+    verify(worldState).goTo(selectingTarget);
   }
 
   @Test
@@ -141,7 +141,7 @@ public class PlayerActionStateTest {
     state.selectConsumable(consumable);
 
     verify(player).quickAccess(consumable);
-    verify(mapState).goTo(usingConsumable);
+    verify(worldState).goTo(usingConsumable);
   }
 
   @Test
@@ -151,7 +151,7 @@ public class PlayerActionStateTest {
     state.finish();
 
     verify(player).setActionable(false);
-    verify(mapState).branchTo(waiting);
+    verify(worldState).branchTo(waiting);
   }
 
   @Test

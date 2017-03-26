@@ -8,15 +8,15 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.Movements;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movement;
+import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class StateModuleTest {
   @Inject
   private StateFactory stateFactory;
   @Inject
-  private MapState mapState;
+  private WorldState worldState;
 
   @Before
   public void setUp() {

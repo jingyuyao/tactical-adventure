@@ -6,16 +6,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class RetaliatingTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -58,14 +58,14 @@ public class RetaliatingTest {
   public void setUp() {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
-    retaliating = new Retaliating(eventBus, mapState, stateFactory, world);
+    retaliating = new Retaliating(eventBus, worldState, stateFactory, world);
   }
 
   @Test
   public void select() {
     retaliating.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -75,7 +75,7 @@ public class RetaliatingTest {
 
   @Test
   public void enter() {
-    when(world.getCells()).thenReturn(FluentIterable.of(cell, cell2));
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.hasEnemy()).thenReturn(true);
     when(cell2.hasEnemy()).thenReturn(true);
     when(cell.getEnemy()).thenReturn(enemy);
@@ -86,12 +86,12 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState, eventBus);
+    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, eventBus);
     inOrder.verify(eventBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).retaliate(cell);
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).retaliate(cell2);
-    inOrder.verify(mapState).branchTo(waiting);
+    inOrder.verify(worldState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);

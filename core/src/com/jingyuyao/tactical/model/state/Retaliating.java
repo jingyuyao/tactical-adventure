@@ -1,15 +1,14 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
 public class Retaliating extends BaseState {
@@ -20,10 +19,10 @@ public class Retaliating extends BaseState {
   @Inject
   Retaliating(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       World world) {
-    super(eventBus, mapState);
+    super(eventBus, worldState);
     this.stateFactory = stateFactory;
     this.world = world;
   }
@@ -31,29 +30,27 @@ public class Retaliating extends BaseState {
   @Override
   public void enter() {
     super.enter();
-    // Warning: must filter cells here so that we don't call retaliate on the same enemy
-    // multiples times after they moved
-    retaliate(world.getCells().filter(new Predicate<Cell>() {
-      @Override
-      public boolean apply(Cell input) {
-        return input.hasEnemy();
-      }
-    }).toList(), 0);
+    retaliate(world.getCharacterSnapshot(), 0);
   }
 
-  private void retaliate(final ImmutableList<Cell> cells, final int i) {
-    if (i == cells.size()) {
+  private void retaliate(final ImmutableList<Cell> characterSnapshot, final int i) {
+    if (i == characterSnapshot.size()) {
       branchTo(stateFactory.createWaiting());
       return;
     }
 
-    Cell cell = cells.get(i);
+    Cell cell = characterSnapshot.get(i);
+    if (!cell.hasEnemy()) {
+      retaliate(characterSnapshot, i + 1);
+      return;
+    }
+
     Enemy enemy = cell.getEnemy();
     post(new ActivatedEnemy(enemy));
     Futures.addCallback(enemy.retaliate(cell), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        retaliate(cells, i + 1);
+        retaliate(characterSnapshot, i + 1);
       }
 
       @Override

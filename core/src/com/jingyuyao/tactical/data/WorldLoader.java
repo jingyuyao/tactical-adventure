@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.World;
+import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.CellFactory;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.CellFactory;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,7 +17,7 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldLoader {
 
-  private final World world;
+  private final Model model;
   private final CellFactory cellFactory;
   private final Provider<Waiting> waitingProvider;
   private final CharactersLoader charactersLoader;
@@ -25,12 +25,12 @@ public class WorldLoader {
 
   @Inject
   WorldLoader(
-      World world,
+      Model model,
       CellFactory cellFactory,
       Provider<Waiting> waitingProvider,
       CharactersLoader charactersLoader,
       TerrainsLoader terrainsLoader) {
-    this.world = world;
+    this.model = model;
     this.cellFactory = cellFactory;
     this.waitingProvider = waitingProvider;
     this.charactersLoader = charactersLoader;
@@ -59,6 +59,6 @@ public class WorldLoader {
       cell.spawnCharacter(entry.getValue());
     }
 
-    world.load(waitingProvider.get(), cellMap.values());
+    model.load(cellMap.values(), waitingProvider.get());
   }
 }

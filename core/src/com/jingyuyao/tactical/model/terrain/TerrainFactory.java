@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.terrain;
 
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.world.Coordinate;
 
 public interface TerrainFactory {
 

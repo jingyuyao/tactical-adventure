@@ -15,11 +15,11 @@ public class UsingConsumable extends AbstractPlayerState {
   @Inject
   UsingConsumable(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       @Assisted Player player,
       @Assisted Consumable consumable) {
-    super(eventBus, mapState, stateFactory, player);
+    super(eventBus, worldState, stateFactory, player);
     this.consumable = consumable;
   }
 

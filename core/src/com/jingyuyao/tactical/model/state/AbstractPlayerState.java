@@ -8,9 +8,9 @@ abstract class AbstractPlayerState extends BaseState implements PlayerState {
   private final StateFactory stateFactory;
   private final Player player;
 
-  AbstractPlayerState(EventBus eventBus, MapState mapState, StateFactory stateFactory,
+  AbstractPlayerState(EventBus eventBus, WorldState worldState, StateFactory stateFactory,
       Player player) {
-    super(eventBus, mapState);
+    super(eventBus, worldState);
     this.stateFactory = stateFactory;
     this.player = player;
   }

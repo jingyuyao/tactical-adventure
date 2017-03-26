@@ -1,10 +1,9 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.world;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Function;
-import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;

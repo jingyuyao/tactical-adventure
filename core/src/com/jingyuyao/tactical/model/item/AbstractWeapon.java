@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Locale;
 
 /**
@@ -18,8 +18,10 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
 
   @Override
   public void damages(Target target) {
-    for (Character opponent : target.getTargetCharacters()) {
-      opponent.damageBy(attackPower);
+    for (Cell cell : target.getTargetCells()) {
+      if (cell.hasCharacter()) {
+        cell.getCharacter().damageBy(attackPower);
+      }
     }
   }
 

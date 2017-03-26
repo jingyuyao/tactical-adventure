@@ -24,7 +24,7 @@ public class UsingConsumableTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -40,7 +40,7 @@ public class UsingConsumableTest {
 
   @Before
   public void setUp() {
-    usingConsumable = new UsingConsumable(eventBus, mapState, stateFactory, player, consumable);
+    usingConsumable = new UsingConsumable(eventBus, worldState, stateFactory, player, consumable);
   }
 
   @Test
@@ -69,7 +69,7 @@ public class UsingConsumableTest {
     verify(consumable).apply(player);
     verify(player).useItem(consumable);
     verify(player).setActionable(false);
-    verify(mapState).branchTo(waiting);
+    verify(worldState).branchTo(waiting);
   }
 
   @Test

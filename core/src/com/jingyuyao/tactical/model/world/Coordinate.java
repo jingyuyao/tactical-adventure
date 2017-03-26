@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Objects;
 
@@ -29,8 +29,8 @@ public final class Coordinate {
     return y;
   }
 
-  public Coordinate offsetBy(Coordinate coordinate) {
-    return new Coordinate(x + coordinate.x, y + coordinate.y);
+  public Coordinate offsetBy(Direction direction) {
+    return new Coordinate(x + direction.getXOffset(), y + direction.getYOffset());
   }
 
   @Override

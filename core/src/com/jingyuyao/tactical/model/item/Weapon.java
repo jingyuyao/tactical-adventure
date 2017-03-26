@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 
 /**
  * An {@link Item} that can affect a {@link Character}'s HP and status. Not a {@link Consumable}

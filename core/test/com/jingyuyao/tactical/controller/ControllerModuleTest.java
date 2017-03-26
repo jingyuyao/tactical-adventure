@@ -5,8 +5,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.World;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
@@ -19,6 +20,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ControllerModuleTest {
 
+  @Bind
+  @Mock
+  private Model model;
   @Bind
   @Mock
   private World world;

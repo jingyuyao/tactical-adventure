@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.state;
+package com.jingyuyao.tactical.model.world;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -9,39 +9,33 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.world.Movements;
-import com.jingyuyao.tactical.model.world.World;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-public class StateModule extends AbstractModule {
+public class WorldModule extends AbstractModule {
 
   @Override
   protected void configure() {
     requireBinding(EventBus.class);
-    requireBinding(Battle.class);
-    requireBinding(Movements.class);
-    requireBinding(World.class);
 
-    install(new FactoryModuleBuilder().build(StateFactory.class));
+    install(new FactoryModuleBuilder().build(CellFactory.class));
   }
 
   @Provides
   @Singleton
-  @BackingStateStack
-  Deque<State> provideStateStack() {
-    return new LinkedList<>();
+  @BackingCellMap
+  Map<Coordinate, Cell> provideBackingCellMap() {
+    return new HashMap<>();
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingStateStack {
+  @interface BackingCellMap {
 
   }
 }

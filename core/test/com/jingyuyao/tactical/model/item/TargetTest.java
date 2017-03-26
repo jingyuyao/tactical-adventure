@@ -1,11 +1,10 @@
 package com.jingyuyao.tactical.model.item;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,9 +25,6 @@ public class TargetTest {
 
   @Before
   public void setUp() {
-    when(cell1.hasCharacter()).thenReturn(false);
-    when(cell2.hasCharacter()).thenReturn(true);
-    when(cell2.getCharacter()).thenReturn(character);
     target = new Target(ImmutableSet.of(cell1), ImmutableSet.of(cell1, cell2));
   }
 
@@ -36,11 +32,6 @@ public class TargetTest {
   public void selected_by() {
     assertThat(target.selectedBy(cell1)).isTrue();
     assertThat(target.selectedBy(cell2)).isFalse();
-  }
-
-  @Test
-  public void get_target_characters() {
-    assertThat(target.getTargetCharacters()).containsExactly(character);
   }
 
   @Test

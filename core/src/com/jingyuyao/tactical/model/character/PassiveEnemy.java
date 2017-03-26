@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.FluentIterable;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -9,10 +7,10 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movement;
+import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.Path;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -41,12 +39,19 @@ public class PassiveEnemy extends AbstractEnemy {
     for (Cell moveCell : movement.getCells()) {
       for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
         for (final Target target : weapon.createTargets(moveCell)) {
-          FluentIterable<Character> targetCharacters = target.getTargetCharacters();
-          // Don't hit friendly characters?
-          if (targetCharacters.anyMatch(Predicates.instanceOf(Enemy.class))) {
-            continue;
+          boolean containsPlayer = false;
+          boolean containsEnemy = false;
+
+          for (Cell cell : target.getTargetCells()) {
+            if (cell.hasPlayer()) {
+              containsPlayer = true;
+            } else if (cell.hasEnemy()) {
+              containsEnemy = true;
+            }
           }
-          if (targetCharacters.anyMatch(Predicates.instanceOf(Player.class))) {
+
+          // Don't hit friendly characters?
+          if (!containsEnemy && containsPlayer) {
             Path path = movement.pathTo(moveCell);
 
             return Futures

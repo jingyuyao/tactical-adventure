@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.controller;
 
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 
 public interface ControllerFactory {
 

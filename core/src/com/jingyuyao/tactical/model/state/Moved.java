@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Movements;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import javax.inject.Inject;
 
 /**
@@ -18,11 +18,11 @@ public class Moved extends PlayerActionState {
   @Inject
   Moved(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       Movements movements,
       @Assisted Cell cell) {
-    super(eventBus, mapState, stateFactory, cell);
+    super(eventBus, worldState, stateFactory, cell);
     this.movements = movements;
   }
 

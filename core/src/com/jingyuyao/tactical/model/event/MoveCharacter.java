@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.event;
 
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.world.Path;
 
 public class MoveCharacter {
 

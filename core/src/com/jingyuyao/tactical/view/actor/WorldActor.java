@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import java.util.LinkedHashSet;
 

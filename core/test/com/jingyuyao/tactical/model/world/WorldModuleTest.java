@@ -1,11 +1,10 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.world;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.World;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,16 +12,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MapModuleTest {
+public class WorldModuleTest {
 
   @Bind
   @Mock
   @ModelEventBus
   private EventBus eventBus;
-  @Bind
-  @Mock
-  private World world;
 
+  @Inject
+  private World world;
   @Inject
   private CellFactory cellFactory;
   @Inject
@@ -30,6 +28,6 @@ public class MapModuleTest {
 
   @Test
   public void can_create_module() {
-    Guice.createInjector(BoundFieldModule.of(this), new MapModule()).injectMembers(this);
+    Guice.createInjector(BoundFieldModule.of(this), new WorldModule()).injectMembers(this);
   }
 }

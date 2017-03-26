@@ -4,12 +4,12 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
+import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

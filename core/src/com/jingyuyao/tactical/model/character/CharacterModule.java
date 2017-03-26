@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.map.Movements;
+import com.jingyuyao.tactical.model.world.Movements;
 
 public class CharacterModule extends AbstractModule {
 
