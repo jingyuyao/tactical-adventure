@@ -3,10 +3,10 @@ package com.jingyuyao.tactical.model;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.BackingCellMap;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -58,20 +58,14 @@ public class World {
     return FluentIterable.from(cellMap.values());
   }
 
-  public FluentIterable<Character> getCharacters() {
+  public ImmutableList<Cell> getCharacterSnapshot() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
             return input.hasCharacter();
           }
-        })
-        .transform(new Function<Cell, Character>() {
-          @Override
-          public Character apply(Cell input) {
-            return input.getCharacter();
-          }
-        });
+        }).toList();
   }
 
   public Iterable<Cell> getNeighbors(final Cell from) {

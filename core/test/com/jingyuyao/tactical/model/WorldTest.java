@@ -78,8 +78,6 @@ public class WorldTest {
     when(cell4.getCoordinate()).thenReturn(COORDINATE4);
     when(cell1.hasCharacter()).thenReturn(true);
     when(cell2.hasCharacter()).thenReturn(true);
-    when(cell1.getCharacter()).thenReturn(character1);
-    when(cell2.getCharacter()).thenReturn(character2);
   }
 
   @Test
@@ -137,10 +135,13 @@ public class WorldTest {
   }
 
   @Test
-  public void get_characters() {
-    world.load(waiting, ImmutableList.of(cell1, cell2));
+  public void get_character_snapshot() {
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
+    when(cell1.hasCharacter()).thenReturn(true);
+    when(cell2.hasCharacter()).thenReturn(true);
 
-    assertThat(world.getCharacters()).containsExactly(character1, character2);
+    assertThat(world.getCharacterSnapshot()).containsExactly(cell1, cell2);
   }
 
   @Test

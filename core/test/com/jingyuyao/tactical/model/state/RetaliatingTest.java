@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -75,7 +75,7 @@ public class RetaliatingTest {
 
   @Test
   public void enter() {
-    when(world.getCells()).thenReturn(FluentIterable.of(cell, cell2));
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.hasEnemy()).thenReturn(true);
     when(cell2.hasEnemy()).thenReturn(true);
     when(cell.getEnemy()).thenReturn(enemy);

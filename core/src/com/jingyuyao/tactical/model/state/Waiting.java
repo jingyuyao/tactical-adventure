@@ -1,13 +1,9 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.World;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
@@ -37,11 +33,20 @@ public class Waiting extends BaseState {
   @Override
   public void enter() {
     super.enter();
-    FluentIterable<Character> characters = world.getCharacters();
-    if (!characters.anyMatch(Predicates.instanceOf(Player.class))) {
-      post(new LevelFailed());
+
+    boolean levelComplete = true;
+    boolean levelFailed = true;
+    for (Cell cell : world.getCharacterSnapshot()) {
+      if (cell.hasPlayer()) {
+        levelFailed = false;
+      } else if (cell.hasEnemy()) {
+        levelComplete = false;
+      }
     }
-    if (!characters.anyMatch(Predicates.instanceOf(Enemy.class))) {
+
+    if (levelFailed) {
+      post(new LevelFailed());
+    } else if (levelComplete) {
       post(new LevelComplete());
     }
   }
@@ -62,8 +67,10 @@ public class Waiting extends BaseState {
   }
 
   void endTurn() {
-    for (Player player : world.getCharacters().filter(Player.class)) {
-      player.setActionable(true);
+    for (Cell cell : world.getCharacterSnapshot()) {
+      if (cell.hasPlayer()) {
+        cell.getPlayer().setActionable(true);
+      }
     }
     goTo(stateFactory.createRetaliating());
   }

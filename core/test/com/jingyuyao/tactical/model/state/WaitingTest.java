@@ -7,11 +7,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.World;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -45,6 +44,8 @@ public class WaitingTest {
   @Mock
   private Cell cell;
   @Mock
+  private Cell cell2;
+  @Mock
   private Player player;
   @Mock
   private Enemy enemy;
@@ -66,7 +67,9 @@ public class WaitingTest {
 
   @Test
   public void enter_not_complete() {
-    when(world.getCharacters()).thenReturn(FluentIterable.of(enemy, player));
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell2.hasEnemy()).thenReturn(true);
 
     waiting.enter();
 
@@ -76,7 +79,8 @@ public class WaitingTest {
 
   @Test
   public void enter_level_complete() {
-    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(player));
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(cell.hasPlayer()).thenReturn(true);
 
     waiting.enter();
 
@@ -88,7 +92,8 @@ public class WaitingTest {
 
   @Test
   public void enter_level_failed() {
-    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(enemy));
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(cell.hasEnemy()).thenReturn(true);
 
     waiting.enter();
 
@@ -134,7 +139,9 @@ public class WaitingTest {
 
   @Test
   public void end_turn() {
-    when(world.getCharacters()).thenReturn(FluentIterable.<Character>of(player));
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
     waiting.endTurn();
