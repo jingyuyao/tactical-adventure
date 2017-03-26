@@ -19,6 +19,10 @@ class DataConfig {
     return "main.save.json";
   }
 
+  String getLevelDataFileName(int level) {
+    return "levels/" + level + ".level.json";
+  }
+
   String getCharactersFileName(String mapName) {
     return String.format("maps/%s.json", mapName);
   }
