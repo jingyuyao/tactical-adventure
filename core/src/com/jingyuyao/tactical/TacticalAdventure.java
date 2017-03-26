@@ -6,8 +6,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
-import com.jingyuyao.tactical.data.WorldLoader;
-import com.jingyuyao.tactical.data.WorldSaver;
+import com.jingyuyao.tactical.data.ModelLoader;
+import com.jingyuyao.tactical.data.ModelSaver;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.ViewModule;
@@ -29,9 +29,9 @@ public class TacticalAdventure extends Game {
   @Inject
   private WorldScreenSubscribers worldScreenSubscribers;
   @Inject
-  private WorldLoader worldLoader;
+  private ModelLoader modelLoader;
   @Inject
-  private WorldSaver worldSaver;
+  private ModelSaver modelSaver;
   @Inject
   private AssetManager assetManager;
 
@@ -54,7 +54,7 @@ public class TacticalAdventure extends Game {
   @Override
   public void pause() {
     super.pause();
-    worldSaver.saveMap(TEST_MAP);
+    modelSaver.saveMap(TEST_MAP);
   }
 
   @Override
@@ -65,7 +65,7 @@ public class TacticalAdventure extends Game {
   }
 
   void setLevel(String mapName) {
-    worldLoader.loadMap(mapName);
+    modelLoader.loadMap(mapName);
     setScreen(worldScreen);
   }
 }
