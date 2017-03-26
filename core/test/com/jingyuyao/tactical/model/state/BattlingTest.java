@@ -30,7 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BattlingTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -56,7 +56,7 @@ public class BattlingTest {
 
   @Before
   public void setUp() {
-    battling = new Battling(eventBus, mapState, stateFactory, battle, attackingPlayer,
+    battling = new Battling(eventBus, worldState, stateFactory, battle, attackingPlayer,
         weapon,
         target);
   }
@@ -83,7 +83,7 @@ public class BattlingTest {
 
     battling.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -120,11 +120,11 @@ public class BattlingTest {
   }
 
   private void verify_attacked() {
-    InOrder inOrder = Mockito.inOrder(mapState, weapon, attackingPlayer, battle);
-    inOrder.verify(mapState).goTo(transition);
+    InOrder inOrder = Mockito.inOrder(worldState, weapon, attackingPlayer, battle);
+    inOrder.verify(worldState).goTo(transition);
     inOrder.verify(battle).begin(attackingPlayer, weapon, target);
     inOrder.verify(attackingPlayer).setActionable(false);
-    inOrder.verify(mapState).branchTo(waiting);
-    verifyNoMoreInteractions(mapState);
+    inOrder.verify(worldState).branchTo(waiting);
+    verifyNoMoreInteractions(worldState);
   }
 }

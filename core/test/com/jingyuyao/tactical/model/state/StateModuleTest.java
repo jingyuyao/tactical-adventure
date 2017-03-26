@@ -58,7 +58,7 @@ public class StateModuleTest {
   @Inject
   private StateFactory stateFactory;
   @Inject
-  private MapState mapState;
+  private WorldState worldState;
 
   @Before
   public void setUp() {

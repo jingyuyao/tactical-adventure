@@ -23,13 +23,13 @@ public class Battling extends AbstractPlayerState {
   @Inject
   Battling(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       Battle battle,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted Target target) {
-    super(eventBus, mapState, stateFactory, player);
+    super(eventBus, worldState, stateFactory, player);
     this.stateFactory = stateFactory;
     this.battle = battle;
     this.weapon = weapon;

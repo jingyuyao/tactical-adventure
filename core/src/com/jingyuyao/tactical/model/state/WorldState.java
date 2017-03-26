@@ -10,12 +10,12 @@ import javax.inject.Singleton;
  * Manages selection logic.
  */
 @Singleton
-public class MapState {
+public class WorldState {
 
   private final Deque<State> stateStack;
 
   @Inject
-  public MapState(@BackingStateStack Deque<State> stateStack) {
+  public WorldState(@BackingStateStack Deque<State> stateStack) {
     this.stateStack = stateStack;
   }
 

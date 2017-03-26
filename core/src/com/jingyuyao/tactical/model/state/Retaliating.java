@@ -19,10 +19,10 @@ public class Retaliating extends BaseState {
   @Inject
   Retaliating(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       World world) {
-    super(eventBus, mapState);
+    super(eventBus, worldState);
     this.stateFactory = stateFactory;
     this.world = world;
   }

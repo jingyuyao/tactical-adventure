@@ -30,7 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class RetaliatingTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -58,14 +58,14 @@ public class RetaliatingTest {
   public void setUp() {
     retaliation = Futures.immediateFuture(null);
     retaliation2 = Futures.immediateFuture(null);
-    retaliating = new Retaliating(eventBus, mapState, stateFactory, world);
+    retaliating = new Retaliating(eventBus, worldState, stateFactory, world);
   }
 
   @Test
   public void select() {
     retaliating.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -86,12 +86,12 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder = Mockito.inOrder(enemy, enemy2, mapState, eventBus);
+    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, eventBus);
     inOrder.verify(eventBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).retaliate(cell);
     inOrder.verify(eventBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).retaliate(cell2);
-    inOrder.verify(mapState).branchTo(waiting);
+    inOrder.verify(worldState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);

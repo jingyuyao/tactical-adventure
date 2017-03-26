@@ -22,7 +22,7 @@ public class TransitionTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private Cell cell;
   @Captor
@@ -32,7 +32,7 @@ public class TransitionTest {
 
   @Before
   public void setUp() {
-    transition = new Transition(eventBus, mapState);
+    transition = new Transition(eventBus, worldState);
   }
 
   @Test
@@ -46,7 +46,7 @@ public class TransitionTest {
   public void exit() {
     transition.exit();
 
-    verify(mapState).popLast();
+    verify(worldState).popLast();
     verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, transition, ExitState.class);
   }
@@ -55,7 +55,7 @@ public class TransitionTest {
   public void select() {
     transition.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test

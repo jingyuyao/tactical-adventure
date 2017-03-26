@@ -18,12 +18,12 @@ public class SelectingTarget extends AbstractPlayerState {
   @Inject
   SelectingTarget(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       @Assisted Player player,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
-    super(eventBus, mapState, stateFactory, player);
+    super(eventBus, worldState, stateFactory, player);
     this.weapon = weapon;
     this.targets = targets;
   }

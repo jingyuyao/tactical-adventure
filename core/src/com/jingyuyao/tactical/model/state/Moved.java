@@ -18,11 +18,11 @@ public class Moved extends PlayerActionState {
   @Inject
   Moved(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       Movements movements,
       @Assisted Cell cell) {
-    super(eventBus, mapState, stateFactory, cell);
+    super(eventBus, worldState, stateFactory, cell);
     this.movements = movements;
   }
 

@@ -16,10 +16,10 @@ class PlayerActionState extends AbstractPlayerState {
 
   PlayerActionState(
       EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       Cell cell) {
-    super(eventBus, mapState, stateFactory, cell.getPlayer());
+    super(eventBus, worldState, stateFactory, cell.getPlayer());
     Preconditions.checkArgument(cell.hasPlayer());
     this.cell = cell;
   }

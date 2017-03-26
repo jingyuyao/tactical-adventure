@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MapStateTest {
+public class WorldStateTest {
 
   @Mock
   private Deque<State> stateStack;
@@ -28,16 +28,16 @@ public class MapStateTest {
   @Mock
   private Cell cell;
 
-  private MapState mapState;
+  private WorldState worldState;
 
   @Before
   public void setUp() {
-    mapState = new MapState(stateStack);
+    worldState = new WorldState(stateStack);
   }
 
   @Test
   public void initialize() throws Exception {
-    mapState.initialize(state1);
+    worldState.initialize(state1);
 
     verify(stateStack).push(state1);
     verify(state1).enter();
@@ -47,7 +47,7 @@ public class MapStateTest {
   public void reset() {
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.reset();
+    worldState.reset();
 
     verify(state1).exit();
     verify(stateStack).clear();
@@ -57,7 +57,7 @@ public class MapStateTest {
   public void select_cell() {
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.select(cell);
+    worldState.select(cell);
 
     verify(state1).select(cell);
   }
@@ -66,7 +66,7 @@ public class MapStateTest {
   public void go_to() {
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.goTo(state2);
+    worldState.goTo(state2);
 
     InOrder inOrder = inOrder(state1, state2, stateStack);
     inOrder.verify(state1).exit();
@@ -78,7 +78,7 @@ public class MapStateTest {
   public void back_nothing() {
     when(stateStack.size()).thenReturn(1);
 
-    mapState.back();
+    worldState.back();
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
@@ -90,7 +90,7 @@ public class MapStateTest {
     when(stateStack.pop()).thenReturn(state2);
     when(stateStack.peek()).thenReturn(state1);
 
-    mapState.back();
+    worldState.back();
 
     InOrder inOrder = inOrder(stateStack, state2, state1);
 
@@ -105,7 +105,7 @@ public class MapStateTest {
   public void rollback_nothing() {
     when(stateStack.size()).thenReturn(1);
 
-    mapState.rollback();
+    worldState.rollback();
 
     verify(stateStack).size();
     verifyNoMoreInteractions(stateStack);
@@ -117,7 +117,7 @@ public class MapStateTest {
     when(stateStack.pop()).thenReturn(state3, state2);
     when(stateStack.peek()).thenReturn(state2, state1);
 
-    mapState.rollback();
+    worldState.rollback();
 
     InOrder inOrder = inOrder(stateStack, state3, state2, state1);
 
@@ -139,7 +139,7 @@ public class MapStateTest {
   public void newStack() {
     when(stateStack.peek()).thenReturn(state2);
 
-    mapState.branchTo(state1);
+    worldState.branchTo(state1);
 
     InOrder inOrder = inOrder(stateStack, state1, state2);
 
@@ -152,7 +152,7 @@ public class MapStateTest {
 
   @Test
   public void pop() {
-    mapState.popLast();
+    worldState.popLast();
 
     verify(stateStack).pop();
   }

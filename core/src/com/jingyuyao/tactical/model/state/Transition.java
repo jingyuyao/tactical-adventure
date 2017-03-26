@@ -11,8 +11,8 @@ import javax.inject.Inject;
 public class Transition extends BaseState {
 
   @Inject
-  Transition(@ModelEventBus EventBus eventBus, MapState mapState) {
-    super(eventBus, mapState);
+  Transition(@ModelEventBus EventBus eventBus, WorldState worldState) {
+    super(eventBus, worldState);
   }
 
   @Override

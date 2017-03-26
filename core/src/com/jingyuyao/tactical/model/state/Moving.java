@@ -21,12 +21,12 @@ public class Moving extends PlayerActionState {
   @Inject
   Moving(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       Movements movements,
       @Assisted Cell cell,
       @Assisted Movement movement) {
-    super(eventBus, mapState, stateFactory, cell);
+    super(eventBus, worldState, stateFactory, cell);
     this.movements = movements;
     this.movement = movement;
   }

@@ -29,7 +29,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class MovedTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -61,7 +61,7 @@ public class MovedTest {
   public void setUp() {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(player);
-    moved = new Moved(eventBus, mapState, stateFactory, movements, cell);
+    moved = new Moved(eventBus, worldState, stateFactory, movements, cell);
   }
 
   @Test
@@ -87,7 +87,7 @@ public class MovedTest {
 
     moved.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -98,8 +98,8 @@ public class MovedTest {
 
     moved.select(cell);
 
-    verify(mapState).rollback();
-    verifyNoMoreInteractions(mapState);
+    verify(worldState).rollback();
+    verifyNoMoreInteractions(worldState);
   }
 
   @Test
@@ -112,9 +112,9 @@ public class MovedTest {
 
     moved.select(cell2);
 
-    verify(mapState).rollback();
-    verify(mapState).goTo(moving);
-    verifyNoMoreInteractions(mapState);
+    verify(worldState).rollback();
+    verify(worldState).goTo(moving);
+    verifyNoMoreInteractions(worldState);
   }
 
   @Test

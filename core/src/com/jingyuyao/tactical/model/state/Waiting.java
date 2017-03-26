@@ -20,11 +20,11 @@ public class Waiting extends BaseState {
   @Inject
   Waiting(
       @ModelEventBus EventBus eventBus,
-      MapState mapState,
+      WorldState worldState,
       StateFactory stateFactory,
       World world,
       Movements movements) {
-    super(eventBus, mapState);
+    super(eventBus, worldState);
     this.stateFactory = stateFactory;
     this.world = world;
     this.movements = movements;

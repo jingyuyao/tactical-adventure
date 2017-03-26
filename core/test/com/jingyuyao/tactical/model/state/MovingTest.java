@@ -34,7 +34,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class MovingTest {
 
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -77,7 +77,7 @@ public class MovingTest {
     when(cell.getPlayer()).thenReturn(player);
     // Futures are too hard to mock correctly
     immediateFuture = Futures.immediateFuture(null);
-    moving = new Moving(eventBus, mapState, stateFactory, movements, cell, movement);
+    moving = new Moving(eventBus, worldState, stateFactory, movements, cell, movement);
   }
 
   @Test
@@ -119,7 +119,7 @@ public class MovingTest {
 
     moving.select(cell);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -130,8 +130,8 @@ public class MovingTest {
 
     moving.select(cell);
 
-    verify(mapState).rollback();
-    verifyNoMoreInteractions(mapState);
+    verify(worldState).rollback();
+    verifyNoMoreInteractions(worldState);
   }
 
   @Test
@@ -144,9 +144,9 @@ public class MovingTest {
 
     moving.select(cell2);
 
-    verify(mapState).rollback();
-    verify(mapState).goTo(anotherMoving);
-    verifyNoMoreInteractions(mapState);
+    verify(worldState).rollback();
+    verify(worldState).goTo(anotherMoving);
+    verifyNoMoreInteractions(worldState);
   }
 
   @Test
@@ -161,11 +161,11 @@ public class MovingTest {
 
     moving.select(cell2);
 
-    InOrder inOrder = Mockito.inOrder(player, cell, mapState);
-    inOrder.verify(mapState).goTo(transition);
+    InOrder inOrder = Mockito.inOrder(player, cell, worldState);
+    inOrder.verify(worldState).goTo(transition);
     inOrder.verify(cell).moveCharacter(path);
-    inOrder.verify(mapState).goTo(moved);
-    verifyNoMoreInteractions(mapState);
+    inOrder.verify(worldState).goTo(moved);
+    verifyNoMoreInteractions(worldState);
   }
 
   @Test
@@ -175,7 +175,7 @@ public class MovingTest {
 
     moving.select(cell2);
 
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test

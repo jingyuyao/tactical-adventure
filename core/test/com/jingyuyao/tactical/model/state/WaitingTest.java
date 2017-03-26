@@ -34,7 +34,7 @@ public class WaitingTest {
   @Mock
   private EventBus eventBus;
   @Mock
-  private MapState mapState;
+  private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -62,7 +62,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(eventBus, mapState, stateFactory, world, movements);
+    waiting = new Waiting(eventBus, worldState, stateFactory, world, movements);
   }
 
   @Test
@@ -122,7 +122,7 @@ public class WaitingTest {
     waiting.select(cell);
 
     verify(stateFactory).createMoving(cell, movement);
-    verify(mapState).goTo(moving);
+    verify(worldState).goTo(moving);
   }
 
   @Test
@@ -134,7 +134,7 @@ public class WaitingTest {
     waiting.select(cell);
 
     verifyZeroInteractions(stateFactory);
-    verifyZeroInteractions(mapState);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -147,7 +147,7 @@ public class WaitingTest {
     waiting.endTurn();
 
     verify(player).setActionable(true);
-    verify(mapState).goTo(retaliating);
+    verify(worldState).goTo(retaliating);
   }
 
   @Test

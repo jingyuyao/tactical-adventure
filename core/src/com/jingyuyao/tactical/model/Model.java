@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
+import com.jingyuyao.tactical.model.state.WorldState;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -13,32 +13,32 @@ import javax.inject.Singleton;
 public class Model {
 
   private final World world;
-  private final MapState mapState;
+  private final WorldState worldState;
   private final EventBus eventBus;
 
   @Inject
-  Model(World world, MapState mapState, @ModelEventBus EventBus eventBus) {
+  Model(World world, WorldState worldState, @ModelEventBus EventBus eventBus) {
     this.world = world;
-    this.mapState = mapState;
+    this.worldState = worldState;
     this.eventBus = eventBus;
   }
 
   public void load(Iterable<Cell> cells, State initialState) {
     world.load(cells);
-    mapState.initialize(initialState);
+    worldState.initialize(initialState);
   }
 
   public void prepForSave() {
-    mapState.prepForSave();
+    worldState.prepForSave();
   }
 
   public void reset() {
     world.reset();
-    mapState.reset();
+    worldState.reset();
   }
 
   public void select(Cell cell) {
     eventBus.post(new SelectCell(cell));
-    mapState.select(cell);
+    worldState.select(cell);
   }
 }
