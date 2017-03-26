@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.map.Direction;
 import javax.inject.Inject;
 
@@ -36,20 +35,27 @@ public class DirectionalWeapon extends AbstractWeapon {
   }
 
   private Optional<Target> createTarget(Cell from, Direction direction) {
-    Coordinate current = from.getCoordinate().offsetBy(direction);
-    if (!world.hasCoordinate(current)) {
-      return Optional.absent();
-    }
-    ImmutableSet<Cell> selectCells = ImmutableSet.of(world.getCell(current));
+    ImmutableSet.Builder<Cell> targetBuilder = ImmutableSet.builder();
+    Cell current = from;
     int leftOverDistance = distance;
 
-    ImmutableSet.Builder<Cell> targetBuilder = ImmutableSet.builder();
-    while (leftOverDistance > 0 && world.hasCoordinate(current)) {
-      targetBuilder.add(world.getCell(current));
-      current = current.offsetBy(direction);
-      leftOverDistance--;
+    while (leftOverDistance > 0) {
+      Optional<Cell> neighbor = world.getNeighbor(current, direction);
+      if (neighbor.isPresent()) {
+        current = neighbor.get();
+        targetBuilder.add(current);
+        leftOverDistance--;
+      } else {
+        break;
+      }
     }
 
-    return Optional.of(new Target(selectCells, targetBuilder.build()));
+    ImmutableSet<Cell> targets = targetBuilder.build();
+    if (targets.isEmpty()) {
+      return Optional.absent();
+    }
+
+    ImmutableSet<Cell> select = ImmutableSet.of(targets.iterator().next());
+    return Optional.of(new Target(select, targets));
   }
 }

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
@@ -89,6 +90,10 @@ public class World {
             return cellMap.get(input);
           }
         });
+  }
+
+  public Optional<Cell> getNeighbor(Cell from, Direction direction) {
+    return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
   }
 
   public void load(State initialState, Iterable<Cell> cells) {

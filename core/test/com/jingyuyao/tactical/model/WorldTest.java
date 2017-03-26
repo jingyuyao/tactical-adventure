@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.map.Direction;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -169,6 +170,17 @@ public class WorldTest {
     world.load(waiting, ImmutableList.of(cell1, cell2, cell3, cell4));
 
     assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2, cell3, cell4);
+  }
+
+  @Test
+  public void get_neighbor() {
+    Coordinate from = new Coordinate(5, 5);
+    Coordinate up = from.offsetBy(Direction.UP);
+    when(temp.getCoordinate()).thenReturn(from);
+    cellMap.put(up, cell1);
+
+    assertThat(world.getNeighbor(temp, Direction.UP)).hasValue(cell1);
+    assertThat(world.getNeighbor(temp, Direction.DOWN)).isAbsent();
   }
 
   @Test
