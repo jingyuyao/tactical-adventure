@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldSaver {
+public class ModelSaver {
 
   private final DataConfig dataConfig;
   private final Gson gson;
@@ -22,7 +22,7 @@ public class WorldSaver {
   private final World world;
 
   @Inject
-  WorldSaver(DataConfig dataConfig, Gson gson, Model model, World world) {
+  ModelSaver(DataConfig dataConfig, Gson gson, Model model, World world) {
     this.dataConfig = dataConfig;
     this.gson = gson;
     this.model = model;
