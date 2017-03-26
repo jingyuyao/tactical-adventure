@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.map;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -6,13 +6,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.BackingCellMap;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Direction;
+import com.jingyuyao.tactical.model.map.MapModule.BackingCellMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -80,7 +77,7 @@ public class World {
     return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
   }
 
-  void load(Iterable<Cell> cells) {
+  public void load(Iterable<Cell> cells) {
     for (Cell cell : cells) {
       Coordinate coordinate = cell.getCoordinate();
       cellMap.put(coordinate, cell);

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model;
+package com.jingyuyao.tactical.model.map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
@@ -9,9 +9,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Direction;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;

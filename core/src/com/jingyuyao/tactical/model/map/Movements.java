@@ -8,7 +8,6 @@ import com.google.common.graph.Graphs;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
-import com.jingyuyao.tactical.model.World;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;

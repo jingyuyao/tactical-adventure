@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.map.World;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.WorldState;
 import javax.inject.Inject;
