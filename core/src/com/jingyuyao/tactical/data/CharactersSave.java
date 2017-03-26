@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.data;
 
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Coordinate;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.Map;
 
 class CharactersSave {

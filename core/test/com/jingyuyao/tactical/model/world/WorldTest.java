@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.world;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
@@ -132,7 +132,8 @@ public class WorldTest {
   @Test
   public void get_neighbor() {
     Coordinate from = new Coordinate(5, 5);
-    Coordinate up = from.offsetBy(Direction.UP);
+    Coordinate up = from.offsetBy(
+        Direction.UP);
     when(temp.getCoordinate()).thenReturn(from);
     cellMap.put(up, cell1);
 

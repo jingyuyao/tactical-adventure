@@ -2,11 +2,11 @@ package com.jingyuyao.tactical.data;
 
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.CellFactory;
-import com.jingyuyao.tactical.model.map.Coordinate;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.CellFactory;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;

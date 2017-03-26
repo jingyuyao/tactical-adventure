@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.jingyuyao.tactical.model.Model;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

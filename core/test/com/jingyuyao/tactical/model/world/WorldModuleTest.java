@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.world;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;

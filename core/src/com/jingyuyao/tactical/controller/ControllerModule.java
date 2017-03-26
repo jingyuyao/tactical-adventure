@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.controller;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.Model;
-import com.jingyuyao.tactical.model.map.World;
+import com.jingyuyao.tactical.model.world.World;
 
 public class ControllerModule extends AbstractModule {
 

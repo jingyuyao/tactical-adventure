@@ -6,10 +6,10 @@ import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movement;
+import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.Path;
 import javax.inject.Inject;
 
 public class Moving extends PlayerActionState {

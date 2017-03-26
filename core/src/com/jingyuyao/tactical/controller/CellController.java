@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.Model;
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
 public class CellController extends InputListener {

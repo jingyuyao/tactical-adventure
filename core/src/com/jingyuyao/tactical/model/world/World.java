@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.map;
+package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -9,7 +9,7 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.map.WorldModule.BackingCellMap;
+import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;

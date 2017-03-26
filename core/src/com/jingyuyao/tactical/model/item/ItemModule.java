@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.inject.AbstractModule;
-import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.map.World;
+import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 public class ItemModule extends AbstractModule {
 

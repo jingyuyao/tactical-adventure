@@ -7,10 +7,10 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.map.Cell;
-import com.jingyuyao.tactical.model.map.Movement;
-import com.jingyuyao.tactical.model.map.Movements;
-import com.jingyuyao.tactical.model.map.Path;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movement;
+import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.Path;
 import java.util.List;
 import javax.inject.Inject;
 

@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.map.Cell;
+import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Locale;
 
 /**

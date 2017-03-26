@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
+import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Deque;
 import javax.inject.Inject;
 import javax.inject.Singleton;
