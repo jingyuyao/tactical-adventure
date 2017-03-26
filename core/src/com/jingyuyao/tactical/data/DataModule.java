@@ -1,6 +1,9 @@
 package com.jingyuyao.tactical.data;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
@@ -11,6 +14,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Provides;
+import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
@@ -31,11 +35,24 @@ public class DataModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(Model.class);
     requireBinding(World.class);
     requireBinding(new Key<Provider<Waiting>>() {
     });
     requireBinding(AssetManager.class);
     requireBinding(OrthogonalTiledMapRenderer.class);
+  }
+
+  @Provides
+  @Singleton
+  Files providesFiles() {
+    return Gdx.files;
+  }
+
+  @Provides
+  @Singleton
+  TmxMapLoader provideTmxMapLoader() {
+    return new TmxMapLoader();
   }
 
   @Provides
