@@ -15,7 +15,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldLoader {
+public class ModelLoader {
 
   private final Model model;
   private final CellFactory cellFactory;
@@ -24,7 +24,7 @@ public class WorldLoader {
   private final TerrainsLoader terrainsLoader;
 
   @Inject
-  WorldLoader(
+  ModelLoader(
       Model model,
       CellFactory cellFactory,
       Provider<Waiting> waitingProvider,
