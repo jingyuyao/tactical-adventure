@@ -24,7 +24,7 @@ public class GameSaveManager {
     if (mainSave.exists()) {
       return myGson.fromJson(mainSave.readString(), GameSave.class);
     }
-    FileHandle startSave = files.internal(dataConfig.getStartSaveFileName());
+    FileHandle startSave = files.local(dataConfig.getStartSaveFileName());
     if (startSave.exists()) {
       return myGson.fromJson(startSave.readString(), GameSave.class);
     }
@@ -37,6 +37,6 @@ public class GameSaveManager {
   }
 
   private FileHandle getMainSaveHandle() {
-    return files.internal(dataConfig.getMainSaveFileName());
+    return files.local(dataConfig.getMainSaveFileName());
   }
 }

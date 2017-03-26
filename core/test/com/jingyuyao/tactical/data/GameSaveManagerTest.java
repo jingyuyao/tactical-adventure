@@ -42,7 +42,7 @@ public class GameSaveManagerTest {
   @Test
   public void load_main_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN_SAVE);
-    when(files.internal(MAIN_SAVE)).thenReturn(fileHandle1);
+    when(files.local(MAIN_SAVE)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
@@ -54,8 +54,8 @@ public class GameSaveManagerTest {
   public void load_start_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN_SAVE);
     when(dataConfig.getStartSaveFileName()).thenReturn(START_SAVE);
-    when(files.internal(MAIN_SAVE)).thenReturn(fileHandle1);
-    when(files.internal(START_SAVE)).thenReturn(fileHandle2);
+    when(files.local(MAIN_SAVE)).thenReturn(fileHandle1);
+    when(files.local(START_SAVE)).thenReturn(fileHandle2);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
@@ -66,7 +66,7 @@ public class GameSaveManagerTest {
   @Test
   public void save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN_SAVE);
-    when(files.internal(MAIN_SAVE)).thenReturn(fileHandle1);
+    when(files.local(MAIN_SAVE)).thenReturn(fileHandle1);
     when(myGson.toJson(gameSave)).thenReturn(DATA);
 
     gameSaveManager.save(gameSave);
