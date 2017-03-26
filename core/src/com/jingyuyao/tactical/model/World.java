@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.map.Cell;
 import com.jingyuyao.tactical.model.map.Coordinate;
-import com.jingyuyao.tactical.model.map.Directions;
+import com.jingyuyao.tactical.model.map.Direction;
 import com.jingyuyao.tactical.model.state.MapState;
 import com.jingyuyao.tactical.model.state.State;
 import java.util.Map;
@@ -70,10 +70,10 @@ public class World {
 
   public Iterable<Cell> getNeighbors(final Cell from) {
     return FluentIterable
-        .from(Directions.ALL)
-        .transform(new Function<Coordinate, Coordinate>() {
+        .from(Direction.values())
+        .transform(new Function<Direction, Coordinate>() {
           @Override
-          public Coordinate apply(Coordinate input) {
+          public Coordinate apply(Direction input) {
             return from.getCoordinate().offsetBy(input);
           }
         })
