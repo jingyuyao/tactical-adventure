@@ -1,15 +1,23 @@
 package com.jingyuyao.tactical.model;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.state.State;
+import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.state.WorldState;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Provider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +36,13 @@ public class ModelTest {
   @Mock
   private EventBus eventBus;
   @Mock
+  private Provider<Waiting> waitingProvider;
+  @Mock
   private Cell cell;
   @Mock
   private State state;
+  @Mock
+  private Waiting waiting;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -38,7 +50,19 @@ public class ModelTest {
 
   @Before
   public void setUp() {
-    model = new Model(world, worldState, eventBus);
+    model = new Model(world, worldState, eventBus, waitingProvider);
+  }
+
+  @Test
+  public void initialize() {
+    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
+    Map<Coordinate, Character> characterMap = new HashMap<>();
+    when(waitingProvider.get()).thenReturn(waiting);
+
+    model.initialize(terrainMap, characterMap);
+
+    verify(world).initialize(terrainMap, characterMap);
+    verify(worldState).initialize(waiting);
   }
 
   @Test

@@ -7,10 +7,13 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,13 +21,18 @@ import javax.inject.Singleton;
 public class World {
 
   private final EventBus eventBus;
+  private final CellFactory cellFactory;
   private final Map<Coordinate, Cell> cellMap;
   private int maxHeight;
   private int maxWidth;
 
   @Inject
-  World(@ModelEventBus EventBus eventBus, @BackingCellMap Map<Coordinate, Cell> cellMap) {
+  World(
+      @ModelEventBus EventBus eventBus,
+      CellFactory cellFactory,
+      @BackingCellMap Map<Coordinate, Cell> cellMap) {
     this.eventBus = eventBus;
+    this.cellFactory = cellFactory;
     this.cellMap = cellMap;
   }
 
@@ -75,6 +83,34 @@ public class World {
 
   public Optional<Cell> getNeighbor(Cell from, Direction direction) {
     return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
+  }
+
+  public void initialize(
+      Map<Coordinate, Terrain> terrainMap,
+      Map<Coordinate, Character> characterMap) {
+    for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
+      Coordinate coordinate = entry.getKey();
+      if (cellMap.containsKey(coordinate)) {
+        throw new IllegalArgumentException("Duplicated terrain detected");
+      }
+      Cell cell = cellFactory.create(coordinate, entry.getValue());
+      cellMap.put(coordinate, cell);
+      // index is zero based
+      maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
+      maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
+    }
+    for (Entry<Coordinate, Character> entry : characterMap.entrySet()) {
+      Coordinate coordinate = entry.getKey();
+      if (!cellMap.containsKey(coordinate)) {
+        throw new IllegalArgumentException("Character not on a terrain");
+      }
+      Cell cell = cellMap.get(coordinate);
+      if (cell.hasCharacter()) {
+        throw new IllegalArgumentException("Character occupying same space as another");
+      }
+      cell.spawnCharacter(entry.getValue());
+    }
+    eventBus.post(new WorldLoad(cellMap.values()));
   }
 
   public void load(Iterable<Cell> cells) {

@@ -7,8 +7,10 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
@@ -33,6 +35,8 @@ public class WorldTest {
   @Mock
   private EventBus worldEventBus;
   @Mock
+  private CellFactory cellFactory;
+  @Mock
   private Cell temp;
   @Mock
   private Cell cell1;
@@ -42,6 +46,14 @@ public class WorldTest {
   private Cell cell3;
   @Mock
   private Cell cell4;
+  @Mock
+  private Terrain terrain1;
+  @Mock
+  private Terrain terrain2;
+  @Mock
+  private Character character1;
+  @Mock
+  private Character character2;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -51,7 +63,7 @@ public class WorldTest {
   @Before
   public void setUp() {
     cellMap = new HashMap<>();
-    world = new World(worldEventBus, cellMap);
+    world = new World(worldEventBus, cellFactory, cellMap);
 
     when(cell1.getCoordinate()).thenReturn(COORDINATE1);
     when(cell2.getCoordinate()).thenReturn(COORDINATE2);
@@ -59,6 +71,30 @@ public class WorldTest {
     when(cell4.getCoordinate()).thenReturn(COORDINATE4);
     when(cell1.hasCharacter()).thenReturn(true);
     when(cell2.hasCharacter()).thenReturn(true);
+  }
+
+  @Test
+  public void initialize() {
+    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
+    Map<Coordinate, Character> characterMap = new HashMap<>();
+    terrainMap.put(COORDINATE1, terrain1);
+    terrainMap.put(COORDINATE2, terrain2);
+    characterMap.put(COORDINATE1, character1);
+    characterMap.put(COORDINATE2, character2);
+    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
+    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
+    when(cell1.hasCharacter()).thenReturn(false, true);
+    when(cell2.hasCharacter()).thenReturn(false, true);
+
+    world.initialize(terrainMap, characterMap);
+
+    assertThat(cellMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
+    assertThat(world.getMaxHeight()).isEqualTo(COORDINATE1.getY() + 1);
+    assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
+    verify(cell1).spawnCharacter(character1);
+    verify(cell2).spawnCharacter(character2);
+    verify(worldEventBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
   }
 
   @Test
