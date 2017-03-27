@@ -1,0 +1,106 @@
+{
+  "currentLevel": 1,
+  "inProgress": false,
+  "startingPlayers": [
+    {
+      "type": "BasePlayer",
+      "name": "dance",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        },
+        {
+          "type": "Grenade",
+          "name": "bomb",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 3,
+          "size": 2
+        },
+        {
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "type": "BasePlayer",
+      "name": "stick",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        },
+        {
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "type": "BasePlayer",
+      "name": "stick",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        },
+        {
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "type": "BasePlayer",
+      "name": "stick",
+      "maxHp": 30,
+      "hp": 30,
+      "moveDistance": 4,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        },
+        {
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
+        }
+      ]
+    }
+  ]
+}
