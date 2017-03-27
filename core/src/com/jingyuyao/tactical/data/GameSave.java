@@ -56,16 +56,4 @@ public class GameSave {
     activePlayers.clear();
     activeEnemies.clear();
   }
-
-  public void addActive(Coordinate coordinate, Player player) {
-    activePlayers.put(coordinate, player);
-  }
-
-  public void addActive(Coordinate coordinate, Enemy enemy) {
-    activeEnemies.put(coordinate, enemy);
-  }
-
-  public void addInActive(Player player) {
-    inactivePlayers.add(player);
-  }
 }

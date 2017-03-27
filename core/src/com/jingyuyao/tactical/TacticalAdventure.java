@@ -44,6 +44,12 @@ public class TacticalAdventure extends Game {
   }
 
   @Override
+  public void pause() {
+    super.pause();
+    gameState.save();
+  }
+
+  @Override
   public void dispose() {
     super.dispose();
     worldScreen.dispose();

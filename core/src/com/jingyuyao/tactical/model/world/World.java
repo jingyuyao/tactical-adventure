@@ -5,9 +5,12 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -34,6 +37,39 @@ public class World {
     this.eventBus = eventBus;
     this.cellFactory = cellFactory;
     this.cellMap = cellMap;
+  }
+
+  public void initialize(
+      Map<Coordinate, Terrain> terrainMap,
+      Map<Coordinate, Character> characterMap) {
+    for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
+      Coordinate coordinate = entry.getKey();
+      if (cellMap.containsKey(coordinate)) {
+        throw new IllegalArgumentException("Duplicated terrain detected");
+      }
+      Cell cell = cellFactory.create(coordinate, entry.getValue());
+      cellMap.put(coordinate, cell);
+      // index is zero based
+      maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
+      maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
+    }
+    for (Entry<Coordinate, Character> entry : characterMap.entrySet()) {
+      Coordinate coordinate = entry.getKey();
+      if (!cellMap.containsKey(coordinate)) {
+        throw new IllegalArgumentException("Character not on a terrain");
+      }
+      Cell cell = cellMap.get(coordinate);
+      if (cell.hasCharacter()) {
+        throw new IllegalArgumentException("Character occupying same space as another");
+      }
+      cell.spawnCharacter(entry.getValue());
+    }
+    eventBus.post(new WorldLoad(cellMap.values()));
+  }
+
+  public void reset() {
+    cellMap.clear();
+    eventBus.post(new WorldReset());
   }
 
   public int getMaxHeight() {
@@ -85,36 +121,31 @@ public class World {
     return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
   }
 
-  public void initialize(
-      Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Character> characterMap) {
-    for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
-      Coordinate coordinate = entry.getKey();
-      if (cellMap.containsKey(coordinate)) {
-        throw new IllegalArgumentException("Duplicated terrain detected");
+  public Map<Coordinate, Player> getPlayers() {
+    return Maps.transformValues(Maps.filterValues(cellMap, new Predicate<Cell>() {
+      @Override
+      public boolean apply(Cell input) {
+        return input.hasPlayer();
       }
-      Cell cell = cellFactory.create(coordinate, entry.getValue());
-      cellMap.put(coordinate, cell);
-      // index is zero based
-      maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
-      maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
-    }
-    for (Entry<Coordinate, Character> entry : characterMap.entrySet()) {
-      Coordinate coordinate = entry.getKey();
-      if (!cellMap.containsKey(coordinate)) {
-        throw new IllegalArgumentException("Character not on a terrain");
+    }), new Function<Cell, Player>() {
+      @Override
+      public Player apply(Cell input) {
+        return input.getPlayer();
       }
-      Cell cell = cellMap.get(coordinate);
-      if (cell.hasCharacter()) {
-        throw new IllegalArgumentException("Character occupying same space as another");
-      }
-      cell.spawnCharacter(entry.getValue());
-    }
-    eventBus.post(new WorldLoad(cellMap.values()));
+    });
   }
 
-  public void reset() {
-    cellMap.clear();
-    eventBus.post(new WorldReset());
+  public Map<Coordinate, Enemy> getEnemies() {
+    return Maps.transformValues(Maps.filterValues(cellMap, new Predicate<Cell>() {
+      @Override
+      public boolean apply(Cell input) {
+        return input.hasEnemy();
+      }
+    }), new Function<Cell, Enemy>() {
+      @Override
+      public Enemy apply(Cell input) {
+        return input.getEnemy();
+      }
+    });
   }
 }
