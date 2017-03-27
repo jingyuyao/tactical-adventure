@@ -17,7 +17,9 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
@@ -100,7 +102,14 @@ public class DataModule extends AbstractModule {
     builder.setPrettyPrinting();
     builder.enableComplexMapKeySerialization();
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
-    builder.registerTypeAdapterFactory(characterRuntimeTypeAdapterFactory);
+    builder.registerTypeAdapterFactory(
+        RuntimeTypeAdapterFactory
+            .of(Player.class)
+            .registerSubtype(BasePlayer.class));
+    builder.registerTypeAdapterFactory(
+        RuntimeTypeAdapterFactory
+            .of(Enemy.class)
+            .registerSubtype(PassiveEnemy.class));
     builder.registerTypeAdapterFactory(itemRuntimeTypeAdapterFactory);
     for (Class<?> clazz : classes) {
       final Provider<?> provider = injector.getProvider(clazz);

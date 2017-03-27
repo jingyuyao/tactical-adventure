@@ -22,8 +22,16 @@ public class GameSave {
     return currentLevel;
   }
 
+  public void setCurrentLevel(int currentLevel) {
+    this.currentLevel = currentLevel;
+  }
+
   public boolean isInProgress() {
     return inProgress;
+  }
+
+  public void setInProgress(boolean inProgress) {
+    this.inProgress = inProgress;
   }
 
   public List<Player> getStartingPlayers() {
@@ -40,5 +48,24 @@ public class GameSave {
 
   public Map<Coordinate, Enemy> getActiveEnemies() {
     return activeEnemies;
+  }
+
+  public void clearActiveData() {
+    inProgress = false;
+    inactivePlayers.clear();
+    activePlayers.clear();
+    activeEnemies.clear();
+  }
+
+  public void addActive(Coordinate coordinate, Player player) {
+    activePlayers.put(coordinate, player);
+  }
+
+  public void addActive(Coordinate coordinate, Enemy enemy) {
+    activeEnemies.put(coordinate, enemy);
+  }
+
+  public void addInActive(Player player) {
+    inactivePlayers.add(player);
   }
 }
