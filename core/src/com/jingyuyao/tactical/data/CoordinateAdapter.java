@@ -18,7 +18,7 @@ class CoordinateAdapter extends TypeAdapter<Coordinate> {
     String xy = in.nextString();
     if (xy.length() < 3) {
       throw new IOException(
-          "Coordinate in JSON should be at least five characters long i.e \"1,2\"");
+          "Coordinate in JSON should be at least three characters long i.e \"1,2\"");
     }
     String[] parts = xy.split(",");
     int x = Integer.parseInt(parts[0]);
