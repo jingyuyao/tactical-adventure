@@ -3,6 +3,7 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
@@ -12,9 +13,10 @@ import com.jingyuyao.tactical.data.GameSaveManager;
 import com.jingyuyao.tactical.data.LevelData;
 import com.jingyuyao.tactical.data.LevelDataManager;
 import com.jingyuyao.tactical.data.LevelMapManager;
-import com.jingyuyao.tactical.data.ModelManager;
+import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -22,6 +24,7 @@ import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.ViewModule;
 import com.jingyuyao.tactical.view.WorldScreen;
 import com.jingyuyao.tactical.view.WorldScreenSubscribers;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,7 +42,7 @@ public class TacticalAdventure extends Game {
   @Inject
   private WorldScreenSubscribers worldScreenSubscribers;
   @Inject
-  private ModelManager modelManager;
+  private Model model;
   @Inject
   private GameSaveManager gameSaveManager;
   @Inject
@@ -90,7 +93,18 @@ public class TacticalAdventure extends Game {
       loadLevel(gameSave, level);
     }
 
-    modelManager.load(terrainMap, gameSave.getActivePlayers(), gameSave.getActiveEnemies());
+    Map<Coordinate, Player> playerMap = gameSave.getActivePlayers();
+    Map<Coordinate, Enemy> enemyMap = gameSave.getActiveEnemies();
+
+    if (!Sets.intersection(playerMap.keySet(), enemyMap.keySet()).isEmpty()) {
+      throw new IllegalStateException("Some player and enemy occupy the same coordinate");
+    }
+
+    Map<Coordinate, Character> characterMap = new HashMap<>();
+    characterMap.putAll(playerMap);
+    characterMap.putAll(enemyMap);
+
+    model.initialize(terrainMap, characterMap);
     setScreen(worldScreen);
   }
 
