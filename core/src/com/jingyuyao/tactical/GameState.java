@@ -32,6 +32,7 @@ class GameState {
   private final LevelMapManager levelMapManager;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
   private final Model model;
+  private final GameSave gameSave;
 
   @Inject
   GameState(
@@ -47,34 +48,42 @@ class GameState {
     this.levelMapManager = levelMapManager;
     this.tiledMapRenderer = tiledMapRenderer;
     this.model = model;
+    // TODO: some day we will support multiple game saves
+    this.gameSave = gameSaveManager.load();
   }
 
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
-    model.reset();
+    resetLevel();
+    playCurrentLevel();
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
-    model.reset();
+    resetLevel();
+    playCurrentLevel();
   }
 
   void playCurrentLevel() {
-    GameSave gameSave = gameSaveManager.load();
     int level = gameSave.getCurrentLevel();
 
     if (!gameSave.isInProgress()) {
-      loadLevel(gameSave, level);
+      loadLevel(level);
     }
 
     Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
-    Map<Coordinate, Character> characterMap = extractCharacterMap(gameSave);
+    Map<Coordinate, Character> characterMap = makeCharacterMap();
 
     model.initialize(terrainMap, characterMap);
     tacticalAdventure.goToWorldScreen();
   }
 
-  private Map<Coordinate, Character> extractCharacterMap(GameSave gameSave) {
+  private void resetLevel() {
+    model.reset();
+    gameSave.clearInProgressData();
+  }
+
+  private Map<Coordinate, Character> makeCharacterMap() {
     Map<Coordinate, Character> characterMap = new HashMap<>();
     Map<Coordinate, Player> playerMap = gameSave.getActivePlayers();
     Map<Coordinate, Enemy> enemyMap = gameSave.getActiveEnemies();
@@ -88,11 +97,8 @@ class GameState {
     return characterMap;
   }
 
-  /**
-   * Load level data into {@code gameSave} using the {@code startingPlayers} then save it.
-   */
-  private void loadLevel(GameSave gameSave, int level) {
-    gameSave.clearActiveData();
+  private void loadLevel(int level) {
+    gameSave.clearInProgressData();
     gameSave.setCurrentLevel(level);
     gameSave.setInProgress(true);
 
@@ -112,6 +118,5 @@ class GameState {
     for (Entry<Coordinate, Enemy> entry : levelData.getEnemies().entrySet()) {
       gameSave.addActive(entry.getKey(), entry.getValue());
     }
-    gameSaveManager.save(gameSave);
   }
 }

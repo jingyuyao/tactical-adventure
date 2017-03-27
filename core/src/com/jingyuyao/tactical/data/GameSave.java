@@ -50,7 +50,7 @@ public class GameSave {
     return activeEnemies;
   }
 
-  public void clearActiveData() {
+  public void clearInProgressData() {
     inProgress = false;
     inactivePlayers.clear();
     activePlayers.clear();
