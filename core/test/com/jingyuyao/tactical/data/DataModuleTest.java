@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -46,12 +44,6 @@ public class DataModuleTest {
   @Bind
   @Mock
   private Provider<Grenade> grenadeProvider;
-  @Bind
-  @Mock
-  private AssetManager assetManager;
-  @Bind
-  @Mock
-  private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
   @Mock
   private Files files;
 
