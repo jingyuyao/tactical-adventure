@@ -113,17 +113,6 @@ public class World {
     eventBus.post(new WorldLoad(cellMap.values()));
   }
 
-  public void load(Iterable<Cell> cells) {
-    for (Cell cell : cells) {
-      Coordinate coordinate = cell.getCoordinate();
-      cellMap.put(coordinate, cell);
-      // index is zero based
-      maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
-      maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
-    }
-    eventBus.post(new WorldLoad(cells));
-  }
-
   public void reset() {
     cellMap.clear();
     eventBus.post(new WorldReset());

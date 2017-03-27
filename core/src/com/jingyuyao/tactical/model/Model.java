@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
-import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -41,11 +40,6 @@ public class Model {
       Map<Coordinate, Character> characterMap) {
     world.initialize(terrainMap, characterMap);
     worldState.initialize(waitingProvider.get());
-  }
-
-  public void load(Iterable<Cell> cells, State initialState) {
-    world.load(cells);
-    worldState.initialize(initialState);
   }
 
   public void prepForSave() {

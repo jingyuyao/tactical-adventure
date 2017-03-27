@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
@@ -64,13 +63,6 @@ public class WorldTest {
   public void setUp() {
     cellMap = new HashMap<>();
     world = new World(worldEventBus, cellFactory, cellMap);
-
-    when(cell1.getCoordinate()).thenReturn(COORDINATE1);
-    when(cell2.getCoordinate()).thenReturn(COORDINATE2);
-    when(cell3.getCoordinate()).thenReturn(COORDINATE3);
-    when(cell4.getCoordinate()).thenReturn(COORDINATE4);
-    when(cell1.hasCharacter()).thenReturn(true);
-    when(cell2.hasCharacter()).thenReturn(true);
   }
 
   @Test
@@ -95,18 +87,6 @@ public class WorldTest {
     verify(cell2).spawnCharacter(character2);
     verify(worldEventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
-  }
-
-  @Test
-  public void load() {
-    Iterable<Cell> list = ImmutableList.of(cell1, cell2);
-    world.load(list);
-
-    assertThat(cellMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
-    assertThat(world.getMaxHeight()).isEqualTo(COORDINATE1.getY() + 1);
-    assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
-    verify(worldEventBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, list, WorldLoad.class);
   }
 
   @Test
@@ -141,8 +121,8 @@ public class WorldTest {
   @Test
   public void no_neighbor() {
     when(temp.getCoordinate()).thenReturn(NO_NEIGHBOR);
-
-    world.load(ImmutableList.of(cell1, cell2));
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
 
     assertThat(world.getNeighbors(temp)).isEmpty();
   }
@@ -150,8 +130,8 @@ public class WorldTest {
   @Test
   public void get_neighbors_some() {
     when(temp.getCoordinate()).thenReturn(TWO_NEIGHBOR);
-
-    world.load(ImmutableList.of(cell1, cell2));
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
 
     assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2);
   }
@@ -159,8 +139,10 @@ public class WorldTest {
   @Test
   public void all_neighbors() {
     when(temp.getCoordinate()).thenReturn(FOUR_NEIGHBOR);
-
-    world.load(ImmutableList.of(cell1, cell2, cell3, cell4));
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
+    cellMap.put(COORDINATE3, cell3);
+    cellMap.put(COORDINATE4, cell4);
 
     assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2, cell3, cell4);
   }
@@ -168,8 +150,7 @@ public class WorldTest {
   @Test
   public void get_neighbor() {
     Coordinate from = new Coordinate(5, 5);
-    Coordinate up = from.offsetBy(
-        Direction.UP);
+    Coordinate up = from.offsetBy(Direction.UP);
     when(temp.getCoordinate()).thenReturn(from);
     cellMap.put(up, cell1);
 

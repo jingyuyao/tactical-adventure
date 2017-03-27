@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
@@ -63,16 +62,6 @@ public class ModelTest {
 
     verify(world).initialize(terrainMap, characterMap);
     verify(worldState).initialize(waiting);
-  }
-
-  @Test
-  public void load() {
-    Iterable<Cell> cells = ImmutableList.of();
-
-    model.load(cells, state);
-
-    verify(world).load(cells);
-    verify(worldState).initialize(state);
   }
 
   @Test
