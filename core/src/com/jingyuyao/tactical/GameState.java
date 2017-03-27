@@ -82,7 +82,7 @@ class GameState {
     tacticalAdventure.goToWorldScreen();
   }
 
-  void save() {
+  void saveProgress() {
     model.prepForSave();
     GameSave gameSave = gameSaveManager.load();
     Map<Coordinate, Player> activePlayers = gameSave.getActivePlayers();

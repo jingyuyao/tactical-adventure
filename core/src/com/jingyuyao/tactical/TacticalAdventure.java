@@ -46,7 +46,7 @@ public class TacticalAdventure extends Game {
   @Override
   public void pause() {
     super.pause();
-    gameState.save();
+    gameState.saveProgress();
   }
 
   @Override
