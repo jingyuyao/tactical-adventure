@@ -1,6 +1,8 @@
 {
-  "characters": {
-    "1,2": {
+  "currentLevel": 1,
+  "inProgress": false,
+  "startingPlayers": [
+    {
       "type": "BasePlayer",
       "name": "dance",
       "maxHp": 30,
@@ -31,7 +33,7 @@
         }
       ]
     },
-    "3,2": {
+    {
       "type": "BasePlayer",
       "name": "stick",
       "maxHp": 30,
@@ -54,30 +56,7 @@
         }
       ]
     },
-    "2,3": {
-      "type": "BasePlayer",
-      "name": "dance",
-      "maxHp": 30,
-      "hp": 30,
-      "moveDistance": 4,
-      "actionable": true,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 5,
-          "distance": 1
-        },
-        {
-          "type": "Heal",
-          "name": "pot",
-          "usageLeft": 3,
-          "amount": 5
-        }
-      ]
-    },
-    "2,1": {
+    {
       "type": "BasePlayer",
       "name": "stick",
       "maxHp": 30,
@@ -100,11 +79,11 @@
         }
       ]
     },
-    "5,4": {
-      "type": "PassiveEnemy",
+    {
+      "type": "BasePlayer",
       "name": "stick",
-      "maxHp": 5,
-      "hp": 5,
+      "maxHp": 30,
+      "hp": 30,
       "moveDistance": 4,
       "actionable": true,
       "items": [
@@ -114,42 +93,14 @@
           "usageLeft": 10,
           "attackPower": 5,
           "distance": 1
-        }
-      ]
-    },
-    "4,5": {
-      "type": "PassiveEnemy",
-      "name": "dance",
-      "maxHp": 5,
-      "hp": 5,
-      "moveDistance": 4,
-      "actionable": true,
-      "items": [
+        },
         {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 5,
-          "distance": 1
-        }
-      ]
-    },
-    "5,6": {
-      "type": "PassiveEnemy",
-      "name": "dance",
-      "maxHp": 5,
-      "hp": 5,
-      "moveDistance": 4,
-      "actionable": true,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 5,
-          "distance": 1
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
         }
       ]
     }
-  }
+  ]
 }

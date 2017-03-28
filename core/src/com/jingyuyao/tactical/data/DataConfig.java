@@ -11,16 +11,20 @@ class DataConfig {
 
   }
 
-  String getCharactersFileName(String mapName) {
-    return String.format("maps/%s.json", mapName);
+  String getStartSaveFileName() {
+    return "main.json";
   }
 
-  String getCharactersSaveFileName(String mapName) {
-    return String.format("maps/%s.save.json", mapName);
+  String getMainSaveFileName() {
+    return "main.save.json";
   }
 
-  String getTerrainsFileName(String mapName) {
-    return String.format("maps/%s.tmx", mapName);
+  String getLevelDataFileName(int level) {
+    return "levels/" + level + ".level.json";
+  }
+
+  String getLevelMapFileName(int level) {
+    return "levels/" + level + ".level.tmx";
   }
 
   String getTerrainLayerKey() {

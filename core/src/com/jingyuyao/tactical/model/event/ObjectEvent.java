@@ -13,10 +13,7 @@ public class ObjectEvent<T> {
 
   private final T object;
 
-  /**
-   * Protected constructor to prevent making a generic event.
-   */
-  protected ObjectEvent(T object) {
+  ObjectEvent(T object) {
     this.object = object;
   }
 

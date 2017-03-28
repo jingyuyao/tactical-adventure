@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.data;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.terrain.Land;
@@ -16,39 +16,29 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+// TODO: test me
 @Singleton
-class TerrainsLoader {
+public class LevelMapManager {
 
   private final DataConfig dataConfig;
-  private final AssetManager assetManager;
-  private final OrthogonalTiledMapRenderer tiledMapRenderer;
+  private final TmxMapLoader tmxMapLoader;
 
   @Inject
-  TerrainsLoader(
-      DataConfig dataConfig,
-      AssetManager assetManager,
-      OrthogonalTiledMapRenderer tiledMapRenderer) {
+  LevelMapManager(DataConfig dataConfig, TmxMapLoader tmxMapLoader) {
     this.dataConfig = dataConfig;
-    this.assetManager = assetManager;
-    this.tiledMapRenderer = tiledMapRenderer;
+    this.tmxMapLoader = tmxMapLoader;
   }
 
-  Map<Coordinate, Terrain> loadTerrains(String mapName) {
-    String fileName = dataConfig.getTerrainsFileName(mapName);
-    assetManager.load(fileName, TiledMap.class);
-    assetManager.finishLoadingAsset(fileName);
-    TiledMap tiledMap = assetManager.get(fileName);
+  public Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
+    TiledMap tiledMap = tmxMapLoader.load(dataConfig.getLevelMapFileName(level));
     tiledMapRenderer.setMap(tiledMap);
+    return extractTerrains(tiledMap);
+  }
 
+  private Map<Coordinate, Terrain> extractTerrains(TiledMap tiledMap) {
     TiledMapTileLayer terrainLayer =
         (TiledMapTileLayer) tiledMap.getLayers().get(dataConfig.getTerrainLayerKey());
-    return createTerrains(terrainLayer);
-  }
-
-  private Map<Coordinate, Terrain> createTerrains(TiledMapTileLayer terrainLayer) {
     Preconditions.checkNotNull(terrainLayer);
-    Preconditions.checkArgument(terrainLayer.getWidth() > 0);
-    Preconditions.checkArgument(terrainLayer.getHeight() > 0);
 
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     for (int y = 0; y < terrainLayer.getHeight(); y++) {

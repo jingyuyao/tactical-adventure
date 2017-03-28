@@ -6,8 +6,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
-import com.jingyuyao.tactical.data.ModelLoader;
-import com.jingyuyao.tactical.data.ModelSaver;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.ViewModule;
@@ -17,21 +15,15 @@ import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
 
-  static final String TEST_MAP = "test_map";
-
   @Inject
   @ModelEventBus
   private EventBus modelEventBus;
-  @Inject
-  private GameSubscriber gameSubscriber;
   @Inject
   private WorldScreen worldScreen;
   @Inject
   private WorldScreenSubscribers worldScreenSubscribers;
   @Inject
-  private ModelLoader modelLoader;
-  @Inject
-  private ModelSaver modelSaver;
+  private GameState gameState;
   @Inject
   private AssetManager assetManager;
 
@@ -46,15 +38,15 @@ public class TacticalAdventure extends Game {
             new ControllerModule())
         .injectMembers(this);
 
-    modelEventBus.register(gameSubscriber);
     worldScreenSubscribers.register(modelEventBus);
-    setLevel(TEST_MAP);
+    modelEventBus.register(gameState);
+    gameState.playCurrentLevel();
   }
 
   @Override
   public void pause() {
     super.pause();
-    modelSaver.saveMap(TEST_MAP);
+    gameState.saveProgress();
   }
 
   @Override
@@ -64,8 +56,7 @@ public class TacticalAdventure extends Game {
     assetManager.dispose();
   }
 
-  void setLevel(String mapName) {
-    modelLoader.loadMap(mapName);
+  void goToWorldScreen() {
     setScreen(worldScreen);
   }
 }
