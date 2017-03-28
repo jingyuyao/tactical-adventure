@@ -111,14 +111,6 @@ public class WorldTest {
   }
 
   @Test
-  public void get_cells() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-
-    assertThat(world.getCells()).containsExactly(cell1, cell2);
-  }
-
-  @Test
   public void get_character_snapshot() {
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
@@ -166,33 +158,5 @@ public class WorldTest {
 
     assertThat(world.getNeighbor(temp, Direction.UP)).hasValue(cell1);
     assertThat(world.getNeighbor(temp, Direction.DOWN)).isAbsent();
-  }
-
-  @Test
-  public void get_players() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-    cellMap.put(COORDINATE3, cell3);
-    cellMap.put(COORDINATE4, cell4);
-    when(cell1.hasPlayer()).thenReturn(true);
-    when(cell2.hasPlayer()).thenReturn(true);
-    when(cell1.getPlayer()).thenReturn(player1);
-    when(cell2.getPlayer()).thenReturn(player2);
-
-    assertThat(world.getPlayers()).containsExactly(COORDINATE1, player1, COORDINATE2, player2);
-  }
-
-  @Test
-  public void get_enemies() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-    cellMap.put(COORDINATE3, cell3);
-    cellMap.put(COORDINATE4, cell4);
-    when(cell1.hasEnemy()).thenReturn(true);
-    when(cell2.hasEnemy()).thenReturn(true);
-    when(cell1.getEnemy()).thenReturn(enemy1);
-    when(cell2.getEnemy()).thenReturn(enemy2);
-
-    assertThat(world.getEnemies()).containsExactly(COORDINATE1, enemy1, COORDINATE2, enemy2);
   }
 }

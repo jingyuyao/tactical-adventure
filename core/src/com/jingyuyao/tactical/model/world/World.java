@@ -5,12 +5,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -80,10 +77,6 @@ public class World {
     return maxWidth;
   }
 
-  public FluentIterable<Cell> getCells() {
-    return FluentIterable.from(cellMap.values());
-  }
-
   public ImmutableList<Cell> getCharacterSnapshot() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
@@ -119,33 +112,5 @@ public class World {
 
   public Optional<Cell> getNeighbor(Cell from, Direction direction) {
     return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
-  }
-
-  public Map<Coordinate, Player> getPlayers() {
-    return Maps.transformValues(Maps.filterValues(cellMap, new Predicate<Cell>() {
-      @Override
-      public boolean apply(Cell input) {
-        return input.hasPlayer();
-      }
-    }), new Function<Cell, Player>() {
-      @Override
-      public Player apply(Cell input) {
-        return input.getPlayer();
-      }
-    });
-  }
-
-  public Map<Coordinate, Enemy> getEnemies() {
-    return Maps.transformValues(Maps.filterValues(cellMap, new Predicate<Cell>() {
-      @Override
-      public boolean apply(Cell input) {
-        return input.hasEnemy();
-      }
-    }), new Function<Cell, Enemy>() {
-      @Override
-      public Enemy apply(Cell input) {
-        return input.getEnemy();
-      }
-    });
   }
 }

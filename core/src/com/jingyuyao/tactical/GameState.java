@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.HashMap;
@@ -89,8 +90,14 @@ class GameState {
     Map<Coordinate, Enemy> activeEnemies = gameSave.getActiveEnemies();
     activePlayers.clear();
     activeEnemies.clear();
-    activePlayers.putAll(world.getPlayers());
-    activeEnemies.putAll(world.getEnemies());
+    for (Cell cell : world.getCharacterSnapshot()) {
+      Coordinate coordinate = cell.getCoordinate();
+      if (cell.hasPlayer()) {
+        activePlayers.put(coordinate, cell.getPlayer());
+      } else if (cell.hasEnemy()) {
+        activeEnemies.put(coordinate, cell.getEnemy());
+      }
+    }
     gameSaveManager.save(gameSave);
   }
 
