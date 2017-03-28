@@ -9,10 +9,7 @@ public class FutureEvent<T> extends ObjectEvent<T> {
 
   private final SettableFuture<Void> future;
 
-  /**
-   * See {@link ObjectEvent#ObjectEvent(Object)} to why this is protected.
-   */
-  protected FutureEvent(T object, SettableFuture<Void> future) {
+  FutureEvent(T object, SettableFuture<Void> future) {
     super(object);
     this.future = future;
   }
