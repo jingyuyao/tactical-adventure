@@ -1,11 +1,12 @@
 package com.jingyuyao.tactical.data;
 
 import com.google.gson.Gson;
+import java.lang.reflect.Type;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Just wraps {@link Gson} so we can mock it.
+ * Wraps {@link Gson} to make mocking easier and provide some convenience methods.
  */
 @Singleton
 class MyGson {
@@ -23,5 +24,13 @@ class MyGson {
 
   String toJson(Object src) {
     return gson.toJson(src);
+  }
+
+  <T> T deepCopy(T obj, Class<T> clazz) {
+    return gson.fromJson(gson.toJsonTree(obj, clazz), clazz);
+  }
+
+  <T> T deepCopy(T obj, Type type) {
+    return gson.fromJson(gson.toJsonTree(obj, type), type);
   }
 }
