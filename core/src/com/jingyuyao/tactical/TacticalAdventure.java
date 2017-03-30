@@ -40,7 +40,7 @@ public class TacticalAdventure extends Game {
 
     worldScreenSubscribers.register(modelEventBus);
     modelEventBus.register(gameState);
-    gameState.playCurrentLevel();
+    gameState.continueLevel();
   }
 
   @Override

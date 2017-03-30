@@ -1,11 +1,9 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.GameSaveManager;
-import com.jingyuyao.tactical.data.LevelData;
 import com.jingyuyao.tactical.data.LevelDataManager;
 import com.jingyuyao.tactical.data.LevelMapManager;
 import com.jingyuyao.tactical.model.Model;
@@ -18,18 +16,13 @@ import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class GameState {
 
-  // we don't keep a reference to GameState so we can sort of abuse Gson to copy data around
-  // for us
   private final TacticalAdventure tacticalAdventure;
   private final GameSaveManager gameSaveManager;
   private final LevelDataManager levelDataManager;
@@ -37,6 +30,7 @@ class GameState {
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
   private final Model model;
   private final World world;
+  private final GameSave gameSave;
 
   @Inject
   GameState(
@@ -54,30 +48,32 @@ class GameState {
     this.tiledMapRenderer = tiledMapRenderer;
     this.model = model;
     this.world = world;
+    this.gameSave = gameSaveManager.load();
   }
 
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
-    removeProgress();
-    playCurrentLevel();
+    model.reset();
+    gameSaveManager.removeLevelProgress(gameSave);
+    continueLevel();
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
-    removeProgress();
-    playCurrentLevel();
+    model.reset();
+    gameSaveManager.removeLevelProgress(gameSave);
+    continueLevel();
   }
 
-  void playCurrentLevel() {
-    GameSave gameSave = gameSaveManager.load();
+  void continueLevel() {
     int level = gameSave.getCurrentLevel();
 
     if (!gameSave.isInProgress()) {
-      loadLevel(gameSave, level);
+      gameSaveManager.loadLevel(gameSave, levelDataManager.load(level));
     }
 
     Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
-    Map<Coordinate, Character> characterMap = extractCharacterMap(gameSave);
+    Map<Coordinate, Character> characterMap = gameSave.getActiveCharacters();
 
     model.initialize(terrainMap, characterMap);
     tacticalAdventure.goToWorldScreen();
@@ -85,7 +81,6 @@ class GameState {
 
   void saveProgress() {
     model.prepForSave();
-    GameSave gameSave = gameSaveManager.load();
     Map<Coordinate, Player> activePlayers = gameSave.getActivePlayers();
     Map<Coordinate, Enemy> activeEnemies = gameSave.getActiveEnemies();
     activePlayers.clear();
@@ -97,54 +92,6 @@ class GameState {
       } else if (cell.hasEnemy()) {
         activeEnemies.put(coordinate, cell.getEnemy());
       }
-    }
-    gameSaveManager.save(gameSave);
-  }
-
-  private void removeProgress() {
-    model.reset();
-    GameSave gameSave = gameSaveManager.load();
-    gameSave.clearInProgressData();
-    gameSaveManager.save(gameSave);
-  }
-
-  private Map<Coordinate, Character> extractCharacterMap(GameSave gameSave) {
-    Map<Coordinate, Character> characterMap = new HashMap<>();
-    Map<Coordinate, Player> playerMap = gameSave.getActivePlayers();
-    Map<Coordinate, Enemy> enemyMap = gameSave.getActiveEnemies();
-
-    if (!Sets.intersection(playerMap.keySet(), enemyMap.keySet()).isEmpty()) {
-      throw new IllegalArgumentException("Some player and enemy occupy the same coordinate");
-    }
-
-    characterMap.putAll(playerMap);
-    characterMap.putAll(enemyMap);
-    return characterMap;
-  }
-
-  private void loadLevel(GameSave gameSave, int level) {
-    gameSave.clearInProgressData();
-    gameSave.setCurrentLevel(level);
-    gameSave.setInProgress(true);
-
-    LevelData levelData = levelDataManager.load(level);
-
-    List<Player> startingPlayers = gameSave.getStartingPlayers();
-    Map<Coordinate, Player> activePlayers = gameSave.getActivePlayers();
-    List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
-    for (int i = 0; i < playerSpawns.size(); i++) {
-      if (i >= startingPlayers.size()) {
-        break;
-      }
-      activePlayers.put(playerSpawns.get(i), startingPlayers.get(i));
-    }
-    List<Player> inactivePlayers = gameSave.getInactivePlayers();
-    for (int i = playerSpawns.size(); i < startingPlayers.size(); i++) {
-      inactivePlayers.add(startingPlayers.get(i));
-    }
-    Map<Coordinate, Enemy> activeEnemies = gameSave.getActiveEnemies();
-    for (Entry<Coordinate, Enemy> entry : levelData.getEnemies().entrySet()) {
-      activeEnemies.put(entry.getKey(), entry.getValue());
     }
     gameSaveManager.save(gameSave);
   }

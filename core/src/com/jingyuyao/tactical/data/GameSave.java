@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.common.collect.Sets;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -22,7 +24,7 @@ public class GameSave {
     return currentLevel;
   }
 
-  public void setCurrentLevel(int currentLevel) {
+  void setCurrentLevel(int currentLevel) {
     this.currentLevel = currentLevel;
   }
 
@@ -30,15 +32,15 @@ public class GameSave {
     return inProgress;
   }
 
-  public void setInProgress(boolean inProgress) {
+  void setInProgress(boolean inProgress) {
     this.inProgress = inProgress;
   }
 
-  public List<Player> getStartingPlayers() {
+  List<Player> getStartingPlayers() {
     return startingPlayers;
   }
 
-  public List<Player> getInactivePlayers() {
+  List<Player> getInactivePlayers() {
     return inactivePlayers;
   }
 
@@ -50,10 +52,15 @@ public class GameSave {
     return activeEnemies;
   }
 
-  public void clearInProgressData() {
-    inProgress = false;
-    inactivePlayers.clear();
-    activePlayers.clear();
-    activeEnemies.clear();
+  public Map<Coordinate, Character> getActiveCharacters() {
+    Map<Coordinate, Character> characterMap = new HashMap<>();
+
+    if (!Sets.intersection(activePlayers.keySet(), activeEnemies.keySet()).isEmpty()) {
+      throw new IllegalArgumentException("Some player and enemy occupy the same coordinate");
+    }
+
+    characterMap.putAll(activePlayers);
+    characterMap.putAll(activeEnemies);
+    return characterMap;
   }
 }

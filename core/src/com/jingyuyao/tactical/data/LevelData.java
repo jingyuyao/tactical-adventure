@@ -7,16 +7,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LevelData {
+class LevelData {
 
+  private int id;
   private List<Coordinate> playerSpawns = new ArrayList<>();
   private Map<Coordinate, Enemy> enemies = new HashMap<>();
 
-  public List<Coordinate> getPlayerSpawns() {
+  int getId() {
+    return id;
+  }
+
+  List<Coordinate> getPlayerSpawns() {
     return playerSpawns;
   }
 
-  public Map<Coordinate, Enemy> getEnemies() {
+  Map<Coordinate, Enemy> getEnemies() {
     return enemies;
   }
 }
