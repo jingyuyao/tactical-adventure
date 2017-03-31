@@ -1,7 +1,6 @@
 {
   "currentLevel": 1,
-  "inProgress": false,
-  "startingPlayers": [
+  "players": [
     {
       "type": "BasePlayer",
       "name": "dance",

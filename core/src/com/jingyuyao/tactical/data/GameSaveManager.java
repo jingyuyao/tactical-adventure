@@ -2,11 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.world.Coordinate;
-import java.util.List;
-import java.util.Map.Entry;
+import com.google.common.base.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -25,49 +21,31 @@ public class GameSaveManager {
   }
 
   public GameSave load() {
-    FileHandle mainSave = getMainSaveHandle();
-    if (mainSave.exists()) {
-      return myGson.fromJson(mainSave.readString(), GameSave.class);
+    Optional<GameSave> main = load(dataConfig.getMainSaveFileName());
+    if (main.isPresent()) {
+      return main.get();
     }
-    FileHandle startSave = files.local(dataConfig.getStartSaveFileName());
-    if (startSave.exists()) {
-      return myGson.fromJson(startSave.readString(), GameSave.class);
+
+    Optional<GameSave> start = load(dataConfig.getStartSaveFileName());
+    if (start.isPresent()) {
+      GameSave startSave = start.get();
+      save(startSave);
+      return startSave;
     }
-    throw new IllegalStateException("Could not find either start or main game save file");
+
+    throw new IllegalStateException("Could not find a suitable save file!");
   }
 
   public void save(GameSave gameSave) {
-    FileHandle mainSave = getMainSaveHandle();
-    mainSave.writeString(myGson.toJson(gameSave), false);
+    FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
+    fileHandle.writeString(myGson.toJson(gameSave), false);
   }
 
-  /**
-   * Copies the {@link LevelData} into {@link GameSave}
-   */
-  public void loadLevel(GameSave gameSave, LevelData levelData) {
-    gameSave.clearLevelProgress();
-    gameSave.setCurrentLevel(levelData.getId());
-    gameSave.setInProgress(true);
-
-    List<Player> startingPlayers = gameSave.getStartingPlayers();
-    List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
-    for (int i = 0; i < startingPlayers.size(); i++) {
-      Player startingPlayer = startingPlayers.get(i);
-      Player copy = myGson.deepCopy(startingPlayer, startingPlayer.getClass());
-      if (i < playerSpawns.size()) {
-        gameSave.addActivePlayer(playerSpawns.get(i), copy);
-      } else {
-        gameSave.addInactivePlayer(copy);
-      }
+  private Optional<GameSave> load(String fileName) {
+    FileHandle fileHandle = files.local(fileName);
+    if (fileHandle.exists()) {
+      return Optional.of(myGson.fromJson(fileHandle.readString(), GameSave.class));
     }
-
-    for (Entry<Coordinate, Enemy> entry : levelData.getEnemies().entrySet()) {
-      Enemy enemy = entry.getValue();
-      gameSave.addActiveEnemy(entry.getKey(), myGson.deepCopy(enemy, enemy.getClass()));
-    }
-  }
-
-  private FileHandle getMainSaveHandle() {
-    return files.local(dataConfig.getMainSaveFileName());
+    return Optional.absent();
   }
 }
