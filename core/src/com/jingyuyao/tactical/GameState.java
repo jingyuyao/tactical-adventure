@@ -8,8 +8,6 @@ import com.jingyuyao.tactical.data.LevelDataManager;
 import com.jingyuyao.tactical.data.LevelMapManager;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -54,14 +52,14 @@ class GameState {
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
     model.reset();
-    gameSaveManager.removeLevelProgress(gameSave);
+    gameSave.setInProgress(false);
     continueLevel();
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
     model.reset();
-    gameSaveManager.removeLevelProgress(gameSave);
+    gameSave.setInProgress(false);
     continueLevel();
   }
 
@@ -81,16 +79,13 @@ class GameState {
 
   void saveProgress() {
     model.prepForSave();
-    Map<Coordinate, Player> activePlayers = gameSave.getActivePlayers();
-    Map<Coordinate, Enemy> activeEnemies = gameSave.getActiveEnemies();
-    activePlayers.clear();
-    activeEnemies.clear();
+    gameSave.clearActiveCharacters();
     for (Cell cell : world.getCharacterSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
       if (cell.hasPlayer()) {
-        activePlayers.put(coordinate, cell.getPlayer());
+        gameSave.addActivePlayer(coordinate, cell.getPlayer());
       } else if (cell.hasEnemy()) {
-        activeEnemies.put(coordinate, cell.getEnemy());
+        gameSave.addActiveEnemy(coordinate, cell.getEnemy());
       }
     }
     gameSaveManager.save(gameSave);

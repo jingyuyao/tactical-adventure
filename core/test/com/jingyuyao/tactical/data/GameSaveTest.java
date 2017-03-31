@@ -52,4 +52,30 @@ public class GameSaveTest {
             E1, enemy1,
             E2, enemy2);
   }
+
+  @Test
+  public void clearActiveCharacters() {
+    gameSave.addActivePlayer(P2, player2);
+    gameSave.addActiveEnemy(E1, enemy1);
+
+    gameSave.clearActiveCharacters();
+
+    assertThat(gameSave.getActivePlayers()).isEmpty();
+    assertThat(gameSave.getActiveEnemies()).isEmpty();
+  }
+
+  @Test
+  public void clear_level_progress() {
+    gameSave.setInProgress(true);
+    gameSave.addInactivePlayer(player1);
+    gameSave.addActivePlayer(P2, player2);
+    gameSave.addActiveEnemy(E1, enemy1);
+
+    gameSave.clearLevelProgress();
+
+    assertThat(gameSave.isInProgress()).isFalse();
+    assertThat(gameSave.getInactivePlayers()).isEmpty();
+    assertThat(gameSave.getActivePlayers()).isEmpty();
+    assertThat(gameSave.getActiveEnemies()).isEmpty();
+  }
 }
