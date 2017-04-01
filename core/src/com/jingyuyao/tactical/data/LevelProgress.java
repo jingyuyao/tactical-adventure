@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.data;
 
-import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class LevelProgress {
 
@@ -34,10 +32,7 @@ public class LevelProgress {
         inactivePlayers.add(player);
       }
     }
-
-    for (Entry<Coordinate, Enemy> entry : levelData.getEnemies().entrySet()) {
-      activeEnemies.put(entry.getKey(), entry.getValue());
-    }
+    activeEnemies.putAll(levelData.getEnemies());
   }
 
   public List<Player> getInactivePlayers() {
@@ -46,18 +41,8 @@ public class LevelProgress {
 
   public Map<Coordinate, Character> getActiveCharacters() {
     Map<Coordinate, Character> characterMap = new HashMap<>();
-    Iterable<Entry<Coordinate, ? extends Character>> entries =
-        Iterables.concat(activePlayers.entrySet(), activeEnemies.entrySet());
-
-    for (Entry<Coordinate, ? extends Character> entry : entries) {
-      Coordinate coordinate = entry.getKey();
-      if (characterMap.containsKey(coordinate)) {
-        throw new IllegalArgumentException("Some player and enemy occupy the same coordinate");
-      }
-      Character character = entry.getValue();
-      characterMap.put(coordinate, character);
-    }
-
+    characterMap.putAll(activePlayers);
+    characterMap.putAll(activeEnemies);
     return characterMap;
   }
 
