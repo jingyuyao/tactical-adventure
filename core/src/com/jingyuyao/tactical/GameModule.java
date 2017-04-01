@@ -2,6 +2,8 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.google.inject.AbstractModule;
@@ -27,5 +29,11 @@ class GameModule extends AbstractModule {
     AssetManager assetManager = new AssetManager();
     assetManager.setLoader(TiledMap.class, new TmxMapLoader());
     return assetManager;
+  }
+
+  @Provides
+  @Singleton
+  Batch provideBatch() {
+    return new SpriteBatch();
   }
 }

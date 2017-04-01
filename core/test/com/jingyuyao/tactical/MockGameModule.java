@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -35,5 +36,11 @@ public class MockGameModule extends AbstractModule {
     when(assetManager.get(anyString(), eq(TextureAtlas.class))).thenReturn(textureAtlas);
     when(assetManager.get(anyString(), eq(Skin.class))).thenReturn(skin);
     return assetManager;
+  }
+
+  @Provides
+  @Singleton
+  Batch provideBatch() {
+    return mock(Batch.class);
   }
 }
