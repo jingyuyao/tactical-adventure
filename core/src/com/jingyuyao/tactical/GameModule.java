@@ -1,7 +1,12 @@
 package com.jingyuyao.tactical;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -24,6 +29,10 @@ class GameModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(Game.class).toInstance(game);
+    bind(Files.class).toInstance(Gdx.files);
+    bind(Graphics.class).toInstance(Gdx.graphics);
+    bind(Input.class).toInstance(Gdx.input);
+    bind(GL20.class).toInstance(Gdx.gl);
   }
 
   @Provides

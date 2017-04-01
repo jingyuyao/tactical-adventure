@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.controller;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -21,13 +20,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldControllerTest {
 
   @Mock
+  private Input input;
+  @Mock
   private Stage worldStage;
   @Mock
   private Stage uiStage;
   @Mock
   private WorldCamera worldCamera;
-  @Mock
-  private Input input;
   @Captor
   private ArgumentCaptor<InputProcessor> inputProcessorCaptor;
 
@@ -35,8 +34,7 @@ public class WorldControllerTest {
 
   @Before
   public void setUp() {
-    worldController = new WorldController(worldStage, uiStage, worldCamera);
-    Gdx.input = input;
+    worldController = new WorldController(input, worldStage, uiStage, worldCamera);
   }
 
   @Test

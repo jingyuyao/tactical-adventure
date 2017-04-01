@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.view;
 
 import static org.mockito.Mockito.verify;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.Markings;
@@ -21,6 +20,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldScreenTest {
 
   @Mock
+  private GL20 gl;
+  @Mock
   private WorldView worldView;
   @Mock
   private Markings markings;
@@ -31,14 +32,11 @@ public class WorldScreenTest {
   @Mock
   private WorldController worldController;
   @Mock
-  private GL20 gl20;
-
   private WorldScreen worldScreen;
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(worldView, markings, ui, animationTime, worldController);
-    Gdx.gl = gl20;
+    worldScreen = new WorldScreen(gl, worldView, markings, ui, animationTime, worldController);
   }
 
   @Test
@@ -59,11 +57,11 @@ public class WorldScreenTest {
   public void render() {
     worldScreen.render(10f);
 
-    InOrder inOrder = Mockito.inOrder(worldView, markings, ui, animationTime, gl20);
+    InOrder inOrder = Mockito.inOrder(worldView, markings, ui, animationTime, gl);
     inOrder.verify(ui).act(10f);
     inOrder.verify(worldView).act(10f);
     inOrder.verify(animationTime).advanceStateTime(10f);
-    inOrder.verify(gl20).glClear(GL20.GL_COLOR_BUFFER_BIT);
+    inOrder.verify(gl).glClear(GL20.GL_COLOR_BUFFER_BIT);
     inOrder.verify(worldView).draw();
     inOrder.verify(markings).draw();
     inOrder.verify(ui).draw();
