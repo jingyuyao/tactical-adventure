@@ -8,14 +8,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldScreenSubscribers {
+public class WorldScreenSubscriber {
 
   private final WorldSubscriber worldSubscriber;
   private final MarkingsSubscriber markingsSubscriber;
   private final UISubscriber uiSubscriber;
 
   @Inject
-  WorldScreenSubscribers(
+  WorldScreenSubscriber(
       WorldSubscriber worldSubscriber,
       MarkingsSubscriber markingsSubscriber,
       UISubscriber uiSubscriber) {

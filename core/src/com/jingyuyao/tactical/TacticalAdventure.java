@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.controller.ControllerModule;
@@ -9,8 +8,6 @@ import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.view.ViewModule;
-import com.jingyuyao.tactical.view.WorldScreen;
-import com.jingyuyao.tactical.view.WorldScreenSubscribers;
 import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
@@ -19,13 +16,9 @@ public class TacticalAdventure extends Game {
   @ModelEventBus
   private EventBus modelEventBus;
   @Inject
-  private WorldScreen worldScreen;
-  @Inject
-  private WorldScreenSubscribers worldScreenSubscribers;
-  @Inject
   private GameState gameState;
   @Inject
-  private AssetManager assetManager;
+  private GameStateSubscriber gameStateSubscriber;
 
   @Override
   public void create() {
@@ -38,25 +31,19 @@ public class TacticalAdventure extends Game {
             new ControllerModule())
         .injectMembers(this);
 
-    worldScreenSubscribers.register(modelEventBus);
-    modelEventBus.register(gameState);
+    gameStateSubscriber.register(modelEventBus);
     gameState.continueLevel();
   }
 
   @Override
   public void pause() {
     super.pause();
-    gameState.saveProgress();
+    gameState.pause();
   }
 
   @Override
   public void dispose() {
     super.dispose();
-    worldScreen.dispose();
-    assetManager.dispose();
-  }
-
-  void goToWorldScreen() {
-    setScreen(worldScreen);
+    gameState.dispose();
   }
 }

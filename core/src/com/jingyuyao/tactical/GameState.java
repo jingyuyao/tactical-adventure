@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
-import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.GameSaveManager;
 import com.jingyuyao.tactical.data.LevelData;
@@ -12,11 +12,10 @@ import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.LevelProgressManager;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.LevelComplete;
-import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
+import com.jingyuyao.tactical.view.WorldScreen;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,47 +23,44 @@ import javax.inject.Singleton;
 @Singleton
 class GameState {
 
-  private final TacticalAdventure tacticalAdventure;
+  private final Game game;
   private final GameSaveManager gameSaveManager;
   private final LevelProgressManager levelProgressManager;
   private final LevelDataManager levelDataManager;
   private final LevelMapManager levelMapManager;
+  private final WorldScreen worldScreen;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
   private final Model model;
   private final World world;
 
   @Inject
   GameState(
-      TacticalAdventure tacticalAdventure,
+      Game game,
       GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
       LevelDataManager levelDataManager,
       LevelMapManager levelMapManager,
+      WorldScreen worldScreen,
       OrthogonalTiledMapRenderer tiledMapRenderer,
       Model model,
       World world) {
-    this.tacticalAdventure = tacticalAdventure;
+    this.game = game;
     this.gameSaveManager = gameSaveManager;
     this.levelProgressManager = levelProgressManager;
     this.levelDataManager = levelDataManager;
     this.levelMapManager = levelMapManager;
+    this.worldScreen = worldScreen;
     this.tiledMapRenderer = tiledMapRenderer;
     this.model = model;
     this.world = world;
   }
 
-  @Subscribe
-  void levelComplete(LevelComplete levelComplete) {
-    model.reset();
-    levelProgressManager.removeSave();
-    continueLevel();
+  void pause() {
+    saveProgress();
   }
 
-  @Subscribe
-  void levelFailed(LevelFailed levelFailed) {
-    model.reset();
-    levelProgressManager.removeSave();
-    continueLevel();
+  void dispose() {
+    worldScreen.dispose();
   }
 
   void continueLevel() {
@@ -86,10 +82,16 @@ class GameState {
     Map<Coordinate, Character> characterMap = levelProgress.getActiveCharacters();
 
     model.initialize(terrainMap, characterMap);
-    tacticalAdventure.goToWorldScreen();
+    game.setScreen(worldScreen);
   }
 
-  void saveProgress() {
+  void replay() {
+    model.reset();
+    levelProgressManager.removeSave();
+    continueLevel();
+  }
+
+  private void saveProgress() {
     model.prepForSave();
 
     Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();

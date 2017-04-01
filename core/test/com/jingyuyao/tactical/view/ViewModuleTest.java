@@ -39,7 +39,7 @@ public class ViewModuleTest {
   @Inject
   private WorldScreen worldScreen;
   @Inject
-  private WorldScreenSubscribers worldScreenSubscribers;
+  private WorldScreenSubscriber worldScreenSubscriber;
 
   @BeforeClass
   public static void setUpClass() {
