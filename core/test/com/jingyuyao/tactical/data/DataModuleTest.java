@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -19,6 +20,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DataModuleTest {
 
+  @Bind
+  @Mock
+  private AssetManager assetManager;
   @Bind
   @Mock
   private Provider<PassiveEnemy> passiveEnemyProvider;

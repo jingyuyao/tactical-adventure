@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.data;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.terrain.Land;
@@ -21,16 +21,19 @@ import javax.inject.Singleton;
 public class LevelMapManager {
 
   private final DataConfig dataConfig;
-  private final TmxMapLoader tmxMapLoader;
+  private final AssetManager assetManager;
 
   @Inject
-  LevelMapManager(DataConfig dataConfig, TmxMapLoader tmxMapLoader) {
+  LevelMapManager(DataConfig dataConfig, AssetManager assetManager) {
     this.dataConfig = dataConfig;
-    this.tmxMapLoader = tmxMapLoader;
+    this.assetManager = assetManager;
   }
 
   public Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
-    TiledMap tiledMap = tmxMapLoader.load(dataConfig.getLevelMapFileName(level));
+    String levelFileName = dataConfig.getLevelMapFileName(level);
+    assetManager.load(levelFileName, TiledMap.class);
+    assetManager.finishLoadingAsset(levelFileName);
+    TiledMap tiledMap = assetManager.get(levelFileName);
     tiledMapRenderer.setMap(tiledMap);
     return extractTerrains(tiledMap);
   }

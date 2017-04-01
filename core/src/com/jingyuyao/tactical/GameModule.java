@@ -2,6 +2,8 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import javax.inject.Singleton;
@@ -22,6 +24,8 @@ class GameModule extends AbstractModule {
   @Provides
   @Singleton
   AssetManager provideAssetManager() {
-    return new AssetManager();
+    AssetManager assetManager = new AssetManager();
+    assetManager.setLoader(TiledMap.class, new TmxMapLoader());
+    return assetManager;
   }
 }

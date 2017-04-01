@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.GameSave;
@@ -30,6 +31,7 @@ class GameState {
   private final LevelMapManager levelMapManager;
   private final WorldScreen worldScreen;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
+  private final AssetManager assetManager;
   private final Model model;
   private final World world;
 
@@ -42,6 +44,7 @@ class GameState {
       LevelMapManager levelMapManager,
       WorldScreen worldScreen,
       OrthogonalTiledMapRenderer tiledMapRenderer,
+      AssetManager assetManager,
       Model model,
       World world) {
     this.game = game;
@@ -51,6 +54,7 @@ class GameState {
     this.levelMapManager = levelMapManager;
     this.worldScreen = worldScreen;
     this.tiledMapRenderer = tiledMapRenderer;
+    this.assetManager = assetManager;
     this.model = model;
     this.world = world;
   }
@@ -65,6 +69,7 @@ class GameState {
 
   void dispose() {
     worldScreen.dispose();
+    assetManager.dispose();
   }
 
   void replay() {
