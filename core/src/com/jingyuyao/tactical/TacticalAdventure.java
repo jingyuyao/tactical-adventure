@@ -32,7 +32,7 @@ public class TacticalAdventure extends Game {
         .injectMembers(this);
 
     gameStateSubscriber.register(modelEventBus);
-    gameState.continueLevel();
+    gameState.start();
   }
 
   @Override

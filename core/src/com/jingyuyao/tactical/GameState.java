@@ -55,6 +55,10 @@ class GameState {
     this.world = world;
   }
 
+  void start() {
+    continueLevel();
+  }
+
   void pause() {
     saveProgress();
   }
@@ -63,7 +67,13 @@ class GameState {
     worldScreen.dispose();
   }
 
-  void continueLevel() {
+  void replay() {
+    model.reset();
+    levelProgressManager.removeSave();
+    continueLevel();
+  }
+
+  private void continueLevel() {
     GameSave gameSave = gameSaveManager.load();
     int level = gameSave.getCurrentLevel();
 
@@ -83,12 +93,6 @@ class GameState {
 
     model.initialize(terrainMap, characterMap);
     game.setScreen(worldScreen);
-  }
-
-  void replay() {
-    model.reset();
-    levelProgressManager.removeSave();
-    continueLevel();
   }
 
   private void saveProgress() {
