@@ -4,7 +4,6 @@ import static org.mockito.Mockito.verify;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.marking.Markings;
 import com.jingyuyao.tactical.view.resource.AnimationTime;
@@ -22,8 +21,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldScreenTest {
 
   @Mock
-  private Batch batch;
-  @Mock
   private WorldView worldView;
   @Mock
   private Markings markings;
@@ -40,7 +37,7 @@ public class WorldScreenTest {
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(batch, worldView, markings, ui, animationTime, worldController);
+    worldScreen = new WorldScreen(worldView, markings, ui, animationTime, worldController);
     Gdx.gl = gl20;
   }
 
@@ -86,6 +83,5 @@ public class WorldScreenTest {
 
     verify(worldView).dispose();
     verify(ui).dispose();
-    verify(batch).dispose();
   }
 }
