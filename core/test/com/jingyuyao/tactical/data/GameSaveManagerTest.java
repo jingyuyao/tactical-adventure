@@ -15,8 +15,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class GameSaveManagerTest {
 
-  private static final String MAIN_SAVE = "main.save.json";
-  private static final String START_SAVE = "main.json";
+  private static final String MAIN = "main.save.json";
+  private static final String START = "start.json";
   private static final String DATA = "hello world!";
 
   @Mock
@@ -40,9 +40,9 @@ public class GameSaveManagerTest {
   }
 
   @Test
-  public void load_main_save() {
-    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN_SAVE);
-    when(files.local(MAIN_SAVE)).thenReturn(fileHandle1);
+  public void load() {
+    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
@@ -51,11 +51,11 @@ public class GameSaveManagerTest {
   }
 
   @Test
-  public void load_start_save() {
-    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN_SAVE);
-    when(dataConfig.getStartSaveFileName()).thenReturn(START_SAVE);
-    when(files.local(MAIN_SAVE)).thenReturn(fileHandle1);
-    when(files.local(START_SAVE)).thenReturn(fileHandle2);
+  public void load_start() {
+    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
+    when(dataConfig.getStartSaveFileName()).thenReturn(START);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
+    when(files.local(START)).thenReturn(fileHandle2);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
@@ -65,8 +65,8 @@ public class GameSaveManagerTest {
 
   @Test
   public void save() {
-    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN_SAVE);
-    when(files.local(MAIN_SAVE)).thenReturn(fileHandle1);
+    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
     when(myGson.toJson(gameSave)).thenReturn(DATA);
 
     gameSaveManager.save(gameSave);

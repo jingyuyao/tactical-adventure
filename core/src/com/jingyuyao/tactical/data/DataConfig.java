@@ -12,11 +12,15 @@ class DataConfig {
   }
 
   String getStartSaveFileName() {
-    return "main.json";
+    return "start.json";
   }
 
   String getMainSaveFileName() {
     return "main.save.json";
+  }
+
+  String getMainLevelProgressFileName() {
+    return "main.progress.save.json";
   }
 
   String getLevelDataFileName(int level) {

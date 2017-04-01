@@ -12,11 +12,11 @@ public class LevelData {
   private List<Coordinate> playerSpawns = new ArrayList<>();
   private Map<Coordinate, Enemy> enemies = new HashMap<>();
 
-  public List<Coordinate> getPlayerSpawns() {
+  List<Coordinate> getPlayerSpawns() {
     return playerSpawns;
   }
 
-  public Map<Coordinate, Enemy> getEnemies() {
+  Map<Coordinate, Enemy> getEnemies() {
     return enemies;
   }
 }

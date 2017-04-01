@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Just wraps {@link Gson} so we can mock it.
+ * Wraps {@link Gson} to make mocking easier and provide some convenience methods.
  */
 @Singleton
 class MyGson {

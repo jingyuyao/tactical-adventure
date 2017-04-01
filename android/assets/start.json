@@ -1,7 +1,37 @@
 {
   "currentLevel": 1,
-  "inProgress": false,
-  "startingPlayers": [
+  "players": [
+    {
+      "type": "BasePlayer",
+      "name": "dance",
+      "maxHp": 40,
+      "hp": 40,
+      "moveDistance": 5,
+      "actionable": true,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        },
+        {
+          "type": "Grenade",
+          "name": "bomb",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 3,
+          "size": 2
+        },
+        {
+          "type": "Heal",
+          "name": "pot",
+          "usageLeft": 3,
+          "amount": 5
+        }
+      ]
+    },
     {
       "type": "BasePlayer",
       "name": "dance",
