@@ -30,12 +30,15 @@ public class MockGameModule extends AbstractModule {
     TextureAtlas textureAtlas = mock(TextureAtlas.class);
     when(textureAtlas.findRegion(anyString())).thenReturn(atlasRegion);
 
-    Skin skin = mock(Skin.class);
-
     AssetManager assetManager = mock(AssetManager.class);
     when(assetManager.get(anyString(), eq(TextureAtlas.class))).thenReturn(textureAtlas);
-    when(assetManager.get(anyString(), eq(Skin.class))).thenReturn(skin);
     return assetManager;
+  }
+
+  @Provides
+  @Singleton
+  Skin provideSkin() {
+    return mock(Skin.class);
   }
 
   @Provides
