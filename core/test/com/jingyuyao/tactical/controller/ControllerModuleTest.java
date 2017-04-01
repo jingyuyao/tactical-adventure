@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -48,7 +49,9 @@ public class ControllerModuleTest {
 
   @Test
   public void can_create_module() {
-    Guice.createInjector(BoundFieldModule.of(this), new ControllerModule()).injectMembers(this);
+    Guice.createInjector(
+        BoundFieldModule.of(this), new MockGameModule(), new ControllerModule())
+        .injectMembers(this);
     controllerFactory.create(cell);
   }
 }

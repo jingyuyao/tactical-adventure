@@ -1,39 +1,54 @@
 package com.jingyuyao.tactical;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.backends.headless.HeadlessFiles;
+import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import javax.inject.Singleton;
 
+/**
+ * Provides mocks for Gdx related classes.
+ */
 public class MockGameModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    Gdx.files = new HeadlessFiles();
+    Gdx.graphics = new MockGraphics();
+    Gdx.input = mock(Input.class);
+    Gdx.gl = mock(GL20.class);
+
+    bind(Files.class).toInstance(Gdx.files);
+    bind(Graphics.class).toInstance(Gdx.graphics);
+    bind(Input.class).toInstance(Gdx.input);
+    bind(GL20.class).toInstance(Gdx.gl);
   }
 
   @Provides
   @Singleton
   AssetManager provideAssetManager() {
-    AtlasRegion atlasRegion = mock(AtlasRegion.class);
-    when(atlasRegion.getRegionHeight()).thenReturn(10);
-    when(atlasRegion.getRegionWidth()).thenReturn(10);
+    return mock(AssetManager.class);
+  }
 
-    TextureAtlas textureAtlas = mock(TextureAtlas.class);
-    when(textureAtlas.findRegion(anyString())).thenReturn(atlasRegion);
+  @Provides
+  @Singleton
+  Skin provideSkin() {
+    return mock(Skin.class);
+  }
 
-    Skin skin = mock(Skin.class);
-
-    AssetManager assetManager = mock(AssetManager.class);
-    when(assetManager.get(anyString(), eq(TextureAtlas.class))).thenReturn(textureAtlas);
-    when(assetManager.get(anyString(), eq(Skin.class))).thenReturn(skin);
-    return assetManager;
+  @Provides
+  @Singleton
+  Batch provideBatch() {
+    return mock(Batch.class);
   }
 }

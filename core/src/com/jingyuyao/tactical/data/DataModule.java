@@ -1,8 +1,7 @@
 package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.assets.AssetManager;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,18 +28,8 @@ public class DataModule extends AbstractModule {
 
   @Override
   protected void configure() {
-  }
-
-  @Provides
-  @Singleton
-  Files providesFiles() {
-    return Gdx.files;
-  }
-
-  @Provides
-  @Singleton
-  TmxMapLoader provideTmxMapLoader() {
-    return new TmxMapLoader();
+    requireBinding(AssetManager.class);
+    requireBinding(Files.class);
   }
 
   @Provides

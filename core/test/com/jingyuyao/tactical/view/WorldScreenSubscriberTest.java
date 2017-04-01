@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WorldScreenSubscribersTest {
+public class WorldScreenSubscriberTest {
 
   @Mock
   private WorldSubscriber worldSubscriber;
@@ -25,10 +25,10 @@ public class WorldScreenSubscribersTest {
 
   @Test
   public void register_subscribers() {
-    WorldScreenSubscribers worldScreenSubscribers =
-        new WorldScreenSubscribers(worldSubscriber, markingsSubscriber, uiSubscriber);
+    WorldScreenSubscriber worldScreenSubscriber =
+        new WorldScreenSubscriber(worldSubscriber, markingsSubscriber, uiSubscriber);
 
-    worldScreenSubscribers.register(eventBus);
+    worldScreenSubscriber.register(eventBus);
 
     InOrder inOrder = Mockito.inOrder(eventBus);
     inOrder.verify(eventBus).register(worldSubscriber);

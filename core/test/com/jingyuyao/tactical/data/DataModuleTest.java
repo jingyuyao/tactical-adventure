@@ -1,16 +1,14 @@
 package com.jingyuyao.tactical.data;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,8 +26,6 @@ public class DataModuleTest {
   @Bind
   @Mock
   private Provider<Grenade> grenadeProvider;
-  @Mock
-  private Files files;
 
   @Inject
   private GameSaveManager gameSaveManager;
@@ -38,13 +34,9 @@ public class DataModuleTest {
   @Inject
   private LevelMapManager levelMapManager;
 
-  @Before
-  public void setUp() {
-    Gdx.files = files;
-  }
-
   @Test
   public void can_create_module() {
-    Guice.createInjector(BoundFieldModule.of(this), new DataModule()).injectMembers(this);
+    Guice.createInjector(
+        BoundFieldModule.of(this), new MockGameModule(), new DataModule()).injectMembers(this);
   }
 }
