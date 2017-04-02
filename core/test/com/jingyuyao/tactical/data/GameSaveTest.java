@@ -39,10 +39,10 @@ public class GameSaveTest {
 
     gameSave.update(levelProgress);
 
-    assertThat(gameSave.getPlayers()).containsExactly(player1, player2);
+    assertThat(gameSave.getPlayers()).containsExactly(player2, player1).inOrder();
 
     gameSave.update(levelProgress);
 
-    assertThat(gameSave.getPlayers()).containsExactly(player1, player2);
+    assertThat(gameSave.getPlayers()).containsExactly(player2, player1).inOrder();
   }
 }

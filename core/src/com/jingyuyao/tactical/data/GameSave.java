@@ -23,7 +23,7 @@ public class GameSave {
 
   void update(LevelProgress levelProgress) {
     players.clear();
-    players.addAll(levelProgress.getInactivePlayers());
     players.addAll(levelProgress.getActivePlayers().values());
+    players.addAll(levelProgress.getInactivePlayers());
   }
 }
