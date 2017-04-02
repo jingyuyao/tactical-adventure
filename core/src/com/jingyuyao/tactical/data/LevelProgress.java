@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.World;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,10 +55,10 @@ public class LevelProgress {
     return characterMap;
   }
 
-  void update(Iterable<Cell> cells) {
+  void update(World world) {
     activePlayers.clear();
     activeEnemies.clear();
-    for (Cell cell : cells) {
+    for (Cell cell : world.getCharacterSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
       if (cell.hasPlayer()) {
         activePlayers.put(coordinate, cell.getPlayer());

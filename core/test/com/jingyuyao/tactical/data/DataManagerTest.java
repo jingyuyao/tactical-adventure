@@ -12,8 +12,8 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.World;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
@@ -46,6 +46,8 @@ public class DataManagerTest {
   private LevelData levelData;
   @Mock
   private OrthogonalTiledMapRenderer tiledMapRenderer;
+  @Mock
+  private World world;
   @Mock
   private Player player1;
   @Mock
@@ -89,9 +91,10 @@ public class DataManagerTest {
     when(gameSaveManager.load()).thenReturn(gameSave);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
-    dataManager.changeLevel(2);
+    dataManager.changeLevel(2, world);
 
     verify(gameSave).setCurrentLevel(2);
+    verify(levelProgress).update(world);
     verify(gameSave).update(levelProgress);
     verify(gameSaveManager).save(gameSave);
     verify(levelProgressManager).removeSave();
@@ -145,12 +148,11 @@ public class DataManagerTest {
 
   @Test
   public void save_progress() {
-    Iterable<Cell> cells = ImmutableList.of();
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
-    dataManager.saveProgress(cells);
+    dataManager.saveProgress(world);
 
-    verify(levelProgress).update(cells);
+    verify(levelProgress).update(world);
     verify(levelProgressManager).save(levelProgress);
   }
 

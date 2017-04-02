@@ -48,7 +48,8 @@ public class GameState {
 
   void pause() {
     if (game.isAtWorldScreen()) {
-      save();
+      model.prepForSave();
+      dataManager.saveProgress(world);
     }
   }
 
@@ -56,8 +57,8 @@ public class GameState {
     GameSave gameSave = dataManager.loadCurrentSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
-      save();
-      dataManager.changeLevel(nextLevel);
+      model.prepForSave();
+      dataManager.changeLevel(nextLevel, world);
     } else {
       dataManager.freshStart();
     }
@@ -69,10 +70,5 @@ public class GameState {
     dataManager.removeProgress();
     model.reset();
     game.goToPlayMenu();
-  }
-
-  private void save() {
-    model.prepForSave();
-    dataManager.saveProgress(world.getCharacterSnapshot());
   }
 }

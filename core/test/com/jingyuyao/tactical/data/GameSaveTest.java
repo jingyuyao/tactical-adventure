@@ -41,6 +41,7 @@ public class GameSaveTest {
 
     assertThat(gameSave.getPlayers()).containsExactly(player2, player1).inOrder();
 
+    // tests the previous changes are cleared
     gameSave.update(levelProgress);
 
     assertThat(gameSave.getPlayers()).containsExactly(player2, player1).inOrder();

@@ -4,8 +4,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.World;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -42,16 +42,19 @@ public class DataManager {
     return levelDataManager.hasLevel(level);
   }
 
-  /**
-   * {@link #saveProgress(Iterable)} must be called before this method to migrate the saved data.
-   */
-  public void changeLevel(int level) {
+  public void changeLevel(int level, World world) {
+    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
+    if (!levelProgressOptional.isPresent()) {
+      throw new IllegalStateException(
+          "An existing level progress file is needed for changing levels.");
+    }
+
+    LevelProgress levelProgress = levelProgressOptional.get();
+    levelProgress.update(world);
+
     GameSave gameSave = gameSaveManager.load();
     gameSave.setCurrentLevel(level);
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-    if (levelProgressOptional.isPresent()) {
-      gameSave.update(levelProgressOptional.get());
-    }
+    gameSave.update(levelProgress);
     gameSaveManager.save(gameSave);
     levelProgressManager.removeSave();
   }
@@ -81,7 +84,7 @@ public class DataManager {
     return new LoadedLevel(terrainMap, characterMap);
   }
 
-  public void saveProgress(Iterable<Cell> cells) {
+  public void saveProgress(World world) {
     Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
 
     if (!levelProgressOptional.isPresent()) {
@@ -89,7 +92,7 @@ public class DataManager {
     }
 
     LevelProgress levelProgress = levelProgressOptional.get();
-    levelProgress.update(cells);
+    levelProgress.update(world);
     levelProgressManager.save(levelProgress);
   }
 
