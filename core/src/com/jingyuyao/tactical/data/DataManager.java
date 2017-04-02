@@ -38,6 +38,22 @@ public class DataManager {
     return levelProgressManager.load();
   }
 
+  public boolean hasLevel(int level) {
+    return levelDataManager.hasLevel(level);
+  }
+
+  public void changeLevel(int level) {
+    GameSave gameSave = gameSaveManager.load();
+    gameSave.setCurrentLevel(level);
+    gameSaveManager.save(gameSave);
+    levelProgressManager.removeSave();
+  }
+
+  public void freshStart() {
+    levelProgressManager.removeSave();
+    gameSaveManager.removeSave();
+  }
+
   public LoadedLevel loadCurrentLevel(OrthogonalTiledMapRenderer tiledMapRenderer) {
     GameSave gameSave = gameSaveManager.load();
     int level = gameSave.getCurrentLevel();

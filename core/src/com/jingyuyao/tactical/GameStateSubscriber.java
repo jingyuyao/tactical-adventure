@@ -34,12 +34,12 @@ class GameStateSubscriber {
 
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
-    gameState.finishLevel();
+    gameState.advanceLevel();
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
-    gameState.finishLevel();
+    gameState.replayLevel();
   }
 
   @Subscribe

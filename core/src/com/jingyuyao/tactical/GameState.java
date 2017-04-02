@@ -2,6 +2,7 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.jingyuyao.tactical.data.DataManager;
+import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.world.World;
@@ -52,7 +53,19 @@ public class GameState {
     }
   }
 
-  void finishLevel() {
+  void advanceLevel() {
+    model.reset();
+    GameSave gameSave = dataManager.loadCurrentSave();
+    int nextLevel = gameSave.getCurrentLevel() + 1;
+    if (dataManager.hasLevel(nextLevel)) {
+      dataManager.changeLevel(nextLevel);
+    } else {
+      dataManager.freshStart();
+    }
+    game.goToPlayMenu();
+  }
+
+  void replayLevel() {
     model.reset();
     dataManager.removeProgress();
     game.goToPlayMenu();

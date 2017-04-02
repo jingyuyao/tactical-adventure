@@ -78,6 +78,32 @@ public class DataManagerTest {
   }
 
   @Test
+  public void has_level() {
+    when(levelDataManager.hasLevel(2)).thenReturn(true);
+
+    assertThat(dataManager.hasLevel(2)).isTrue();
+  }
+
+  @Test
+  public void change_level() {
+    when(gameSaveManager.load()).thenReturn(gameSave);
+
+    dataManager.changeLevel(2);
+
+    verify(gameSave).setCurrentLevel(2);
+    verify(gameSaveManager).save(gameSave);
+    verify(levelProgressManager).removeSave();
+  }
+
+  @Test
+  public void fresh_start() {
+    dataManager.freshStart();
+
+    verify(gameSaveManager).removeSave();
+    verify(levelProgressManager).removeSave();
+  }
+
+  @Test
   public void load_level_has_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Character> characterMap = new HashMap<>();

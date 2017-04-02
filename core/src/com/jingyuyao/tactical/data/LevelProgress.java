@@ -16,12 +16,12 @@ public class LevelProgress {
   private Map<Coordinate, Player> activePlayers = new HashMap<>();
   private Map<Coordinate, Enemy> activeEnemies = new HashMap<>();
 
-  public LevelProgress() {
+  LevelProgress() {
 
   }
 
   // TODO: should be able to choose which player goes to which spawn
-  public LevelProgress(GameSave gameSave, LevelData levelData) {
+  LevelProgress(GameSave gameSave, LevelData levelData) {
     List<Player> players = gameSave.getPlayers();
     List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
     for (int i = 0; i < players.size(); i++) {
@@ -35,10 +35,6 @@ public class LevelProgress {
     activeEnemies.putAll(levelData.getEnemies());
   }
 
-  public List<Player> getInactivePlayers() {
-    return inactivePlayers;
-  }
-
   public Map<Coordinate, Player> getActivePlayers() {
     return activePlayers;
   }
@@ -47,14 +43,18 @@ public class LevelProgress {
     return activeEnemies;
   }
 
-  public Map<Coordinate, Character> getActiveCharacters() {
+  List<Player> getInactivePlayers() {
+    return inactivePlayers;
+  }
+
+  Map<Coordinate, Character> getActiveCharacters() {
     Map<Coordinate, Character> characterMap = new HashMap<>();
     characterMap.putAll(activePlayers);
     characterMap.putAll(activeEnemies);
     return characterMap;
   }
 
-  public void update(Iterable<Cell> cells) {
+  void update(Iterable<Cell> cells) {
     activePlayers.clear();
     activeEnemies.clear();
     for (Cell cell : cells) {

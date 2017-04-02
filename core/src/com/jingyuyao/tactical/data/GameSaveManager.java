@@ -41,6 +41,13 @@ class GameSaveManager {
     fileHandle.writeString(myGson.toJson(gameSave), false);
   }
 
+  void removeSave() {
+    FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
+    if (fileHandle.exists()) {
+      fileHandle.delete();
+    }
+  }
+
   private Optional<GameSave> load(String fileName) {
     FileHandle fileHandle = files.local(fileName);
     if (fileHandle.exists()) {

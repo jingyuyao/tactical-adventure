@@ -73,4 +73,15 @@ public class GameSaveManagerTest {
 
     verify(fileHandle1).writeString(DATA, false);
   }
+
+  @Test
+  public void remove_save() {
+    when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
+    when(fileHandle1.exists()).thenReturn(true);
+
+    gameSaveManager.removeSave();
+
+    verify(fileHandle1).delete();
+  }
 }

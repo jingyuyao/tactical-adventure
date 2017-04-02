@@ -26,4 +26,9 @@ class LevelDataManager {
     }
     throw new IllegalArgumentException("level " + level + " does not exist");
   }
+
+  boolean hasLevel(int level) {
+    FileHandle fileHandle = files.internal(dataConfig.getLevelDataFileName(level));
+    return fileHandle.exists();
+  }
 }
