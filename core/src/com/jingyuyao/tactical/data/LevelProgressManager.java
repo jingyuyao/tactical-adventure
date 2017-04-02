@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class LevelProgressManager {
+class LevelProgressManager {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
@@ -20,7 +20,7 @@ public class LevelProgressManager {
     this.files = files;
   }
 
-  public Optional<LevelProgress> load() {
+  Optional<LevelProgress> load() {
     FileHandle fileHandle = getFileHandle();
     if (fileHandle.exists()) {
       return Optional.of(myGson.fromJson(fileHandle.readString(), LevelProgress.class));
@@ -28,12 +28,12 @@ public class LevelProgressManager {
     return Optional.absent();
   }
 
-  public void save(LevelProgress levelProgress) {
+  void save(LevelProgress levelProgress) {
     FileHandle fileHandle = getFileHandle();
     fileHandle.writeString(myGson.toJson(levelProgress), false);
   }
 
-  public void removeSave() {
+  void removeSave() {
     FileHandle fileHandle = getFileHandle();
     if (fileHandle.exists()) {
       fileHandle.delete();

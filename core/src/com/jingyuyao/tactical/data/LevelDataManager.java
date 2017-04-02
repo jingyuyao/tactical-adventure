@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class LevelDataManager {
+class LevelDataManager {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
@@ -19,7 +19,7 @@ public class LevelDataManager {
     this.files = files;
   }
 
-  public LevelData load(int level) {
+  LevelData load(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelDataFileName(level));
     if (fileHandle.exists()) {
       return myGson.fromJson(fileHandle.readString(), LevelData.class);

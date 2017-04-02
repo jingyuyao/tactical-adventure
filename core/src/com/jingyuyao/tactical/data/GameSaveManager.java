@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class GameSaveManager {
+class GameSaveManager {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
@@ -20,7 +20,7 @@ public class GameSaveManager {
     this.files = files;
   }
 
-  public GameSave load() {
+  GameSave load() {
     Optional<GameSave> main = load(dataConfig.getMainSaveFileName());
     if (main.isPresent()) {
       return main.get();
@@ -36,7 +36,7 @@ public class GameSaveManager {
     throw new IllegalStateException("Could not find a suitable save file!");
   }
 
-  public void save(GameSave gameSave) {
+  void save(GameSave gameSave) {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
     fileHandle.writeString(myGson.toJson(gameSave), false);
   }

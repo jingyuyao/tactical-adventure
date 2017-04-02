@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.GameState;
-import com.jingyuyao.tactical.data.GameSaveManager;
-import com.jingyuyao.tactical.data.LevelProgressManager;
+import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.menu.play.PlayMenuModule;
 
 public class MenuModule extends AbstractModule {
@@ -19,8 +18,7 @@ public class MenuModule extends AbstractModule {
     requireBinding(Batch.class);
     requireBinding(Skin.class);
     requireBinding(GameState.class);
-    requireBinding(GameSaveManager.class);
-    requireBinding(LevelProgressManager.class);
+    requireBinding(DataManager.class);
 
     install(new PlayMenuModule());
   }

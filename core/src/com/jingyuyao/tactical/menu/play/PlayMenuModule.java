@@ -15,8 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.GameState;
-import com.jingyuyao.tactical.data.GameSaveManager;
-import com.jingyuyao.tactical.data.LevelProgressManager;
+import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.menu.MenuConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -33,8 +32,7 @@ public class PlayMenuModule extends AbstractModule {
     requireBinding(Skin.class);
     requireBinding(MenuConfig.class);
     requireBinding(GameState.class);
-    requireBinding(GameSaveManager.class);
-    requireBinding(LevelProgressManager.class);
+    requireBinding(DataManager.class);
   }
 
   @Provides
