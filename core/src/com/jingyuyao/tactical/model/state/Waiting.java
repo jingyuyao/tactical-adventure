@@ -44,6 +44,14 @@ public class Waiting extends BaseState {
       }
     }
 
+    if (levelFailed || levelComplete) {
+      for (Cell cell : world.getCharacterSnapshot()) {
+        if (cell.hasPlayer()) {
+          cell.getPlayer().setActionable(true);
+        }
+      }
+    }
+
     if (levelFailed) {
       post(new LevelFailed());
     } else if (levelComplete) {

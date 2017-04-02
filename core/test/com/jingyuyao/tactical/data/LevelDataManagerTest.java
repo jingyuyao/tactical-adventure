@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class LevelDataManagerTest {
 
-  private static final String LEVEL_DATA = "levels/1.level.json";
+  private static final String LEVEL = "levels/1.level.json";
   private static final String DATA = "goodbye world!";
 
   @Mock
@@ -37,12 +37,21 @@ public class LevelDataManagerTest {
 
   @Test
   public void load() {
-    when(dataConfig.getLevelDataFileName(2)).thenReturn(LEVEL_DATA);
-    when(files.internal(LEVEL_DATA)).thenReturn(fileHandle);
+    when(dataConfig.getLevelDataFileName(2)).thenReturn(LEVEL);
+    when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, LevelData.class)).thenReturn(levelData);
 
     assertThat(levelDataManager.load(2)).isSameAs(levelData);
+  }
+
+  @Test
+  public void has_level() {
+    when(dataConfig.getLevelDataFileName(2)).thenReturn(LEVEL);
+    when(files.internal(LEVEL)).thenReturn(fileHandle);
+    when(fileHandle.exists()).thenReturn(true);
+
+    assertThat(levelDataManager.hasLevel(2)).isTrue();
   }
 }

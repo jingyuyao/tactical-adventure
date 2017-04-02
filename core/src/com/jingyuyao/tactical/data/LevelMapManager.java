@@ -18,7 +18,7 @@ import javax.inject.Singleton;
 
 // TODO: test me
 @Singleton
-public class LevelMapManager {
+class LevelMapManager {
 
   private final DataConfig dataConfig;
   private final AssetManager assetManager;
@@ -29,7 +29,7 @@ public class LevelMapManager {
     this.assetManager = assetManager;
   }
 
-  public Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
+  Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
     String levelFileName = dataConfig.getLevelMapFileName(level);
     assetManager.load(levelFileName, TiledMap.class);
     assetManager.finishLoadingAsset(levelFileName);

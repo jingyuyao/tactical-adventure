@@ -1,116 +1,74 @@
 package com.jingyuyao.tactical;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.google.common.base.Optional;
+import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
-import com.jingyuyao.tactical.data.GameSaveManager;
-import com.jingyuyao.tactical.data.LevelData;
-import com.jingyuyao.tactical.data.LevelDataManager;
-import com.jingyuyao.tactical.data.LevelMapManager;
-import com.jingyuyao.tactical.data.LevelProgress;
-import com.jingyuyao.tactical.data.LevelProgressManager;
+import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.Model;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.WorldScreen;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class GameState {
+public class GameState {
 
-  private final Game game;
-  private final GameSaveManager gameSaveManager;
-  private final LevelProgressManager levelProgressManager;
-  private final LevelDataManager levelDataManager;
-  private final LevelMapManager levelMapManager;
-  private final WorldScreen worldScreen;
+  private final TacticalAdventure game;
+  private final DataManager dataManager;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
-  private final AssetManager assetManager;
   private final Model model;
   private final World world;
 
   @Inject
   GameState(
-      Game game,
-      GameSaveManager gameSaveManager,
-      LevelProgressManager levelProgressManager,
-      LevelDataManager levelDataManager,
-      LevelMapManager levelMapManager,
-      WorldScreen worldScreen,
+      TacticalAdventure game,
+      DataManager dataManager,
       OrthogonalTiledMapRenderer tiledMapRenderer,
-      AssetManager assetManager,
       Model model,
       World world) {
     this.game = game;
-    this.gameSaveManager = gameSaveManager;
-    this.levelProgressManager = levelProgressManager;
-    this.levelDataManager = levelDataManager;
-    this.levelMapManager = levelMapManager;
-    this.worldScreen = worldScreen;
+    this.dataManager = dataManager;
     this.tiledMapRenderer = tiledMapRenderer;
-    this.assetManager = assetManager;
     this.model = model;
     this.world = world;
   }
 
+  public void play() {
+    LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
+    model.initialize(loadedLevel.getTerrainMap(), loadedLevel.getCharacterMap());
+    game.goToWorldScreen();
+  }
+
+  public void reset() {
+    dataManager.removeProgress();
+  }
+
   void start() {
-    continueLevel();
+    game.goToPlayMenu();
   }
 
   void pause() {
-    saveProgress();
+    if (game.isAtWorldScreen()) {
+      model.prepForSave();
+      dataManager.saveProgress(world);
+    }
   }
 
-  void dispose() {
-    worldScreen.dispose();
-    assetManager.dispose();
-  }
-
-  void replay() {
-    model.reset();
-    levelProgressManager.removeSave();
-    continueLevel();
-  }
-
-  private void continueLevel() {
-    GameSave gameSave = gameSaveManager.load();
-    int level = gameSave.getCurrentLevel();
-
-    LevelProgress levelProgress;
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-
-    if (levelProgressOptional.isPresent()) {
-      levelProgress = levelProgressOptional.get();
+  void advanceLevel() {
+    GameSave gameSave = dataManager.loadCurrentSave();
+    int nextLevel = gameSave.getCurrentLevel() + 1;
+    if (dataManager.hasLevel(nextLevel)) {
+      model.prepForSave();
+      dataManager.changeLevel(nextLevel, world);
     } else {
-      LevelData levelData = levelDataManager.load(level);
-      levelProgress = new LevelProgress(gameSave, levelData);
-      levelProgressManager.save(levelProgress);
+      dataManager.freshStart();
     }
-
-    Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
-    Map<Coordinate, Character> characterMap = levelProgress.getActiveCharacters();
-
-    model.initialize(terrainMap, characterMap);
-    game.setScreen(worldScreen);
+    model.reset();
+    game.goToPlayMenu();
   }
 
-  private void saveProgress() {
-    model.prepForSave();
-
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-
-    if (!levelProgressOptional.isPresent()) {
-      throw new IllegalStateException("An existing level progress file is needed for saving.");
-    }
-
-    LevelProgress levelProgress = levelProgressOptional.get();
-    levelProgress.update(world.getCharacterSnapshot());
-    levelProgressManager.save(levelProgress);
+  void replayLevel() {
+    dataManager.removeProgress();
+    model.reset();
+    game.goToPlayMenu();
   }
 }

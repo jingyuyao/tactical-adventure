@@ -20,4 +20,10 @@ public class GameSave {
   List<Player> getPlayers() {
     return players;
   }
+
+  void update(LevelProgress levelProgress) {
+    players.clear();
+    players.addAll(levelProgress.getActivePlayers().values());
+    players.addAll(levelProgress.getInactivePlayers());
+  }
 }

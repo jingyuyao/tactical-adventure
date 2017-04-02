@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
@@ -48,8 +47,6 @@ public class WaitingTest {
   @Mock
   private Player player;
   @Mock
-  private Enemy enemy;
-  @Mock
   private Moving moving;
   @Mock
   private Retaliating retaliating;
@@ -81,9 +78,11 @@ public class WaitingTest {
   public void enter_level_complete() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.hasPlayer()).thenReturn(true);
+    when(cell.getPlayer()).thenReturn(player);
 
     waiting.enter();
 
+    verify(player).setActionable(true);
     verify(eventBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);

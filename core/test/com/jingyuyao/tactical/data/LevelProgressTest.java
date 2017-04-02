@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.World;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -25,6 +26,8 @@ public class LevelProgressTest {
   private GameSave gameSave;
   @Mock
   private LevelData levelData;
+  @Mock
+  private World world;
   @Mock
   private Cell cell1;
   @Mock
@@ -61,14 +64,15 @@ public class LevelProgressTest {
     when(cell2.getCoordinate()).thenReturn(E1);
     when(cell2.hasEnemy()).thenReturn(true);
     when(cell2.getEnemy()).thenReturn(enemy1);
+    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
 
     LevelProgress levelProgress = new LevelProgress();
-    levelProgress.update(ImmutableList.of(cell1, cell2));
+    levelProgress.update(world);
 
     assertThat(levelProgress.getActiveCharacters()).containsExactly(P1, player1, E1, enemy1);
 
     // Make sure the previous things are cleared
-    levelProgress.update(ImmutableList.of(cell1, cell2));
+    levelProgress.update(world);
     assertThat(levelProgress.getActiveCharacters()).containsExactly(P1, player1, E1, enemy1);
   }
 }
