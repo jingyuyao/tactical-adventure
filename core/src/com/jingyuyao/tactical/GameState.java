@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.GameSave;
@@ -16,35 +14,30 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.WorldScreen;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class GameState {
+public class GameState {
 
-  private final Game game;
+  private final TacticalAdventure game;
   private final GameSaveManager gameSaveManager;
   private final LevelProgressManager levelProgressManager;
   private final LevelDataManager levelDataManager;
   private final LevelMapManager levelMapManager;
-  private final WorldScreen worldScreen;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
-  private final AssetManager assetManager;
   private final Model model;
   private final World world;
 
   @Inject
   GameState(
-      Game game,
+      TacticalAdventure game,
       GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
       LevelDataManager levelDataManager,
       LevelMapManager levelMapManager,
-      WorldScreen worldScreen,
       OrthogonalTiledMapRenderer tiledMapRenderer,
-      AssetManager assetManager,
       Model model,
       World world) {
     this.game = game;
@@ -52,30 +45,33 @@ class GameState {
     this.levelProgressManager = levelProgressManager;
     this.levelDataManager = levelDataManager;
     this.levelMapManager = levelMapManager;
-    this.worldScreen = worldScreen;
     this.tiledMapRenderer = tiledMapRenderer;
-    this.assetManager = assetManager;
     this.model = model;
     this.world = world;
   }
 
-  void start() {
+  public void play() {
     continueLevel();
+  }
+
+  public void reset() {
+    levelProgressManager.removeSave();
+  }
+
+  void start() {
+    game.goToPlayMenu();
   }
 
   void pause() {
-    saveProgress();
+    if (game.isAtWorldScreen()) {
+      saveProgress();
+    }
   }
 
-  void dispose() {
-    worldScreen.dispose();
-    assetManager.dispose();
-  }
-
-  void replay() {
+  void finishLevel() {
     model.reset();
     levelProgressManager.removeSave();
-    continueLevel();
+    game.goToPlayMenu();
   }
 
   private void continueLevel() {
@@ -97,7 +93,7 @@ class GameState {
     Map<Coordinate, Character> characterMap = levelProgress.getActiveCharacters();
 
     model.initialize(terrainMap, characterMap);
-    game.setScreen(worldScreen);
+    game.goToWorldScreen();
   }
 
   private void saveProgress() {

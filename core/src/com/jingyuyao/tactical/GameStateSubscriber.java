@@ -29,11 +29,11 @@ class GameStateSubscriber {
 
   @Subscribe
   void levelComplete(LevelComplete levelComplete) {
-    gameState.replay();
+    gameState.finishLevel();
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
-    gameState.replay();
+    gameState.finishLevel();
   }
 }

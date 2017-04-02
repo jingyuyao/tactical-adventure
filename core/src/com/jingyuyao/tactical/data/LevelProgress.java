@@ -39,6 +39,14 @@ public class LevelProgress {
     return inactivePlayers;
   }
 
+  public Map<Coordinate, Player> getActivePlayers() {
+    return activePlayers;
+  }
+
+  public Map<Coordinate, Enemy> getActiveEnemies() {
+    return activeEnemies;
+  }
+
   public Map<Coordinate, Character> getActiveCharacters() {
     Map<Coordinate, Character> characterMap = new HashMap<>();
     characterMap.putAll(activePlayers);
