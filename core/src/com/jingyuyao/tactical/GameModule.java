@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
@@ -33,6 +34,7 @@ class GameModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(TacticalAdventure.class).toInstance(game);
+    bind(Application.class).toInstance(Gdx.app);
     bind(Files.class).toInstance(Gdx.files);
     bind(Graphics.class).toInstance(Gdx.graphics);
     bind(Input.class).toInstance(Gdx.input);

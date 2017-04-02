@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical;
 
+import com.badlogic.gdx.Application;
+import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.LevelComplete;
@@ -13,13 +15,16 @@ class GameStateSubscriber {
 
   private final GameState gameState;
   private final WorldScreenSubscriber worldScreenSubscriber;
+  private final Application application;
 
   @Inject
   GameStateSubscriber(
       GameState gameState,
-      WorldScreenSubscriber worldScreenSubscriber) {
+      WorldScreenSubscriber worldScreenSubscriber,
+      Application application) {
     this.gameState = gameState;
     this.worldScreenSubscriber = worldScreenSubscriber;
+    this.application = application;
   }
 
   void register(EventBus eventBus) {
@@ -35,5 +40,10 @@ class GameStateSubscriber {
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
     gameState.finishLevel();
+  }
+
+  @Subscribe
+  void deadEvent(DeadEvent deadEvent) {
+    application.log("GameStateSubscriber", deadEvent.getEvent().toString());
   }
 }
