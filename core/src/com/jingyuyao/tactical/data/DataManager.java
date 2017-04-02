@@ -42,9 +42,16 @@ public class DataManager {
     return levelDataManager.hasLevel(level);
   }
 
+  /**
+   * {@link #saveProgress(Iterable)} must be called before this method to migrate the saved data.
+   */
   public void changeLevel(int level) {
     GameSave gameSave = gameSaveManager.load();
     gameSave.setCurrentLevel(level);
+    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
+    if (levelProgressOptional.isPresent()) {
+      gameSave.update(levelProgressOptional.get());
+    }
     gameSaveManager.save(gameSave);
     levelProgressManager.removeSave();
   }

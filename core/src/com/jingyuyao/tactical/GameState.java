@@ -48,26 +48,31 @@ public class GameState {
 
   void pause() {
     if (game.isAtWorldScreen()) {
-      model.prepForSave();
-      dataManager.saveProgress(world.getCharacterSnapshot());
+      save();
     }
   }
 
   void advanceLevel() {
-    model.reset();
     GameSave gameSave = dataManager.loadCurrentSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
+      save();
       dataManager.changeLevel(nextLevel);
     } else {
       dataManager.freshStart();
     }
+    model.reset();
     game.goToPlayMenu();
   }
 
   void replayLevel() {
-    model.reset();
     dataManager.removeProgress();
+    model.reset();
     game.goToPlayMenu();
+  }
+
+  private void save() {
+    model.prepForSave();
+    dataManager.saveProgress(world.getCharacterSnapshot());
   }
 }

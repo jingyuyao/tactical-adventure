@@ -87,10 +87,12 @@ public class DataManagerTest {
   @Test
   public void change_level() {
     when(gameSaveManager.load()).thenReturn(gameSave);
+    when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
     dataManager.changeLevel(2);
 
     verify(gameSave).setCurrentLevel(2);
+    verify(gameSave).update(levelProgress);
     verify(gameSaveManager).save(gameSave);
     verify(levelProgressManager).removeSave();
   }
