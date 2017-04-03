@@ -21,7 +21,6 @@ class PlayInfo extends Label {
     super(null, skin);
     this.dataManager = dataManager;
     setAlignment(Align.center);
-    updateText();
   }
 
   void updateText() {
