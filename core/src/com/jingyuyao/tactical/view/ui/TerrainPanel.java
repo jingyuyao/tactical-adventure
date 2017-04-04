@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,8 +20,9 @@ class TerrainPanel extends VerticalGroup {
     columnRight();
   }
 
-  void display(Terrain terrain) {
+  void display(Coordinate coordinate, Terrain terrain) {
     clear();
+    addActor(new Label(coordinate.toString(), skin));
     addActor(new Label(terrain.getClass().getSimpleName(), skin));
     addActor(
         new Label(String.format(Locale.US, "Penalty: %d", terrain.getMovementPenalty()), skin));

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Objects;
+import java.util.Locale;
 
 /**
  * An object with a (x,y) coordinate. This class is the foundation for many of other classes and
@@ -48,5 +49,10 @@ public final class Coordinate {
   @Override
   public int hashCode() {
     return Objects.hashCode(getX(), getY());
+  }
+
+  @Override
+  public String toString() {
+    return String.format(Locale.US, "(%d,%d)", x, y);
   }
 }

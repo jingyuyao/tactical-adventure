@@ -9,7 +9,9 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
+import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -34,12 +36,14 @@ public class UISubscriber {
   @Subscribe
   void selectCell(SelectCell selectCell) {
     Cell cell = selectCell.getObject();
+    Coordinate coordinate = cell.getCoordinate();
+    Terrain terrain = cell.getTerrain();
     if (cell.hasCharacter()) {
       characterPanel.display(cell.getCharacter());
-      terrainPanel.display(cell.getTerrain());
+      terrainPanel.display(coordinate, terrain);
     } else {
       characterPanel.clear();
-      terrainPanel.display(cell.getTerrain());
+      terrainPanel.display(coordinate, terrain);
     }
   }
 
