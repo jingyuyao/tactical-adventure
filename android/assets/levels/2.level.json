@@ -6,12 +6,12 @@
     "2,1"
   ],
   "enemies": {
-    "5,4": {
+    "1,11": {
       "type": "PassiveEnemy",
       "name": "stick",
-      "maxHp": 5,
-      "hp": 5,
-      "moveDistance": 4,
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
       "items": [
         {
           "type": "DirectionalWeapon",
@@ -22,12 +22,12 @@
         }
       ]
     },
-    "4,5": {
+    "3,12": {
       "type": "PassiveEnemy",
-      "name": "dance",
-      "maxHp": 5,
-      "hp": 5,
-      "moveDistance": 4,
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
       "items": [
         {
           "type": "DirectionalWeapon",
@@ -38,12 +38,92 @@
         }
       ]
     },
-    "5,6": {
+    "5,14": {
       "type": "PassiveEnemy",
-      "name": "dance",
-      "maxHp": 5,
-      "hp": 5,
-      "moveDistance": 4,
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        }
+      ]
+    },
+    "6,5": {
+      "type": "PassiveEnemy",
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        }
+      ]
+    },
+    "10,8": {
+      "type": "PassiveEnemy",
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        }
+      ]
+    },
+    "13,6": {
+      "type": "PassiveEnemy",
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        }
+      ]
+    },
+    "12,10": {
+      "type": "PassiveEnemy",
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
+      "items": [
+        {
+          "type": "DirectionalWeapon",
+          "name": "melee",
+          "usageLeft": 10,
+          "attackPower": 5,
+          "distance": 1
+        }
+      ]
+    },
+    "14,10": {
+      "type": "PassiveEnemy",
+      "name": "stick",
+      "maxHp": 10,
+      "hp": 10,
+      "moveDistance": 5,
       "items": [
         {
           "type": "DirectionalWeapon",

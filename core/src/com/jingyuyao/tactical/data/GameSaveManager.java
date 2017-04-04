@@ -21,12 +21,12 @@ class GameSaveManager {
   }
 
   GameSave load() {
-    Optional<GameSave> main = load(dataConfig.getMainSaveFileName());
+    Optional<GameSave> main = load(dataConfig.getMainSaveFileName(), false);
     if (main.isPresent()) {
       return main.get();
     }
 
-    Optional<GameSave> start = load(dataConfig.getStartSaveFileName());
+    Optional<GameSave> start = load(dataConfig.getStartSaveFileName(), true);
     if (start.isPresent()) {
       GameSave startSave = start.get();
       save(startSave);
@@ -48,8 +48,8 @@ class GameSaveManager {
     }
   }
 
-  private Optional<GameSave> load(String fileName) {
-    FileHandle fileHandle = files.local(fileName);
+  private Optional<GameSave> load(String fileName, boolean internal) {
+    FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
       return Optional.of(myGson.fromJson(fileHandle.readString(), GameSave.class));
     }
