@@ -55,7 +55,7 @@ public class GameSaveManagerTest {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(dataConfig.getStartSaveFileName()).thenReturn(START);
     when(files.local(MAIN)).thenReturn(fileHandle1);
-    when(files.local(START)).thenReturn(fileHandle2);
+    when(files.internal(START)).thenReturn(fileHandle2);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
