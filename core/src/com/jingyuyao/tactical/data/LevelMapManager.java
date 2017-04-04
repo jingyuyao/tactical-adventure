@@ -54,16 +54,18 @@ class LevelMapManager {
   }
 
   private Terrain createTerrain(TiledMapTileLayer.Cell cell) {
-    MapProperties tileProperties = cell.getTile().getProperties();
-    if (tileProperties.containsKey(dataConfig.getTerrainTypeKey())) {
+    if (cell != null) {
+      MapProperties tileProperties = cell.getTile().getProperties();
       String type = tileProperties.get(dataConfig.getTerrainTypeKey(), String.class);
-      switch (type) {
-        case "OBSTRUCTED":
-          return new Obstructed();
-        case "WATER":
-          return new Water();
-        default:
-          throw new IllegalArgumentException("Unrecognized terrain type: " + type);
+      if (type != null) {
+        switch (type) {
+          case "OBSTRUCTED":
+            return new Obstructed();
+          case "WATER":
+            return new Water();
+          default:
+            throw new IllegalArgumentException("Unrecognized terrain type: " + type);
+        }
       }
     }
     return new Land();
