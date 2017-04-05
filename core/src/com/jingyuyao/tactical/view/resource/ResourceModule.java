@@ -12,7 +12,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
-import com.jingyuyao.tactical.view.world.WorldConfig;
+import com.jingyuyao.tactical.view.world2.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;

@@ -4,10 +4,9 @@ import static org.mockito.Mockito.verify;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.marking.Markings;
 import com.jingyuyao.tactical.view.resource.AnimationTime;
 import com.jingyuyao.tactical.view.ui.UI;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world2.WorldView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +23,6 @@ public class WorldScreenTest {
   @Mock
   private WorldView worldView;
   @Mock
-  private Markings markings;
-  @Mock
   private UI ui;
   @Mock
   private AnimationTime animationTime;
@@ -36,7 +33,7 @@ public class WorldScreenTest {
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(gl, worldView, markings, ui, animationTime, worldController);
+    worldScreen = new WorldScreen(gl, worldView, ui, animationTime, worldController);
   }
 
   @Test
@@ -57,13 +54,11 @@ public class WorldScreenTest {
   public void render() {
     worldScreen.render(10f);
 
-    InOrder inOrder = Mockito.inOrder(worldView, markings, ui, animationTime, gl);
+    InOrder inOrder = Mockito.inOrder(worldView, ui, animationTime, gl);
     inOrder.verify(ui).act(10f);
-    inOrder.verify(worldView).act(10f);
     inOrder.verify(animationTime).advanceStateTime(10f);
     inOrder.verify(gl).glClear(GL20.GL_COLOR_BUFFER_BIT);
-    inOrder.verify(worldView).draw();
-    inOrder.verify(markings).draw();
+    inOrder.verify(worldView).update(10f);
     inOrder.verify(ui).draw();
   }
 
@@ -79,7 +74,6 @@ public class WorldScreenTest {
   public void dispose() {
     worldScreen.dispose();
 
-    verify(worldView).dispose();
     verify(ui).dispose();
   }
 }

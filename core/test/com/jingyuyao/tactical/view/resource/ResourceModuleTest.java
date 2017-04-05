@@ -15,7 +15,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
-import com.jingyuyao.tactical.view.world.WorldConfig;
+import com.jingyuyao.tactical.view.world2.WorldConfig;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;

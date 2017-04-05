@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
-import com.jingyuyao.tactical.view.world.WorldConfig;
+import com.jingyuyao.tactical.view.world2.WorldConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

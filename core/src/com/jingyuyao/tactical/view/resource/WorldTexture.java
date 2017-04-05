@@ -1,15 +1,16 @@
 package com.jingyuyao.tactical.view.resource;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.view.actor.ActorConfig;
-import com.jingyuyao.tactical.view.world.WorldConfig;
+import com.jingyuyao.tactical.view.world2.WorldConfig;
 import javax.inject.Inject;
 
-public class WorldTexture {
+public class WorldTexture implements Component {
 
   private final TextureRegion textureRegion;
   private final float worldSize;
@@ -21,6 +22,7 @@ public class WorldTexture {
     Preconditions.checkArgument(textureRegion.getRegionHeight() == textureRegion.getRegionWidth());
     this.textureRegion = textureRegion;
     int scale = textureRegion.getRegionHeight() / worldConfig.getTileSize();
+    // TODO: don't use actor size
     this.worldSize = actorConfig.getActorWorldSize() * scale;
     this.worldOffset = (actorConfig.getActorWorldSize() / 2f) * (scale - 1);
   }

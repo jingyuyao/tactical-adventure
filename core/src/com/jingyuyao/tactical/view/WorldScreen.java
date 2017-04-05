@@ -3,10 +3,9 @@ package com.jingyuyao.tactical.view;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.marking.Markings;
 import com.jingyuyao.tactical.view.resource.AnimationTime;
 import com.jingyuyao.tactical.view.ui.UI;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world2.WorldView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,7 +14,6 @@ public class WorldScreen extends ScreenAdapter {
 
   private final GL20 gl;
   private final WorldView worldView;
-  private final Markings markings;
   private final UI ui;
   private final AnimationTime animationTime;
   private final WorldController worldController;
@@ -24,13 +22,11 @@ public class WorldScreen extends ScreenAdapter {
   WorldScreen(
       GL20 gl,
       WorldView worldView,
-      Markings markings,
       UI ui,
       AnimationTime animationTime,
       WorldController worldController) {
     this.gl = gl;
     this.worldView = worldView;
-    this.markings = markings;
     this.ui = ui;
     this.animationTime = animationTime;
     this.worldController = worldController;
@@ -49,12 +45,11 @@ public class WorldScreen extends ScreenAdapter {
   @Override
   public void render(float delta) {
     ui.act(delta);
-    worldView.act(delta);
+    // TODO: move this into AnimationSystem
     animationTime.advanceStateTime(delta);
 
     gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    worldView.draw();
-    markings.draw();
+    worldView.update(delta);
     ui.draw();
   }
 
@@ -67,7 +62,6 @@ public class WorldScreen extends ScreenAdapter {
 
   @Override
   public void dispose() {
-    worldView.dispose();
     ui.dispose();
   }
 }

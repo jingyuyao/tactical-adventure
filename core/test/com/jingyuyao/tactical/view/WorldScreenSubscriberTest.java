@@ -1,9 +1,8 @@
 package com.jingyuyao.tactical.view;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.view.marking.MarkingsSubscriber;
 import com.jingyuyao.tactical.view.ui.UISubscriber;
-import com.jingyuyao.tactical.view.world.WorldSubscriber;
+import com.jingyuyao.tactical.view.world2.WorldSubscriber;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -17,8 +16,6 @@ public class WorldScreenSubscriberTest {
   @Mock
   private WorldSubscriber worldSubscriber;
   @Mock
-  private MarkingsSubscriber markingsSubscriber;
-  @Mock
   private UISubscriber uiSubscriber;
   @Mock
   private EventBus eventBus;
@@ -26,13 +23,12 @@ public class WorldScreenSubscriberTest {
   @Test
   public void register_subscribers() {
     WorldScreenSubscriber worldScreenSubscriber =
-        new WorldScreenSubscriber(worldSubscriber, markingsSubscriber, uiSubscriber);
+        new WorldScreenSubscriber(worldSubscriber, uiSubscriber);
 
     worldScreenSubscriber.register(eventBus);
 
     InOrder inOrder = Mockito.inOrder(eventBus);
     inOrder.verify(eventBus).register(worldSubscriber);
-    inOrder.verify(eventBus).register(markingsSubscriber);
     inOrder.verify(eventBus).register(uiSubscriber);
   }
 }
