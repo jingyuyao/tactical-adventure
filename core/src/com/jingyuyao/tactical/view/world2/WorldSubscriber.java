@@ -15,10 +15,14 @@ import javax.inject.Singleton;
 public class WorldSubscriber {
 
   private final Entities entities;
+  private final CharacterEntities characterEntities;
 
   @Inject
-  WorldSubscriber(Entities entities) {
+  WorldSubscriber(
+      Entities entities,
+      CharacterEntities characterEntities) {
     this.entities = entities;
+    this.characterEntities = characterEntities;
   }
 
   @Subscribe
@@ -31,15 +35,15 @@ public class WorldSubscriber {
     Cell cell = spawnCharacter.getObject();
     Coordinate coordinate = cell.getCoordinate();
     if (cell.hasPlayer()) {
-      entities.add(coordinate, cell.getPlayer());
+      characterEntities.add(coordinate, cell.getPlayer());
     } else if (cell.hasEnemy()) {
-      entities.add(coordinate, cell.getEnemy());
+      characterEntities.add(coordinate, cell.getEnemy());
     }
   }
 
   @Subscribe
   void removeCharacter(RemoveCharacter removeCharacter) {
-    entities.remove(removeCharacter.getObject());
+    characterEntities.remove(removeCharacter.getObject());
   }
 
   @Subscribe
