@@ -20,4 +20,8 @@ public class FutureEvent<T> extends ObjectEvent<T> {
   public void done() {
     future.set(null);
   }
+
+  public SettableFuture<Void> getFuture() {
+    return future;
+  }
 }

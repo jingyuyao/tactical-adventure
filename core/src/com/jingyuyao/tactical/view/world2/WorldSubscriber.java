@@ -2,9 +2,8 @@ package com.jingyuyao.tactical.view.world2;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -21,8 +20,6 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -34,18 +31,18 @@ public class WorldSubscriber {
   private final Entities entities;
   private final CharacterEntities characterEntities;
   private final MarkerEntities markerEntities;
-  private final Animations animations;
+  private final EffectsEntities effectsEntities;
 
   @Inject
   WorldSubscriber(
       Entities entities,
       CharacterEntities characterEntities,
       MarkerEntities markerEntities,
-      Animations animations) {
+      EffectsEntities effectsEntities) {
     this.entities = entities;
     this.characterEntities = characterEntities;
     this.markerEntities = markerEntities;
-    this.animations = animations;
+    this.effectsEntities = effectsEntities;
   }
 
   @Subscribe
@@ -149,22 +146,11 @@ public class WorldSubscriber {
 
   @Subscribe
   void attack(final Attack attack) {
-    SingleAnimation animation = animations.getWeapon(attack.getWeapon().getName());
-    Futures.addCallback(animation.getFuture(), new FutureCallback<Void>() {
-      @Override
-      public void onSuccess(Void result) {
-        attack.done();
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-
-      }
-    });
-    // TODO: need a way to distinguish on animation on select tile or an animation for every target
-    // tile
-//    for (Cell cell : attack.getObject().getSelectCells()) {
-//      markings.addSingleAnimation(worldView.get(cell.getTerrain()), animation);
-//    }
+    // TODO: distinguish on animation on select tile or an animation for every target tile
+    Cell select = Iterables.getFirst(attack.getObject().getSelectCells(), null);
+    if (select != null) {
+      effectsEntities
+          .addWeaponEffect(select.getCoordinate(), attack.getWeapon(), attack.getFuture());
+    }
   }
 }
