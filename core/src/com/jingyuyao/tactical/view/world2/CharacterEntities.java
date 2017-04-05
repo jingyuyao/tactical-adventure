@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.world2.component.Position;
+import com.jingyuyao.tactical.view.world2.component.Remove;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -55,7 +56,7 @@ class CharacterEntities {
 
   void remove(Character character) {
     Entity entity = characterMap.remove(character);
-    engine.removeEntity(entity);
+    entity.add(engine.createComponent(Remove.class));
   }
 
   private Position createPosition(Coordinate coordinate) {

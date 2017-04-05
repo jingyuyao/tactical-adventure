@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Entities {
+class Entities {
 
   private final PooledEngine engine;
   private final CharacterEntities characterEntities;

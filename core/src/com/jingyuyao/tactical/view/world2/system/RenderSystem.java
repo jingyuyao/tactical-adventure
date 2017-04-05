@@ -34,7 +34,7 @@ public class RenderSystem extends EntitySystem {
     this.viewport = viewport;
     this.positionMapper = positionMapper;
     this.worldTextureMapper = worldTextureMapper;
-    this.priority = 1; // render goes last
+    this.priority = 999; // render goes last
   }
 
   @Override
