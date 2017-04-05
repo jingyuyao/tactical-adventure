@@ -2,13 +2,11 @@ package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.CharacterActor;
@@ -21,7 +19,6 @@ import javax.inject.Singleton;
 public class WorldView {
 
   private final Stage stage;
-  private final MapGroup<Cell, Actor> cellGroup;
   private final MapGroup<Character, CharacterActor> characterGroup;
   private final MapGroup<Terrain, WorldActor> terrainGroup;
   private final OrthogonalTiledMapRenderer mapRenderer;
@@ -30,20 +27,17 @@ public class WorldView {
   @Inject
   WorldView(
       @WorldStage Stage stage,
-      MapGroup<Cell, Actor> cellGroup,
       MapGroup<Character, CharacterActor> characterGroup,
       MapGroup<Terrain, WorldActor> terrainGroup,
       OrthogonalTiledMapRenderer mapRenderer,
       ActorFactory actorFactory) {
     this.stage = stage;
-    this.cellGroup = cellGroup;
     this.characterGroup = characterGroup;
     this.terrainGroup = terrainGroup;
     this.mapRenderer = mapRenderer;
     this.actorFactory = actorFactory;
     terrainGroup.addToStage(stage);
     characterGroup.addToStage(stage);
-    cellGroup.addToStage(stage);
   }
 
   public void act(float delta) {
@@ -63,7 +57,6 @@ public class WorldView {
   }
 
   public void reset() {
-    cellGroup.clear();
     characterGroup.clear();
     terrainGroup.clear();
   }
@@ -72,20 +65,12 @@ public class WorldView {
     stage.dispose();
   }
 
-  public Actor get(Cell cell) {
-    return cellGroup.get(cell);
-  }
-
   public WorldActor get(Terrain terrain) {
     return terrainGroup.get(terrain);
   }
 
   public CharacterActor get(Character character) {
     return characterGroup.get(character);
-  }
-
-  void add(Cell cell) {
-    cellGroup.add(cell, actorFactory.create(cell));
   }
 
   void add(Coordinate coordinate, Terrain terrain) {

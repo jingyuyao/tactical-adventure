@@ -2,11 +2,9 @@ package com.jingyuyao.tactical.view.actor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.actor.ActorModule.InitialMarkers;
 import com.jingyuyao.tactical.view.resource.Animations;
@@ -19,27 +17,17 @@ import javax.inject.Provider;
 public class ActorFactory {
 
   private final ActorConfig actorConfig;
-  private final ControllerFactory controllerFactory;
   private final Animations animations;
   private final Provider<LinkedHashSet<WorldTexture>> markersProvider;
 
   @Inject
   ActorFactory(
       ActorConfig actorConfig,
-      ControllerFactory controllerFactory,
       Animations animations,
       @InitialMarkers Provider<LinkedHashSet<WorldTexture>> markersProvider) {
     this.actorConfig = actorConfig;
-    this.controllerFactory = controllerFactory;
     this.animations = animations;
     this.markersProvider = markersProvider;
-  }
-
-  public Actor create(Cell cell) {
-    Actor actor = new Actor();
-    setSizeAndPosition(cell.getCoordinate(), actor);
-    actor.addListener(controllerFactory.create(cell));
-    return actor;
   }
 
   public WorldActor create(Coordinate initialCoordinate) {

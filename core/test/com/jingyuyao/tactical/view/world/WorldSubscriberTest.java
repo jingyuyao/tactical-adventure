@@ -74,7 +74,6 @@ public class WorldSubscriberTest {
 
     subscriber.worldLoad(worldLoad);
 
-    verify(worldView).add(cell);
     verify(worldView).add(COORDINATE, terrain);
   }
 

@@ -5,7 +5,6 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -25,9 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ActorModuleTest {
 
-  @Bind
-  @Mock
-  private ControllerFactory controllerFactory;
   @Bind
   @Mock
   private Animations animations;

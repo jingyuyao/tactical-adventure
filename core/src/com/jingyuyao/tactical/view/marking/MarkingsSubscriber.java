@@ -42,7 +42,7 @@ public class MarkingsSubscriber {
   @Subscribe
   void selectCell(SelectCell selectCell) {
     Cell cell = selectCell.getObject();
-    markings.highlight(worldView.get(cell));
+    markings.highlight(worldView.get(cell.getTerrain()));
   }
 
   @Subscribe

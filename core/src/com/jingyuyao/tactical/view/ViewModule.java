@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
-import com.jingyuyao.tactical.controller.ControllerFactory;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.actor.ActorModule;
 import com.jingyuyao.tactical.view.marking.MarkingModule;
@@ -22,7 +21,6 @@ public class ViewModule extends AbstractModule {
     requireBinding(Skin.class);
     requireBinding(Batch.class);
     requireBinding(WorldController.class);
-    requireBinding(ControllerFactory.class);
 
     install(new ResourceModule());
     install(new ActorModule());

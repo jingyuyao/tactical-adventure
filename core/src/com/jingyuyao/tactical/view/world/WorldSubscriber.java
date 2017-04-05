@@ -26,7 +26,6 @@ public class WorldSubscriber {
   @Subscribe
   void worldLoad(WorldLoad worldLoad) {
     for (Cell cell : worldLoad.getObject()) {
-      worldView.add(cell);
       worldView.add(cell.getCoordinate(), cell.getTerrain());
     }
   }

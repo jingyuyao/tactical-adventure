@@ -34,8 +34,6 @@ public class WorldViewTest {
   @Mock
   private Stage stage;
   @Mock
-  private MapGroup<Cell, Actor> cellGroup;
-  @Mock
   private MapGroup<Character, CharacterActor> characterGroup;
   @Mock
   private MapGroup<Terrain, WorldActor> terrainGroup;
@@ -66,12 +64,10 @@ public class WorldViewTest {
 
   @Before
   public void setUp() {
-    worldView =
-        new WorldView(stage, cellGroup, characterGroup, terrainGroup, mapRenderer, actorFactory);
-    InOrder inOrder = Mockito.inOrder(terrainGroup, characterGroup, cellGroup);
+    worldView = new WorldView(stage, characterGroup, terrainGroup, mapRenderer, actorFactory);
+    InOrder inOrder = Mockito.inOrder(terrainGroup, characterGroup);
     inOrder.verify(terrainGroup).addToStage(stage);
     inOrder.verify(characterGroup).addToStage(stage);
-    inOrder.verify(cellGroup).addToStage(stage);
   }
 
   @Test
@@ -115,16 +111,8 @@ public class WorldViewTest {
   public void reset() {
     worldView.reset();
 
-    verify(cellGroup).clear();
     verify(characterGroup).clear();
     verify(terrainGroup).clear();
-  }
-
-  @Test
-  public void get_cell_actor() {
-    when(cellGroup.get(cell)).thenReturn(cellActor);
-
-    assertThat(worldView.get(cell)).isSameAs(cellActor);
   }
 
   @Test
@@ -139,15 +127,6 @@ public class WorldViewTest {
     when(characterGroup.get(player)).thenReturn(characterActor);
 
     assertThat(worldView.get(player)).isSameAs(characterActor);
-  }
-
-  @Test
-  public void add_cell() {
-    when(actorFactory.create(cell)).thenReturn(cellActor);
-
-    worldView.add(cell);
-
-    verify(cellGroup).add(cell, cellActor);
   }
 
   @Test

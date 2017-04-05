@@ -108,12 +108,13 @@ public class MarkingsSubscriberTest {
 
   @Test
   public void select_cell() {
-    when(worldView.get(cell)).thenReturn(actor);
     when(selectCell.getObject()).thenReturn(cell);
+    when(cell.getTerrain()).thenReturn(terrain);
+    when(worldView.get(terrain)).thenReturn(worldActor);
 
     subscriber.selectCell(selectCell);
 
-    verify(markings).highlight(actor);
+    verify(markings).highlight(worldActor);
   }
 
   @Test

@@ -8,7 +8,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -17,7 +16,6 @@ import com.google.inject.Key;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.view.actor.ActorFactory;
 import com.jingyuyao.tactical.view.actor.CharacterActor;
 import com.jingyuyao.tactical.view.actor.WorldActor;
@@ -40,8 +38,6 @@ public class WorldModule extends AbstractModule {
     }).toInstance(new HashMap<Terrain, WorldActor>());
     bind(new Key<Map<Character, CharacterActor>>() {
     }).toInstance(new HashMap<Character, CharacterActor>());
-    bind(new Key<Map<Cell, Actor>>() {
-    }).toInstance(new HashMap<Cell, Actor>());
   }
 
   @Provides
@@ -71,14 +67,14 @@ public class WorldModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface WorldStage {
+  public @interface WorldViewport {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface WorldViewport {
+  @interface WorldStage {
 
   }
 }
