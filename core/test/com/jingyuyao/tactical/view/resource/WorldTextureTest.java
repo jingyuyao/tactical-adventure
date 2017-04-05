@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.resource;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -41,32 +40,6 @@ public class WorldTextureTest {
     worldTexture.draw(batch, 2f, 3f);
 
     verify(batch).draw(textureRegion, 1.5f, 2f, 2f, 3f);
-  }
-
-  @Test
-  public void draw_actor() {
-    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
-    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
-    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
-    when(actor.getX()).thenReturn(2f);
-    when(actor.getY()).thenReturn(3f);
-
-    worldTexture = new WorldTexture(textureRegion, worldConfig);
-    worldTexture.draw(batch, actor);
-
-    verify(batch).draw(textureRegion, 1.5f, 2f, 2f, 3f);
-  }
-
-  @Test
-  public void draw_actor_null() {
-    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
-    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
-    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
-
-    worldTexture = new WorldTexture(textureRegion, worldConfig);
-    worldTexture.draw(batch, null);
-
-    verifyZeroInteractions(batch);
   }
 
   @Test

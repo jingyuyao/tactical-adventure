@@ -34,8 +34,6 @@ public class ResourceModuleTest {
   @Inject
   private Animations animations;
   @Inject
-  private AnimationTime animationTime;
-  @Inject
   private Skin provideSkin;
   @Inject
   private TextureAtlas provideTextureAtlas;
