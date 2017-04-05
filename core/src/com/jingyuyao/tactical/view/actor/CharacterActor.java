@@ -30,7 +30,7 @@ public class CharacterActor extends WorldActor {
   @Override
   public void draw(Batch batch, float parentAlpha) {
     batch.setColor(getColor());
-    loopAnimation.getCurrentFrame().draw(batch, this);
+//    loopAnimation.getCurrentFrame().draw(batch, this);
     batch.setColor(Color.WHITE);
     super.draw(batch, parentAlpha);
   }

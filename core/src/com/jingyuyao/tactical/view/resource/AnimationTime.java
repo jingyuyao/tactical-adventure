@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.resource;
 
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.view.resource.ResourceModule.AnimationBus;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -12,7 +11,7 @@ public class AnimationTime {
   private float stateTime = 0f;
 
   @Inject
-  AnimationTime(@AnimationBus EventBus animationBus) {
+  AnimationTime(EventBus animationBus) {
     this.animationBus = animationBus;
   }
 

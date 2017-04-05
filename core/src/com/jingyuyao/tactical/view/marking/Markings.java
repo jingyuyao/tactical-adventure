@@ -43,8 +43,8 @@ public class Markings {
     markers.getHighlight().draw(batch, highlightedActor);
     markers.getActivated().draw(batch, activatedActor);
     for (Entry<WorldActor, SingleAnimation> entry : animationsMap.entries()) {
-      WorldTexture worldTexture = entry.getValue().getCurrentFrame();
-      worldTexture.draw(batch, entry.getKey());
+//      WorldTexture worldTexture = entry.getValue().getCurrentFrame();
+//      worldTexture.draw(batch, entry.getKey());
     }
     batch.end();
   }

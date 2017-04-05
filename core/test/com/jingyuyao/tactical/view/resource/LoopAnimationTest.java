@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.resource;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +14,6 @@ public class LoopAnimationTest {
   private static final int FPS = 5;
 
   @Mock
-  private AnimationTime animationTime;
-  @Mock
   private WorldTexture texture1;
   @Mock
   private WorldTexture texture2;
@@ -25,27 +22,21 @@ public class LoopAnimationTest {
 
   @Before
   public void setUp() {
-    loopAnimation = new LoopAnimation(FPS, new WorldTexture[]{texture1, texture2}, animationTime);
+    loopAnimation = new LoopAnimation(FPS, new WorldTexture[]{texture1, texture2});
   }
 
   @Test
   public void get_current_frame_1() {
-    when(animationTime.getStateTime()).thenReturn(0.1f);
-
-    assertThat(loopAnimation.getCurrentFrame()).isSameAs(texture1);
+    assertThat(loopAnimation.getKeyFrame(0.1f)).isSameAs(texture1);
   }
 
   @Test
   public void get_current_frame_2() {
-    when(animationTime.getStateTime()).thenReturn(0.3f);
-
-    assertThat(loopAnimation.getCurrentFrame()).isSameAs(texture2);
+    assertThat(loopAnimation.getKeyFrame(0.3f)).isSameAs(texture2);
   }
 
   @Test
   public void get_current_frame_loopback() {
-    when(animationTime.getStateTime()).thenReturn(0.5f);
-
-    assertThat(loopAnimation.getCurrentFrame()).isSameAs(texture1);
+    assertThat(loopAnimation.getKeyFrame(0.5f)).isSameAs(texture1);
   }
 }

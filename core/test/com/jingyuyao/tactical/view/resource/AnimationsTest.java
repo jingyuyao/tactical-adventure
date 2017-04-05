@@ -36,8 +36,6 @@ public class AnimationsTest {
   @Mock
   private TextureAtlas textureAtlas;
   @Mock
-  private AnimationFactory animationFactory;
-  @Mock
   private TextureFactory textureFactory;
   @Mock
   private Map<String, LoopAnimation> loopAnimationCache;
@@ -45,8 +43,6 @@ public class AnimationsTest {
   private Map<String, WorldTexture[]> worldTextureCache;
   @Mock
   private LoopAnimation mockLoopAnimation;
-  @Mock
-  private SingleAnimation mockSingleAnimation;
   @Mock
   private AtlasRegion atlasRegion;
   @Mock
@@ -65,8 +61,7 @@ public class AnimationsTest {
     atlasRegions.add(atlasRegion);
     animations =
         new Animations(
-            resourceConfig, textureAtlas, animationFactory, textureFactory, loopAnimationCache,
-            worldTextureCache);
+            resourceConfig, textureAtlas, textureFactory, loopAnimationCache, worldTextureCache);
   }
 
   @Test
@@ -77,16 +72,13 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
-    when(animationFactory.createLoop(eq(CHARACTER_IDLE_FPS), worldTexturesCaptor.capture()))
-        .thenReturn(mockLoopAnimation);
 
     LoopAnimation animation = animations.getCharacter(CHARACTER_NAME);
 
     verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
-    verify(worldTextureCache).put(CHARACTER_ASSET, worldTexturesCaptor.getValue());
-    assertThat(animationCaptor.getValue()).isSameAs(mockLoopAnimation);
+    verify(worldTextureCache).put(eq(CHARACTER_ASSET), worldTexturesCaptor.capture());
+    assertThat(animationCaptor.getValue()).isSameAs(animation);
     assertThat(worldTexturesCaptor.getValue()).asList().containsExactly(worldTexture);
-    assertThat(animation).isSameAs(mockLoopAnimation);
   }
 
   @Test
@@ -97,15 +89,12 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(CHARACTER_ASSET)).thenReturn(cached);
-    when(animationFactory.createLoop(CHARACTER_IDLE_FPS, cached))
-        .thenReturn(mockLoopAnimation);
 
     LoopAnimation animation = animations.getCharacter(CHARACTER_NAME);
 
     verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
     verifyZeroInteractions(textureAtlas);
-    assertThat(animationCaptor.getValue()).isSameAs(mockLoopAnimation);
-    assertThat(animation).isSameAs(mockLoopAnimation);
+    assertThat(animationCaptor.getValue()).isSameAs(animation);
   }
 
   @Test
@@ -128,14 +117,12 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(WEAPON_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(WEAPON_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
-    when(animationFactory.createSingle(eq(WEAPON_FPS), worldTexturesCaptor.capture()))
-        .thenReturn(mockSingleAnimation);
 
     SingleAnimation animation = animations.getWeapon(WEAPON_NAME);
 
-    verify(worldTextureCache).put(WEAPON_ASSET, worldTexturesCaptor.getValue());
+    verify(worldTextureCache).put(eq(WEAPON_ASSET), worldTexturesCaptor.capture());
     assertThat(worldTexturesCaptor.getValue()).asList().containsExactly(worldTexture);
-    assertThat(animation).isSameAs(mockSingleAnimation);
+    assertThat(animation.getAnimation().getKeyFrames()).asList().containsExactly(worldTexture);
   }
 
   @Test
@@ -145,11 +132,10 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(WEAPON_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(WEAPON_ASSET)).thenReturn(cached);
-    when(animationFactory.createSingle(WEAPON_FPS, cached)).thenReturn(mockSingleAnimation);
 
     SingleAnimation animation = animations.getWeapon(WEAPON_NAME);
 
     verifyZeroInteractions(textureAtlas);
-    assertThat(animation).isSameAs(mockSingleAnimation);
+    assertThat(animation.getAnimation().getKeyFrames()).asList().containsExactly(worldTexture);
   }
 }

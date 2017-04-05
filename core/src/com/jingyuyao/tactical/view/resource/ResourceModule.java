@@ -7,7 +7,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -28,7 +27,6 @@ public class ResourceModule extends AbstractModule {
     requireBinding(AssetManager.class);
     requireBinding(WorldConfig.class);
 
-    install(new FactoryModuleBuilder().build(AnimationFactory.class));
     install(new FactoryModuleBuilder().build(TextureFactory.class));
   }
 
@@ -44,13 +42,6 @@ public class ResourceModule extends AbstractModule {
   @WorldTextureCache
   Map<String, WorldTexture[]> provideWorldTextureCache() {
     return new HashMap<>();
-  }
-
-  @Provides
-  @Singleton
-  @AnimationBus
-  EventBus provideAnimationBus() {
-    return new EventBus();
   }
 
   @Provides
@@ -72,13 +63,6 @@ public class ResourceModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface WorldTextureCache {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface AnimationBus {
 
   }
 }

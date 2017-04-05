@@ -14,7 +14,6 @@ public class Animations {
 
   private final ResourceConfig resourceConfig;
   private final TextureAtlas textureAtlas;
-  private final AnimationFactory animationFactory;
   private final TextureFactory textureFactory;
   private final Map<String, LoopAnimation> loopAnimationCache;
   private final Map<String, WorldTexture[]> atlasRegionsCache;
@@ -23,7 +22,6 @@ public class Animations {
   Animations(
       ResourceConfig resourceConfig,
       TextureAtlas textureAtlas,
-      AnimationFactory animationFactory,
       TextureFactory textureFactory,
       @LoopAnimationCache Map<String, LoopAnimation> loopAnimationCache,
       @WorldTextureCache Map<String, WorldTexture[]> atlasRegionsCache) {
@@ -31,7 +29,6 @@ public class Animations {
     this.textureFactory = textureFactory;
     this.loopAnimationCache = loopAnimationCache;
     this.textureAtlas = textureAtlas;
-    this.animationFactory = animationFactory;
     this.atlasRegionsCache = atlasRegionsCache;
   }
 
@@ -48,7 +45,7 @@ public class Animations {
   }
 
   private SingleAnimation getSingle(int fps, String assetPath) {
-    return animationFactory.createSingle(fps, getAtlasRegions(assetPath));
+    return new SingleAnimation(fps, getAtlasRegions(assetPath));
   }
 
   private LoopAnimation getLoop(int fps, String assetPath) {
@@ -62,7 +59,7 @@ public class Animations {
   }
 
   private LoopAnimation createLoop(int fps, String assetPath) {
-    return animationFactory.createLoop(fps, getAtlasRegions(assetPath));
+    return new LoopAnimation(fps, getAtlasRegions(assetPath));
   }
 
   private WorldTexture[] getAtlasRegions(String assetPath) {

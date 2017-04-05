@@ -40,8 +40,6 @@ public class ResourceModuleTest {
   @Inject
   private TextureAtlas provideTextureAtlas;
   @Inject
-  private AnimationFactory animationFactory;
-  @Inject
   private TextureFactory textureFactory;
 
   @Before

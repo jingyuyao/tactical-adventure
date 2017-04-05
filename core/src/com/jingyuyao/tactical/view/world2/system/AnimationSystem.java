@@ -6,28 +6,24 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.jingyuyao.tactical.view.resource.AnimationTime;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
-import com.jingyuyao.tactical.view.resource.WorldTexture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class AnimationSystem extends EntitySystem {
 
-  private final AnimationTime animationTime;
   private final ComponentMapper<LoopAnimation> loopAnimationMapper;
   private final ComponentMapper<SingleAnimation> singleAnimationMapper;
   private ImmutableArray<Entity> loopAnimationEntities;
   private ImmutableArray<Entity> singleAnimationEntities;
+  private float stateTime = 0f;
 
   @Inject
   AnimationSystem(
-      AnimationTime animationTime,
       ComponentMapper<LoopAnimation> loopAnimationMapper,
       ComponentMapper<SingleAnimation> singleAnimationMapper) {
-    this.animationTime = animationTime;
     this.loopAnimationMapper = loopAnimationMapper;
     this.singleAnimationMapper = singleAnimationMapper;
     this.priority = SystemPriority.ANIMATION;
@@ -41,20 +37,20 @@ public class AnimationSystem extends EntitySystem {
 
   @Override
   public void update(float deltaTime) {
-    animationTime.advanceStateTime(deltaTime);
+    stateTime += deltaTime;
 
     for (Entity entity : loopAnimationEntities) {
       LoopAnimation loopAnimation = loopAnimationMapper.get(entity);
-      entity.add(loopAnimation.getCurrentFrame());
+      entity.add(loopAnimation.getKeyFrame(stateTime));
     }
 
     for (Entity entity : singleAnimationEntities) {
       SingleAnimation singleAnimation = singleAnimationMapper.get(entity);
+      singleAnimation.advanceTime(deltaTime);
       if (singleAnimation.isDone()) {
-        entity.remove(SingleAnimation.class);
-        entity.remove(WorldTexture.class);
+        getEngine().removeEntity(entity);
       } else {
-        entity.add(singleAnimation.getCurrentFrame());
+        entity.add(singleAnimation.getKeyFrame());
       }
     }
   }

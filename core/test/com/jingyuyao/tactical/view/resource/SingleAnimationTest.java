@@ -1,11 +1,7 @@
 package com.jingyuyao.tactical.view.resource;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,57 +14,39 @@ public class SingleAnimationTest {
   private static final int FPS = 1;
 
   @Mock
-  private EventBus animationBus;
-  @Mock
   private WorldTexture texture1;
   @Mock
   private WorldTexture texture2;
-  @Mock
-  private AdvanceTime advanceTime;
 
   private SingleAnimation singleAnimation;
 
   @Before
   public void setUp() {
-    singleAnimation = new SingleAnimation(FPS, new WorldTexture[]{texture1, texture2},
-        animationBus);
+    singleAnimation = new SingleAnimation(FPS, new WorldTexture[]{texture1, texture2});
 
-    verify(animationBus).register(singleAnimation);
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
   }
 
   @Test
   public void advance_time_not_finished_1() {
-    when(advanceTime.getDelta()).thenReturn(0.5f);
+    singleAnimation.advanceTime(0.5f);
 
-    singleAnimation.advanceTime(advanceTime);
-
-    assertThat(singleAnimation.getStateTime()).isEqualTo(0.5f);
-    assertThat(singleAnimation.getCurrentFrame()).isSameAs(texture1);
+    assertThat(singleAnimation.getKeyFrame()).isSameAs(texture1);
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
-    verifyNoMoreInteractions(animationBus);
   }
 
   @Test
   public void advance_time_not_finished_2() {
-    when(advanceTime.getDelta()).thenReturn(1.5f);
+    singleAnimation.advanceTime(1.5f);
 
-    singleAnimation.advanceTime(advanceTime);
-
-    assertThat(singleAnimation.getStateTime()).isEqualTo(1.5f);
-    assertThat(singleAnimation.getCurrentFrame()).isSameAs(texture2);
+    assertThat(singleAnimation.getKeyFrame()).isSameAs(texture2);
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
-    verifyNoMoreInteractions(animationBus);
   }
 
   @Test
   public void advance_time_finished() {
-    when(advanceTime.getDelta()).thenReturn(2.5f);
+    singleAnimation.advanceTime(2.5f);
 
-    singleAnimation.advanceTime(advanceTime);
-
-    assertThat(singleAnimation.getStateTime()).isEqualTo(2.5f);
     assertThat(singleAnimation.getFuture().isDone()).isTrue();
-    verify(animationBus).unregister(singleAnimation);
   }
 }
