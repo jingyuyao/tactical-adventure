@@ -69,14 +69,17 @@ public class WorldSubscriber {
 
   @Subscribe
   void instantMoveCharacter(InstantMoveCharacter instantMoveCharacter) {
-//    CharacterActor actor = worldView.get(instantMoveCharacter.getCharacter());
-//    actor.moveTo(instantMoveCharacter.getDestination().getCoordinate());
+    characterEntities.move(
+        instantMoveCharacter.getCharacter(),
+        instantMoveCharacter.getDestination().getCoordinate());
   }
 
   @Subscribe
   void moveCharacter(MoveCharacter moveCharacter) {
-//    CharacterActor actor = worldView.get(moveCharacter.getCharacter());
-//    actor.moveAlong(moveCharacter.getPath(), moveCharacter.getFuture());
+    characterEntities.move(
+        moveCharacter.getCharacter(),
+        moveCharacter.getPath().getDestination().getCoordinate());
+    moveCharacter.getFuture().set(null);
   }
 
   @Subscribe

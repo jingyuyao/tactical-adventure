@@ -54,6 +54,11 @@ class CharacterEntities {
     engine.addEntity(entity);
   }
 
+  void move(Character character, Coordinate destination) {
+    Entity entity = characterMap.get(character);
+    entity.add(createPosition(destination));
+  }
+
   void remove(Character character) {
     Entity entity = characterMap.remove(character);
     entity.add(engine.createComponent(Remove.class));
