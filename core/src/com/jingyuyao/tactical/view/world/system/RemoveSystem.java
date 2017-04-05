@@ -1,9 +1,9 @@
-package com.jingyuyao.tactical.view.world2.system;
+package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.jingyuyao.tactical.view.world2.component.Remove;
+import com.jingyuyao.tactical.view.world.component.Remove;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

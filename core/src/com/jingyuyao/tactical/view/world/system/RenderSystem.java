@@ -1,4 +1,6 @@
-package com.jingyuyao.tactical.view.world2.system;
+package com.jingyuyao.tactical.view.world.system;
+
+import static com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -8,8 +10,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
-import com.jingyuyao.tactical.view.world2.WorldModule.WorldViewport;
-import com.jingyuyao.tactical.view.world2.component.Position;
+import com.jingyuyao.tactical.view.world.component.Position;
 import java.util.Comparator;
 import javax.inject.Inject;
 import javax.inject.Singleton;

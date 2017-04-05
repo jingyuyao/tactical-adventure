@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.jingyuyao.tactical.view.world2.WorldConfig;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

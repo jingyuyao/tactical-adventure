@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -9,9 +9,9 @@ import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
-import com.jingyuyao.tactical.view.world2.component.Moving;
-import com.jingyuyao.tactical.view.world2.component.Position;
-import com.jingyuyao.tactical.view.world2.component.Remove;
+import com.jingyuyao.tactical.view.world.component.Moving;
+import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.Remove;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;

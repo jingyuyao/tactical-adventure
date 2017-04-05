@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;

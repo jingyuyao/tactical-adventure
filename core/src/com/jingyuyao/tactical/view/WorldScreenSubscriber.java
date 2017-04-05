@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view;
 
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.view.ui.UISubscriber;
-import com.jingyuyao.tactical.view.world2.WorldSubscriber;
+import com.jingyuyao.tactical.view.world.WorldSubscriber;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

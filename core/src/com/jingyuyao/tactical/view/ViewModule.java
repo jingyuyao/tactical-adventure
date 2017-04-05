@@ -8,7 +8,7 @@ import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.resource.ResourceModule;
 import com.jingyuyao.tactical.view.ui.UIModule;
-import com.jingyuyao.tactical.view.world2.WorldModule;
+import com.jingyuyao.tactical.view.world.WorldModule;
 
 public class ViewModule extends AbstractModule {
 

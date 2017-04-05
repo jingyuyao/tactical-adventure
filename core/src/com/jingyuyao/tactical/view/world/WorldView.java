@@ -1,9 +1,9 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jingyuyao.tactical.view.world2.WorldModule.WorldViewport;
+import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

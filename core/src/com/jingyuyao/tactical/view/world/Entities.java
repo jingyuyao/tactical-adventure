@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.PooledEngine;
 import javax.inject.Inject;
@@ -11,9 +11,7 @@ class Entities {
   private final CharacterEntities characterEntities;
 
   @Inject
-  Entities(
-      PooledEngine engine,
-      CharacterEntities characterEntities) {
+  Entities(PooledEngine engine, CharacterEntities characterEntities) {
     this.engine = engine;
     this.characterEntities = characterEntities;
   }

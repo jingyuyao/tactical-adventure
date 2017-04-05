@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
-import com.jingyuyao.tactical.view.world2.component.Position;
+import com.jingyuyao.tactical.view.world.component.Position;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,9 +18,7 @@ class EffectsEntities {
   private final Animations animations;
 
   @Inject
-  EffectsEntities(
-      PooledEngine engine,
-      Animations animations) {
+  EffectsEntities(PooledEngine engine, Animations animations) {
     this.engine = engine;
     this.animations = animations;
   }

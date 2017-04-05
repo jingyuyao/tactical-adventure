@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -14,11 +14,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.view.world2.component.ComponentModule;
-import com.jingyuyao.tactical.view.world2.system.AnimationSystem;
-import com.jingyuyao.tactical.view.world2.system.MovingSystem;
-import com.jingyuyao.tactical.view.world2.system.RemoveSystem;
-import com.jingyuyao.tactical.view.world2.system.RenderSystem;
+import com.jingyuyao.tactical.view.world.component.ComponentModule;
+import com.jingyuyao.tactical.view.world.system.AnimationSystem;
+import com.jingyuyao.tactical.view.world.system.MovingSystem;
+import com.jingyuyao.tactical.view.world.system.RemoveSystem;
+import com.jingyuyao.tactical.view.world.system.RenderSystem;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;

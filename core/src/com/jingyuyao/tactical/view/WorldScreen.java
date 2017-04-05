@@ -4,7 +4,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.UI;
-import com.jingyuyao.tactical.view.world2.WorldView;
+import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

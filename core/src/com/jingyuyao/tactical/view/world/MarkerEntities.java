@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2;
+package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
@@ -7,8 +7,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
-import com.jingyuyao.tactical.view.world2.component.Position;
-import com.jingyuyao.tactical.view.world2.component.Remove;
+import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.Remove;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

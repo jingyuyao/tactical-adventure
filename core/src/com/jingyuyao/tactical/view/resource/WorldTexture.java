@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.view.world2.WorldConfig;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import javax.inject.Inject;
 
 public class WorldTexture implements Component {

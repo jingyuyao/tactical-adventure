@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.world2.system;
+package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;

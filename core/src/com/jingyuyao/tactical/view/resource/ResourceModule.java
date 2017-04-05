@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.jingyuyao.tactical.view.world2.WorldConfig;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;

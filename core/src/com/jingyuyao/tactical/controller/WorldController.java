@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
-import com.jingyuyao.tactical.view.world2.WorldModule.WorldViewport;
+import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
