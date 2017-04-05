@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.view.world2;
 
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -78,8 +80,15 @@ public class WorldSubscriber {
   void moveCharacter(MoveCharacter moveCharacter) {
     characterEntities.move(
         moveCharacter.getCharacter(),
-        moveCharacter.getPath().getDestination().getCoordinate());
-    moveCharacter.getFuture().set(null);
+        FluentIterable
+            .from(moveCharacter.getPath().getTrack())
+            .transform(new Function<Cell, Coordinate>() {
+              @Override
+              public Coordinate apply(Cell input) {
+                return input.getCoordinate();
+              }
+            }).toList(),
+        moveCharacter.getFuture());
   }
 
   @Subscribe

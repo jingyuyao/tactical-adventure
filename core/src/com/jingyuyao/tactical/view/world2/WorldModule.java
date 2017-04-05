@@ -16,6 +16,7 @@ import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.view.world2.component.ComponentModule;
 import com.jingyuyao.tactical.view.world2.system.AnimationSystem;
+import com.jingyuyao.tactical.view.world2.system.MovingSystem;
 import com.jingyuyao.tactical.view.world2.system.RemoveSystem;
 import com.jingyuyao.tactical.view.world2.system.RenderSystem;
 import java.lang.annotation.Retention;
@@ -38,10 +39,12 @@ public class WorldModule extends AbstractModule {
   @Singleton
   PooledEngine provideEngine(
       AnimationSystem animationSystem,
+      MovingSystem movingSystem,
       RenderSystem renderSystem,
       RemoveSystem removeSystem) {
     PooledEngine engine = new PooledEngine();
     engine.addSystem(animationSystem);
+    engine.addSystem(movingSystem);
     engine.addSystem(renderSystem);
     engine.addSystem(removeSystem);
     return engine;

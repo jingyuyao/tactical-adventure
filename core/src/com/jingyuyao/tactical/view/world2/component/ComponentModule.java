@@ -13,6 +13,8 @@ public class ComponentModule extends AbstractModule {
   protected void configure() {
     bind(new Key<ComponentMapper<Position>>() {
     }).toInstance(ComponentMapper.getFor(Position.class));
+    bind(new Key<ComponentMapper<Moving>>() {
+    }).toInstance(ComponentMapper.getFor(Moving.class));
     bind(new Key<ComponentMapper<WorldTexture>>() {
     }).toInstance(ComponentMapper.getFor(WorldTexture.class));
     bind(new Key<ComponentMapper<LoopAnimation>>() {
