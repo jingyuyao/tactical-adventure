@@ -77,6 +77,10 @@ public class World {
     return maxWidth;
   }
 
+  public Optional<Cell> getCell(int x, int y) {
+    return Optional.fromNullable(cellMap.get(new Coordinate(x, y)));
+  }
+
   public ImmutableList<Cell> getCharacterSnapshot() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {

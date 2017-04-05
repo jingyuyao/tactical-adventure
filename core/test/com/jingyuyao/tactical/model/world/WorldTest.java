@@ -7,8 +7,6 @@ import static org.mockito.Mockito.when;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -55,14 +53,6 @@ public class WorldTest {
   private Character character1;
   @Mock
   private Character character2;
-  @Mock
-  private Player player1;
-  @Mock
-  private Player player2;
-  @Mock
-  private Enemy enemy1;
-  @Mock
-  private Enemy enemy2;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -118,6 +108,13 @@ public class WorldTest {
     when(cell2.hasCharacter()).thenReturn(true);
 
     assertThat(world.getCharacterSnapshot()).containsExactly(cell1, cell2);
+  }
+
+  @Test
+  public void get_cell() {
+    cellMap.put(COORDINATE1, cell1);
+
+    assertThat(world.getCell(COORDINATE1.getX(), COORDINATE1.getY())).hasValue(cell1);
   }
 
   @Test
