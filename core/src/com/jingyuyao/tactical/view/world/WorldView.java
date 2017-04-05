@@ -22,7 +22,6 @@ public class WorldView {
     this.entities = entities;
     this.mapRenderer = mapRenderer;
     this.viewport = viewport;
-    // TODO: fix initial camera position
   }
 
   public void update(float delta) {
