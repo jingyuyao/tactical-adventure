@@ -15,6 +15,12 @@ public class MyFuture {
     this.future = SettableFuture.create();
   }
 
+  public static MyFuture immediate() {
+    MyFuture future = new MyFuture();
+    future.done();
+    return future;
+  }
+
   public boolean isDone() {
     return future.isDone();
   }

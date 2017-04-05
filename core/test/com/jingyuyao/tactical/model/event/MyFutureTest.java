@@ -39,4 +39,9 @@ public class MyFutureTest {
 
     verify(runnable).run();
   }
+
+  @Test
+  public void immediate() {
+    assertThat(MyFuture.immediate().isDone()).isTrue();
+  }
 }
