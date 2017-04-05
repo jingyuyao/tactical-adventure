@@ -1,8 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Player;
@@ -53,18 +51,12 @@ public class Moving extends PlayerActionState {
         Path path = movement.pathTo(cell);
         prevMove = cell;
         goTo(getStateFactory().createTransition());
-        Futures.addCallback(movement.getStartingCell().moveCharacter(path),
-            new FutureCallback<Void>() {
-              @Override
-              public void onSuccess(Void result) {
-                goTo(getStateFactory().createMoved(cell));
-              }
-
-              @Override
-              public void onFailure(Throwable t) {
-
-              }
-            });
+        movement.getStartingCell().moveCharacter(path).addCallback(new Runnable() {
+          @Override
+          public void run() {
+            goTo(getStateFactory().createMoved(cell));
+          }
+        });
       }
     }
   }

@@ -9,11 +9,10 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -68,15 +67,12 @@ public class MovingTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private ListenableFuture<Void> immediateFuture;
   private Moving moving;
 
   @Before
   public void setUp() {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(player);
-    // Futures are too hard to mock correctly
-    immediateFuture = Futures.immediateFuture(null);
     moving = new Moving(eventBus, worldState, stateFactory, movements, cell, movement);
   }
 
@@ -157,7 +153,7 @@ public class MovingTest {
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
-    when(cell.moveCharacter(path)).thenReturn(immediateFuture);
+    when(cell.moveCharacter(path)).thenReturn(MyFuture.immediate());
 
     moving.select(cell2);
 

@@ -8,12 +8,11 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
@@ -50,14 +49,10 @@ public class RetaliatingTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private ListenableFuture<Void> retaliation;
-  private ListenableFuture<Void> retaliation2;
   private Retaliating retaliating;
 
   @Before
   public void setUp() {
-    retaliation = Futures.immediateFuture(null);
-    retaliation2 = Futures.immediateFuture(null);
     retaliating = new Retaliating(eventBus, worldState, stateFactory, world);
   }
 
@@ -80,8 +75,8 @@ public class RetaliatingTest {
     when(cell2.hasEnemy()).thenReturn(true);
     when(cell.getEnemy()).thenReturn(enemy);
     when(cell2.getEnemy()).thenReturn(enemy2);
-    when(enemy.retaliate(cell)).thenReturn(retaliation);
-    when(enemy2.retaliate(cell2)).thenReturn(retaliation2);
+    when(enemy.retaliate(cell)).thenReturn(MyFuture.immediate());
+    when(enemy2.retaliate(cell2)).thenReturn(MyFuture.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     retaliating.enter();

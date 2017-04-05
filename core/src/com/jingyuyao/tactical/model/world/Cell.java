@@ -2,9 +2,6 @@ package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
@@ -12,6 +9,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -95,18 +93,18 @@ public class Cell {
     character = null;
   }
 
-  public ListenableFuture<Void> moveCharacter(Path path) {
+  public MyFuture moveCharacter(Path path) {
     Preconditions.checkState(hasCharacter());
     Preconditions.checkArgument(path.getOrigin().equals(this));
 
     Cell destination = path.getDestination();
     if (destination.equals(this)) {
-      return Futures.immediateFuture(null);
+      return MyFuture.immediate();
     }
 
     Preconditions.checkArgument(!destination.hasCharacter());
 
-    SettableFuture<Void> future = SettableFuture.create();
+    MyFuture future = new MyFuture();
     eventBus.post(new MoveCharacter(character, path, future));
     path.getDestination().character = character;
     character = null;

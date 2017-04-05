@@ -1,13 +1,10 @@
 package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Attack;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -24,13 +21,13 @@ public class Battle {
     this.eventBus = eventBus;
   }
 
-  public ListenableFuture<Void> begin(
+  public MyFuture begin(
       final Character attacker, final Weapon weapon, final Target target) {
-    SettableFuture<Void> future = SettableFuture.create();
+    MyFuture future = new MyFuture();
     eventBus.post(new Attack(target, weapon, future));
-    Futures.addCallback(future, new FutureCallback<Void>() {
+    future.addCallback(new Runnable() {
       @Override
-      public void onSuccess(Void result) {
+      public void run() {
         attacker.useItem(weapon);
         weapon.damages(target);
         for (Cell cell : target.getTargetCells()) {
@@ -38,11 +35,6 @@ public class Battle {
             cell.removeCharacter();
           }
         }
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-
       }
     });
     return future;

@@ -1,9 +1,7 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.util.concurrent.AsyncFunction;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.model.battle.Battle;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -34,7 +32,7 @@ public class PassiveEnemy extends AbstractEnemy {
   }
 
   @Override
-  public ListenableFuture<Void> retaliate(Cell startingCell) {
+  public MyFuture retaliate(Cell startingCell) {
     Movement movement = movements.distanceFrom(startingCell);
     for (Cell moveCell : movement.getCells()) {
       for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
@@ -54,17 +52,23 @@ public class PassiveEnemy extends AbstractEnemy {
           if (!containsEnemy && containsPlayer) {
             Path path = movement.pathTo(moveCell);
 
-            return Futures
-                .transformAsync(startingCell.moveCharacter(path), new AsyncFunction<Void, Void>() {
+            final MyFuture future = new MyFuture();
+            startingCell.moveCharacter(path).addCallback(new Runnable() {
+              @Override
+              public void run() {
+                battle.begin(PassiveEnemy.this, weapon, target).addCallback(new Runnable() {
                   @Override
-                  public ListenableFuture<Void> apply(Void input) {
-                    return battle.begin(PassiveEnemy.this, weapon, target);
+                  public void run() {
+                    future.done();
                   }
                 });
+              }
+            });
+            return future;
           }
         }
       }
     }
-    return Futures.immediateFuture(null);
+    return MyFuture.immediate();
   }
 }

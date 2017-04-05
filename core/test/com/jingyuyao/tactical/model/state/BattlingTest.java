@@ -8,11 +8,11 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -91,8 +91,7 @@ public class BattlingTest {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(target.canTarget(cell)).thenReturn(true);
-    when(battle.begin(attackingPlayer, weapon, target))
-        .thenReturn(Futures.<Void>immediateFuture(null));
+    when(battle.begin(attackingPlayer, weapon, target)).thenReturn(MyFuture.immediate());
 
     battling.select(cell);
 
@@ -103,8 +102,7 @@ public class BattlingTest {
   public void attack() {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(battle.begin(attackingPlayer, weapon, target))
-        .thenReturn(Futures.<Void>immediateFuture(null));
+    when(battle.begin(attackingPlayer, weapon, target)).thenReturn(MyFuture.immediate());
 
     battling.attack();
 

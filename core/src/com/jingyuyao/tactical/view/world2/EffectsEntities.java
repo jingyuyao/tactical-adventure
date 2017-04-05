@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.SettableFuture;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
@@ -27,7 +27,7 @@ class EffectsEntities {
     this.animations = animations;
   }
 
-  void addWeaponEffect(Coordinate coordinate, Weapon weapon, SettableFuture<Void> future) {
+  void addWeaponEffect(Coordinate coordinate, Weapon weapon, MyFuture future) {
     SingleAnimation animation = animations.getWeapon(weapon.getName());
     addEffect(coordinate, animation, future);
   }
@@ -35,7 +35,7 @@ class EffectsEntities {
   private void addEffect(
       Coordinate coordinate,
       SingleAnimation singleAnimation,
-      final SettableFuture<Void> future) {
+      final MyFuture future) {
     Entity entity = engine.createEntity();
     entity.add(createPosition(coordinate));
     entity.add(singleAnimation);
@@ -43,7 +43,7 @@ class EffectsEntities {
     Futures.addCallback(singleAnimation.getFuture(), new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
-        future.set(null);
+        future.done();
       }
 
       @Override

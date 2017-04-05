@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.view.world2;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
@@ -59,7 +59,7 @@ class CharacterEntities {
     entity.add(createPosition(destination));
   }
 
-  void move(Character character, List<Coordinate> path, SettableFuture<Void> future) {
+  void move(Character character, List<Coordinate> path, MyFuture future) {
     Entity entity = characterMap.get(character);
     Moving moving = engine.createComponent(Moving.class);
     moving.setPath(path);

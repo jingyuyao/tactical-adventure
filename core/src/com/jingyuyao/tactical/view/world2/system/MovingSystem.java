@@ -42,7 +42,7 @@ public class MovingSystem extends IteratingSystem {
       if (nextIndex < path.size()) {
         moving.setCurrentIndex(nextIndex);
       } else {
-        moving.getFuture().set(null);
+        moving.getFuture().done();
         entity.remove(Moving.class);
       }
     } else {
