@@ -42,4 +42,16 @@ public class MyFuture {
       }
     });
   }
+
+  /**
+   * This {@link MyFuture} will be completed when {@code another} completes.
+   */
+  public void completedBy(MyFuture another) {
+    another.addCallback(new Runnable() {
+      @Override
+      public void run() {
+        done();
+      }
+    });
+  }
 }

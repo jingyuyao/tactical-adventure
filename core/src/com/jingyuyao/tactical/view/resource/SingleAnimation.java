@@ -1,17 +1,15 @@
 package com.jingyuyao.tactical.view.resource;
 
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
+import com.jingyuyao.tactical.model.event.MyFuture;
 
 public class SingleAnimation extends AbstractAnimation {
 
-  private final SettableFuture<Void> future;
+  private final MyFuture future = new MyFuture();
   private float stateTime = 0f;
 
   SingleAnimation(int fps, WorldTexture[] keyFrames) {
     super(fps, keyFrames);
-    future = SettableFuture.create();
   }
 
   public WorldTexture getKeyFrame() {
@@ -21,7 +19,7 @@ public class SingleAnimation extends AbstractAnimation {
   public void advanceTime(float delta) {
     stateTime += delta;
     if (isDone()) {
-      future.set(null);
+      future.done();
     }
   }
 
@@ -29,7 +27,7 @@ public class SingleAnimation extends AbstractAnimation {
     return getAnimation().isAnimationFinished(stateTime);
   }
 
-  public ListenableFuture<Void> getFuture() {
+  public MyFuture getFuture() {
     return future;
   }
 

@@ -17,6 +17,8 @@ public class SingleAnimationTest {
   private WorldTexture texture1;
   @Mock
   private WorldTexture texture2;
+  @Mock
+  private Runnable runnable;
 
   private SingleAnimation singleAnimation;
 
@@ -24,7 +26,7 @@ public class SingleAnimationTest {
   public void setUp() {
     singleAnimation = new SingleAnimation(FPS, new WorldTexture[]{texture1, texture2});
 
-    assertThat(singleAnimation.getFuture().isDone()).isFalse();
+    assertThat(singleAnimation.isDone()).isFalse();
   }
 
   @Test
@@ -32,6 +34,7 @@ public class SingleAnimationTest {
     singleAnimation.advanceTime(0.5f);
 
     assertThat(singleAnimation.getKeyFrame()).isSameAs(texture1);
+    assertThat(singleAnimation.isDone()).isFalse();
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
   }
 
@@ -40,6 +43,7 @@ public class SingleAnimationTest {
     singleAnimation.advanceTime(1.5f);
 
     assertThat(singleAnimation.getKeyFrame()).isSameAs(texture2);
+    assertThat(singleAnimation.isDone()).isFalse();
     assertThat(singleAnimation.getFuture().isDone()).isFalse();
   }
 
@@ -47,6 +51,7 @@ public class SingleAnimationTest {
   public void advance_time_finished() {
     singleAnimation.advanceTime(2.5f);
 
+    assertThat(singleAnimation.isDone()).isTrue();
     assertThat(singleAnimation.getFuture().isDone()).isTrue();
   }
 }

@@ -23,6 +23,11 @@ public class MyFutureTest {
   }
 
   @Test
+  public void immediate() {
+    assertThat(MyFuture.immediate().isDone()).isTrue();
+  }
+
+  @Test
   public void isDone() {
     assertThat(future.isDone()).isFalse();
 
@@ -41,7 +46,9 @@ public class MyFutureTest {
   }
 
   @Test
-  public void immediate() {
-    assertThat(MyFuture.immediate().isDone()).isTrue();
+  public void complete_by() {
+    future.completedBy(MyFuture.immediate());
+
+    assertThat(future.isDone()).isTrue();
   }
 }

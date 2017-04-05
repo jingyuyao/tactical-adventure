@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.view.world2;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -27,30 +25,16 @@ class EffectsEntities {
     this.animations = animations;
   }
 
-  void addWeaponEffect(Coordinate coordinate, Weapon weapon, MyFuture future) {
+  void addWeaponEffect(Coordinate coordinate, Weapon weapon, final MyFuture future) {
     SingleAnimation animation = animations.getWeapon(weapon.getName());
-    addEffect(coordinate, animation, future);
+    future.completedBy(animation.getFuture());
+    addEffect(coordinate, animation);
   }
 
-  private void addEffect(
-      Coordinate coordinate,
-      SingleAnimation singleAnimation,
-      final MyFuture future) {
+  private void addEffect(Coordinate coordinate, SingleAnimation singleAnimation) {
     Entity entity = engine.createEntity();
     entity.add(createPosition(coordinate));
     entity.add(singleAnimation);
-    // TODO: remove future from animation
-    Futures.addCallback(singleAnimation.getFuture(), new FutureCallback<Void>() {
-      @Override
-      public void onSuccess(Void result) {
-        future.done();
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-
-      }
-    });
     engine.addEntity(entity);
   }
 
