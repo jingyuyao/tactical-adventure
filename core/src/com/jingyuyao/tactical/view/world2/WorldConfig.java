@@ -15,10 +15,6 @@ public class WorldConfig {
     return 32;
   }
 
-  public float getWorldUnit() {
-    return 1f;
-  }
-
   int getWorldViewportWidth() {
     return 16;
   }
@@ -28,6 +24,6 @@ public class WorldConfig {
   }
 
   float getTileToWorldScale() {
-    return getWorldUnit() / getTileSize();
+    return 1f / getTileSize();
   }
 }

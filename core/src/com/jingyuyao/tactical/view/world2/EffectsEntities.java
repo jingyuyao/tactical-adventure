@@ -16,16 +16,13 @@ import javax.inject.Singleton;
 @Singleton
 class EffectsEntities {
 
-  private final WorldConfig worldConfig;
   private final PooledEngine engine;
   private final Animations animations;
 
   @Inject
   EffectsEntities(
-      WorldConfig worldConfig,
       PooledEngine engine,
       Animations animations) {
-    this.worldConfig = worldConfig;
     this.engine = engine;
     this.animations = animations;
   }
@@ -59,8 +56,8 @@ class EffectsEntities {
 
   private Position createPosition(Coordinate coordinate) {
     Position position = engine.createComponent(Position.class);
-    position.setX(coordinate.getX() * worldConfig.getWorldUnit());
-    position.setY(coordinate.getY() * worldConfig.getWorldUnit());
+    position.setX(coordinate.getX());
+    position.setY(coordinate.getY());
     position.setZ(WorldZIndex.EFFECTS);
     return position;
   }

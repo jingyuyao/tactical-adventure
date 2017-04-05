@@ -20,18 +20,15 @@ import javax.inject.Singleton;
 @Singleton
 class CharacterEntities {
 
-  private final WorldConfig worldConfig;
   private final PooledEngine engine;
   private final Map<Character, Entity> characterMap;
   private final Animations animations;
 
   @Inject
   CharacterEntities(
-      WorldConfig worldConfig,
       PooledEngine engine,
       Map<Character, Entity> characterMap,
       Animations animations) {
-    this.worldConfig = worldConfig;
     this.engine = engine;
     this.characterMap = characterMap;
     this.animations = animations;
@@ -77,8 +74,8 @@ class CharacterEntities {
 
   private Position createPosition(Coordinate coordinate) {
     Position position = engine.createComponent(Position.class);
-    position.setX(coordinate.getX() * worldConfig.getWorldUnit());
-    position.setY(coordinate.getY() * worldConfig.getWorldUnit());
+    position.setX(coordinate.getX());
+    position.setY(coordinate.getY());
     position.setZ(WorldZIndex.CHARACTER);
     return position;
   }

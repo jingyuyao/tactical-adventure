@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.jingyuyao.tactical.view.actor.ActorConfig;
 import com.jingyuyao.tactical.view.world2.WorldConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,16 +16,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldTextureTest {
 
-  private static final int TEXTURE_SIZE = 10;
+  private static final int TEXTURE_WIDTH = 10;
+  private static final int TEXTURE_HEIGHT = 15;
   private static final int TILE_SIZE = 5;
-  private static final float ACTOR_SIZE = 1f;
 
   @Mock
   private TextureRegion textureRegion;
   @Mock
   private WorldConfig worldConfig;
-  @Mock
-  private ActorConfig actorConfig;
   @Mock
   private Batch batch;
   @Mock
@@ -36,40 +33,37 @@ public class WorldTextureTest {
 
   @Test
   public void draw() {
-    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_SIZE);
-    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_SIZE);
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
     when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
     worldTexture.draw(batch, 2f, 3f);
 
-    verify(batch).draw(textureRegion, 1.5f, 2.5f, 2 * ACTOR_SIZE, 2 * ACTOR_SIZE);
+    verify(batch).draw(textureRegion, 1.5f, 2f, 2f, 3f);
   }
 
   @Test
   public void draw_actor() {
-    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_SIZE);
-    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_SIZE);
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
     when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
     when(actor.getX()).thenReturn(2f);
     when(actor.getY()).thenReturn(3f);
 
-    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
     worldTexture.draw(batch, actor);
 
-    verify(batch).draw(textureRegion, 1.5f, 2.5f, 2 * ACTOR_SIZE, 2 * ACTOR_SIZE);
+    verify(batch).draw(textureRegion, 1.5f, 2f, 2f, 3f);
   }
 
   @Test
   public void draw_actor_null() {
-    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_SIZE);
-    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_SIZE);
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
     when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
     worldTexture.draw(batch, null);
 
     verifyZeroInteractions(batch);
@@ -80,19 +74,10 @@ public class WorldTextureTest {
     when(textureRegion.getRegionWidth()).thenReturn(TILE_SIZE);
     when(textureRegion.getRegionHeight()).thenReturn(TILE_SIZE);
     when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
-    when(actorConfig.getActorWorldSize()).thenReturn(ACTOR_SIZE);
 
-    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
     worldTexture.draw(batch, 2f, 3f);
 
-    verify(batch).draw(textureRegion, 2f, 3f, ACTOR_SIZE, ACTOR_SIZE);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void irregular_texture() {
-    when(textureRegion.getRegionWidth()).thenReturn(TILE_SIZE);
-    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_SIZE);
-
-    worldTexture = new WorldTexture(textureRegion, worldConfig, actorConfig);
+    verify(batch).draw(textureRegion, 2f, 3f, 1f, 1f);
   }
 }

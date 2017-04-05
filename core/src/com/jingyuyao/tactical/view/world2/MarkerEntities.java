@@ -15,7 +15,6 @@ import javax.inject.Singleton;
 @Singleton
 class MarkerEntities {
 
-  private final WorldConfig worldConfig;
   private final PooledEngine engine;
   private final Markers markers;
   private final Entity highlight;
@@ -23,8 +22,7 @@ class MarkerEntities {
   private final Family markedFamily;
 
   @Inject
-  MarkerEntities(WorldConfig worldConfig, PooledEngine engine, Markers markers) {
-    this.worldConfig = worldConfig;
+  MarkerEntities(PooledEngine engine, Markers markers) {
     this.engine = engine;
     this.markers = markers;
     highlight = engine.createEntity();
@@ -76,8 +74,8 @@ class MarkerEntities {
 
   private Position createPosition(Coordinate coordinate, int zIndex) {
     Position position = engine.createComponent(Position.class);
-    position.setX(coordinate.getX() * worldConfig.getWorldUnit());
-    position.setY(coordinate.getY() * worldConfig.getWorldUnit());
+    position.setX(coordinate.getX());
+    position.setY(coordinate.getY());
     position.setZ(zIndex);
     return position;
   }
