@@ -26,6 +26,14 @@ public class SingleAnimation extends AbstractAnimation {
     animationBus.register(this);
   }
 
+  public ListenableFuture<Void> getFuture() {
+    return future;
+  }
+
+  public boolean isDone() {
+    return getAnimation().isAnimationFinished(stateTime);
+  }
+
   @Override
   PlayMode getPlayMode() {
     return PlayMode.NORMAL;
@@ -39,13 +47,9 @@ public class SingleAnimation extends AbstractAnimation {
   @Subscribe
   void advanceTime(AdvanceTime advanceTime) {
     stateTime += advanceTime.getDelta();
-    if (getAnimation().isAnimationFinished(stateTime)) {
+    if (isDone()) {
       animationBus.unregister(this);
       future.set(null);
     }
-  }
-
-  public ListenableFuture<Void> getFuture() {
-    return future;
   }
 }
