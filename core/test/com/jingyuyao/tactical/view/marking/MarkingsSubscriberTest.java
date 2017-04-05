@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -153,8 +154,8 @@ public class MarkingsSubscriberTest {
   @Test
   public void selecting_target() {
     when(selectingTarget.getTargets()).thenReturn(ImmutableList.of(target));
-    when(target.getTargetCells()).thenReturn(ImmutableList.of(cell));
-    when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell));
+    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell2));
     when(cell.getTerrain()).thenReturn(terrain);
     when(cell2.getTerrain()).thenReturn(terrain2);
     when(worldView.get(terrain)).thenReturn(worldActor);
@@ -172,8 +173,8 @@ public class MarkingsSubscriberTest {
   @Test
   public void battling() {
     when(battling.getTarget()).thenReturn(target);
-    when(target.getTargetCells()).thenReturn(ImmutableList.of(cell));
-    when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell));
+    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell2));
     when(cell.getTerrain()).thenReturn(terrain);
     when(cell2.getTerrain()).thenReturn(terrain2);
     when(worldView.get(terrain)).thenReturn(worldActor);
@@ -193,7 +194,7 @@ public class MarkingsSubscriberTest {
     SettableFuture<Void> future = SettableFuture.create();
     when(attack.getWeapon()).thenReturn(weapon);
     when(attack.getObject()).thenReturn(target);
-    when(target.getSelectCells()).thenReturn(ImmutableList.of(cell2));
+    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell2));
     when(cell2.getTerrain()).thenReturn(terrain);
     when(worldView.get(terrain)).thenReturn(worldActor);
     when(weapon.getName()).thenReturn(WEAPON_NAME);

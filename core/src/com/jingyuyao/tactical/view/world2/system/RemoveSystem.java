@@ -13,7 +13,7 @@ public class RemoveSystem extends IteratingSystem {
   @Inject
   RemoveSystem() {
     super(Family.all(Remove.class).get());
-    this.priority = 0;
+    this.priority = SystemPriority.REMOVE;
   }
 
   @Override

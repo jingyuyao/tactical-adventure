@@ -37,11 +37,11 @@ class MarkerEntities {
   }
 
   void highlight(Coordinate coordinate) {
-    highlight.add(createPosition(coordinate));
+    highlight.add(createPosition(coordinate, WorldZIndex.HIGHLIGHT_MARKER));
   }
 
   void activate(Coordinate coordinate) {
-    activated.add(createPosition(coordinate));
+    activated.add(createPosition(coordinate, WorldZIndex.ACTIVATE_MARKER));
   }
 
   void deactivate() {
@@ -55,30 +55,30 @@ class MarkerEntities {
   }
 
   void markMove(Coordinate coordinate) {
-    mark(coordinate, markers.getMove());
+    mark(coordinate, markers.getMove(), WorldZIndex.MOVE_MARKER);
   }
 
   void markAttack(Coordinate coordinate) {
-    mark(coordinate, markers.getAttack());
+    mark(coordinate, markers.getAttack(), WorldZIndex.ATTACK_MARKER);
   }
 
   void markTargetSelect(Coordinate coordinate) {
-    mark(coordinate, markers.getTargetSelect());
+    mark(coordinate, markers.getTargetSelect(), WorldZIndex.TARGET_SELECT_MARKER);
   }
 
-  private void mark(Coordinate coordinate, WorldTexture worldTexture) {
-    // TODO: need to maintain order and number of textures
+  private void mark(Coordinate coordinate, WorldTexture worldTexture, int zIndex) {
     Entity entity = engine.createEntity();
-    entity.add(createPosition(coordinate));
+    entity.add(createPosition(coordinate, zIndex));
     entity.add(worldTexture);
     entity.add(engine.createComponent(Marked.class));
     engine.addEntity(entity);
   }
 
-  private Position createPosition(Coordinate coordinate) {
+  private Position createPosition(Coordinate coordinate, int zIndex) {
     Position position = engine.createComponent(Position.class);
     position.setX(coordinate.getX() * worldConfig.getWorldUnit());
     position.setY(coordinate.getY() * worldConfig.getWorldUnit());
+    position.setZ(zIndex);
     return position;
   }
 

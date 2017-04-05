@@ -22,11 +22,11 @@ public class Target {
     return targetCells.contains(cell);
   }
 
-  public Iterable<Cell> getSelectCells() {
+  public ImmutableSet<Cell> getSelectCells() {
     return selectCells;
   }
 
-  public Iterable<Cell> getTargetCells() {
+  public ImmutableSet<Cell> getTargetCells() {
     return targetCells;
   }
 }

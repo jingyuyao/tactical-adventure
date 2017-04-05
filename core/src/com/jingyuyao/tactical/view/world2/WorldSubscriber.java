@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.view.world2;
 
-import com.badlogic.ashley.core.PooledEngine;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -22,6 +21,8 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -32,20 +33,17 @@ public class WorldSubscriber {
   private final CharacterEntities characterEntities;
   private final MarkerEntities markerEntities;
   private final Animations animations;
-  private final PooledEngine engine;
 
   @Inject
   WorldSubscriber(
       Entities entities,
       CharacterEntities characterEntities,
       MarkerEntities markerEntities,
-      Animations animations,
-      PooledEngine engine) {
+      Animations animations) {
     this.entities = entities;
     this.characterEntities = characterEntities;
     this.markerEntities = markerEntities;
     this.animations = animations;
-    this.engine = engine;
   }
 
   @Subscribe
@@ -106,14 +104,29 @@ public class WorldSubscriber {
 
   @Subscribe
   void selectingTarget(SelectingTarget selectingTarget) {
+    Set<Cell> targetCells = new HashSet<>();
+    Set<Cell> selectCells = new HashSet<>();
     for (Target target : selectingTarget.getTargets()) {
-      markTarget(target);
+      targetCells.addAll(target.getTargetCells());
+      selectCells.addAll(target.getSelectCells());
+    }
+    for (Cell cell : targetCells) {
+      markerEntities.markAttack(cell.getCoordinate());
+    }
+    for (Cell cell : selectCells) {
+      markerEntities.markTargetSelect(cell.getCoordinate());
     }
   }
 
   @Subscribe
   void battling(Battling battling) {
-    markTarget(battling.getTarget());
+    Target target = battling.getTarget();
+    for (Cell cell : target.getTargetCells()) {
+      markerEntities.markAttack(cell.getCoordinate());
+    }
+    for (Cell cell : target.getSelectCells()) {
+      markerEntities.markTargetSelect(cell.getCoordinate());
+    }
   }
 
   @Subscribe
@@ -141,14 +154,5 @@ public class WorldSubscriber {
 //    for (Cell cell : attack.getObject().getSelectCells()) {
 //      markings.addSingleAnimation(worldView.get(cell.getTerrain()), animation);
 //    }
-  }
-
-  private void markTarget(Target target) {
-    for (Cell cell : target.getTargetCells()) {
-      markerEntities.markAttack(cell.getCoordinate());
-    }
-    for (Cell cell : target.getSelectCells()) {
-      markerEntities.markTargetSelect(cell.getCoordinate());
-    }
   }
 }

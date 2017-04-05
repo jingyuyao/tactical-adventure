@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
@@ -54,7 +54,7 @@ public class BattleTest {
 
   @Test
   public void begin() {
-    when(target.getTargetCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
     when(cell1.hasCharacter()).thenReturn(true);
     when(cell1.getCharacter()).thenReturn(character1);
     when(character1.getHp()).thenReturn(0);

@@ -30,7 +30,7 @@ public class AnimationSystem extends EntitySystem {
     this.animationTime = animationTime;
     this.loopAnimationMapper = loopAnimationMapper;
     this.singleAnimationMapper = singleAnimationMapper;
-    this.priority = 1;
+    this.priority = SystemPriority.ANIMATION;
   }
 
   @Override

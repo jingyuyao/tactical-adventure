@@ -63,6 +63,7 @@ class CharacterEntities {
     Position position = engine.createComponent(Position.class);
     position.setX(coordinate.getX() * worldConfig.getWorldUnit());
     position.setY(coordinate.getY() * worldConfig.getWorldUnit());
+    position.setZ(WorldZIndex.CHARACTER);
     return position;
   }
 
