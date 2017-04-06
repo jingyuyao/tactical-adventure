@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
@@ -14,6 +15,7 @@ public class Frame implements Component, Poolable {
 
   private final List<WorldTexture> overlays = new ArrayList<>(4);
   private WorldTexture texture = null;
+  private Color color = Color.WHITE;
 
   public Optional<WorldTexture> getTexture() {
     return Optional.fromNullable(texture);
@@ -35,9 +37,18 @@ public class Frame implements Component, Poolable {
     overlays.remove(texture);
   }
 
+  public Color getColor() {
+    return color;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
   @Override
   public void reset() {
-    texture = null;
     overlays.clear();
+    texture = null;
+    color = Color.WHITE;
   }
 }

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.world;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.Color;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
@@ -31,10 +32,17 @@ class EntityFactory {
     return entity;
   }
 
-  Entity animated(Coordinate coordinate, int zIndex, LoopAnimation loopAnimation) {
+  Entity idle(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
     Entity entity = bare();
     entity.add(position(coordinate, zIndex));
-    entity.add(frame());
+    entity.add(frame(worldTexture));
+    return entity;
+  }
+
+  Entity animated(Coordinate coordinate, int zIndex, LoopAnimation loopAnimation, Color color) {
+    Entity entity = bare();
+    entity.add(position(coordinate, zIndex));
+    entity.add(frame(color));
     entity.add(loopAnimation);
     return entity;
   }
@@ -44,13 +52,6 @@ class EntityFactory {
     entity.add(position(coordinate, zIndex));
     entity.add(frame());
     entity.add(singleAnimation);
-    return entity;
-  }
-
-  Entity idle(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
-    Entity entity = bare();
-    entity.add(position(coordinate, zIndex));
-    entity.add(frame(worldTexture));
     return entity;
   }
 
@@ -68,6 +69,12 @@ class EntityFactory {
 
   Frame frame() {
     return component(Frame.class);
+  }
+
+  Frame frame(Color color) {
+    Frame frame = component(Frame.class);
+    frame.setColor(color);
+    return frame;
   }
 
   Frame frame(WorldTexture texture) {

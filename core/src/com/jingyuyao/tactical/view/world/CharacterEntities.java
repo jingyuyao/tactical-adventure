@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Color;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -18,6 +19,9 @@ import javax.inject.Singleton;
 
 @Singleton
 class CharacterEntities {
+
+  private static final Color BLUE_300 = new Color(0x64b5f6ff);
+  private static final Color RED_500 = new Color(0xf44336ff);
 
   private final EntityFactory entityFactory;
   private final Map<Character, Entity> characterMap;
@@ -38,12 +42,14 @@ class CharacterEntities {
   }
 
   void add(Coordinate coordinate, Player player) {
-    Entity entity = entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(player));
+    Entity entity =
+        entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(player), BLUE_300);
     characterMap.put(player, entity);
   }
 
   void add(Coordinate coordinate, Enemy enemy) {
-    Entity entity = entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(enemy));
+    Entity entity =
+        entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(enemy), RED_500);
     characterMap.put(enemy, entity);
   }
 

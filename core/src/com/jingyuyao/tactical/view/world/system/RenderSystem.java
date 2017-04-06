@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.base.Optional;
@@ -55,7 +56,9 @@ public class RenderSystem extends SortedIteratingSystem {
     Frame frame = frameMapper.get(entity);
     Optional<WorldTexture> textureOptional = frame.getTexture();
     if (textureOptional.isPresent()) {
+      batch.setColor(frame.getColor());
       textureOptional.get().draw(batch, position.getX(), position.getY());
+      batch.setColor(Color.WHITE);
     }
     for (WorldTexture texture : frame.getOverlays()) {
       texture.draw(batch, position.getX(), position.getY());
