@@ -144,7 +144,6 @@ public class WorldSubscriber {
   @Subscribe
   void exitState(ExitState exitState) {
     markerSystem.removeMarkers();
-    markerSystem.deactivate();
   }
 
   @Subscribe
