@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
@@ -15,6 +16,7 @@ import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
+import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -90,6 +92,16 @@ public class WorldSubscriber {
   void selectCell(SelectCell selectCell) {
     Cell cell = selectCell.getObject();
     markerEntities.highlight(cell.getCoordinate());
+  }
+
+  @Subscribe
+  void playerState(PlayerState playerState) {
+    markerEntities.activate(characterEntities.get(playerState.getPlayer()));
+  }
+
+  @Subscribe
+  void activatedEnemy(ActivatedEnemy activatedEnemy) {
+    markerEntities.activate(characterEntities.get(activatedEnemy.getObject()));
   }
 
   @Subscribe

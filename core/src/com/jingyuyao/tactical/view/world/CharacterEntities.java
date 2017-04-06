@@ -47,6 +47,10 @@ class CharacterEntities {
     characterMap.put(enemy, entity);
   }
 
+  Entity get(Character character) {
+    return characterMap.get(character);
+  }
+
   void move(Character character, Coordinate destination) {
     Entity entity = characterMap.get(character);
     entity.add(entityFactory.position(destination, WorldZIndex.CHARACTER));

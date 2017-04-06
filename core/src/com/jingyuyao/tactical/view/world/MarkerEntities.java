@@ -1,11 +1,13 @@
 package com.jingyuyao.tactical.view.world;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.world.WorldModule.MarkedEntityList;
-import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import java.util.List;
 import javax.inject.Inject;
@@ -16,34 +18,42 @@ class MarkerEntities {
 
   private final EntityFactory entityFactory;
   private final Markers markers;
-  private final Entity highlight;
-  private final Entity activated;
   private final List<Entity> markedEntities;
+  private final Entity highlight;
+  private final ComponentMapper<Frame> frameMapper;
+  private Entity activated;
 
   @Inject
   MarkerEntities(
       EntityFactory entityFactory,
       Markers markers,
-      @MarkedEntityList List<Entity> markedEntities) {
+      @MarkedEntityList List<Entity> markedEntities,
+      ComponentMapper<Frame> frameMapper) {
     this.entityFactory = entityFactory;
     this.markers = markers;
     this.markedEntities = markedEntities;
     highlight = entityFactory.bare();
+    this.frameMapper = frameMapper;
     highlight.add(entityFactory.frame(markers.getHighlight()));
-    activated = entityFactory.bare();
-    activated.add(entityFactory.frame(markers.getActivated()));
   }
 
   void highlight(Coordinate coordinate) {
     highlight.add(entityFactory.position(coordinate, WorldZIndex.HIGHLIGHT_MARKER));
   }
 
-  void activate(Coordinate coordinate) {
-    activated.add(entityFactory.position(coordinate, WorldZIndex.ACTIVATE_MARKER));
+  void activate(Entity entity) {
+    Preconditions.checkArgument(frameMapper.has(entity));
+    deactivate();
+    Frame frame = frameMapper.get(entity);
+    frame.addOverlay(markers.getActivated());
+    activated = entity;
   }
 
   void deactivate() {
-    activated.remove(Position.class);
+    if (activated != null) {
+      Frame frame = frameMapper.get(activated);
+      frame.removeOverlay(markers.getActivated());
+    }
   }
 
   void removeMarkers() {

@@ -15,14 +15,6 @@ public class Frame implements Component, Poolable {
   private final List<WorldTexture> overlays = new ArrayList<>(4);
   private WorldTexture texture = null;
 
-  public List<WorldTexture> getOverlays() {
-    return overlays;
-  }
-
-  public void clearOverlays() {
-    overlays.clear();
-  }
-
   public Optional<WorldTexture> getTexture() {
     return Optional.fromNullable(texture);
   }
@@ -31,9 +23,21 @@ public class Frame implements Component, Poolable {
     this.texture = texture;
   }
 
+  public List<WorldTexture> getOverlays() {
+    return overlays;
+  }
+
+  public void addOverlay(WorldTexture texture) {
+    overlays.add(texture);
+  }
+
+  public void removeOverlay(WorldTexture texture) {
+    overlays.remove(texture);
+  }
+
   @Override
   public void reset() {
     texture = null;
-    clearOverlays();
+    overlays.clear();
   }
 }
