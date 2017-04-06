@@ -32,8 +32,8 @@ class MarkerEntities {
     this.entityFactory = entityFactory;
     this.markers = markers;
     this.markedEntities = markedEntities;
-    highlight = entityFactory.bare();
     this.frameMapper = frameMapper;
+    highlight = entityFactory.bare();
     highlight.add(entityFactory.frame(markers.getHighlight()));
   }
 
