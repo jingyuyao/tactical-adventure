@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -9,9 +8,8 @@ import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
-import com.jingyuyao.tactical.view.world.component.Frame;
+import com.jingyuyao.tactical.view.world.WorldModule.CharacterEntityMap;
 import com.jingyuyao.tactical.view.world.component.Moving;
-import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import java.util.List;
 import java.util.Map;
@@ -21,16 +19,16 @@ import javax.inject.Singleton;
 @Singleton
 class CharacterEntities {
 
-  private final PooledEngine engine;
+  private final EntityFactory entityFactory;
   private final Map<Character, Entity> characterMap;
   private final Animations animations;
 
   @Inject
   CharacterEntities(
-      PooledEngine engine,
-      Map<Character, Entity> characterMap,
+      EntityFactory entityFactory,
+      @CharacterEntityMap Map<Character, Entity> characterMap,
       Animations animations) {
-    this.engine = engine;
+    this.entityFactory = entityFactory;
     this.characterMap = characterMap;
     this.animations = animations;
   }
@@ -40,31 +38,23 @@ class CharacterEntities {
   }
 
   void add(Coordinate coordinate, Player player) {
-    Entity entity = engine.createEntity();
-    entity.add(createPosition(coordinate));
-    entity.add(getAnimation(player));
-    entity.add(engine.createComponent(Frame.class));
+    Entity entity = entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(player));
     characterMap.put(player, entity);
-    engine.addEntity(entity);
   }
 
   void add(Coordinate coordinate, Enemy enemy) {
-    Entity entity = engine.createEntity();
-    entity.add(createPosition(coordinate));
-    entity.add(getAnimation(enemy));
-    entity.add(engine.createComponent(Frame.class));
+    Entity entity = entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(enemy));
     characterMap.put(enemy, entity);
-    engine.addEntity(entity);
   }
 
   void move(Character character, Coordinate destination) {
     Entity entity = characterMap.get(character);
-    entity.add(createPosition(destination));
+    entity.add(entityFactory.position(destination, WorldZIndex.CHARACTER));
   }
 
   void move(Character character, List<Coordinate> path, MyFuture future) {
     Entity entity = characterMap.get(character);
-    Moving moving = engine.createComponent(Moving.class);
+    Moving moving = entityFactory.component(Moving.class);
     moving.setPath(path);
     moving.setFuture(future);
     entity.add(moving);
@@ -72,15 +62,7 @@ class CharacterEntities {
 
   void remove(Character character) {
     Entity entity = characterMap.remove(character);
-    entity.add(engine.createComponent(Remove.class));
-  }
-
-  private Position createPosition(Coordinate coordinate) {
-    Position position = engine.createComponent(Position.class);
-    position.setX(coordinate.getX());
-    position.setY(coordinate.getY());
-    position.setZ(WorldZIndex.CHARACTER);
-    return position;
+    entity.add(entityFactory.component(Remove.class));
   }
 
   private LoopAnimation getAnimation(Character character) {

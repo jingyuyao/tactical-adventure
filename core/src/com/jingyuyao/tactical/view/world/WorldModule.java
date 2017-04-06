@@ -23,6 +23,8 @@ import com.jingyuyao.tactical.view.world.system.RenderSystem;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
@@ -54,8 +56,16 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Map<Character, Entity> provideEntityMap() {
+  @CharacterEntityMap
+  Map<Character, Entity> provideCharacterEntities() {
     return new HashMap<>();
+  }
+
+  @Provides
+  @Singleton
+  @MarkedEntityList
+  List<Entity> provideMarkedEntities() {
+    return new LinkedList<>();
   }
 
   @Provides
@@ -82,6 +92,20 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface CharacterEntityMap {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface MarkedEntityList {
 
   }
 }

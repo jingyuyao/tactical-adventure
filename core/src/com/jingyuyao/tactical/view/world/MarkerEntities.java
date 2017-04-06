@@ -1,52 +1,45 @@
 package com.jingyuyao.tactical.view.world;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
-import com.jingyuyao.tactical.view.world.component.Frame;
+import com.jingyuyao.tactical.view.world.WorldModule.MarkedEntityList;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class MarkerEntities {
 
-  private final PooledEngine engine;
+  private final EntityFactory entityFactory;
   private final Markers markers;
-  private final Family markedFamily;
   private final Entity highlight;
   private final Entity activated;
+  private final List<Entity> markedEntities;
 
   @Inject
-  MarkerEntities(PooledEngine engine, Markers markers) {
-    this.engine = engine;
+  MarkerEntities(
+      EntityFactory entityFactory,
+      Markers markers,
+      @MarkedEntityList List<Entity> markedEntities) {
+    this.entityFactory = entityFactory;
     this.markers = markers;
-    markedFamily = Family.all(Marked.class).get();
-
-    highlight = engine.createEntity();
-    Frame highlightFrame = engine.createComponent(Frame.class);
-    highlightFrame.setTexture(markers.getHighlight());
-    highlight.add(highlightFrame);
-    engine.addEntity(highlight);
-
-    activated = engine.createEntity();
-    Frame activatedFrame = engine.createComponent(Frame.class);
-    activatedFrame.setTexture(markers.getActivated());
-    activated.add(activatedFrame);
-    engine.addEntity(activated);
+    this.markedEntities = markedEntities;
+    highlight = entityFactory.bare();
+    highlight.add(entityFactory.frame(markers.getHighlight()));
+    activated = entityFactory.bare();
+    activated.add(entityFactory.frame(markers.getActivated()));
   }
 
   void highlight(Coordinate coordinate) {
-    highlight.add(createPosition(coordinate, WorldZIndex.HIGHLIGHT_MARKER));
+    highlight.add(entityFactory.position(coordinate, WorldZIndex.HIGHLIGHT_MARKER));
   }
 
   void activate(Coordinate coordinate) {
-    activated.add(createPosition(coordinate, WorldZIndex.ACTIVATE_MARKER));
+    activated.add(entityFactory.position(coordinate, WorldZIndex.ACTIVATE_MARKER));
   }
 
   void deactivate() {
@@ -54,42 +47,26 @@ class MarkerEntities {
   }
 
   void removeMarkers() {
-    for (Entity entity : engine.getEntitiesFor(markedFamily)) {
-      entity.add(engine.createComponent(Remove.class));
+    for (Entity entity : markedEntities) {
+      entity.add(entityFactory.component(Remove.class));
     }
+    markedEntities.clear();
   }
 
   void markMove(Coordinate coordinate) {
-    mark(coordinate, markers.getMove(), WorldZIndex.MOVE_MARKER);
+    mark(coordinate, WorldZIndex.MOVE_MARKER, markers.getMove());
   }
 
   void markAttack(Coordinate coordinate) {
-    mark(coordinate, markers.getAttack(), WorldZIndex.ATTACK_MARKER);
+    mark(coordinate, WorldZIndex.ATTACK_MARKER, markers.getAttack());
   }
 
   void markTargetSelect(Coordinate coordinate) {
-    mark(coordinate, markers.getTargetSelect(), WorldZIndex.TARGET_SELECT_MARKER);
+    mark(coordinate, WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
   }
 
-  private void mark(Coordinate coordinate, WorldTexture worldTexture, int zIndex) {
-    Entity entity = engine.createEntity();
-    entity.add(createPosition(coordinate, zIndex));
-    Frame frame = engine.createComponent(Frame.class);
-    frame.setTexture(worldTexture);
-    entity.add(frame);
-    entity.add(engine.createComponent(Marked.class));
-    engine.addEntity(entity);
-  }
-
-  private Position createPosition(Coordinate coordinate, int zIndex) {
-    Position position = engine.createComponent(Position.class);
-    position.setX(coordinate.getX());
-    position.setY(coordinate.getY());
-    position.setZ(zIndex);
-    return position;
-  }
-
-  private static class Marked implements Component {
-
+  private void mark(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
+    Entity entity = entityFactory.idle(coordinate, zIndex, worldTexture);
+    markedEntities.add(entity);
   }
 }
