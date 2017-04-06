@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 @Singleton
 public class Movements {
 
-  private static final int BLOCKED = -1;
+  static final int BLOCKED = -1;
 
   private final World world;
 
@@ -117,7 +117,7 @@ public class Movements {
     return graph;
   }
 
-  private Function<Cell, Integer> createEdgeCostFunction(final Character character) {
+  Function<Cell, Integer> createEdgeCostFunction(final Character character) {
     return new Function<Cell, Integer>() {
       @Override
       public Integer apply(Cell input) {
