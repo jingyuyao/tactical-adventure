@@ -34,6 +34,7 @@ public class CharacterSystem extends EntitySystem {
     this.entityFactory = entityFactory;
     this.characterMap = characterMap;
     this.animations = animations;
+    this.priority = SystemPriority.CHARACTER;
   }
 
   public void add(Coordinate coordinate, Player player) {

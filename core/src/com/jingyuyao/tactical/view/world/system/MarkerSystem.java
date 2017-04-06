@@ -35,6 +35,7 @@ public class MarkerSystem extends EntitySystem {
     this.entityFactory = entityFactory;
     this.markers = markers;
     this.frameMapper = frameMapper;
+    this.priority = SystemPriority.MARKER;
     highlight = entityFactory.bare();
     highlight.add(entityFactory.frame(markers.getHighlight()));
   }

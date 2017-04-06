@@ -20,6 +20,7 @@ public class EffectsSystem extends EntitySystem {
   EffectsSystem(EntityFactory entityFactory, Animations animations) {
     this.entityFactory = entityFactory;
     this.animations = animations;
+    this.priority = SystemPriority.EFFECTS;
   }
 
   public void addWeaponEffect(Coordinate coordinate, Weapon weapon, final MyFuture future) {
