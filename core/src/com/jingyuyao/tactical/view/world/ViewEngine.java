@@ -16,7 +16,6 @@ import javax.inject.Singleton;
 class ViewEngine {
 
   private final Engine engine;
-  private final CharacterSystem characterSystem;
 
   @Inject
   ViewEngine(
@@ -38,7 +37,6 @@ class ViewEngine {
     engine.addSystem(playerSystem);
     engine.addSystem(removeSystem);
     engine.addSystem(renderSystem);
-    this.characterSystem = characterSystem;
   }
 
   void update(float delta) {
@@ -46,7 +44,6 @@ class ViewEngine {
   }
 
   void reset() {
-    characterSystem.reset();
     engine.removeAllEntities();
   }
 }

@@ -4,8 +4,10 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
@@ -83,6 +85,12 @@ class EntityFactory {
     Frame frame = component(Frame.class);
     frame.setTexture(texture);
     return frame;
+  }
+
+  CharacterComponent character(Character character) {
+    CharacterComponent characterComponent = component(CharacterComponent.class);
+    characterComponent.setCharacter(character);
+    return characterComponent;
   }
 
   PlayerComponent player(Player player) {

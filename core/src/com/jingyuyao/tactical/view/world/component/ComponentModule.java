@@ -18,6 +18,8 @@ public class ComponentModule extends AbstractModule {
     }).toInstance(ComponentMapper.getFor(SingleAnimation.class));
     bind(new Key<ComponentMapper<Moving>>() {
     }).toInstance(ComponentMapper.getFor(Moving.class));
+    bind(new Key<ComponentMapper<CharacterComponent>>() {
+    }).toInstance(ComponentMapper.getFor(CharacterComponent.class));
     bind(new Key<ComponentMapper<PlayerComponent>>() {
     }).toInstance(ComponentMapper.getFor(PlayerComponent.class));
   }
