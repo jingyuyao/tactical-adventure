@@ -10,6 +10,8 @@ import static org.mockito.Mockito.when;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
+import com.jingyuyao.tactical.view.world.component.LoopAnimation;
+import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,7 +124,7 @@ public class AnimationsTest {
 
     verify(worldTextureCache).put(eq(WEAPON_ASSET), worldTexturesCaptor.capture());
     assertThat(worldTexturesCaptor.getValue()).asList().containsExactly(worldTexture);
-    assertThat(animation.getAnimation().getKeyFrames()).asList().containsExactly(worldTexture);
+    assertThat(animation.getKeyFrame()).isSameAs(worldTexture);
   }
 
   @Test
@@ -135,7 +137,7 @@ public class AnimationsTest {
 
     SingleAnimation animation = animations.getWeapon(WEAPON_NAME);
 
+    assertThat(animation.getKeyFrame()).isSameAs(worldTexture);
     verifyZeroInteractions(textureAtlas);
-    assertThat(animation.getAnimation().getKeyFrames()).asList().containsExactly(worldTexture);
   }
 }

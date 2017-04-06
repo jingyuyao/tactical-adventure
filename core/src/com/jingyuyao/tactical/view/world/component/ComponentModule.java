@@ -3,8 +3,6 @@ package com.jingyuyao.tactical.view.world.component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
-import com.jingyuyao.tactical.view.world.resource.LoopAnimation;
-import com.jingyuyao.tactical.view.world.resource.SingleAnimation;
 
 public class ComponentModule extends AbstractModule {
 

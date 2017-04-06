@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.view.world.resource;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
+import com.jingyuyao.tactical.view.world.component.LoopAnimation;
+import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule.LoopAnimationCache;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule.WorldTextureCache;
 import java.util.Map;

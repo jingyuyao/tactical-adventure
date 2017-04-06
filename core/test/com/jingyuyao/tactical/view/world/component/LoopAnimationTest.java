@@ -1,7 +1,8 @@
-package com.jingyuyao.tactical.view.world.resource;
+package com.jingyuyao.tactical.view.world.component;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

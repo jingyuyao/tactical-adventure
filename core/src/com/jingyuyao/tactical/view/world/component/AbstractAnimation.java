@@ -1,9 +1,10 @@
-package com.jingyuyao.tactical.view.world.resource;
+package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 
 abstract class AbstractAnimation implements Component {
 
