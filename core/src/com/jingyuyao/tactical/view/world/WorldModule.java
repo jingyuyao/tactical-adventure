@@ -5,7 +5,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -14,20 +14,11 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.view.world.component.ComponentModule;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule;
-import com.jingyuyao.tactical.view.world.system.AnimationSystem;
-import com.jingyuyao.tactical.view.world.system.MovingSystem;
-import com.jingyuyao.tactical.view.world.system.PlayerSystem;
-import com.jingyuyao.tactical.view.world.system.RemoveSystem;
-import com.jingyuyao.tactical.view.world.system.RenderSystem;
+import com.jingyuyao.tactical.view.world.system.SystemModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
@@ -40,37 +31,13 @@ public class WorldModule extends AbstractModule {
 
     install(new ComponentModule());
     install(new ResourceModule());
+    install(new SystemModule());
   }
 
   @Provides
   @Singleton
-  PooledEngine provideEngine(
-      RemoveSystem removeSystem,
-      AnimationSystem animationSystem,
-      MovingSystem movingSystem,
-      PlayerSystem playerSystem,
-      RenderSystem renderSystem) {
-    PooledEngine engine = new PooledEngine();
-    engine.addSystem(removeSystem);
-    engine.addSystem(animationSystem);
-    engine.addSystem(movingSystem);
-    engine.addSystem(playerSystem);
-    engine.addSystem(renderSystem);
-    return engine;
-  }
-
-  @Provides
-  @Singleton
-  @CharacterEntityMap
-  Map<Character, Entity> provideCharacterEntities() {
-    return new HashMap<>();
-  }
-
-  @Provides
-  @Singleton
-  @MarkedEntityList
-  List<Entity> provideMarkedEntities() {
-    return new LinkedList<>();
+  Engine provideEngine() {
+    return new PooledEngine();
   }
 
   @Provides
@@ -97,20 +64,6 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface CharacterEntityMap {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface MarkedEntityList {
 
   }
 }

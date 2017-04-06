@@ -1,8 +1,8 @@
-package com.jingyuyao.tactical.view.world;
+package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Color;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -16,15 +16,15 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * All methods adds the created {@link Entity} to the {@link PooledEngine}
+ * All methods adds the created {@link Entity} to the {@link Engine}
  */
 @Singleton
 class EntityFactory {
 
-  private final PooledEngine engine;
+  private final Engine engine;
 
   @Inject
-  EntityFactory(PooledEngine engine) {
+  EntityFactory(Engine engine) {
     this.engine = engine;
   }
 

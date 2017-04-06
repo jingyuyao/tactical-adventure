@@ -20,6 +20,9 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.view.world.system.CharacterSystem;
+import com.jingyuyao.tactical.view.world.system.EffectsSystem;
+import com.jingyuyao.tactical.view.world.system.MarkerSystem;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -28,26 +31,26 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldSubscriber {
 
-  private final Entities entities;
-  private final CharacterEntities characterEntities;
-  private final MarkerEntities markerEntities;
-  private final EffectsEntities effectsEntities;
+  private final ViewEngine viewEngine;
+  private final CharacterSystem characterSystem;
+  private final MarkerSystem markerSystem;
+  private final EffectsSystem effectsSystem;
 
   @Inject
   WorldSubscriber(
-      Entities entities,
-      CharacterEntities characterEntities,
-      MarkerEntities markerEntities,
-      EffectsEntities effectsEntities) {
-    this.entities = entities;
-    this.characterEntities = characterEntities;
-    this.markerEntities = markerEntities;
-    this.effectsEntities = effectsEntities;
+      ViewEngine viewEngine,
+      CharacterSystem characterSystem,
+      MarkerSystem markerSystem,
+      EffectsSystem effectsSystem) {
+    this.viewEngine = viewEngine;
+    this.characterSystem = characterSystem;
+    this.markerSystem = markerSystem;
+    this.effectsSystem = effectsSystem;
   }
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
-    entities.reset();
+    viewEngine.reset();
   }
 
   @Subscribe
@@ -55,27 +58,27 @@ public class WorldSubscriber {
     Cell cell = spawnCharacter.getObject();
     Coordinate coordinate = cell.getCoordinate();
     if (cell.hasPlayer()) {
-      characterEntities.add(coordinate, cell.getPlayer());
+      characterSystem.add(coordinate, cell.getPlayer());
     } else if (cell.hasEnemy()) {
-      characterEntities.add(coordinate, cell.getEnemy());
+      characterSystem.add(coordinate, cell.getEnemy());
     }
   }
 
   @Subscribe
   void removeCharacter(RemoveCharacter removeCharacter) {
-    characterEntities.remove(removeCharacter.getObject());
+    characterSystem.remove(removeCharacter.getObject());
   }
 
   @Subscribe
   void instantMoveCharacter(InstantMoveCharacter instantMoveCharacter) {
-    characterEntities.move(
+    characterSystem.move(
         instantMoveCharacter.getCharacter(),
         instantMoveCharacter.getDestination().getCoordinate());
   }
 
   @Subscribe
   void moveCharacter(MoveCharacter moveCharacter) {
-    characterEntities.move(
+    characterSystem.move(
         moveCharacter.getCharacter(),
         FluentIterable
             .from(moveCharacter.getPath().getTrack())
@@ -91,23 +94,23 @@ public class WorldSubscriber {
   @Subscribe
   void selectCell(SelectCell selectCell) {
     Cell cell = selectCell.getObject();
-    markerEntities.highlight(cell.getCoordinate());
+    markerSystem.highlight(cell.getCoordinate());
   }
 
   @Subscribe
   void playerState(PlayerState playerState) {
-    markerEntities.activate(characterEntities.get(playerState.getPlayer()));
+    markerSystem.activate(characterSystem.get(playerState.getPlayer()));
   }
 
   @Subscribe
   void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    markerEntities.activate(characterEntities.get(activatedEnemy.getObject()));
+    markerSystem.activate(characterSystem.get(activatedEnemy.getObject()));
   }
 
   @Subscribe
   void moving(Moving moving) {
     for (Cell cell : moving.getMovement().getCells()) {
-      markerEntities.markMove(cell.getCoordinate());
+      markerSystem.markMove(cell.getCoordinate());
     }
   }
 
@@ -120,10 +123,10 @@ public class WorldSubscriber {
       selectCells.addAll(target.getSelectCells());
     }
     for (Cell cell : targetCells) {
-      markerEntities.markAttack(cell.getCoordinate());
+      markerSystem.markAttack(cell.getCoordinate());
     }
     for (Cell cell : selectCells) {
-      markerEntities.markTargetSelect(cell.getCoordinate());
+      markerSystem.markTargetSelect(cell.getCoordinate());
     }
   }
 
@@ -131,17 +134,17 @@ public class WorldSubscriber {
   void battling(Battling battling) {
     Target target = battling.getTarget();
     for (Cell cell : target.getTargetCells()) {
-      markerEntities.markAttack(cell.getCoordinate());
+      markerSystem.markAttack(cell.getCoordinate());
     }
     for (Cell cell : target.getSelectCells()) {
-      markerEntities.markTargetSelect(cell.getCoordinate());
+      markerSystem.markTargetSelect(cell.getCoordinate());
     }
   }
 
   @Subscribe
   void exitState(ExitState exitState) {
-    markerEntities.removeMarkers();
-    markerEntities.deactivate();
+    markerSystem.removeMarkers();
+    markerSystem.deactivate();
   }
 
   @Subscribe
@@ -149,7 +152,7 @@ public class WorldSubscriber {
     // TODO: distinguish on animation on select tile or an animation for every target tile
     Cell select = Iterables.getFirst(attack.getObject().getSelectCells(), null);
     if (select != null) {
-      effectsEntities
+      effectsSystem
           .addWeaponEffect(select.getCoordinate(), attack.getWeapon(), attack.getFuture());
     }
   }
