@@ -4,9 +4,11 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Color;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
+import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
@@ -81,5 +83,11 @@ class EntityFactory {
     Frame frame = component(Frame.class);
     frame.setTexture(texture);
     return frame;
+  }
+
+  PlayerComponent player(Player player) {
+    PlayerComponent playerComponent = component(PlayerComponent.class);
+    playerComponent.setPlayer(player);
+    return playerComponent;
   }
 }

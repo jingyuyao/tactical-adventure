@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Color;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -12,6 +11,7 @@ import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Animations;
+import com.jingyuyao.tactical.view.world.resource.Colors;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -19,9 +19,6 @@ import javax.inject.Singleton;
 
 @Singleton
 class CharacterEntities {
-
-  private static final Color BLUE_300 = new Color(0x64b5f6ff);
-  private static final Color RED_500 = new Color(0xf44336ff);
 
   private final EntityFactory entityFactory;
   private final Map<Character, Entity> characterMap;
@@ -43,13 +40,16 @@ class CharacterEntities {
 
   void add(Coordinate coordinate, Player player) {
     Entity entity =
-        entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(player), BLUE_300);
+        entityFactory
+            .animated(coordinate, WorldZIndex.CHARACTER, getAnimation(player), Colors.BLUE_300);
+    entity.add(entityFactory.player(player));
     characterMap.put(player, entity);
   }
 
   void add(Coordinate coordinate, Enemy enemy) {
     Entity entity =
-        entityFactory.animated(coordinate, WorldZIndex.CHARACTER, getAnimation(enemy), RED_500);
+        entityFactory
+            .animated(coordinate, WorldZIndex.CHARACTER, getAnimation(enemy), Colors.RED_500);
     characterMap.put(enemy, entity);
   }
 

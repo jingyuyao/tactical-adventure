@@ -19,6 +19,7 @@ import com.jingyuyao.tactical.view.world.component.ComponentModule;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule;
 import com.jingyuyao.tactical.view.world.system.AnimationSystem;
 import com.jingyuyao.tactical.view.world.system.MovingSystem;
+import com.jingyuyao.tactical.view.world.system.PlayerSystem;
 import com.jingyuyao.tactical.view.world.system.RemoveSystem;
 import com.jingyuyao.tactical.view.world.system.RenderSystem;
 import java.lang.annotation.Retention;
@@ -44,15 +45,17 @@ public class WorldModule extends AbstractModule {
   @Provides
   @Singleton
   PooledEngine provideEngine(
+      RemoveSystem removeSystem,
       AnimationSystem animationSystem,
       MovingSystem movingSystem,
-      RenderSystem renderSystem,
-      RemoveSystem removeSystem) {
+      PlayerSystem playerSystem,
+      RenderSystem renderSystem) {
     PooledEngine engine = new PooledEngine();
+    engine.addSystem(removeSystem);
     engine.addSystem(animationSystem);
     engine.addSystem(movingSystem);
+    engine.addSystem(playerSystem);
     engine.addSystem(renderSystem);
-    engine.addSystem(removeSystem);
     return engine;
   }
 
