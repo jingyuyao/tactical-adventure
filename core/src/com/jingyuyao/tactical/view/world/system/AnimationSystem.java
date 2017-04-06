@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
+import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -55,7 +56,7 @@ public class AnimationSystem extends EntitySystem {
       SingleAnimation singleAnimation = singleAnimationMapper.get(entity);
       singleAnimation.advanceTime(deltaTime);
       if (singleAnimation.isDone()) {
-        getEngine().removeEntity(entity);
+        entity.add(getEngine().createComponent(Remove.class));
       } else {
         Frame frame = frameMapper.get(entity);
         frame.setTexture(singleAnimation.getKeyFrame());

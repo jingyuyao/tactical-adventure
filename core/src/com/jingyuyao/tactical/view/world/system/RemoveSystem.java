@@ -7,6 +7,11 @@ import com.jingyuyao.tactical.view.world.component.Remove;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * System for removing {@link Entity}. This system provides a deterministic and centralized way to
+ * know when an entity is removed from the system. This should be the only place we call {@link
+ * com.badlogic.ashley.core.Engine#removeEntity(Entity)}.
+ */
 @Singleton
 public class RemoveSystem extends IteratingSystem {
 
