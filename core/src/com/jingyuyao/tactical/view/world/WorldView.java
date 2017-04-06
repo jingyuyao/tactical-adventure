@@ -10,16 +10,16 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldView {
 
-  private final ViewEngine viewEngine;
+  private final WorldEngine worldEngine;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final Viewport viewport;
 
   @Inject
   WorldView(
-      ViewEngine viewEngine,
+      WorldEngine worldEngine,
       OrthogonalTiledMapRenderer mapRenderer,
       @WorldViewport Viewport viewport) {
-    this.viewEngine = viewEngine;
+    this.worldEngine = worldEngine;
     this.mapRenderer = mapRenderer;
     this.viewport = viewport;
   }
@@ -28,7 +28,7 @@ public class WorldView {
     viewport.apply();
     mapRenderer.setView((OrthographicCamera) viewport.getCamera());
     mapRenderer.render();
-    viewEngine.update(delta);
+    worldEngine.update(delta);
   }
 
   public void resize(int width, int height) {

@@ -31,18 +31,18 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldSubscriber {
 
-  private final ViewEngine viewEngine;
+  private final WorldEngine worldEngine;
   private final CharacterSystem characterSystem;
   private final MarkerSystem markerSystem;
   private final EffectsSystem effectsSystem;
 
   @Inject
   WorldSubscriber(
-      ViewEngine viewEngine,
+      WorldEngine worldEngine,
       CharacterSystem characterSystem,
       MarkerSystem markerSystem,
       EffectsSystem effectsSystem) {
-    this.viewEngine = viewEngine;
+    this.worldEngine = worldEngine;
     this.characterSystem = characterSystem;
     this.markerSystem = markerSystem;
     this.effectsSystem = effectsSystem;
@@ -50,7 +50,7 @@ public class WorldSubscriber {
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
-    viewEngine.reset();
+    worldEngine.reset();
   }
 
   @Subscribe

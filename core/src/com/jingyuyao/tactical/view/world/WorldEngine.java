@@ -13,12 +13,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class ViewEngine {
+class WorldEngine {
 
   private final Engine engine;
 
   @Inject
-  ViewEngine(
+  WorldEngine(
       Engine engine,
       AnimationSystem animationSystem,
       CharacterSystem characterSystem,
