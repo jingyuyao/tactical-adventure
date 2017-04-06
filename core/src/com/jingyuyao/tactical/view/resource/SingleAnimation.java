@@ -13,7 +13,7 @@ public class SingleAnimation extends AbstractAnimation {
   }
 
   public WorldTexture getKeyFrame() {
-    return getKeyFrame(stateTime);
+    return getAnimation().getKeyFrame(stateTime);
   }
 
   public void advanceTime(float delta) {

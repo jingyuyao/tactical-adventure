@@ -16,10 +16,6 @@ abstract class AbstractAnimation implements Component {
     this.animation.setPlayMode(getPlayMode());
   }
 
-  public WorldTexture getKeyFrame(float stateTime) {
-    return animation.getKeyFrame(stateTime);
-  }
-
   Animation<WorldTexture> getAnimation() {
     return animation;
   }

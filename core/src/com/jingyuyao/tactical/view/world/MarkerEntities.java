@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Markers;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
+import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import javax.inject.Inject;
@@ -17,21 +18,27 @@ class MarkerEntities {
 
   private final PooledEngine engine;
   private final Markers markers;
+  private final Family markedFamily;
   private final Entity highlight;
   private final Entity activated;
-  private final Family markedFamily;
 
   @Inject
   MarkerEntities(PooledEngine engine, Markers markers) {
     this.engine = engine;
     this.markers = markers;
-    highlight = engine.createEntity();
-    highlight.add(markers.getHighlight());
-    engine.addEntity(highlight);
-    activated = engine.createEntity();
-    activated.add(markers.getActivated());
-    engine.addEntity(activated);
     markedFamily = Family.all(Marked.class).get();
+
+    highlight = engine.createEntity();
+    Frame highlightFrame = engine.createComponent(Frame.class);
+    highlightFrame.setTexture(markers.getHighlight());
+    highlight.add(highlightFrame);
+    engine.addEntity(highlight);
+
+    activated = engine.createEntity();
+    Frame activatedFrame = engine.createComponent(Frame.class);
+    activatedFrame.setTexture(markers.getActivated());
+    activated.add(activatedFrame);
+    engine.addEntity(activated);
   }
 
   void highlight(Coordinate coordinate) {
@@ -67,7 +74,9 @@ class MarkerEntities {
   private void mark(Coordinate coordinate, WorldTexture worldTexture, int zIndex) {
     Entity entity = engine.createEntity();
     entity.add(createPosition(coordinate, zIndex));
-    entity.add(worldTexture);
+    Frame frame = engine.createComponent(Frame.class);
+    frame.setTexture(worldTexture);
+    entity.add(frame);
     entity.add(engine.createComponent(Marked.class));
     engine.addEntity(entity);
   }

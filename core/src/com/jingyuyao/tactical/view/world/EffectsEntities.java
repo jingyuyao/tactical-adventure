@@ -7,6 +7,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,6 +34,7 @@ class EffectsEntities {
     Entity entity = engine.createEntity();
     entity.add(createPosition(coordinate));
     entity.add(singleAnimation);
+    entity.add(engine.createComponent(Frame.class));
     engine.addEntity(entity);
   }
 

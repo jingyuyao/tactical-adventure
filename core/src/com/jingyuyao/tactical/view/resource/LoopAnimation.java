@@ -8,6 +8,10 @@ public class LoopAnimation extends AbstractAnimation {
     super(fps, keyFrames);
   }
 
+  public WorldTexture getKeyFrame(float stateTime) {
+    return getAnimation().getKeyFrame(stateTime);
+  }
+
   @Override
   PlayMode getPlayMode() {
     return PlayMode.LOOP;

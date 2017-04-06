@@ -9,7 +9,9 @@ import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.view.resource.WorldTexture;
+import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import java.util.Comparator;
 import javax.inject.Inject;
@@ -21,19 +23,19 @@ public class RenderSystem extends SortedIteratingSystem {
   private final Batch batch;
   private final Viewport viewport;
   private final ComponentMapper<Position> positionMapper;
-  private final ComponentMapper<WorldTexture> worldTextureMapper;
+  private final ComponentMapper<Frame> frameMapper;
 
   @Inject
   RenderSystem(
       Batch batch,
       @WorldViewport Viewport viewport,
       ComponentMapper<Position> positionMapper,
-      ComponentMapper<WorldTexture> worldTextureMapper) {
-    super(Family.all(Position.class, WorldTexture.class).get(), new ZComparator(positionMapper));
+      ComponentMapper<Frame> frameMapper) {
+    super(Family.all(Position.class, Frame.class).get(), new ZComparator(positionMapper));
     this.batch = batch;
     this.viewport = viewport;
     this.positionMapper = positionMapper;
-    this.worldTextureMapper = worldTextureMapper;
+    this.frameMapper = frameMapper;
     this.priority = SystemPriority.RENDER;
   }
 
@@ -50,9 +52,14 @@ public class RenderSystem extends SortedIteratingSystem {
   @Override
   protected void processEntity(Entity entity, float deltaTime) {
     Position position = positionMapper.get(entity);
-    WorldTexture worldTexture = worldTextureMapper.get(entity);
-    // TODO: add area and use it in draw
-    worldTexture.draw(batch, position.getX(), position.getY());
+    Frame frame = frameMapper.get(entity);
+    Optional<WorldTexture> textureOptional = frame.getTexture();
+    if (textureOptional.isPresent()) {
+      textureOptional.get().draw(batch, position.getX(), position.getY());
+    }
+    for (WorldTexture texture : frame.getOverlays()) {
+      texture.draw(batch, position.getX(), position.getY());
+    }
   }
 
   private static class ZComparator implements Comparator<Entity> {

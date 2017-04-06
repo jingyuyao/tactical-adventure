@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.resource.Animations;
 import com.jingyuyao.tactical.view.resource.LoopAnimation;
+import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
@@ -42,6 +43,7 @@ class CharacterEntities {
     Entity entity = engine.createEntity();
     entity.add(createPosition(coordinate));
     entity.add(getAnimation(player));
+    entity.add(engine.createComponent(Frame.class));
     characterMap.put(player, entity);
     engine.addEntity(entity);
   }
@@ -50,6 +52,7 @@ class CharacterEntities {
     Entity entity = engine.createEntity();
     entity.add(createPosition(coordinate));
     entity.add(getAnimation(enemy));
+    entity.add(engine.createComponent(Frame.class));
     characterMap.put(enemy, entity);
     engine.addEntity(entity);
   }
