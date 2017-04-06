@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.resource;
+package com.jingyuyao.tactical.view.world.resource;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

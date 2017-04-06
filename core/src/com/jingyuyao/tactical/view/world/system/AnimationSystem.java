@@ -6,9 +6,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.jingyuyao.tactical.view.resource.LoopAnimation;
-import com.jingyuyao.tactical.view.resource.SingleAnimation;
 import com.jingyuyao.tactical.view.world.component.Frame;
+import com.jingyuyao.tactical.view.world.resource.LoopAnimation;
+import com.jingyuyao.tactical.view.world.resource.SingleAnimation;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

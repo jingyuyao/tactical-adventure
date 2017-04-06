@@ -1,10 +1,10 @@
-package com.jingyuyao.tactical.view.resource;
+package com.jingyuyao.tactical.view.world.resource;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
-import com.jingyuyao.tactical.view.resource.ResourceModule.LoopAnimationCache;
-import com.jingyuyao.tactical.view.resource.ResourceModule.WorldTextureCache;
+import com.jingyuyao.tactical.view.world.resource.ResourceModule.LoopAnimationCache;
+import com.jingyuyao.tactical.view.world.resource.ResourceModule.WorldTextureCache;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;

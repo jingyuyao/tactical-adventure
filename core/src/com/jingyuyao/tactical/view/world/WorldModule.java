@@ -16,6 +16,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.view.world.component.ComponentModule;
+import com.jingyuyao.tactical.view.world.resource.ResourceModule;
 import com.jingyuyao.tactical.view.world.system.AnimationSystem;
 import com.jingyuyao.tactical.view.world.system.MovingSystem;
 import com.jingyuyao.tactical.view.world.system.RemoveSystem;
@@ -37,6 +38,7 @@ public class WorldModule extends AbstractModule {
     requireBinding(Graphics.class);
 
     install(new ComponentModule());
+    install(new ResourceModule());
   }
 
   @Provides

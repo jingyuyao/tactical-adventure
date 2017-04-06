@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.resource;
+package com.jingyuyao.tactical.view.world.resource;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.resource.ResourceModule;
 import com.jingyuyao.tactical.view.ui.UIModule;
 import com.jingyuyao.tactical.view.world.WorldModule;
 
@@ -20,7 +19,6 @@ public class ViewModule extends AbstractModule {
     requireBinding(Batch.class);
     requireBinding(WorldController.class);
 
-    install(new ResourceModule());
     install(new UIModule());
     install(new WorldModule());
   }

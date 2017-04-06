@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.resource;
+package com.jingyuyao.tactical.view.world.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.eq;

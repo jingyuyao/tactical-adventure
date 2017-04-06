@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view.resource;
+package com.jingyuyao.tactical.view.world.resource;
 
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.jingyuyao.tactical.model.event.MyFuture;

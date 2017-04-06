@@ -4,11 +4,11 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.resource.LoopAnimation;
-import com.jingyuyao.tactical.view.resource.SingleAnimation;
-import com.jingyuyao.tactical.view.resource.WorldTexture;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.resource.LoopAnimation;
+import com.jingyuyao.tactical.view.world.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

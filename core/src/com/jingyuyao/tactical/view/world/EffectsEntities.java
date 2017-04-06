@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.view.world;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.resource.Animations;
-import com.jingyuyao.tactical.view.resource.SingleAnimation;
+import com.jingyuyao.tactical.view.world.resource.Animations;
+import com.jingyuyao.tactical.view.world.resource.SingleAnimation;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

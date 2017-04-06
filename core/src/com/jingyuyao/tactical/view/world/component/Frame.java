@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.world.component;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.view.resource.WorldTexture;
+import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import java.util.ArrayList;
 import java.util.List;
 
