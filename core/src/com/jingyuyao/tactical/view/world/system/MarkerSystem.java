@@ -10,7 +10,6 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.world.WorldZIndex;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;

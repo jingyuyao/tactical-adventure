@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.world.WorldZIndex;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import javax.inject.Inject;
