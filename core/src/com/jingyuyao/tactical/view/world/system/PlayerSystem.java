@@ -17,7 +17,7 @@ class PlayerSystem extends IteratingSystem {
   private final ComponentMapper<Frame> frameMapper;
 
   @Inject
-  public PlayerSystem(
+  PlayerSystem(
       ComponentMapper<PlayerComponent> playerMapper,
       ComponentMapper<Frame> frameMapper) {
     super(Family.all(PlayerComponent.class, Frame.class).get(), SystemPriority.PLAYER);

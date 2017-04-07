@@ -20,7 +20,7 @@ class MovingSystem extends IteratingSystem {
   private final ComponentMapper<Moving> movingMapper;
 
   @Inject
-  public MovingSystem(
+  MovingSystem(
       ComponentMapper<Position> positionMapper,
       ComponentMapper<Moving> movingMapper) {
     super(Family.all(Position.class, Moving.class).get(), SystemPriority.MOVING);
