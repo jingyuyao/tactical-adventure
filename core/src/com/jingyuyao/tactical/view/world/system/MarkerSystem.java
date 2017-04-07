@@ -37,8 +37,8 @@ public class MarkerSystem extends EntitySystem {
   private final ComponentMapper<Frame> frameMapper;
   private final CharacterSystem characterSystem;
   private ImmutableArray<Entity> marked;
-  private ImmutableArray<Entity> highlight;
-  private ImmutableArray<Entity> activated;
+  private Entity highlight;
+  private Entity activated;
 
   @Inject
   MarkerSystem(
@@ -56,22 +56,19 @@ public class MarkerSystem extends EntitySystem {
   @Override
   public void addedToEngine(Engine engine) {
     marked = engine.getEntitiesFor(Family.all(Marked.class).get());
-    highlight = engine.getEntitiesFor(Family.all(Highlight.class).get());
-    activated = engine.getEntitiesFor(Family.all(Activated.class).get());
   }
 
   @Subscribe
   void selectCell(SelectCell selectCell) {
-    Entity entity;
-    if (highlight.size() == 0) {
-      entity = ecf.entity();
-      entity.add(ecf.frame(markers.getHighlight()));
-      entity.add(ecf.component(Highlight.class));
-    } else {
-      entity = highlight.first();
+    if (highlight != null) {
+      highlight.add(ecf.component(Remove.class));
     }
+
     Cell cell = selectCell.getObject();
-    entity.add(ecf.position(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER));
+    // create a new entity every time to make sure it is in the engine
+    highlight = ecf.entity();
+    highlight.add(ecf.frame(markers.getHighlight()));
+    highlight.add(ecf.position(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER));
   }
 
   @Subscribe
@@ -120,19 +117,10 @@ public class MarkerSystem extends EntitySystem {
 
   @Subscribe
   void exitState(ExitState exitState) {
-    // TODO: BUG, might not deactivate if activate() is called within the same frame
     for (Entity entity : marked) {
       entity.add(ecf.component(Remove.class));
     }
     deactivate();
-  }
-
-  private void activate(Entity entity) {
-    Preconditions.checkArgument(frameMapper.has(entity));
-    deactivate();
-    Frame frame = frameMapper.get(entity);
-    frame.addOverlay(markers.getActivated());
-    entity.add(ecf.component(Activated.class));
   }
 
   private void mark(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
@@ -142,31 +130,23 @@ public class MarkerSystem extends EntitySystem {
     entity.add(ecf.component(Marked.class));
   }
 
+  private void activate(Entity entity) {
+    deactivate();
+    Frame frame = frameMapper.get(entity);
+    Preconditions.checkNotNull(frame);
+    frame.addOverlay(markers.getActivated());
+    activated = entity;
+  }
+
   private void deactivate() {
-    for (Entity entity : activated) {
-      Frame frame = frameMapper.get(entity);
+    if (activated != null) {
+      Frame frame = frameMapper.get(activated);
       frame.removeOverlay(markers.getActivated());
-      entity.remove(Activated.class);
+      activated = null;
     }
   }
 
   private static class Marked implements Component, Poolable {
-
-    @Override
-    public void reset() {
-
-    }
-  }
-
-  private static class Highlight implements Component, Poolable {
-
-    @Override
-    public void reset() {
-
-    }
-  }
-
-  private static class Activated implements Component, Poolable {
 
     @Override
     public void reset() {
