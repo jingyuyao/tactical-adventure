@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.view;
+package com.jingyuyao.tactical.screen;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.view.ui.UI;
+import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class WorldScreenTest {
   @Mock
   private WorldView worldView;
   @Mock
-  private UI ui;
+  private WorldUI worldUI;
   @Mock
   private EventBus eventBus;
   @Mock
@@ -45,7 +45,7 @@ public class WorldScreenTest {
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(gl, input, worldView, ui);
+    worldScreen = new WorldScreen(gl, input, worldView, worldUI);
   }
 
   @Test
@@ -53,12 +53,12 @@ public class WorldScreenTest {
     worldScreen.register(eventBus);
 
     verify(worldView).register(eventBus);
-    verify(ui).register(eventBus);
+    verify(worldUI).register(eventBus);
   }
 
   @Test
   public void show() {
-    when(ui.getInputProcessor()).thenReturn(inputProcessor1);
+    when(worldUI.getInputProcessor()).thenReturn(inputProcessor1);
     when(worldView.getInputProcessor()).thenReturn(inputProcessor2);
 
     worldScreen.show();
@@ -80,11 +80,11 @@ public class WorldScreenTest {
   public void render() {
     worldScreen.render(10f);
 
-    InOrder inOrder = Mockito.inOrder(worldView, ui, gl);
-    inOrder.verify(ui).act(10f);
+    InOrder inOrder = Mockito.inOrder(worldView, worldUI, gl);
+    inOrder.verify(worldUI).act(10f);
     inOrder.verify(gl).glClear(GL20.GL_COLOR_BUFFER_BIT);
     inOrder.verify(worldView).update(10f);
-    inOrder.verify(ui).draw();
+    inOrder.verify(worldUI).draw();
   }
 
   @Test
@@ -92,13 +92,13 @@ public class WorldScreenTest {
     worldScreen.resize(20, 30);
 
     verify(worldView).resize(20, 30);
-    verify(ui).resize(20, 30);
+    verify(worldUI).resize(20, 30);
   }
 
   @Test
   public void dispose() {
     worldScreen.dispose();
 
-    verify(ui).dispose();
+    verify(worldUI).dispose();
   }
 }

@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-public class UIModule extends AbstractModule {
+public class WorldUIModule extends AbstractModule {
 
   @Override
   protected void configure() {

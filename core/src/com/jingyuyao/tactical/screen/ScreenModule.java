@@ -8,6 +8,8 @@ import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.screen.play.PlayMenuModule;
+import com.jingyuyao.tactical.view.ui.WorldUI;
+import com.jingyuyao.tactical.view.world.WorldView;
 
 public class ScreenModule extends AbstractModule {
 
@@ -19,6 +21,8 @@ public class ScreenModule extends AbstractModule {
     requireBinding(Skin.class);
     requireBinding(GameState.class);
     requireBinding(DataManager.class);
+    requireBinding(WorldView.class);
+    requireBinding(WorldUI.class);
 
     install(new PlayMenuModule());
   }
