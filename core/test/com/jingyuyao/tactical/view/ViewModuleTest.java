@@ -14,6 +14,7 @@ import com.google.inject.Injector;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
+import com.jingyuyao.tactical.controller.WorldCamera;
 import com.jingyuyao.tactical.controller.WorldController;
 import javax.inject.Inject;
 import org.junit.BeforeClass;
@@ -28,6 +29,9 @@ public class ViewModuleTest {
   @Bind
   @Mock
   private WorldController worldController;
+  @Bind
+  @Mock
+  private WorldCamera worldCamera;
 
   @Inject
   private WorldScreen worldScreen;

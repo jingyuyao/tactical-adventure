@@ -5,13 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.Model;
@@ -29,10 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldControllerTest {
 
   @Mock
-  private Input input;
-  @Mock
-  private Stage uiStage;
-  @Mock
   private Viewport worldViewport;
   @Mock
   private WorldCamera worldCamera;
@@ -45,33 +36,13 @@ public class WorldControllerTest {
   @Mock
   private Cell cell;
   @Captor
-  private ArgumentCaptor<InputProcessor> inputProcessorCaptor;
-  @Captor
   private ArgumentCaptor<Vector3> vector3Captor;
 
   private WorldController worldController;
 
   @Before
   public void setUp() {
-    worldController = new WorldController(input, uiStage, worldViewport, worldCamera, model, world);
-  }
-
-  @Test
-  public void receive_input() {
-    worldController.receiveInput();
-
-    verify(input).setInputProcessor(inputProcessorCaptor.capture());
-    assertThat(inputProcessorCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
-    InputMultiplexer multiplexer = (InputMultiplexer) inputProcessorCaptor.getValue();
-    Array<InputProcessor> processors = multiplexer.getProcessors();
-    assertThat(processors).containsExactly(uiStage, worldCamera, worldController).inOrder();
-  }
-
-  @Test
-  public void stop_receiving_input() {
-    worldController.stopReceivingInput();
-
-    verify(input).setInputProcessor(null);
+    worldController = new WorldController(worldViewport, worldCamera, model, world);
   }
 
   @Test

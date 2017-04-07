@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.view.ui;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
@@ -21,6 +22,10 @@ public class UI {
 
   public void register(EventBus eventBus) {
     uiLayout.register(eventBus);
+  }
+
+  public InputProcessor getInputProcessor() {
+    return stage;
   }
 
   public void act(float delta) {

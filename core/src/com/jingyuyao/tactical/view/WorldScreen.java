@@ -1,9 +1,10 @@
 package com.jingyuyao.tactical.view;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.UI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
@@ -13,20 +14,16 @@ import javax.inject.Singleton;
 public class WorldScreen extends ScreenAdapter {
 
   private final GL20 gl;
+  private final Input input;
   private final WorldView worldView;
   private final UI ui;
-  private final WorldController worldController;
 
   @Inject
-  WorldScreen(
-      GL20 gl,
-      WorldView worldView,
-      UI ui,
-      WorldController worldController) {
+  WorldScreen(GL20 gl, Input input, WorldView worldView, UI ui) {
     this.gl = gl;
+    this.input = input;
     this.worldView = worldView;
     this.ui = ui;
-    this.worldController = worldController;
   }
 
   public void register(EventBus eventBus) {
@@ -36,12 +33,13 @@ public class WorldScreen extends ScreenAdapter {
 
   @Override
   public void show() {
-    worldController.receiveInput();
+    input.setInputProcessor(
+        new InputMultiplexer(ui.getInputProcessor(), worldView.getInputProcessor()));
   }
 
   @Override
   public void hide() {
-    worldController.stopReceivingInput();
+    input.setInputProcessor(null);
   }
 
   @Override

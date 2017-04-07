@@ -1,15 +1,21 @@
 package com.jingyuyao.tactical.view;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.UI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,19 +27,25 @@ public class WorldScreenTest {
   @Mock
   private GL20 gl;
   @Mock
+  private Input input;
+  @Mock
   private WorldView worldView;
   @Mock
   private UI ui;
   @Mock
-  private WorldController worldController;
-  @Mock
-  private WorldScreen worldScreen;
-  @Mock
   private EventBus eventBus;
+  @Mock
+  private InputProcessor inputProcessor1;
+  @Mock
+  private InputProcessor inputProcessor2;
+  @Captor
+  private ArgumentCaptor<InputProcessor> argumentCaptor;
+
+  private WorldScreen worldScreen;
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(gl, worldView, ui, worldController);
+    worldScreen = new WorldScreen(gl, input, worldView, ui);
   }
 
   @Test
@@ -46,16 +58,22 @@ public class WorldScreenTest {
 
   @Test
   public void show() {
+    when(ui.getInputProcessor()).thenReturn(inputProcessor1);
+    when(worldView.getInputProcessor()).thenReturn(inputProcessor2);
+
     worldScreen.show();
 
-    verify(worldController).receiveInput();
+    verify(input).setInputProcessor(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
+    InputMultiplexer multiplexer = (InputMultiplexer) argumentCaptor.getValue();
+    assertThat(multiplexer.getProcessors()).containsExactly(inputProcessor1, inputProcessor2);
   }
 
   @Test
   public void hide() {
     worldScreen.hide();
 
-    verify(worldController).stopReceivingInput();
+    verify(input).setInputProcessor(null);
   }
 
   @Test

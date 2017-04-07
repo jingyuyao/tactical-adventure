@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class WorldCamera extends InputAdapter {
+public class WorldCamera extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
   private final Viewport worldViewport;

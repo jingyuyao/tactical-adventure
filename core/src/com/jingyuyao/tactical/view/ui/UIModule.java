@@ -45,7 +45,7 @@ public class UIModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface UIStage {
+  @interface UIStage {
 
   }
 

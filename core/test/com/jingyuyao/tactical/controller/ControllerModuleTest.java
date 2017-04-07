@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.controller;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -8,7 +7,6 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import org.junit.Test;
@@ -25,10 +23,6 @@ public class ControllerModuleTest {
   @Bind
   @Mock
   private World world;
-  @Bind
-  @Mock
-  @UIStage
-  private Stage uiStage;
   @Bind
   @Mock
   @WorldViewport
