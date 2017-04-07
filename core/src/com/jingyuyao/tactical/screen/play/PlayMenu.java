@@ -1,10 +1,10 @@
-package com.jingyuyao.tactical.menu.play;
+package com.jingyuyao.tactical.screen.play;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.menu.play.PlayMenuModule.PlayMenuStage;
+import com.jingyuyao.tactical.screen.play.PlayMenuModule.PlayMenuStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

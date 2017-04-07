@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.menu;
+package com.jingyuyao.tactical.screen;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.menu.play.PlayMenuModule;
+import com.jingyuyao.tactical.screen.play.PlayMenuModule;
 
-public class MenuModule extends AbstractModule {
+public class ScreenModule extends AbstractModule {
 
   @Override
   protected void configure() {

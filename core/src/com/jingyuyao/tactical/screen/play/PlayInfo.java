@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.menu.play;
+package com.jingyuyao.tactical.screen.play;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

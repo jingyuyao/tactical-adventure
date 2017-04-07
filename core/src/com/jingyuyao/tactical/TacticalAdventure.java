@@ -4,8 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
-import com.jingyuyao.tactical.menu.play.PlayMenu;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.screen.play.PlayMenu;
 import com.jingyuyao.tactical.view.WorldScreen;
 import javax.inject.Inject;
 

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.menu.play;
+package com.jingyuyao.tactical.screen.play;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -16,7 +16,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.menu.MenuConfig;
+import com.jingyuyao.tactical.screen.ScreenConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -30,7 +30,7 @@ public class PlayMenuModule extends AbstractModule {
     requireBinding(GL20.class);
     requireBinding(Batch.class);
     requireBinding(Skin.class);
-    requireBinding(MenuConfig.class);
+    requireBinding(ScreenConfig.class);
     requireBinding(GameState.class);
     requireBinding(DataManager.class);
   }
@@ -38,9 +38,10 @@ public class PlayMenuModule extends AbstractModule {
   @Provides
   @Singleton
   @PlayMenuStage
-  Stage providePlayMenuStage(MenuConfig menuConfig, Batch batch) {
+  Stage providePlayMenuStage(ScreenConfig screenConfig, Batch batch) {
     Viewport viewport =
-        new StretchViewport(menuConfig.getMenuViewportWidth(), menuConfig.getMenuViewportHeight());
+        new StretchViewport(screenConfig.getMenuViewportWidth(),
+            screenConfig.getMenuViewportHeight());
     return new Stage(viewport, batch);
   }
 
