@@ -46,11 +46,11 @@ class MarkerSystem extends EntitySystem {
       Markers markers,
       ComponentMapper<Frame> frameMapper,
       CharacterSystem characterSystem) {
+    super(SystemPriority.MARKER);
     this.ecf = ecf;
     this.markers = markers;
     this.frameMapper = frameMapper;
     this.characterSystem = characterSystem;
-    this.priority = SystemPriority.MARKER;
   }
 
   @Override

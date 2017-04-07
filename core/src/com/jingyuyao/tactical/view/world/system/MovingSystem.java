@@ -23,10 +23,9 @@ class MovingSystem extends IteratingSystem {
   public MovingSystem(
       ComponentMapper<Position> positionMapper,
       ComponentMapper<Moving> movingMapper) {
-    super(Family.all(Position.class, Moving.class).get());
+    super(Family.all(Position.class, Moving.class).get(), SystemPriority.MOVING);
     this.positionMapper = positionMapper;
     this.movingMapper = movingMapper;
-    this.priority = SystemPriority.MOVING;
   }
 
   @Override

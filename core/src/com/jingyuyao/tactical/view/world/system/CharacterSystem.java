@@ -39,10 +39,10 @@ class CharacterSystem extends EntitySystem {
       ECF ecf,
       ComponentMapper<CharacterComponent> characterMapper,
       Animations animations) {
+    super(SystemPriority.CHARACTER);
     this.ecf = ecf;
     this.characterMapper = characterMapper;
     this.animations = animations;
-    this.priority = SystemPriority.CHARACTER;
   }
 
   @Override

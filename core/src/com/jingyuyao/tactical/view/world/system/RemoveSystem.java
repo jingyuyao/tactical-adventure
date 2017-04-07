@@ -17,8 +17,7 @@ class RemoveSystem extends IteratingSystem {
 
   @Inject
   RemoveSystem() {
-    super(Family.all(Remove.class).get());
-    this.priority = SystemPriority.REMOVE;
+    super(Family.all(Remove.class).get(), SystemPriority.REMOVE);
   }
 
   @Override

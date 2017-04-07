@@ -19,9 +19,9 @@ class EffectsSystem extends EntitySystem {
 
   @Inject
   EffectsSystem(ECF ecf, Animations animations) {
+    super(SystemPriority.EFFECTS);
     this.ecf = ecf;
     this.animations = animations;
-    this.priority = SystemPriority.EFFECTS;
   }
 
   @Subscribe

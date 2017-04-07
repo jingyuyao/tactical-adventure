@@ -32,12 +32,14 @@ class RenderSystem extends SortedIteratingSystem {
       @WorldViewport Viewport viewport,
       ComponentMapper<Position> positionMapper,
       ComponentMapper<Frame> frameMapper) {
-    super(Family.all(Position.class, Frame.class).get(), new ZComparator(positionMapper));
+    super(
+        Family.all(Position.class, Frame.class).get(),
+        new ZComparator(positionMapper),
+        SystemPriority.RENDER);
     this.batch = batch;
     this.viewport = viewport;
     this.positionMapper = positionMapper;
     this.frameMapper = frameMapper;
-    this.priority = SystemPriority.RENDER;
   }
 
   @Override

@@ -28,10 +28,10 @@ class AnimationSystem extends EntitySystem {
       ComponentMapper<LoopAnimation> loopAnimationMapper,
       ComponentMapper<SingleAnimation> singleAnimationMapper,
       ComponentMapper<Frame> frameMapper) {
+    super(SystemPriority.ANIMATION);
     this.loopAnimationMapper = loopAnimationMapper;
     this.singleAnimationMapper = singleAnimationMapper;
     this.frameMapper = frameMapper;
-    this.priority = SystemPriority.ANIMATION;
   }
 
   @Override

@@ -20,10 +20,9 @@ class PlayerSystem extends IteratingSystem {
   public PlayerSystem(
       ComponentMapper<PlayerComponent> playerMapper,
       ComponentMapper<Frame> frameMapper) {
-    super(Family.all(PlayerComponent.class, Frame.class).get());
+    super(Family.all(PlayerComponent.class, Frame.class).get(), SystemPriority.PLAYER);
     this.playerMapper = playerMapper;
     this.frameMapper = frameMapper;
-    this.priority = SystemPriority.PLAYER;
   }
 
   @Override
