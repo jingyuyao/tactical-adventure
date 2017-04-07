@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view;
 import static org.mockito.Mockito.verify;
 
 import com.badlogic.gdx.graphics.GL20;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.UI;
 import com.jingyuyao.tactical.view.world.WorldView;
@@ -27,10 +28,20 @@ public class WorldScreenTest {
   private WorldController worldController;
   @Mock
   private WorldScreen worldScreen;
+  @Mock
+  private EventBus eventBus;
 
   @Before
   public void setUp() {
     worldScreen = new WorldScreen(gl, worldView, ui, worldController);
+  }
+
+  @Test
+  public void register() {
+    worldScreen.register(eventBus);
+
+    verify(worldView).register(eventBus);
+    verify(ui).register(eventBus);
   }
 
   @Test

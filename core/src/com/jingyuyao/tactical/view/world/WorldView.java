@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.world;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,6 +23,10 @@ public class WorldView {
     this.worldEngine = worldEngine;
     this.mapRenderer = mapRenderer;
     this.viewport = viewport;
+  }
+
+  public void register(EventBus eventBus) {
+    worldEngine.register(eventBus);
   }
 
   public void update(float delta) {

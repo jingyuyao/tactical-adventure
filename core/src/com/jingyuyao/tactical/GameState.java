@@ -1,10 +1,15 @@
 package com.jingyuyao.tactical;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.google.common.eventbus.DeadEvent;
+import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.event.LevelComplete;
+import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,6 +17,7 @@ import javax.inject.Singleton;
 @Singleton
 public class GameState {
 
+  private final Application application;
   private final TacticalAdventure game;
   private final DataManager dataManager;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -20,11 +26,13 @@ public class GameState {
 
   @Inject
   GameState(
+      Application application,
       TacticalAdventure game,
       DataManager dataManager,
       OrthogonalTiledMapRenderer tiledMapRenderer,
       Model model,
       World world) {
+    this.application = application;
     this.game = game;
     this.dataManager = dataManager;
     this.tiledMapRenderer = tiledMapRenderer;
@@ -53,7 +61,8 @@ public class GameState {
     }
   }
 
-  void advanceLevel() {
+  @Subscribe
+  void levelComplete(LevelComplete levelComplete) {
     GameSave gameSave = dataManager.loadCurrentSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
@@ -66,9 +75,15 @@ public class GameState {
     game.goToPlayMenu();
   }
 
-  void replayLevel() {
+  @Subscribe
+  void levelFailed(LevelFailed levelFailed) {
     dataManager.removeProgress();
     model.reset();
     game.goToPlayMenu();
+  }
+
+  @Subscribe
+  void deadEvent(DeadEvent deadEvent) {
+    application.log("GameStateSubscriber", deadEvent.getEvent().toString());
   }
 }

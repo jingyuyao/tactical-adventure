@@ -35,8 +35,6 @@ public class GameModuleTest {
 
   @Inject
   private GameState gameState;
-  @Inject
-  private GameStateSubscriber gameStateSubscriber;
 
   @BeforeClass
   public static void setUpClass() {

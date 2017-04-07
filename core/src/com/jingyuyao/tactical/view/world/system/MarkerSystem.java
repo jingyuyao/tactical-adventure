@@ -9,32 +9,47 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.google.common.base.Preconditions;
+import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.SelectCell;
+import com.jingyuyao.tactical.model.item.Target;
+import com.jingyuyao.tactical.model.state.Battling;
+import com.jingyuyao.tactical.model.state.Moving;
+import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.SelectingTarget;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class MarkerSystem extends EntitySystem {
 
-  private final EntityFactory entityFactory;
+  private final ECF ecf;
   private final Markers markers;
   private final ComponentMapper<Frame> frameMapper;
+  private final CharacterSystem characterSystem;
   private ImmutableArray<Entity> marked;
   private ImmutableArray<Entity> highlight;
   private ImmutableArray<Entity> activated;
 
   @Inject
   MarkerSystem(
-      EntityFactory entityFactory,
+      ECF ecf,
       Markers markers,
-      ComponentMapper<Frame> frameMapper) {
-    this.entityFactory = entityFactory;
+      ComponentMapper<Frame> frameMapper,
+      CharacterSystem characterSystem) {
+    this.ecf = ecf;
     this.markers = markers;
     this.frameMapper = frameMapper;
+    this.characterSystem = characterSystem;
     this.priority = SystemPriority.MARKER;
   }
 
@@ -45,48 +60,86 @@ public class MarkerSystem extends EntitySystem {
     activated = engine.getEntitiesFor(Family.all(Activated.class).get());
   }
 
-  public void highlight(Coordinate coordinate) {
+  @Subscribe
+  void selectCell(SelectCell selectCell) {
     Entity entity;
     if (highlight.size() == 0) {
-      entity = entityFactory.bare();
-      entity.add(entityFactory.frame(markers.getHighlight()));
-      entity.add(entityFactory.component(Highlight.class));
+      entity = ecf.entity();
+      entity.add(ecf.frame(markers.getHighlight()));
+      entity.add(ecf.component(Highlight.class));
     } else {
       entity = highlight.first();
     }
-    entity.add(entityFactory.position(coordinate, WorldZIndex.HIGHLIGHT_MARKER));
+    Cell cell = selectCell.getObject();
+    entity.add(ecf.position(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER));
   }
 
-  public void activate(Entity entity) {
+  @Subscribe
+  void playerState(PlayerState playerState) {
+    activate(characterSystem.get(playerState.getPlayer()));
+  }
+
+  @Subscribe
+  void activatedEnemy(ActivatedEnemy activatedEnemy) {
+    activate(characterSystem.get(activatedEnemy.getObject()));
+  }
+
+  @Subscribe
+  void moving(Moving moving) {
+    for (Cell cell : moving.getMovement().getCells()) {
+      mark(cell.getCoordinate(), WorldZIndex.MOVE_MARKER, markers.getMove());
+    }
+  }
+
+  @Subscribe
+  void selectingTarget(SelectingTarget selectingTarget) {
+    Set<Cell> targetCells = new HashSet<>();
+    Set<Cell> selectCells = new HashSet<>();
+    for (Target target : selectingTarget.getTargets()) {
+      targetCells.addAll(target.getTargetCells());
+      selectCells.addAll(target.getSelectCells());
+    }
+    for (Cell cell : targetCells) {
+      mark(cell.getCoordinate(), WorldZIndex.ATTACK_MARKER, markers.getAttack());
+    }
+    for (Cell cell : selectCells) {
+      mark(cell.getCoordinate(), WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
+    }
+  }
+
+  @Subscribe
+  void battling(Battling battling) {
+    Target target = battling.getTarget();
+    for (Cell cell : target.getTargetCells()) {
+      mark(cell.getCoordinate(), WorldZIndex.ATTACK_MARKER, markers.getAttack());
+    }
+    for (Cell cell : target.getSelectCells()) {
+      mark(cell.getCoordinate(), WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
+    }
+  }
+
+  @Subscribe
+  void exitState(ExitState exitState) {
+    // TODO: BUG, might not deactivate if activate() is called within the same frame
+    for (Entity entity : marked) {
+      entity.add(ecf.component(Remove.class));
+    }
+    deactivate();
+  }
+
+  private void activate(Entity entity) {
     Preconditions.checkArgument(frameMapper.has(entity));
     deactivate();
     Frame frame = frameMapper.get(entity);
     frame.addOverlay(markers.getActivated());
-    entity.add(entityFactory.component(Activated.class));
-  }
-
-  public void markMove(Coordinate coordinate) {
-    mark(coordinate, WorldZIndex.MOVE_MARKER, markers.getMove());
-  }
-
-  public void markAttack(Coordinate coordinate) {
-    mark(coordinate, WorldZIndex.ATTACK_MARKER, markers.getAttack());
-  }
-
-  public void markTargetSelect(Coordinate coordinate) {
-    mark(coordinate, WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
-  }
-
-  public void removeMarkers() {
-    for (Entity entity : marked) {
-      entity.add(entityFactory.component(Remove.class));
-    }
-    deactivate();
+    entity.add(ecf.component(Activated.class));
   }
 
   private void mark(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
-    Entity entity = entityFactory.idle(coordinate, zIndex, worldTexture);
-    entity.add(entityFactory.component(Marked.class));
+    Entity entity = ecf.entity();
+    entity.add(ecf.position(coordinate, zIndex));
+    entity.add(ecf.frame(worldTexture));
+    entity.add(ecf.component(Marked.class));
   }
 
   private void deactivate() {

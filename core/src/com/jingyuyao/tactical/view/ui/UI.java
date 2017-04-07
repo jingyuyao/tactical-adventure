@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.view.ui.UIModule.UIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -9,11 +10,17 @@ import javax.inject.Singleton;
 public class UI {
 
   private final Stage stage;
+  private final UILayout uiLayout;
 
   @Inject
-  UI(@UIStage Stage stage, RootTable rootTable) {
+  UI(@UIStage Stage stage, UILayout uiLayout) {
     this.stage = stage;
-    stage.addActor(rootTable);
+    this.uiLayout = uiLayout;
+    this.stage.addActor(uiLayout);
+  }
+
+  public void register(EventBus eventBus) {
+    uiLayout.register(eventBus);
   }
 
   public void act(float delta) {

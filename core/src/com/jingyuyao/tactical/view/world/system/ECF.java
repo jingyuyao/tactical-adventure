@@ -9,53 +9,31 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
-import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
-import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * All methods adds the created {@link Entity} to the {@link Engine}
+ * Entity component factory.
  */
 @Singleton
-class EntityFactory {
+class ECF {
 
   private final Engine engine;
 
   @Inject
-  EntityFactory(Engine engine) {
+  ECF(Engine engine) {
     this.engine = engine;
   }
 
-  Entity bare() {
+  /**
+   * Creates an {@link Entity} and adds it to the {@link Engine}.
+   */
+  Entity entity() {
     Entity entity = engine.createEntity();
     engine.addEntity(entity);
-    return entity;
-  }
-
-  Entity idle(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
-    Entity entity = bare();
-    entity.add(position(coordinate, zIndex));
-    entity.add(frame(worldTexture));
-    return entity;
-  }
-
-  Entity animated(Coordinate coordinate, int zIndex, LoopAnimation loopAnimation, Color color) {
-    Entity entity = bare();
-    entity.add(position(coordinate, zIndex));
-    entity.add(frame(color));
-    entity.add(loopAnimation);
-    return entity;
-  }
-
-  Entity animated(Coordinate coordinate, int zIndex, SingleAnimation singleAnimation) {
-    Entity entity = bare();
-    entity.add(position(coordinate, zIndex));
-    entity.add(frame());
-    entity.add(singleAnimation);
     return entity;
   }
 

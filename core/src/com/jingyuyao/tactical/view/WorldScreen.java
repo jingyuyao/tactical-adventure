@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.UI;
 import com.jingyuyao.tactical.view.world.WorldView;
@@ -26,6 +27,11 @@ public class WorldScreen extends ScreenAdapter {
     this.worldView = worldView;
     this.ui = ui;
     this.worldController = worldController;
+  }
+
+  public void register(EventBus eventBus) {
+    worldView.register(eventBus);
+    ui.register(eventBus);
   }
 
   @Override
