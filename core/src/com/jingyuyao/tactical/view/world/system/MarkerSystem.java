@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MarkerSystem extends EntitySystem {
+class MarkerSystem extends EntitySystem {
 
   private final ECF ecf;
   private final Markers markers;

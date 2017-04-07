@@ -13,7 +13,7 @@ import javax.inject.Singleton;
  * com.badlogic.ashley.core.Engine#removeEntity(Entity)}.
  */
 @Singleton
-public class RemoveSystem extends IteratingSystem {
+class RemoveSystem extends IteratingSystem {
 
   @Inject
   RemoveSystem() {

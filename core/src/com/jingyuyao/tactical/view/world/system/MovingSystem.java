@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class MovingSystem extends IteratingSystem {
+class MovingSystem extends IteratingSystem {
 
   private static final float MOVING_RATE = 5f;
 

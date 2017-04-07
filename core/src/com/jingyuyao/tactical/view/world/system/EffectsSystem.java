@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class EffectsSystem extends EntitySystem {
+class EffectsSystem extends EntitySystem {
 
   private final ECF ecf;
   private final Animations animations;

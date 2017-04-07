@@ -5,14 +5,8 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.view.world.system.AnimationSystem;
-import com.jingyuyao.tactical.view.world.system.CharacterSystem;
-import com.jingyuyao.tactical.view.world.system.EffectsSystem;
-import com.jingyuyao.tactical.view.world.system.MarkerSystem;
-import com.jingyuyao.tactical.view.world.system.MovingSystem;
-import com.jingyuyao.tactical.view.world.system.PlayerSystem;
-import com.jingyuyao.tactical.view.world.system.RemoveSystem;
-import com.jingyuyao.tactical.view.world.system.RenderSystem;
+import com.jingyuyao.tactical.view.world.system.SystemModule.EntitySystems;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -22,25 +16,11 @@ class WorldEngine {
   private final Engine engine;
 
   @Inject
-  WorldEngine(
-      Engine engine,
-      AnimationSystem animationSystem,
-      CharacterSystem characterSystem,
-      EffectsSystem effectsSystem,
-      MarkerSystem markerSystem,
-      MovingSystem movingSystem,
-      PlayerSystem playerSystem,
-      RemoveSystem removeSystem,
-      RenderSystem renderSystem) {
+  WorldEngine(Engine engine, @EntitySystems List<EntitySystem> entitySystems) {
     this.engine = engine;
-    engine.addSystem(animationSystem);
-    engine.addSystem(characterSystem);
-    engine.addSystem(effectsSystem);
-    engine.addSystem(markerSystem);
-    engine.addSystem(movingSystem);
-    engine.addSystem(playerSystem);
-    engine.addSystem(removeSystem);
-    engine.addSystem(renderSystem);
+    for (EntitySystem system : entitySystems) {
+      engine.addSystem(system);
+    }
   }
 
   void register(EventBus eventBus) {

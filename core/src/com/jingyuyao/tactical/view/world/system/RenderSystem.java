@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class RenderSystem extends SortedIteratingSystem {
+class RenderSystem extends SortedIteratingSystem {
 
   private final Batch batch;
   private final Viewport viewport;

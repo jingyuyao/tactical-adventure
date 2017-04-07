@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class CharacterSystem extends EntitySystem {
+class CharacterSystem extends EntitySystem {
 
   private final ECF ecf;
   private final ComponentMapper<CharacterComponent> characterMapper;

@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class AnimationSystem extends EntitySystem {
+class AnimationSystem extends EntitySystem {
 
   private final ComponentMapper<LoopAnimation> loopAnimationMapper;
   private final ComponentMapper<SingleAnimation> singleAnimationMapper;

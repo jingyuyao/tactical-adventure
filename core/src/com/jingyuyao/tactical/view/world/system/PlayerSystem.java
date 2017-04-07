@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class PlayerSystem extends IteratingSystem {
+class PlayerSystem extends IteratingSystem {
 
   private final ComponentMapper<PlayerComponent> playerMapper;
   private final ComponentMapper<Frame> frameMapper;
