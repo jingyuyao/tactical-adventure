@@ -18,6 +18,6 @@ public class CharacterComponent implements Component, Poolable {
 
   @Override
   public void reset() {
-
+    character = null;
   }
 }

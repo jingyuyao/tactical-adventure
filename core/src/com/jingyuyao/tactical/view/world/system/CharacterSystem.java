@@ -56,7 +56,7 @@ class CharacterSystem extends EntitySystem {
    * Could be constant time if we keep a map but then we would be holding references to entities
    * outside of the engine which is a bad practice.
    */
-  public Entity get(final Character character) {
+  Entity get(final Character character) {
     return Iterables.find(entities, new Predicate<Entity>() {
       @Override
       public boolean apply(Entity input) {

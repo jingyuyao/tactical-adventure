@@ -38,7 +38,7 @@ class MarkerSystem extends EntitySystem {
   private final CharacterSystem characterSystem;
   private ImmutableArray<Entity> marked;
   private Entity highlight;
-  private Entity activated;
+  private Frame activated;
 
   @Inject
   MarkerSystem(
@@ -135,13 +135,12 @@ class MarkerSystem extends EntitySystem {
     Frame frame = frameMapper.get(entity);
     Preconditions.checkNotNull(frame);
     frame.addOverlay(markers.getActivated());
-    activated = entity;
+    activated = frame;
   }
 
   private void deactivate() {
     if (activated != null) {
-      Frame frame = frameMapper.get(activated);
-      frame.removeOverlay(markers.getActivated());
+      activated.removeOverlay(markers.getActivated());
       activated = null;
     }
   }

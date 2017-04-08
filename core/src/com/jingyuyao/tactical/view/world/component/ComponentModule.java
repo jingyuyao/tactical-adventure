@@ -22,5 +22,7 @@ public class ComponentModule extends AbstractModule {
     }).toInstance(ComponentMapper.getFor(CharacterComponent.class));
     bind(new Key<ComponentMapper<PlayerComponent>>() {
     }).toInstance(ComponentMapper.getFor(PlayerComponent.class));
+    bind(new Key<ComponentMapper<Remove>>() {
+    }).toInstance(ComponentMapper.getFor(Remove.class));
   }
 }
