@@ -5,6 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Remove;
@@ -32,13 +33,14 @@ public class AnimationSystemTest {
 
   @Before
   public void setUp() {
-    engine = new Engine();
+    engine = new PooledEngine();
     animationSystem =
         new AnimationSystem(
             ComponentMapper.getFor(LoopAnimation.class),
             ComponentMapper.getFor(SingleAnimation.class),
             ComponentMapper.getFor(Frame.class));
     assertThat(animationSystem.priority).isEqualTo(SystemPriority.ANIMATION);
+    engine.addSystem(animationSystem);
   }
 
   @Test
@@ -49,7 +51,6 @@ public class AnimationSystemTest {
     Frame frame1 = new Frame();
     Frame frame2 = new Frame();
 
-    engine.addSystem(animationSystem);
     Entity entity1 = engine.createEntity();
     entity1.add(loopAnimation);
     entity1.add(frame1);
