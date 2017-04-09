@@ -15,12 +15,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class RemoveSystemTest {
 
   private Engine engine;
-  private RemoveSystem removeSystem;
 
   @Before
   public void setUp() {
     engine = new PooledEngine();
-    removeSystem = new RemoveSystem();
+    RemoveSystem removeSystem = new RemoveSystem();
+    assertThat(removeSystem.priority).isEqualTo(SystemPriority.REMOVE);
     engine.addSystem(removeSystem);
   }
 

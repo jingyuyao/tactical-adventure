@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view.world.system;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.jingyuyao.tactical.view.world.component.Frame;
@@ -28,13 +27,12 @@ public class AnimationSystemTest {
   private WorldTexture texture3;
 
   // Its better to depend on real Engine behavior rather than mocking
-  private Engine engine;
-  private AnimationSystem animationSystem;
+  private PooledEngine engine;
 
   @Before
   public void setUp() {
     engine = new PooledEngine();
-    animationSystem =
+    AnimationSystem animationSystem =
         new AnimationSystem(
             ComponentMapper.getFor(LoopAnimation.class),
             ComponentMapper.getFor(SingleAnimation.class),
