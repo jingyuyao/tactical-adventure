@@ -1,26 +1,21 @@
 package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
-import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
@@ -34,51 +29,37 @@ class MarkerSystem extends EntitySystem {
 
   private final ECF ecf;
   private final Markers markers;
-  private final ComponentMapper<Frame> frameMapper;
-  private final CharacterSystem characterSystem;
   private ImmutableArray<Entity> marked;
-  private Entity highlight;
-  private Frame activated;
+  private ImmutableArray<Entity> highlight;
 
   @Inject
-  MarkerSystem(
-      ECF ecf,
-      Markers markers,
-      ComponentMapper<Frame> frameMapper,
-      CharacterSystem characterSystem) {
+  MarkerSystem(ECF ecf, Markers markers) {
     super(SystemPriority.MARKER);
     this.ecf = ecf;
     this.markers = markers;
-    this.frameMapper = frameMapper;
-    this.characterSystem = characterSystem;
   }
 
   @Override
   public void addedToEngine(Engine engine) {
     marked = engine.getEntitiesFor(Family.all(Marked.class).get());
+    highlight = engine.getEntitiesFor(Family.all(Highlight.class).get());
   }
 
   @Subscribe
   void selectCell(SelectCell selectCell) {
-    if (highlight != null) {
-      highlight.add(ecf.component(Remove.class));
+    Entity entity;
+
+    // only one active highlight entity at a time
+    if (highlight.size() > 0) {
+      entity = highlight.first();
+    } else {
+      entity = ecf.entity();
+      entity.add(ecf.frame(markers.getHighlight()));
+      entity.add(ecf.component(Highlight.class));
     }
 
     Cell cell = selectCell.getObject();
-    // create a new entity every time to make sure it is in the engine
-    highlight = ecf.entity();
-    highlight.add(ecf.frame(markers.getHighlight()));
-    highlight.add(ecf.position(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER));
-  }
-
-  @Subscribe
-  void playerState(PlayerState playerState) {
-    activate(characterSystem.get(playerState.getPlayer()));
-  }
-
-  @Subscribe
-  void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    activate(characterSystem.get(activatedEnemy.getObject()));
+    entity.add(ecf.position(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER));
   }
 
   @Subscribe
@@ -120,7 +101,6 @@ class MarkerSystem extends EntitySystem {
     for (Entity entity : marked) {
       entity.add(ecf.component(Remove.class));
     }
-    deactivate();
   }
 
   private void mark(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
@@ -130,22 +110,15 @@ class MarkerSystem extends EntitySystem {
     entity.add(ecf.component(Marked.class));
   }
 
-  private void activate(Entity entity) {
-    deactivate();
-    Frame frame = frameMapper.get(entity);
-    Preconditions.checkNotNull(frame);
-    frame.addOverlay(markers.getActivated());
-    activated = frame;
-  }
+  private static class Marked implements Component, Poolable {
 
-  private void deactivate() {
-    if (activated != null) {
-      activated.removeOverlay(markers.getActivated());
-      activated = null;
+    @Override
+    public void reset() {
+
     }
   }
 
-  private static class Marked implements Component, Poolable {
+  private static class Highlight implements Component, Poolable {
 
     @Override
     public void reset() {

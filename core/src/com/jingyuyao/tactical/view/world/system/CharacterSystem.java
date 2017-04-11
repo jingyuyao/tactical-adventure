@@ -12,18 +12,23 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.event.MoveCharacter;
 import com.jingyuyao.tactical.model.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.CharacterComponent;
+import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
+import com.jingyuyao.tactical.view.world.resource.Markers;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,6 +38,8 @@ class CharacterSystem extends EntitySystem {
 
   private final ECF ecf;
   private final ComponentMapper<CharacterComponent> characterMapper;
+  private final ComponentMapper<Frame> frameMapper;
+  private final Markers markers;
   private final Animations animations;
   private ImmutableArray<Entity> entities;
 
@@ -40,32 +47,20 @@ class CharacterSystem extends EntitySystem {
   CharacterSystem(
       ECF ecf,
       ComponentMapper<CharacterComponent> characterMapper,
+      ComponentMapper<Frame> frameMapper,
+      Markers markers,
       Animations animations) {
     super(SystemPriority.CHARACTER);
     this.ecf = ecf;
     this.characterMapper = characterMapper;
+    this.frameMapper = frameMapper;
+    this.markers = markers;
     this.animations = animations;
   }
 
   @Override
   public void addedToEngine(Engine engine) {
     entities = engine.getEntitiesFor(Family.all(CharacterComponent.class).get());
-  }
-
-  /**
-   * O(n).
-   *
-   * Could be constant time if we keep a map but then we would be holding references to entities
-   * outside of the engine which is a bad practice.
-   */
-  Entity get(final Character character) {
-    return Iterables.find(entities, new Predicate<Entity>() {
-      @Override
-      public boolean apply(Entity input) {
-        CharacterComponent component = characterMapper.get(input);
-        return component != null && component.getCharacter().equals(character);
-      }
-    });
   }
 
   @Subscribe
@@ -103,6 +98,51 @@ class CharacterSystem extends EntitySystem {
     moving.setPath(smoothPath(moveCharacter.getPath().getTrack()));
     moving.setFuture(moveCharacter.getFuture());
     entity.add(moving);
+  }
+
+  @Subscribe
+  void playerState(PlayerState playerState) {
+    activate(playerState.getPlayer());
+  }
+
+  @Subscribe
+  void activatedEnemy(ActivatedEnemy activatedEnemy) {
+    activate(activatedEnemy.getObject());
+  }
+
+  @Subscribe
+  void exitState(ExitState exitState) {
+    deactivate();
+  }
+
+  /**
+   * O(n).
+   *
+   * Could be constant time if we keep a map but then we would be holding references to entities
+   * outside of the engine which is a bad practice.
+   */
+  private Entity get(final Character character) {
+    return Iterables.find(entities, new Predicate<Entity>() {
+      @Override
+      public boolean apply(Entity input) {
+        CharacterComponent component = characterMapper.get(input);
+        return component != null && component.getCharacter().equals(character);
+      }
+    });
+  }
+
+  private void activate(Character character) {
+    deactivate();
+    Entity entity = get(character);
+    Frame frame = frameMapper.get(entity);
+    frame.addOverlay(markers.getActivated());
+  }
+
+  private void deactivate() {
+    for (Entity entity : entities) {
+      Frame frame = frameMapper.get(entity);
+      frame.removeOverlay(markers.getActivated());
+    }
   }
 
   /**

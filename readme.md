@@ -52,6 +52,8 @@ injections, all model objects either need a no-args constructor or a Guice injec
 
 ## Views
 - Follows the Entity-Component design pattern
+- DO NOT HOLD REFERENCE TO ENTITY AND COMPONENTS OUTSIDE OF ENGINE
+  - We pool entity and components so holding reference outside of engine can have unintended effects
 - Only views should hold references to assets
 - Subscribes to various model events to update itself.
 - Should not change the model except to complete future events
