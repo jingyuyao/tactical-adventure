@@ -36,6 +36,7 @@ public class Movement {
    */
   public Path pathTo(Cell cell) {
     Preconditions.checkArgument(moveGraph.nodes().contains(cell));
+    Preconditions.checkArgument(!getStartingCell().equals(cell));
 
     return new Path(getTrackTo(moveGraph, cell));
   }

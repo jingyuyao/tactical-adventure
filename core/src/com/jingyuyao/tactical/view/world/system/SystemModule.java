@@ -13,6 +13,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
@@ -29,6 +30,7 @@ public class SystemModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(WorldConfig.class);
     requireBinding(Engine.class);
     requireBinding(new Key<ComponentMapper<Position>>() {
     });

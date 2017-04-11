@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.Position;
 import java.util.List;
@@ -14,16 +15,17 @@ import javax.inject.Singleton;
 @Singleton
 class MovingSystem extends IteratingSystem {
 
-  private static final float MOVING_RATE = 5f;
-
+  private final WorldConfig worldConfig;
   private final ComponentMapper<Position> positionMapper;
   private final ComponentMapper<Moving> movingMapper;
 
   @Inject
   MovingSystem(
+      WorldConfig worldConfig,
       ComponentMapper<Position> positionMapper,
       ComponentMapper<Moving> movingMapper) {
     super(Family.all(Position.class, Moving.class).get(), SystemPriority.MOVING);
+    this.worldConfig = worldConfig;
     this.positionMapper = positionMapper;
     this.movingMapper = movingMapper;
   }
@@ -55,12 +57,11 @@ class MovingSystem extends IteratingSystem {
   }
 
   private void moveTowards(Position position, Coordinate target, float delta) {
-    // TODO: this is not very smooth as there is a bit of spazzing when transition between coords
     float px = position.getX();
     float py = position.getY();
     float tx = target.getX();
     float ty = target.getY();
-    float distance = MOVING_RATE * delta;
+    float distance = delta * worldConfig.getCharacterMoveUnitPerSec();
 
     if (px < tx) {
       position.setX(Math.min(px + distance, tx));

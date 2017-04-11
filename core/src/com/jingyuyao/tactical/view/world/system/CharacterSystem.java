@@ -6,9 +6,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.character.Character;
@@ -18,11 +18,13 @@ import com.jingyuyao.tactical.model.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -98,16 +100,45 @@ class CharacterSystem extends EntitySystem {
   void moveCharacter(MoveCharacter moveCharacter) {
     Entity entity = get(moveCharacter.getCharacter());
     Moving moving = ecf.component(Moving.class);
-    moving.setPath(
-        FluentIterable
-            .from(moveCharacter.getPath().getTrack())
-            .transform(new Function<Cell, Coordinate>() {
-              @Override
-              public Coordinate apply(Cell input) {
-                return input.getCoordinate();
-              }
-            }).toList());
+    moving.setPath(smoothPath(moveCharacter.getPath().getTrack()));
     moving.setFuture(moveCharacter.getFuture());
     entity.add(moving);
+  }
+
+  /**
+   * Smooth out a track for animating the character. Removes any intermediate coordinate
+   * that are part of the same straight line. This will reduce the amount of animation hiccups.
+   */
+  private List<Coordinate> smoothPath(List<Cell> track) {
+    Preconditions.checkArgument(track.size() > 1);
+    if (track.size() == 2) {
+      return ImmutableList.of(track.get(1).getCoordinate());
+    }
+
+    ImmutableList.Builder<Coordinate> builder = ImmutableList.builder();
+    Coordinate origin = track.get(0).getCoordinate();
+    Coordinate second = track.get(1).getCoordinate();
+    Coordinate last = second;
+    Direction lastDirection = Direction.fromTo(origin, second);
+
+    // reduce part of a straight path to a single 'pivot' coordinate
+    for (int i = 2; i < track.size() - 1; i++) {
+      Coordinate current = track.get(i).getCoordinate();
+      Direction currentDirection = Direction.fromTo(last, current);
+      if (!currentDirection.equals(lastDirection)) {
+        builder.add(last);
+        lastDirection = currentDirection;
+      }
+      last = current;
+    }
+
+    // we always want the target coordinate to be the last on in the path
+    Coordinate target = track.get(track.size() - 1).getCoordinate();
+    if (!Direction.fromTo(last, target).equals(lastDirection)) {
+      builder.add(last);
+    }
+    builder.add(target);
+
+    return builder.build();
   }
 }
