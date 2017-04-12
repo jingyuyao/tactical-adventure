@@ -15,7 +15,6 @@ import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
@@ -65,7 +64,7 @@ class MarkerSystem extends EntitySystem {
   @Subscribe
   void moving(Moving moving) {
     for (Cell cell : moving.getMovement().getCells()) {
-      mark(cell.getCoordinate(), WorldZIndex.MOVE_MARKER, markers.getMove());
+      mark(cell, WorldZIndex.MOVE_MARKER, markers.getMove());
     }
   }
 
@@ -78,10 +77,10 @@ class MarkerSystem extends EntitySystem {
       selectCells.addAll(target.getSelectCells());
     }
     for (Cell cell : targetCells) {
-      mark(cell.getCoordinate(), WorldZIndex.ATTACK_MARKER, markers.getAttack());
+      mark(cell, WorldZIndex.ATTACK_MARKER, markers.getAttack());
     }
     for (Cell cell : selectCells) {
-      mark(cell.getCoordinate(), WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
+      mark(cell, WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
     }
   }
 
@@ -89,10 +88,10 @@ class MarkerSystem extends EntitySystem {
   void battling(Battling battling) {
     Target target = battling.getTarget();
     for (Cell cell : target.getTargetCells()) {
-      mark(cell.getCoordinate(), WorldZIndex.ATTACK_MARKER, markers.getAttack());
+      mark(cell, WorldZIndex.ATTACK_MARKER, markers.getAttack());
     }
     for (Cell cell : target.getSelectCells()) {
-      mark(cell.getCoordinate(), WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
+      mark(cell, WorldZIndex.TARGET_SELECT_MARKER, markers.getTargetSelect());
     }
   }
 
@@ -103,9 +102,9 @@ class MarkerSystem extends EntitySystem {
     }
   }
 
-  private void mark(Coordinate coordinate, int zIndex, WorldTexture worldTexture) {
+  private void mark(Cell cell, int zIndex, WorldTexture worldTexture) {
     Entity entity = ecf.entity();
-    entity.add(ecf.position(coordinate, zIndex));
+    entity.add(ecf.position(cell.getCoordinate(), zIndex));
     entity.add(ecf.frame(worldTexture));
     entity.add(ecf.component(Marked.class));
   }
