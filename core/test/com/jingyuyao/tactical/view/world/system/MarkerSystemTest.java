@@ -6,11 +6,16 @@ import static org.mockito.Mockito.when;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
+import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import org.junit.Before;
@@ -35,6 +40,12 @@ public class MarkerSystemTest {
   private SelectCell selectCell;
   @Mock
   private WorldTexture texture1;
+  @Mock
+  private Moving moving;
+  @Mock
+  private Movement movement;
+  @Mock
+  private ExitState exitState;
 
   private PooledEngine engine;
   private MarkerSystem markerSystem;
@@ -81,5 +92,44 @@ public class MarkerSystemTest {
     assertThat(position.getX()).isEqualTo((float) C2.getX());
     assertThat(position.getY()).isEqualTo((float) C2.getY());
     assertThat(position.getZ()).isEqualTo(WorldZIndex.HIGHLIGHT_MARKER);
+  }
+
+  @Test
+  public void moving() {
+    when(markers.getMove()).thenReturn(texture1);
+    when(moving.getMovement()).thenReturn(movement);
+    when(movement.getCells()).thenReturn(ImmutableList.of(cell, cell2));
+    when(cell.getCoordinate()).thenReturn(C1);
+    when(cell2.getCoordinate()).thenReturn(C2);
+
+    markerSystem.moving(moving);
+
+    ImmutableArray<Entity> entities = engine.getEntities();
+    assertThat(entities).hasSize(2);
+    Entity entity1 = entities.get(0);
+    Frame frame1 = entity1.getComponent(Frame.class);
+    Position position1 = entity1.getComponent(Position.class);
+    assertThat(frame1).isNotNull();
+    assertThat(frame1.getTexture()).hasValue(texture1);
+    assertThat(position1).isNotNull();
+    assertThat(position1.getX()).isEqualTo((float) C1.getX());
+    assertThat(position1.getY()).isEqualTo((float) C1.getY());
+    assertThat(position1.getZ()).isEqualTo(WorldZIndex.MOVE_MARKER);
+
+    Entity entity2 = entities.get(1);
+    Frame frame2 = entity2.getComponent(Frame.class);
+    Position position2 = entity2.getComponent(Position.class);
+    assertThat(frame2).isNotNull();
+    assertThat(frame2.getTexture()).hasValue(texture1);
+    assertThat(position2).isNotNull();
+    assertThat(position2.getX()).isEqualTo((float) C2.getX());
+    assertThat(position2.getY()).isEqualTo((float) C2.getY());
+    assertThat(position2.getZ()).isEqualTo(WorldZIndex.MOVE_MARKER);
+
+    // make sure the entities are tagged
+    markerSystem.exitState(exitState);
+
+    assertThat(entity1.getComponent(Remove.class)).isNotNull();
+    assertThat(entity2.getComponent(Remove.class)).isNotNull();
   }
 }
