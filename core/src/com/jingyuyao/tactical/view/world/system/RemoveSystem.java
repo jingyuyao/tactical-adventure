@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.view.world.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,5 +25,10 @@ class RemoveSystem extends IteratingSystem {
   @Override
   protected void processEntity(Entity entity, float deltaTime) {
     getEngine().removeEntity(entity);
+  }
+
+  @Subscribe
+  void worldReset(WorldReset worldReset) {
+    getEngine().removeAllEntities();
   }
 }
