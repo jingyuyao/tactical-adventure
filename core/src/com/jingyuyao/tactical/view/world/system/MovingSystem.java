@@ -38,6 +38,8 @@ class MovingSystem extends IteratingSystem {
     List<Coordinate> path = moving.getPath();
     Coordinate currentTarget = path.get(currentIndex);
 
+    moveTowards(position, currentTarget, deltaTime);
+
     if (samePosition(position, currentTarget)) {
       int nextIndex = currentIndex + 1;
       if (nextIndex < path.size()) {
@@ -46,8 +48,6 @@ class MovingSystem extends IteratingSystem {
         moving.getFuture().done();
         entity.remove(Moving.class);
       }
-    } else {
-      moveTowards(position, currentTarget, deltaTime);
     }
   }
 
