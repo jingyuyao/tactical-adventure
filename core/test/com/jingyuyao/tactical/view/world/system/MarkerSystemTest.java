@@ -6,10 +6,16 @@ import static org.mockito.Mockito.when;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
+import com.jingyuyao.tactical.model.item.Target;
+import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
+import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Movement;
@@ -41,9 +47,17 @@ public class MarkerSystemTest {
   @Mock
   private WorldTexture texture1;
   @Mock
+  private WorldTexture texture2;
+  @Mock
   private Moving moving;
   @Mock
+  private SelectingTarget selectingTarget;
+  @Mock
+  private Battling battling;
+  @Mock
   private Movement movement;
+  @Mock
+  private Target target;
   @Mock
   private ExitState exitState;
 
@@ -104,32 +118,81 @@ public class MarkerSystemTest {
 
     markerSystem.moving(moving);
 
-    ImmutableArray<Entity> entities = engine.getEntities();
-    assertThat(entities).hasSize(2);
-    Entity entity1 = entities.get(0);
-    Frame frame1 = entity1.getComponent(Frame.class);
-    Position position1 = entity1.getComponent(Position.class);
-    assertThat(frame1).isNotNull();
-    assertThat(frame1.getTexture()).hasValue(texture1);
-    assertThat(position1).isNotNull();
-    assertThat(position1.getX()).isEqualTo((float) C1.getX());
-    assertThat(position1.getY()).isEqualTo((float) C1.getY());
-    assertThat(position1.getZ()).isEqualTo(WorldZIndex.MOVE_MARKER);
-
-    Entity entity2 = entities.get(1);
-    Frame frame2 = entity2.getComponent(Frame.class);
-    Position position2 = entity2.getComponent(Position.class);
-    assertThat(frame2).isNotNull();
-    assertThat(frame2.getTexture()).hasValue(texture1);
-    assertThat(position2).isNotNull();
-    assertThat(position2.getX()).isEqualTo((float) C2.getX());
-    assertThat(position2.getY()).isEqualTo((float) C2.getY());
-    assertThat(position2.getZ()).isEqualTo(WorldZIndex.MOVE_MARKER);
+    assertContains(C1, WorldZIndex.MOVE_MARKER, texture1);
+    assertContains(C2, WorldZIndex.MOVE_MARKER, texture1);
 
     // make sure the entities are tagged
     markerSystem.exitState(exitState);
 
-    assertThat(entity1.getComponent(Remove.class)).isNotNull();
-    assertThat(entity2.getComponent(Remove.class)).isNotNull();
+    assertAllRemoved();
+  }
+
+  @Test
+  public void selecting_target() {
+    when(selectingTarget.getTargets()).thenReturn(ImmutableList.of(target));
+    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell));
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell2));
+    when(cell.getCoordinate()).thenReturn(C1);
+    when(cell2.getCoordinate()).thenReturn(C2);
+    when(markers.getTargetSelect()).thenReturn(texture1);
+    when(markers.getAttack()).thenReturn(texture2);
+
+    markerSystem.selectingTarget(selectingTarget);
+
+    assertContains(C1, WorldZIndex.TARGET_SELECT_MARKER, texture1);
+    assertContains(C2, WorldZIndex.ATTACK_MARKER, texture2);
+
+    markerSystem.exitState(exitState);
+
+    assertAllRemoved();
+  }
+
+  @Test
+  public void battling() {
+    when(battling.getTarget()).thenReturn(target);
+    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell));
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell2));
+    when(cell.getCoordinate()).thenReturn(C1);
+    when(cell2.getCoordinate()).thenReturn(C2);
+    when(markers.getTargetSelect()).thenReturn(texture1);
+    when(markers.getAttack()).thenReturn(texture2);
+
+    markerSystem.battling(battling);
+
+    assertContains(C1, WorldZIndex.TARGET_SELECT_MARKER, texture1);
+    assertContains(C2, WorldZIndex.ATTACK_MARKER, texture2);
+
+    markerSystem.exitState(exitState);
+
+    assertAllRemoved();
+  }
+
+  private void assertContains(
+      final Coordinate coordinate,
+      final int zIndex,
+      final WorldTexture worldTexture) {
+    assertThat(Iterables.any(engine.getEntities(), new Predicate<Entity>() {
+      @Override
+      public boolean apply(Entity input) {
+        Position position = input.getComponent(Position.class);
+        Frame frame = input.getComponent(Frame.class);
+        return position != null
+            && frame != null
+            && position.getX() == (float) coordinate.getX()
+            && position.getY() == (float) coordinate.getY()
+            && position.getZ() == zIndex
+            && frame.getTexture().isPresent()
+            && frame.getTexture().get() == worldTexture;
+      }
+    })).isTrue();
+  }
+
+  private void assertAllRemoved() {
+    assertThat(Iterables.all(engine.getEntities(), new Predicate<Entity>() {
+      @Override
+      public boolean apply(Entity input) {
+        return input.getComponent(Remove.class) != null;
+      }
+    })).isTrue();
   }
 }
