@@ -8,6 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
@@ -21,6 +22,8 @@ import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
+import com.jingyuyao.tactical.view.world.resource.Animations;
+import com.jingyuyao.tactical.view.world.resource.Markers;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
@@ -30,8 +33,11 @@ public class SystemModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    requireBinding(Batch.class);
     requireBinding(WorldConfig.class);
     requireBinding(Engine.class);
+    requireBinding(Animations.class);
+    requireBinding(Markers.class);
     requireBinding(new Key<ComponentMapper<Position>>() {
     });
     requireBinding(new Key<ComponentMapper<Frame>>() {
