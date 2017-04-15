@@ -37,25 +37,25 @@ import javax.inject.Singleton;
 class CharacterSystem extends EntitySystem {
 
   private final ECF ecf;
-  private final ComponentMapper<CharacterComponent> characterMapper;
-  private final ComponentMapper<Frame> frameMapper;
   private final Markers markers;
   private final Animations animations;
+  private final ComponentMapper<CharacterComponent> characterMapper;
+  private final ComponentMapper<Frame> frameMapper;
   private ImmutableArray<Entity> entities;
 
   @Inject
   CharacterSystem(
       ECF ecf,
-      ComponentMapper<CharacterComponent> characterMapper,
-      ComponentMapper<Frame> frameMapper,
       Markers markers,
-      Animations animations) {
+      Animations animations,
+      ComponentMapper<CharacterComponent> characterMapper,
+      ComponentMapper<Frame> frameMapper) {
     super(SystemPriority.CHARACTER);
     this.ecf = ecf;
-    this.characterMapper = characterMapper;
-    this.frameMapper = frameMapper;
     this.markers = markers;
     this.animations = animations;
+    this.characterMapper = characterMapper;
+    this.frameMapper = frameMapper;
   }
 
   @Override
@@ -150,7 +150,10 @@ class CharacterSystem extends EntitySystem {
    * that are part of the same straight line. This will reduce the amount of animation hiccups.
    */
   private List<Coordinate> smoothPath(List<Cell> track) {
-    Preconditions.checkArgument(track.size() > 1);
+    Preconditions.checkArgument(!track.isEmpty());
+    if (track.size() == 1) {
+      return ImmutableList.of(track.get(0).getCoordinate());
+    }
     if (track.size() == 2) {
       return ImmutableList.of(track.get(1).getCoordinate());
     }
