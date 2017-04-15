@@ -25,8 +25,8 @@ public class WorldView {
       WorldEngine worldEngine,
       OrthogonalTiledMapRenderer mapRenderer,
       @WorldViewport Viewport viewport,
-      WorldController worldController,
-      WorldCamera worldCamera) {
+      WorldCamera worldCamera,
+      WorldController worldController) {
     this.worldEngine = worldEngine;
     this.mapRenderer = mapRenderer;
     this.viewport = viewport;
