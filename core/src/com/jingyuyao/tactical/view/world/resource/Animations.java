@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
+import com.jingyuyao.tactical.view.world.resource.ResourceModule.AtlasRegionsCache;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule.LoopAnimationCache;
-import com.jingyuyao.tactical.view.world.resource.ResourceModule.WorldTextureCache;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +26,7 @@ public class Animations {
       TextureAtlas textureAtlas,
       TextureFactory textureFactory,
       @LoopAnimationCache Map<String, LoopAnimation> loopAnimationCache,
-      @WorldTextureCache Map<String, WorldTexture[]> atlasRegionsCache) {
+      @AtlasRegionsCache Map<String, WorldTexture[]> atlasRegionsCache) {
     this.resourceConfig = resourceConfig;
     this.textureFactory = textureFactory;
     this.loopAnimationCache = loopAnimationCache;

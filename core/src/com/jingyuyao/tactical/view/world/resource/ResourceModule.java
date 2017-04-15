@@ -5,7 +5,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -21,11 +20,9 @@ import javax.inject.Singleton;
 
 public class ResourceModule extends AbstractModule {
 
-  private static final String TEXTURE_ATLAS = "packed/texture.atlas";
-
   @Override
   protected void configure() {
-    requireBinding(AssetManager.class);
+    requireBinding(TextureAtlas.class);
     requireBinding(WorldConfig.class);
 
     install(new FactoryModuleBuilder().build(TextureFactory.class));
@@ -40,17 +37,16 @@ public class ResourceModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @WorldTextureCache
-  Map<String, WorldTexture[]> provideWorldTextureCache() {
+  @AtlasRegionsCache
+  Map<String, WorldTexture[]> provideAtlasRegionsCache() {
     return new HashMap<>();
   }
 
   @Provides
   @Singleton
-  TextureAtlas provideTextureAtlas(AssetManager assetManager) {
-    assetManager.load(TEXTURE_ATLAS, TextureAtlas.class);
-    assetManager.finishLoadingAsset(TEXTURE_ATLAS);
-    return assetManager.get(TEXTURE_ATLAS, TextureAtlas.class);
+  @MarkerTextureCache
+  Map<String, WorldTexture> provideMarkerTextureCache() {
+    return new HashMap<>();
   }
 
   @Qualifier
@@ -63,7 +59,14 @@ public class ResourceModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface WorldTextureCache {
+  @interface AtlasRegionsCache {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface MarkerTextureCache {
 
   }
 }
