@@ -4,12 +4,15 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Path to move in the world grid. Track begins includes both the starting and ending {@link Cell}.
+ * Path to move in the world grid.
  */
 public class Path {
 
   private final ImmutableList<Cell> track;
 
+  /**
+   * Creates a path where the first cell is the starting point and the last cell is the destination.
+   */
   Path(ImmutableList<Cell> track) {
     Preconditions.checkArgument(!track.isEmpty());
     this.track = track;

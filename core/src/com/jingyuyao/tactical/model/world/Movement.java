@@ -12,6 +12,10 @@ public class Movement {
 
   private final Graph<Cell> moveGraph;
 
+  /**
+   * @param moveGraph an acyclic graph that represents movement where the first node is the root
+   * node.
+   */
   Movement(Graph<Cell> moveGraph) {
     this.moveGraph = moveGraph;
   }
@@ -20,6 +24,9 @@ public class Movement {
     return moveGraph.nodes().iterator().next();
   }
 
+  /**
+   * Get the cells this movement can move to.
+   */
   public Iterable<Cell> getCells() {
     return moveGraph.nodes();
   }
@@ -35,9 +42,7 @@ public class Movement {
    * Get a path to {@code coordinate}.
    */
   public Path pathTo(Cell cell) {
-    Preconditions.checkArgument(moveGraph.nodes().contains(cell));
-    Preconditions.checkArgument(!getStartingCell().equals(cell));
-
+    Preconditions.checkArgument(canMoveTo(cell));
     return new Path(getTrackTo(moveGraph, cell));
   }
 
@@ -51,8 +56,6 @@ public class Movement {
    * not in the graph
    */
   private ImmutableList<Cell> getTrackTo(Graph<Cell> graph, Cell target) {
-    Preconditions.checkArgument(graph.nodes().contains(target));
-
     ImmutableList.Builder<Cell> builder = ImmutableList.builder();
     builder.add(target);
 
