@@ -51,30 +51,16 @@ injections, all model objects either need a no-args constructor or a Guice injec
 - Only model should fire events
 
 ## Views
+- Follows the Entity-Component design pattern
+- DO NOT HOLD REFERENCE TO ENTITY AND COMPONENTS OUTSIDE OF ENGINE
+  - We pool entity and components so holding reference outside of engine can have unintended effects
 - Only views should hold references to assets
-- Glues model and controller together in the form of Actor
 - Subscribes to various model events to update itself.
 - Should not change the model except to complete future events
 
 ## Controllers
 - Listen to user input
-- Dispatches input to models via visitor pattern, this minimizes logic in controllers
+- Dispatches input to models
 
 ## Data
-- Only the data part of an object is saved
-- The data objects are dynamically saved and loaded with the class information intact
-- The data objects should be able to create an instance of the game object using visitor pattern
-
-# Development plan
-- MVC 
-- path finding + moving
-- creating enemy
-- idea of player & enemy teams
-- targeting + stub fighting
-- idea of a turn
-- dumb AI
-- map UI overlay
-- simple character detail viewer
-- saving/loading map state
-- create a simple level
-- misc games stuff like start screen
+- The game objects are dynamically saved and loaded with the class information intact

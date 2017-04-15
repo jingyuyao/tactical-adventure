@@ -12,6 +12,7 @@ import com.badlogic.gdx.backends.headless.HeadlessFiles;
 import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -47,6 +48,12 @@ public class MockGameModule extends AbstractModule {
   @Singleton
   Skin provideSkin() {
     return mock(Skin.class);
+  }
+
+  @Provides
+  @Singleton
+  TextureAtlas provideTextureAtlas() {
+    return mock(TextureAtlas.class);
   }
 
   @Provides

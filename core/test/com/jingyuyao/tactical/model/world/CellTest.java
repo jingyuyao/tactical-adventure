@@ -6,12 +6,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -121,7 +121,7 @@ public class CellTest {
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(other);
 
-    ListenableFuture<Void> future = cell.moveCharacter(path);
+    MyFuture future = cell.moveCharacter(path);
 
     assertThat(future.isDone()).isFalse();
     assertThat(cell.hasCharacter()).isFalse();
@@ -138,7 +138,7 @@ public class CellTest {
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(cell);
 
-    ListenableFuture<Void> future = cell.moveCharacter(path);
+    MyFuture future = cell.moveCharacter(path);
 
     assertThat(future.isDone()).isTrue();
     verify(eventBus).post(argumentCaptor.capture());

@@ -15,6 +15,10 @@ public class WorldConfig {
     return 32;
   }
 
+  public float getCharacterMoveUnitPerSec() {
+    return 8f;
+  }
+
   int getWorldViewportWidth() {
     return 16;
   }

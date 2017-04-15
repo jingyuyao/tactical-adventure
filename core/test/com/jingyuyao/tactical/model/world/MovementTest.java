@@ -1,22 +1,19 @@
 package com.jingyuyao.tactical.model.world;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.graph.Graph;
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-// TODO: test path_to
 @RunWith(MockitoJUnitRunner.class)
 public class MovementTest {
 
-  @Mock
-  private Graph<Cell> graph;
   @Mock
   private Cell origin;
   @Mock
@@ -30,7 +27,15 @@ public class MovementTest {
 
   @Before
   public void setUp() {
-    when(graph.nodes()).thenReturn(ImmutableSet.of(origin, move1, move2));
+    MutableGraph<Cell> graph =
+        GraphBuilder
+            .directed()
+            .allowsSelfLoops(false)
+            .nodeOrder(ElementOrder.insertion())
+            .build();
+    graph.addNode(origin);
+    graph.putEdge(origin, move1);
+    graph.putEdge(move1, move2);
     movement = new Movement(graph);
   }
 
@@ -41,6 +46,7 @@ public class MovementTest {
 
   @Test
   public void can_move_to() {
+    assertThat(movement.canMoveTo(origin)).isTrue();
     assertThat(movement.canMoveTo(move1)).isTrue();
     assertThat(movement.canMoveTo(move2)).isTrue();
     assertThat(movement.canMoveTo(other)).isFalse();
@@ -49,5 +55,13 @@ public class MovementTest {
   @Test
   public void move_cells() {
     assertThat(movement.getCells()).containsExactly(origin, move1, move2).inOrder();
+  }
+
+  @Test
+  public void path_to() {
+    Path path = movement.pathTo(move2);
+    assertThat(path.getOrigin()).isSameAs(origin);
+    assertThat(path.getDestination()).isSameAs(move2);
+    assertThat(path.getTrack()).containsExactly(origin, move1, move2).inOrder();
   }
 }

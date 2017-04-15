@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.google.common.util.concurrent.SettableFuture;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.world.Path;
 
@@ -8,9 +7,9 @@ public class MoveCharacter {
 
   private final Character character;
   private final Path path;
-  private final SettableFuture<Void> future;
+  private final MyFuture future;
 
-  public MoveCharacter(Character character, Path path, SettableFuture<Void> future) {
+  public MoveCharacter(Character character, Path path, MyFuture future) {
     this.character = character;
     this.path = path;
     this.future = future;
@@ -24,7 +23,7 @@ public class MoveCharacter {
     return path;
   }
 
-  public SettableFuture<Void> getFuture() {
+  public MyFuture getFuture() {
     return future;
   }
 }

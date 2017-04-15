@@ -60,7 +60,8 @@ public class Movements {
   public ValueGraph<Cell, Integer> distanceFrom(
       Cell startingCell, int distance, Function<Cell, Integer> edgeCostFunction) {
     MutableValueGraph<Cell, Integer> graph =
-        ValueGraphBuilder.directed()
+        ValueGraphBuilder
+            .directed()
             .allowsSelfLoops(false)
             .nodeOrder(ElementOrder.insertion())
             .build();

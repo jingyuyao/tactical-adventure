@@ -1,91 +1,54 @@
 package com.jingyuyao.tactical.view.world;
 
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.CharacterActor;
-import com.jingyuyao.tactical.view.actor.WorldActor;
-import com.jingyuyao.tactical.view.world.WorldModule.WorldStage;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.controller.WorldCamera;
+import com.jingyuyao.tactical.controller.WorldController;
+import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class WorldView {
 
-  private final Stage stage;
-  private final MapGroup<Character, CharacterActor> characterGroup;
-  private final MapGroup<Terrain, WorldActor> terrainGroup;
+  private final WorldEngine worldEngine;
   private final OrthogonalTiledMapRenderer mapRenderer;
-  private final ActorFactory actorFactory;
+  private final Viewport viewport;
+  private final InputProcessor inputProcessor;
 
   @Inject
   WorldView(
-      @WorldStage Stage stage,
-      MapGroup<Character, CharacterActor> characterGroup,
-      MapGroup<Terrain, WorldActor> terrainGroup,
+      WorldEngine worldEngine,
       OrthogonalTiledMapRenderer mapRenderer,
-      ActorFactory actorFactory) {
-    this.stage = stage;
-    this.characterGroup = characterGroup;
-    this.terrainGroup = terrainGroup;
+      @WorldViewport Viewport viewport,
+      WorldCamera worldCamera,
+      WorldController worldController) {
+    this.worldEngine = worldEngine;
     this.mapRenderer = mapRenderer;
-    this.actorFactory = actorFactory;
-    terrainGroup.addToStage(stage);
-    characterGroup.addToStage(stage);
+    this.viewport = viewport;
+    this.inputProcessor = new InputMultiplexer(worldCamera, worldController);
   }
 
-  public void act(float delta) {
-    stage.act(delta);
+  public void register(EventBus eventBus) {
+    worldEngine.register(eventBus);
   }
 
-  public void draw() {
-    stage.getViewport().apply();
-    mapRenderer.setView((OrthographicCamera) stage.getCamera());
+  public InputProcessor getInputProcessor() {
+    return inputProcessor;
+  }
+
+  public void update(float delta) {
+    viewport.apply();
+    mapRenderer.setView((OrthographicCamera) viewport.getCamera());
     mapRenderer.render();
-    stage.draw();
+    worldEngine.update(delta);
   }
 
   public void resize(int width, int height) {
-    // TODO: update camera so we don't show black bars
-    stage.getViewport().update(width, height);
-  }
-
-  public void reset() {
-    characterGroup.clear();
-    terrainGroup.clear();
-  }
-
-  public void dispose() {
-    stage.dispose();
-  }
-
-  public WorldActor get(Terrain terrain) {
-    return terrainGroup.get(terrain);
-  }
-
-  public CharacterActor get(Character character) {
-    return characterGroup.get(character);
-  }
-
-  void add(Coordinate coordinate, Terrain terrain) {
-    terrainGroup.add(terrain, actorFactory.create(coordinate));
-  }
-
-  void add(Coordinate coordinate, Player player) {
-    characterGroup.add(player, actorFactory.create(player, coordinate));
-  }
-
-  void add(Coordinate coordinate, Enemy enemy) {
-    characterGroup.add(enemy, actorFactory.create(enemy, coordinate));
-  }
-
-  void remove(Character character) {
-    characterGroup.remove(character);
+    viewport.update(width, height);
   }
 }

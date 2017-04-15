@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.battle.Battle;
@@ -58,15 +56,10 @@ public class Battling extends AbstractPlayerState {
 
   void attack() {
     goTo(stateFactory.createTransition());
-    Futures.addCallback(battle.begin(getPlayer(), weapon, target), new FutureCallback<Void>() {
+    battle.begin(getPlayer(), weapon, target).addCallback(new Runnable() {
       @Override
-      public void onSuccess(Void result) {
+      public void run() {
         finish();
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-
       }
     });
   }

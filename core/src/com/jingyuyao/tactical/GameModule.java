@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,14 +17,15 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
-import com.jingyuyao.tactical.menu.MenuModule;
 import com.jingyuyao.tactical.model.ModelModule;
+import com.jingyuyao.tactical.screen.ScreenModule;
 import com.jingyuyao.tactical.view.ViewModule;
 import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {
 
   private static final String SKIN = "ui/uiskin.json";
+  private static final String TEXTURE_ATLAS = "packed/texture.atlas";
 
   private final TacticalAdventure game;
 
@@ -44,7 +46,7 @@ class GameModule extends AbstractModule {
     install(new ViewModule());
     install(new ControllerModule());
     install(new DataModule());
-    install(new MenuModule());
+    install(new ScreenModule());
   }
 
   @Provides
@@ -61,6 +63,14 @@ class GameModule extends AbstractModule {
     assetManager.load(SKIN, Skin.class);
     assetManager.finishLoadingAsset(SKIN);
     return assetManager.get(SKIN, Skin.class);
+  }
+
+  @Provides
+  @Singleton
+  TextureAtlas provideTextureAtlas(AssetManager assetManager) {
+    assetManager.load(TEXTURE_ATLAS, TextureAtlas.class);
+    assetManager.finishLoadingAsset(TEXTURE_ATLAS);
+    return assetManager.get(TEXTURE_ATLAS, TextureAtlas.class);
   }
 
   @Provides

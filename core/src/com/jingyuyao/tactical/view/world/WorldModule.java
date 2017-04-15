@@ -5,24 +5,22 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
-import com.google.inject.Key;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.view.actor.ActorFactory;
-import com.jingyuyao.tactical.view.actor.CharacterActor;
-import com.jingyuyao.tactical.view.actor.WorldActor;
+import com.jingyuyao.tactical.controller.WorldCamera;
+import com.jingyuyao.tactical.controller.WorldController;
+import com.jingyuyao.tactical.view.world.component.ComponentModule;
+import com.jingyuyao.tactical.view.world.resource.ResourceModule;
+import com.jingyuyao.tactical.view.world.system.SystemModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
@@ -30,29 +28,31 @@ public class WorldModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(AssetManager.class);
     requireBinding(Batch.class);
-    requireBinding(ActorFactory.class);
+    requireBinding(Graphics.class);
+    requireBinding(WorldController.class);
+    requireBinding(WorldCamera.class);
 
-    bind(new Key<Map<Terrain, WorldActor>>() {
-    }).toInstance(new HashMap<Terrain, WorldActor>());
-    bind(new Key<Map<Character, CharacterActor>>() {
-    }).toInstance(new HashMap<Character, CharacterActor>());
+    install(new ComponentModule());
+    install(new ResourceModule());
+    install(new SystemModule());
   }
 
   @Provides
   @Singleton
-  @WorldStage
-  Stage provideWorldStage(Batch batch, @WorldViewport Viewport viewport) {
-    return new Stage(viewport, batch);
+  Engine provideEngine() {
+    return new PooledEngine();
   }
 
   @Provides
   @Singleton
   @WorldViewport
-  Viewport provideWorldViewport(WorldConfig worldConfig) {
-    return new ExtendViewport(worldConfig.getWorldViewportWidth(),
-        worldConfig.getWorldViewportHeight());
+  Viewport provideWorldViewport(WorldConfig worldConfig, Graphics graphics) {
+    Viewport viewport =
+        new ExtendViewport(
+            worldConfig.getWorldViewportWidth(), worldConfig.getWorldViewportHeight());
+    viewport.update(graphics.getWidth(), graphics.getHeight(), true);
+    return viewport;
   }
 
   /**
@@ -68,13 +68,6 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   public @interface WorldViewport {
-
-  }
-
-  @Qualifier
-  @Target({FIELD, PARAMETER, METHOD})
-  @Retention(RUNTIME)
-  @interface WorldStage {
 
   }
 }

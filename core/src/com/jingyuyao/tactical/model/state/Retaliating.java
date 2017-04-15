@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
@@ -47,15 +45,10 @@ public class Retaliating extends BaseState {
 
     Enemy enemy = cell.getEnemy();
     post(new ActivatedEnemy(enemy));
-    Futures.addCallback(enemy.retaliate(cell), new FutureCallback<Void>() {
+    enemy.retaliate(cell).addCallback(new Runnable() {
       @Override
-      public void onSuccess(Void result) {
+      public void run() {
         retaliate(characterSnapshot, i + 1);
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-
       }
     });
   }

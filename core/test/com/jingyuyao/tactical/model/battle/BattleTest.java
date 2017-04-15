@@ -6,12 +6,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Attack;
+import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -54,7 +54,7 @@ public class BattleTest {
 
   @Test
   public void begin() {
-    when(target.getTargetCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
     when(cell1.hasCharacter()).thenReturn(true);
     when(cell1.getCharacter()).thenReturn(character1);
     when(character1.getHp()).thenReturn(0);
@@ -62,16 +62,17 @@ public class BattleTest {
     when(cell2.getCharacter()).thenReturn(character2);
     when(character2.getHp()).thenReturn(10);
 
-    ListenableFuture<Void> future = battle.begin(attacker, weapon, target);
+    MyFuture future = battle.begin(attacker, weapon, target);
 
     verify(eventBus).post(argumentCaptor.capture());
     Attack attack = TestHelpers.verifyObjectEvent(argumentCaptor, 0, target, Attack.class);
     assertThat(attack.getWeapon()).isSameAs(weapon);
+    assertThat(attack.getFuture()).isSameAs(future);
     assertThat(future.isDone()).isFalse();
     verifyZeroInteractions(weapon);
     verifyZeroInteractions(attacker);
 
-    attack.done();
+    future.done();
     assertThat(future.isDone()).isTrue();
     verify(attacker).useItem(weapon);
     verify(weapon).damages(target);
