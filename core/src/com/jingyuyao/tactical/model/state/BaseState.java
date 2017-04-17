@@ -58,7 +58,7 @@ class BaseState implements State {
     worldState.branchTo(state);
   }
 
-  void popLast() {
-    worldState.popLast();
+  void removeSelf() {
+    worldState.remove(this);
   }
 }
