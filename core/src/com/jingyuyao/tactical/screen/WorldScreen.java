@@ -33,6 +33,7 @@ public class WorldScreen extends ScreenAdapter {
 
   @Override
   public void show() {
+    worldView.center();
     input.setInputProcessor(
         new InputMultiplexer(worldUI.getInputProcessor(), worldView.getInputProcessor()));
   }

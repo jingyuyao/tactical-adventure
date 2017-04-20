@@ -18,6 +18,7 @@ public class WorldView {
   private final WorldEngine worldEngine;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final Viewport viewport;
+  private final WorldCamera worldCamera;
   private final InputProcessor inputProcessor;
 
   @Inject
@@ -30,6 +31,7 @@ public class WorldView {
     this.worldEngine = worldEngine;
     this.mapRenderer = mapRenderer;
     this.viewport = viewport;
+    this.worldCamera = worldCamera;
     this.inputProcessor = new InputMultiplexer(worldCamera, worldController);
   }
 
@@ -39,6 +41,10 @@ public class WorldView {
 
   public InputProcessor getInputProcessor() {
     return inputProcessor;
+  }
+
+  public void center() {
+    worldCamera.center();
   }
 
   public void update(float delta) {

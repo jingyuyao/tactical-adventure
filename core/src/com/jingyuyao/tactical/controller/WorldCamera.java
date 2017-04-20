@@ -72,6 +72,13 @@ public class WorldCamera extends InputAdapter {
     return false;
   }
 
+  public void center() {
+    Camera camera = worldViewport.getCamera();
+    camera.position.x = world.getMaxWidth() / 2f;
+    camera.position.y = world.getMaxHeight() / 2f;
+    camera.update();
+  }
+
   boolean isDragged() {
     return dragged;
   }
