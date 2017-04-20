@@ -7,7 +7,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -29,7 +28,6 @@ public class WorldModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(Batch.class);
-    requireBinding(Graphics.class);
     requireBinding(WorldController.class);
     requireBinding(WorldCamera.class);
 
@@ -47,12 +45,9 @@ public class WorldModule extends AbstractModule {
   @Provides
   @Singleton
   @WorldViewport
-  Viewport provideWorldViewport(WorldConfig worldConfig, Graphics graphics) {
-    Viewport viewport =
-        new ExtendViewport(
-            worldConfig.getWorldViewportWidth(), worldConfig.getWorldViewportHeight());
-    viewport.update(graphics.getWidth(), graphics.getHeight(), true);
-    return viewport;
+  Viewport provideWorldViewport(WorldConfig worldConfig) {
+    return new ExtendViewport(
+        worldConfig.getWorldViewportWidth(), worldConfig.getWorldViewportHeight());
   }
 
   /**

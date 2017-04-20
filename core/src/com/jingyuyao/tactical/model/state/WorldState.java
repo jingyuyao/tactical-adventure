@@ -6,9 +6,6 @@ import java.util.Deque;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Manages selection logic.
- */
 @Singleton
 public class WorldState {
 
@@ -83,9 +80,9 @@ public class WorldState {
   }
 
   /**
-   * Remove the last state on the stack. Use with caution.
+   * Remove a state on the stack. Use with caution.
    */
-  void popLast() {
-    stateStack.pop();
+  void remove(State state) {
+    stateStack.remove(state);
   }
 }

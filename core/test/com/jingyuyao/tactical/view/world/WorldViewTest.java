@@ -61,6 +61,13 @@ public class WorldViewTest {
   }
 
   @Test
+  public void center() {
+    worldView.center();
+
+    verify(worldCamera).center();
+  }
+
+  @Test
   public void update() {
     when(viewport.getCamera()).thenReturn(camera);
 

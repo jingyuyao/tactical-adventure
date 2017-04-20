@@ -46,7 +46,7 @@ public class TransitionTest {
   public void exit() {
     transition.exit();
 
-    verify(worldState).popLast();
+    verify(worldState).remove(transition);
     verify(eventBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, transition, ExitState.class);
   }

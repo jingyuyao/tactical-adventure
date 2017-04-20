@@ -19,6 +19,6 @@ public class Transition extends BaseState {
   public void exit() {
     super.exit();
     // This state is temporary, don't keep it on the state stack
-    popLast();
+    removeSelf();
   }
 }

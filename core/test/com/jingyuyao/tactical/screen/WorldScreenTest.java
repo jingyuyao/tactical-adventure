@@ -63,6 +63,7 @@ public class WorldScreenTest {
 
     worldScreen.show();
 
+    verify(worldView).center();
     verify(input).setInputProcessor(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
     InputMultiplexer multiplexer = (InputMultiplexer) argumentCaptor.getValue();

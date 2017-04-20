@@ -112,10 +112,10 @@ public class PlayerActionStateTest {
   }
 
   @Test
-  public void pop() {
-    state.popLast();
+  public void remove_self() {
+    state.removeSelf();
 
-    verify(worldState).popLast();
+    verify(worldState).remove(state);
   }
 
   @Test
