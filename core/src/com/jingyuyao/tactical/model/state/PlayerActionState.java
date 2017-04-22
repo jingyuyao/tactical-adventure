@@ -40,13 +40,11 @@ class PlayerActionState extends AbstractPlayerState {
   }
 
   void selectWeapon(Weapon weapon) {
-    getPlayer().quickAccess(weapon);
     ImmutableList<Target> targets = weapon.createTargets(cell);
     goTo(getStateFactory().createSelectingTarget(getPlayer(), weapon, targets));
   }
 
   void selectConsumable(Consumable consumable) {
-    getPlayer().quickAccess(consumable);
     goTo(getStateFactory().createUsingConsumable(getPlayer(), consumable));
   }
 }

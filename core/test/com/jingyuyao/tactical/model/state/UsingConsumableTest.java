@@ -65,7 +65,6 @@ public class UsingConsumableTest {
 
     usingConsumable.use();
 
-    verify(player).quickAccess(consumable);
     verify(consumable).apply(player);
     verify(player).useItem(consumable);
     verify(player).setActionable(false);

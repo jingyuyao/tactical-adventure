@@ -130,7 +130,6 @@ public class PlayerActionStateTest {
 
     state.selectWeapon(weapon);
 
-    verify(player).quickAccess(weapon);
     verify(worldState).goTo(selectingTarget);
   }
 
@@ -140,7 +139,6 @@ public class PlayerActionStateTest {
 
     state.selectConsumable(consumable);
 
-    verify(player).quickAccess(consumable);
     verify(worldState).goTo(usingConsumable);
   }
 

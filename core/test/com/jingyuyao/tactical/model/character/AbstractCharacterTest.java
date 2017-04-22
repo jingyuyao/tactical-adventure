@@ -78,13 +78,6 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void quick_access() {
-    character.quickAccess(weapon2);
-
-    assertThat(items).containsExactly(weapon2, consumable, weapon1).inOrder();
-  }
-
-  @Test
   public void fluent_items() {
     assertThat(character.fluentItems()).containsExactly(weapon1, consumable, weapon2).inOrder();
   }

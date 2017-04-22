@@ -19,8 +19,6 @@ public interface Character {
 
   void removeItem(Item item);
 
-  void quickAccess(Item item);
-
   FluentIterable<Item> fluentItems();
 
   void useItem(Item item);

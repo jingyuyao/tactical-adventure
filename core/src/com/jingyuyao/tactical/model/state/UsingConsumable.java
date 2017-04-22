@@ -36,7 +36,6 @@ public class UsingConsumable extends AbstractPlayerState {
   }
 
   void use() {
-    getPlayer().quickAccess(consumable);
     consumable.apply(getPlayer());
     getPlayer().useItem(consumable);
     finish();

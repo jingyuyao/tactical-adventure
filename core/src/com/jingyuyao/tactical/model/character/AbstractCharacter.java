@@ -1,9 +1,7 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
 import com.jingyuyao.tactical.model.item.Item;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,13 +57,6 @@ abstract class AbstractCharacter implements Character {
   @Override
   public void removeItem(Item item) {
     items.remove(item);
-  }
-
-  @Override
-  public void quickAccess(Item item) {
-    int itemIndex = items.indexOf(item);
-    Preconditions.checkArgument(itemIndex != -1);
-    Collections.swap(items, 0, itemIndex);
   }
 
   @Override
