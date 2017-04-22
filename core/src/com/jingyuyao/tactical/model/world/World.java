@@ -117,4 +117,12 @@ public class World {
   public Optional<Cell> getNeighbor(Cell from, Direction direction) {
     return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
   }
+
+  public void fullHealPlayers() {
+    for (Cell cell : cellMap.values()) {
+      if (cell.hasPlayer()) {
+        cell.getPlayer().fullHeal();
+      }
+    }
+  }
 }

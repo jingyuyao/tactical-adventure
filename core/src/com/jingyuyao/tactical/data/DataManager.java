@@ -49,6 +49,8 @@ public class DataManager {
           "An existing level progress file is needed for changing levels.");
     }
 
+    world.fullHealPlayers();
+
     LevelProgress levelProgress = levelProgressOptional.get();
     levelProgress.update(world);
 
