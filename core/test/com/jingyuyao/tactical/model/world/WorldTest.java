@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -53,6 +54,8 @@ public class WorldTest {
   private Character character1;
   @Mock
   private Character character2;
+  @Mock
+  private Player player;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -155,5 +158,17 @@ public class WorldTest {
 
     assertThat(world.getNeighbor(temp, Direction.UP)).hasValue(cell1);
     assertThat(world.getNeighbor(temp, Direction.DOWN)).isAbsent();
+  }
+
+  @Test
+  public void full_heal_players() {
+    when(cell1.hasPlayer()).thenReturn(true);
+    when(cell1.getPlayer()).thenReturn(player);
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
+
+    world.fullHealPlayers();
+
+    verify(player).fullHeal();
   }
 }

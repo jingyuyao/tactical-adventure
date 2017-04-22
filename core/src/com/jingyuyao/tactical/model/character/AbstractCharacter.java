@@ -50,6 +50,11 @@ abstract class AbstractCharacter implements Character {
   }
 
   @Override
+  public void fullHeal() {
+    hp = maxHp;
+  }
+
+  @Override
   public void addItem(Item item) {
     items.add(item);
   }

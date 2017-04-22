@@ -15,6 +15,8 @@ public interface Character {
 
   void healBy(int delta);
 
+  void fullHeal();
+
   void addItem(Item item);
 
   void removeItem(Item item);

@@ -21,7 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -93,11 +95,15 @@ public class DataManagerTest {
 
     dataManager.changeLevel(2, world);
 
-    verify(gameSave).setCurrentLevel(2);
-    verify(levelProgress).update(world);
-    verify(gameSave).update(levelProgress);
-    verify(gameSaveManager).save(gameSave);
-    verify(levelProgressManager).removeSave();
+    InOrder inOrder =
+        Mockito.inOrder(world, gameSave, levelProgress, gameSaveManager, levelProgressManager);
+
+    inOrder.verify(world).fullHealPlayers();
+    inOrder.verify(levelProgress).update(world);
+    inOrder.verify(gameSave).setCurrentLevel(2);
+    inOrder.verify(gameSave).update(levelProgress);
+    inOrder.verify(gameSaveManager).save(gameSave);
+    inOrder.verify(levelProgressManager).removeSave();
   }
 
   @Test

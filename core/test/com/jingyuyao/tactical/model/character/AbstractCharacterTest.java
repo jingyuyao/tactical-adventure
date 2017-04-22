@@ -64,6 +64,13 @@ public class AbstractCharacterTest {
   }
 
   @Test
+  public void full_heal() {
+    character.fullHeal();
+
+    assertThat(character.getHp()).isEqualTo(MAX_HP);
+  }
+
+  @Test
   public void add_item() {
     character.addItem(newItem);
 
