@@ -2,16 +2,33 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Direction;
 import java.util.Set;
 
 public class Target {
 
+  private final Cell origin;
+  private final Direction direction;
   private final ImmutableSet<Cell> selectCells;
   private final ImmutableSet<Cell> targetCells;
 
-  Target(Set<Cell> selectCells, Set<Cell> targetCells) {
+  Target(Cell origin, Set<Cell> selectCells, Set<Cell> targetCells) {
+    this(origin, Direction.RIGHT, selectCells, targetCells);
+  }
+
+  Target(Cell origin, Direction direction, Set<Cell> selectCells, Set<Cell> targetCells) {
+    this.origin = origin;
+    this.direction = direction;
     this.selectCells = ImmutableSet.copyOf(selectCells);
     this.targetCells = ImmutableSet.copyOf(targetCells);
+  }
+
+  public Cell getOrigin() {
+    return origin;
+  }
+
+  public Direction getDirection() {
+    return direction;
   }
 
   public boolean selectedBy(Cell cell) {

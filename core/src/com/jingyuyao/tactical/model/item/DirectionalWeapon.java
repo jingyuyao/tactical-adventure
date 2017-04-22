@@ -55,7 +55,8 @@ public class DirectionalWeapon extends AbstractWeapon {
       return Optional.absent();
     }
 
-    ImmutableSet<Cell> select = ImmutableSet.of(targets.iterator().next());
-    return Optional.of(new Target(select, targets));
+    Cell origin = targets.iterator().next();
+    ImmutableSet<Cell> selects = ImmutableSet.of(origin);
+    return Optional.of(new Target(origin, direction, selects, targets));
   }
 }
