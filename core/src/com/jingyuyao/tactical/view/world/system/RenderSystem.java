@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.base.Optional;
+import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
@@ -56,14 +57,25 @@ class RenderSystem extends SortedIteratingSystem {
   protected void processEntity(Entity entity, float deltaTime) {
     Position position = positionMapper.get(entity);
     Frame frame = frameMapper.get(entity);
+    Optional<Direction> direction = frame.getDirection();
+    float x = position.getX();
+    float y = position.getY();
     Optional<WorldTexture> textureOptional = frame.getTexture();
     if (textureOptional.isPresent()) {
       batch.setColor(frame.getColor());
-      textureOptional.get().draw(batch, position.getX(), position.getY());
+      if (direction.isPresent()) {
+        textureOptional.get().draw(batch, x, y, direction.get());
+      } else {
+        textureOptional.get().draw(batch, x, y);
+      }
       batch.setColor(Color.WHITE);
     }
     for (WorldTexture texture : frame.getOverlays()) {
-      texture.draw(batch, position.getX(), position.getY());
+      if (direction.isPresent()) {
+        texture.draw(batch, x, y, direction.get());
+      } else {
+        texture.draw(batch, x, y);
+      }
     }
   }
 

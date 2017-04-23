@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +25,6 @@ public class WorldTextureTest {
   private WorldConfig worldConfig;
   @Mock
   private Batch batch;
-  @Mock
-  private Actor actor;
 
   private WorldTexture worldTexture;
 
@@ -52,5 +50,53 @@ public class WorldTextureTest {
     worldTexture.draw(batch, 2f, 3f);
 
     verify(batch).draw(textureRegion, 2f, 3f, 1f, 1f);
+  }
+
+  @Test
+  public void draw_right() {
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
+    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
+
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
+    worldTexture.draw(batch, 2f, 3f, Direction.RIGHT);
+
+    verify(batch).draw(textureRegion, 2f, 2f, 0.5f, 1.5f, 2f, 3f, 1f, 1f, 0f);
+  }
+
+  @Test
+  public void draw_left() {
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
+    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
+
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
+    worldTexture.draw(batch, 2f, 3f, Direction.LEFT);
+
+    verify(batch).draw(textureRegion, 2f, 2f, 0.5f, 1.5f, 2f, 3f, -1f, 1f, 0f);
+  }
+
+  @Test
+  public void draw_up() {
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
+    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
+
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
+    worldTexture.draw(batch, 2f, 3f, Direction.UP);
+
+    verify(batch).draw(textureRegion, 2f, 2f, 0.5f, 1.5f, 2f, 3f, 1f, 1f, 90f);
+  }
+
+  @Test
+  public void draw_down() {
+    when(textureRegion.getRegionWidth()).thenReturn(TEXTURE_WIDTH);
+    when(textureRegion.getRegionHeight()).thenReturn(TEXTURE_HEIGHT);
+    when(worldConfig.getTileSize()).thenReturn(TILE_SIZE);
+
+    worldTexture = new WorldTexture(textureRegion, worldConfig);
+    worldTexture.draw(batch, 2f, 3f, Direction.DOWN);
+
+    verify(batch).draw(textureRegion, 2f, 2f, 0.5f, 1.5f, 2f, 3f, 1f, 1f, -90f);
   }
 }

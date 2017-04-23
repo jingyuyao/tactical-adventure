@@ -36,7 +36,7 @@ public class TargetTest {
 
   @Test
   public void get_direction() {
-    assertThat(target.getDirection()).isSameAs(direction);
+    assertThat(target.getDirection()).hasValue(direction);
   }
 
   @Test

@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Direction;
@@ -13,7 +14,7 @@ public class Target {
   private final ImmutableSet<Cell> targetCells;
 
   Target(Cell origin, Set<Cell> selectCells, Set<Cell> targetCells) {
-    this(origin, Direction.RIGHT, selectCells, targetCells);
+    this(origin, null, selectCells, targetCells);
   }
 
   Target(Cell origin, Direction direction, Set<Cell> selectCells, Set<Cell> targetCells) {
@@ -27,8 +28,8 @@ public class Target {
     return origin;
   }
 
-  public Direction getDirection() {
-    return direction;
+  public Optional<Direction> getDirection() {
+    return Optional.fromNullable(direction);
   }
 
   public boolean selectedBy(Cell cell) {
