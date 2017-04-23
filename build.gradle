@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+        // TODO: update to latest after idea 2017.2 is released
         classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.0'
     }
@@ -26,8 +27,8 @@ allprojects {
         gsonVersion = '2.8.0'
         guiceVersion = '4.1.0'
         junitVersion = '4.12'
-        mockitoVersion = '2.3.7'
-        truthVersion = '0.31'
+        mockitoVersion = '2.7.22'
+        truthVersion = '0.32'
     }
 
     repositories {
