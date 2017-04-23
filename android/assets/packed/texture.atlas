@@ -1,5 +1,144 @@
 
 texture.png
+size: 1024,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+weapon/bomb
+  rotate: false
+  xy: 2, 6
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 0
+weapon/bomb
+  rotate: false
+  xy: 100, 6
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+weapon/bomb
+  rotate: false
+  xy: 198, 6
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 2
+weapon/bomb
+  rotate: false
+  xy: 296, 6
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 3
+weapon/bomb
+  rotate: false
+  xy: 394, 6
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 4
+weapon/bomb
+  rotate: false
+  xy: 492, 6
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 5
+weapon/buzz
+  rotate: false
+  xy: 590, 70
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 0
+weapon/buzz
+  rotate: false
+  xy: 590, 36
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 1
+weapon/buzz
+  rotate: false
+  xy: 688, 70
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 2
+weapon/buzz
+  rotate: false
+  xy: 688, 36
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 3
+weapon/buzz
+  rotate: false
+  xy: 786, 70
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 4
+weapon/buzz
+  rotate: false
+  xy: 786, 36
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 5
+weapon/buzz
+  rotate: false
+  xy: 884, 70
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 6
+weapon/melee
+  rotate: false
+  xy: 884, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+weapon/melee
+  rotate: false
+  xy: 982, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+weapon/melee
+  rotate: false
+  xy: 918, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+weapon/melee
+  rotate: false
+  xy: 952, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+weapon/melee
+  rotate: false
+  xy: 590, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+weapon/melee
+  rotate: false
+  xy: 624, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+
+texture2.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -47,7 +186,7 @@ marking/target_select
   offset: 0, 0
   index: -1
 
-texture2.png
+texture3.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -108,93 +247,3 @@ character/stick
   orig: 32, 32
   offset: 0, 0
   index: 2
-
-texture3.png
-size: 1024,128
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-weapon/bomb
-  rotate: false
-  xy: 2, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 0
-weapon/bomb
-  rotate: false
-  xy: 100, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 1
-weapon/bomb
-  rotate: false
-  xy: 198, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 2
-weapon/bomb
-  rotate: false
-  xy: 296, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 3
-weapon/bomb
-  rotate: false
-  xy: 394, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 4
-weapon/bomb
-  rotate: false
-  xy: 492, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 5
-weapon/melee
-  rotate: false
-  xy: 590, 66
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
-weapon/melee
-  rotate: false
-  xy: 590, 32
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 1
-weapon/melee
-  rotate: false
-  xy: 624, 66
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-weapon/melee
-  rotate: false
-  xy: 624, 32
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 3
-weapon/melee
-  rotate: false
-  xy: 658, 66
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
-weapon/melee
-  rotate: false
-  xy: 658, 32
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5

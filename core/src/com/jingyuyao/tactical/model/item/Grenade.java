@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
+import java.util.Set;
 import javax.inject.Inject;
 
 // TODO: test me
@@ -28,9 +29,8 @@ public class Grenade extends AbstractWeapon {
         .transform(new Function<Cell, Target>() {
           @Override
           public Target apply(Cell input) {
-            return new Target(
-                ImmutableSet.of(input),
-                movements.distanceFrom(input, size - 1, weightFunction).nodes());
+            Set<Cell> targets = movements.distanceFrom(input, size - 1, weightFunction).nodes();
+            return new Target(input, ImmutableSet.of(input), targets);
           }
         })
         .toList();

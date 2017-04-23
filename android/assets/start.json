@@ -73,10 +73,10 @@
       "items": [
         {
           "type": "DirectionalWeapon",
-          "name": "melee",
+          "name": "buzz",
           "usageLeft": 15,
           "attackPower": 7,
-          "distance": 1
+          "distance": 3
         },
         {
           "type": "Heal",
@@ -96,10 +96,10 @@
       "items": [
         {
           "type": "DirectionalWeapon",
-          "name": "melee",
+          "name": "buzz",
           "usageLeft": 15,
           "attackPower": 7,
-          "distance": 1
+          "distance": 3
         },
         {
           "type": "Heal",

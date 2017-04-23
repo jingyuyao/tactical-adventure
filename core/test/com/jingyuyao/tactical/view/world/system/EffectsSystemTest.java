@@ -6,13 +6,14 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
@@ -31,8 +32,6 @@ public class EffectsSystemTest {
 
   @Mock
   private Animations animations;
-  @Mock
-  private Attack attack;
   @Mock
   private Target target;
   @Mock
@@ -56,23 +55,49 @@ public class EffectsSystemTest {
   }
 
   @Test
-  public void attack() {
+  public void attack_no_direction() {
     SingleAnimation animation = new SingleAnimation(10, new WorldTexture[]{worldTexture});
 
-    when(attack.getObject()).thenReturn(target);
-    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell));
+    when(target.getOrigin()).thenReturn(cell);
+    when(target.getDirection()).thenReturn(Optional.<Direction>absent());
     when(cell.getCoordinate()).thenReturn(C1);
-    when(attack.getWeapon()).thenReturn(weapon);
     when(weapon.getName()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
-    when(attack.getFuture()).thenReturn(myFuture);
 
-    effectsSystem.attack(attack);
+    effectsSystem.attack(new Attack(target, weapon, myFuture));
 
     verify(myFuture).completedBy(animation.getFuture());
     assertThat(engine.getEntities()).hasSize(1);
     Entity entity = engine.getEntities().first();
-    assertThat(entity.getComponent(Frame.class)).isNotNull();
+    Frame frame = entity.getComponent(Frame.class);
+    assertThat(frame).isNotNull();
+    assertThat(frame.getDirection()).isAbsent();
+    Position position = entity.getComponent(Position.class);
+    assertThat(position).isNotNull();
+    assertThat(position.getX()).isEqualTo((float) C1.getX());
+    assertThat(position.getY()).isEqualTo((float) C1.getY());
+    assertThat(position.getZ()).isEqualTo(WorldZIndex.EFFECTS);
+    assertThat(entity.getComponent(SingleAnimation.class)).isSameAs(animation);
+  }
+
+  @Test
+  public void attack_direction() {
+    SingleAnimation animation = new SingleAnimation(10, new WorldTexture[]{worldTexture});
+
+    when(target.getOrigin()).thenReturn(cell);
+    when(target.getDirection()).thenReturn(Optional.of(Direction.DOWN));
+    when(cell.getCoordinate()).thenReturn(C1);
+    when(weapon.getName()).thenReturn("titan");
+    when(animations.getWeapon("titan")).thenReturn(animation);
+
+    effectsSystem.attack(new Attack(target, weapon, myFuture));
+
+    verify(myFuture).completedBy(animation.getFuture());
+    assertThat(engine.getEntities()).hasSize(1);
+    Entity entity = engine.getEntities().first();
+    Frame frame = entity.getComponent(Frame.class);
+    assertThat(frame).isNotNull();
+    assertThat(frame.getDirection()).hasValue(Direction.DOWN);
     Position position = entity.getComponent(Position.class);
     assertThat(position).isNotNull();
     assertThat(position.getX()).isEqualTo((float) C1.getX());

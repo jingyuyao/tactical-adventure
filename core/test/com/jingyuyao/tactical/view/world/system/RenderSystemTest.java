@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.resource.Colors;
@@ -63,6 +64,7 @@ public class RenderSystemTest {
     Frame frame1 = engine.createComponent(Frame.class);
     Position position1 = engine.createComponent(Position.class);
     frame1.setTexture(worldTexture);
+    frame1.setDirection(Direction.LEFT);
     frame1.addOverlay(overlay1);
     frame1.addOverlay(overlay2);
     frame1.setColor(Colors.RED_500);
@@ -96,10 +98,10 @@ public class RenderSystemTest {
     inOrder.verify(batch).setColor(Color.WHITE);
     // draw entity 1
     inOrder.verify(batch).setColor(Colors.RED_500);
-    inOrder.verify(worldTexture).draw(batch, 10f, 11f);
+    inOrder.verify(worldTexture).draw(batch, 10f, 11f, Direction.LEFT);
     inOrder.verify(batch).setColor(Color.WHITE);
-    inOrder.verify(overlay1).draw(batch, 10f, 11f);
-    inOrder.verify(overlay2).draw(batch, 10f, 11f);
+    inOrder.verify(overlay1).draw(batch, 10f, 11f, Direction.LEFT);
+    inOrder.verify(overlay2).draw(batch, 10f, 11f, Direction.LEFT);
     inOrder.verify(batch).end();
   }
 }
