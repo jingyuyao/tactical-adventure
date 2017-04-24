@@ -88,7 +88,7 @@ class UILayout extends Table {
 
   @Subscribe
   void exitState(ExitState exitState) {
-    itemPanel.clear();
+    itemPanel.reset();
     actionGroup.clear();
   }
 
@@ -96,6 +96,6 @@ class UILayout extends Table {
   void worldReset(WorldReset worldReset) {
     selectCellPanel.reset();
     actionGroup.clear();
-    itemPanel.clear();
+    itemPanel.reset();
   }
 }
