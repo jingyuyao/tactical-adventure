@@ -12,6 +12,10 @@ import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
+import com.kotcrab.vis.ui.building.StandardTableBuilder;
+import com.kotcrab.vis.ui.building.TableBuilder;
+import com.kotcrab.vis.ui.building.utilities.CellWidget;
+import com.kotcrab.vis.ui.building.utilities.Padding;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import java.util.Locale;
@@ -19,33 +23,35 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class StartScreenLayout extends Table {
+class StartScreenLayout {
 
   private final GameState gameState;
   private final DataManager dataManager;
-  private final Container<Label> infoContainer;
-  private final Container<TextButton> playContainer;
-  private final Container<TextButton> resetContainer;
+  private final Table table;
+  private final Container<Label> infoContainer = new Container<>();
+  private final Container<TextButton> playContainer = new Container<>();
+  private final Container<TextButton> resetContainer = new Container<>();
 
   @Inject
   StartScreenLayout(GameState gameState, DataManager dataManager) {
     this.gameState = gameState;
     this.dataManager = dataManager;
-    this.infoContainer = new Container<>();
-    this.playContainer = new Container<>();
-    this.resetContainer = new Container<>();
-    setFillParent(true);
-    pad(10);
 
-    add(infoContainer).grow();
-    row();
+    TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
+    builder.append(infoContainer);
+    builder.row();
+    builder.append(CellWidget.builder().expandY().wrap());
+    builder.row();
+    builder.append(playContainer);
+    builder.append(CellWidget.builder().expandX().wrap());
+    builder.append(resetContainer);
 
-    Table buttonTable = new Table();
-    buttonTable.add(playContainer).left();
-    buttonTable.add().expand();
-    buttonTable.add(resetContainer).right();
+    this.table = builder.build();
+    this.table.setFillParent(true);
+  }
 
-    add(buttonTable).fill();
+  Table getTable() {
+    return table;
   }
 
   void show() {
