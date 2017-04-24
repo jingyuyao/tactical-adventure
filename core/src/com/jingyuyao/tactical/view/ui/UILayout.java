@@ -11,9 +11,6 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
-import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -21,19 +18,13 @@ import javax.inject.Singleton;
 class UILayout extends Table {
 
   private final ActionGroup actionGroup;
-  private final CharacterPanel characterPanel;
-  private final TerrainPanel terrainPanel;
+  private final SelectCellPanel selectCellPanel;
   private final ItemPanel itemPanel;
 
   @Inject
-  UILayout(
-      ActionGroup actionGroup,
-      CharacterPanel characterPanel,
-      TerrainPanel terrainPanel,
-      ItemPanel itemPanel) {
+  UILayout(ActionGroup actionGroup, SelectCellPanel selectCellPanel, ItemPanel itemPanel) {
     this.actionGroup = actionGroup;
-    this.characterPanel = characterPanel;
-    this.terrainPanel = terrainPanel;
+    this.selectCellPanel = selectCellPanel;
     this.itemPanel = itemPanel;
 
     setDebug(true);
@@ -48,9 +39,7 @@ class UILayout extends Table {
 
     Table right = new Table().debug();
     right.defaults().top().right();
-    right.add(characterPanel);
-    right.row();
-    right.add(terrainPanel);
+    right.add(selectCellPanel);
     right.row();
     right.add(actionGroup).bottom().expand();
 
@@ -67,29 +56,19 @@ class UILayout extends Table {
 
   @Subscribe
   void selectCell(SelectCell selectCell) {
-    Cell cell = selectCell.getObject();
-    Coordinate coordinate = cell.getCoordinate();
-    Terrain terrain = cell.getTerrain();
-    if (cell.hasCharacter()) {
-      characterPanel.display(cell.getCharacter());
-      terrainPanel.display(coordinate, terrain);
-    } else {
-      characterPanel.clear();
-      terrainPanel.display(coordinate, terrain);
-    }
+    selectCellPanel.display(selectCell.getObject());
   }
 
   @Subscribe
   void state(State state) {
-    characterPanel.refresh();
+    selectCellPanel.refresh();
     itemPanel.refresh();
     actionGroup.loadActions(state.getActions());
   }
 
   @Subscribe
   void playerState(PlayerState playerState) {
-    characterPanel.display(playerState.getPlayer());
-    // TODO: somehow show terrain? Use player action state?
+    selectCellPanel.refresh();
   }
 
   @Subscribe
@@ -115,9 +94,8 @@ class UILayout extends Table {
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
-    characterPanel.clear();
-    itemPanel.clear();
+    selectCellPanel.reset();
     actionGroup.clear();
-    terrainPanel.clear();
+    itemPanel.clear();
   }
 }
