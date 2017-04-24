@@ -30,9 +30,7 @@ then enable format code and optimize import on commit.
 ### Note for EventBus
 We use EventBus to communicate model events to the view. We should NOT use EventBus to communicate
 between model components. This is due to the order sensitive nature of model logic. We also should
-not use EventBus for things that can be cheaply polled per frame by the view. Our EventBus' are also
-scoped. We have ONE model scoped EventBus. Each character also have its own EventBus which is used
-to send events to its associated actor.
+not use EventBus for things that can be cheaply polled per frame by the view.
 
 ### Note for serialization
 We use Gson to serialize/deserialize game objects (except for terrains). We make use of the
@@ -56,6 +54,8 @@ injections, all model objects either need a no-args constructor or a Guice injec
   - We pool entity and components so holding reference outside of engine can have unintended effects
 - Only views should hold references to assets
 - Subscribes to various model events to update itself.
+- Should not hold reference to model objects (i.e. world)
+  - Only react to events from the model to initialize + update itself
 - Should not change the model except to complete future events
 
 ## Controllers
