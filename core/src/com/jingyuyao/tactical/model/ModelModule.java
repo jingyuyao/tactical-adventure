@@ -41,7 +41,7 @@ public class ModelModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface ModelEventBus {
+  @interface ModelEventBus {
 
   }
 }

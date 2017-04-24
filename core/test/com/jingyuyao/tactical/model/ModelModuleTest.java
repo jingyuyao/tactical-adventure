@@ -11,6 +11,8 @@ public class ModelModuleTest {
 
   @Inject
   private Model model;
+  @Inject
+  private ModelBus modelBus;
 
   @Test
   public void can_create_module() {

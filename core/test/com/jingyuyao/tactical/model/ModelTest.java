@@ -3,11 +3,9 @@ package com.jingyuyao.tactical.model;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
-import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.Waiting;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -33,13 +31,11 @@ public class ModelTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private Provider<Waiting> waitingProvider;
   @Mock
   private Cell cell;
-  @Mock
-  private State state;
   @Mock
   private Waiting waiting;
   @Captor
@@ -49,7 +45,7 @@ public class ModelTest {
 
   @Before
   public void setUp() {
-    model = new Model(world, worldState, eventBus, waitingProvider);
+    model = new Model(world, worldState, modelBus, waitingProvider);
   }
 
   @Test
@@ -84,7 +80,7 @@ public class ModelTest {
     model.select(cell);
 
     verify(worldState).select(cell);
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SelectCell.class);
   }
 }

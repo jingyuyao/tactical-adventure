@@ -8,7 +8,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
-import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
@@ -33,7 +33,7 @@ public class WorldScreenTest {
   @Mock
   private WorldUI worldUI;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private InputProcessor inputProcessor1;
   @Mock
@@ -50,10 +50,10 @@ public class WorldScreenTest {
 
   @Test
   public void register() {
-    worldScreen.register(eventBus);
+    worldScreen.register(modelBus);
 
-    verify(worldView).register(eventBus);
-    verify(worldUI).register(eventBus);
+    verify(worldView).register(modelBus);
+    verify(worldUI).register(modelBus);
   }
 
   @Test

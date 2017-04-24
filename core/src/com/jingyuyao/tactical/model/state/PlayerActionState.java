@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
@@ -15,11 +15,8 @@ class PlayerActionState extends AbstractPlayerState {
   private final Cell cell;
 
   PlayerActionState(
-      EventBus eventBus,
-      WorldState worldState,
-      StateFactory stateFactory,
-      Cell cell) {
-    super(eventBus, worldState, stateFactory, cell.getPlayer());
+      ModelBus modelBus, WorldState worldState, StateFactory stateFactory, Cell cell) {
+    super(modelBus, worldState, stateFactory, cell.getPlayer());
     Preconditions.checkArgument(cell.hasPlayer());
     this.cell = cell;
   }

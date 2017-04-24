@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.event.MyFuture;
@@ -27,7 +27,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BattleTest {
 
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private Character attacker;
   @Mock
@@ -49,7 +49,7 @@ public class BattleTest {
 
   @Before
   public void setUp() {
-    battle = new Battle(eventBus);
+    battle = new Battle(modelBus);
   }
 
   @Test
@@ -64,7 +64,7 @@ public class BattleTest {
 
     MyFuture future = battle.begin(attacker, weapon, target);
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     Attack attack = TestHelpers.verifyObjectEvent(argumentCaptor, 0, target, Attack.class);
     assertThat(attack.getWeapon()).isSameAs(weapon);
     assertThat(attack.getFuture()).isSameAs(future);

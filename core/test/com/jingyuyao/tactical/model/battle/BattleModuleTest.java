@@ -1,10 +1,9 @@
 package com.jingyuyao.tactical.model.battle;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +15,7 @@ public class BattleModuleTest {
 
   @Bind
   @Mock
-  @ModelEventBus
-  private EventBus eventBus;
+  private ModelBus modelBus;
 
   @Inject
   private Battle battle;

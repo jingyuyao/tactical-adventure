@@ -5,9 +5,9 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.WorldCamera;
 import com.jingyuyao.tactical.controller.WorldController;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,8 +35,8 @@ public class WorldView {
     this.inputProcessor = new InputMultiplexer(worldCamera, worldController);
   }
 
-  public void register(EventBus eventBus) {
-    worldEngine.register(eventBus);
+  public void register(ModelBus modelBus) {
+    worldEngine.register(modelBus);
   }
 
   public InputProcessor getInputProcessor() {

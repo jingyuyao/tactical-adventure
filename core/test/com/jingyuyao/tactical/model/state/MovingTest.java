@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.MyFuture;
@@ -39,7 +39,7 @@ public class MovingTest {
   @Mock
   private Movements movements;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private Cell cell;
   @Mock
@@ -73,14 +73,14 @@ public class MovingTest {
   public void setUp() {
     when(cell.hasPlayer()).thenReturn(true);
     when(cell.getPlayer()).thenReturn(player);
-    moving = new Moving(eventBus, worldState, stateFactory, movements, cell, movement);
+    moving = new Moving(modelBus, worldState, stateFactory, movements, cell, movement);
   }
 
   @Test
   public void enter() {
     moving.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(moving);
   }
 
@@ -104,7 +104,7 @@ public class MovingTest {
   public void exit() {
     moving.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, moving, ExitState.class);
   }
 

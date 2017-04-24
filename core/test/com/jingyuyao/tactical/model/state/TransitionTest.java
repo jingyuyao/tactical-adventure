@@ -4,8 +4,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class TransitionTest {
 
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private WorldState worldState;
   @Mock
@@ -32,14 +32,14 @@ public class TransitionTest {
 
   @Before
   public void setUp() {
-    transition = new Transition(eventBus, worldState);
+    transition = new Transition(modelBus, worldState);
   }
 
   @Test
   public void enter() {
     transition.enter();
 
-    verify(eventBus).post(transition);
+    verify(modelBus).post(transition);
   }
 
   @Test
@@ -47,7 +47,7 @@ public class TransitionTest {
     transition.exit();
 
     verify(worldState).remove(transition);
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, transition, ExitState.class);
   }
 

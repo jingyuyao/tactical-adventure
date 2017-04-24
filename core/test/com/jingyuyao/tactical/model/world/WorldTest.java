@@ -4,8 +4,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
@@ -33,7 +33,7 @@ public class WorldTest {
   private static final Coordinate NO_NEIGHBOR = new Coordinate(100, 100);
 
   @Mock
-  private EventBus worldEventBus;
+  private ModelBus modelBus;
   @Mock
   private CellFactory cellFactory;
   @Mock
@@ -65,7 +65,7 @@ public class WorldTest {
   @Before
   public void setUp() {
     cellMap = new HashMap<>();
-    world = new World(worldEventBus, cellFactory, cellMap);
+    world = new World(modelBus, cellFactory, cellMap);
   }
 
   @Test
@@ -88,7 +88,7 @@ public class WorldTest {
     assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
     verify(cell1).spawnCharacter(character1);
     verify(cell2).spawnCharacter(character2);
-    verify(worldEventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
   }
 
@@ -99,7 +99,7 @@ public class WorldTest {
     world.reset();
 
     assertThat(cellMap).isEmpty();
-    verify(worldEventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(WorldReset.class);
   }
 

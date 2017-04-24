@@ -8,7 +8,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Array;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class WorldEngineTest {
   @Mock
   private EntitySystem system2;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
 
   private WorldEngine worldEngine;
 
@@ -41,10 +41,10 @@ public class WorldEngineTest {
     when(engine.getSystems())
         .thenReturn(new ImmutableArray<>(new Array<>(new EntitySystem[]{system1, system2})));
 
-    worldEngine.register(eventBus);
+    worldEngine.register(modelBus);
 
-    verify(eventBus).register(system1);
-    verify(eventBus).register(system2);
+    verify(modelBus).register(system1);
+    verify(modelBus).register(system2);
   }
 
   @Test

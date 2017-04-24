@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -34,7 +34,7 @@ public class BattlingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private Battle battle;
   @Mock
@@ -56,7 +56,7 @@ public class BattlingTest {
 
   @Before
   public void setUp() {
-    battling = new Battling(eventBus, worldState, stateFactory, battle, attackingPlayer,
+    battling = new Battling(modelBus, worldState, stateFactory, battle, attackingPlayer,
         weapon,
         target);
   }
@@ -65,7 +65,7 @@ public class BattlingTest {
   public void enter() {
     battling.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(battling);
   }
 
@@ -73,7 +73,7 @@ public class BattlingTest {
   public void exit() {
     battling.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, battling, ExitState.class);
   }
 

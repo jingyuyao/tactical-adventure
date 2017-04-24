@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Target;
@@ -29,7 +29,7 @@ public class SelectingTargetTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private Cell cell;
   @Mock
@@ -51,14 +51,14 @@ public class SelectingTargetTest {
   public void setUp() {
     selectingTarget =
         new SelectingTarget(
-            eventBus, worldState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
+            modelBus, worldState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
   }
 
   @Test
   public void enter() {
     selectingTarget.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(selectingTarget);
   }
 
@@ -66,7 +66,7 @@ public class SelectingTargetTest {
   public void exit() {
     selectingTarget.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, selectingTarget, ExitState.class);
   }
 

@@ -1,23 +1,23 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.world.Cell;
 
 class BaseState implements State {
 
-  private final EventBus eventBus;
+  private final ModelBus modelBus;
   private final WorldState worldState;
 
-  BaseState(EventBus eventBus, WorldState worldState) {
-    this.eventBus = eventBus;
+  BaseState(ModelBus modelBus, WorldState worldState) {
+    this.modelBus = modelBus;
     this.worldState = worldState;
   }
 
   @Override
   public void enter() {
-    eventBus.post(this);
+    modelBus.post(this);
   }
 
   @Override
@@ -26,7 +26,7 @@ class BaseState implements State {
 
   @Override
   public void exit() {
-    eventBus.post(new ExitState(this));
+    modelBus.post(new ExitState(this));
   }
 
   @Override
@@ -39,7 +39,7 @@ class BaseState implements State {
   }
 
   void post(Object event) {
-    eventBus.post(event);
+    modelBus.post(event);
   }
 
   void goTo(State newState) {

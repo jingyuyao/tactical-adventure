@@ -5,8 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -22,7 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class UsingConsumableTest {
 
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private WorldState worldState;
   @Mock
@@ -40,14 +40,14 @@ public class UsingConsumableTest {
 
   @Before
   public void setUp() {
-    usingConsumable = new UsingConsumable(eventBus, worldState, stateFactory, player, consumable);
+    usingConsumable = new UsingConsumable(modelBus, worldState, stateFactory, player, consumable);
   }
 
   @Test
   public void enter() {
     usingConsumable.enter();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(usingConsumable);
   }
 
@@ -55,7 +55,7 @@ public class UsingConsumableTest {
   public void exit() {
     usingConsumable.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, usingConsumable, ExitState.class);
   }
 

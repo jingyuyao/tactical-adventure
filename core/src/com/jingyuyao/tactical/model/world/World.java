@@ -5,8 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -20,18 +19,15 @@ import javax.inject.Singleton;
 @Singleton
 public class World {
 
-  private final EventBus eventBus;
+  private final ModelBus modelBus;
   private final CellFactory cellFactory;
   private final Map<Coordinate, Cell> cellMap;
   private int maxHeight;
   private int maxWidth;
 
   @Inject
-  World(
-      @ModelEventBus EventBus eventBus,
-      CellFactory cellFactory,
-      @BackingCellMap Map<Coordinate, Cell> cellMap) {
-    this.eventBus = eventBus;
+  World(ModelBus modelBus, CellFactory cellFactory, @BackingCellMap Map<Coordinate, Cell> cellMap) {
+    this.modelBus = modelBus;
     this.cellFactory = cellFactory;
     this.cellMap = cellMap;
   }
@@ -61,12 +57,12 @@ public class World {
       }
       cell.spawnCharacter(entry.getValue());
     }
-    eventBus.post(new WorldLoad(cellMap.values()));
+    modelBus.post(new WorldLoad(cellMap.values()));
   }
 
   public void reset() {
     cellMap.clear();
-    eventBus.post(new WorldReset());
+    modelBus.post(new WorldReset());
   }
 
   public int getMaxHeight() {
