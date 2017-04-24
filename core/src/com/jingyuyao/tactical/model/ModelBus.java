@@ -19,14 +19,6 @@ public class ModelBus {
     eventBus.register(object);
   }
 
-  public void unregister(Object object) {
-    eventBus.unregister(object);
-  }
-
-  public String identifier() {
-    return eventBus.identifier();
-  }
-
   public void post(Object event) {
     eventBus.post(event);
   }

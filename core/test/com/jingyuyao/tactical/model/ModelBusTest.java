@@ -27,11 +27,6 @@ public class ModelBusTest {
   }
 
   @Test
-  public void identifier() {
-    assertThat(modelBus.identifier()).isEqualTo(eventBus.identifier());
-  }
-
-  @Test
   public void to_string() {
     assertThat(modelBus.toString()).isEqualTo(eventBus.toString());
   }
@@ -57,17 +52,6 @@ public class ModelBusTest {
     assertThat(privateEvent).isNull();
     assertThat(deadEvent).isNotNull();
     assertThat(deadEvent.getEvent()).isSameAs(event);
-  }
-
-  @Test
-  public void unregister() {
-    modelBus.register(this);
-    modelBus.unregister(this);
-
-    modelBus.post(new PrivateEvent());
-
-    assertThat(privateEvent).isNull();
-    assertThat(deadEvent).isNull();
   }
 
   @Subscribe
