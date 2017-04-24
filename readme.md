@@ -42,6 +42,13 @@ instances by hand. All the data fields and injected by gson. Since gson requires
 injections, all model objects either need a no-args constructor or a Guice injectable constructor
 (with no assisted injections).
 
+### Note for UI
+We currently use a library called VisUI for development. It comes with its own skin files that are
+loaded from classpath by invoking a static method. This means we need to enable headless environment
+to be able to call that method. Instead of enabling headless environment for module tests, we should
+move UI widget creation to runtime. Then we can enable headless environment only during unit tests
+which should be less error prone.
+
 ## Models
 - Model classes should self-contained, it should not reference libgdx, controller or views
 - Receive commands via method invocation from controllers
