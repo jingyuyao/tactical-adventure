@@ -66,9 +66,6 @@ class StartScreenLayout extends Table {
   }
 
   private void updateInfo() {
-    GameSave gameSave = dataManager.loadCurrentSave();
-    int level = gameSave.getCurrentLevel();
-
     String progress = "No progress";
     Optional<LevelProgress> levelProgressOptional = dataManager.loadCurrentProgress();
     if (levelProgressOptional.isPresent()) {
@@ -81,6 +78,8 @@ class StartScreenLayout extends Table {
               "%d player characters, %d enemies remaining", activePlayers, activeEnemies);
     }
 
+    GameSave gameSave = dataManager.loadCurrentSave();
+    int level = gameSave.getCurrentLevel();
     String text = String.format(Locale.US, "Current level: %d\n%s", level, progress);
     VisLabel label = new VisLabel(text, Align.center);
     infoContainer.setActor(label);
