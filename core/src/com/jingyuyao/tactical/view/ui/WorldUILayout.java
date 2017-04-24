@@ -15,14 +15,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class UILayout extends Table {
+class WorldUILayout extends Table {
 
   private final ActionGroup actionGroup;
   private final SelectCellPanel selectCellPanel;
   private final ItemPanel itemPanel;
 
   @Inject
-  UILayout(ActionGroup actionGroup, SelectCellPanel selectCellPanel, ItemPanel itemPanel) {
+  WorldUILayout(ActionGroup actionGroup, SelectCellPanel selectCellPanel, ItemPanel itemPanel) {
     this.actionGroup = actionGroup;
     this.selectCellPanel = selectCellPanel;
     this.itemPanel = itemPanel;
@@ -94,7 +94,7 @@ class UILayout extends Table {
   @Subscribe
   void worldReset(WorldReset worldReset) {
     selectCellPanel.reset();
-    actionGroup.clear();
     itemPanel.reset();
+    actionGroup.clear();
   }
 }

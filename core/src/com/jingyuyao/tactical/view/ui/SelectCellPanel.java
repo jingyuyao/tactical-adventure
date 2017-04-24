@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jingyuyao.tactical.model.character.Character;
@@ -11,16 +10,13 @@ import java.util.Locale;
 import javax.inject.Singleton;
 
 @Singleton
-class SelectCellPanel extends Container<Label> {
+class SelectCellPanel extends DisplayPanel<Cell> {
 
   private static final String CHARACTER_FMT = "%s\nHP: %d\n\n";
   private static final String TERRAIN_FMT = "%s\nMove: %d\n%s";
 
-  private Cell cell;
-
-  void display(Cell cell) {
-    this.cell = cell;
-
+  @Override
+  Label createLabel(Cell cell) {
     Terrain terrain = cell.getTerrain();
     String terrainName = terrain.getName();
     int penalty = terrain.getMovementPenalty();
@@ -36,17 +32,6 @@ class SelectCellPanel extends Container<Label> {
     VisLabel label = new VisLabel(text);
     label.setAlignment(Align.right);
     label.setFontScale(0.5f);
-    setActor(label);
-  }
-
-  void refresh() {
-    if (cell != null) {
-      display(cell);
-    }
-  }
-
-  void reset() {
-    cell = null;
-    setActor(null);
+    return label;
   }
 }
