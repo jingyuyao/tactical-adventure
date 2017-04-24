@@ -1,25 +1,37 @@
 package com.jingyuyao.tactical.view.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.jingyuyao.tactical.model.state.Action;
-import javax.inject.Inject;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Singleton;
 
 @Singleton
 class ActionGroup extends VerticalGroup {
 
-  private final UIFactory uiFactory;
-
-  @Inject
-  ActionGroup(UIFactory uiFactory) {
-    this.uiFactory = uiFactory;
+  ActionGroup() {
     space(7);
     columnRight();
   }
 
   void loadActions(Iterable<Action> actions) {
-    for (Action action : actions) {
-      addActor(uiFactory.createActionButton(action));
+    for (final Action action : actions) {
+      VisTextButton button = new VisTextButton(action.getName());
+      button.getLabelCell().pad(10);
+      Label label = button.getLabel();
+      label.setAlignment(Align.right);
+      label.setFontScale(0.5f);
+      button.addListener(new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          action.run();
+        }
+      });
+
+      addActor(button);
     }
   }
 }

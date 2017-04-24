@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.ControllerModule;
@@ -24,7 +23,6 @@ import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {
 
-  private static final String SKIN = "ui/uiskin.json";
   private static final String TEXTURE_ATLAS = "packed/texture.atlas";
 
   private final TacticalAdventure game;
@@ -55,14 +53,6 @@ class GameModule extends AbstractModule {
     AssetManager assetManager = new AssetManager();
     assetManager.setLoader(TiledMap.class, new TmxMapLoader());
     return assetManager;
-  }
-
-  @Provides
-  @Singleton
-  Skin provideSkin(AssetManager assetManager) {
-    assetManager.load(SKIN, Skin.class);
-    assetManager.finishLoadingAsset(SKIN);
-    return assetManager.get(SKIN, Skin.class);
   }
 
   @Provides

@@ -1,55 +1,26 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.jingyuyao.tactical.model.item.Item;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import java.util.Locale;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class ItemPanel extends VerticalGroup {
+class ItemPanel extends DisplayPanel<Item> {
 
-  private final Skin skin;
-  private Item current;
-
-  @Inject
-  ItemPanel(Skin skin) {
-    this.skin = skin;
-    columnLeft();
-  }
+  private static final String ITEM_FMT = "%s\nUsage: %d\n%s";
 
   @Override
-  public void clear() {
-    super.clear();
-    current = null;
-  }
-
-  void display(Item item) {
-    clear();
-    Label label = new Label(getLabelString(item), skin);
+  Label createLabel(Item item) {
+    String text =
+        String.format(
+            Locale.US, ITEM_FMT, item.getName(), item.getUsageLeft(), item.getDescription());
+    VisLabel label = new VisLabel(text);
     label.setAlignment(Align.left);
-    addActor(label);
-    current = item;
-  }
+    label.setFontScale(0.5f);
 
-  void refresh() {
-    if (current != null) {
-      display(current);
-    }
-  }
-
-  private String getLabelString(Item item) {
-    return String.format(
-        Locale.US,
-        "%s\n" +
-            "Usage: %d\n" +
-            "%s",
-        item.getName(),
-        item.getUsageLeft(),
-        item.getDescription()
-    );
+    return label;
   }
 }

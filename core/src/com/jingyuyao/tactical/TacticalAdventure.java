@@ -4,8 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.screen.StartScreen;
 import com.jingyuyao.tactical.screen.WorldScreen;
-import com.jingyuyao.tactical.screen.play.PlayMenu;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.VisUI.SkinScale;
 import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
@@ -18,12 +20,13 @@ public class TacticalAdventure extends Game {
   @Inject
   private WorldScreen worldScreen;
   @Inject
-  private PlayMenu playMenu;
+  private StartScreen startScreen;
   @Inject
   private AssetManager assetManager;
 
   @Override
   public void create() {
+    VisUI.load(SkinScale.X2);
     Guice.createInjector(new GameModule(this)).injectMembers(this);
 
     modelBus.register(gameState);
@@ -41,12 +44,13 @@ public class TacticalAdventure extends Game {
   public void dispose() {
     super.dispose();
     worldScreen.dispose();
-    playMenu.dispose();
+    startScreen.dispose();
     assetManager.dispose();
+    VisUI.dispose();
   }
 
   void goToPlayMenu() {
-    setScreen(playMenu);
+    setScreen(startScreen);
   }
 
   void goToWorldScreen() {

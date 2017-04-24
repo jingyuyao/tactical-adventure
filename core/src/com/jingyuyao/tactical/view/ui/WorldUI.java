@@ -11,17 +11,17 @@ import javax.inject.Singleton;
 public class WorldUI {
 
   private final Stage stage;
-  private final UILayout uiLayout;
+  private final WorldUILayout worldUiLayout;
 
   @Inject
-  WorldUI(@UIStage Stage stage, UILayout uiLayout) {
+  WorldUI(@UIStage Stage stage, WorldUILayout worldUiLayout) {
     this.stage = stage;
-    this.uiLayout = uiLayout;
-    this.stage.addActor(uiLayout);
+    this.worldUiLayout = worldUiLayout;
+    this.stage.addActor(worldUiLayout);
   }
 
   public void register(ModelBus modelBus) {
-    uiLayout.register(modelBus);
+    worldUiLayout.register(modelBus);
   }
 
   public InputProcessor getInputProcessor() {
