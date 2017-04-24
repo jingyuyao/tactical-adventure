@@ -3,13 +3,13 @@ package com.jingyuyao.tactical.screen;
 import javax.inject.Singleton;
 
 @Singleton
-public class ScreenConfig {
+class ScreenConfig {
 
-  public int getMenuViewportWidth() {
+  int getMenuScreenWidth() {
     return 700;
   }
 
-  public int getMenuViewportHeight() {
+  int getMenuScreenHeight() {
     return 450;
   }
 }

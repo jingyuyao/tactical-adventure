@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen.play;
+package com.jingyuyao.tactical.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class PlayMenuLayout extends Table {
+class StartScreenLayout extends Table {
 
   private final GameState gameState;
   private final DataManager dataManager;
@@ -28,7 +28,7 @@ class PlayMenuLayout extends Table {
   private final Container<TextButton> resetContainer;
 
   @Inject
-  PlayMenuLayout(GameState gameState, DataManager dataManager) {
+  StartScreenLayout(GameState gameState, DataManager dataManager) {
     this.gameState = gameState;
     this.dataManager = dataManager;
     this.infoContainer = new Container<>();

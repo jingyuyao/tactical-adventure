@@ -4,17 +4,17 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class UIConfig {
+class WorldUIConfig {
 
   @Inject
-  UIConfig() {
+  WorldUIConfig() {
   }
 
-  int getUIViewportWidth() {
+  int getUIWidth() {
     return 700;
   }
 
-  int getUIViewportHeight() {
+  int getUIHeight() {
     return 450;
   }
 }

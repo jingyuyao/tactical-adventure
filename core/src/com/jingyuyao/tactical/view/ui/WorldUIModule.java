@@ -33,8 +33,8 @@ public class WorldUIModule extends AbstractModule {
   @Provides
   @Singleton
   @UIViewport
-  Viewport provideUIViewport(UIConfig uiConfig) {
-    return new StretchViewport(uiConfig.getUIViewportWidth(), uiConfig.getUIViewportHeight());
+  Viewport provideUIViewport(WorldUIConfig worldUiConfig) {
+    return new StretchViewport(worldUiConfig.getUIWidth(), worldUiConfig.getUIHeight());
   }
 
   @Qualifier
