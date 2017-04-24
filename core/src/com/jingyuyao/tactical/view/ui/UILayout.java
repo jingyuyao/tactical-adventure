@@ -27,17 +27,16 @@ class UILayout extends Table {
     this.selectCellPanel = selectCellPanel;
     this.itemPanel = itemPanel;
 
-    setDebug(true);
     setFillParent(true);
     pad(10);
 
-    Table left = new Table().debug();
+    Table left = new Table();
     left.defaults().top().left();
     left.add(itemPanel).expand();
 
-    Table mid = new Table().debug();
+    Table mid = new Table();
 
-    Table right = new Table().debug();
+    Table right = new Table();
     right.defaults().top().right();
     right.add(selectCellPanel);
     right.row();

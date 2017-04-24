@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -24,8 +23,6 @@ public class WorldUIModule extends AbstractModule {
   protected void configure() {
     requireBinding(Batch.class);
     requireBinding(Skin.class);
-
-    install(new FactoryModuleBuilder().build(UIFactory.class));
   }
 
   @Provides
