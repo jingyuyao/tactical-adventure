@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.controller.WorldCamera;
 import com.jingyuyao.tactical.controller.WorldController;
@@ -14,7 +13,6 @@ public class ViewModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(AssetManager.class);
-    requireBinding(Skin.class);
     requireBinding(Batch.class);
     requireBinding(WorldController.class);
     requireBinding(WorldCamera.class);

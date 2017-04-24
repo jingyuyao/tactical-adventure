@@ -7,7 +7,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
@@ -22,7 +21,6 @@ public class WorldUIModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(Batch.class);
-    requireBinding(Skin.class);
   }
 
   @Provides
