@@ -13,7 +13,6 @@ import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import javax.inject.Singleton;
@@ -42,12 +41,6 @@ public class MockGameModule extends AbstractModule {
   @Singleton
   AssetManager provideAssetManager() {
     return mock(AssetManager.class);
-  }
-
-  @Provides
-  @Singleton
-  Skin provideSkin() {
-    return mock(Skin.class);
   }
 
   @Provides

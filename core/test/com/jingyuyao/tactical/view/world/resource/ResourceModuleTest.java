@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.view.world.resource;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -23,8 +22,6 @@ public class ResourceModuleTest {
   private Markers markers;
   @Inject
   private Animations animations;
-  @Inject
-  private Skin provideSkin;
   @Inject
   private TextureFactory textureFactory;
 
