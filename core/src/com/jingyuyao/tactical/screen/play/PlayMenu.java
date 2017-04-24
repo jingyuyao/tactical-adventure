@@ -14,26 +14,25 @@ public class PlayMenu extends ScreenAdapter {
   private final Stage stage;
   private final GL20 gl;
   private final Input input;
-  private final PlayInfo playInfo;
+  private final PlayMenuLayout playMenuLayout;
 
   @Inject
   PlayMenu(
       @PlayMenuStage Stage stage,
       GL20 gl,
       Input input,
-      PlayMenuLayout playMenuLayout,
-      PlayInfo playInfo) {
+      PlayMenuLayout playMenuLayout) {
     this.stage = stage;
     this.gl = gl;
     this.input = input;
-    this.playInfo = playInfo;
+    this.playMenuLayout = playMenuLayout;
     stage.addActor(playMenuLayout);
   }
 
   @Override
   public void show() {
     input.setInputProcessor(stage);
-    playInfo.updateText();
+    playMenuLayout.show();
   }
 
   @Override

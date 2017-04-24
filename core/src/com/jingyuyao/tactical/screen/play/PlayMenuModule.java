@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
@@ -29,7 +28,6 @@ public class PlayMenuModule extends AbstractModule {
     requireBinding(Input.class);
     requireBinding(GL20.class);
     requireBinding(Batch.class);
-    requireBinding(Skin.class);
     requireBinding(ScreenConfig.class);
     requireBinding(GameState.class);
     requireBinding(DataManager.class);
