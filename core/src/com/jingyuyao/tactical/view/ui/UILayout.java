@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -61,8 +61,8 @@ class UILayout extends Table {
     add(right).fill();
   }
 
-  void register(EventBus eventBus) {
-    eventBus.register(this);
+  void register(ModelBus modelBus) {
+    modelBus.register(this);
   }
 
   @Subscribe

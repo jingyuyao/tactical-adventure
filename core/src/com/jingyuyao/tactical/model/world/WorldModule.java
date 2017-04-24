@@ -5,10 +5,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.model.ModelBus;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class WorldModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(EventBus.class);
+    requireBinding(ModelBus.class);
 
     install(new FactoryModuleBuilder().build(CellFactory.class));
   }

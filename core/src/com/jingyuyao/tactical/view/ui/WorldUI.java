@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.view.ui.WorldUIModule.UIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,8 +20,8 @@ public class WorldUI {
     this.stage.addActor(uiLayout);
   }
 
-  public void register(EventBus eventBus) {
-    uiLayout.register(eventBus);
+  public void register(ModelBus modelBus) {
+    uiLayout.register(modelBus);
   }
 
   public InputProcessor getInputProcessor() {

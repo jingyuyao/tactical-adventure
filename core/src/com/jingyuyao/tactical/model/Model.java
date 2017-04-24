@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.state.Waiting;
@@ -20,18 +18,18 @@ public class Model {
 
   private final World world;
   private final WorldState worldState;
-  private final EventBus eventBus;
+  private final ModelBus modelBus;
   private final Provider<Waiting> waitingProvider;
 
   @Inject
   Model(
       World world,
       WorldState worldState,
-      @ModelEventBus EventBus eventBus,
+      ModelBus modelBus,
       Provider<Waiting> waitingProvider) {
     this.world = world;
     this.worldState = worldState;
-    this.eventBus = eventBus;
+    this.modelBus = modelBus;
     this.waitingProvider = waitingProvider;
   }
 
@@ -52,7 +50,7 @@ public class Model {
   }
 
   public void select(Cell cell) {
-    eventBus.post(new SelectCell(cell));
+    modelBus.post(new SelectCell(cell));
     worldState.select(cell);
   }
 }

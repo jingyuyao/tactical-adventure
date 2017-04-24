@@ -3,11 +3,10 @@ package com.jingyuyao.tactical.model.state;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -29,8 +28,7 @@ public class StateModuleTest {
 
   @Bind
   @Mock
-  @ModelEventBus
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Bind
   @Mock
   private World world;

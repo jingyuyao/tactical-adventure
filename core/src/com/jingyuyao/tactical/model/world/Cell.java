@@ -1,9 +1,8 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Preconditions;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
@@ -17,17 +16,14 @@ import javax.inject.Inject;
 
 public class Cell {
 
-  private final EventBus eventBus;
+  private final ModelBus modelBus;
   private final Coordinate coordinate;
   private final Terrain terrain;
   private Character character;
 
   @Inject
-  Cell(
-      @ModelEventBus EventBus eventBus,
-      @Assisted Coordinate coordinate,
-      @Assisted Terrain terrain) {
-    this.eventBus = eventBus;
+  Cell(ModelBus modelBus, @Assisted Coordinate coordinate, @Assisted Terrain terrain) {
+    this.modelBus = modelBus;
     this.coordinate = coordinate;
     this.terrain = terrain;
   }
@@ -69,13 +65,13 @@ public class Cell {
     Preconditions.checkNotNull(character);
 
     this.character = character;
-    eventBus.post(new SpawnCharacter(this));
+    modelBus.post(new SpawnCharacter(this));
   }
 
   public void removeCharacter() {
     Preconditions.checkState(hasCharacter());
 
-    eventBus.post(new RemoveCharacter(character));
+    modelBus.post(new RemoveCharacter(character));
     this.character = null;
   }
 
@@ -88,7 +84,7 @@ public class Cell {
 
     Preconditions.checkArgument(!destination.hasCharacter());
 
-    eventBus.post(new InstantMoveCharacter(character, destination));
+    modelBus.post(new InstantMoveCharacter(character, destination));
     destination.character = character;
     character = null;
   }
@@ -105,7 +101,7 @@ public class Cell {
     Preconditions.checkArgument(!destination.hasCharacter());
 
     MyFuture future = new MyFuture();
-    eventBus.post(new MoveCharacter(character, path, future));
+    modelBus.post(new MoveCharacter(character, path, future));
     path.getDestination().character = character;
     character = null;
     return future;

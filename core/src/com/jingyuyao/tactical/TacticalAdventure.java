@@ -2,9 +2,8 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.screen.WorldScreen;
 import com.jingyuyao.tactical.screen.play.PlayMenu;
 import javax.inject.Inject;
@@ -12,8 +11,7 @@ import javax.inject.Inject;
 public class TacticalAdventure extends Game {
 
   @Inject
-  @ModelEventBus
-  private EventBus modelEventBus;
+  private ModelBus modelBus;
   @Inject
   private GameState gameState;
 
@@ -28,8 +26,8 @@ public class TacticalAdventure extends Game {
   public void create() {
     Guice.createInjector(new GameModule(this)).injectMembers(this);
 
-    modelEventBus.register(gameState);
-    worldScreen.register(modelEventBus);
+    modelBus.register(gameState);
+    worldScreen.register(modelBus);
     gameState.start();
   }
 

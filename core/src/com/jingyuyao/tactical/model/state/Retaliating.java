@@ -1,8 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -16,11 +15,11 @@ public class Retaliating extends BaseState {
 
   @Inject
   Retaliating(
-      @ModelEventBus EventBus eventBus,
+      ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
       World world) {
-    super(eventBus, worldState);
+    super(modelBus, worldState);
     this.stateFactory = stateFactory;
     this.world = world;
   }

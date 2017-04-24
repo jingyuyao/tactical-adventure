@@ -9,9 +9,9 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.controller.WorldCamera;
 import com.jingyuyao.tactical.controller.WorldController;
+import com.jingyuyao.tactical.model.ModelBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +34,7 @@ public class WorldViewTest {
   @Mock
   private WorldController worldController;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private OrthographicCamera camera;
 
@@ -47,9 +47,9 @@ public class WorldViewTest {
 
   @Test
   public void register() {
-    worldView.register(eventBus);
+    worldView.register(modelBus);
 
-    verify(worldEngine).register(eventBus);
+    verify(worldEngine).register(modelBus);
   }
 
   @Test

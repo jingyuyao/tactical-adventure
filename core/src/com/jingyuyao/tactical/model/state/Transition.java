@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.eventbus.EventBus;
-import com.jingyuyao.tactical.model.ModelModule.ModelEventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import javax.inject.Inject;
 
 /**
@@ -11,8 +10,8 @@ import javax.inject.Inject;
 public class Transition extends BaseState {
 
   @Inject
-  Transition(@ModelEventBus EventBus eventBus, WorldState worldState) {
-    super(eventBus, worldState);
+  Transition(ModelBus modelBus, WorldState worldState) {
+    super(modelBus, worldState);
   }
 
   @Override

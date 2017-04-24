@@ -8,8 +8,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
@@ -31,7 +31,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WaitingTest {
 
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private WorldState worldState;
   @Mock
@@ -59,7 +59,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(eventBus, worldState, stateFactory, world, movements);
+    waiting = new Waiting(modelBus, worldState, stateFactory, world, movements);
   }
 
   @Test
@@ -70,8 +70,8 @@ public class WaitingTest {
 
     waiting.enter();
 
-    verify(eventBus).post(waiting);
-    verifyNoMoreInteractions(eventBus);
+    verify(modelBus).post(waiting);
+    verifyNoMoreInteractions(modelBus);
   }
 
   @Test
@@ -83,7 +83,7 @@ public class WaitingTest {
     waiting.enter();
 
     verify(player).setActionable(true);
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelComplete.class);
@@ -96,7 +96,7 @@ public class WaitingTest {
 
     waiting.enter();
 
-    verify(eventBus, times(2)).post(argumentCaptor.capture());
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelFailed.class);
@@ -106,7 +106,7 @@ public class WaitingTest {
   public void exit() {
     waiting.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, waiting, ExitState.class);
   }
 

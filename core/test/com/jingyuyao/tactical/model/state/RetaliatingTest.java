@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -33,7 +33,7 @@ public class RetaliatingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private EventBus eventBus;
+  private ModelBus modelBus;
   @Mock
   private World world;
   @Mock
@@ -53,7 +53,7 @@ public class RetaliatingTest {
 
   @Before
   public void setUp() {
-    retaliating = new Retaliating(eventBus, worldState, stateFactory, world);
+    retaliating = new Retaliating(modelBus, worldState, stateFactory, world);
   }
 
   @Test
@@ -81,10 +81,10 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, eventBus);
-    inOrder.verify(eventBus, times(2)).post(argumentCaptor.capture());
+    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, modelBus);
+    inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).retaliate(cell);
-    inOrder.verify(eventBus).post(argumentCaptor.capture());
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).retaliate(cell2);
     inOrder.verify(worldState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
@@ -96,7 +96,7 @@ public class RetaliatingTest {
   public void exit() {
     retaliating.exit();
 
-    verify(eventBus).post(argumentCaptor.capture());
+    verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, retaliating, ExitState.class);
   }
 }

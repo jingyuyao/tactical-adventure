@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
-import com.google.common.eventbus.EventBus;
+import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.view.world.system.SystemModule.EntitySystems;
 import java.util.List;
 import javax.inject.Inject;
@@ -21,9 +21,9 @@ class WorldEngine {
     }
   }
 
-  void register(EventBus eventBus) {
+  void register(ModelBus modelBus) {
     for (EntitySystem system : engine.getSystems()) {
-      eventBus.register(system);
+      modelBus.register(system);
     }
   }
 
