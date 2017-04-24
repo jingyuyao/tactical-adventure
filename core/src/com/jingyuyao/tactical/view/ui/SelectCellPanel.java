@@ -2,13 +2,12 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import java.util.Locale;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
@@ -17,13 +16,7 @@ class SelectCellPanel extends Container<Label> {
   private static final String CHARACTER_FMT = "%s\nHP: %d\n\n";
   private static final String TERRAIN_FMT = "%s\nMove: %d\n%s";
 
-  private final Skin skin;
   private Cell cell;
-
-  @Inject
-  SelectCellPanel(Skin skin) {
-    this.skin = skin;
-  }
 
   void display(Cell cell) {
     this.cell = cell;
@@ -40,8 +33,9 @@ class SelectCellPanel extends Container<Label> {
       text = String.format(Locale.US, CHARACTER_FMT, character.getName(), character.getHp()) + text;
     }
 
-    Label label = new Label(text, skin);
+    VisLabel label = new VisLabel(text);
     label.setAlignment(Align.right);
+    label.setFontScale(0.5f);
     setActor(label);
   }
 
