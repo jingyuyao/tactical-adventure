@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
+@ModelBusListener
 class WorldUILayout {
 
   private final ActionGroup actionGroup;
@@ -49,10 +50,6 @@ class WorldUILayout {
     Table table = builder.build();
     table.setFillParent(true);
     return table;
-  }
-
-  void register(ModelBus modelBus) {
-    modelBus.register(this);
   }
 
   @Subscribe

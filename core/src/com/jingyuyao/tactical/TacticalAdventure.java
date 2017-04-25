@@ -3,7 +3,6 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
-import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.screen.StartScreen;
 import com.jingyuyao.tactical.screen.WorldScreen;
 import com.kotcrab.vis.ui.VisUI;
@@ -12,8 +11,6 @@ import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
 
-  @Inject
-  private ModelBus modelBus;
   @Inject
   private GameState gameState;
 
@@ -29,8 +26,6 @@ public class TacticalAdventure extends Game {
     VisUI.load(SkinScale.X2);
     Guice.createInjector(new GameModule(this)).injectMembers(this);
 
-    modelBus.register(gameState);
-    worldScreen.register(modelBus);
     gameState.start();
   }
 

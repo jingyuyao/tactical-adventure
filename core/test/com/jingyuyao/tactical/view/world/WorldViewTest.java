@@ -46,13 +46,6 @@ public class WorldViewTest {
   }
 
   @Test
-  public void register() {
-    worldView.register(modelBus);
-
-    verify(worldEngine).register(modelBus);
-  }
-
-  @Test
   public void input_processor() {
     InputProcessor processor = worldView.getInputProcessor();
     assertThat(processor).isInstanceOf(InputMultiplexer.class);

@@ -49,14 +49,6 @@ public class WorldScreenTest {
   }
 
   @Test
-  public void register() {
-    worldScreen.register(modelBus);
-
-    verify(worldView).register(modelBus);
-    verify(worldUI).register(modelBus);
-  }
-
-  @Test
   public void show() {
     when(worldUI.getInputProcessor()).thenReturn(inputProcessor1);
     when(worldView.getInputProcessor()).thenReturn(inputProcessor2);
