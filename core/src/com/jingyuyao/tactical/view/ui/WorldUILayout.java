@@ -11,42 +11,44 @@ import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
+import com.kotcrab.vis.ui.building.StandardTableBuilder;
+import com.kotcrab.vis.ui.building.TableBuilder;
+import com.kotcrab.vis.ui.building.utilities.Alignment;
+import com.kotcrab.vis.ui.building.utilities.CellWidget;
+import com.kotcrab.vis.ui.building.utilities.Padding;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class WorldUILayout extends Table {
+class WorldUILayout {
 
   private final ActionGroup actionGroup;
   private final SelectCellPanel selectCellPanel;
   private final ItemPanel itemPanel;
 
+  /**
+   * All components are injected so this object can handle events immediately. This means none
+   * of these objects can be concrete widgets.
+   */
   @Inject
   WorldUILayout(ActionGroup actionGroup, SelectCellPanel selectCellPanel, ItemPanel itemPanel) {
     this.actionGroup = actionGroup;
     this.selectCellPanel = selectCellPanel;
     this.itemPanel = itemPanel;
+  }
 
-    setFillParent(true);
-    pad(10);
+  Table rootTable() {
+    TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
+    builder.append(CellWidget.of(itemPanel).align(Alignment.TOP_LEFT).wrap());
+    builder.append(CellWidget.of(selectCellPanel).align(Alignment.TOP_RIGHT).expandX().wrap());
+    builder.row();
 
-    Table left = new Table();
-    left.defaults().top().left();
-    left.add(itemPanel).expand();
+    builder.append(
+        CellWidget.of(actionGroup).align(Alignment.BOTTOM_RIGHT).expandY().expandX().wrap());
 
-    Table mid = new Table();
-
-    Table right = new Table();
-    right.defaults().top().right();
-    right.add(selectCellPanel);
-    right.row();
-    right.add(actionGroup).bottom().expand();
-
-    // fill() enables the sub-tables to distribute its own vertical space.
-    // grow() causes the middle column to take up all the horizontal space.
-    add(left).fill();
-    add(mid).grow();
-    add(right).fill();
+    Table table = builder.build();
+    table.setFillParent(true);
+    return table;
   }
 
   void register(ModelBus modelBus) {

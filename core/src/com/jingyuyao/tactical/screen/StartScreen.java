@@ -23,13 +23,15 @@ public class StartScreen extends ScreenAdapter {
     this.gl = gl;
     this.input = input;
     this.startScreenLayout = startScreenLayout;
-    stage.addActor(startScreenLayout);
   }
 
   @Override
   public void show() {
     input.setInputProcessor(stage);
-    startScreenLayout.show();
+    stage.clear();
+    // root table creation delayed until show since it contains concrete widgets that relies on
+    // the skin being loaded (which doesn't happen during testing).
+    stage.addActor(startScreenLayout.rootTable());
   }
 
   @Override
