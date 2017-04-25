@@ -56,7 +56,7 @@ class StartScreenLayout {
     builder.append(CellWidget.of(play).align(Alignment.LEFT).expandX().wrap());
     builder.append(reset);
 
-    Table table = builder.build().debug();
+    Table table = builder.build();
     table.setFillParent(true);
     return table;
   }

@@ -42,7 +42,7 @@ class WorldUILayout {
     builder.append(
         CellWidget.of(actionGroup).align(Alignment.BOTTOM_RIGHT).expandY().expandX().wrap());
 
-    Table table = builder.build().debug();
+    Table table = builder.build();
     table.setFillParent(true);
     return table;
   }
