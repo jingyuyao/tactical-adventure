@@ -17,7 +17,7 @@ public class WorldUI {
   WorldUI(@UIStage Stage stage, WorldUILayout worldUiLayout) {
     this.stage = stage;
     this.worldUiLayout = worldUiLayout;
-    this.stage.addActor(worldUiLayout);
+    this.stage.addActor(worldUiLayout.rootTable());
   }
 
   public void register(ModelBus modelBus) {

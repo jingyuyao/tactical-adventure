@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
+import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -27,7 +28,6 @@ class StartScreenLayout {
 
   private final GameState gameState;
   private final DataManager dataManager;
-  private final Table table;
   private final Container<Label> infoContainer = new Container<>();
   private final Container<TextButton> playContainer = new Container<>();
   private final Container<TextButton> resetContainer = new Container<>();
@@ -36,21 +36,18 @@ class StartScreenLayout {
   StartScreenLayout(GameState gameState, DataManager dataManager) {
     this.gameState = gameState;
     this.dataManager = dataManager;
-
-    TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
-    builder.append(infoContainer);
-    builder.row();
-    builder.append(CellWidget.builder().expandY().wrap());
-    builder.row();
-    builder.append(playContainer);
-    builder.append(CellWidget.builder().expandX().wrap());
-    builder.append(resetContainer);
-
-    this.table = builder.build();
-    this.table.setFillParent(true);
   }
 
-  Table getTable() {
+  Table rootTable() {
+    TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
+    builder.append(CellWidget.of(infoContainer).expandY().wrap());
+    builder.row();
+
+    builder.append(CellWidget.of(playContainer).align(Alignment.LEFT).expandX().wrap());
+    builder.append(resetContainer);
+
+    Table table = builder.build().debug();
+    table.setFillParent(true);
     return table;
   }
 
