@@ -26,6 +26,10 @@ class WorldUILayout {
   private final SelectCellPanel selectCellPanel;
   private final ItemPanel itemPanel;
 
+  /**
+   * All components are injected so this object can handle events immediately. This means none
+   * of these objects can be concrete widgets.
+   */
   @Inject
   WorldUILayout(ActionGroup actionGroup, SelectCellPanel selectCellPanel, ItemPanel itemPanel) {
     this.actionGroup = actionGroup;
