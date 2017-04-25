@@ -2,7 +2,12 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.event.SelectCell;
+import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -10,6 +15,7 @@ import java.util.Locale;
 import javax.inject.Singleton;
 
 @Singleton
+@ModelBusListener
 class SelectCellPanel extends DisplayPanel<Cell> {
 
   private static final String CHARACTER_FMT = "%s\nHP: %d\n\n";
@@ -33,5 +39,20 @@ class SelectCellPanel extends DisplayPanel<Cell> {
     label.setAlignment(Align.right);
     label.setFontScale(0.5f);
     return label;
+  }
+
+  @Subscribe
+  void selectCell(SelectCell selectCell) {
+    display(selectCell.getObject());
+  }
+
+  @Subscribe
+  void state(State state) {
+    refresh();
+  }
+
+  @Subscribe
+  void worldReset(WorldReset worldReset) {
+    reset();
   }
 }
