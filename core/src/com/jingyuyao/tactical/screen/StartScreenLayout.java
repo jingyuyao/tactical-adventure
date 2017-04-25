@@ -1,10 +1,7 @@
 package com.jingyuyao.tactical.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
@@ -28,9 +25,7 @@ class StartScreenLayout {
 
   private final GameState gameState;
   private final DataManager dataManager;
-  private final Container<Label> infoContainer = new Container<>();
-  private final Container<TextButton> playContainer = new Container<>();
-  private final Container<TextButton> resetContainer = new Container<>();
+  private VisLabel infoLabel;
 
   @Inject
   StartScreenLayout(GameState gameState, DataManager dataManager) {
@@ -39,36 +34,34 @@ class StartScreenLayout {
   }
 
   Table rootTable() {
+    infoLabel = new VisLabel(getInfoText(), Align.center);
+    VisTextButton play = new VisTextButton("Play", new ChangeListener() {
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+        gameState.play();
+      }
+    });
+    VisTextButton reset = new VisTextButton("Reset", new ChangeListener() {
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+        gameState.reset();
+        infoLabel.setText(getInfoText());
+      }
+    });
+
     TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
-    builder.append(CellWidget.of(infoContainer).expandY().wrap());
+    builder.append(CellWidget.of(infoLabel).expandY().wrap());
     builder.row();
 
-    builder.append(CellWidget.of(playContainer).align(Alignment.LEFT).expandX().wrap());
-    builder.append(resetContainer);
+    builder.append(CellWidget.of(play).align(Alignment.LEFT).expandX().wrap());
+    builder.append(reset);
 
     Table table = builder.build().debug();
     table.setFillParent(true);
     return table;
   }
 
-  void show() {
-    updateInfo();
-    playContainer.setActor(new VisTextButton("Play", new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        gameState.play();
-      }
-    }));
-    resetContainer.setActor(new VisTextButton("Reset", new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        gameState.reset();
-        updateInfo();
-      }
-    }));
-  }
-
-  private void updateInfo() {
+  private String getInfoText() {
     String progress = "No progress";
     Optional<LevelProgress> levelProgressOptional = dataManager.loadCurrentProgress();
     if (levelProgressOptional.isPresent()) {
@@ -83,8 +76,6 @@ class StartScreenLayout {
 
     GameSave gameSave = dataManager.loadCurrentSave();
     int level = gameSave.getCurrentLevel();
-    String text = String.format(Locale.US, "Current level: %d\n%s", level, progress);
-    VisLabel label = new VisLabel(text, Align.center);
-    infoContainer.setActor(label);
+    return String.format(Locale.US, "Current level: %d\n%s", level, progress);
   }
 }

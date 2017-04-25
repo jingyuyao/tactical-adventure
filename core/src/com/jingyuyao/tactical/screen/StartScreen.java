@@ -23,13 +23,13 @@ public class StartScreen extends ScreenAdapter {
     this.gl = gl;
     this.input = input;
     this.startScreenLayout = startScreenLayout;
-    stage.addActor(startScreenLayout.rootTable());
   }
 
   @Override
   public void show() {
     input.setInputProcessor(stage);
-    startScreenLayout.show();
+    stage.clear();
+    stage.addActor(startScreenLayout.rootTable());
   }
 
   @Override
