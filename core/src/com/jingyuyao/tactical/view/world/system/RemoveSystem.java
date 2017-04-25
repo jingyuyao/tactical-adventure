@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ import javax.inject.Singleton;
  * com.badlogic.ashley.core.Engine#removeEntity(Entity)}.
  */
 @Singleton
+@ModelBusListener
 class RemoveSystem extends IteratingSystem {
 
   @Inject

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
@@ -24,11 +23,6 @@ public class WorldScreen extends ScreenAdapter {
     this.input = input;
     this.worldView = worldView;
     this.worldUI = worldUI;
-  }
-
-  public void register(ModelBus modelBus) {
-    worldView.register(modelBus);
-    worldUI.register(modelBus);
   }
 
   @Override

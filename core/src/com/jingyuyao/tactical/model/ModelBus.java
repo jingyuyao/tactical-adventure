@@ -15,12 +15,15 @@ public class ModelBus {
     this.eventBus = eventBus;
   }
 
-  public void register(Object object) {
-    eventBus.register(object);
-  }
-
   public void post(Object event) {
     eventBus.post(event);
+  }
+
+  /**
+   * Annotate a class with {@link Singleton} and {@link ModelBusListener} to register with this bus.
+   */
+  void register(Object object) {
+    eventBus.register(object);
   }
 
   @Override
