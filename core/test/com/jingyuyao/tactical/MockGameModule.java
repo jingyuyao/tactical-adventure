@@ -22,6 +22,10 @@ import javax.inject.Singleton;
  */
 public class MockGameModule extends AbstractModule {
 
+  public MockGameModule() {
+    VisLoader.load();
+  }
+
   @Override
   protected void configure() {
     Gdx.app = mock(Application.class);

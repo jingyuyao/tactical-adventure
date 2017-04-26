@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.google.common.base.Preconditions;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.ControllerModule;
@@ -27,8 +28,19 @@ class GameModule extends AbstractModule {
 
   private final TacticalAdventure game;
 
+  /**
+   * Requires {@link Gdx} to be initialized.
+   *
+   * Also calls {@link VisLoader#load()}.
+   */
   GameModule(TacticalAdventure game) {
+    Preconditions.checkNotNull(Gdx.app);
+    Preconditions.checkNotNull(Gdx.files);
+    Preconditions.checkNotNull(Gdx.graphics);
+    Preconditions.checkNotNull(Gdx.input);
+    Preconditions.checkNotNull(Gdx.gl);
     this.game = game;
+    VisLoader.load();
   }
 
   @Override

@@ -1,21 +1,21 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.kotcrab.vis.ui.widget.VisLabel;
 
 /**
  * A panel that can display an object as a {@link VisLabel}.
  */
-abstract class TextPanel<T> extends Container<VisLabel> {
+abstract class TextPanel<T> extends VisLabel {
 
   private T object;
 
+  TextPanel() {
+    setFontScale(0.5f);
+  }
+
   void display(T object) {
     this.object = object;
-    VisLabel label = new VisLabel(createText(object));
-    label.setAlignment(labelAlign());
-    label.setFontScale(0.5f);
-    setActor(label);
+    setText(createText(object));
   }
 
   void refresh() {
@@ -26,10 +26,8 @@ abstract class TextPanel<T> extends Container<VisLabel> {
 
   void reset() {
     object = null;
-    setActor(null);
+    setText(null);
   }
 
   abstract String createText(T object);
-
-  abstract int labelAlign();
 }

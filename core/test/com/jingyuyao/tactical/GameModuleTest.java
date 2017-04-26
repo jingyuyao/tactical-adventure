@@ -52,7 +52,7 @@ public class GameModuleTest {
 
   @Test
   public void can_create_module() {
-    // NOTE: This test will only pass if the working direction is set to android/assets/
+    // NOTE: This test will only pass if the working directory is set to android/assets/
     Guice.createInjector(Modules.override(new GameModule(game)).with(new AbstractModule() {
       @Override
       protected void configure() {

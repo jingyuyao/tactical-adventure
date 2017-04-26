@@ -17,6 +17,10 @@ class TargetPanel extends TextPanel<Battling> {
 
   private static final String FMT = "%s\nHP: %d\nDmg: %d\n";
 
+  TargetPanel() {
+    setAlignment(Align.left);
+  }
+
   @Override
   String createText(Battling battling) {
     StringBuilder builder = new StringBuilder();
@@ -29,11 +33,6 @@ class TargetPanel extends TextPanel<Battling> {
       }
     }
     return builder.toString();
-  }
-
-  @Override
-  int labelAlign() {
-    return Align.left;
   }
 
   @Subscribe
