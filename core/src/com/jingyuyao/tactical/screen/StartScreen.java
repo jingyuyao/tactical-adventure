@@ -11,27 +11,22 @@ import javax.inject.Singleton;
 @Singleton
 public class StartScreen extends ScreenAdapter {
 
-  private final Stage stage;
   private final GL20 gl;
   private final Input input;
-  private final StartScreenLayout startScreenLayout;
+  private final Stage stage;
 
   @Inject
   StartScreen(
-      @MenuScreenStage Stage stage, GL20 gl, Input input, StartScreenLayout startScreenLayout) {
-    this.stage = stage;
+      GL20 gl, Input input, @MenuScreenStage Stage stage, StartScreenLayout startScreenLayout) {
     this.gl = gl;
     this.input = input;
-    this.startScreenLayout = startScreenLayout;
+    this.stage = stage;
+    this.stage.addActor(startScreenLayout);
   }
 
   @Override
   public void show() {
     input.setInputProcessor(stage);
-    stage.clear();
-    // root table creation delayed until show since it contains concrete widgets that relies on
-    // the skin being loaded (which doesn't happen during testing).
-    stage.addActor(startScreenLayout.rootTable());
   }
 
   @Override
