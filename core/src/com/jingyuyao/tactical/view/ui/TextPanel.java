@@ -12,7 +12,8 @@ abstract class TextPanel<T> extends Container<VisLabel> {
 
   void display(T object) {
     this.object = object;
-    VisLabel label = new VisLabel(createText(object), labelAlign());
+    VisLabel label = new VisLabel(createText(object));
+    label.setAlignment(labelAlign());
     label.setFontScale(0.5f);
     setActor(label);
   }

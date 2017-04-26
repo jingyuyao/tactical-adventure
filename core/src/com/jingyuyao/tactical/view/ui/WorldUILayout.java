@@ -15,12 +15,18 @@ class WorldUILayout {
   private final ActionGroup actionGroup;
   private final SelectCellPanel selectCellPanel;
   private final ItemPanel itemPanel;
+  private final TargetPanel targetPanel;
 
   @Inject
-  WorldUILayout(ActionGroup actionGroup, SelectCellPanel selectCellPanel, ItemPanel itemPanel) {
+  WorldUILayout(
+      ActionGroup actionGroup,
+      SelectCellPanel selectCellPanel,
+      ItemPanel itemPanel,
+      TargetPanel targetPanel) {
     this.actionGroup = actionGroup;
     this.selectCellPanel = selectCellPanel;
     this.itemPanel = itemPanel;
+    this.targetPanel = targetPanel;
   }
 
   Table rootTable() {
@@ -29,6 +35,7 @@ class WorldUILayout {
     builder.append(CellWidget.of(selectCellPanel).align(Alignment.TOP_RIGHT).expandX().wrap());
     builder.row();
 
+    builder.append(CellWidget.of(targetPanel).align(Alignment.TOP_LEFT).wrap());
     builder.append(
         CellWidget.of(actionGroup).align(Alignment.BOTTOM_RIGHT).expandY().expandX().wrap());
 
