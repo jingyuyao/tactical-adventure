@@ -19,15 +19,14 @@ class ItemPanel extends TextPanel<Item> {
 
   private static final String ITEM_FMT = "%s\nUsage: %d\n%s";
 
+  ItemPanel() {
+    setAlignment(Align.left);
+  }
+
   @Override
   String createText(Item item) {
     return String.format(
         Locale.US, ITEM_FMT, item.getName(), item.getUsageLeft(), item.getDescription());
-  }
-
-  @Override
-  int labelAlign() {
-    return Align.left;
   }
 
   @Subscribe

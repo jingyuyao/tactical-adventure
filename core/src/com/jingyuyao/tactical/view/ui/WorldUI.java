@@ -14,7 +14,7 @@ public class WorldUI {
   @Inject
   WorldUI(@UIStage Stage stage, WorldUILayout worldUiLayout) {
     this.stage = stage;
-    this.stage.addActor(worldUiLayout.rootTable());
+    this.stage.addActor(worldUiLayout);
   }
 
   public InputProcessor getInputProcessor() {

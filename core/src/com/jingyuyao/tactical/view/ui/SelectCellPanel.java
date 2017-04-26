@@ -19,6 +19,10 @@ class SelectCellPanel extends TextPanel<Cell> {
   private static final String CHARACTER_FMT = "%s\nHP: %d\n\n";
   private static final String TERRAIN_FMT = "%s\nMove: %d\n%s";
 
+  SelectCellPanel() {
+    setAlignment(Align.right);
+  }
+
   @Override
   String createText(Cell cell) {
     Terrain terrain = cell.getTerrain();
@@ -34,11 +38,6 @@ class SelectCellPanel extends TextPanel<Cell> {
     }
 
     return text;
-  }
-
-  @Override
-  int labelAlign() {
-    return Align.right;
   }
 
   @Subscribe

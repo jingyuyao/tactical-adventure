@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
+import com.kotcrab.vis.ui.VisUI;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -52,7 +55,7 @@ public class GameModuleTest {
 
   @Test
   public void can_create_module() {
-    // NOTE: This test will only pass if the working direction is set to android/assets/
+    // NOTE: This test will only pass if the working directory is set to android/assets/
     Guice.createInjector(Modules.override(new GameModule(game)).with(new AbstractModule() {
       @Override
       protected void configure() {
@@ -60,5 +63,7 @@ public class GameModuleTest {
         bind(Batch.class).toInstance(batch);
       }
     })).injectMembers(this);
+
+    assertThat(VisUI.isLoaded()).isTrue();
   }
 }

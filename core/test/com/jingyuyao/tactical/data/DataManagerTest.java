@@ -31,6 +31,7 @@ public class DataManagerTest {
 
   private static final Coordinate SPAWN1 = new Coordinate(2, 2);
   private static final Coordinate E1 = new Coordinate(3, 3);
+  private static final Coordinate E2 = new Coordinate(3, 4);
 
   @Mock
   private GameSaveManager gameSaveManager;
@@ -56,6 +57,8 @@ public class DataManagerTest {
   private Player player2;
   @Mock
   private Enemy enemy1;
+  @Mock
+  private Enemy enemy2;
   @Captor
   private ArgumentCaptor<LevelProgress> levelProgressCaptor;
 
@@ -72,13 +75,6 @@ public class DataManagerTest {
     when(gameSaveManager.load()).thenReturn(gameSave);
 
     assertThat(dataManager.loadCurrentSave()).isSameAs(gameSave);
-  }
-
-  @Test
-  public void load_current_progress() {
-    when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
-
-    assertThat(dataManager.loadCurrentProgress()).hasValue(levelProgress);
   }
 
   @Test
@@ -167,5 +163,26 @@ public class DataManagerTest {
     dataManager.removeProgress();
 
     verify(levelProgressManager).removeSave();
+  }
+
+  @Test
+  public void get_info() {
+    when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
+    when(levelProgress.getActivePlayers()).thenReturn(ImmutableMap.of(SPAWN1, player1));
+    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.of(E1, enemy1, E2, enemy2));
+    when(gameSaveManager.load()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(4);
+
+    assertThat(dataManager.getInfo())
+        .isEqualTo("Current level: 4\n1 player characters, 2 enemies remaining");
+  }
+
+  @Test
+  public void get_info_no_progress() {
+    when(levelProgressManager.load()).thenReturn(Optional.<LevelProgress>absent());
+    when(gameSaveManager.load()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
+
+    assertThat(dataManager.getInfo()).isEqualTo("Current level: 2\nNo progress");
   }
 }
