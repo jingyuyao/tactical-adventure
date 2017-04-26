@@ -14,15 +14,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import javax.inject.Singleton;
 
 /**
- * Provides mocks for Gdx related classes.
+ * Provides mocks for {@link Gdx} and {@link com.kotcrab.vis.ui.VisUI} related classes.
  */
 public class MockGameModule extends AbstractModule {
 
   public MockGameModule() {
+    // Loads VisUI just like the normal game module
     VisLoader.load();
   }
 
@@ -39,23 +38,8 @@ public class MockGameModule extends AbstractModule {
     bind(Graphics.class).toInstance(Gdx.graphics);
     bind(Input.class).toInstance(Gdx.input);
     bind(GL20.class).toInstance(Gdx.gl);
-  }
-
-  @Provides
-  @Singleton
-  AssetManager provideAssetManager() {
-    return mock(AssetManager.class);
-  }
-
-  @Provides
-  @Singleton
-  TextureAtlas provideTextureAtlas() {
-    return mock(TextureAtlas.class);
-  }
-
-  @Provides
-  @Singleton
-  Batch provideBatch() {
-    return mock(Batch.class);
+    bind(AssetManager.class).toInstance(mock(AssetManager.class));
+    bind(TextureAtlas.class).toInstance(mock(TextureAtlas.class));
+    bind(Batch.class).toInstance(mock(Batch.class));
   }
 }

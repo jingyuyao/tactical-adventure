@@ -1,21 +1,16 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
+import com.kotcrab.vis.ui.widget.VisTable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class WorldUILayout {
-
-  private final ActionGroup actionGroup;
-  private final SelectCellPanel selectCellPanel;
-  private final ItemPanel itemPanel;
-  private final TargetPanel targetPanel;
+class WorldUILayout extends VisTable {
 
   @Inject
   WorldUILayout(
@@ -23,13 +18,9 @@ class WorldUILayout {
       SelectCellPanel selectCellPanel,
       ItemPanel itemPanel,
       TargetPanel targetPanel) {
-    this.actionGroup = actionGroup;
-    this.selectCellPanel = selectCellPanel;
-    this.itemPanel = itemPanel;
-    this.targetPanel = targetPanel;
-  }
+    super(true);
+    setFillParent(true);
 
-  Table rootTable() {
     TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
     builder.append(CellWidget.of(itemPanel).align(Alignment.TOP_LEFT).wrap());
     builder.append(CellWidget.of(selectCellPanel).align(Alignment.TOP_RIGHT).expandX().wrap());
@@ -39,8 +30,6 @@ class WorldUILayout {
     builder.append(
         CellWidget.of(actionGroup).align(Alignment.BOTTOM_RIGHT).expandY().expandX().wrap());
 
-    Table table = builder.build();
-    table.setFillParent(true);
-    return table;
+    builder.build(this);
   }
 }

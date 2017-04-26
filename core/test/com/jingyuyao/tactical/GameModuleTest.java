@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
+import com.kotcrab.vis.ui.VisUI;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -60,5 +63,7 @@ public class GameModuleTest {
         bind(Batch.class).toInstance(batch);
       }
     })).injectMembers(this);
+
+    assertThat(VisUI.isLoaded()).isTrue();
   }
 }
