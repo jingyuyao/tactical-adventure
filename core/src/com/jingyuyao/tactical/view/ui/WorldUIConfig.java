@@ -11,10 +11,10 @@ class WorldUIConfig {
   }
 
   int getUIWidth() {
-    return 700;
+    return 1920;
   }
 
   int getUIHeight() {
-    return 450;
+    return 1080;
   }
 }

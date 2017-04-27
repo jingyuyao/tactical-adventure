@@ -31,6 +31,7 @@ class StartScreenLayout extends VisTable {
         gameState.play();
       }
     });
+    play.getLabelCell().pad(30);
     VisTextButton reset = new VisTextButton("Reset", new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
@@ -38,8 +39,9 @@ class StartScreenLayout extends VisTable {
         infoLabel.setText(dataManager.getInfo());
       }
     });
+    reset.getLabelCell().pad(30);
 
-    TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
+    TableBuilder builder = new StandardTableBuilder(new Padding(20));
     builder.append(CellWidget.of(infoLabel).expandY().wrap());
     builder.row();
 

@@ -20,7 +20,7 @@ class ItemPanel extends TextPanel<Item> {
   private static final String ITEM_FMT = "%s\nUsage: %d\n%s";
 
   ItemPanel() {
-    setAlignment(Align.left);
+    getLabel().setAlignment(Align.left);
   }
 
   @Override
@@ -51,11 +51,11 @@ class ItemPanel extends TextPanel<Item> {
 
   @Subscribe
   void exitState(ExitState exitState) {
-    reset();
+    clearDisplay();
   }
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
-    reset();
+    clearDisplay();
   }
 }

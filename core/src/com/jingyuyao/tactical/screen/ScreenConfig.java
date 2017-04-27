@@ -6,10 +6,10 @@ import javax.inject.Singleton;
 class ScreenConfig {
 
   int getMenuScreenWidth() {
-    return 700;
+    return 1920;
   }
 
   int getMenuScreenHeight() {
-    return 450;
+    return 1080;
   }
 }

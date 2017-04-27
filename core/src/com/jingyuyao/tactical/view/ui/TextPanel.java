@@ -1,21 +1,23 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 
 /**
- * A panel that can display an object as a {@link VisLabel}.
+ * A refreshable button that can display an object as text.
  */
-abstract class TextPanel<T> extends VisLabel {
+abstract class TextPanel<T> extends VisTextButton {
 
   private T object;
 
   TextPanel() {
-    setFontScale(0.5f);
+    super(null);
+    setVisible(false);
   }
 
   void display(T object) {
     this.object = object;
     setText(createText(object));
+    setVisible(true);
   }
 
   void refresh() {
@@ -24,8 +26,9 @@ abstract class TextPanel<T> extends VisLabel {
     }
   }
 
-  void reset() {
+  void clearDisplay() {
     object = null;
+    setVisible(false);
     setText(null);
   }
 
