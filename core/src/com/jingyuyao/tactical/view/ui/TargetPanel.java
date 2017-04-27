@@ -15,15 +15,15 @@ import javax.inject.Singleton;
 @ModelBusListener
 class TargetPanel extends TextPanel<Battling> {
 
-  private static final String FMT = "%s\nHP: %d\nDmg: %d\n";
+  private static final String FMT = "%s\nHP: %d\nDmg: %d\n\n";
 
   TargetPanel() {
-    setAlignment(Align.left);
+    getLabel().setAlignment(Align.left);
   }
 
   @Override
   String createText(Battling battling) {
-    StringBuilder builder = new StringBuilder();
+    StringBuilder builder = new StringBuilder("Targets:\n");
     int damage = battling.getWeapon().getAttackPower();
     for (Cell cell : battling.getTarget().getTargetCells()) {
       if (cell.hasCharacter()) {
@@ -42,11 +42,11 @@ class TargetPanel extends TextPanel<Battling> {
 
   @Subscribe
   void exitState(ExitState exitState) {
-    reset();
+    clearDisplay();
   }
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
-    reset();
+    clearDisplay();
   }
 }

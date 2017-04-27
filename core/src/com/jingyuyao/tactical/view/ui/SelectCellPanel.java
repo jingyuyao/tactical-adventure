@@ -20,7 +20,7 @@ class SelectCellPanel extends TextPanel<Cell> {
   private static final String TERRAIN_FMT = "%s\nMove: %d\n%s";
 
   SelectCellPanel() {
-    setAlignment(Align.right);
+    getLabel().setAlignment(Align.right);
   }
 
   @Override
@@ -52,6 +52,6 @@ class SelectCellPanel extends TextPanel<Cell> {
 
   @Subscribe
   void worldReset(WorldReset worldReset) {
-    reset();
+    clearDisplay();
   }
 }

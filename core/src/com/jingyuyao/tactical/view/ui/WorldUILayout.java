@@ -21,7 +21,7 @@ class WorldUILayout extends VisTable {
     super(true);
     setFillParent(true);
 
-    TableBuilder builder = new StandardTableBuilder(Padding.PAD_8);
+    TableBuilder builder = new StandardTableBuilder(new Padding(20));
     builder.append(CellWidget.of(itemPanel).align(Alignment.TOP_LEFT).wrap());
     builder.append(CellWidget.of(selectCellPanel).align(Alignment.TOP_RIGHT).expandX().wrap());
     builder.row();

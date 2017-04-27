@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -19,7 +18,7 @@ import javax.inject.Singleton;
 class ActionGroup extends VerticalGroup {
 
   ActionGroup() {
-    space(7);
+    space(25);
     columnRight();
   }
 
@@ -27,10 +26,8 @@ class ActionGroup extends VerticalGroup {
   void state(State state) {
     for (final Action action : state.getActions()) {
       VisTextButton button = new VisTextButton(action.getName());
-      button.getLabelCell().pad(10);
-      Label label = button.getLabel();
-      label.setAlignment(Align.right);
-      label.setFontScale(0.5f);
+      button.getLabelCell().pad(15, 20, 15, 20);
+      button.getLabel().setAlignment(Align.right);
       button.addListener(new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
