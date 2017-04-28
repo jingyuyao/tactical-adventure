@@ -20,11 +20,6 @@ import com.google.inject.AbstractModule;
  */
 public class MockGameModule extends AbstractModule {
 
-  public MockGameModule() {
-    // Loads VisUI just like the normal game module
-    VisLoader.load();
-  }
-
   @Override
   protected void configure() {
     Gdx.app = mock(Application.class);
@@ -32,6 +27,9 @@ public class MockGameModule extends AbstractModule {
     Gdx.graphics = new MockGraphics();
     Gdx.input = mock(Input.class);
     Gdx.gl = mock(GL20.class);
+
+    // We need to populate Gdx.files before we can load this
+    VisLoader.load();
 
     bind(Application.class).toInstance(Gdx.app);
     bind(Files.class).toInstance(Gdx.files);
