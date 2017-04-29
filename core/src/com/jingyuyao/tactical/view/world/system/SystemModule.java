@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
@@ -22,7 +21,6 @@ public class SystemModule extends AbstractModule {
   protected void configure() {
     requireBinding(Batch.class);
     requireBinding(WorldConfig.class);
-    requireBinding(Engine.class);
     requireBinding(Animations.class);
     requireBinding(Markers.class);
     requireBinding(new Key<ComponentMapper<Position>>() {

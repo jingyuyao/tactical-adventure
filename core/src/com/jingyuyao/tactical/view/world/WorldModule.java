@@ -5,7 +5,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -38,7 +37,8 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Engine provideEngine() {
+  @WorldEngine
+  PooledEngine provideEngine() {
     return new PooledEngine();
   }
 
@@ -63,6 +63,13 @@ public class WorldModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface WorldViewport {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface WorldEngine {
 
   }
 }

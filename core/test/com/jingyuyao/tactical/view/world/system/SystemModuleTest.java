@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -28,9 +27,6 @@ public class SystemModuleTest {
   @Bind
   @Mock
   private Batch batch;
-  @Bind
-  @Mock
-  private Engine engine;
   @Bind
   @Mock
   private WorldConfig worldConfig;

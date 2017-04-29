@@ -1,11 +1,12 @@
 package com.jingyuyao.tactical.view.world;
 
-import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jingyuyao.tactical.view.world.WorldModule.WorldEngine;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import com.jingyuyao.tactical.view.world.system.Systems;
 import javax.inject.Inject;
@@ -17,14 +18,14 @@ public class WorldView {
   private final Batch batch;
   private final Viewport viewport;
   private final OrthogonalTiledMapRenderer mapRenderer;
-  private final Engine engine;
+  private final PooledEngine engine;
 
   @Inject
   WorldView(
       Batch batch,
       @WorldViewport Viewport viewport,
       OrthogonalTiledMapRenderer mapRenderer,
-      Engine engine,
+      @WorldEngine PooledEngine engine,
       Systems systems) {
     this.batch = batch;
     this.viewport = viewport;
