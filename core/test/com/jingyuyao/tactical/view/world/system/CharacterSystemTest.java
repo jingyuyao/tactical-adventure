@@ -98,7 +98,6 @@ public class CharacterSystemTest {
     engine = new PooledEngine();
     characterSystem =
         new CharacterSystem(
-            new ECF(engine),
             markers,
             animations,
             ComponentMapper.getFor(CharacterComponent.class),

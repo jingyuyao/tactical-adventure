@@ -19,6 +19,7 @@ import javax.inject.Singleton;
  * Entity component factory.
  */
 @Singleton
+@Deprecated
 class ECF {
 
   private final Engine engine;

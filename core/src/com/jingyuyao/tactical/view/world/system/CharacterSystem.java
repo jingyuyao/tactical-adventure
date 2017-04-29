@@ -26,6 +26,8 @@ import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Moving;
+import com.jingyuyao.tactical.view.world.component.PlayerComponent;
+import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
@@ -38,7 +40,6 @@ import javax.inject.Singleton;
 @ModelBusListener
 class CharacterSystem extends EntitySystem {
 
-  private final ECF ecf;
   private final Markers markers;
   private final Animations animations;
   private final ComponentMapper<CharacterComponent> characterMapper;
@@ -47,13 +48,11 @@ class CharacterSystem extends EntitySystem {
 
   @Inject
   CharacterSystem(
-      ECF ecf,
       Markers markers,
       Animations animations,
       ComponentMapper<CharacterComponent> characterMapper,
       ComponentMapper<Frame> frameMapper) {
     super(SystemPriority.CHARACTER);
-    this.ecf = ecf;
     this.markers = markers;
     this.animations = animations;
     this.characterMapper = characterMapper;
@@ -68,35 +67,53 @@ class CharacterSystem extends EntitySystem {
   @Subscribe
   void spawnCharacter(SpawnCharacter spawnCharacter) {
     Cell cell = spawnCharacter.getObject();
-    Entity entity = ecf.entity();
-    entity.add(ecf.position(cell.getCoordinate(), WorldZIndex.CHARACTER));
-    entity.add(animations.getCharacter(cell.getCharacter().getName()));
-    entity.add(ecf.character(cell.getCharacter()));
+    Entity entity = getEngine().createEntity();
+
+    Position position = getEngine().createComponent(Position.class);
+    position.set(cell.getCoordinate(), WorldZIndex.CHARACTER);
+
+    CharacterComponent characterComponent = getEngine().createComponent(CharacterComponent.class);
+    characterComponent.setCharacter(cell.getCharacter());
+
+    Frame frame = getEngine().createComponent(Frame.class);
     if (cell.hasPlayer()) {
-      entity.add(ecf.frame(Colors.BLUE_300));
-      entity.add(ecf.player(cell.getPlayer()));
+      frame.setColor(Colors.BLUE_300);
     } else if (cell.hasEnemy()) {
-      entity.add(ecf.frame(Colors.RED_500));
+      frame.setColor(Colors.RED_500);
     }
+
+    entity.add(position);
+    entity.add(characterComponent);
+    entity.add(frame);
+    entity.add(animations.getCharacter(cell.getCharacter().getName()));
+    if (cell.hasPlayer()) {
+      PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
+      playerComponent.setPlayer(cell.getPlayer());
+      entity.add(playerComponent);
+    }
+
+    getEngine().addEntity(entity);
   }
 
   @Subscribe
   void removeCharacter(RemoveCharacter removeCharacter) {
     Entity entity = get(removeCharacter.getObject());
-    entity.add(ecf.component(Remove.class));
+    entity.add(getEngine().createComponent(Remove.class));
   }
 
   @Subscribe
   void instantMoveCharacter(InstantMoveCharacter instantMoveCharacter) {
     Entity entity = get(instantMoveCharacter.getCharacter());
     Coordinate destination = instantMoveCharacter.getDestination().getCoordinate();
-    entity.add(ecf.position(destination, WorldZIndex.CHARACTER));
+    Position position = getEngine().createComponent(Position.class);
+    position.set(destination, WorldZIndex.CHARACTER);
+    entity.add(position);
   }
 
   @Subscribe
   void moveCharacter(MoveCharacter moveCharacter) {
     Entity entity = get(moveCharacter.getCharacter());
-    Moving moving = ecf.component(Moving.class);
+    Moving moving = getEngine().createComponent(Moving.class);
     moving.setPath(smoothPath(moveCharacter.getPath().getTrack()));
     moving.setFuture(moveCharacter.getFuture());
     entity.add(moving);

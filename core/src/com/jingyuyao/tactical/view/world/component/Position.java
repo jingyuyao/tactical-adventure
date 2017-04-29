@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import com.jingyuyao.tactical.model.world.Coordinate;
 
 public class Position implements Component, Poolable {
 
@@ -30,6 +31,12 @@ public class Position implements Component, Poolable {
   }
 
   public void setZ(int z) {
+    this.z = z;
+  }
+
+  public void set(Coordinate coordinate, int z) {
+    this.x = coordinate.getX();
+    this.y = coordinate.getY();
     this.z = z;
   }
 
