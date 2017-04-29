@@ -1,15 +1,11 @@
 package com.jingyuyao.tactical.view.world.system;
 
-import static com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
-
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
@@ -23,14 +19,12 @@ import javax.inject.Singleton;
 class RenderSystem extends SortedIteratingSystem {
 
   private final Batch batch;
-  private final Viewport viewport;
   private final ComponentMapper<Position> positionMapper;
   private final ComponentMapper<Frame> frameMapper;
 
   @Inject
   RenderSystem(
       Batch batch,
-      @WorldViewport Viewport viewport,
       ComponentMapper<Position> positionMapper,
       ComponentMapper<Frame> frameMapper) {
     super(
@@ -38,19 +32,8 @@ class RenderSystem extends SortedIteratingSystem {
         new ZComparator(positionMapper),
         SystemPriority.RENDER);
     this.batch = batch;
-    this.viewport = viewport;
     this.positionMapper = positionMapper;
     this.frameMapper = frameMapper;
-  }
-
-  @Override
-  public void update(float deltaTime) {
-    Camera camera = viewport.getCamera();
-    camera.update();
-    batch.begin();
-    batch.setProjectionMatrix(camera.combined);
-    super.update(deltaTime);
-    batch.end();
   }
 
   @Override

@@ -1,32 +1,29 @@
 package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
+import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldCamera extends InputAdapter {
+public class CameraController extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
-  private final Viewport worldViewport;
   private final World world;
+  private final WorldView worldView;
   private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
   private int lastPointer = -1;
   private boolean dragged = false;
 
   @Inject
-  WorldCamera(
-      ControllerConfig controllerConfig, @WorldViewport Viewport worldViewport, World world) {
+  CameraController(ControllerConfig controllerConfig, World world, WorldView worldView) {
     this.controllerConfig = controllerConfig;
-    this.worldViewport = worldViewport;
     this.world = world;
+    this.worldView = worldView;
   }
 
   @Override
@@ -41,31 +38,29 @@ public class WorldCamera extends InputAdapter {
   @Override
   public boolean touchDragged(int screenX, int screenY, int pointer) {
     if (lastPointer == pointer) {
-      float horizontalScale = worldViewport.getWorldWidth() / worldViewport.getScreenWidth();
-      float verticalScale = worldViewport.getWorldHeight() / worldViewport.getScreenHeight();
+      float viewportWorldWidth = worldView.getViewportWorldWidth();
+      float viewportWorldHeight = worldView.getViewportWorldHeight();
+      float horizontalScale = viewportWorldWidth / worldView.getViewportScreenWidth();
+      float verticalScale = viewportWorldHeight / worldView.getViewportScreenHeight();
 
       float deltaWorldX = (screenX - lastTouch.x) * horizontalScale;
       float deltaWorldY = (screenY - lastTouch.y) * verticalScale;
 
-      Camera camera = worldViewport.getCamera();
-      Vector3 cameraPosition = camera.position;
+      Vector3 cameraPosition = worldView.getCameraPosition();
 
       // world is y-up, screen is y-down
       float unboundedNewWorldX = cameraPosition.x - deltaWorldX;
       float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
 
-      float lowerXBound = worldViewport.getWorldWidth() / 2f;
+      float lowerXBound = viewportWorldWidth / 2f;
       float upperXBound = world.getMaxWidth() - lowerXBound;
-      float lowerYBound = worldViewport.getWorldHeight() / 2f;
+      float lowerYBound = viewportWorldHeight / 2f;
       float upperYBound = world.getMaxHeight() - lowerYBound;
 
       float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
       float boundedNewWorldY = bound(lowerYBound, unboundedNewWorldY, upperYBound);
 
-      cameraPosition.x = boundedNewWorldX;
-      cameraPosition.y = boundedNewWorldY;
-      camera.update();
-
+      worldView.setCameraPosition(boundedNewWorldX, boundedNewWorldY);
       lastTouch.set(screenX, screenY);
       calcDragged();
     }
@@ -73,10 +68,7 @@ public class WorldCamera extends InputAdapter {
   }
 
   public void center() {
-    Camera camera = worldViewport.getCamera();
-    camera.position.x = world.getMaxWidth() / 2f;
-    camera.position.y = world.getMaxHeight() / 2f;
-    camera.update();
+    worldView.setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
   }
 
   boolean isDragged() {

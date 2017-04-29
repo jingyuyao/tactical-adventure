@@ -5,7 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.controller.WorldCamera;
+import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
@@ -24,7 +24,7 @@ public class ViewModuleTest {
   private WorldController worldController;
   @Bind
   @Mock
-  private WorldCamera worldCamera;
+  private CameraController cameraController;
 
   @Inject
   private WorldView worldView;

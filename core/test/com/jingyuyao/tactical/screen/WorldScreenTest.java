@@ -8,7 +8,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
-import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.controller.CameraController;
+import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
@@ -33,11 +34,11 @@ public class WorldScreenTest {
   @Mock
   private WorldUI worldUI;
   @Mock
-  private ModelBus modelBus;
+  private CameraController cameraController;
   @Mock
-  private InputProcessor inputProcessor1;
+  private WorldController worldController;
   @Mock
-  private InputProcessor inputProcessor2;
+  private InputProcessor worldUIProcessor;
   @Captor
   private ArgumentCaptor<InputProcessor> argumentCaptor;
 
@@ -45,21 +46,20 @@ public class WorldScreenTest {
 
   @Before
   public void setUp() {
-    worldScreen = new WorldScreen(gl, input, worldView, worldUI);
+    when(worldUI.getInputProcessor()).thenReturn(worldUIProcessor);
+    worldScreen = new WorldScreen(gl, input, worldView, worldUI, cameraController, worldController);
   }
 
   @Test
   public void show() {
-    when(worldUI.getInputProcessor()).thenReturn(inputProcessor1);
-    when(worldView.getInputProcessor()).thenReturn(inputProcessor2);
-
     worldScreen.show();
 
-    verify(worldView).center();
+    verify(cameraController).center();
     verify(input).setInputProcessor(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
     InputMultiplexer multiplexer = (InputMultiplexer) argumentCaptor.getValue();
-    assertThat(multiplexer.getProcessors()).containsExactly(inputProcessor1, inputProcessor2);
+    assertThat(multiplexer.getProcessors())
+        .containsExactly(worldUIProcessor, cameraController, worldController).inOrder();
   }
 
   @Test

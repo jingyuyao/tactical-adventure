@@ -4,6 +4,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.jingyuyao.tactical.controller.CameraController;
+import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
@@ -16,20 +18,30 @@ public class WorldScreen extends ScreenAdapter {
   private final Input input;
   private final WorldView worldView;
   private final WorldUI worldUI;
+  private final CameraController cameraController;
+  private final InputMultiplexer inputMultiplexer;
 
   @Inject
-  WorldScreen(GL20 gl, Input input, WorldView worldView, WorldUI worldUI) {
+  WorldScreen(
+      GL20 gl,
+      Input input,
+      WorldView worldView,
+      WorldUI worldUI,
+      CameraController cameraController,
+      WorldController worldController) {
     this.gl = gl;
     this.input = input;
     this.worldView = worldView;
     this.worldUI = worldUI;
+    this.cameraController = cameraController;
+    this.inputMultiplexer =
+        new InputMultiplexer(worldUI.getInputProcessor(), cameraController, worldController);
   }
 
   @Override
   public void show() {
-    worldView.center();
-    input.setInputProcessor(
-        new InputMultiplexer(worldUI.getInputProcessor(), worldView.getInputProcessor()));
+    cameraController.center();
+    input.setInputProcessor(inputMultiplexer);
   }
 
   @Override

@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.controller.WorldCamera;
+import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.world.component.ComponentModule;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule;
@@ -29,7 +29,7 @@ public class WorldModule extends AbstractModule {
   protected void configure() {
     requireBinding(Batch.class);
     requireBinding(WorldController.class);
-    requireBinding(WorldCamera.class);
+    requireBinding(CameraController.class);
 
     install(new ComponentModule());
     install(new ResourceModule());
@@ -62,7 +62,7 @@ public class WorldModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface WorldViewport {
+  @interface WorldViewport {
 
   }
 }

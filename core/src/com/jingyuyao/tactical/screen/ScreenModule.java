@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.GameState;
+import com.jingyuyao.tactical.controller.CameraController;
+import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.view.ui.WorldUI;
 import com.jingyuyao.tactical.view.world.WorldView;
@@ -31,6 +33,8 @@ public class ScreenModule extends AbstractModule {
     requireBinding(DataManager.class);
     requireBinding(WorldView.class);
     requireBinding(WorldUI.class);
+    requireBinding(CameraController.class);
+    requireBinding(WorldController.class);
   }
 
   @Provides
