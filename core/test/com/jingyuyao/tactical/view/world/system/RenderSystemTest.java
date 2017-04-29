@@ -1,15 +1,12 @@
 package com.jingyuyao.tactical.view.world.system;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
@@ -29,10 +26,6 @@ public class RenderSystemTest {
   @Mock
   private Batch batch;
   @Mock
-  private Viewport viewport;
-  @Mock
-  private Camera camera;
-  @Mock
   private WorldTexture worldTexture;
   @Mock
   private WorldTexture worldTexture2;
@@ -49,7 +42,6 @@ public class RenderSystemTest {
     RenderSystem renderSystem =
         new RenderSystem(
             batch,
-            viewport,
             ComponentMapper.getFor(Position.class),
             ComponentMapper.getFor(Frame.class));
     assertThat(renderSystem.priority).isEqualTo(SystemPriority.RENDER);
@@ -58,8 +50,6 @@ public class RenderSystemTest {
 
   @Test
   public void update() {
-    when(viewport.getCamera()).thenReturn(camera);
-
     Entity entity1 = engine.createEntity();
     Frame frame1 = engine.createComponent(Frame.class);
     Position position1 = engine.createComponent(Position.class);
@@ -87,11 +77,7 @@ public class RenderSystemTest {
 
     engine.update(5f);
 
-    InOrder inOrder =
-        Mockito.inOrder(batch, camera, worldTexture, worldTexture2, overlay1, overlay2);
-    inOrder.verify(camera).update();
-    inOrder.verify(batch).begin();
-    inOrder.verify(batch).setProjectionMatrix(camera.combined);
+    InOrder inOrder = Mockito.inOrder(batch, worldTexture, worldTexture2, overlay1, overlay2);
     // draw entity 2
     inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(worldTexture2).draw(batch, 20f, 21f);
@@ -102,6 +88,5 @@ public class RenderSystemTest {
     inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(overlay1).draw(batch, 10f, 11f, Direction.LEFT);
     inOrder.verify(overlay2).draw(batch, 10f, 11f, Direction.LEFT);
-    inOrder.verify(batch).end();
   }
 }

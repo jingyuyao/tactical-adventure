@@ -6,13 +6,11 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.view.world.WorldConfig;
-import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
@@ -47,10 +45,6 @@ public class SystemModuleTest {
   @Bind
   @Mock
   private Markers markers;
-  @Bind
-  @Mock
-  @WorldViewport
-  private Viewport viewport;
   @Bind
   private ComponentMapper<Position> positionMapper = ComponentMapper.getFor(Position.class);
   @Bind

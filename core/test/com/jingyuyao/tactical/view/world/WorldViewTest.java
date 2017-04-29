@@ -1,17 +1,13 @@
 package com.jingyuyao.tactical.view.world;
 
-import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jingyuyao.tactical.controller.CameraController;
-import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.model.ModelBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,36 +26,17 @@ public class WorldViewTest {
   @Mock
   private Viewport viewport;
   @Mock
-  private CameraController cameraController;
-  @Mock
-  private WorldController worldController;
-  @Mock
-  private ModelBus modelBus;
+  private Batch batch;
   @Mock
   private OrthographicCamera camera;
+  @Mock
+  private Vector3 vector3;
 
   private WorldView worldView;
 
   @Before
   public void setUp() {
-    worldView = new WorldView(worldEngine, mapRenderer, viewport, cameraController,
-        worldController);
-  }
-
-  @Test
-  public void input_processor() {
-    InputProcessor processor = worldView.getInputProcessor();
-    assertThat(processor).isInstanceOf(InputMultiplexer.class);
-    InputMultiplexer multiplexer = (InputMultiplexer) processor;
-    assertThat(multiplexer.getProcessors()).containsExactly(cameraController, worldController)
-        .inOrder();
-  }
-
-  @Test
-  public void center() {
-    worldView.center();
-
-    verify(cameraController).center();
+    worldView = new WorldView(worldEngine, mapRenderer, viewport, batch);
   }
 
   @Test
@@ -68,11 +45,14 @@ public class WorldViewTest {
 
     worldView.update(5f);
 
-    InOrder inOrder = Mockito.inOrder(viewport, mapRenderer, worldEngine);
+    InOrder inOrder = Mockito.inOrder(viewport, mapRenderer, worldEngine, batch);
     inOrder.verify(viewport).apply();
     inOrder.verify(mapRenderer).setView(camera);
     inOrder.verify(mapRenderer).render();
+    inOrder.verify(batch).begin();
+    inOrder.verify(batch).setProjectionMatrix(camera.combined);
     inOrder.verify(worldEngine).update(5f);
+    inOrder.verify(batch).end();
   }
 
   @Test
@@ -80,5 +60,14 @@ public class WorldViewTest {
     worldView.resize(11, 12);
 
     verify(viewport).update(11, 12);
+  }
+
+  @Test
+  public void unproject() {
+    when(viewport.getCamera()).thenReturn(camera);
+
+    worldView.unproject(vector3);
+
+    verify(camera).unproject(vector3);
   }
 }

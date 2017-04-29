@@ -62,7 +62,7 @@ public class WorldModule extends AbstractModule {
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  public @interface WorldViewport {
+  @interface WorldViewport {
 
   }
 }

@@ -5,13 +5,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +23,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldControllerTest {
 
   @Mock
-  private Viewport worldViewport;
-  @Mock
   private CameraController cameraController;
+  @Mock
+  private WorldView worldView;
   @Mock
   private Model model;
   @Mock
   private World world;
-  @Mock
-  private Camera camera;
   @Mock
   private Cell cell;
   @Captor
@@ -42,7 +39,7 @@ public class WorldControllerTest {
 
   @Before
   public void setUp() {
-    worldController = new WorldController(worldViewport, cameraController, model, world);
+    worldController = new WorldController(cameraController, worldView, model, world);
   }
 
   @Test
@@ -63,12 +60,11 @@ public class WorldControllerTest {
   @Test
   public void touch_up_select() {
     when(cameraController.isDragged()).thenReturn(false);
-    when(worldViewport.getCamera()).thenReturn(camera);
     when(world.getCell(1, 2)).thenReturn(Optional.of(cell));
 
     worldController.touchUp(1, 2, 0, 0);
 
-    verify(camera).unproject(vector3Captor.capture());
+    verify(worldView).unproject(vector3Captor.capture());
     Vector3 vector3 = vector3Captor.getValue();
     assertThat(vector3.x).isEqualTo(1.0f);
     assertThat(vector3.y).isEqualTo(2.0f);

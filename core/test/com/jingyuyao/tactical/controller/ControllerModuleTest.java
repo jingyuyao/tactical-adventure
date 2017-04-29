@@ -1,13 +1,12 @@
 package com.jingyuyao.tactical.controller;
 
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
+import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,11 +24,12 @@ public class ControllerModuleTest {
   private World world;
   @Bind
   @Mock
-  @WorldViewport
-  private Viewport worldViewport;
+  private WorldView worldView;
 
   @Inject
   private WorldController worldController;
+  @Inject
+  private CameraController cameraController;
 
   @Test
   public void can_create_module() {
