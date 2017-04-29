@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WorldModuleTest {
+public class WorldViewModuleTest {
 
   @Bind
   @Mock
@@ -30,6 +30,6 @@ public class WorldModuleTest {
     Guice.createInjector(
         BoundFieldModule.of(this),
         new MockGameModule(),
-        new WorldModule()).injectMembers(this);
+        new WorldViewModule()).injectMembers(this);
   }
 }

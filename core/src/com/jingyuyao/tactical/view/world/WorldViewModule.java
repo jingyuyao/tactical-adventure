@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-public class WorldModule extends AbstractModule {
+public class WorldViewModule extends AbstractModule {
 
   @Override
   protected void configure() {
