@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.event.Attack;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
+import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import javax.inject.Inject;
@@ -18,13 +19,11 @@ import javax.inject.Singleton;
 @ModelBusListener
 class EffectsSystem extends EntitySystem {
 
-  private final ECF ecf;
   private final Animations animations;
 
   @Inject
-  EffectsSystem(ECF ecf, Animations animations) {
+  EffectsSystem(Animations animations) {
     super(SystemPriority.EFFECTS);
-    this.ecf = ecf;
     this.animations = animations;
   }
 
@@ -32,18 +31,23 @@ class EffectsSystem extends EntitySystem {
   void attack(final Attack attack) {
     Target target = attack.getObject();
 
-    SingleAnimation animation = animations.getWeapon(attack.getWeapon().getName());
-    attack.getFuture().completedBy(animation.getFuture());
+    Position position = getEngine().createComponent(Position.class);
+    position.set(target.getOrigin().getCoordinate(), WorldZIndex.EFFECTS);
 
-    Frame frame = ecf.frame();
+    Frame frame = getEngine().createComponent(Frame.class);
     Optional<Direction> direction = target.getDirection();
     if (direction.isPresent()) {
       frame.setDirection(direction.get());
     }
 
-    Entity entity = ecf.entity();
-    entity.add(ecf.position(target.getOrigin().getCoordinate(), WorldZIndex.EFFECTS));
+    SingleAnimation animation = animations.getWeapon(attack.getWeapon().getName());
+    attack.getFuture().completedBy(animation.getFuture());
+
+    Entity entity = getEngine().createEntity();
+    entity.add(position);
     entity.add(frame);
     entity.add(animation);
+
+    getEngine().addEntity(entity);
   }
 }

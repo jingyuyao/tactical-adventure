@@ -16,6 +16,8 @@ import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.view.world.component.Frame;
+import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
@@ -28,15 +30,13 @@ import javax.inject.Singleton;
 @ModelBusListener
 class MarkerSystem extends EntitySystem {
 
-  private final ECF ecf;
   private final Markers markers;
   private ImmutableArray<Entity> marked;
   private ImmutableArray<Entity> highlight;
 
   @Inject
-  MarkerSystem(ECF ecf, Markers markers) {
+  MarkerSystem(Markers markers) {
     super(SystemPriority.MARKER);
-    this.ecf = ecf;
     this.markers = markers;
   }
 
@@ -54,13 +54,22 @@ class MarkerSystem extends EntitySystem {
     if (highlight.size() > 0) {
       entity = highlight.first();
     } else {
-      entity = ecf.entity();
-      entity.add(ecf.frame(markers.getHighlight()));
-      entity.add(ecf.component(Highlight.class));
+      entity = getEngine().createEntity();
+
+      Frame frame = getEngine().createComponent(Frame.class);
+      frame.setTexture(markers.getHighlight());
+
+      entity.add(frame);
+      entity.add(getEngine().createComponent(Highlight.class));
+
+      getEngine().addEntity(entity);
     }
 
     Cell cell = selectCell.getObject();
-    entity.add(ecf.position(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER));
+    Position position = getEngine().createComponent(Position.class);
+    position.set(cell.getCoordinate(), WorldZIndex.HIGHLIGHT_MARKER);
+
+    entity.add(position);
   }
 
   @Subscribe
@@ -100,15 +109,24 @@ class MarkerSystem extends EntitySystem {
   @Subscribe
   void exitState(ExitState exitState) {
     for (Entity entity : marked) {
-      entity.add(ecf.component(Remove.class));
+      entity.add(getEngine().createComponent(Remove.class));
     }
   }
 
   private void mark(Cell cell, int zIndex, WorldTexture worldTexture) {
-    Entity entity = ecf.entity();
-    entity.add(ecf.position(cell.getCoordinate(), zIndex));
-    entity.add(ecf.frame(worldTexture));
-    entity.add(ecf.component(Marked.class));
+    Entity entity = getEngine().createEntity();
+
+    Position position = getEngine().createComponent(Position.class);
+    position.set(cell.getCoordinate(), zIndex);
+
+    Frame frame = getEngine().createComponent(Frame.class);
+    frame.setTexture(worldTexture);
+
+    entity.add(position);
+    entity.add(frame);
+    entity.add(getEngine().createComponent(Marked.class));
+
+    getEngine().addEntity(entity);
   }
 
   private static class Marked implements Component, Poolable {

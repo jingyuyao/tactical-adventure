@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.world;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -28,7 +28,7 @@ public class WorldViewTest {
   @Mock
   private OrthogonalTiledMapRenderer mapRenderer;
   @Mock
-  private Engine engine;
+  private PooledEngine engine;
   @Mock
   private Systems systems;
   @Mock
