@@ -62,6 +62,8 @@ public class World {
 
   public void reset() {
     cellMap.clear();
+    maxWidth = 0;
+    maxHeight = 0;
     modelBus.post(new WorldReset());
   }
 

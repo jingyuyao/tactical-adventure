@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.world;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -94,13 +95,26 @@ public class WorldTest {
 
   @Test
   public void reset() {
-    cellMap.put(COORDINATE1, cell1);
+    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
+    Map<Coordinate, Character> characterMap = new HashMap<>();
+    terrainMap.put(COORDINATE1, terrain1);
+    terrainMap.put(COORDINATE2, terrain2);
+    characterMap.put(COORDINATE1, character1);
+    characterMap.put(COORDINATE2, character2);
+    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
+    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
+    when(cell1.hasCharacter()).thenReturn(false, true);
+    when(cell2.hasCharacter()).thenReturn(false, true);
 
+    world.initialize(terrainMap, characterMap);
     world.reset();
 
     assertThat(cellMap).isEmpty();
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(WorldReset.class);
+    assertThat(world.getMaxHeight()).isEqualTo(0);
+    assertThat(world.getMaxWidth()).isEqualTo(0);
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(WorldReset.class);
   }
 
   @Test
