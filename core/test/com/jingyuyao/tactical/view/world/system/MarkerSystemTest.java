@@ -67,7 +67,7 @@ public class MarkerSystemTest {
   @Before
   public void setUp() {
     engine = new PooledEngine();
-    markerSystem = new MarkerSystem(new ECF(engine), markers);
+    markerSystem = new MarkerSystem(markers);
     assertThat(markerSystem.priority).isEqualTo(SystemPriority.MARKER);
     engine.addSystem(markerSystem);
   }
