@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 public class WorldController extends InputAdapter {
 
   private final Viewport worldViewport;
-  private final WorldCamera worldCamera;
+  private final CameraController cameraController;
   private final Model model;
   private final World world;
   private final Vector3 vector3 = new Vector3();
@@ -24,11 +24,11 @@ public class WorldController extends InputAdapter {
   @Inject
   WorldController(
       @WorldViewport Viewport worldViewport,
-      WorldCamera worldCamera,
+      CameraController cameraController,
       Model model,
       World world) {
     this.worldViewport = worldViewport;
-    this.worldCamera = worldCamera;
+    this.cameraController = cameraController;
     this.model = model;
     this.world = world;
   }
@@ -40,7 +40,7 @@ public class WorldController extends InputAdapter {
 
   @Override
   public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-    if (!worldCamera.isDragged()) {
+    if (!cameraController.isDragged()) {
       Camera camera = worldViewport.getCamera();
       vector3.set(screenX, screenY, 0);
       camera.unproject(vector3);

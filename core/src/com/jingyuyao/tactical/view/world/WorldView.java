@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jingyuyao.tactical.controller.WorldCamera;
+import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ public class WorldView {
   private final WorldEngine worldEngine;
   private final OrthogonalTiledMapRenderer mapRenderer;
   private final Viewport viewport;
-  private final WorldCamera worldCamera;
+  private final CameraController cameraController;
   private final InputProcessor inputProcessor;
 
   @Inject
@@ -25,13 +25,13 @@ public class WorldView {
       WorldEngine worldEngine,
       OrthogonalTiledMapRenderer mapRenderer,
       @WorldViewport Viewport viewport,
-      WorldCamera worldCamera,
+      CameraController cameraController,
       WorldController worldController) {
     this.worldEngine = worldEngine;
     this.mapRenderer = mapRenderer;
     this.viewport = viewport;
-    this.worldCamera = worldCamera;
-    this.inputProcessor = new InputMultiplexer(worldCamera, worldController);
+    this.cameraController = cameraController;
+    this.inputProcessor = new InputMultiplexer(cameraController, worldController);
   }
 
   public InputProcessor getInputProcessor() {
@@ -39,7 +39,7 @@ public class WorldView {
   }
 
   public void center() {
-    worldCamera.center();
+    cameraController.center();
   }
 
   public void update(float delta) {

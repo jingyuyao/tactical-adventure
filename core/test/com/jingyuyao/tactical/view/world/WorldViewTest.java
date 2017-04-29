@@ -9,7 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jingyuyao.tactical.controller.WorldCamera;
+import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.model.ModelBus;
 import org.junit.Before;
@@ -30,7 +30,7 @@ public class WorldViewTest {
   @Mock
   private Viewport viewport;
   @Mock
-  private WorldCamera worldCamera;
+  private CameraController cameraController;
   @Mock
   private WorldController worldController;
   @Mock
@@ -42,7 +42,8 @@ public class WorldViewTest {
 
   @Before
   public void setUp() {
-    worldView = new WorldView(worldEngine, mapRenderer, viewport, worldCamera, worldController);
+    worldView = new WorldView(worldEngine, mapRenderer, viewport, cameraController,
+        worldController);
   }
 
   @Test
@@ -50,14 +51,15 @@ public class WorldViewTest {
     InputProcessor processor = worldView.getInputProcessor();
     assertThat(processor).isInstanceOf(InputMultiplexer.class);
     InputMultiplexer multiplexer = (InputMultiplexer) processor;
-    assertThat(multiplexer.getProcessors()).containsExactly(worldCamera, worldController).inOrder();
+    assertThat(multiplexer.getProcessors()).containsExactly(cameraController, worldController)
+        .inOrder();
   }
 
   @Test
   public void center() {
     worldView.center();
 
-    verify(worldCamera).center();
+    verify(cameraController).center();
   }
 
   @Test

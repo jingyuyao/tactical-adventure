@@ -26,7 +26,7 @@ public class WorldControllerTest {
   @Mock
   private Viewport worldViewport;
   @Mock
-  private WorldCamera worldCamera;
+  private CameraController cameraController;
   @Mock
   private Model model;
   @Mock
@@ -42,7 +42,7 @@ public class WorldControllerTest {
 
   @Before
   public void setUp() {
-    worldController = new WorldController(worldViewport, worldCamera, model, world);
+    worldController = new WorldController(worldViewport, cameraController, model, world);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class WorldControllerTest {
 
   @Test
   public void touch_up_dragged() {
-    when(worldCamera.isDragged()).thenReturn(true);
+    when(cameraController.isDragged()).thenReturn(true);
 
     worldController.touchUp(0, 0, 0, 0);
 
@@ -62,7 +62,7 @@ public class WorldControllerTest {
 
   @Test
   public void touch_up_select() {
-    when(worldCamera.isDragged()).thenReturn(false);
+    when(cameraController.isDragged()).thenReturn(false);
     when(worldViewport.getCamera()).thenReturn(camera);
     when(world.getCell(1, 2)).thenReturn(Optional.of(cell));
 
