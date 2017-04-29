@@ -3,11 +3,14 @@ package com.jingyuyao.tactical.view.world;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +23,17 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldViewTest {
 
   @Mock
-  private WorldEngine worldEngine;
-  @Mock
-  private OrthogonalTiledMapRenderer mapRenderer;
+  private Batch batch;
   @Mock
   private Viewport viewport;
   @Mock
-  private Batch batch;
+  private OrthogonalTiledMapRenderer mapRenderer;
+  @Mock
+  private Engine engine;
+  @Mock
+  private EntitySystem system1;
+  @Mock
+  private EntitySystem system2;
   @Mock
   private OrthographicCamera camera;
   @Mock
@@ -36,7 +43,10 @@ public class WorldViewTest {
 
   @Before
   public void setUp() {
-    worldView = new WorldView(worldEngine, mapRenderer, viewport, batch);
+    worldView =
+        new WorldView(batch, viewport, mapRenderer, engine, ImmutableList.of(system1, system2));
+    verify(engine).addSystem(system1);
+    verify(engine).addSystem(system2);
   }
 
   @Test
@@ -45,13 +55,13 @@ public class WorldViewTest {
 
     worldView.update(5f);
 
-    InOrder inOrder = Mockito.inOrder(viewport, mapRenderer, worldEngine, batch);
+    InOrder inOrder = Mockito.inOrder(viewport, mapRenderer, engine, batch);
     inOrder.verify(viewport).apply();
     inOrder.verify(mapRenderer).setView(camera);
     inOrder.verify(mapRenderer).render();
     inOrder.verify(batch).begin();
     inOrder.verify(batch).setProjectionMatrix(camera.combined);
-    inOrder.verify(worldEngine).update(5f);
+    inOrder.verify(engine).update(5f);
     inOrder.verify(batch).end();
   }
 

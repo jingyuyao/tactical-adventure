@@ -1,32 +1,40 @@
 package com.jingyuyao.tactical.view.world;
 
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
+import com.jingyuyao.tactical.view.world.system.SystemModule.EntitySystems;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class WorldView {
 
-  private final WorldEngine worldEngine;
-  private final OrthogonalTiledMapRenderer mapRenderer;
-  private final Viewport viewport;
   private final Batch batch;
+  private final Viewport viewport;
+  private final OrthogonalTiledMapRenderer mapRenderer;
+  private final Engine engine;
 
   @Inject
   WorldView(
-      WorldEngine worldEngine,
-      OrthogonalTiledMapRenderer mapRenderer,
+      Batch batch,
       @WorldViewport Viewport viewport,
-      Batch batch) {
-    this.worldEngine = worldEngine;
-    this.mapRenderer = mapRenderer;
-    this.viewport = viewport;
+      OrthogonalTiledMapRenderer mapRenderer,
+      Engine engine,
+      @EntitySystems List<EntitySystem> entitySystems) {
     this.batch = batch;
+    this.viewport = viewport;
+    this.mapRenderer = mapRenderer;
+    this.engine = engine;
+    for (EntitySystem system : entitySystems) {
+      engine.addSystem(system);
+    }
   }
 
   public void update(float delta) {
@@ -38,7 +46,7 @@ public class WorldView {
     // Render and update everything else
     batch.begin();
     batch.setProjectionMatrix(viewport.getCamera().combined);
-    worldEngine.update(delta);
+    engine.update(delta);
     batch.end();
   }
 
