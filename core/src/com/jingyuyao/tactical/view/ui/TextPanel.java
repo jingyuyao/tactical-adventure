@@ -12,6 +12,7 @@ abstract class TextPanel<T> extends VisTextButton {
   TextPanel() {
     super(null);
     setVisible(false);
+    pad(10);
   }
 
   void display(T object) {

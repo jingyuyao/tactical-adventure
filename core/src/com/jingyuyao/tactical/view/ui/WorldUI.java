@@ -12,9 +12,9 @@ public class WorldUI {
   private final Stage stage;
 
   @Inject
-  WorldUI(@UIStage Stage stage, WorldUILayout worldUiLayout) {
+  WorldUI(@UIStage Stage stage, MainLayout mainLayout) {
     this.stage = stage;
-    this.stage.addActor(worldUiLayout);
+    this.stage.addActor(mainLayout);
   }
 
   public InputProcessor getInputProcessor() {

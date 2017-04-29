@@ -10,10 +10,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class WorldUILayout extends VisTable {
+class MainLayout extends VisTable {
 
   @Inject
-  WorldUILayout(
+  MainLayout(
       ActionGroup actionGroup,
       SelectCellPanel selectCellPanel,
       ItemPanel itemPanel,
