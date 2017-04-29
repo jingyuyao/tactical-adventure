@@ -1,15 +1,13 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jingyuyao.tactical.view.world.WorldModule.WorldViewport;
-import com.jingyuyao.tactical.view.world.system.SystemModule.EntitySystems;
-import java.util.List;
+import com.jingyuyao.tactical.view.world.system.Systems;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -27,14 +25,12 @@ public class WorldView {
       @WorldViewport Viewport viewport,
       OrthogonalTiledMapRenderer mapRenderer,
       Engine engine,
-      @EntitySystems List<EntitySystem> entitySystems) {
+      Systems systems) {
     this.batch = batch;
     this.viewport = viewport;
     this.mapRenderer = mapRenderer;
     this.engine = engine;
-    for (EntitySystem system : entitySystems) {
-      engine.addSystem(system);
-    }
+    systems.addTo(engine);
   }
 
   public void update(float delta) {

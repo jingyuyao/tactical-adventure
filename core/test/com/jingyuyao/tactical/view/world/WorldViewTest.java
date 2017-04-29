@@ -4,13 +4,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.view.world.system.Systems;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,9 +30,7 @@ public class WorldViewTest {
   @Mock
   private Engine engine;
   @Mock
-  private EntitySystem system1;
-  @Mock
-  private EntitySystem system2;
+  private Systems systems;
   @Mock
   private OrthographicCamera camera;
   @Mock
@@ -43,10 +40,8 @@ public class WorldViewTest {
 
   @Before
   public void setUp() {
-    worldView =
-        new WorldView(batch, viewport, mapRenderer, engine, ImmutableList.of(system1, system2));
-    verify(engine).addSystem(system1);
-    verify(engine).addSystem(system2);
+    worldView = new WorldView(batch, viewport, mapRenderer, engine, systems);
+    verify(systems).addTo(engine);
   }
 
   @Test
