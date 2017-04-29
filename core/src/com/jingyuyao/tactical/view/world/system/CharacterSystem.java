@@ -67,7 +67,6 @@ class CharacterSystem extends EntitySystem {
   @Subscribe
   void spawnCharacter(SpawnCharacter spawnCharacter) {
     Cell cell = spawnCharacter.getObject();
-    Entity entity = getEngine().createEntity();
 
     Position position = getEngine().createComponent(Position.class);
     position.set(cell.getCoordinate(), WorldZIndex.CHARACTER);
@@ -82,6 +81,7 @@ class CharacterSystem extends EntitySystem {
       frame.setColor(Colors.RED_500);
     }
 
+    Entity entity = getEngine().createEntity();
     entity.add(position);
     entity.add(characterComponent);
     entity.add(frame);

@@ -49,7 +49,7 @@ public class EffectsSystemTest {
   @Before
   public void setUp() {
     engine = new PooledEngine();
-    effectsSystem = new EffectsSystem(new ECF(engine), animations);
+    effectsSystem = new EffectsSystem(animations);
     assertThat(effectsSystem.priority).isEqualTo(SystemPriority.EFFECTS);
     engine.addSystem(effectsSystem);
   }
