@@ -33,5 +33,9 @@ abstract class TextPanel<T> extends VisTextButton {
     setText(null);
   }
 
+  T getObject() {
+    return object;
+  }
+
   abstract String createText(T object);
 }

@@ -6,6 +6,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -13,6 +14,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.Deque;
+import java.util.LinkedList;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
@@ -32,6 +35,13 @@ public class WorldUIModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @BackingLayerStack
+  Deque<Actor> provideBackingLayerStack() {
+    return new LinkedList<>();
+  }
+
+  @Provides
+  @Singleton
   @UIViewport
   Viewport provideUIViewport(WorldUIConfig worldUiConfig) {
     return new StretchViewport(worldUiConfig.getUIWidth(), worldUiConfig.getUIHeight());
@@ -41,6 +51,13 @@ public class WorldUIModule extends AbstractModule {
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface UIStage {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingLayerStack {
 
   }
 

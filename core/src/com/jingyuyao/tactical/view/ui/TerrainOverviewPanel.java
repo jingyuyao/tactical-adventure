@@ -2,7 +2,9 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.Locale;
+import javax.inject.Singleton;
 
+@Singleton
 class TerrainOverviewPanel extends TextPanel<Terrain> {
 
   private static final String FMT = "%s\nMove: %d";

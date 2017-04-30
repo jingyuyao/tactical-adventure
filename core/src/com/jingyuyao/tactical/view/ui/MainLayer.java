@@ -10,10 +10,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class MainLayout extends VisTable {
+class MainLayer extends VisTable {
 
   @Inject
-  MainLayout(
+  MainLayer(
       ActionGroup actionGroup,
       SelectCellPanel selectCellPanel,
       ItemPanel itemPanel,

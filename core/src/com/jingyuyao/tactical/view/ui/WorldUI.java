@@ -10,15 +10,22 @@ import javax.inject.Singleton;
 public class WorldUI {
 
   private final Stage stage;
+  private final LayerManager layerManager;
+  private final MainLayer mainLayer;
 
   @Inject
-  WorldUI(@UIStage Stage stage, MainLayout mainLayout) {
+  WorldUI(@UIStage Stage stage, LayerManager layerManager, MainLayer mainLayer) {
     this.stage = stage;
-    this.stage.addActor(mainLayout);
+    this.layerManager = layerManager;
+    this.mainLayer = mainLayer;
   }
 
   public InputProcessor getInputProcessor() {
     return stage;
+  }
+
+  public void init() {
+    layerManager.init(mainLayer);
   }
 
   public void act(float delta) {
