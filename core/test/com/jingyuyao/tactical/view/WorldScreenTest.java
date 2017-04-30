@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.view;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;

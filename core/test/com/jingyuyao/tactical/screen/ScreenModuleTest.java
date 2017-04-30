@@ -6,11 +6,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.controller.CameraController;
-import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.view.ui.WorldUI;
-import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,21 +23,7 @@ public class ScreenModuleTest {
   @Bind
   @Mock
   private DataManager dataManager;
-  @Bind
-  @Mock
-  private WorldView worldView;
-  @Bind
-  @Mock
-  private WorldUI worldUI;
-  @Bind
-  @Mock
-  private CameraController cameraController;
-  @Bind
-  @Mock
-  private WorldController worldController;
 
-  @Inject
-  private WorldScreen worldScreen;
   @Inject
   private StartScreen startScreen;
 

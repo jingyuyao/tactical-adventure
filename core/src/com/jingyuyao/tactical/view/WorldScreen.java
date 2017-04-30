@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.view;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;

@@ -7,8 +7,6 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.ui.WorldUI;
-import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,9 +25,7 @@ public class ViewModuleTest {
   private CameraController cameraController;
 
   @Inject
-  private WorldView worldView;
-  @Inject
-  private WorldUI worldUI;
+  private WorldScreen worldScreen;
 
   @BeforeClass
   public static void setUpClass() {

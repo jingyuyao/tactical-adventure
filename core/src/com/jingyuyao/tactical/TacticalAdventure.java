@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.screen.StartScreen;
-import com.jingyuyao.tactical.screen.WorldScreen;
+import com.jingyuyao.tactical.view.WorldScreen;
 import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
