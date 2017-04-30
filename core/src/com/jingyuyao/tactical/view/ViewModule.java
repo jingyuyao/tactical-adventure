@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.ui.WorldUIModule;
+import com.jingyuyao.tactical.view.ui.GameUIModule;
 import com.jingyuyao.tactical.view.world.WorldViewModule;
 
 public class ViewModule extends AbstractModule {
@@ -21,7 +21,7 @@ public class ViewModule extends AbstractModule {
     requireBinding(WorldController.class);
     requireBinding(CameraController.class);
 
-    install(new WorldUIModule());
+    install(new GameUIModule());
     install(new WorldViewModule());
   }
 }

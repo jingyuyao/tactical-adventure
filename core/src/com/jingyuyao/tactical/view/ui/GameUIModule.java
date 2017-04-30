@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-public class WorldUIModule extends AbstractModule {
+public class GameUIModule extends AbstractModule {
 
   @Override
   protected void configure() {
@@ -43,8 +43,8 @@ public class WorldUIModule extends AbstractModule {
   @Provides
   @Singleton
   @UIViewport
-  Viewport provideUIViewport(WorldUIConfig worldUiConfig) {
-    return new StretchViewport(worldUiConfig.getUIWidth(), worldUiConfig.getUIHeight());
+  Viewport provideUIViewport(GameUIConfig gameUiConfig) {
+    return new StretchViewport(gameUiConfig.getUIWidth(), gameUiConfig.getUIHeight());
   }
 
   @Qualifier

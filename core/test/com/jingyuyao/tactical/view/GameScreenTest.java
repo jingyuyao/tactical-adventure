@@ -10,7 +10,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.view.ui.WorldUI;
+import com.jingyuyao.tactical.view.ui.GameUI;
 import com.jingyuyao.tactical.view.world.WorldView;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class GameScreenTest {
   @Mock
   private WorldView worldView;
   @Mock
-  private WorldUI worldUI;
+  private GameUI gameUI;
   @Mock
   private CameraController cameraController;
   @Mock
@@ -46,8 +46,8 @@ public class GameScreenTest {
 
   @Before
   public void setUp() {
-    when(worldUI.getInputProcessor()).thenReturn(worldUIProcessor);
-    gameScreen = new GameScreen(gl, input, worldView, worldUI, cameraController, worldController);
+    when(gameUI.getInputProcessor()).thenReturn(worldUIProcessor);
+    gameScreen = new GameScreen(gl, input, worldView, gameUI, cameraController, worldController);
   }
 
   @Test
@@ -73,11 +73,11 @@ public class GameScreenTest {
   public void render() {
     gameScreen.render(10f);
 
-    InOrder inOrder = Mockito.inOrder(worldView, worldUI, gl);
-    inOrder.verify(worldUI).act(10f);
+    InOrder inOrder = Mockito.inOrder(worldView, gameUI, gl);
+    inOrder.verify(gameUI).act(10f);
     inOrder.verify(gl).glClear(GL20.GL_COLOR_BUFFER_BIT);
     inOrder.verify(worldView).update(10f);
-    inOrder.verify(worldUI).draw();
+    inOrder.verify(gameUI).draw();
   }
 
   @Test
@@ -85,13 +85,13 @@ public class GameScreenTest {
     gameScreen.resize(20, 30);
 
     verify(worldView).resize(20, 30);
-    verify(worldUI).resize(20, 30);
+    verify(gameUI).resize(20, 30);
   }
 
   @Test
   public void dispose() {
     gameScreen.dispose();
 
-    verify(worldUI).dispose();
+    verify(gameUI).dispose();
   }
 }

@@ -2,19 +2,19 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.view.ui.WorldUIModule.UIStage;
+import com.jingyuyao.tactical.view.ui.GameUIModule.UIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldUI {
+public class GameUI {
 
   private final Stage stage;
   private final LayerManager layerManager;
   private final MainLayer mainLayer;
 
   @Inject
-  WorldUI(@UIStage Stage stage, LayerManager layerManager, MainLayer mainLayer) {
+  GameUI(@UIStage Stage stage, LayerManager layerManager, MainLayer mainLayer) {
     this.stage = stage;
     this.layerManager = layerManager;
     this.mainLayer = mainLayer;
