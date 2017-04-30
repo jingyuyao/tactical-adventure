@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ScreenModuleTest {
+public class MenuModuleTest {
 
   @Bind
   @Mock
@@ -25,7 +25,7 @@ public class ScreenModuleTest {
   private DataManager dataManager;
 
   @Inject
-  private StartScreen startScreen;
+  private StartMenu startMenu;
 
   @BeforeClass
   public static void setUpClass() {
@@ -35,6 +35,6 @@ public class ScreenModuleTest {
   @Test
   public void can_create_module() {
     Guice.createInjector(
-        BoundFieldModule.of(this), new MockGameModule(), new ScreenModule()).injectMembers(this);
+        BoundFieldModule.of(this), new MockGameModule(), new MenuModule()).injectMembers(this);
   }
 }

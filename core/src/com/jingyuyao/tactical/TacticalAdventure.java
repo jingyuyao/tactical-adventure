@@ -3,7 +3,7 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
-import com.jingyuyao.tactical.menu.StartScreen;
+import com.jingyuyao.tactical.menu.StartMenu;
 import com.jingyuyao.tactical.view.GameScreen;
 import javax.inject.Inject;
 
@@ -15,7 +15,7 @@ public class TacticalAdventure extends Game {
   @Inject
   private GameScreen gameScreen;
   @Inject
-  private StartScreen startScreen;
+  private StartMenu startMenu;
   @Inject
   private AssetManager assetManager;
 
@@ -36,12 +36,12 @@ public class TacticalAdventure extends Game {
   public void dispose() {
     super.dispose();
     gameScreen.dispose();
-    startScreen.dispose();
+    startMenu.dispose();
     assetManager.dispose();
   }
 
   void goToPlayMenu() {
-    setScreen(startScreen);
+    setScreen(startMenu);
   }
 
   void goToWorldScreen() {

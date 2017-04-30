@@ -18,7 +18,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
-public class ScreenModule extends AbstractModule {
+public class MenuModule extends AbstractModule {
 
   @Override
   protected void configure() {
@@ -30,17 +30,17 @@ public class ScreenModule extends AbstractModule {
   }
 
   @Provides
-  @MenuScreenStage
-  Stage provideMenuStage(ScreenConfig screenConfig, Batch batch) {
-    int width = screenConfig.getMenuScreenWidth();
-    int height = screenConfig.getMenuScreenHeight();
+  @MenuStage
+  Stage provideMenuStage(MenuConfig menuConfig, Batch batch) {
+    int width = menuConfig.getMenuScreenWidth();
+    int height = menuConfig.getMenuScreenHeight();
     return new Stage(new StretchViewport(width, height), batch);
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MenuScreenStage {
+  @interface MenuStage {
 
   }
 }
