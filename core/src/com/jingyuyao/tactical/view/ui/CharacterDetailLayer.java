@@ -1,49 +1,58 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.google.common.collect.FluentIterable;
 import com.jingyuyao.tactical.model.character.Character;
-import com.kotcrab.vis.ui.building.StandardTableBuilder;
+import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.view.world.resource.Colors;
+import com.kotcrab.vis.ui.building.OneColumnTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
-import com.kotcrab.vis.ui.building.utilities.Alignment;
-import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
 import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisScrollPane;
+import com.kotcrab.vis.ui.widget.VisWindow;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterDetailLayer extends VisTable {
+class CharacterDetailLayer extends VisWindow {
 
-  private static final String FMT = "Detail:\n%s";
-
-  private final VisLabel text;
+  private final LayerManager layerManager;
+  private final VisScrollPane content;
 
   @Inject
-  CharacterDetailLayer(final LayerManager layerManager) {
-    this.text = new VisLabel();
+  CharacterDetailLayer(LayerManager layerManager) {
+    super("Character Detail", false);
+    this.layerManager = layerManager;
+    this.content = new VisScrollPane(null);
     setFillParent(true);
-    setBackground("window-noborder");
+    setMovable(false);
+    addCloseButton();
 
-    VisTextButton back = new VisTextButton("Back");
-    back.pad(20);
-    back.addListener(new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        layerManager.close(CharacterDetailLayer.this);
-      }
-    });
-    TableBuilder builder = new StandardTableBuilder(new Padding(20));
-    builder.append(CellWidget.of(text).expandX().expandY().wrap());
-    builder.row();
-    builder.append(CellWidget.of(back).align(Alignment.RIGHT).wrap());
-    builder.build(this);
+    add(content).expand().fill().center();
   }
 
   void display(Character character) {
-    text.setText(String.format(Locale.US, FMT, character.getName()));
+    TableBuilder builder = new OneColumnTableBuilder(new Padding(20));
+    builder.append(new VisLabel(String.format("Name: %s", character.getName()), Colors.BLUE_300));
+    builder.append(new VisLabel(String.format(Locale.US, "HP: %d", character.getHp())));
+    builder.append(new VisLabel(String.format(Locale.US, "Move: %d", character.getMoveDistance())));
+    builder.append(new VisLabel("Items:"));
+    FluentIterable<Item> items = character.fluentItems();
+    if (items.isEmpty()) {
+      builder.append(new VisLabel("None"));
+    } else {
+      for (Item item : character.fluentItems()) {
+        builder.append(new VisLabel(String.format(
+            Locale.US, "%s (%d): %s",
+            item.getName(), item.getUsageLeft(), item.getDescription())));
+      }
+    }
+    content.setWidget(builder.build());
+  }
+
+  @Override
+  protected void close() {
+    layerManager.close(CharacterDetailLayer.this);
   }
 }
