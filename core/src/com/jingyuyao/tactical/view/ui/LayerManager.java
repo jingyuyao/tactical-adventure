@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.jingyuyao.tactical.view.ui.WorldUIModule.BackingLayerStack;
-import com.jingyuyao.tactical.view.ui.WorldUIModule.UIStage;
+import com.jingyuyao.tactical.view.ui.GameUIModule.BackingLayerStack;
+import com.jingyuyao.tactical.view.ui.GameUIModule.UIStage;
 import java.util.Deque;
 import javax.inject.Inject;
 import javax.inject.Singleton;

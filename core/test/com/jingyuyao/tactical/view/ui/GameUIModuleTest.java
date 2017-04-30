@@ -10,10 +10,10 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WorldUIModuleTest {
+public class GameUIModuleTest {
 
   @Inject
-  private WorldUI worldUI;
+  private GameUI gameUI;
 
   @BeforeClass
   public static void setUpClass() {
@@ -22,6 +22,6 @@ public class WorldUIModuleTest {
 
   @Test
   public void can_create_module() {
-    Guice.createInjector(new MockGameModule(), new WorldUIModule()).injectMembers(this);
+    Guice.createInjector(new MockGameModule(), new GameUIModule()).injectMembers(this);
   }
 }

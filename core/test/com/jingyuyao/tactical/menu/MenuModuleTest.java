@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import com.badlogic.gdx.backends.headless.HeadlessNativesLoader;
 import com.google.inject.Guice;
@@ -6,11 +6,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.controller.CameraController;
-import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.view.ui.WorldUI;
-import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ScreenModuleTest {
+public class MenuModuleTest {
 
   @Bind
   @Mock
@@ -27,23 +23,9 @@ public class ScreenModuleTest {
   @Bind
   @Mock
   private DataManager dataManager;
-  @Bind
-  @Mock
-  private WorldView worldView;
-  @Bind
-  @Mock
-  private WorldUI worldUI;
-  @Bind
-  @Mock
-  private CameraController cameraController;
-  @Bind
-  @Mock
-  private WorldController worldController;
 
   @Inject
-  private WorldScreen worldScreen;
-  @Inject
-  private StartScreen startScreen;
+  private StartMenu startMenu;
 
   @BeforeClass
   public static void setUpClass() {
@@ -53,6 +35,6 @@ public class ScreenModuleTest {
   @Test
   public void can_create_module() {
     Guice.createInjector(
-        BoundFieldModule.of(this), new MockGameModule(), new ScreenModule()).injectMembers(this);
+        BoundFieldModule.of(this), new MockGameModule(), new MenuModule()).injectMembers(this);
   }
 }

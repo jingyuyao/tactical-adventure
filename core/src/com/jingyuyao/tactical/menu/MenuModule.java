@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -13,16 +13,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.GameState;
-import com.jingyuyao.tactical.controller.CameraController;
-import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.view.ui.WorldUI;
-import com.jingyuyao.tactical.view.world.WorldView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
-public class ScreenModule extends AbstractModule {
+public class MenuModule extends AbstractModule {
 
   @Override
   protected void configure() {
@@ -31,24 +27,20 @@ public class ScreenModule extends AbstractModule {
     requireBinding(Batch.class);
     requireBinding(GameState.class);
     requireBinding(DataManager.class);
-    requireBinding(WorldView.class);
-    requireBinding(WorldUI.class);
-    requireBinding(CameraController.class);
-    requireBinding(WorldController.class);
   }
 
   @Provides
-  @MenuScreenStage
-  Stage provideMenuStage(ScreenConfig screenConfig, Batch batch) {
-    int width = screenConfig.getMenuScreenWidth();
-    int height = screenConfig.getMenuScreenHeight();
+  @MenuStage
+  Stage provideMenuStage(MenuConfig menuConfig, Batch batch) {
+    int width = menuConfig.getMenuScreenWidth();
+    int height = menuConfig.getMenuScreenHeight();
     return new Stage(new StretchViewport(width, height), batch);
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface MenuScreenStage {
+  @interface MenuStage {
 
   }
 }

@@ -4,10 +4,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class WorldUIConfig {
+class GameUIConfig {
 
   @Inject
-  WorldUIConfig() {
+  GameUIConfig() {
   }
 
   int getUIWidth() {

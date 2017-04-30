@@ -1,9 +1,9 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import javax.inject.Singleton;
 
 @Singleton
-class ScreenConfig {
+class MenuConfig {
 
   int getMenuScreenWidth() {
     return 1920;

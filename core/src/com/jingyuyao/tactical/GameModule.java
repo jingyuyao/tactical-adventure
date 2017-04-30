@@ -17,8 +17,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.ControllerModule;
 import com.jingyuyao.tactical.data.DataModule;
+import com.jingyuyao.tactical.menu.MenuModule;
 import com.jingyuyao.tactical.model.ModelModule;
-import com.jingyuyao.tactical.screen.ScreenModule;
 import com.jingyuyao.tactical.view.ViewModule;
 import javax.inject.Singleton;
 
@@ -53,10 +53,10 @@ class GameModule extends AbstractModule {
     bind(GL20.class).toInstance(Gdx.gl);
 
     install(new ModelModule());
-    install(new ViewModule());
     install(new ControllerModule());
+    install(new ViewModule());
     install(new DataModule());
-    install(new ScreenModule());
+    install(new MenuModule());
   }
 
   @Provides

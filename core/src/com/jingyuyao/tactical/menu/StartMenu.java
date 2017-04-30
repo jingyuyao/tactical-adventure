@@ -1,37 +1,44 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
+import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
 import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class StartScreenLayout extends VisTable {
+public class StartMenu extends AbstractMenu {
 
   @Inject
-  StartScreenLayout(final GameState gameState, final DataManager dataManager) {
-    super(true);
-    setFillParent(true);
+  StartMenu(
+      GL20 gl,
+      Input input,
+      @MenuStage Stage stage,
+      final GameState gameState,
+      final DataManager dataManager) {
+    super(gl, input, stage);
 
     final VisLabel infoLabel = new VisLabel(dataManager.getInfo(), Align.center);
-    VisTextButton play = new VisTextButton("Play", new ChangeListener() {
+    VisTextButton play = new VisTextButton("Play", "blue", new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
         gameState.play();
       }
     });
-    play.getLabelCell().pad(30);
+    play.getLabelCell().pad(20);
     VisTextButton reset = new VisTextButton("Reset", new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
@@ -39,7 +46,7 @@ class StartScreenLayout extends VisTable {
         infoLabel.setText(dataManager.getInfo());
       }
     });
-    reset.getLabelCell().pad(30);
+    reset.getLabelCell().pad(20);
 
     TableBuilder builder = new StandardTableBuilder(new Padding(20));
     builder.append(CellWidget.of(infoLabel).expandY().wrap());
@@ -48,6 +55,11 @@ class StartScreenLayout extends VisTable {
     builder.append(CellWidget.of(play).align(Alignment.LEFT).expandX().wrap());
     builder.append(reset);
 
-    builder.build(this);
+    builder.build(getRoot());
+  }
+
+  @Override
+  String getTitle() {
+    return "Start";
   }
 }
