@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import javax.inject.Singleton;
 

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

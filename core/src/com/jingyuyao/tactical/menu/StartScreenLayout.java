@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;

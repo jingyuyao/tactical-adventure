@@ -3,7 +3,7 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
-import com.jingyuyao.tactical.screen.StartScreen;
+import com.jingyuyao.tactical.menu.StartScreen;
 import com.jingyuyao.tactical.view.GameScreen;
 import javax.inject.Inject;
 

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.screen;
+package com.jingyuyao.tactical.menu;
 
 import com.badlogic.gdx.backends.headless.HeadlessNativesLoader;
 import com.google.inject.Guice;
