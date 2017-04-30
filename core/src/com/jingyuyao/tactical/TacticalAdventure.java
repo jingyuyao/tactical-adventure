@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.screen.StartScreen;
-import com.jingyuyao.tactical.view.WorldScreen;
+import com.jingyuyao.tactical.view.GameScreen;
 import javax.inject.Inject;
 
 public class TacticalAdventure extends Game {
@@ -13,7 +13,7 @@ public class TacticalAdventure extends Game {
   private GameState gameState;
 
   @Inject
-  private WorldScreen worldScreen;
+  private GameScreen gameScreen;
   @Inject
   private StartScreen startScreen;
   @Inject
@@ -35,7 +35,7 @@ public class TacticalAdventure extends Game {
   @Override
   public void dispose() {
     super.dispose();
-    worldScreen.dispose();
+    gameScreen.dispose();
     startScreen.dispose();
     assetManager.dispose();
   }
@@ -45,10 +45,10 @@ public class TacticalAdventure extends Game {
   }
 
   void goToWorldScreen() {
-    setScreen(worldScreen);
+    setScreen(gameScreen);
   }
 
   boolean isAtWorldScreen() {
-    return getScreen().equals(worldScreen);
+    return getScreen().equals(gameScreen);
   }
 }

@@ -23,7 +23,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WorldScreenTest {
+public class GameScreenTest {
 
   @Mock
   private GL20 gl;
@@ -42,17 +42,17 @@ public class WorldScreenTest {
   @Captor
   private ArgumentCaptor<InputProcessor> argumentCaptor;
 
-  private WorldScreen worldScreen;
+  private GameScreen gameScreen;
 
   @Before
   public void setUp() {
     when(worldUI.getInputProcessor()).thenReturn(worldUIProcessor);
-    worldScreen = new WorldScreen(gl, input, worldView, worldUI, cameraController, worldController);
+    gameScreen = new GameScreen(gl, input, worldView, worldUI, cameraController, worldController);
   }
 
   @Test
   public void show() {
-    worldScreen.show();
+    gameScreen.show();
 
     verify(cameraController).center();
     verify(input).setInputProcessor(argumentCaptor.capture());
@@ -64,14 +64,14 @@ public class WorldScreenTest {
 
   @Test
   public void hide() {
-    worldScreen.hide();
+    gameScreen.hide();
 
     verify(input).setInputProcessor(null);
   }
 
   @Test
   public void render() {
-    worldScreen.render(10f);
+    gameScreen.render(10f);
 
     InOrder inOrder = Mockito.inOrder(worldView, worldUI, gl);
     inOrder.verify(worldUI).act(10f);
@@ -82,7 +82,7 @@ public class WorldScreenTest {
 
   @Test
   public void resize() {
-    worldScreen.resize(20, 30);
+    gameScreen.resize(20, 30);
 
     verify(worldView).resize(20, 30);
     verify(worldUI).resize(20, 30);
@@ -90,7 +90,7 @@ public class WorldScreenTest {
 
   @Test
   public void dispose() {
-    worldScreen.dispose();
+    gameScreen.dispose();
 
     verify(worldUI).dispose();
   }

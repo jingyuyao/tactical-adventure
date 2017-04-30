@@ -25,7 +25,7 @@ public class ViewModuleTest {
   private CameraController cameraController;
 
   @Inject
-  private WorldScreen worldScreen;
+  private GameScreen gameScreen;
 
   @BeforeClass
   public static void setUpClass() {

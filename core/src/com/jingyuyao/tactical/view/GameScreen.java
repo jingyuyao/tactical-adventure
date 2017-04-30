@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorldScreen extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter {
 
   private final GL20 gl;
   private final Input input;
@@ -22,7 +22,7 @@ public class WorldScreen extends ScreenAdapter {
   private final InputMultiplexer inputMultiplexer;
 
   @Inject
-  WorldScreen(
+  GameScreen(
       GL20 gl,
       Input input,
       WorldView worldView,
