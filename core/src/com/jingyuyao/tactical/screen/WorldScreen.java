@@ -41,6 +41,7 @@ public class WorldScreen extends ScreenAdapter {
   @Override
   public void show() {
     cameraController.center();
+    worldUI.init();
     input.setInputProcessor(inputMultiplexer);
   }
 

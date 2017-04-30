@@ -12,6 +12,7 @@ abstract class TextPanel<T> extends VisTextButton {
   TextPanel() {
     super(null);
     setVisible(false);
+    pad(10);
   }
 
   void display(T object) {
@@ -30,6 +31,10 @@ abstract class TextPanel<T> extends VisTextButton {
     object = null;
     setVisible(false);
     setText(null);
+  }
+
+  T getObject() {
+    return object;
   }
 
   abstract String createText(T object);
