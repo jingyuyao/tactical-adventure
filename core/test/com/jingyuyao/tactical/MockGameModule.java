@@ -9,6 +9,7 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.headless.HeadlessFiles;
+import com.badlogic.gdx.backends.headless.HeadlessNativesLoader;
 import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -22,6 +23,8 @@ public class MockGameModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    HeadlessNativesLoader.load();
+
     Gdx.app = mock(Application.class);
     Gdx.files = new HeadlessFiles();
     Gdx.graphics = new MockGraphics();

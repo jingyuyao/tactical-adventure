@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.view;
 
-import com.badlogic.gdx.backends.headless.HeadlessNativesLoader;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -8,7 +7,6 @@ import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
 import javax.inject.Inject;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -26,11 +24,6 @@ public class ViewModuleTest {
 
   @Inject
   private GameScreen gameScreen;
-
-  @BeforeClass
-  public static void setUpClass() {
-    HeadlessNativesLoader.load();
-  }
 
   @Test
   public void can_create_module() {
