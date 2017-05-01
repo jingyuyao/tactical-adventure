@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 @ModelBusListener
 class TargetPanel extends TextPanel<Battling> {
 
-  private static final String FMT = "%s\nHP: %d\nDmg: %d\n\n";
+  private static final String FMT = "%s\nHP: %d\n";
 
   TargetPanel() {
     super(Align.left);
@@ -24,12 +24,11 @@ class TargetPanel extends TextPanel<Battling> {
   @Override
   String createText(Battling battling) {
     StringBuilder builder = new StringBuilder("Targets:\n");
-    int damage = battling.getWeapon().getAttackPower();
     for (Cell cell : battling.getTarget().getTargetCells()) {
       if (cell.hasCharacter()) {
         Character character = cell.getCharacter();
         builder.append(
-            String.format(Locale.US, FMT, character.getName(), character.getHp(), damage));
+            String.format(Locale.US, FMT, character.getName(), character.getHp()));
       }
     }
     return builder.toString();
