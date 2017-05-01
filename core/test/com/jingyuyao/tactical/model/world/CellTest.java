@@ -48,7 +48,7 @@ public class CellTest {
     cell = new Cell(modelBus, COORDINATE, terrain);
     assertThat(cell.getCoordinate()).isEqualTo(COORDINATE);
     assertThat(cell.getTerrain()).isSameAs(terrain);
-    assertThat(cell.hasCharacter()).isFalse();
+    assertThat(cell.character()).isAbsent();
     assertThat(cell.hasPlayer()).isFalse();
     assertThat(cell.hasEnemy()).isFalse();
   }
@@ -57,7 +57,7 @@ public class CellTest {
   public void spawn_player() {
     cell.spawnCharacter(player);
 
-    assertThat(cell.hasCharacter()).isTrue();
+    assertThat(cell.character()).hasValue(player);
     assertThat(cell.hasPlayer()).isTrue();
     assertThat(cell.getPlayer()).isSameAs(player);
     assertThat(cell.hasEnemy()).isFalse();
@@ -69,7 +69,7 @@ public class CellTest {
   public void spawn_enemy() {
     cell.spawnCharacter(enemy);
 
-    assertThat(cell.hasCharacter()).isTrue();
+    assertThat(cell.character()).hasValue(enemy);
     assertThat(cell.hasEnemy()).isTrue();
     assertThat(cell.getEnemy()).isSameAs(enemy);
     assertThat(cell.hasPlayer()).isFalse();
@@ -94,9 +94,8 @@ public class CellTest {
 
     cell.instantMoveCharacter(other);
 
-    assertThat(cell.hasCharacter()).isFalse();
-    assertThat(other.hasCharacter()).isTrue();
-    assertThat(other.getCharacter()).isSameAs(player);
+    assertThat(cell.character()).isAbsent();
+    assertThat(other.character()).hasValue(player);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(InstantMoveCharacter.class);
@@ -110,7 +109,7 @@ public class CellTest {
 
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    assertThat(cell.hasCharacter()).isTrue();
+    assertThat(cell.character()).hasValue(player);
     assertThat(cell.getPlayer()).isSameAs(player);
   }
 
@@ -124,9 +123,8 @@ public class CellTest {
     MyFuture future = cell.moveCharacter(path);
 
     assertThat(future.isDone()).isFalse();
-    assertThat(cell.hasCharacter()).isFalse();
-    assertThat(other.hasCharacter()).isTrue();
-    assertThat(other.getCharacter()).isSameAs(player);
+    assertThat(cell.character()).isAbsent();
+    assertThat(other.character()).hasValue(player);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(MoveCharacter.class);
@@ -143,7 +141,7 @@ public class CellTest {
     assertThat(future.isDone()).isTrue();
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    assertThat(cell.hasCharacter()).isTrue();
+    assertThat(cell.character()).hasValue(player);
     assertThat(cell.getPlayer()).isSameAs(player);
   }
 }

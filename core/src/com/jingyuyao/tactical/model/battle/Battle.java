@@ -30,8 +30,10 @@ public class Battle {
         attacker.useItem(weapon);
         weapon.damages(target);
         for (Cell cell : target.getTargetCells()) {
-          if (cell.hasCharacter() && cell.getCharacter().getHp() == 0) {
-            cell.removeCharacter();
+          for (Character character : cell.character().asSet()) {
+            if (character.getHp() == 0) {
+              cell.removeCharacter();
+            }
           }
         }
       }

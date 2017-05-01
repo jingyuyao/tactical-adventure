@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
@@ -79,8 +80,10 @@ public class WorldTest {
     characterMap.put(COORDINATE2, character2);
     when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
     when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
-    when(cell1.hasCharacter()).thenReturn(false, true);
-    when(cell2.hasCharacter()).thenReturn(false, true);
+    when(cell1.character())
+        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character1));
+    when(cell2.character())
+        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character2));
 
     world.initialize(terrainMap, characterMap);
 
@@ -103,8 +106,10 @@ public class WorldTest {
     characterMap.put(COORDINATE2, character2);
     when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
     when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
-    when(cell1.hasCharacter()).thenReturn(false, true);
-    when(cell2.hasCharacter()).thenReturn(false, true);
+    when(cell1.character())
+        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character1));
+    when(cell2.character())
+        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character2));
 
     world.initialize(terrainMap, characterMap);
     world.reset();
@@ -121,8 +126,8 @@ public class WorldTest {
   public void get_character_snapshot() {
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
-    when(cell1.hasCharacter()).thenReturn(true);
-    when(cell2.hasCharacter()).thenReturn(true);
+    when(cell1.character()).thenReturn(Optional.of(character1));
+    when(cell2.character()).thenReturn(Optional.of(character2));
 
     assertThat(world.getCharacterSnapshot()).containsExactly(cell1, cell2);
   }

@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class MovementsTest {
 
   @Test
   public void edge_cost_function_has_character() {
-    when(cell.hasCharacter()).thenReturn(true);
+    when(cell.character()).thenReturn(Optional.of(character));
     when(cell.getTerrain()).thenReturn(terrain);
 
     Function<Cell, Integer> function = movements.createEdgeCostFunction(character);
@@ -43,7 +44,7 @@ public class MovementsTest {
 
   @Test
   public void edge_cost_function_cannot_hold() {
-    when(cell.hasCharacter()).thenReturn(false);
+    when(cell.character()).thenReturn(Optional.<Character>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(character)).thenReturn(false);
 
@@ -54,7 +55,7 @@ public class MovementsTest {
 
   @Test
   public void edge_cost_function_penalty() {
-    when(cell.hasCharacter()).thenReturn(false);
+    when(cell.character()).thenReturn(Optional.<Character>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(character)).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(10);

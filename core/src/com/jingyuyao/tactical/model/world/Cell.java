@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.world;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -36,16 +37,12 @@ public class Cell {
     return terrain;
   }
 
-  public boolean hasCharacter() {
-    return character != null;
-  }
-
-  public Character getCharacter() {
-    return character;
+  public Optional<Character> character() {
+    return Optional.fromNullable(character);
   }
 
   public boolean hasPlayer() {
-    return hasCharacter() && character instanceof Player;
+    return character != null && character instanceof Player;
   }
 
   public Player getPlayer() {
@@ -53,7 +50,7 @@ public class Cell {
   }
 
   public boolean hasEnemy() {
-    return hasCharacter() && character instanceof Enemy;
+    return character != null && character instanceof Enemy;
   }
 
   public Enemy getEnemy() {
@@ -61,7 +58,7 @@ public class Cell {
   }
 
   public void spawnCharacter(Character character) {
-    Preconditions.checkState(!hasCharacter());
+    Preconditions.checkState(this.character == null);
     Preconditions.checkNotNull(character);
 
     this.character = character;
@@ -69,20 +66,20 @@ public class Cell {
   }
 
   public void removeCharacter() {
-    Preconditions.checkState(hasCharacter());
+    Preconditions.checkState(character != null);
 
     modelBus.post(new RemoveCharacter(character));
     this.character = null;
   }
 
   public void instantMoveCharacter(Cell destination) {
-    Preconditions.checkState(hasCharacter());
+    Preconditions.checkState(character != null);
 
     if (destination.equals(this)) {
       return;
     }
 
-    Preconditions.checkArgument(!destination.hasCharacter());
+    Preconditions.checkArgument(destination.character == null);
 
     modelBus.post(new InstantMoveCharacter(character, destination));
     destination.character = character;
@@ -90,7 +87,7 @@ public class Cell {
   }
 
   public MyFuture moveCharacter(Path path) {
-    Preconditions.checkState(hasCharacter());
+    Preconditions.checkState(character != null);
     Preconditions.checkArgument(path.getOrigin().equals(this));
 
     Cell destination = path.getDestination();
@@ -98,7 +95,7 @@ public class Cell {
       return MyFuture.immediate();
     }
 
-    Preconditions.checkArgument(!destination.hasCharacter());
+    Preconditions.checkArgument(destination.character == null);
 
     MyFuture future = new MyFuture();
     modelBus.post(new MoveCharacter(character, path, future));

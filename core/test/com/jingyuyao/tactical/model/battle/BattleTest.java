@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -55,11 +56,9 @@ public class BattleTest {
   @Test
   public void begin() {
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.hasCharacter()).thenReturn(true);
-    when(cell1.getCharacter()).thenReturn(character1);
+    when(cell1.character()).thenReturn(Optional.of(character1));
     when(character1.getHp()).thenReturn(0);
-    when(cell2.hasCharacter()).thenReturn(true);
-    when(cell2.getCharacter()).thenReturn(character2);
+    when(cell2.character()).thenReturn(Optional.of(character2));
     when(character2.getHp()).thenReturn(10);
 
     MyFuture future = battle.begin(attacker, weapon, target);

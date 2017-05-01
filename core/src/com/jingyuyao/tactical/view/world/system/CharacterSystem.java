@@ -67,12 +67,13 @@ class CharacterSystem extends EntitySystem {
   @Subscribe
   void spawnCharacter(SpawnCharacter spawnCharacter) {
     Cell cell = spawnCharacter.getObject();
+    Preconditions.checkArgument(cell.character().isPresent());
 
     Position position = getEngine().createComponent(Position.class);
     position.set(cell.getCoordinate(), WorldZIndex.CHARACTER);
 
     CharacterComponent characterComponent = getEngine().createComponent(CharacterComponent.class);
-    characterComponent.setCharacter(cell.getCharacter());
+    characterComponent.setCharacter(cell.character().get());
 
     Frame frame = getEngine().createComponent(Frame.class);
     if (cell.hasPlayer()) {
@@ -85,7 +86,7 @@ class CharacterSystem extends EntitySystem {
     entity.add(position);
     entity.add(characterComponent);
     entity.add(frame);
-    entity.add(animations.getCharacter(cell.getCharacter().getName()));
+    entity.add(animations.getCharacter(cell.character().get().getName()));
     if (cell.hasPlayer()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
       playerComponent.setPlayer(cell.getPlayer());

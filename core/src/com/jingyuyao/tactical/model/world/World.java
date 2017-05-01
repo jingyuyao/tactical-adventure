@@ -52,7 +52,7 @@ public class World {
         throw new IllegalArgumentException("Character not on a terrain");
       }
       Cell cell = cellMap.get(coordinate);
-      if (cell.hasCharacter()) {
+      if (cell.character().isPresent()) {
         throw new IllegalArgumentException("Character occupying same space as another");
       }
       cell.spawnCharacter(entry.getValue());
@@ -84,7 +84,7 @@ public class World {
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
-            return input.hasCharacter();
+            return input.character().isPresent();
           }
         }).toList();
   }

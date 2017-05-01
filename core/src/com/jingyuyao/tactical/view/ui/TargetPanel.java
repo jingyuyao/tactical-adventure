@@ -26,8 +26,7 @@ class TargetPanel extends TextPanel<Battling> {
   Optional<String> getText(Battling battling) {
     StringBuilder builder = new StringBuilder("Targets:\n");
     for (Cell cell : battling.getTarget().getTargetCells()) {
-      if (cell.hasCharacter()) {
-        Character character = cell.getCharacter();
+      for (Character character : cell.character().asSet()) {
         builder.append(
             String.format(Locale.US, FMT, character.getName(), character.getHp()));
       }
