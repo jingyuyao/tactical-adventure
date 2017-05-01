@@ -1,23 +1,30 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisLabel;
 
 /**
- * A refreshable button that can display an object as text.
+ * A panel with a dark background that can display an object in text format. This panel can be
+ * manually refreshed to update its text (based on the previous object). This panel can also be
+ * cleared so it does not display anything and does not take up any layout space.
  */
-abstract class TextPanel<T> extends VisTextButton {
+abstract class TextPanel<T> extends Container<VisLabel> {
 
+  private final VisLabel label;
   private T object;
 
-  TextPanel() {
-    super(null);
+  TextPanel(int alignment) {
+    this.label = new VisLabel(null, alignment);
+    setBackground(VisUI.getSkin().getDrawable("window-bg"));
     setVisible(false);
-    pad(10);
+    pad(15);
   }
 
   void display(T object) {
     this.object = object;
-    setText(createText(object));
+    label.setText(createText(object));
+    setActor(label);
     setVisible(true);
   }
 
@@ -29,13 +36,12 @@ abstract class TextPanel<T> extends VisTextButton {
 
   void clearDisplay() {
     object = null;
-    setVisible(false);
-    setText(null);
+    setVisible(false);  // hides background
+    setActor(null);  // stop panel from taking up space
   }
 
-  T getObject() {
-    return object;
-  }
-
+  /**
+   * Called to create the text for an object.
+   */
   abstract String createText(T object);
 }

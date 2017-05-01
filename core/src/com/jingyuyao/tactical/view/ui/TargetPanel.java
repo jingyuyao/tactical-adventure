@@ -18,7 +18,7 @@ class TargetPanel extends TextPanel<Battling> {
   private static final String FMT = "%s\nHP: %d\nDmg: %d\n\n";
 
   TargetPanel() {
-    getLabel().setAlignment(Align.left);
+    super(Align.left);
   }
 
   @Override

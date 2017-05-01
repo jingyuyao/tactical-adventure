@@ -12,14 +12,14 @@ import javax.inject.Singleton;
 
 @Singleton
 @ModelBusListener
-class SelectCellPanel extends VerticalGroup {
+class SelectCellGroup extends VerticalGroup {
 
   private final CharacterOverviewPanel characterOverviewPanel;
   private final TerrainOverviewPanel terrainOverviewPanel;
   private final CoordinatePanel coordinatePanel;
 
   @Inject
-  SelectCellPanel(
+  SelectCellGroup(
       CharacterOverviewPanel characterOverviewPanel,
       TerrainOverviewPanel terrainOverviewPanel,
       CoordinatePanel coordinatePanel) {
@@ -27,6 +27,7 @@ class SelectCellPanel extends VerticalGroup {
     this.terrainOverviewPanel = terrainOverviewPanel;
     this.coordinatePanel = coordinatePanel;
     space(10);
+    columnRight();
     addActor(characterOverviewPanel);
     addActor(terrainOverviewPanel);
     addActor(coordinatePanel);

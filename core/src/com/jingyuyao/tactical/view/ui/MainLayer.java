@@ -15,7 +15,7 @@ class MainLayer extends VisTable {
   @Inject
   MainLayer(
       ActionGroup actionGroup,
-      SelectCellPanel selectCellPanel,
+      SelectCellGroup selectCellGroup,
       ItemPanel itemPanel,
       TargetPanel targetPanel) {
     super(true);
@@ -23,7 +23,7 @@ class MainLayer extends VisTable {
 
     TableBuilder builder = new StandardTableBuilder(new Padding(20));
     builder.append(CellWidget.of(itemPanel).align(Alignment.TOP_LEFT).wrap());
-    builder.append(CellWidget.of(selectCellPanel).align(Alignment.TOP_RIGHT).expandX().wrap());
+    builder.append(CellWidget.of(selectCellGroup).align(Alignment.TOP_RIGHT).expandX().wrap());
     builder.row();
 
     builder.append(CellWidget.of(targetPanel).align(Alignment.TOP_LEFT).wrap());

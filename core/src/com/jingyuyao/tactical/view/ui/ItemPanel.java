@@ -20,7 +20,7 @@ class ItemPanel extends TextPanel<Item> {
   private static final String ITEM_FMT = "%s\nUsage: %d\n%s";
 
   ItemPanel() {
-    getLabel().setAlignment(Align.left);
+    super(Align.left);
   }
 
   @Override
