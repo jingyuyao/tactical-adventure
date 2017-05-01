@@ -1,32 +1,38 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterOverviewPanel extends TextPanel<Character> {
+class CharacterOverviewPanel extends ButtonPanel<Character> {
 
-  private static final String FMT = "%s\nHP: %d";
+  private static final String FMT = "Name: %s\nHP: %d";
+
+  private final LayerManager layerManager;
+  private final CharacterDetailLayer characterDetailLayer;
 
   @Inject
-  CharacterOverviewPanel(
-      final LayerManager layerManager,
-      final CharacterDetailLayer characterDetailLayer) {
-    addListener(new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        characterDetailLayer.display(getObject());
-        layerManager.open(characterDetailLayer);
-      }
-    });
+  CharacterOverviewPanel(LayerManager layerManager, CharacterDetailLayer characterDetailLayer) {
+    super(Align.right);
+    this.layerManager = layerManager;
+    this.characterDetailLayer = characterDetailLayer;
   }
 
   @Override
-  String createText(Character character) {
-    return String.format(Locale.US, FMT, character.getName(), character.getHp());
+  Optional<String> getText(Character character) {
+    if (character.getHp() <= 0) {
+      return Optional.absent();
+    }
+    return Optional.of(String.format(Locale.US, FMT, character.getName(), character.getHp()));
+  }
+
+  @Override
+  void click(Character character) {
+    characterDetailLayer.display(character);
+    layerManager.open(characterDetailLayer);
   }
 }

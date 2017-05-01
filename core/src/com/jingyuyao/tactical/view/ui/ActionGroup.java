@@ -25,15 +25,14 @@ class ActionGroup extends VerticalGroup {
   @Subscribe
   void state(State state) {
     for (final Action action : state.getActions()) {
-      VisTextButton button = new VisTextButton(action.getName());
-      button.getLabelCell().pad(15, 20, 15, 20);
-      button.getLabel().setAlignment(Align.right);
-      button.addListener(new ChangeListener() {
+      VisTextButton button = new VisTextButton(action.getName(), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           action.run();
         }
       });
+      button.getLabelCell().pad(15);
+      button.getLabel().setAlignment(Align.right);
 
       addActor(button);
     }

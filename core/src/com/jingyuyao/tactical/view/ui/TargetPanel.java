@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.utils.Align;
+import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.character.Character;
@@ -15,24 +16,23 @@ import javax.inject.Singleton;
 @ModelBusListener
 class TargetPanel extends TextPanel<Battling> {
 
-  private static final String FMT = "%s\nHP: %d\nDmg: %d\n\n";
+  private static final String FMT = "%s\nHP: %d\n";
 
   TargetPanel() {
-    getLabel().setAlignment(Align.left);
+    super(Align.left);
   }
 
   @Override
-  String createText(Battling battling) {
+  Optional<String> getText(Battling battling) {
     StringBuilder builder = new StringBuilder("Targets:\n");
-    int damage = battling.getWeapon().getAttackPower();
     for (Cell cell : battling.getTarget().getTargetCells()) {
       if (cell.hasCharacter()) {
         Character character = cell.getCharacter();
         builder.append(
-            String.format(Locale.US, FMT, character.getName(), character.getHp(), damage));
+            String.format(Locale.US, FMT, character.getName(), character.getHp()));
       }
     }
-    return builder.toString();
+    return Optional.of(builder.toString());
   }
 
   @Subscribe
