@@ -22,6 +22,10 @@ import javax.inject.Singleton;
 @Singleton
 public class StartMenu extends AbstractMenu {
 
+  private final GameState gameState;
+  private final DataManager dataManager;
+  private final VisLabel infoLabel;
+
   @Inject
   StartMenu(
       GL20 gl,
@@ -30,30 +34,17 @@ public class StartMenu extends AbstractMenu {
       final GameState gameState,
       final DataManager dataManager) {
     super(gl, input, stage);
-
-    final VisLabel infoLabel = new VisLabel(dataManager.getInfo(), Align.center);
-    VisTextButton play = new VisTextButton("Play", "blue", new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        gameState.play();
-      }
-    });
-    play.getLabelCell().pad(20);
-    VisTextButton reset = new VisTextButton("Reset", new ChangeListener() {
-      @Override
-      public void changed(ChangeEvent event, Actor actor) {
-        gameState.reset();
-        infoLabel.setText(dataManager.getInfo());
-      }
-    });
-    reset.getLabelCell().pad(20);
+    this.gameState = gameState;
+    this.dataManager = dataManager;
+    this.infoLabel = new VisLabel(null, Align.center);
+    this.infoLabel.setName("infoLabel");
 
     TableBuilder builder = new StandardTableBuilder(new Padding(20));
     builder.append(CellWidget.of(infoLabel).expandY().wrap());
     builder.row();
 
-    builder.append(CellWidget.of(play).align(Alignment.LEFT).expandX().wrap());
-    builder.append(reset);
+    builder.append(CellWidget.of(this.new ResetButton()).align(Alignment.LEFT).expandX().wrap());
+    builder.append(this.new PlayButton());
 
     builder.build(getRoot());
   }
@@ -61,5 +52,40 @@ public class StartMenu extends AbstractMenu {
   @Override
   String getTitle() {
     return "Start";
+  }
+
+  @Override
+  public void show() {
+    super.show();
+    infoLabel.setText(dataManager.getInfo());
+  }
+
+  class PlayButton extends VisTextButton {
+
+    PlayButton() {
+      super("Play", "blue", new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          gameState.play();
+        }
+      });
+      setName("playButton");
+      getLabelCell().pad(30);
+    }
+  }
+
+  class ResetButton extends VisTextButton {
+
+    ResetButton() {
+      super("Reset", new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          gameState.reset();
+          infoLabel.setText(dataManager.getInfo());
+        }
+      });
+      setName("resetButton");
+      getLabelCell().pad(30);
+    }
   }
 }
