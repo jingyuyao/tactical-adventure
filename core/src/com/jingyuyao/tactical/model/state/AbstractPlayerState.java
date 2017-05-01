@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 
@@ -11,6 +12,7 @@ abstract class AbstractPlayerState extends BaseState implements PlayerState {
   AbstractPlayerState(
       ModelBus modelBus, WorldState worldState, StateFactory stateFactory, Player player) {
     super(modelBus, worldState);
+    Preconditions.checkNotNull(player);
     this.stateFactory = stateFactory;
     this.player = player;
   }

@@ -37,18 +37,18 @@ public class Retaliating extends BaseState {
     }
 
     Cell cell = characterSnapshot.get(i);
-    if (!cell.hasEnemy()) {
-      retaliate(characterSnapshot, i + 1);
-      return;
-    }
 
-    Enemy enemy = cell.getEnemy();
-    post(new ActivatedEnemy(enemy));
-    enemy.retaliate(cell).addCallback(new Runnable() {
-      @Override
-      public void run() {
-        retaliate(characterSnapshot, i + 1);
-      }
-    });
+    if (cell.enemy().isPresent()) {
+      Enemy enemy = cell.enemy().get();
+      post(new ActivatedEnemy(enemy));
+      enemy.retaliate(cell).addCallback(new Runnable() {
+        @Override
+        public void run() {
+          retaliate(characterSnapshot, i + 1);
+        }
+      });
+    } else {
+      retaliate(characterSnapshot, i + 1);
+    }
   }
 }

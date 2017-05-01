@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
@@ -71,8 +72,7 @@ public class MovingTest {
 
   @Before
   public void setUp() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
     moving = new Moving(modelBus, worldState, stateFactory, movements, cell, movement);
   }
 
@@ -110,8 +110,7 @@ public class MovingTest {
 
   @Test
   public void select_player() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
 
     moving.select(cell);
 
@@ -120,8 +119,7 @@ public class MovingTest {
 
   @Test
   public void select_other_player_not_actionable() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(otherPlayer);
+    when(cell.player()).thenReturn(Optional.of(otherPlayer));
     when(otherPlayer.isActionable()).thenReturn(false);
 
     moving.select(cell);
@@ -132,8 +130,7 @@ public class MovingTest {
 
   @Test
   public void select_other_player_actionable() {
-    when(cell2.hasPlayer()).thenReturn(true);
-    when(cell2.getPlayer()).thenReturn(otherPlayer);
+    when(cell2.player()).thenReturn(Optional.of(otherPlayer));
     when(otherPlayer.isActionable()).thenReturn(true);
     when(movements.distanceFrom(cell2)).thenReturn(otherMovement);
     when(stateFactory.createMoving(cell2, otherMovement)).thenReturn(anotherMoving);
@@ -147,7 +144,7 @@ public class MovingTest {
 
   @Test
   public void select_can_move() {
-    when(cell2.hasPlayer()).thenReturn(false);
+    when(cell2.player()).thenReturn(Optional.<Player>absent());
     when(movement.getStartingCell()).thenReturn(cell);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
@@ -166,7 +163,7 @@ public class MovingTest {
 
   @Test
   public void select_cannot_move() {
-    when(cell2.hasPlayer()).thenReturn(false);
+    when(cell2.player()).thenReturn(Optional.<Player>absent());
     when(movement.canMoveTo(cell2)).thenReturn(false);
 
     moving.select(cell2);

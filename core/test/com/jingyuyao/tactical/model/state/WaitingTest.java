@@ -7,9 +7,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
@@ -47,6 +49,8 @@ public class WaitingTest {
   @Mock
   private Player player;
   @Mock
+  private Enemy enemy;
+  @Mock
   private Moving moving;
   @Mock
   private Retaliating retaliating;
@@ -65,8 +69,10 @@ public class WaitingTest {
   @Test
   public void enter_not_complete() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell2.hasEnemy()).thenReturn(true);
+    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
+    when(cell2.player()).thenReturn(Optional.<Player>absent());
+    when(cell2.enemy()).thenReturn(Optional.of(enemy));
 
     waiting.enter();
 
@@ -77,8 +83,8 @@ public class WaitingTest {
   @Test
   public void enter_level_complete() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
 
     waiting.enter();
 
@@ -92,7 +98,8 @@ public class WaitingTest {
   @Test
   public void enter_level_failed() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.hasEnemy()).thenReturn(true);
+    when(cell.player()).thenReturn(Optional.<Player>absent());
+    when(cell.enemy()).thenReturn(Optional.of(enemy));
 
     waiting.enter();
 
@@ -115,8 +122,7 @@ public class WaitingTest {
     when(player.isActionable()).thenReturn(true);
     when(movements.distanceFrom(cell)).thenReturn(movement);
     when(stateFactory.createMoving(cell, movement)).thenReturn(moving);
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
 
     waiting.select(cell);
 
@@ -127,8 +133,7 @@ public class WaitingTest {
   @Test
   public void select_player_not_actionable() {
     when(player.isActionable()).thenReturn(false);
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
 
     waiting.select(cell);
 
@@ -139,8 +144,7 @@ public class WaitingTest {
   @Test
   public void end_turn() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
     waiting.endTurn();

@@ -56,8 +56,8 @@ class SelectCellGroup extends VerticalGroup {
 
   private void display(Cell cell) {
     this.cell = cell;
-    if (cell.hasCharacter()) {
-      characterOverviewPanel.display(cell.getCharacter());
+    if (cell.character().isPresent()) {
+      characterOverviewPanel.display(cell.character().get());
     } else {
       characterOverviewPanel.clearDisplay();
     }

@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -65,8 +66,7 @@ public class StateModuleTest {
 
   @Test
   public void state_factory() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
 
     stateFactory.createTransition();
     stateFactory.createWaiting();

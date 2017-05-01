@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
@@ -59,8 +60,7 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
     moved = new Moved(modelBus, worldState, stateFactory, movements, cell);
   }
 
@@ -82,8 +82,7 @@ public class MovedTest {
 
   @Test
   public void select_player() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
 
     moved.select(cell);
 
@@ -92,8 +91,7 @@ public class MovedTest {
 
   @Test
   public void select_other_player_not_actionable() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(otherPlayer);
+    when(cell.player()).thenReturn(Optional.of(otherPlayer));
     when(otherPlayer.isActionable()).thenReturn(false);
 
     moved.select(cell);
@@ -104,8 +102,7 @@ public class MovedTest {
 
   @Test
   public void select_other_player_actionable() {
-    when(cell2.hasPlayer()).thenReturn(true);
-    when(cell2.getPlayer()).thenReturn(otherPlayer);
+    when(cell2.player()).thenReturn(Optional.of(otherPlayer));
     when(otherPlayer.isActionable()).thenReturn(true);
     when(movements.distanceFrom(cell2)).thenReturn(movement);
     when(stateFactory.createMoving(cell2, movement)).thenReturn(moving);

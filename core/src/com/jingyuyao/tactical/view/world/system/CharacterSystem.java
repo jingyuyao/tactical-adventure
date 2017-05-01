@@ -13,6 +13,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
@@ -67,17 +68,18 @@ class CharacterSystem extends EntitySystem {
   @Subscribe
   void spawnCharacter(SpawnCharacter spawnCharacter) {
     Cell cell = spawnCharacter.getObject();
+    Preconditions.checkArgument(cell.character().isPresent());
 
     Position position = getEngine().createComponent(Position.class);
     position.set(cell.getCoordinate(), WorldZIndex.CHARACTER);
 
     CharacterComponent characterComponent = getEngine().createComponent(CharacterComponent.class);
-    characterComponent.setCharacter(cell.getCharacter());
+    characterComponent.setCharacter(cell.character().get());
 
     Frame frame = getEngine().createComponent(Frame.class);
-    if (cell.hasPlayer()) {
+    if (cell.player().isPresent()) {
       frame.setColor(Colors.BLUE_300);
-    } else if (cell.hasEnemy()) {
+    } else if (cell.enemy().isPresent()) {
       frame.setColor(Colors.RED_500);
     }
 
@@ -85,10 +87,10 @@ class CharacterSystem extends EntitySystem {
     entity.add(position);
     entity.add(characterComponent);
     entity.add(frame);
-    entity.add(animations.getCharacter(cell.getCharacter().getName()));
-    if (cell.hasPlayer()) {
+    entity.add(animations.getCharacter(cell.character().get().getName()));
+    for (Player player : cell.player().asSet()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
-      playerComponent.setPlayer(cell.getPlayer());
+      playerComponent.setPlayer(player);
       entity.add(playerComponent);
     }
 

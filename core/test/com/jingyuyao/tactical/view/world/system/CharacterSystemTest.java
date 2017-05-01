@@ -8,7 +8,9 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
@@ -111,9 +113,8 @@ public class CharacterSystemTest {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
     when(spawnCharacter.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
-    when(cell.getCharacter()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.character()).thenReturn(Optional.<Character>of(player));
     when(player.getName()).thenReturn("me");
     when(animations.getCharacter("me")).thenReturn(animation);
 
@@ -145,8 +146,9 @@ public class CharacterSystemTest {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
     when(spawnCharacter.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
-    when(cell.hasEnemy()).thenReturn(true);
-    when(cell.getCharacter()).thenReturn(enemy);
+    when(cell.enemy()).thenReturn(Optional.of(enemy));
+    when(cell.player()).thenReturn(Optional.<Player>absent());
+    when(cell.character()).thenReturn(Optional.<Character>of(enemy));
     when(enemy.getName()).thenReturn("me");
     when(animations.getCharacter("me")).thenReturn(animation);
 

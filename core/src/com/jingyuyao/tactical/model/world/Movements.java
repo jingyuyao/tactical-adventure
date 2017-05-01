@@ -38,8 +38,8 @@ public class Movements {
    * Create a {@link Movement} for the {@link Character} in a {@link Cell}.
    */
   public Movement distanceFrom(Cell cell) {
-    Preconditions.checkArgument(cell.hasCharacter());
-    Character character = cell.getCharacter();
+    Preconditions.checkArgument(cell.character().isPresent());
+    Character character = cell.character().get();
     return new Movement(
         distanceFrom(
             cell,
@@ -123,7 +123,7 @@ public class Movements {
       @Override
       public Integer apply(Cell input) {
         Terrain terrain = input.getTerrain();
-        if (input.hasCharacter() || !terrain.canHold(character)) {
+        if (input.character().isPresent() || !terrain.canHold(character)) {
           return Movements.BLOCKED;
         }
         return terrain.getMovementPenalty();

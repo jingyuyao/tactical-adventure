@@ -7,6 +7,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -52,7 +53,7 @@ public class World {
         throw new IllegalArgumentException("Character not on a terrain");
       }
       Cell cell = cellMap.get(coordinate);
-      if (cell.hasCharacter()) {
+      if (cell.character().isPresent()) {
         throw new IllegalArgumentException("Character occupying same space as another");
       }
       cell.spawnCharacter(entry.getValue());
@@ -84,7 +85,7 @@ public class World {
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
-            return input.hasCharacter();
+            return input.character().isPresent();
           }
         }).toList();
   }
@@ -118,8 +119,8 @@ public class World {
 
   public void fullHealPlayers() {
     for (Cell cell : cellMap.values()) {
-      if (cell.hasPlayer()) {
-        cell.getPlayer().fullHeal();
+      for (Player player : cell.player().asSet()) {
+        player.fullHeal();
       }
     }
   }

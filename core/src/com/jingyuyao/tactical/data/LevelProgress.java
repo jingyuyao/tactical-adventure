@@ -60,10 +60,12 @@ class LevelProgress {
     activeEnemies.clear();
     for (Cell cell : world.getCharacterSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
-      if (cell.hasPlayer()) {
-        activePlayers.put(coordinate, cell.getPlayer());
-      } else if (cell.hasEnemy()) {
-        activeEnemies.put(coordinate, cell.getEnemy());
+      for (Player player : cell.player().asSet()) {
+        activePlayers.put(coordinate, player);
+      }
+
+      for (Enemy enemy : cell.enemy().asSet()) {
+        activeEnemies.put(coordinate, enemy);
       }
     }
   }
