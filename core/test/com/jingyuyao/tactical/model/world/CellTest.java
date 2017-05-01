@@ -49,7 +49,7 @@ public class CellTest {
     assertThat(cell.getCoordinate()).isEqualTo(COORDINATE);
     assertThat(cell.getTerrain()).isSameAs(terrain);
     assertThat(cell.character()).isAbsent();
-    assertThat(cell.hasPlayer()).isFalse();
+    assertThat(cell.player()).isAbsent();
     assertThat(cell.hasEnemy()).isFalse();
   }
 
@@ -58,8 +58,7 @@ public class CellTest {
     cell.spawnCharacter(player);
 
     assertThat(cell.character()).hasValue(player);
-    assertThat(cell.hasPlayer()).isTrue();
-    assertThat(cell.getPlayer()).isSameAs(player);
+    assertThat(cell.player()).hasValue(player);
     assertThat(cell.hasEnemy()).isFalse();
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
@@ -72,7 +71,7 @@ public class CellTest {
     assertThat(cell.character()).hasValue(enemy);
     assertThat(cell.hasEnemy()).isTrue();
     assertThat(cell.getEnemy()).isSameAs(enemy);
-    assertThat(cell.hasPlayer()).isFalse();
+    assertThat(cell.player()).isAbsent();
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
   }
@@ -110,7 +109,7 @@ public class CellTest {
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
     assertThat(cell.character()).hasValue(player);
-    assertThat(cell.getPlayer()).isSameAs(player);
+    assertThat(cell.player()).hasValue(player);
   }
 
   @Test
@@ -142,6 +141,6 @@ public class CellTest {
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
     assertThat(cell.character()).hasValue(player);
-    assertThat(cell.getPlayer()).isSameAs(player);
+    assertThat(cell.player()).hasValue(player);
   }
 }

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.data;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -59,9 +60,9 @@ public class LevelProgressTest {
   @Test
   public void update() {
     when(cell1.getCoordinate()).thenReturn(P1);
-    when(cell1.hasPlayer()).thenReturn(true);
-    when(cell1.getPlayer()).thenReturn(player1);
+    when(cell1.player()).thenReturn(Optional.of(player1));
     when(cell2.getCoordinate()).thenReturn(E1);
+    when(cell2.player()).thenReturn(Optional.<Player>absent());
     when(cell2.hasEnemy()).thenReturn(true);
     when(cell2.getEnemy()).thenReturn(enemy1);
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));

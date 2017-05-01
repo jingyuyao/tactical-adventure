@@ -113,8 +113,7 @@ public class CharacterSystemTest {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
     when(spawnCharacter.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
     when(cell.character()).thenReturn(Optional.<Character>of(player));
     when(player.getName()).thenReturn("me");
     when(animations.getCharacter("me")).thenReturn(animation);
@@ -148,6 +147,7 @@ public class CharacterSystemTest {
     when(spawnCharacter.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.hasEnemy()).thenReturn(true);
+    when(cell.player()).thenReturn(Optional.<Player>absent());
     when(cell.character()).thenReturn(Optional.<Character>of(enemy));
     when(enemy.getName()).thenReturn("me");
     when(animations.getCharacter("me")).thenReturn(animation);

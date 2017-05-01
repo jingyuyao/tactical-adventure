@@ -27,8 +27,7 @@ public class Moved extends PlayerActionState {
 
   @Override
   public void select(Cell cell) {
-    if (cell.hasPlayer()) {
-      Player player = cell.getPlayer();
+    for (Player player : cell.player().asSet()) {
       if (!getPlayer().equals(player)) {
         rollback();
         if (player.isActionable()) {

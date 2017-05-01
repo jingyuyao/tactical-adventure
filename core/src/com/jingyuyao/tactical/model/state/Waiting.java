@@ -36,17 +36,19 @@ public class Waiting extends BaseState {
     boolean levelComplete = true;
     boolean levelFailed = true;
     for (Cell cell : world.getCharacterSnapshot()) {
-      if (cell.hasPlayer()) {
+      if (cell.player().isPresent()) {
         levelFailed = false;
-      } else if (cell.hasEnemy()) {
+      }
+
+      if (cell.hasEnemy()) {
         levelComplete = false;
       }
     }
 
     if (levelFailed || levelComplete) {
       for (Cell cell : world.getCharacterSnapshot()) {
-        if (cell.hasPlayer()) {
-          cell.getPlayer().setActionable(true);
+        for (Player player : cell.player().asSet()) {
+          player.setActionable(true);
         }
       }
     }
@@ -60,8 +62,7 @@ public class Waiting extends BaseState {
 
   @Override
   public void select(Cell cell) {
-    if (cell.hasPlayer()) {
-      Player player = cell.getPlayer();
+    for (Player player : cell.player().asSet()) {
       if (player.isActionable()) {
         goTo(stateFactory.createMoving(cell, movements.distanceFrom(cell)));
       }
@@ -75,8 +76,8 @@ public class Waiting extends BaseState {
 
   void endTurn() {
     for (Cell cell : world.getCharacterSnapshot()) {
-      if (cell.hasPlayer()) {
-        cell.getPlayer().setActionable(true);
+      for (Player player : cell.player().asSet()) {
+        player.setActionable(true);
       }
     }
     goTo(stateFactory.createRetaliating());

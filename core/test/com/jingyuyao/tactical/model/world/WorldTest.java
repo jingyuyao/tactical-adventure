@@ -181,8 +181,8 @@ public class WorldTest {
 
   @Test
   public void full_heal_players() {
-    when(cell1.hasPlayer()).thenReturn(true);
-    when(cell1.getPlayer()).thenReturn(player);
+    when(cell1.player()).thenReturn(Optional.of(player));
+    when(cell2.player()).thenReturn(Optional.<Player>absent());
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
 

@@ -41,12 +41,11 @@ public class Cell {
     return Optional.fromNullable(character);
   }
 
-  public boolean hasPlayer() {
-    return character != null && character instanceof Player;
-  }
-
-  public Player getPlayer() {
-    return (Player) character;
+  public Optional<Player> player() {
+    if (character != null && character instanceof Player) {
+      return Optional.of((Player) character);
+    }
+    return Optional.absent();
   }
 
   public boolean hasEnemy() {

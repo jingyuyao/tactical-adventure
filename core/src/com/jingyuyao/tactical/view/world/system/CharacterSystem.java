@@ -13,6 +13,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
@@ -76,7 +77,7 @@ class CharacterSystem extends EntitySystem {
     characterComponent.setCharacter(cell.character().get());
 
     Frame frame = getEngine().createComponent(Frame.class);
-    if (cell.hasPlayer()) {
+    if (cell.player().isPresent()) {
       frame.setColor(Colors.BLUE_300);
     } else if (cell.hasEnemy()) {
       frame.setColor(Colors.RED_500);
@@ -87,9 +88,9 @@ class CharacterSystem extends EntitySystem {
     entity.add(characterComponent);
     entity.add(frame);
     entity.add(animations.getCharacter(cell.character().get().getName()));
-    if (cell.hasPlayer()) {
+    for (Player player : cell.player().asSet()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
-      playerComponent.setPlayer(cell.getPlayer());
+      playerComponent.setPlayer(player);
       entity.add(playerComponent);
     }
 

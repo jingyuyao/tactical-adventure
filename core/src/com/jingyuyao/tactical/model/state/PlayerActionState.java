@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -16,8 +15,7 @@ class PlayerActionState extends AbstractPlayerState {
 
   PlayerActionState(
       ModelBus modelBus, WorldState worldState, StateFactory stateFactory, Cell cell) {
-    super(modelBus, worldState, stateFactory, cell.getPlayer());
-    Preconditions.checkArgument(cell.hasPlayer());
+    super(modelBus, worldState, stateFactory, cell.player().orNull());
     this.cell = cell;
   }
 

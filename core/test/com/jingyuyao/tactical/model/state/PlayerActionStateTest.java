@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
@@ -56,14 +57,13 @@ public class PlayerActionStateTest {
 
   @Before
   public void setUp() {
-    when(cell.hasPlayer()).thenReturn(true);
-    when(cell.getPlayer()).thenReturn(player);
+    when(cell.player()).thenReturn(Optional.of(player));
     state = new PlayerActionState(modelBus, worldState, stateFactory, cell);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void setUp_no_player() {
-    when(cell.hasPlayer()).thenReturn(false);
+    when(cell.player()).thenReturn(Optional.<Player>absent());
     state = new PlayerActionState(modelBus, worldState, stateFactory, cell);
   }
 

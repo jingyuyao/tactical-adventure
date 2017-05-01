@@ -27,10 +27,20 @@ The game follows MVC and uses Guice to share objects between components.
 We follow Google's Java style guide for all Java files. Install the style guide for Intellij
 then enable format code and optimize import on commit.
 
-### Note for EventBus
+### Note for Guava
+#### Optional
+Poor man `ifPresent` lambda:
+```
+for (Object obj : optional.asSet()) {
+  // run when optional is present 
+}
+```
+
+#### EventBus
 We use EventBus to communicate model events to the view. We should NOT use EventBus to communicate
 between model components. This is due to the order sensitive nature of model logic. We also should
 not use EventBus for things that can be cheaply polled per frame by the view.
+
 
 ### Note for serialization
 We use Gson to serialize/deserialize game objects (except for terrains). We make use of the
