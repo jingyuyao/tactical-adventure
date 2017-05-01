@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.utils.Align;
+import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.character.Character;
@@ -22,7 +23,7 @@ class TargetPanel extends TextPanel<Battling> {
   }
 
   @Override
-  String createText(Battling battling) {
+  Optional<String> getText(Battling battling) {
     StringBuilder builder = new StringBuilder("Targets:\n");
     for (Cell cell : battling.getTarget().getTargetCells()) {
       if (cell.hasCharacter()) {
@@ -31,7 +32,7 @@ class TargetPanel extends TextPanel<Battling> {
             String.format(Locale.US, FMT, character.getName(), character.getHp()));
       }
     }
-    return builder.toString();
+    return Optional.of(builder.toString());
   }
 
   @Subscribe

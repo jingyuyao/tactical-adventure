@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.google.common.base.Optional;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 
@@ -22,10 +23,15 @@ abstract class TextPanel<T> extends Container<VisLabel> {
   }
 
   void display(T object) {
-    this.object = object;
-    label.setText(createText(object));
-    setActor(label);
-    setVisible(true);
+    Optional<String> textOptional = getText(object);
+    if (textOptional.isPresent()) {
+      this.object = object;
+      label.setText(textOptional.get());
+      setActor(label);
+      setVisible(true);
+    } else {
+      clearDisplay();
+    }
   }
 
   void refresh() {
@@ -41,7 +47,8 @@ abstract class TextPanel<T> extends Container<VisLabel> {
   }
 
   /**
-   * Called to create the text for an object.
+   * Called to create the text for an object. If the return value is not present, it will not be
+   * displayed and the object will not be stored for future refresh.
    */
-  abstract String createText(T object);
+  abstract Optional<String> getText(T object);
 }

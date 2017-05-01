@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.google.common.base.Optional;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
 /**
@@ -30,10 +31,15 @@ abstract class ButtonPanel<T> extends Container<VisTextButton> {
   }
 
   void display(T object) {
-    this.object = object;
-    button.setText(createText(object));
-    setActor(button);
-    setVisible(true);
+    Optional<String> textOptional = getText(object);
+    if (textOptional.isPresent()) {
+      this.object = object;
+      button.setText(textOptional.get());
+      setActor(button);
+      setVisible(true);
+    } else {
+      clearDisplay();
+    }
   }
 
   void refresh() {
@@ -49,9 +55,10 @@ abstract class ButtonPanel<T> extends Container<VisTextButton> {
   }
 
   /**
-   * Called to create the text for an object.
+   * Called to create the text for an object. If the return value is not present, it will not be
+   * displayed and the object will not be stored for future refresh.
    */
-  abstract String createText(T object);
+  abstract Optional<String> getText(T object);
 
   /**
    * Called when this panel is clicked.

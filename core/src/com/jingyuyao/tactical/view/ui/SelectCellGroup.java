@@ -17,6 +17,7 @@ class SelectCellGroup extends VerticalGroup {
   private final CharacterOverviewPanel characterOverviewPanel;
   private final TerrainOverviewPanel terrainOverviewPanel;
   private final CoordinatePanel coordinatePanel;
+  private Cell cell;
 
   @Inject
   SelectCellGroup(
@@ -35,7 +36,26 @@ class SelectCellGroup extends VerticalGroup {
 
   @Subscribe
   void selectCell(SelectCell selectCell) {
-    Cell cell = selectCell.getObject();
+    display(selectCell.getObject());
+  }
+
+  @Subscribe
+  void state(State state) {
+    if (cell != null) {
+      display(cell);
+    }
+  }
+
+  @Subscribe
+  void worldReset(WorldReset worldReset) {
+    cell = null;
+    characterOverviewPanel.clearDisplay();
+    terrainOverviewPanel.clearDisplay();
+    coordinatePanel.clearDisplay();
+  }
+
+  private void display(Cell cell) {
+    this.cell = cell;
     if (cell.hasCharacter()) {
       characterOverviewPanel.display(cell.getCharacter());
     } else {
@@ -43,19 +63,5 @@ class SelectCellGroup extends VerticalGroup {
     }
     terrainOverviewPanel.display(cell.getTerrain());
     coordinatePanel.display(cell.getCoordinate());
-  }
-
-  @Subscribe
-  void state(State state) {
-    characterOverviewPanel.refresh();
-    terrainOverviewPanel.refresh();
-    coordinatePanel.refresh();
-  }
-
-  @Subscribe
-  void worldReset(WorldReset worldReset) {
-    characterOverviewPanel.clearDisplay();
-    terrainOverviewPanel.clearDisplay();
-    coordinatePanel.clearDisplay();
   }
 }

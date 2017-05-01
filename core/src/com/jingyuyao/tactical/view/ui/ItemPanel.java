@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.utils.Align;
+import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -24,9 +25,9 @@ class ItemPanel extends TextPanel<Item> {
   }
 
   @Override
-  String createText(Item item) {
-    return String.format(
-        Locale.US, ITEM_FMT, item.getName(), item.getUsageLeft(), item.getDescription());
+  Optional<String> getText(Item item) {
+    return Optional.of(String.format(
+        Locale.US, ITEM_FMT, item.getName(), item.getUsageLeft(), item.getDescription()));
   }
 
   @Subscribe

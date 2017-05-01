@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.utils.Align;
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 import javax.inject.Inject;
@@ -22,13 +23,16 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
   }
 
   @Override
-  String createText(Character character) {
-    return String.format(Locale.US, FMT, character.getName(), character.getHp());
+  Optional<String> getText(Character character) {
+    if (character.getHp() <= 0) {
+      return Optional.absent();
+    }
+    return Optional.of(String.format(Locale.US, FMT, character.getName(), character.getHp()));
   }
 
   @Override
-  void click(Character object) {
-    characterDetailLayer.display(object);
+  void click(Character character) {
+    characterDetailLayer.display(character);
     layerManager.open(characterDetailLayer);
   }
 }
