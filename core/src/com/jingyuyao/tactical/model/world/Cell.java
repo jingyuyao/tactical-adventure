@@ -48,12 +48,11 @@ public class Cell {
     return Optional.absent();
   }
 
-  public boolean hasEnemy() {
-    return character != null && character instanceof Enemy;
-  }
-
-  public Enemy getEnemy() {
-    return (Enemy) character;
+  public Optional<Enemy> enemy() {
+    if (character != null && character instanceof Enemy) {
+      return Optional.of((Enemy) character);
+    }
+    return Optional.absent();
   }
 
   public void spawnCharacter(Character character) {

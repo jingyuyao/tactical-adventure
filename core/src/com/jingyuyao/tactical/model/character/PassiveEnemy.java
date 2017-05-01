@@ -45,7 +45,7 @@ public class PassiveEnemy extends AbstractEnemy {
               containsPlayer = true;
             }
 
-            if (cell.hasEnemy()) {
+            if (cell.enemy().isPresent()) {
               containsEnemy = true;
             }
           }

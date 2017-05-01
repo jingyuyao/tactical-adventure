@@ -61,10 +61,10 @@ public class LevelProgressTest {
   public void update() {
     when(cell1.getCoordinate()).thenReturn(P1);
     when(cell1.player()).thenReturn(Optional.of(player1));
+    when(cell1.enemy()).thenReturn(Optional.<Enemy>absent());
     when(cell2.getCoordinate()).thenReturn(E1);
     when(cell2.player()).thenReturn(Optional.<Player>absent());
-    when(cell2.hasEnemy()).thenReturn(true);
-    when(cell2.getEnemy()).thenReturn(enemy1);
+    when(cell2.enemy()).thenReturn(Optional.of(enemy1));
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
 
     LevelProgress levelProgress = new LevelProgress();

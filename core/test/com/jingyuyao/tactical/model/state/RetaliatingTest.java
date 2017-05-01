@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -71,10 +72,8 @@ public class RetaliatingTest {
   @Test
   public void enter() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
-    when(cell.hasEnemy()).thenReturn(true);
-    when(cell2.hasEnemy()).thenReturn(true);
-    when(cell.getEnemy()).thenReturn(enemy);
-    when(cell2.getEnemy()).thenReturn(enemy2);
+    when(cell.enemy()).thenReturn(Optional.of(enemy));
+    when(cell2.enemy()).thenReturn(Optional.of(enemy2));
     when(enemy.retaliate(cell)).thenReturn(MyFuture.immediate());
     when(enemy2.retaliate(cell2)).thenReturn(MyFuture.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);

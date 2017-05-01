@@ -11,6 +11,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
@@ -48,6 +49,8 @@ public class WaitingTest {
   @Mock
   private Player player;
   @Mock
+  private Enemy enemy;
+  @Mock
   private Moving moving;
   @Mock
   private Retaliating retaliating;
@@ -67,8 +70,9 @@ public class WaitingTest {
   public void enter_not_complete() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
     when(cell2.player()).thenReturn(Optional.<Player>absent());
-    when(cell2.hasEnemy()).thenReturn(true);
+    when(cell2.enemy()).thenReturn(Optional.of(enemy));
 
     waiting.enter();
 
@@ -80,6 +84,7 @@ public class WaitingTest {
   public void enter_level_complete() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
 
     waiting.enter();
 
@@ -94,7 +99,7 @@ public class WaitingTest {
   public void enter_level_failed() {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.<Player>absent());
-    when(cell.hasEnemy()).thenReturn(true);
+    when(cell.enemy()).thenReturn(Optional.of(enemy));
 
     waiting.enter();
 

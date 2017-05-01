@@ -64,8 +64,8 @@ class LevelProgress {
         activePlayers.put(coordinate, player);
       }
 
-      if (cell.hasEnemy()) {
-        activeEnemies.put(coordinate, cell.getEnemy());
+      for (Enemy enemy : cell.enemy().asSet()) {
+        activeEnemies.put(coordinate, enemy);
       }
     }
   }

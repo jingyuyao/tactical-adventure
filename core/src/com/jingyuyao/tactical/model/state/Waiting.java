@@ -40,7 +40,7 @@ public class Waiting extends BaseState {
         levelFailed = false;
       }
 
-      if (cell.hasEnemy()) {
+      if (cell.enemy().isPresent()) {
         levelComplete = false;
       }
     }

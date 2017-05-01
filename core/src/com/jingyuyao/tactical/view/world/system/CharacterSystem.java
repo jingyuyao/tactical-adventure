@@ -79,7 +79,7 @@ class CharacterSystem extends EntitySystem {
     Frame frame = getEngine().createComponent(Frame.class);
     if (cell.player().isPresent()) {
       frame.setColor(Colors.BLUE_300);
-    } else if (cell.hasEnemy()) {
+    } else if (cell.enemy().isPresent()) {
       frame.setColor(Colors.RED_500);
     }
 
