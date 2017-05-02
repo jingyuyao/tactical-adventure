@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.BasicArmor;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
@@ -50,6 +51,7 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Item.class)
+            .registerSubtype(BasicArmor.class)
             .registerSubtype(DirectionalWeapon.class)
             .registerSubtype(Grenade.class)
             .registerSubtype(Heal.class)
