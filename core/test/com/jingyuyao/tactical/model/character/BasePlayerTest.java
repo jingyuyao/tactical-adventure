@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.model.character;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.jingyuyao.tactical.model.item.Item;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +17,7 @@ public class BasePlayerTest {
   private static final int MOVE_DISTANCE = 3;
 
   @Mock
-  private List<Item> items;
+  private Items items;
 
   private Player player;
 

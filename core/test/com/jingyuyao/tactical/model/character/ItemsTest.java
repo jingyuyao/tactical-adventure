@@ -50,6 +50,26 @@ public class ItemsTest {
   }
 
   @Test
+  public void use_unequipped_item() {
+    when(armor2.getUsageLeft()).thenReturn(1);
+
+    items.useUnequippedItem(armor2);
+
+    verify(armor2).useOnce();
+    assertThat(items.getUnequippedItems()).containsExactly(armor2, weapon3);
+  }
+
+  @Test
+  public void use_unequipped_item_broken() {
+    when(armor2.getUsageLeft()).thenReturn(0);
+
+    items.useUnequippedItem(armor2);
+
+    verify(armor2).useOnce();
+    assertThat(items.getUnequippedItems()).containsExactly(weapon3);
+  }
+
+  @Test
   public void use_armors() {
     when(armor1.getUsageLeft()).thenReturn(1);
 

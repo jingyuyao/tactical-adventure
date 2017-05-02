@@ -53,13 +53,22 @@ class Items {
     return ignoreNullOf(weapon1, weapon2);
   }
 
+  synchronized void useUnequippedItem(Item item) {
+    Preconditions.checkNotNull(item);
+    Preconditions.checkArgument(unequippedItems.contains(item));
+    item.useOnce();
+    if (item.getUsageLeft() == 0) {
+      unequippedItems.remove(item);
+    }
+  }
+
   void useArmors() {
-    bodyArmor = useItem(bodyArmor);
+    bodyArmor = useEquipped(bodyArmor);
   }
 
   void useWeapons() {
-    weapon1 = useItem(weapon1);
-    weapon2 = useItem(weapon2);
+    weapon1 = useEquipped(weapon1);
+    weapon2 = useEquipped(weapon2);
   }
 
   void equipBodyArmor(Armor armor) {
@@ -77,7 +86,7 @@ class Items {
   /**
    * Use the given item if its not null. Return the item if it still has usage left, null otherwise.
    */
-  private synchronized <T extends Item> T useItem(T item) {
+  private synchronized <T extends Item> T useEquipped(T item) {
     if (item != null) {
       item.useOnce();
       if (item.getUsageLeft() > 0) {

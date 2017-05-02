@@ -2,21 +2,20 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.FluentIterable;
 import com.jingyuyao.tactical.model.item.Item;
-import java.util.List;
 import java.util.Locale;
 
-abstract class AbstractCharacter implements Character {
+class BaseCharacter implements Character {
 
   private String name;
   private int maxHp;
   private int hp;
   private int moveDistance;
-  private List<Item> items;
+  private Items items;
 
-  AbstractCharacter() {
+  BaseCharacter() {
   }
 
-  AbstractCharacter(String name, int maxHp, int hp, int moveDistance, List<Item> items) {
+  BaseCharacter(String name, int maxHp, int hp, int moveDistance, Items items) {
     this.name = name;
     this.maxHp = maxHp;
     this.hp = hp;
@@ -56,15 +55,12 @@ abstract class AbstractCharacter implements Character {
 
   @Override
   public FluentIterable<Item> fluentItems() {
-    return FluentIterable.from(items);
+    return FluentIterable.from(items.getUnequippedItems());
   }
 
   @Override
   public void useItem(Item item) {
-    item.useOnce();
-    if (item.getUsageLeft() == 0) {
-      items.remove(item);
-    }
+    items.useUnequippedItem(item);
   }
 
   @Override
