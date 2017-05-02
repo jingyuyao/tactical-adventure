@@ -55,16 +55,6 @@ abstract class AbstractCharacter implements Character {
   }
 
   @Override
-  public void addItem(Item item) {
-    items.add(item);
-  }
-
-  @Override
-  public void removeItem(Item item) {
-    items.remove(item);
-  }
-
-  @Override
   public FluentIterable<Item> fluentItems() {
     return FluentIterable.from(items);
   }

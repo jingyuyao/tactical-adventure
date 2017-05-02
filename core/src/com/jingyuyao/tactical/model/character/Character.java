@@ -17,10 +17,6 @@ public interface Character {
 
   void fullHeal();
 
-  void addItem(Item item);
-
-  void removeItem(Item item);
-
   FluentIterable<Item> fluentItems();
 
   void useItem(Item item);

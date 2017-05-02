@@ -71,20 +71,6 @@ public class AbstractCharacterTest {
   }
 
   @Test
-  public void add_item() {
-    character.addItem(newItem);
-
-    assertThat(items).contains(newItem);
-  }
-
-  @Test
-  public void remove_item() {
-    character.removeItem(weapon1);
-
-    assertThat(items).containsExactly(consumable, weapon2).inOrder();
-  }
-
-  @Test
   public void fluent_items() {
     assertThat(character.fluentItems()).containsExactly(weapon1, consumable, weapon2).inOrder();
   }
