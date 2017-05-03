@@ -1,20 +1,28 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import java.util.Locale;
 
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
  */
-// TODO: test me
-abstract class AbstractWeapon extends BaseItem implements Weapon {
+class BaseWeapon extends BaseItem implements Weapon {
 
   private int attackPower;
 
+  BaseWeapon() {
+  }
+
+  BaseWeapon(int attackPower) {
+    this.attackPower = attackPower;
+  }
+
   @Override
   public String getDescription() {
-    return String.format(Locale.US, "Damage all targeted with attack power of %d", attackPower);
+    return String.format(Locale.US, "%d attack weapon", attackPower);
   }
 
   /**
@@ -29,5 +37,10 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
         character.damageBy(damage);
       }
     }
+  }
+
+  @Override
+  public ImmutableList<Target> createTargets(Movements movements, Cell from) {
+    throw new UnsupportedOperationException();
   }
 }

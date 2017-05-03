@@ -4,6 +4,9 @@ public class BasePlayer extends BaseCharacter implements Player {
 
   private boolean actionable;
 
+  BasePlayer() {
+  }
+
   BasePlayer(
       String name, int maxHp, int hp, int moveDistance, Items items, boolean actionable) {
     super(name, maxHp, hp, moveDistance, items);

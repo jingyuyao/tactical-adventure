@@ -1,178 +1,97 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.graph.ElementOrder;
-import com.google.common.graph.Graphs;
-import com.google.common.graph.MutableValueGraph;
-import com.google.common.graph.ValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
+import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Contains methods to produce graphs from the current terrains.
+ * Contains methods regarding different kind of movements from a given spot in the world.
  */
 @Singleton
 public class Movements {
 
-  static final int BLOCKED = -1;
-
   private final World world;
+  private final Dijkstra dijkstra;
 
   @Inject
-  Movements(World world) {
+  Movements(World world, Dijkstra dijkstra) {
     this.world = world;
+    this.dijkstra = dijkstra;
+  }
+
+  public Optional<Cell> getNeighbor(Cell from, Direction direction) {
+    return world.getCell(from.getCoordinate().offsetBy(direction));
+  }
+
+  public List<Cell> getNeighbors(final Cell from) {
+    List<Cell> neighbors = new ArrayList<>(4);
+    for (Direction direction : Direction.values()) {
+      Optional<Cell> neighborOpt = getNeighbor(from, direction);
+      if (neighborOpt.isPresent()) {
+        neighbors.add(neighborOpt.get());
+      }
+    }
+    return neighbors;
   }
 
   /**
-   * Create a {@link Movement} for the {@link Character} in a {@link Cell}.
+   * Create a {@link Movement} for the {@link Character} contained in the given {@link Cell}
    */
   public Movement distanceFrom(Cell cell) {
     Preconditions.checkArgument(cell.character().isPresent());
     Character character = cell.character().get();
     return new Movement(
-        distanceFrom(
-            cell,
-            character.getMoveDistance(),
-            createEdgeCostFunction(character)));
+        distanceFrom(cell, character.getMoveDistance(), new CharacterWeight(character)));
   }
 
   /**
-   * Creates a directed, acyclic graph starting at {@code startingCell} that contains all
-   * reachable nodes whose total path cost (sum of all edge weights from the start to the current
-   * node) is less or equal to {@code distance}. Inbound edge costs comes from {@code
-   * edgeCosFunction}.
-   *
-   * @param distance Maximum distance for the path between initial location to any other object
-   * @param edgeCostFunction The function to obtain the incoming edge cost for a particular {@link
-   * Cell}. All incoming edge cost for a {@link Cell} is assumed to be the same.
+   * Create {@link Movement} starting at cell spanning a set distance. Each cell costs one to move.
    */
-  public ValueGraph<Cell, Integer> distanceFrom(
+  public Movement distanceFrom(Cell cell, int distance) {
+    return new Movement(distanceFrom(cell, distance, new ConstWeight()));
+  }
+
+  private Graph<Cell> distanceFrom(
       Cell startingCell, int distance, Function<Cell, Integer> edgeCostFunction) {
-    MutableValueGraph<Cell, Integer> graph =
-        ValueGraphBuilder
-            .directed()
-            .allowsSelfLoops(false)
-            .nodeOrder(ElementOrder.insertion())
-            .build();
-    Set<Cell> processedCells = new HashSet<>();
-    Map<Cell, Integer> pathCostMap = new HashMap<>();
-    Queue<ValueNode<Cell>> minNodeQueue = new PriorityQueue<>();
-
-    pathCostMap.put(startingCell, 0);
-    graph.addNode(startingCell);
-    minNodeQueue.add(new ValueNode<>(startingCell, 0));
-
-    // Dijkstra's algorithm
-    while (!minNodeQueue.isEmpty()) {
-      ValueNode<Cell> minNode = minNodeQueue.poll();
-      Cell minCell = minNode.getObject();
-      processedCells.add(minCell);
-
-      for (Cell neighborCell : world.getNeighbors(minCell)) {
-        if (processedCells.contains(neighborCell)) {
-          continue;
-        }
-
-        Integer edgeCost = edgeCostFunction.apply(neighborCell);
-        Preconditions.checkNotNull(edgeCost);
-        if (edgeCost == BLOCKED) {
-          continue;
-        }
-
-        int pathCost = minNode.getValue() + edgeCost;
-        if (pathCost > distance) {
-          continue;
-        }
-
-        ValueNode<Cell> neighborNode = new ValueNode<>(neighborCell, pathCost);
-        if (!pathCostMap.containsKey(neighborCell)) {
-          graph.putEdgeValue(minCell, neighborCell, pathCost);
-          pathCostMap.put(neighborCell, pathCost);
-        } else if (pathCost < pathCostMap.get(neighborCell)) {
-          // Remove neighbor from graph so that (minNode, neighbor) is the only edge
-          graph.removeNode(neighborCell);
-          graph.putEdgeValue(minCell, neighborCell, pathCost);
-          // Adjust path cost of the current neighbor
-          pathCostMap.put(neighborCell, pathCost);
-          minNodeQueue.remove(neighborNode);
-        }
-        minNodeQueue.add(neighborNode);
-      }
-    }
-
-    Preconditions.checkState(
-        graph.predecessors(
-            startingCell).isEmpty(), "Graph does not contain a terminating node");
-    Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
-    return graph;
+    return dijkstra.minPathSearch(startingCell, distance, edgeCostFunction,
+        new Function<Cell, List<Cell>>() {
+          @Override
+          public List<Cell> apply(Cell input) {
+            return getNeighbors(input);
+          }
+        });
   }
 
-  Function<Cell, Integer> createEdgeCostFunction(final Character character) {
-    return new Function<Cell, Integer>() {
-      @Override
-      public Integer apply(Cell input) {
-        Terrain terrain = input.getTerrain();
-        if (input.character().isPresent() || !terrain.canHold(character)) {
-          return Movements.BLOCKED;
-        }
-        return terrain.getMovementPenalty();
+  static class CharacterWeight implements Function<Cell, Integer> {
+
+    private final Character character;
+
+    CharacterWeight(Character character) {
+      this.character = character;
+    }
+
+    @Override
+    public Integer apply(Cell input) {
+      Terrain terrain = input.getTerrain();
+      if (input.character().isPresent() || !terrain.canHold(character)) {
+        return Dijkstra.NO_EDGE;
       }
-    };
+      return terrain.getMovementPenalty();
+    }
   }
 
-  /**
-   * Store an object with an integer value. Identity of this object is based off {@link #object}.
-   * {@link #value} is not part of the identity. Used for {@link PriorityQueue} sorting.
-   */
-  private static class ValueNode<N> implements Comparable<ValueNode<N>> {
-
-    private final N object;
-    private final int value;
-
-    ValueNode(N object, int value) {
-      this.object = object;
-      this.value = value;
-    }
-
-    N getObject() {
-      return object;
-    }
-
-    int getValue() {
-      return value;
-    }
+  private static class ConstWeight implements Function<Cell, Integer> {
 
     @Override
-    public int compareTo(ValueNode<N> other) {
-      return value - other.value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-        return false;
-      }
-      ValueNode<?> valueNode = (ValueNode<?>) o;
-      return Objects.equal(object, valueNode.object);
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(object);
+    public Integer apply(Cell input) {
+      return 1;
     }
   }
 }

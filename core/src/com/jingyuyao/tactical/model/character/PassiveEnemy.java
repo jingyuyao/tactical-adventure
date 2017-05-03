@@ -8,33 +8,18 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
-import javax.inject.Inject;
 
 public class PassiveEnemy extends BaseCharacter implements Enemy {
 
-  private final transient Movements movements;
-  private final transient Battle battle;
-
-  @Inject
-  PassiveEnemy(Movements movements, Battle battle) {
-    this.movements = movements;
-    this.battle = battle;
-  }
-
-  PassiveEnemy(
-      Movements movements, Battle battle, String name, int maxHp, int hp, int moveDistance,
-      Items items) {
-    super(name, maxHp, hp, moveDistance, items);
-    this.movements = movements;
-    this.battle = battle;
+  PassiveEnemy() {
   }
 
   @Override
-  public MyFuture retaliate(Cell startingCell) {
+  public MyFuture retaliate(Movements movements, final Battle battle, Cell startingCell) {
     Movement movement = movements.distanceFrom(startingCell);
     for (Cell moveCell : movement.getCells()) {
       for (final Weapon weapon : getWeapons()) {
-        for (final Target target : weapon.createTargets(moveCell)) {
+        for (final Target target : weapon.createTargets(movements, moveCell)) {
           boolean containsPlayer = false;
           boolean containsEnemy = false;
 

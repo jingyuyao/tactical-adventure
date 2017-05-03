@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 public class Moving extends PlayerActionState {
 
-  private final Movements movements;
   private final Movement movement;
   private Cell prevMove;
 
@@ -23,8 +22,7 @@ public class Moving extends PlayerActionState {
       Movements movements,
       @Assisted Cell cell,
       @Assisted Movement movement) {
-    super(modelBus, worldState, stateFactory, cell);
-    this.movements = movements;
+    super(modelBus, worldState, stateFactory, movements, cell);
     this.movement = movement;
   }
 
@@ -42,7 +40,7 @@ public class Moving extends PlayerActionState {
       if (!player.equals(getPlayer())) {
         rollback();
         if (player.isActionable()) {
-          goTo(getStateFactory().createMoving(cell, movements.distanceFrom(cell)));
+          goTo(getStateFactory().createMoving(cell, getMovements().distanceFrom(cell)));
         }
       }
     } else {

@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +27,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class PlayerActionStateTest {
 
   @Mock
+  private ModelBus modelBus;
+  @Mock
   private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private ModelBus modelBus;
+  private Movements movements;
   @Mock
   private Cell cell;
   @Mock
@@ -57,13 +60,13 @@ public class PlayerActionStateTest {
   @Before
   public void setUp() {
     when(cell.player()).thenReturn(Optional.of(player));
-    state = new PlayerActionState(modelBus, worldState, stateFactory, cell);
+    state = new PlayerActionState(modelBus, worldState, stateFactory, movements, cell);
   }
 
   @Test(expected = NullPointerException.class)
   public void setUp_no_player() {
     when(cell.player()).thenReturn(Optional.<Player>absent());
-    state = new PlayerActionState(modelBus, worldState, stateFactory, cell);
+    state = new PlayerActionState(modelBus, worldState, stateFactory, movements, cell);
   }
 
   @Test
@@ -124,7 +127,7 @@ public class PlayerActionStateTest {
 
   @Test
   public void select_weapon() {
-    when(weapon.createTargets(cell)).thenReturn(targets);
+    when(weapon.createTargets(movements, cell)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
 
     state.selectWeapon(weapon);

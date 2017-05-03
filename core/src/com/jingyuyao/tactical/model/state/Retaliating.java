@@ -2,15 +2,19 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
 public class Retaliating extends BaseState {
 
   private final StateFactory stateFactory;
+  private final Movements movements;
+  private final Battle battle;
   private final World world;
 
   @Inject
@@ -18,9 +22,11 @@ public class Retaliating extends BaseState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      World world) {
+      Movements movements, Battle battle, World world) {
     super(modelBus, worldState);
     this.stateFactory = stateFactory;
+    this.movements = movements;
+    this.battle = battle;
     this.world = world;
   }
 
@@ -41,7 +47,7 @@ public class Retaliating extends BaseState {
     if (cell.enemy().isPresent()) {
       Enemy enemy = cell.enemy().get();
       post(new ActivatedEnemy(enemy));
-      enemy.retaliate(cell).addCallback(new Runnable() {
+      enemy.retaliate(movements, battle, cell).addCallback(new Runnable() {
         @Override
         public void run() {
           retaliate(characterSnapshot, i + 1);
