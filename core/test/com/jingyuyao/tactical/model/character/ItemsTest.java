@@ -6,7 +6,9 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.item.Armor;
+import com.jingyuyao.tactical.model.item.BodyArmor;
 import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Helmet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +24,11 @@ public class ItemsTest {
   @Mock
   private Weapon weapon1;
   @Mock
-  private Armor armor1;
+  private BodyArmor bodyArmor1;
   @Mock
-  private Armor armor2;
+  private BodyArmor bodyArmor2;
+  @Mock
+  private Helmet helmet;
 
   private Items items;
 
@@ -33,9 +37,11 @@ public class ItemsTest {
     items = new Items(
         Lists.newArrayList(consumable1),
         Lists.newArrayList(weapon1),
-        Lists.newArrayList(armor1),
-        Lists.newArrayList(armor2)
+        Lists.<Armor>newArrayList(bodyArmor1),
+        Lists.<Armor>newArrayList(helmet, bodyArmor2)
     );
+    assertThat(bodyArmor1.getClass()).isAssignableTo(bodyArmor2.getClass());
+    assertThat(bodyArmor2.getClass()).isAssignableTo(bodyArmor1.getClass());
   }
 
   @Test
@@ -50,12 +56,12 @@ public class ItemsTest {
 
   @Test
   public void equipped_armors() {
-    assertThat(items.getEquippedArmors()).containsExactly(armor1);
+    assertThat(items.getEquippedArmors()).containsExactly(bodyArmor1);
   }
 
   @Test
   public void unequipped_armors() {
-    assertThat(items.getUnequippedArmors()).containsExactly(armor2);
+    assertThat(items.getUnequippedArmors()).containsExactly(helmet, bodyArmor2);
   }
 
   @Test
@@ -100,29 +106,37 @@ public class ItemsTest {
 
   @Test
   public void use_armors() {
-    when(armor1.getUsageLeft()).thenReturn(1);
+    when(bodyArmor1.getUsageLeft()).thenReturn(1);
 
     items.useEquippedArmors();
 
-    verify(armor1).useOnce();
-    assertThat(items.getEquippedArmors()).containsExactly(armor1);
+    verify(bodyArmor1).useOnce();
+    assertThat(items.getEquippedArmors()).containsExactly(bodyArmor1);
   }
 
   @Test
   public void use_armors_broken() {
-    when(armor1.getUsageLeft()).thenReturn(0);
+    when(bodyArmor1.getUsageLeft()).thenReturn(0);
 
     items.useEquippedArmors();
 
-    verify(armor1).useOnce();
+    verify(bodyArmor1).useOnce();
     assertThat(items.getEquippedArmors()).isEmpty();
   }
 
   @Test
-  public void equip_body_armor() {
-    items.equipArmor(armor2);
+  public void equip_armor_already_equipped_class() {
+    items.equipArmor(bodyArmor2);
 
-    assertThat(items.getEquippedArmors()).containsExactly(armor2);
-    assertThat(items.getUnequippedArmors()).containsExactly(armor1);
+    assertThat(items.getEquippedArmors()).containsExactly(bodyArmor2);
+    assertThat(items.getUnequippedArmors()).containsExactly(helmet, bodyArmor1);
+  }
+
+  @Test
+  public void equip_armor_no_already_equipped_class() {
+    items.equipArmor(helmet);
+
+    assertThat(items.getEquippedArmors()).containsExactly(bodyArmor1, helmet);
+    assertThat(items.getUnequippedArmors()).containsExactly(bodyArmor2);
   }
 }

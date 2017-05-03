@@ -73,11 +73,11 @@ class Items {
   void equipArmor(Armor armor) {
     Preconditions.checkNotNull(armor);
     Preconditions.checkArgument(unequippedArmors.remove(armor));
-    Optional<Armor> prevEquipped =
+    Optional<Armor> prevEquippedOpt =
         Iterables.tryFind(equippedArmors, Predicates.instanceOf(armor.getClass()));
-    if (prevEquipped.isPresent()) {
-      equippedArmors.remove(prevEquipped.get());
-      unequippedArmors.add(prevEquipped.get());
+    for (Armor prevEquipped : prevEquippedOpt.asSet()) {
+      equippedArmors.remove(prevEquipped);
+      unequippedArmors.add(prevEquipped);
     }
     equippedArmors.add(armor);
   }

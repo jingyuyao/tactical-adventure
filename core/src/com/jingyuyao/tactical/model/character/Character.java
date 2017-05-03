@@ -31,9 +31,6 @@ public interface Character {
 
   ImmutableList<Weapon> getWeapons();
 
-  /**
-   * Return a list b/c eventually we will have multiple armors.
-   */
   ImmutableList<Armor> getEquippedArmors();
 
   ImmutableList<Armor> getUnequippedArmors();
@@ -42,9 +39,6 @@ public interface Character {
 
   void useWeapon(Weapon weapon);
 
-  /**
-   * Plural b/c eventually we will have multiple armors.
-   */
   void useEquippedArmors();
 
   void equipArmor(Armor armor);
