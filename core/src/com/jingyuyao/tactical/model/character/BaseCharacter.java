@@ -40,6 +40,15 @@ class BaseCharacter implements Character {
   }
 
   @Override
+  public int getDefense() {
+    int defense = 0;
+    for (Armor armor : getEquippedArmors()) {
+      defense += armor.getDefense();
+    }
+    return defense;
+  }
+
+  @Override
   public void damageBy(int delta) {
     hp = Math.max(hp - delta, 0);
   }

@@ -14,20 +14,20 @@ abstract class AbstractWeapon extends BaseItem implements Weapon {
 
   @Override
   public String getDescription() {
-    return String.format(Locale.US, "Damages for %d", attackPower);
+    return String.format(Locale.US, "Damage all targeted with attack power of %d", attackPower);
   }
 
+  /**
+   * Default implementation damages every character in the target area equally. All defense is
+   * respected.
+   */
   @Override
   public void damages(Target target) {
     for (Cell cell : target.getTargetCells()) {
       for (Character character : cell.character().asSet()) {
-        character.damageBy(attackPower);
+        int damage = Math.max(attackPower - character.getDefense(), 0);
+        character.damageBy(damage);
       }
     }
-  }
-
-  @Override
-  public int getAttackPower() {
-    return attackPower;
   }
 }

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
+// TODO: we really don't need this class, merge this with battling state
 public class Battle {
 
   private final ModelBus modelBus;

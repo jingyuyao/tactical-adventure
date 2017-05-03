@@ -27,6 +27,8 @@ public class BaseCharacterTest {
   @Mock
   private Armor armor1;
   @Mock
+  private Armor armor2;
+  @Mock
   private Weapon weapon1;
   @Mock
   private Consumable consumable1;
@@ -36,6 +38,15 @@ public class BaseCharacterTest {
   @Before
   public void setUp() {
     character = new BaseCharacter(NAME, MAX_HP, HP, MOVE_DISTANCE, items);
+  }
+
+  @Test
+  public void get_defense() {
+    when(items.getEquippedArmors()).thenReturn(ImmutableList.of(armor1, armor2));
+    when(armor1.getDefense()).thenReturn(11);
+    when(armor2.getDefense()).thenReturn(13);
+
+    assertThat(character.getDefense()).isEqualTo(24);
   }
 
   @Test

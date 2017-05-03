@@ -13,6 +13,11 @@ public interface Character {
 
   int getMoveDistance();
 
+  /**
+   * Sum of all the equipped armors' defense
+   */
+  int getDefense();
+
   void damageBy(int delta);
 
   void healBy(int delta);
