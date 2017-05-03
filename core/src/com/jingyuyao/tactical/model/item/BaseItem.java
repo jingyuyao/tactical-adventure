@@ -36,6 +36,6 @@ class BaseItem implements Item {
 
   @Override
   public String getDescription() {
-    return "Item uses splash! But nothing happened!";
+    throw new UnsupportedOperationException("Override me!");
   }
 }

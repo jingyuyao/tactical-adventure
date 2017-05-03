@@ -41,6 +41,6 @@ class BaseWeapon extends BaseItem implements Weapon {
 
   @Override
   public ImmutableList<Target> createTargets(Movements movements, Cell from) {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Override me!");
   }
 }
