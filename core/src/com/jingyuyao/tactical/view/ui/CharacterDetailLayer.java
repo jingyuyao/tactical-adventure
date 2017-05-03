@@ -50,7 +50,7 @@ class CharacterDetailLayer extends VisWindow {
   private void buildItemString(StringBuilder builder, String name, List<? extends Item> items) {
     builder.append(String.format("%s:\n", name));
     if (items.isEmpty()) {
-      builder.append("None");
+      builder.append("None\n");
     } else {
       for (Item item : items) {
         builder.append(formatItem(item));

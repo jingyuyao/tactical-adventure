@@ -14,11 +14,13 @@ import com.jingyuyao.tactical.model.character.BasePlayer;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.BasicArmor;
+import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
-import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -50,11 +52,19 @@ public class DataModule extends AbstractModule {
             .registerSubtype(PassiveEnemy.class));
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
-            .of(Item.class)
-            .registerSubtype(BasicArmor.class)
+            .of(Consumable.class)
+            .registerSubtype(Heal.class)
+    );
+    builder.registerTypeAdapterFactory(
+        RuntimeTypeAdapterFactory
+            .of(Weapon.class)
             .registerSubtype(DirectionalWeapon.class)
             .registerSubtype(Grenade.class)
-            .registerSubtype(Heal.class)
+    );
+    builder.registerTypeAdapterFactory(
+        RuntimeTypeAdapterFactory
+            .of(Armor.class)
+            .registerSubtype(BasicArmor.class)
     );
     // TODO: maybe we should pass in the things they need to use instead of providing at creation
     List<Class<?>> needCreator = ImmutableList.of(

@@ -8,29 +8,40 @@
       "hp": 15,
       "moveDistance": 4,
       "actionable": true,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 15,
-          "attackPower": 5,
-          "distance": 1
-        },
-        {
-          "type": "Grenade",
-          "name": "bomb",
-          "usageLeft": 5,
-          "attackPower": 4,
-          "distance": 3,
-          "size": 2
-        },
-        {
-          "type": "Heal",
-          "name": "pot",
-          "usageLeft": 3,
-          "amount": 10
+      "items": {
+        "consumables": [
+          {
+            "type": "Heal",
+            "name": "pot",
+            "usageLeft": 3,
+            "amount": 10
+          }
+        ],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 15,
+            "attackPower": 5,
+            "distance": 1
+          },
+          {
+            "type": "Grenade",
+            "name": "bomb",
+            "usageLeft": 5,
+            "attackPower": 4,
+            "distance": 3,
+            "size": 2
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": {
+          "type": "BasicArmor",
+          "name": "armor",
+          "usageLeft": 50,
+          "defense": 5
         }
-      ]
+      }
     },
     {
       "type": "BasePlayer",
@@ -39,29 +50,40 @@
       "hp": 15,
       "moveDistance": 4,
       "actionable": true,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 15,
-          "attackPower": 5,
-          "distance": 1
-        },
-        {
-          "type": "Grenade",
-          "name": "bomb",
-          "usageLeft": 2,
-          "attackPower": 8,
-          "distance": 2,
-          "size": 2
-        },
-        {
-          "type": "Heal",
-          "name": "pot",
-          "usageLeft": 3,
-          "amount": 10
+      "items": {
+        "consumables": [
+          {
+            "type": "Heal",
+            "name": "pot",
+            "usageLeft": 3,
+            "amount": 10
+          }
+        ],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 15,
+            "attackPower": 5,
+            "distance": 1
+          },
+          {
+            "type": "Grenade",
+            "name": "bomb",
+            "usageLeft": 2,
+            "attackPower": 8,
+            "distance": 2,
+            "size": 2
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": {
+          "type": "BasicArmor",
+          "name": "armor",
+          "usageLeft": 50,
+          "defense": 5
         }
-      ]
+      }
     },
     {
       "type": "BasePlayer",
@@ -70,21 +92,32 @@
       "hp": 20,
       "moveDistance": 5,
       "actionable": true,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "buzz",
-          "usageLeft": 15,
-          "attackPower": 7,
-          "distance": 3
-        },
-        {
-          "type": "Heal",
-          "name": "pot",
-          "usageLeft": 5,
-          "amount": 5
+      "items": {
+        "consumables": [
+          {
+            "type": "Heal",
+            "name": "pot",
+            "usageLeft": 5,
+            "amount": 5
+          }
+        ],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "buzz",
+            "usageLeft": 15,
+            "attackPower": 7,
+            "distance": 3
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": {
+          "type": "BasicArmor",
+          "name": "armor",
+          "usageLeft": 50,
+          "defense": 5
         }
-      ]
+      }
     },
     {
       "type": "BasePlayer",
@@ -93,21 +126,32 @@
       "hp": 20,
       "moveDistance": 5,
       "actionable": true,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "buzz",
-          "usageLeft": 15,
-          "attackPower": 7,
-          "distance": 3
-        },
-        {
-          "type": "Heal",
-          "name": "pot",
-          "usageLeft": 5,
-          "amount": 5
+      "items": {
+        "consumables": [
+          {
+            "type": "Heal",
+            "name": "pot",
+            "usageLeft": 5,
+            "amount": 5
+          }
+        ],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "buzz",
+            "usageLeft": 15,
+            "attackPower": 7,
+            "distance": 3
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": {
+          "type": "BasicArmor",
+          "name": "armor",
+          "usageLeft": 50,
+          "defense": 5
         }
-      ]
+      }
     }
   ]
 }
