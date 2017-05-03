@@ -25,7 +25,7 @@ class ActionGroup extends VerticalGroup {
   @Subscribe
   void state(State state) {
     for (final Action action : state.getActions()) {
-      VisTextButton button = new VisTextButton(action.getName(), "blue", new ChangeListener() {
+      VisTextButton button = new VisTextButton(action.getName(), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           action.run();
