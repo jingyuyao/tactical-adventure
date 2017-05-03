@@ -15,7 +15,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import javax.inject.Singleton;
 
+@Singleton
 class Dijkstra {
 
   static final int NO_EDGE = -1;
@@ -31,7 +33,7 @@ class Dijkstra {
    * Cell}. All incoming edge cost for a {@link Cell} is assumed to be the same.
    * @param neighborFunc a function to return the neighbors of a given cell
    */
-  static ValueGraph<Cell, Integer> minPathSearch(
+  ValueGraph<Cell, Integer> minPathSearch(
       Cell startingCell,
       int distance,
       Function<Cell, Integer> edgeCostFunction,

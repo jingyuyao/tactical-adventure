@@ -7,6 +7,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Movements.CharacterWeight;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +15,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
+// TODO: finish me
 public class MovementsTest {
 
   @Mock
   private World world;
+  @Mock
+  private Dijkstra dijkstra;
   @Mock
   private Cell cell;
   @Mock
@@ -29,7 +33,7 @@ public class MovementsTest {
 
   @Before
   public void setUp() {
-    movements = new Movements(world);
+    movements = new Movements(world, dijkstra);
   }
 
   @Test
@@ -37,7 +41,7 @@ public class MovementsTest {
     when(cell.character()).thenReturn(Optional.of(character));
     when(cell.getTerrain()).thenReturn(terrain);
 
-    Function<Cell, Integer> function = movements.createEdgeCostFunction(character);
+    Function<Cell, Integer> function = new CharacterWeight(character);
 
     assertThat(function.apply(cell)).isEqualTo(Dijkstra.NO_EDGE);
   }
@@ -48,7 +52,7 @@ public class MovementsTest {
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(character)).thenReturn(false);
 
-    Function<Cell, Integer> function = movements.createEdgeCostFunction(character);
+    Function<Cell, Integer> function = new CharacterWeight(character);
 
     assertThat(function.apply(cell)).isEqualTo(Dijkstra.NO_EDGE);
   }
@@ -60,7 +64,7 @@ public class MovementsTest {
     when(terrain.canHold(character)).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(10);
 
-    Function<Cell, Integer> function = movements.createEdgeCostFunction(character);
+    Function<Cell, Integer> function = new CharacterWeight(character);
 
     assertThat(function.apply(cell)).isEqualTo(10);
   }

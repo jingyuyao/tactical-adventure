@@ -18,10 +18,12 @@ import javax.inject.Singleton;
 public class Movements {
 
   private final World world;
+  private final Dijkstra dijkstra;
 
   @Inject
-  Movements(World world) {
+  Movements(World world, Dijkstra dijkstra) {
     this.world = world;
+    this.dijkstra = dijkstra;
   }
 
   public Optional<Cell> getNeighbor(Cell from, Direction direction) {
@@ -46,10 +48,7 @@ public class Movements {
     Preconditions.checkArgument(cell.character().isPresent());
     Character character = cell.character().get();
     return new Movement(
-        distanceFrom(
-            cell,
-            character.getMoveDistance(),
-            createEdgeCostFunction(character)));
+        distanceFrom(cell, character.getMoveDistance(), new CharacterWeight(character)));
   }
 
   /**
@@ -59,28 +58,33 @@ public class Movements {
     return new Movement(distanceFrom(cell, distance, new ConstWeight()));
   }
 
-  Function<Cell, Integer> createEdgeCostFunction(final Character character) {
-    return new Function<Cell, Integer>() {
-      @Override
-      public Integer apply(Cell input) {
-        Terrain terrain = input.getTerrain();
-        if (input.character().isPresent() || !terrain.canHold(character)) {
-          return Dijkstra.NO_EDGE;
-        }
-        return terrain.getMovementPenalty();
-      }
-    };
-  }
-
   private Graph<Cell> distanceFrom(
       Cell startingCell, int distance, Function<Cell, Integer> edgeCostFunction) {
-    return Dijkstra.minPathSearch(startingCell, distance, edgeCostFunction,
+    return dijkstra.minPathSearch(startingCell, distance, edgeCostFunction,
         new Function<Cell, List<Cell>>() {
           @Override
           public List<Cell> apply(Cell input) {
             return getNeighbors(input);
           }
         });
+  }
+
+  static class CharacterWeight implements Function<Cell, Integer> {
+
+    private final Character character;
+
+    CharacterWeight(Character character) {
+      this.character = character;
+    }
+
+    @Override
+    public Integer apply(Cell input) {
+      Terrain terrain = input.getTerrain();
+      if (input.character().isPresent() || !terrain.canHold(character)) {
+        return Dijkstra.NO_EDGE;
+      }
+      return terrain.getMovementPenalty();
+    }
   }
 
   private static class ConstWeight implements Function<Cell, Integer> {
