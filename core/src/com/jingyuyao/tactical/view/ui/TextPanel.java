@@ -17,7 +17,7 @@ abstract class TextPanel<T> extends Container<VisLabel> {
 
   TextPanel(int alignment) {
     this.label = new VisLabel(null, alignment);
-    setBackground(VisUI.getSkin().getDrawable("window"));
+    setBackground(VisUI.getSkin().getDrawable("window-bg"));
     setVisible(false);
     pad(15);
   }
