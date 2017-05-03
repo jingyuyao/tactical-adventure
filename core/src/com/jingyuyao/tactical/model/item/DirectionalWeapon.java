@@ -12,7 +12,7 @@ import javax.inject.Inject;
  * A weapon that can be targeted in all directions in {@link Direction#values()}.
  */
 // TODO: test me
-public class DirectionalWeapon extends AbstractWeapon {
+public class DirectionalWeapon extends BaseWeapon {
 
   private transient final World world;
   private int distance;

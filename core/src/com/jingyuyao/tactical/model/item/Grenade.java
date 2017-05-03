@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 // TODO: test me
-public class Grenade extends AbstractWeapon {
+public class Grenade extends BaseWeapon {
 
   private transient final Movements movements;
   private int distance;
