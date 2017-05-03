@@ -23,24 +23,16 @@ public class Grenade extends BaseWeapon {
 
   @Override
   public ImmutableList<Target> createTargets(Cell from) {
-    final Function<Cell, Integer> weightFunction = new ConstWeight();
     return FluentIterable
-        .from(movements.distanceFrom(from, distance, weightFunction).nodes())
+        .from(movements.distanceFrom(from, distance).getCells())
         .transform(new Function<Cell, Target>() {
           @Override
           public Target apply(Cell input) {
-            Set<Cell> targets = movements.distanceFrom(input, size - 1, weightFunction).nodes();
+            Set<Cell> targets =
+                ImmutableSet.copyOf(movements.distanceFrom(input, size - 1).getCells());
             return new Target(input, ImmutableSet.of(input), targets);
           }
         })
         .toList();
-  }
-
-  private static class ConstWeight implements Function<Cell, Integer> {
-
-    @Override
-    public Integer apply(Cell input) {
-      return 1;
-    }
   }
 }

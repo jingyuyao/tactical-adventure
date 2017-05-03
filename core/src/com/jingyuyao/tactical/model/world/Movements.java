@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Contains methods to produce graphs from the current terrains.
+ * Contains methods regarding different kind of movements from a given spot in the world.
  */
 @Singleton
 public class Movements {
@@ -35,7 +35,7 @@ public class Movements {
   }
 
   /**
-   * Create a {@link Movement} for the {@link Character} in a {@link Cell}.
+   * Create a {@link Movement} for the {@link Character} contained in the given {@link Cell}
    */
   public Movement distanceFrom(Cell cell) {
     Preconditions.checkArgument(cell.character().isPresent());
@@ -45,6 +45,13 @@ public class Movements {
             cell,
             character.getMoveDistance(),
             createEdgeCostFunction(character)));
+  }
+
+  /**
+   * Create {@link Movement} starting at cell spanning a set distance. Each cell costs one to move.
+   */
+  public Movement distanceFrom(Cell cell, int distance) {
+    return new Movement(distanceFrom(cell, distance, new ConstWeight()));
   }
 
   /**
@@ -173,6 +180,14 @@ public class Movements {
     @Override
     public int hashCode() {
       return Objects.hashCode(object);
+    }
+  }
+
+  private static class ConstWeight implements Function<Cell, Integer> {
+
+    @Override
+    public Integer apply(Cell input) {
+      return 1;
     }
   }
 }

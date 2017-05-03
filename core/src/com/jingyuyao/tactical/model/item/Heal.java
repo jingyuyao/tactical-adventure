@@ -7,7 +7,7 @@ public class Heal extends BaseItem implements Consumable {
 
   private int amount;
 
-  private Heal() {
+  Heal() {
   }
 
   Heal(String name, int usageLeft, int amount) {
