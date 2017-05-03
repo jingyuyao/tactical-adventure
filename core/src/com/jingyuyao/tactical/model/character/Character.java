@@ -47,5 +47,5 @@ public interface Character {
    */
   void useEquippedArmors();
 
-  void equipBodyArmor(Armor armor);
+  void equipArmor(Armor armor);
 }

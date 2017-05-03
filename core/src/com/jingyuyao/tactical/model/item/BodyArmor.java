@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import java.util.Locale;
 
-public class BasicArmor extends BaseItem implements Armor {
+public class BodyArmor extends BaseItem implements Armor {
 
   private int defense;
 

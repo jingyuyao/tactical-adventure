@@ -36,18 +36,20 @@
         ],
         "unequippedArmors": [
           {
-            "type": "BasicArmor",
+            "type": "BodyArmor",
             "name": "diamond armor",
             "usageLeft": 50,
             "defense": 100
           }
         ],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     },
     {
@@ -84,12 +86,14 @@
           }
         ],
         "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     },
     {
@@ -118,12 +122,14 @@
           }
         ],
         "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     },
     {
@@ -152,12 +158,14 @@
           }
         ],
         "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     }
   ]

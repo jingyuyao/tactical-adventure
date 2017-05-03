@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Armor;
-import com.jingyuyao.tactical.model.item.BasicArmor;
+import com.jingyuyao.tactical.model.item.BodyArmor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
@@ -59,7 +59,7 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Armor.class)
-            .registerSubtype(BasicArmor.class)
+            .registerSubtype(BodyArmor.class)
     );
     return builder.create();
   }

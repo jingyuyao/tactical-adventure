@@ -99,7 +99,7 @@ class BaseCharacter implements Character {
   }
 
   @Override
-  public void equipBodyArmor(Armor armor) {
-    items.equipBodyArmor(armor);
+  public void equipArmor(Armor armor) {
+    items.equipArmor(armor);
   }
 }

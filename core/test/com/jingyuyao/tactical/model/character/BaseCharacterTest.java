@@ -129,8 +129,8 @@ public class BaseCharacterTest {
 
   @Test
   public void equip_body_armor() {
-    character.equipBodyArmor(armor1);
+    character.equipArmor(armor1);
 
-    verify(items).equipBodyArmor(armor1);
+    verify(items).equipArmor(armor1);
   }
 }

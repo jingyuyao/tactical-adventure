@@ -68,14 +68,13 @@ class CharacterItemsPanel extends VisTable {
       super("Equip", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-          // TODO: distinguish which part ot equip, probably do it in model?
-          character.equipBodyArmor(armor);
+          character.equipArmor(armor);
           // refresh
           CharacterItemsPanel.this.display(character);
         }
       });
       // TODO: polish this
-      if (Player.class.isInstance(character) && !Player.class.cast(character).isActionable()) {
+      if (!(Player.class.isInstance(character) && Player.class.cast(character).isActionable())) {
         setDisabled(true);
       }
     }

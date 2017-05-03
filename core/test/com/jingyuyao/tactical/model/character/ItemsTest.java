@@ -33,8 +33,8 @@ public class ItemsTest {
     items = new Items(
         Lists.newArrayList(consumable1),
         Lists.newArrayList(weapon1),
-        Lists.newArrayList(armor2),
-        armor1
+        Lists.newArrayList(armor1),
+        Lists.newArrayList(armor2)
     );
   }
 
@@ -120,7 +120,7 @@ public class ItemsTest {
 
   @Test
   public void equip_body_armor() {
-    items.equipBodyArmor(armor2);
+    items.equipArmor(armor2);
 
     assertThat(items.getEquippedArmors()).containsExactly(armor2);
     assertThat(items.getUnequippedArmors()).containsExactly(armor1);
