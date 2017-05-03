@@ -4,30 +4,30 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.jingyuyao.tactical.model.item.Armor;
+import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
 import java.util.List;
 
 /**
  * Internal representation of all the {@link Item} a {@link Character} holds.
- * <br/>
- * Invariants:
- * <br/>
- * - An item can either be in unequippedItems or in one of the other fields but not both
- * at the same time
  */
 class Items {
 
-  private List<Item> unequippedItems;
+  private List<Consumable> consumables;
+  private List<Weapon> weapons;
+  private List<Armor> unequippedArmors;
   private Armor bodyArmor;
-  private Weapon weapon1;
-  private Weapon weapon2;
 
-  Items(List<Item> unequippedItems, Armor bodyArmor, Weapon weapon1, Weapon weapon2) {
-    this.unequippedItems = unequippedItems;
+  Items(
+      List<Consumable> consumables,
+      List<Weapon> weapons,
+      List<Armor> unequippedArmors,
+      Armor bodyArmor) {
+    this.consumables = consumables;
+    this.weapons = weapons;
+    this.unequippedArmors = unequippedArmors;
     this.bodyArmor = bodyArmor;
-    this.weapon1 = weapon1;
-    this.weapon2 = weapon2;
   }
 
   @SafeVarargs // pointless warning, Guava disables it as well.
@@ -41,46 +41,45 @@ class Items {
     return builder.build();
   }
 
-  ImmutableList<Item> getUnequippedItems() {
-    return ImmutableList.copyOf(unequippedItems);
+  ImmutableList<Consumable> getConsumables() {
+    return ImmutableList.copyOf(consumables);
+  }
+
+  ImmutableList<Weapon> getWeapons() {
+    return ImmutableList.copyOf(weapons);
   }
 
   ImmutableList<Armor> getEquippedArmors() {
     return ignoreNullOf(bodyArmor);
   }
 
-  ImmutableList<Weapon> getEquippedWeapons() {
-    return ignoreNullOf(weapon1, weapon2);
+  ImmutableList<Armor> getUnequippedArmors() {
+    return ImmutableList.copyOf(unequippedArmors);
   }
 
-  synchronized void useUnequippedItem(Item item) {
-    Preconditions.checkNotNull(item);
-    Preconditions.checkArgument(unequippedItems.contains(item));
-    item.useOnce();
-    if (item.getUsageLeft() == 0) {
-      unequippedItems.remove(item);
-    }
+  void useConsumable(Consumable consumable) {
+    useItem(consumable, consumables);
   }
 
-  void useArmors() {
+  void useWeapon(Weapon weapon) {
+    useItem(weapon, weapons);
+  }
+
+  void useEquippedArmors() {
     bodyArmor = useEquipped(bodyArmor);
   }
 
-  void useWeapons() {
-    weapon1 = useEquipped(weapon1);
-    weapon2 = useEquipped(weapon2);
-  }
-
   void equipBodyArmor(Armor armor) {
-    bodyArmor = equipItem(bodyArmor, armor);
+    bodyArmor = equipItem(bodyArmor, armor, unequippedArmors);
   }
 
-  void equipWeapon1(Weapon weapon) {
-    weapon1 = equipItem(weapon1, weapon);
-  }
-
-  void equipWeapon2(Weapon weapon) {
-    weapon2 = equipItem(weapon2, weapon);
+  private synchronized <T extends Item> void useItem(T item, List<T> containingList) {
+    Preconditions.checkNotNull(item);
+    Preconditions.checkArgument(containingList.contains(item));
+    item.useOnce();
+    if (item.getUsageLeft() == 0) {
+      containingList.remove(item);
+    }
   }
 
   /**
@@ -98,13 +97,14 @@ class Items {
 
   /**
    * Handles the swapping of equipped item. Use it like so: {@code thing = equipItem(thing,
-   * newThing)}. Return {@code toBeEquipped}
+   * newThing, unequippedList)}. Return {@code toBeEquipped}
    */
-  private synchronized <T extends Item> T equipItem(T currentlyEquipped, T toBeEquipped) {
+  private synchronized <T extends Item>
+  T equipItem(T currentlyEquipped, T toBeEquipped, List<T> unequippedList) {
     Preconditions.checkNotNull(toBeEquipped);
-    Preconditions.checkArgument(unequippedItems.remove(toBeEquipped));
+    Preconditions.checkArgument(unequippedList.remove(toBeEquipped));
     if (currentlyEquipped != null) {
-      unequippedItems.add(currentlyEquipped);
+      unequippedList.add(currentlyEquipped);
     }
     return toBeEquipped;
   }

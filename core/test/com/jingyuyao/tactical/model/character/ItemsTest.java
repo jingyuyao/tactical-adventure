@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.item.Armor;
+import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,26 +18,34 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ItemsTest {
 
   @Mock
-  private Armor armor1;
-  @Mock
-  private Armor armor2;
+  private Consumable consumable1;
   @Mock
   private Weapon weapon1;
   @Mock
-  private Weapon weapon2;
+  private Armor armor1;
   @Mock
-  private Weapon weapon3;
+  private Armor armor2;
 
   private Items items;
 
   @Before
   public void setUp() {
-    items = new Items(Lists.newArrayList(armor2, weapon3), armor1, weapon1, weapon2);
+    items = new Items(
+        Lists.newArrayList(consumable1),
+        Lists.newArrayList(weapon1),
+        Lists.newArrayList(armor2),
+        armor1
+    );
   }
 
   @Test
-  public void unequipped_items() {
-    assertThat(items.getUnequippedItems()).containsExactly(armor2, weapon3);
+  public void consumables() {
+    assertThat(items.getConsumables()).containsExactly(consumable1);
+  }
+
+  @Test
+  public void weapons() {
+    assertThat(items.getWeapons()).containsExactly(weapon1);
   }
 
   @Test
@@ -45,35 +54,55 @@ public class ItemsTest {
   }
 
   @Test
-  public void equipped_weapons() {
-    assertThat(items.getEquippedWeapons()).containsExactly(weapon1, weapon2);
+  public void unequipped_armors() {
+    assertThat(items.getUnequippedArmors()).containsExactly(armor2);
   }
 
   @Test
-  public void use_unequipped_item() {
-    when(armor2.getUsageLeft()).thenReturn(1);
+  public void use_consumable() {
+    when(consumable1.getUsageLeft()).thenReturn(1);
 
-    items.useUnequippedItem(armor2);
+    items.useConsumable(consumable1);
 
-    verify(armor2).useOnce();
-    assertThat(items.getUnequippedItems()).containsExactly(armor2, weapon3);
+    verify(consumable1).useOnce();
+    assertThat(items.getConsumables()).containsExactly(consumable1);
   }
 
   @Test
-  public void use_unequipped_item_broken() {
-    when(armor2.getUsageLeft()).thenReturn(0);
+  public void use_consumable_no_more() {
+    when(consumable1.getUsageLeft()).thenReturn(0);
 
-    items.useUnequippedItem(armor2);
+    items.useConsumable(consumable1);
 
-    verify(armor2).useOnce();
-    assertThat(items.getUnequippedItems()).containsExactly(weapon3);
+    verify(consumable1).useOnce();
+    assertThat(items.getConsumables()).isEmpty();
+  }
+
+  @Test
+  public void use_weapon() {
+    when(weapon1.getUsageLeft()).thenReturn(1);
+
+    items.useWeapon(weapon1);
+
+    verify(weapon1).useOnce();
+    assertThat(items.getWeapons()).containsExactly(weapon1);
+  }
+
+  @Test
+  public void use_weapon_broken() {
+    when(weapon1.getUsageLeft()).thenReturn(0);
+
+    items.useWeapon(weapon1);
+
+    verify(weapon1).useOnce();
+    assertThat(items.getWeapons()).isEmpty();
   }
 
   @Test
   public void use_armors() {
     when(armor1.getUsageLeft()).thenReturn(1);
 
-    items.useArmors();
+    items.useEquippedArmors();
 
     verify(armor1).useOnce();
     assertThat(items.getEquippedArmors()).containsExactly(armor1);
@@ -83,22 +112,10 @@ public class ItemsTest {
   public void use_armors_broken() {
     when(armor1.getUsageLeft()).thenReturn(0);
 
-    items.useArmors();
+    items.useEquippedArmors();
 
     verify(armor1).useOnce();
     assertThat(items.getEquippedArmors()).isEmpty();
-  }
-
-  @Test
-  public void use_weapons() {
-    when(weapon1.getUsageLeft()).thenReturn(1);
-    when(weapon2.getUsageLeft()).thenReturn(0);
-
-    items.useWeapons();
-
-    verify(weapon1).useOnce();
-    verify(weapon2).useOnce();
-    assertThat(items.getEquippedWeapons()).containsExactly(weapon1);
   }
 
   @Test
@@ -106,22 +123,6 @@ public class ItemsTest {
     items.equipBodyArmor(armor2);
 
     assertThat(items.getEquippedArmors()).containsExactly(armor2);
-    assertThat(items.getUnequippedItems()).containsExactly(armor1, weapon3);
-  }
-
-  @Test
-  public void equip_weapon_1() {
-    items.equipWeapon1(weapon3);
-
-    assertThat(items.getEquippedWeapons()).containsExactly(weapon2, weapon3);
-    assertThat(items.getUnequippedItems()).containsExactly(armor2, weapon1);
-  }
-
-  @Test
-  public void equip_weapon_2() {
-    items.equipWeapon2(weapon3);
-
-    assertThat(items.getEquippedWeapons()).containsExactly(weapon1, weapon3);
-    assertThat(items.getUnequippedItems()).containsExactly(armor2, weapon2);
+    assertThat(items.getUnequippedArmors()).containsExactly(armor1);
   }
 }

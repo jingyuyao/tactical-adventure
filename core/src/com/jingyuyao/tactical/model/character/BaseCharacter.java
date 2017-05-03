@@ -1,8 +1,9 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.collect.FluentIterable;
-import com.jingyuyao.tactical.model.item.Item;
-import java.util.Locale;
+import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.item.Armor;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Weapon;
 
 class BaseCharacter implements Character {
 
@@ -54,17 +55,42 @@ class BaseCharacter implements Character {
   }
 
   @Override
-  public FluentIterable<Item> fluentItems() {
-    return FluentIterable.from(items.getUnequippedItems());
+  public ImmutableList<Consumable> getConsumables() {
+    return items.getConsumables();
   }
 
   @Override
-  public void useItem(Item item) {
-    items.useUnequippedItem(item);
+  public ImmutableList<Weapon> getWeapons() {
+    return items.getWeapons();
   }
 
   @Override
-  public String toString() {
-    return String.format(Locale.US, "%s\nHealth(%d)", name, hp);
+  public ImmutableList<Armor> getEquippedArmors() {
+    return items.getEquippedArmors();
+  }
+
+  @Override
+  public ImmutableList<Armor> getUnequippedArmors() {
+    return items.getUnequippedArmors();
+  }
+
+  @Override
+  public void useConsumable(Consumable consumable) {
+    items.useConsumable(consumable);
+  }
+
+  @Override
+  public void useWeapon(Weapon weapon) {
+    items.useWeapon(weapon);
+  }
+
+  @Override
+  public void useEquippedArmors() {
+    items.useEquippedArmors();
+  }
+
+  @Override
+  public void equipBodyArmor(Armor armor) {
+    items.equipBodyArmor(armor);
   }
 }

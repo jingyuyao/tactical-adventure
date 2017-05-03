@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
@@ -24,9 +25,11 @@ public class BaseCharacterTest {
   @Mock
   private Items items;
   @Mock
+  private Armor armor1;
+  @Mock
   private Weapon weapon1;
   @Mock
-  private Consumable consumable;
+  private Consumable consumable1;
 
   private Character character;
 
@@ -65,16 +68,58 @@ public class BaseCharacterTest {
   }
 
   @Test
-  public void fluent_items() {
-    when(items.getUnequippedItems()).thenReturn(ImmutableList.of(weapon1, consumable));
+  public void get_consumables() {
+    when(items.getConsumables()).thenReturn(ImmutableList.of(consumable1));
 
-    assertThat(character.fluentItems()).containsExactly(weapon1, consumable);
+    assertThat(character.getConsumables()).containsExactly(consumable1);
   }
 
   @Test
-  public void use_item() {
-    character.useItem(weapon1);
+  public void get_weapons() {
+    when(items.getWeapons()).thenReturn(ImmutableList.of(weapon1));
 
-    verify(items).useUnequippedItem(weapon1);
+    assertThat(character.getWeapons()).containsExactly(weapon1);
+  }
+
+  @Test
+  public void get_equipped_armors() {
+    when(items.getEquippedArmors()).thenReturn(ImmutableList.of(armor1));
+
+    assertThat(character.getEquippedArmors()).containsExactly(armor1);
+  }
+
+  @Test
+  public void get_unequipped_armors() {
+    when(items.getUnequippedArmors()).thenReturn(ImmutableList.of(armor1));
+
+    assertThat(character.getUnequippedArmors()).containsExactly(armor1);
+  }
+
+  @Test
+  public void use_consumable() {
+    character.useConsumable(consumable1);
+
+    verify(items).useConsumable(consumable1);
+  }
+
+  @Test
+  public void use_weapon() {
+    character.useWeapon(weapon1);
+
+    verify(items).useWeapon(weapon1);
+  }
+
+  @Test
+  public void use_equipped_armors() {
+    character.useEquippedArmors();
+
+    verify(items).useEquippedArmors();
+  }
+
+  @Test
+  public void equip_body_armor() {
+    character.equipBodyArmor(armor1);
+
+    verify(items).equipBodyArmor(armor1);
   }
 }

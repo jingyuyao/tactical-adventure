@@ -33,7 +33,7 @@ public class PassiveEnemy extends BaseCharacter implements Enemy {
   public MyFuture retaliate(Cell startingCell) {
     Movement movement = movements.distanceFrom(startingCell);
     for (Cell moveCell : movement.getCells()) {
-      for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
+      for (final Weapon weapon : getWeapons()) {
         for (final Target target : weapon.createTargets(moveCell)) {
           boolean containsPlayer = false;
           boolean containsEnemy = false;

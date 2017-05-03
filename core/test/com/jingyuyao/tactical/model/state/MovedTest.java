@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -116,7 +115,8 @@ public class MovedTest {
 
   @Test
   public void actions() {
-    when(player.fluentItems()).thenReturn(FluentIterable.of(weapon, consumable));
+    when(player.getWeapons()).thenReturn(ImmutableList.of(weapon));
+    when(player.getConsumables()).thenReturn(ImmutableList.of(consumable));
 
     ImmutableList<Action> actions = moved.getActions();
 

@@ -1,10 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -22,11 +20,10 @@ class PlayerActionState extends AbstractPlayerState {
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = ImmutableList.builder();
-    FluentIterable<Item> items = getPlayer().fluentItems();
-    for (Weapon weapon : items.filter(Weapon.class)) {
+    for (Weapon weapon : getPlayer().getWeapons()) {
       builder.add(new SelectWeaponAction(this, weapon));
     }
-    for (Consumable consumable : items.filter(Consumable.class)) {
+    for (Consumable consumable : getPlayer().getConsumables()) {
       builder.add(new SelectConsumableAction(this, consumable));
     }
     builder.add(new FinishAction(this));
