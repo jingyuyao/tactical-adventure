@@ -41,5 +41,13 @@ public interface Character {
 
   void useEquippedArmors();
 
+  /**
+   * Equips {@code armor}. Replaces the previously equipped armor of the same type if its present.
+   */
   void equipArmor(Armor armor);
+
+  /**
+   * Unequips {@code armor}. {@code armor} must be currently equipped
+   */
+  void unequipArmor(Armor armor);
 }

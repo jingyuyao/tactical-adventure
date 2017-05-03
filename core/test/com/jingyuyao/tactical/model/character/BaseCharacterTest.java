@@ -128,9 +128,16 @@ public class BaseCharacterTest {
   }
 
   @Test
-  public void equip_body_armor() {
+  public void equip_armor() {
     character.equipArmor(armor1);
 
     verify(items).equipArmor(armor1);
+  }
+
+  @Test
+  public void unequip_armor() {
+    character.unequipArmor(armor1);
+
+    verify(items).unequipArmor(armor1);
   }
 }

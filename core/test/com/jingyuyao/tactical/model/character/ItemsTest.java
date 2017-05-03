@@ -139,4 +139,12 @@ public class ItemsTest {
     assertThat(items.getEquippedArmors()).containsExactly(bodyArmor1, helmet);
     assertThat(items.getUnequippedArmors()).containsExactly(bodyArmor2);
   }
+
+  @Test
+  public void unequip_armor() {
+    items.unequipArmor(bodyArmor1);
+
+    assertThat(items.getEquippedArmors()).isEmpty();
+    assertThat(items.getUnequippedArmors()).containsExactly(bodyArmor1, bodyArmor2, helmet);
+  }
 }

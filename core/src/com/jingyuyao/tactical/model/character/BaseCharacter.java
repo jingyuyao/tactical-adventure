@@ -102,4 +102,9 @@ class BaseCharacter implements Character {
   public void equipArmor(Armor armor) {
     items.equipArmor(armor);
   }
+
+  @Override
+  public void unequipArmor(Armor armor) {
+    items.unequipArmor(armor);
+  }
 }

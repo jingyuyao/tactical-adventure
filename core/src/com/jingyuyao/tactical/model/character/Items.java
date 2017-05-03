@@ -82,6 +82,12 @@ class Items {
     equippedArmors.add(armor);
   }
 
+  void unequipArmor(Armor armor) {
+    Preconditions.checkNotNull(armor);
+    Preconditions.checkArgument(equippedArmors.remove(armor));
+    unequippedArmors.add(armor);
+  }
+
   private <T extends Item> void useItem(T item, List<T> containingList) {
     Preconditions.checkNotNull(item);
     Preconditions.checkArgument(containingList.contains(item));
