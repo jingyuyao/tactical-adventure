@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.world;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.graph.ElementOrder;
@@ -10,34 +9,30 @@ import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Singleton;
 
+/**
+ * A Dijkstra's implementation with interfaces to use it.
+ */
 @Singleton
 class Dijkstra {
-
-  static final int NO_EDGE = -1;
 
   /**
    * Creates a directed, acyclic graph starting at {@code startingCell} that contains all
    * reachable nodes whose total path cost (sum of all edge weights from the start to the current
-   * node) is less or equal to {@code distance}. Inbound edge costs comes from {@code
-   * edgeCosFunction}.
+   * node) is less or equal to {@code distance}. Inbound edge costs comes from {@code edgeCostFunc}.
    *
+   * @param neighborsFunc a function to return the neighbors of a given cell
+   * @param edgeCostFunc a function to obtain the incoming edge cost for a particular {@link Cell}.
+   * All incoming edge cost for a {@link Cell} is assumed to be the same.
    * @param distance Maximum distance for the path between initial location to any other object
-   * @param edgeCostFunction The function to obtain the incoming edge cost for a particular {@link
-   * Cell}. All incoming edge cost for a {@link Cell} is assumed to be the same.
-   * @param neighborFunc a function to return the neighbors of a given cell
    */
   ValueGraph<Cell, Integer> minPathSearch(
-      Cell startingCell,
-      int distance,
-      Function<Cell, Integer> edgeCostFunction,
-      Function<Cell, List<Cell>> neighborFunc) {
+      GetNeighbors neighborsFunc, GetEdgeCost edgeCostFunc, Cell startingCell, int distance) {
     MutableValueGraph<Cell, Integer> graph =
         ValueGraphBuilder
             .directed()
@@ -58,16 +53,13 @@ class Dijkstra {
       Cell minCell = minNode.getObject();
       processedCells.add(minCell);
 
-      List<Cell> neighbors = neighborFunc.apply(minCell);
-      Preconditions.checkNotNull(neighbors);
-      for (Cell neighborCell : neighbors) {
+      for (Cell neighborCell : neighborsFunc.getNeighbors(minCell)) {
         if (processedCells.contains(neighborCell)) {
           continue;
         }
 
-        Integer edgeCost = edgeCostFunction.apply(neighborCell);
-        Preconditions.checkNotNull(edgeCost);
-        if (edgeCost == NO_EDGE) {
+        int edgeCost = edgeCostFunc.getEdgeCost(neighborCell);
+        if (edgeCost == GetEdgeCost.NO_EDGE) {
           continue;
         }
 
@@ -97,6 +89,18 @@ class Dijkstra {
             startingCell).isEmpty(), "Graph does not contain a terminating node");
     Preconditions.checkState(!Graphs.hasCycle(graph), "Cycle in distanceFrom");
     return graph;
+  }
+
+  interface GetEdgeCost {
+
+    int NO_EDGE = -1;
+
+    int getEdgeCost(Cell cell);
+  }
+
+  interface GetNeighbors {
+
+    Iterable<Cell> getNeighbors(Cell cell);
   }
 
   /**
