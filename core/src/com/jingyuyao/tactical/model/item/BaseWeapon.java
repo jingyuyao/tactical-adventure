@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import java.util.Locale;
 
 /**
@@ -39,7 +40,7 @@ class BaseWeapon extends BaseItem implements Weapon {
   }
 
   @Override
-  public ImmutableList<Target> createTargets(Cell from) {
+  public ImmutableList<Target> createTargets(Movements movements, Cell from) {
     throw new UnsupportedOperationException();
   }
 }

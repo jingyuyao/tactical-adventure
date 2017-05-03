@@ -6,14 +6,21 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 
 class PlayerActionState extends AbstractPlayerState {
 
+  private final Movements movements;
   private final Cell cell;
 
   PlayerActionState(
-      ModelBus modelBus, WorldState worldState, StateFactory stateFactory, Cell cell) {
+      ModelBus modelBus,
+      WorldState worldState,
+      StateFactory stateFactory,
+      Movements movements,
+      Cell cell) {
     super(modelBus, worldState, stateFactory, cell.player().orNull());
+    this.movements = movements;
     this.cell = cell;
   }
 
@@ -32,11 +39,15 @@ class PlayerActionState extends AbstractPlayerState {
   }
 
   void selectWeapon(Weapon weapon) {
-    ImmutableList<Target> targets = weapon.createTargets(cell);
+    ImmutableList<Target> targets = weapon.createTargets(movements, cell);
     goTo(getStateFactory().createSelectingTarget(getPlayer(), weapon, targets));
   }
 
   void selectConsumable(Consumable consumable) {
     goTo(getStateFactory().createUsingConsumable(getPlayer(), consumable));
+  }
+
+  Movements getMovements() {
+    return movements;
   }
 }

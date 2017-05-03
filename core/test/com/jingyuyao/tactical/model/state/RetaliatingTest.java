@@ -10,11 +10,13 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,11 +32,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class RetaliatingTest {
 
   @Mock
+  private ModelBus modelBus;
+  @Mock
   private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private ModelBus modelBus;
+  private Movements movements;
+  @Mock
+  private Battle battle;
   @Mock
   private World world;
   @Mock
@@ -54,7 +60,7 @@ public class RetaliatingTest {
 
   @Before
   public void setUp() {
-    retaliating = new Retaliating(modelBus, worldState, stateFactory, world);
+    retaliating = new Retaliating(modelBus, worldState, stateFactory, movements, battle, world);
   }
 
   @Test
@@ -74,17 +80,17 @@ public class RetaliatingTest {
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell2.enemy()).thenReturn(Optional.of(enemy2));
-    when(enemy.retaliate(cell)).thenReturn(MyFuture.immediate());
-    when(enemy2.retaliate(cell2)).thenReturn(MyFuture.immediate());
+    when(enemy.retaliate(movements, battle, cell)).thenReturn(MyFuture.immediate());
+    when(enemy2.retaliate(movements, battle, cell2)).thenReturn(MyFuture.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     retaliating.enter();
 
     InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, modelBus);
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
-    inOrder.verify(enemy).retaliate(cell);
+    inOrder.verify(enemy).retaliate(movements, battle, cell);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    inOrder.verify(enemy2).retaliate(cell2);
+    inOrder.verify(enemy2).retaliate(movements, battle, cell2);
     inOrder.verify(worldState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
