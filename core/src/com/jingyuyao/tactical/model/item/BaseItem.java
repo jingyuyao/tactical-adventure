@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-abstract class BaseItem implements Item {
+class BaseItem implements Item {
 
   private String name;
   private int usageLeft;
@@ -32,5 +32,10 @@ abstract class BaseItem implements Item {
   public void useOnce() {
     Preconditions.checkState(usageLeft > 0);
     usageLeft--;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Item uses splash! But nothing happened!";
   }
 }
