@@ -13,6 +13,6 @@ public class BasicArmor extends BaseItem implements Armor {
 
   @Override
   public String getDescription() {
-    return String.format(Locale.US, "Basic armor that provides %d defense", defense);
+    return String.format(Locale.US, "%d defense", defense);
   }
 }

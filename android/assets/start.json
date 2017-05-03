@@ -34,7 +34,14 @@
             "size": 2
           }
         ],
-        "unequippedArmors": [],
+        "unequippedArmors": [
+          {
+            "type": "BasicArmor",
+            "name": "diamond armor",
+            "usageLeft": 50,
+            "defense": 100
+          }
+        ],
         "bodyArmor": {
           "type": "BasicArmor",
           "name": "armor",

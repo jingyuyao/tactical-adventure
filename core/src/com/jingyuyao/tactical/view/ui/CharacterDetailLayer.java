@@ -13,26 +13,26 @@ import javax.inject.Singleton;
 class CharacterDetailLayer extends VisTable {
 
   private final LayerManager layerManager;
-  private final CharacterStatPanel characterStatPanel;
-  private final CharacterItemPanel characterItemPanel;
+  private final CharacterStatsPanel characterStatsPanel;
+  private final CharacterItemsPanel characterItemsPanel;
 
   @Inject
   CharacterDetailLayer(
       LayerManager layerManager,
-      CharacterStatPanel characterStatPanel,
-      CharacterItemPanel characterItemPanel) {
+      CharacterStatsPanel characterStatsPanel,
+      CharacterItemsPanel characterItemsPanel) {
     super(true);
     this.layerManager = layerManager;
-    this.characterStatPanel = characterStatPanel;
-    this.characterItemPanel = characterItemPanel;
+    this.characterStatsPanel = characterStatsPanel;
+    this.characterItemsPanel = characterItemsPanel;
     setFillParent(true);
     setBackground("window-bg");
     pad(20);
 
     VisTable scrollTable = new VisTable(true);
     scrollTable.defaults().top().left();
-    scrollTable.add(characterStatPanel);
-    scrollTable.add(characterItemPanel).expand().fill();
+    scrollTable.add(characterStatsPanel);
+    scrollTable.add(characterItemsPanel).expand().fill();
 
     VisScrollPane scrollPane = new VisScrollPane(scrollTable);
     scrollPane.setScrollingDisabled(true, false);
@@ -42,8 +42,8 @@ class CharacterDetailLayer extends VisTable {
   }
 
   void display(Character character) {
-    characterStatPanel.display(character);
-    characterItemPanel.display(character);
+    characterStatsPanel.display(character);
+    characterItemsPanel.display(character);
   }
 
   private class CloseButton extends VisTextButton {
