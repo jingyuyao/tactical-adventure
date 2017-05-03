@@ -9,6 +9,9 @@ public interface Character {
 
   String getName();
 
+  /**
+   * Always >= 0.
+   */
   int getHp();
 
   int getMoveDistance();
