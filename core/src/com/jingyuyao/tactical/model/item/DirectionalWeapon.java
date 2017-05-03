@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Direction;
-import com.jingyuyao.tactical.model.world.World;
+import com.jingyuyao.tactical.model.world.Movements;
 import javax.inject.Inject;
 
 /**
@@ -14,12 +14,12 @@ import javax.inject.Inject;
 // TODO: test me
 public class DirectionalWeapon extends BaseWeapon {
 
-  private transient final World world;
+  private transient final Movements movements;
   private int distance;
 
   @Inject
-  DirectionalWeapon(World world) {
-    this.world = world;
+  DirectionalWeapon(Movements movements) {
+    this.movements = movements;
   }
 
   @Override
@@ -40,7 +40,7 @@ public class DirectionalWeapon extends BaseWeapon {
     int leftOverDistance = distance;
 
     while (leftOverDistance > 0) {
-      Optional<Cell> neighbor = world.getNeighbor(current, direction);
+      Optional<Cell> neighbor = movements.getNeighbor(current, direction);
       if (neighbor.isPresent()) {
         current = neighbor.get();
         targetBuilder.add(current);

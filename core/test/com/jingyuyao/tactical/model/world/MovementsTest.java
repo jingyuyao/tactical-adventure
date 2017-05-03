@@ -39,7 +39,7 @@ public class MovementsTest {
 
     Function<Cell, Integer> function = movements.createEdgeCostFunction(character);
 
-    assertThat(function.apply(cell)).isEqualTo(Movements.BLOCKED);
+    assertThat(function.apply(cell)).isEqualTo(Dijkstra.NO_EDGE);
   }
 
   @Test
@@ -50,7 +50,7 @@ public class MovementsTest {
 
     Function<Cell, Integer> function = movements.createEdgeCostFunction(character);
 
-    assertThat(function.apply(cell)).isEqualTo(Movements.BLOCKED);
+    assertThat(function.apply(cell)).isEqualTo(Dijkstra.NO_EDGE);
   }
 
   @Test

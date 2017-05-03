@@ -28,26 +28,15 @@ public class WorldTest {
 
   private static final Coordinate COORDINATE1 = new Coordinate(1, 1);
   private static final Coordinate COORDINATE2 = new Coordinate(2, 0);
-  private static final Coordinate COORDINATE3 = new Coordinate(3, 1);
-  private static final Coordinate COORDINATE4 = new Coordinate(2, 2);
-  private static final Coordinate TWO_NEIGHBOR = new Coordinate(1, 0);
-  private static final Coordinate FOUR_NEIGHBOR = new Coordinate(2, 1);
-  private static final Coordinate NO_NEIGHBOR = new Coordinate(100, 100);
 
   @Mock
   private ModelBus modelBus;
   @Mock
   private CellFactory cellFactory;
   @Mock
-  private Cell temp;
-  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
-  @Mock
-  private Cell cell3;
-  @Mock
-  private Cell cell4;
   @Mock
   private Terrain terrain1;
   @Mock
@@ -140,43 +129,10 @@ public class WorldTest {
   }
 
   @Test
-  public void no_neighbor() {
-    when(temp.getCoordinate()).thenReturn(NO_NEIGHBOR);
+  public void get_cell_coordinate() {
     cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
 
-    assertThat(world.getNeighbors(temp)).isEmpty();
-  }
-
-  @Test
-  public void get_neighbors_some() {
-    when(temp.getCoordinate()).thenReturn(TWO_NEIGHBOR);
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-
-    assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2);
-  }
-
-  @Test
-  public void all_neighbors() {
-    when(temp.getCoordinate()).thenReturn(FOUR_NEIGHBOR);
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-    cellMap.put(COORDINATE3, cell3);
-    cellMap.put(COORDINATE4, cell4);
-
-    assertThat(world.getNeighbors(temp)).containsExactly(cell1, cell2, cell3, cell4);
-  }
-
-  @Test
-  public void get_neighbor() {
-    Coordinate from = new Coordinate(5, 5);
-    Coordinate up = from.offsetBy(Direction.UP);
-    when(temp.getCoordinate()).thenReturn(from);
-    cellMap.put(up, cell1);
-
-    assertThat(world.getNeighbor(temp, Direction.UP)).hasValue(cell1);
-    assertThat(world.getNeighbor(temp, Direction.DOWN)).isAbsent();
+    assertThat(world.getCell(COORDINATE1)).hasValue(cell1);
   }
 
   @Test

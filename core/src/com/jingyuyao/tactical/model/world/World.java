@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.world;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -77,7 +76,11 @@ public class World {
   }
 
   public Optional<Cell> getCell(int x, int y) {
-    return Optional.fromNullable(cellMap.get(new Coordinate(x, y)));
+    return getCell(new Coordinate(x, y));
+  }
+
+  public Optional<Cell> getCell(Coordinate coordinate) {
+    return Optional.fromNullable(cellMap.get(coordinate));
   }
 
   public ImmutableList<Cell> getCharacterSnapshot() {
@@ -88,33 +91,6 @@ public class World {
             return input.character().isPresent();
           }
         }).toList();
-  }
-
-  public Iterable<Cell> getNeighbors(final Cell from) {
-    return FluentIterable
-        .from(Direction.values())
-        .transform(new Function<Direction, Coordinate>() {
-          @Override
-          public Coordinate apply(Direction input) {
-            return from.getCoordinate().offsetBy(input);
-          }
-        })
-        .filter(new Predicate<Coordinate>() {
-          @Override
-          public boolean apply(Coordinate input) {
-            return cellMap.containsKey(input);
-          }
-        })
-        .transform(new Function<Coordinate, Cell>() {
-          @Override
-          public Cell apply(Coordinate input) {
-            return cellMap.get(input);
-          }
-        });
-  }
-
-  public Optional<Cell> getNeighbor(Cell from, Direction direction) {
-    return Optional.fromNullable(cellMap.get(from.getCoordinate().offsetBy(direction)));
   }
 
   public void fullHealPlayers() {
