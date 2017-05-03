@@ -27,10 +27,11 @@ public class Battle {
     future.addCallback(new Runnable() {
       @Override
       public void run() {
-        attacker.useItem(weapon);
         weapon.damages(target);
+        attacker.useWeapon(weapon);
         for (Cell cell : target.getTargetCells()) {
           for (Character character : cell.character().asSet()) {
+            character.useEquippedArmors();
             if (character.getHp() == 0) {
               cell.removeCharacter();
             }

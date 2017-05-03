@@ -10,8 +10,12 @@ import com.jingyuyao.tactical.model.world.Cell;
  */
 public interface Weapon extends Item {
 
-  int getAttackPower();
-
+  /**
+   * Damages characters in the given target. Different weapon implementations might apply different
+   * amount of damage to different parts of the target. This method is responsible for whether
+   * or not it respects the character's defense. (Some weapon implementation might ignore a
+   * character's defense altogether)
+   */
   void damages(Target target);
 
   ImmutableList<Target> createTargets(Cell from);

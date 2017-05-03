@@ -1,14 +1,11 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.jingyuyao.tactical.model.item.Item;
-import java.util.List;
-
-public class BasePlayer extends AbstractCharacter implements Player {
+public class BasePlayer extends BaseCharacter implements Player {
 
   private boolean actionable;
 
   BasePlayer(
-      String name, int maxHp, int hp, int moveDistance, List<Item> items, boolean actionable) {
+      String name, int maxHp, int hp, int moveDistance, Items items, boolean actionable) {
     super(name, maxHp, hp, moveDistance, items);
     this.actionable = actionable;
   }

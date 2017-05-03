@@ -12,15 +12,20 @@
       "maxHp": 50,
       "hp": 50,
       "moveDistance": 3,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 10,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "8,12": {
       "type": "PassiveEnemy",
@@ -28,15 +33,20 @@
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 5,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "9,11": {
       "type": "PassiveEnemy",
@@ -44,15 +54,20 @@
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 5,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "2,12": {
       "type": "PassiveEnemy",
@@ -60,15 +75,20 @@
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 3,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 7,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "4,10": {
       "type": "PassiveEnemy",
@@ -76,15 +96,20 @@
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 3,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 7,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "6,8": {
       "type": "PassiveEnemy",
@@ -92,15 +117,20 @@
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 3,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 7,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "8,6": {
       "type": "PassiveEnemy",
@@ -108,15 +138,20 @@
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 3,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 7,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     },
     "10,4": {
       "type": "PassiveEnemy",
@@ -124,15 +159,20 @@
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 3,
-      "items": [
-        {
-          "type": "DirectionalWeapon",
-          "name": "melee",
-          "usageLeft": 10,
-          "attackPower": 7,
-          "distance": 1
-        }
-      ]
+      "items": {
+        "consumables": [],
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "melee",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ],
+        "unequippedArmors": [],
+        "bodyArmor": null
+      }
     }
   }
 }

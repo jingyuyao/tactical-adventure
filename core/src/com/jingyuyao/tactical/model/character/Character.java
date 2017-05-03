@@ -1,15 +1,25 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.google.common.collect.FluentIterable;
-import com.jingyuyao.tactical.model.item.Item;
+import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.item.Armor;
+import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.item.Weapon;
 
 public interface Character {
 
   String getName();
 
+  /**
+   * Always >= 0.
+   */
   int getHp();
 
   int getMoveDistance();
+
+  /**
+   * Sum of all the equipped armors' defense
+   */
+  int getDefense();
 
   void damageBy(int delta);
 
@@ -17,11 +27,25 @@ public interface Character {
 
   void fullHeal();
 
-  void addItem(Item item);
+  ImmutableList<Consumable> getConsumables();
 
-  void removeItem(Item item);
+  ImmutableList<Weapon> getWeapons();
 
-  FluentIterable<Item> fluentItems();
+  /**
+   * Return a list b/c eventually we will have multiple armors.
+   */
+  ImmutableList<Armor> getEquippedArmors();
 
-  void useItem(Item item);
+  ImmutableList<Armor> getUnequippedArmors();
+
+  void useConsumable(Consumable consumable);
+
+  void useWeapon(Weapon weapon);
+
+  /**
+   * Plural b/c eventually we will have multiple armors.
+   */
+  void useEquippedArmors();
+
+  void equipBodyArmor(Armor armor);
 }

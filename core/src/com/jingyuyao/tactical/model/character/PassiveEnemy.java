@@ -2,17 +2,15 @@ package com.jingyuyao.tactical.model.character;
 
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.MyFuture;
-import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
-import java.util.List;
 import javax.inject.Inject;
 
-public class PassiveEnemy extends AbstractEnemy {
+public class PassiveEnemy extends BaseCharacter implements Enemy {
 
   private final transient Movements movements;
   private final transient Battle battle;
@@ -25,7 +23,7 @@ public class PassiveEnemy extends AbstractEnemy {
 
   PassiveEnemy(
       Movements movements, Battle battle, String name, int maxHp, int hp, int moveDistance,
-      List<Item> items) {
+      Items items) {
     super(name, maxHp, hp, moveDistance, items);
     this.movements = movements;
     this.battle = battle;
@@ -35,7 +33,7 @@ public class PassiveEnemy extends AbstractEnemy {
   public MyFuture retaliate(Cell startingCell) {
     Movement movement = movements.distanceFrom(startingCell);
     for (Cell moveCell : movement.getCells()) {
-      for (final Weapon weapon : fluentItems().filter(Weapon.class)) {
+      for (final Weapon weapon : getWeapons()) {
         for (final Target target : weapon.createTargets(moveCell)) {
           boolean containsPlayer = false;
           boolean containsEnemy = false;

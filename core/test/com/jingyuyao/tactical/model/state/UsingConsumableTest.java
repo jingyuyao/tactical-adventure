@@ -66,7 +66,7 @@ public class UsingConsumableTest {
     usingConsumable.use();
 
     verify(consumable).apply(player);
-    verify(player).useItem(consumable);
+    verify(player).useConsumable(consumable);
     verify(player).setActionable(false);
     verify(worldState).branchTo(waiting);
   }
