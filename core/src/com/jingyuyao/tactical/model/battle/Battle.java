@@ -31,6 +31,7 @@ public class Battle {
         weapon.damages(target);
         for (Cell cell : target.getTargetCells()) {
           for (Character character : cell.character().asSet()) {
+            character.useEquippedArmors();
             if (character.getHp() == 0) {
               cell.removeCharacter();
             }

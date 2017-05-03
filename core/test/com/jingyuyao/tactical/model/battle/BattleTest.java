@@ -75,6 +75,8 @@ public class BattleTest {
     assertThat(future.isDone()).isTrue();
     verify(attacker).useWeapon(weapon);
     verify(weapon).damages(target);
+    verify(character1).useEquippedArmors();
+    verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
   }
