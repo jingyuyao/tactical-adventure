@@ -95,6 +95,6 @@ class BaseWeapon extends BaseItem implements Weapon {
     if (target.character().isPresent()) {
       return Math.max(attackPower - target.character().get().getDefense(), 0);
     }
-    return attackPower;
+    return 0;
   }
 }
