@@ -79,8 +79,8 @@ class BaseCharacter implements Character {
   }
 
   @Override
-  public ImmutableList<Armor> getUnequippedArmors() {
-    return items.getUnequippedArmors();
+  public ImmutableList<Armor> getStashedArmors() {
+    return items.getStashedArmors();
   }
 
   @Override

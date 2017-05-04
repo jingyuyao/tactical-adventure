@@ -100,10 +100,10 @@ public class BaseCharacterTest {
   }
 
   @Test
-  public void get_unequipped_armors() {
-    when(items.getUnequippedArmors()).thenReturn(ImmutableList.of(armor1));
+  public void get_stashed_armors() {
+    when(items.getStashedArmors()).thenReturn(ImmutableList.of(armor1));
 
-    assertThat(character.getUnequippedArmors()).containsExactly(armor1);
+    assertThat(character.getStashedArmors()).containsExactly(armor1);
   }
 
   @Test

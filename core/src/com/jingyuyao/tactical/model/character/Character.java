@@ -33,7 +33,7 @@ public interface Character {
 
   ImmutableList<Armor> getEquippedArmors();
 
-  ImmutableList<Armor> getUnequippedArmors();
+  ImmutableList<Armor> getStashedArmors();
 
   void useConsumable(Consumable consumable);
 
@@ -42,12 +42,13 @@ public interface Character {
   void useEquippedArmors();
 
   /**
-   * Equips {@code armor}. Replaces the previously equipped armor of the same type if its present.
+   * Equips {@code armor} from the stash. Replaces the previously equipped armor of the same type if
+   * its present.
    */
   void equipArmor(Armor armor);
 
   /**
-   * Unequips {@code armor}. {@code armor} must be currently equipped
+   * Unequips equipped {@code armor} and move it to the stash.
    */
   void unequipArmor(Armor armor);
 }

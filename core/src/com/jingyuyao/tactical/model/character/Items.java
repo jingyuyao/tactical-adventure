@@ -23,16 +23,16 @@ class Items {
    * Invariant: contains at most one of each type of armor.
    */
   private List<Armor> equippedArmors;
-  private List<Armor> unequippedArmors;
+  private List<Armor> stashedArmors;
 
   Items(
       List<Consumable> consumables,
       List<Weapon> weapons,
       List<Armor> equippedArmors,
-      List<Armor> unequippedArmors) {
+      List<Armor> stashedArmors) {
     this.consumables = consumables;
     this.weapons = weapons;
-    this.unequippedArmors = unequippedArmors;
+    this.stashedArmors = stashedArmors;
     this.equippedArmors = equippedArmors;
   }
 
@@ -48,8 +48,8 @@ class Items {
     return ImmutableList.copyOf(equippedArmors);
   }
 
-  ImmutableList<Armor> getUnequippedArmors() {
-    return ImmutableList.copyOf(unequippedArmors);
+  ImmutableList<Armor> getStashedArmors() {
+    return ImmutableList.copyOf(stashedArmors);
   }
 
   void useConsumable(Consumable consumable) {
@@ -72,12 +72,12 @@ class Items {
 
   void equipArmor(Armor armor) {
     Preconditions.checkNotNull(armor);
-    Preconditions.checkArgument(unequippedArmors.remove(armor));
+    Preconditions.checkArgument(stashedArmors.remove(armor));
     Optional<Armor> prevEquippedOpt =
         Iterables.tryFind(equippedArmors, Predicates.instanceOf(armor.getClass()));
     for (Armor prevEquipped : prevEquippedOpt.asSet()) {
       equippedArmors.remove(prevEquipped);
-      unequippedArmors.add(prevEquipped);
+      stashedArmors.add(prevEquipped);
     }
     equippedArmors.add(armor);
   }
@@ -85,7 +85,7 @@ class Items {
   void unequipArmor(Armor armor) {
     Preconditions.checkNotNull(armor);
     Preconditions.checkArgument(equippedArmors.remove(armor));
-    unequippedArmors.add(armor);
+    stashedArmors.add(armor);
   }
 
   private <T extends Item> void useItem(T item, List<T> containingList) {

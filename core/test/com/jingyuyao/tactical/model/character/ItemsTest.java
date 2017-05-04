@@ -60,8 +60,8 @@ public class ItemsTest {
   }
 
   @Test
-  public void unequipped_armors() {
-    assertThat(items.getUnequippedArmors()).containsExactly(helmet, bodyArmor2);
+  public void stashed_armors() {
+    assertThat(items.getStashedArmors()).containsExactly(helmet, bodyArmor2);
   }
 
   @Test
@@ -129,7 +129,7 @@ public class ItemsTest {
     items.equipArmor(bodyArmor2);
 
     assertThat(items.getEquippedArmors()).containsExactly(bodyArmor2);
-    assertThat(items.getUnequippedArmors()).containsExactly(helmet, bodyArmor1);
+    assertThat(items.getStashedArmors()).containsExactly(helmet, bodyArmor1);
   }
 
   @Test
@@ -137,7 +137,7 @@ public class ItemsTest {
     items.equipArmor(helmet);
 
     assertThat(items.getEquippedArmors()).containsExactly(bodyArmor1, helmet);
-    assertThat(items.getUnequippedArmors()).containsExactly(bodyArmor2);
+    assertThat(items.getStashedArmors()).containsExactly(bodyArmor2);
   }
 
   @Test
@@ -145,6 +145,6 @@ public class ItemsTest {
     items.unequipArmor(bodyArmor1);
 
     assertThat(items.getEquippedArmors()).isEmpty();
-    assertThat(items.getUnequippedArmors()).containsExactly(bodyArmor1, bodyArmor2, helmet);
+    assertThat(items.getStashedArmors()).containsExactly(bodyArmor1, bodyArmor2, helmet);
   }
 }

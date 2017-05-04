@@ -28,7 +28,7 @@ class CharacterItemsPanel extends VisTable {
     row();
 
     addItemsNoAction(character.getEquippedArmors());
-    addUnequippedArmors(character);
+    addStashedArmors(character);
     addItemsNoAction(character.getWeapons());
     addItemsNoAction(character.getConsumables());
     add();
@@ -44,8 +44,8 @@ class CharacterItemsPanel extends VisTable {
     }
   }
 
-  private void addUnequippedArmors(Character character) {
-    for (Armor armor : character.getUnequippedArmors()) {
+  private void addStashedArmors(Character character) {
+    for (Armor armor : character.getStashedArmors()) {
       addItem(armor);
       add(this.new EquipArmor(character, armor));
       row();

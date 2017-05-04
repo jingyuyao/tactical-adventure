@@ -34,7 +34,7 @@
             "size": 2
           }
         ],
-        "unequippedArmors": [
+        "stashedArmors": [
           {
             "type": "BodyArmor",
             "name": "diamond armor",
@@ -85,7 +85,7 @@
             "size": 2
           }
         ],
-        "unequippedArmors": [],
+        "stashedArmors": [],
         "equippedArmors": [
           {
             "type": "BodyArmor",
@@ -121,7 +121,7 @@
             "distance": 3
           }
         ],
-        "unequippedArmors": [],
+        "stashedArmors": [],
         "equippedArmors": [
           {
             "type": "BodyArmor",
@@ -157,7 +157,7 @@
             "distance": 3
           }
         ],
-        "unequippedArmors": [],
+        "stashedArmors": [],
         "equippedArmors": [
           {
             "type": "BodyArmor",
