@@ -92,6 +92,12 @@
             "name": "armor",
             "usageLeft": 50,
             "defense": 5
+          },
+          {
+            "type": "Helmet",
+            "name": "hat",
+            "usageLeft": 10,
+            "defense": 1
           }
         ]
       }

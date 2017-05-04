@@ -18,6 +18,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
+import com.jingyuyao.tactical.model.item.Helmet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Singleton;
@@ -60,6 +61,7 @@ public class DataModule extends AbstractModule {
         RuntimeTypeAdapterFactory
             .of(Armor.class)
             .registerSubtype(BodyArmor.class)
+            .registerSubtype(Helmet.class)
     );
     return builder.create();
   }
