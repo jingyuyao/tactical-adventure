@@ -125,7 +125,6 @@
             "usageLeft": 15,
             "attackPower": 50,
             "distance": 3,
-            "recoil": true,
             "recoilRate": 0.3
           }
         ],
@@ -163,7 +162,6 @@
             "usageLeft": 15,
             "attackPower": 10,
             "distance": 3,
-            "lifeSteal": true,
             "lifeStealRate": 0.5
           }
         ],

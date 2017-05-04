@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
@@ -43,31 +42,34 @@ public class BaseWeaponTest {
 
   @Test
   public void apply_basic() {
-    baseWeapon = new BaseWeapon(10, false, 0, false, 0);
+    baseWeapon = new BaseWeapon(10, 0, 0);
     baseWeapon.apply(attacker, target);
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
-    verifyZeroInteractions(attacker);
+    verify(attacker).damageBy(0);
+    verify(attacker).healBy(0);
   }
 
   @Test
   public void apply_life_steal() {
-    baseWeapon = new BaseWeapon(10, true, 0.5f, false, 0);
+    baseWeapon = new BaseWeapon(10, 0.5f, 0);
     baseWeapon.apply(attacker, target);
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
+    verify(attacker).damageBy(0);
     verify(attacker).healBy(3);
   }
 
   @Test
   public void apply_recoil() {
-    baseWeapon = new BaseWeapon(10, false, 0, true, 0.5f);
+    baseWeapon = new BaseWeapon(10, 0, 0.5f);
     baseWeapon.apply(attacker, target);
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
     verify(attacker).damageBy(3);
+    verify(attacker).healBy(0);
   }
 }

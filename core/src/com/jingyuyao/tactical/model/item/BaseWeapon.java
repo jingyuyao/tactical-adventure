@@ -11,9 +11,7 @@ import com.jingyuyao.tactical.model.world.Movements;
 class BaseWeapon extends BaseItem implements Weapon {
 
   private int attackPower;
-  private boolean lifeSteal;
   private float lifeStealRate;
-  private boolean recoil;
   private float recoilRate;
 
   BaseWeapon() {
@@ -21,14 +19,10 @@ class BaseWeapon extends BaseItem implements Weapon {
 
   BaseWeapon(
       int attackPower,
-      boolean lifeSteal,
       float lifeStealRate,
-      boolean recoil,
       float recoilRate) {
     this.attackPower = attackPower;
-    this.lifeSteal = lifeSteal;
     this.lifeStealRate = lifeStealRate;
-    this.recoil = recoil;
     this.recoilRate = recoilRate;
   }
 
@@ -36,10 +30,10 @@ class BaseWeapon extends BaseItem implements Weapon {
   public String getDescription() {
     StringBuilder builder = new StringBuilder();
     builder.append(attackPower).append(" attack");
-    if (lifeSteal) {
+    if (lifeStealRate > 0) {
       builder.append(", ").append((int) (lifeStealRate * 100)).append("% lifesteal");
     }
-    if (recoil) {
+    if (recoilRate > 0) {
       builder.append(", ").append((int) (recoilRate * 100)).append("% recoil");
     }
     return builder.toString();
@@ -85,12 +79,8 @@ class BaseWeapon extends BaseItem implements Weapon {
    * Override me to add post-damage effects.
    */
   void postDamage(Character attacker, Cell target, int damage) {
-    if (lifeSteal) {
-      attacker.healBy((int) (lifeStealRate * damage));
-    }
-    if (recoil) {
-      attacker.damageBy((int) (recoilRate * damage));
-    }
+    attacker.healBy((int) (lifeStealRate * damage));
+    attacker.damageBy((int) (recoilRate * damage));
   }
 
   /**
