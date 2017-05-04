@@ -1,22 +1,20 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
 import java.util.Locale;
 
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
  */
-class BaseWeapon extends BaseItem implements Weapon {
+abstract class AbstractWeapon extends AbstractItem implements Weapon {
 
   private int attackPower;
 
-  BaseWeapon() {
+  AbstractWeapon() {
   }
 
-  BaseWeapon(int attackPower) {
+  AbstractWeapon(int attackPower) {
     this.attackPower = attackPower;
   }
 
@@ -37,10 +35,5 @@ class BaseWeapon extends BaseItem implements Weapon {
         character.damageBy(damage);
       }
     }
-  }
-
-  @Override
-  public ImmutableList<Target> createTargets(Movements movements, Cell from) {
-    throw new UnsupportedOperationException("Override me!");
   }
 }

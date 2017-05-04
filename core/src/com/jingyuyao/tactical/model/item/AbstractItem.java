@@ -5,15 +5,15 @@ import com.google.common.base.Preconditions;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-class BaseItem implements Item {
+abstract class AbstractItem implements Item {
 
   private String name;
   private int usageLeft;
 
-  BaseItem() {
+  AbstractItem() {
   }
 
-  BaseItem(String name, int usageLeft) {
+  AbstractItem(String name, int usageLeft) {
     this.name = name;
     this.usageLeft = usageLeft;
   }
@@ -32,10 +32,5 @@ class BaseItem implements Item {
   public void useOnce() {
     Preconditions.checkState(usageLeft > 0);
     usageLeft--;
-  }
-
-  @Override
-  public String getDescription() {
-    throw new UnsupportedOperationException("Override me!");
   }
 }

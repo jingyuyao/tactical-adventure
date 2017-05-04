@@ -29,6 +29,6 @@ class PlayerSystem extends IteratingSystem {
   protected void processEntity(Entity entity, float deltaTime) {
     PlayerComponent playerComponent = playerMapper.get(entity);
     Frame frame = frameMapper.get(entity);
-    frame.setColor(playerComponent.getPlayer().isActionable() ? Colors.BLUE_300 : Colors.GREY_500);
+    frame.setColor(playerComponent.getPlayer().canControl() ? Colors.BLUE_300 : Colors.GREY_500);
   }
 }

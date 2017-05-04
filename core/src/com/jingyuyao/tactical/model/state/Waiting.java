@@ -63,7 +63,7 @@ public class Waiting extends BaseState {
   @Override
   public void select(Cell cell) {
     for (Player player : cell.player().asSet()) {
-      if (player.isActionable()) {
+      if (player.canControl()) {
         goTo(stateFactory.createMoving(cell, movements.distanceFrom(cell)));
       }
     }
