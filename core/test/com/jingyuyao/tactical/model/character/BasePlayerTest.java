@@ -28,13 +28,13 @@ public class BasePlayerTest {
 
   @Test
   public void get_actionable() {
-    assertThat(player.isActionable()).isTrue();
+    assertThat(player.canControl()).isTrue();
   }
 
   @Test
   public void set_actionable() {
     player.setActionable(false);
 
-    assertThat(player.isActionable()).isFalse();
+    assertThat(player.canControl()).isFalse();
   }
 }

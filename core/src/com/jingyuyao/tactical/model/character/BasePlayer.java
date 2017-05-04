@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
-public class BasePlayer extends BaseCharacter implements Player {
+public class BasePlayer extends AbstractCharacter implements Player {
 
   private boolean actionable;
 
@@ -14,7 +14,7 @@ public class BasePlayer extends BaseCharacter implements Player {
   }
 
   @Override
-  public boolean isActionable() {
+  public boolean canControl() {
     return actionable;
   }
 

@@ -4,9 +4,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +29,16 @@ public class BaseWeaponTest {
   @Mock
   private Character character2;
 
-  private BaseWeapon baseWeapon;
+  private AbstractWeapon baseWeapon;
 
   @Before
   public void setUp() {
-    baseWeapon = new BaseWeapon(10);
+    baseWeapon = new AbstractWeapon(10) {
+      @Override
+      public ImmutableList<Target> createTargets(Movements movements, Cell from) {
+        throw new UnsupportedOperationException();
+      }
+    };
   }
 
   @Test

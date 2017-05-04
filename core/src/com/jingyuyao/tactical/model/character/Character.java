@@ -7,6 +7,11 @@ import com.jingyuyao.tactical.model.item.Weapon;
 
 public interface Character {
 
+  /**
+   * Return whether or not this character can currently be controlled by the player.
+   */
+  boolean canControl();
+
   String getName();
 
   /**

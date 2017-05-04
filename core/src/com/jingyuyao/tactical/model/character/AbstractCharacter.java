@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-class BaseCharacter implements Character {
+abstract class AbstractCharacter implements Character {
 
   private String name;
   private int maxHp;
@@ -13,10 +13,10 @@ class BaseCharacter implements Character {
   private int moveDistance;
   private Items items;
 
-  BaseCharacter() {
+  AbstractCharacter() {
   }
 
-  BaseCharacter(String name, int maxHp, int hp, int moveDistance, Items items) {
+  AbstractCharacter(String name, int maxHp, int hp, int moveDistance, Items items) {
     this.name = name;
     this.maxHp = maxHp;
     this.hp = hp;

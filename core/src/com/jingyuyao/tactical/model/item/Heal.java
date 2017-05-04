@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.item;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 
-public class Heal extends BaseItem implements Consumable {
+public class Heal extends AbstractItem implements Consumable {
 
   private int amount;
 

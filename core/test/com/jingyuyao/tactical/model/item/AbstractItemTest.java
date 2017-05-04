@@ -8,16 +8,21 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseItemTest {
+public class AbstractItemTest {
 
   private static final String NAME = "item";
   private static final int USAGE_LEFT = 1;
 
-  private BaseItem item;
+  private AbstractItem item;
 
   @Before
   public void setUp() {
-    item = new BaseItem(NAME, USAGE_LEFT);
+    item = new AbstractItem(NAME, USAGE_LEFT) {
+      @Override
+      public String getDescription() {
+        throw new UnsupportedOperationException();
+      }
+    };
   }
 
   @Test

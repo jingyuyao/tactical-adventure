@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -81,10 +80,7 @@ class CharacterItemsPanel extends VisTable {
           CharacterItemsPanel.this.display(character);
         }
       });
-      // TODO: polish this, add actionable to all characters?
-      if (!(Player.class.isInstance(character) && Player.class.cast(character).isActionable())) {
-        setDisabled(true);
-      }
+      setDisabled(!character.canControl());
     }
   }
 
@@ -99,10 +95,7 @@ class CharacterItemsPanel extends VisTable {
           CharacterItemsPanel.this.display(character);
         }
       });
-      // TODO: polish this, add actionable to all characters?
-      if (!(Player.class.isInstance(character) && Player.class.cast(character).isActionable())) {
-        setDisabled(true);
-      }
+      setDisabled(!character.canControl());
     }
   }
 }

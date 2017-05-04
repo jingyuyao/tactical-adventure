@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.world.Movements;
  * A weapon that can be targeted in all directions in {@link Direction#values()}.
  */
 // TODO: test me
-public class DirectionalWeapon extends BaseWeapon {
+public class DirectionalWeapon extends AbstractWeapon {
 
   private int distance;
 

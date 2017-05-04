@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseCharacterTest {
+public class AbstractCharacterTest {
 
   private static final String NAME = "yo";
   private static final int MAX_HP = 20;
@@ -37,7 +37,12 @@ public class BaseCharacterTest {
 
   @Before
   public void setUp() {
-    character = new BaseCharacter(NAME, MAX_HP, HP, MOVE_DISTANCE, items);
+    character = new AbstractCharacter(NAME, MAX_HP, HP, MOVE_DISTANCE, items) {
+      @Override
+      public boolean canControl() {
+        return false;
+      }
+    };
   }
 
   @Test
