@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.world.Movements;
 import java.util.Set;
 
 // TODO: test me
-public class Grenade extends AbstractWeapon {
+public class Grenade extends BaseWeapon {
 
   private int distance;
   private int size;

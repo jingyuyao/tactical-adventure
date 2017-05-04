@@ -5,15 +5,15 @@ import com.google.common.base.Preconditions;
 /**
  * An {@link Item} that can be used and has a limited number of usages.
  */
-abstract class AbstractItem implements Item {
+class BaseItem implements Item {
 
   private String name;
   private int usageLeft;
 
-  AbstractItem() {
+  BaseItem() {
   }
 
-  AbstractItem(String name, int usageLeft) {
+  BaseItem(String name, int usageLeft) {
     this.name = name;
     this.usageLeft = usageLeft;
   }
@@ -21,6 +21,11 @@ abstract class AbstractItem implements Item {
   @Override
   public String getName() {
     return name;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Does nothing";
   }
 
   @Override

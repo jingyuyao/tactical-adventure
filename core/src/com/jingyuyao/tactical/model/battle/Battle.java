@@ -27,7 +27,7 @@ public class Battle {
     future.addCallback(new Runnable() {
       @Override
       public void run() {
-        weapon.damages(target);
+        weapon.apply(attacker, target);
         attacker.useWeapon(weapon);
         for (Cell cell : target.getTargetCells()) {
           for (Character character : cell.character().asSet()) {

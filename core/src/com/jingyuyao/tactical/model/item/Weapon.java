@@ -12,12 +12,10 @@ import com.jingyuyao.tactical.model.world.Movements;
 public interface Weapon extends Item {
 
   /**
-   * Damages characters in the given target. Different weapon implementations might apply different
-   * amount of damage to different parts of the target. This method is responsible for whether
-   * or not it respects the character's defense. (Some weapon implementation might ignore a
-   * character's defense altogether)
+   * Apply this weapon's effect to target. Different implementations can do completely different
+   * things.
    */
-  void damages(Target target);
+  void apply(Character attacker, Target target);
 
   ImmutableList<Target> createTargets(Movements movements, Cell from);
 }

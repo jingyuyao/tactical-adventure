@@ -4,11 +4,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,33 +23,53 @@ public class BaseWeaponTest {
   @Mock
   private Cell cell2;
   @Mock
+  private Character attacker;
+  @Mock
   private Character character1;
   @Mock
   private Character character2;
 
-  private AbstractWeapon baseWeapon;
+  private BaseWeapon baseWeapon;
 
   @Before
   public void setUp() {
-    baseWeapon = new AbstractWeapon(10) {
-      @Override
-      public ImmutableList<Target> createTargets(Movements movements, Cell from) {
-        throw new UnsupportedOperationException();
-      }
-    };
-  }
-
-  @Test
-  public void damages() {
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
     when(cell1.character()).thenReturn(Optional.of(character1));
     when(cell2.character()).thenReturn(Optional.of(character2));
     when(character1.getDefense()).thenReturn(3);
     when(character2.getDefense()).thenReturn(100);
+  }
 
-    baseWeapon.damages(target);
+  @Test
+  public void apply_basic() {
+    baseWeapon = new BaseWeapon(10, 0, 0);
+    baseWeapon.apply(attacker, target);
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
+    verify(attacker).damageBy(0);
+    verify(attacker).healBy(0);
+  }
+
+  @Test
+  public void apply_life_steal() {
+    baseWeapon = new BaseWeapon(10, 0.5f, 0);
+    baseWeapon.apply(attacker, target);
+
+    verify(character1).damageBy(7);
+    verify(character2).damageBy(0);
+    verify(attacker).damageBy(0);
+    verify(attacker).healBy(3);
+  }
+
+  @Test
+  public void apply_recoil() {
+    baseWeapon = new BaseWeapon(10, 0, 0.5f);
+    baseWeapon.apply(attacker, target);
+
+    verify(character1).damageBy(7);
+    verify(character2).damageBy(0);
+    verify(attacker).damageBy(3);
+    verify(attacker).healBy(0);
   }
 }
