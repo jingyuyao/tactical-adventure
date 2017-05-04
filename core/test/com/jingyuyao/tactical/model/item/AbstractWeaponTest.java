@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseWeaponTest {
+public class AbstractWeaponTest {
 
   @Mock
   private Target target;
@@ -24,6 +24,8 @@ public class BaseWeaponTest {
   private Cell cell1;
   @Mock
   private Cell cell2;
+  @Mock
+  private Character attacker;
   @Mock
   private Character character1;
   @Mock
@@ -49,7 +51,7 @@ public class BaseWeaponTest {
     when(character1.getDefense()).thenReturn(3);
     when(character2.getDefense()).thenReturn(100);
 
-    baseWeapon.damages(target);
+    baseWeapon.apply(attacker, target);
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
