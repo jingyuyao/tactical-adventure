@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import java.util.Locale;
 
-public class BasicArmor extends BaseItem implements Armor {
+class BaseArmor extends BaseItem implements Armor {
 
   private int defense;
 
@@ -13,6 +13,6 @@ public class BasicArmor extends BaseItem implements Armor {
 
   @Override
   public String getDescription() {
-    return String.format(Locale.US, "Basic armor that provides %d defense", defense);
+    return String.format(Locale.US, "%d defense", defense);
   }
 }

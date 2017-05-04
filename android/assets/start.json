@@ -34,13 +34,22 @@
             "size": 2
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "stashedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "diamond armor",
+            "usageLeft": 50,
+            "defense": 100
+          }
+        ],
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     },
     {
@@ -76,13 +85,21 @@
             "size": 2
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "stashedArmors": [],
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          },
+          {
+            "type": "Helmet",
+            "name": "hat",
+            "usageLeft": 10,
+            "defense": 1
+          }
+        ]
       }
     },
     {
@@ -110,13 +127,15 @@
             "distance": 3
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "stashedArmors": [],
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     },
     {
@@ -144,13 +163,15 @@
             "distance": 3
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": {
-          "type": "BasicArmor",
-          "name": "armor",
-          "usageLeft": 50,
-          "defense": 5
-        }
+        "stashedArmors": [],
+        "equippedArmors": [
+          {
+            "type": "BodyArmor",
+            "name": "armor",
+            "usageLeft": 50,
+            "defense": 5
+          }
+        ]
       }
     }
   ]

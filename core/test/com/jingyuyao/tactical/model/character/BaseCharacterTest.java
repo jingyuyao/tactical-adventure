@@ -100,10 +100,10 @@ public class BaseCharacterTest {
   }
 
   @Test
-  public void get_unequipped_armors() {
-    when(items.getUnequippedArmors()).thenReturn(ImmutableList.of(armor1));
+  public void get_stashed_armors() {
+    when(items.getStashedArmors()).thenReturn(ImmutableList.of(armor1));
 
-    assertThat(character.getUnequippedArmors()).containsExactly(armor1);
+    assertThat(character.getStashedArmors()).containsExactly(armor1);
   }
 
   @Test
@@ -128,9 +128,16 @@ public class BaseCharacterTest {
   }
 
   @Test
-  public void equip_body_armor() {
-    character.equipBodyArmor(armor1);
+  public void equip_armor() {
+    character.equipArmor(armor1);
 
-    verify(items).equipBodyArmor(armor1);
+    verify(items).equipArmor(armor1);
+  }
+
+  @Test
+  public void unequip_armor() {
+    character.unequipArmor(armor1);
+
+    verify(items).unequipArmor(armor1);
   }
 }

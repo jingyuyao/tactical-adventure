@@ -17,12 +17,7 @@ public class BaseItemTest {
 
   @Before
   public void setUp() {
-    item = new BaseItem(NAME, USAGE_LEFT) {
-      @Override
-      public String getDescription() {
-        return null;
-      }
-    };
+    item = new BaseItem(NAME, USAGE_LEFT);
   }
 
   @Test

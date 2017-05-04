@@ -13,11 +13,12 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.PassiveEnemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Armor;
-import com.jingyuyao.tactical.model.item.BasicArmor;
+import com.jingyuyao.tactical.model.item.BodyArmor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
+import com.jingyuyao.tactical.model.item.Helmet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Singleton;
@@ -59,7 +60,8 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Armor.class)
-            .registerSubtype(BasicArmor.class)
+            .registerSubtype(BodyArmor.class)
+            .registerSubtype(Helmet.class)
     );
     return builder.create();
   }

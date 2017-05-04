@@ -23,8 +23,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "8,12": {
@@ -44,8 +44,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "9,11": {
@@ -65,8 +65,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "2,12": {
@@ -86,8 +86,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "4,10": {
@@ -107,8 +107,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "6,8": {
@@ -128,8 +128,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "8,6": {
@@ -149,8 +149,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     },
     "10,4": {
@@ -170,8 +170,8 @@
             "distance": 1
           }
         ],
-        "unequippedArmors": [],
-        "bodyArmor": null
+        "stashedArmors": [],
+        "equippedArmors": []
       }
     }
   }

@@ -31,21 +31,24 @@ public interface Character {
 
   ImmutableList<Weapon> getWeapons();
 
-  /**
-   * Return a list b/c eventually we will have multiple armors.
-   */
   ImmutableList<Armor> getEquippedArmors();
 
-  ImmutableList<Armor> getUnequippedArmors();
+  ImmutableList<Armor> getStashedArmors();
 
   void useConsumable(Consumable consumable);
 
   void useWeapon(Weapon weapon);
 
-  /**
-   * Plural b/c eventually we will have multiple armors.
-   */
   void useEquippedArmors();
 
-  void equipBodyArmor(Armor armor);
+  /**
+   * Equips {@code armor} from the stash. Replaces the previously equipped armor of the same type if
+   * its present.
+   */
+  void equipArmor(Armor armor);
+
+  /**
+   * Unequips equipped {@code armor} and move it to the stash.
+   */
+  void unequipArmor(Armor armor);
 }
