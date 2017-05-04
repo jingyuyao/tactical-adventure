@@ -1,5 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-public class BodyArmor extends AbstractArmor {
+public class BodyArmor extends BaseArmor {
 
 }

@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.world.Movements;
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
  */
-class BaseWeapon extends AbstractItem implements Weapon {
+class BaseWeapon extends BaseItem implements Weapon {
 
   private int attackPower;
   private boolean lifeSteal;
