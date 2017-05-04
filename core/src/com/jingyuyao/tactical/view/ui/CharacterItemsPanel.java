@@ -27,7 +27,7 @@ class CharacterItemsPanel extends VisTable {
     addText("Action");
     row();
 
-    addItemsNoAction(character.getEquippedArmors());
+    addEquippedArmors(character);
     addStashedArmors(character);
     addItemsNoAction(character.getWeapons());
     addItemsNoAction(character.getConsumables());
@@ -40,6 +40,14 @@ class CharacterItemsPanel extends VisTable {
     for (Item item : items) {
       addItem(item);
       add(); // no action
+      row();
+    }
+  }
+
+  private void addEquippedArmors(Character character) {
+    for (Armor armor : character.getEquippedArmors()) {
+      addItem(armor);
+      add(this.new UnequipArmor(character, armor));
       row();
     }
   }
@@ -73,7 +81,25 @@ class CharacterItemsPanel extends VisTable {
           CharacterItemsPanel.this.display(character);
         }
       });
-      // TODO: polish this
+      // TODO: polish this, add actionable to all characters?
+      if (!(Player.class.isInstance(character) && Player.class.cast(character).isActionable())) {
+        setDisabled(true);
+      }
+    }
+  }
+
+  private class UnequipArmor extends VisTextButton {
+
+    private UnequipArmor(final Character character, final Armor armor) {
+      super("Unequip", new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          character.unequipArmor(armor);
+          // refresh
+          CharacterItemsPanel.this.display(character);
+        }
+      });
+      // TODO: polish this, add actionable to all characters?
       if (!(Player.class.isInstance(character) && Player.class.cast(character).isActionable())) {
         setDisabled(true);
       }
