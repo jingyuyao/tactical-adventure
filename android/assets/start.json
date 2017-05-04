@@ -123,8 +123,10 @@
             "type": "DirectionalWeapon",
             "name": "buzz",
             "usageLeft": 15,
-            "attackPower": 7,
-            "distance": 3
+            "attackPower": 50,
+            "distance": 3,
+            "recoil": true,
+            "recoilRate": 0.3
           }
         ],
         "stashedArmors": [],
@@ -159,8 +161,10 @@
             "type": "DirectionalWeapon",
             "name": "buzz",
             "usageLeft": 15,
-            "attackPower": 7,
-            "distance": 3
+            "attackPower": 10,
+            "distance": 3,
+            "lifeSteal": true,
+            "lifeStealRate": 0.5
           }
         ],
         "stashedArmors": [],
