@@ -79,7 +79,10 @@ class BaseWeapon extends BaseItem implements Weapon {
    * Override me to add post-damage effects.
    */
   void postDamage(Character attacker, Cell target, int damage) {
-    attacker.healBy((int) (lifeStealRate * damage));
+    // can't life steal if there is nobody to steal it from
+    if (target.character().isPresent()) {
+      attacker.healBy((int) (lifeStealRate * damage));
+    }
     attacker.damageBy((int) (recoilRate * damage));
   }
 
