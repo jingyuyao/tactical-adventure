@@ -4,12 +4,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +30,8 @@ public class UsingConsumableTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private Cell cell;
+  @Mock
   private Player player;
   @Mock
   private Consumable consumable;
@@ -40,7 +44,8 @@ public class UsingConsumableTest {
 
   @Before
   public void setUp() {
-    usingConsumable = new UsingConsumable(modelBus, worldState, stateFactory, player, consumable);
+    when(cell.player()).thenReturn(Optional.of(player));
+    usingConsumable = new UsingConsumable(modelBus, worldState, stateFactory, cell, consumable);
   }
 
   @Test

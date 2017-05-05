@@ -3,11 +3,11 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
+import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class UsingConsumable extends AbstractPlayerState {
+public class UsingConsumable extends BasePlayerState {
 
   private final Consumable consumable;
 
@@ -16,9 +16,9 @@ public class UsingConsumable extends AbstractPlayerState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      @Assisted Player player,
+      @Assisted Cell playerCell,
       @Assisted Consumable consumable) {
-    super(modelBus, worldState, stateFactory, player);
+    super(modelBus, worldState, stateFactory, playerCell);
     this.consumable = consumable;
   }
 

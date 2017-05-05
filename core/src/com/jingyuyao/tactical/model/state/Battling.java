@@ -4,38 +4,31 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.item.Target;
-import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class Battling extends AbstractPlayerState {
+public class Battling extends BasePlayerState {
 
   private final StateFactory stateFactory;
   private final Battle battle;
-  private final Weapon weapon;
-  private final Target target;
 
   @Inject
   Battling(
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Battle battle,
-      @Assisted Player player,
-      @Assisted Weapon weapon,
-      @Assisted Target target) {
-    super(modelBus, worldState, stateFactory, player);
+      @Assisted Cell playerCell,
+      @Assisted Battle battle) {
+    super(modelBus, worldState, stateFactory, playerCell);
     this.stateFactory = stateFactory;
     this.battle = battle;
-    this.weapon = weapon;
-    this.target = target;
   }
 
   @Override
   public void select(Cell cell) {
-    if (target.canTarget(cell)) {
+    if (battle.getTarget().canTarget(cell)) {
       attack();
     }
   }
@@ -45,21 +38,17 @@ public class Battling extends AbstractPlayerState {
     return ImmutableList.of(new AttackAction(this), new BackAction(this));
   }
 
-  public Weapon getWeapon() {
-    return weapon;
-  }
-
-  public Target getTarget() {
-    return target;
+  public Battle getBattle() {
+    return battle;
   }
 
   void attack() {
     goTo(stateFactory.createTransition());
-    battle.begin(getPlayer(), weapon, target).addCallback(new Runnable() {
+    post(new StartBattle(battle, new MyFuture(new Runnable() {
       @Override
       public void run() {
         finish();
       }
-    });
+    })));
   }
 }

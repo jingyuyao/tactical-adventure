@@ -15,6 +15,13 @@ public class MyFuture {
     this.future = SettableFuture.create();
   }
 
+  public MyFuture(Runnable... callbacks) {
+    this();
+    for (Runnable callback : callbacks) {
+      addCallback(callback);
+    }
+  }
+
   public static MyFuture immediate() {
     MyFuture future = new MyFuture();
     future.done();

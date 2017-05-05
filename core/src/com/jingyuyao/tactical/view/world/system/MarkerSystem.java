@@ -9,9 +9,9 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
-import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.Moving;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
@@ -97,7 +97,7 @@ class MarkerSystem extends EntitySystem {
 
   @Subscribe
   void battling(Battling battling) {
-    Target target = battling.getTarget();
+    Target target = battling.getBattle().getTarget();
     for (Cell cell : target.getTargetCells()) {
       mark(cell, WorldZIndex.ATTACK_MARKER, markers.getAttack());
     }

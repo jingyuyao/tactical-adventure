@@ -3,24 +3,16 @@ package com.jingyuyao.tactical.model.battle;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.Attack;
-import com.jingyuyao.tactical.model.event.MyFuture;
-import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -28,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BattleTest {
 
   @Mock
-  private ModelBus modelBus;
+  private Cell attackerCell;
   @Mock
   private Character attacker;
   @Mock
@@ -43,38 +35,52 @@ public class BattleTest {
   private Character character1;
   @Mock
   private Character character2;
-  @Captor
-  private ArgumentCaptor<Object> argumentCaptor;
 
   private Battle battle;
 
   @Before
   public void setUp() {
-    battle = new Battle(modelBus);
+    battle = new Battle(attackerCell, weapon, target);
+    assertThat(battle.getWeapon()).isSameAs(weapon);
+    assertThat(battle.getTarget()).isSameAs(target);
   }
 
   @Test
-  public void begin() {
+  public void execute_attacker_alive() {
+    when(attackerCell.character()).thenReturn(Optional.of(attacker));
+    when(attacker.getHp()).thenReturn(10);
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
     when(cell1.character()).thenReturn(Optional.of(character1));
     when(character1.getHp()).thenReturn(0);
     when(cell2.character()).thenReturn(Optional.of(character2));
     when(character2.getHp()).thenReturn(10);
 
-    MyFuture future = battle.begin(attacker, weapon, target);
+    battle.execute();
 
-    verify(modelBus).post(argumentCaptor.capture());
-    Attack attack = TestHelpers.verifyObjectEvent(argumentCaptor, 0, target, Attack.class);
-    assertThat(attack.getWeapon()).isSameAs(weapon);
-    assertThat(attack.getFuture()).isSameAs(future);
-    assertThat(future.isDone()).isFalse();
-    verifyZeroInteractions(weapon);
-    verifyZeroInteractions(attacker);
-
-    future.done();
-    assertThat(future.isDone()).isTrue();
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
+    verify(attackerCell, never()).removeCharacter();
+    verify(character1).useEquippedArmors();
+    verify(character2).useEquippedArmors();
+    verify(cell1).removeCharacter();
+    verify(cell2, never()).removeCharacter();
+  }
+
+  @Test
+  public void execute_attacker_dead() {
+    when(attackerCell.character()).thenReturn(Optional.of(attacker));
+    when(attacker.getHp()).thenReturn(0);
+    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
+    when(cell1.character()).thenReturn(Optional.of(character1));
+    when(character1.getHp()).thenReturn(0);
+    when(cell2.character()).thenReturn(Optional.of(character2));
+    when(character2.getHp()).thenReturn(10);
+
+    battle.execute();
+
+    verify(weapon).apply(attacker, target);
+    verify(attacker).useWeapon(weapon);
+    verify(attackerCell).removeCharacter();
     verify(character1).useEquippedArmors();
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();

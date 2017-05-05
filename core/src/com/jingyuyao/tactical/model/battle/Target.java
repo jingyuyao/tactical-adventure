@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.item;
+package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
@@ -13,11 +13,11 @@ public class Target {
   private final ImmutableSet<Cell> selectCells;
   private final ImmutableSet<Cell> targetCells;
 
-  Target(Cell origin, Set<Cell> selectCells, Set<Cell> targetCells) {
+  public Target(Cell origin, Set<Cell> selectCells, Set<Cell> targetCells) {
     this(origin, null, selectCells, targetCells);
   }
 
-  Target(Cell origin, Direction direction, Set<Cell> selectCells, Set<Cell> targetCells) {
+  public Target(Cell origin, Direction direction, Set<Cell> selectCells, Set<Cell> targetCells) {
     this.origin = origin;
     this.direction = direction;
     this.selectCells = ImmutableSet.copyOf(selectCells);

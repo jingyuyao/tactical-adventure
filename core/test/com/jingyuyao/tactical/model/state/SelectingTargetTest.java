@@ -5,12 +5,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
@@ -19,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -31,9 +34,11 @@ public class SelectingTargetTest {
   @Mock
   private ModelBus modelBus;
   @Mock
-  private Cell cell;
+  private Cell playerCell;
   @Mock
   private Player player;
+  @Mock
+  private Cell cell;
   @Mock
   private Weapon weapon;
   @Mock
@@ -44,14 +49,16 @@ public class SelectingTargetTest {
   private Battling battling;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<Battle> battleCaptor;
 
   private SelectingTarget selectingTarget;
 
   @Before
   public void setUp() {
-    selectingTarget =
-        new SelectingTarget(
-            modelBus, worldState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
+    when(playerCell.player()).thenReturn(Optional.of(player));
+    selectingTarget = new SelectingTarget(
+        modelBus, worldState, stateFactory, playerCell, weapon, ImmutableList.of(target1, target2));
   }
 
   @Test
@@ -73,10 +80,14 @@ public class SelectingTargetTest {
   @Test
   public void select_target() {
     when(target1.selectedBy(cell)).thenReturn(true);
-    when(stateFactory.createBattling(player, weapon, target1)).thenReturn(battling);
+    when(stateFactory.createBattling(Mockito.eq(playerCell), Mockito.<Battle>any()))
+        .thenReturn(battling);
 
     selectingTarget.select(cell);
 
+    verify(stateFactory).createBattling(Mockito.eq(playerCell), battleCaptor.capture());
+    assertThat(battleCaptor.getValue().getWeapon()).isSameAs(weapon);
+    assertThat(battleCaptor.getValue().getTarget()).isSameAs(target1);
     verify(worldState).goTo(battling);
   }
 

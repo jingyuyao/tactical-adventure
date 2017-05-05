@@ -8,10 +8,10 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -35,7 +35,7 @@ public class PlayerActionStateTest {
   @Mock
   private Movements movements;
   @Mock
-  private Cell cell;
+  private Cell playerCell;
   @Mock
   private Player player;
   @Mock
@@ -59,14 +59,14 @@ public class PlayerActionStateTest {
 
   @Before
   public void setUp() {
-    when(cell.player()).thenReturn(Optional.of(player));
-    state = new PlayerActionState(modelBus, worldState, stateFactory, movements, cell);
+    when(playerCell.player()).thenReturn(Optional.of(player));
+    state = new PlayerActionState(modelBus, worldState, stateFactory, movements, playerCell);
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void setUp_no_player() {
-    when(cell.player()).thenReturn(Optional.<Player>absent());
-    state = new PlayerActionState(modelBus, worldState, stateFactory, movements, cell);
+    when(playerCell.player()).thenReturn(Optional.<Player>absent());
+    state = new PlayerActionState(modelBus, worldState, stateFactory, movements, playerCell);
   }
 
   @Test
@@ -127,8 +127,9 @@ public class PlayerActionStateTest {
 
   @Test
   public void select_weapon() {
-    when(weapon.createTargets(movements, cell)).thenReturn(targets);
-    when(stateFactory.createSelectingTarget(player, weapon, targets)).thenReturn(selectingTarget);
+    when(weapon.createTargets(movements, playerCell)).thenReturn(targets);
+    when(stateFactory.createSelectingTarget(playerCell, weapon, targets))
+        .thenReturn(selectingTarget);
 
     state.selectWeapon(weapon);
 
@@ -137,7 +138,7 @@ public class PlayerActionStateTest {
 
   @Test
   public void select_consumable() {
-    when(stateFactory.createUsingConsumable(player, consumable)).thenReturn(usingConsumable);
+    when(stateFactory.createUsingConsumable(playerCell, consumable)).thenReturn(usingConsumable);
 
     state.selectConsumable(consumable);
 
