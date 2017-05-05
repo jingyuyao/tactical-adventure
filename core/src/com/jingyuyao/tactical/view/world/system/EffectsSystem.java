@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
-import com.jingyuyao.tactical.model.event.Attack;
+import com.jingyuyao.tactical.model.battle.Battle2;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
@@ -28,8 +28,8 @@ class EffectsSystem extends EntitySystem {
   }
 
   @Subscribe
-  void attack(final Attack attack) {
-    Target target = attack.getObject();
+  void battle2(final Battle2 battle2) {
+    Target target = battle2.getTarget();
 
     Position position = getEngine().createComponent(Position.class);
     position.set(target.getOrigin().getCoordinate(), WorldZIndex.EFFECTS);
@@ -40,8 +40,13 @@ class EffectsSystem extends EntitySystem {
       frame.setDirection(direction.get());
     }
 
-    SingleAnimation animation = animations.getWeapon(attack.getWeapon().getName());
-    attack.getFuture().completedBy(animation.getFuture());
+    SingleAnimation animation = animations.getWeapon(battle2.getWeapon().getName());
+    animation.getFuture().addCallback(new Runnable() {
+      @Override
+      public void run() {
+        battle2.execute();
+      }
+    });
 
     Entity entity = getEngine().createEntity();
     entity.add(position);
