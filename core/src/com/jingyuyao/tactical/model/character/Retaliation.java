@@ -1,24 +1,24 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.battle.Battle2;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.world.Path;
 
 public class Retaliation {
 
   private final Path path;
-  private final Battle2 battle2;
+  private final Battle battle;
 
-  Retaliation(Path path, Battle2 battle2) {
+  Retaliation(Path path, Battle battle) {
     this.path = path;
-    this.battle2 = battle2;
+    this.battle = battle;
   }
 
   public Optional<Path> getPath() {
     return Optional.fromNullable(path);
   }
 
-  public Optional<Battle2> getBattle2() {
-    return Optional.fromNullable(battle2);
+  public Optional<Battle> getBattle() {
+    return Optional.fromNullable(battle);
   }
 }

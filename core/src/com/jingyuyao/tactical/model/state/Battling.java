@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.battle.Battle2;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -52,7 +52,7 @@ public class Battling extends BasePlayerState {
 
   void attack() {
     goTo(stateFactory.createTransition());
-    post(new Battle2(getPlayerCell(), weapon, target, new MyFuture(new Runnable() {
+    post(new Battle(getPlayerCell(), weapon, target, new MyFuture(new Runnable() {
       @Override
       public void run() {
         finish();

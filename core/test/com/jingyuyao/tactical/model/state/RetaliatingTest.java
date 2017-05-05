@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.battle.Battle2;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
@@ -58,7 +58,7 @@ public class RetaliatingTest {
   @Mock
   private Path path;
   @Mock
-  private Battle2 battle2;
+  private Battle battle;
   @Mock
   private Cell origin;
   @Mock
@@ -93,12 +93,12 @@ public class RetaliatingTest {
     when(enemy.getRetaliation(movements, cell)).thenReturn(retaliation);
     when(enemy2.getRetaliation(movements, cell2)).thenReturn(retaliation2);
     when(retaliation.getPath()).thenReturn(Optional.of(path));
-    when(retaliation.getBattle2()).thenReturn(Optional.of(battle2));
+    when(retaliation.getBattle()).thenReturn(Optional.of(battle));
     when(retaliation2.getPath()).thenReturn(Optional.<Path>absent());
-    when(retaliation2.getBattle2()).thenReturn(Optional.<Battle2>absent());
+    when(retaliation2.getBattle()).thenReturn(Optional.<Battle>absent());
     when(path.getOrigin()).thenReturn(origin);
     when(origin.moveCharacter(path)).thenReturn(MyFuture.immediate());
-    when(battle2.getFuture()).thenReturn(MyFuture.immediate());
+    when(battle.getFuture()).thenReturn(MyFuture.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     retaliating.enter();
@@ -107,7 +107,7 @@ public class RetaliatingTest {
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).getRetaliation(movements, cell);
     inOrder.verify(origin).moveCharacter(path);
-    inOrder.verify(modelBus).post(battle2);
+    inOrder.verify(modelBus).post(battle);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).getRetaliation(movements, cell2);
     inOrder.verify(worldState).branchTo(waiting);

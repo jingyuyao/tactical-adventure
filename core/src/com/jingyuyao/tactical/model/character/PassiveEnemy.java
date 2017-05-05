@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
-import com.jingyuyao.tactical.model.battle.Battle2;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -27,7 +27,7 @@ public class PassiveEnemy extends AbstractCharacter implements Enemy {
           if (canTarget(target)) {
             return new Retaliation(
                 movement.pathTo(moveCell),
-                new Battle2(moveCell, weapon, target, new MyFuture()));
+                new Battle(moveCell, weapon, target, new MyFuture()));
           }
         }
       }

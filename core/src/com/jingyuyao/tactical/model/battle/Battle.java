@@ -6,14 +6,14 @@ import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 
-public class Battle2 {
+public class Battle {
 
   private final Cell attackerCell;
   private final Weapon weapon;
   private final Target target;
   private final MyFuture future;
 
-  public Battle2(Cell attackerCell, Weapon weapon, Target target, MyFuture future) {
+  public Battle(Cell attackerCell, Weapon weapon, Target target, MyFuture future) {
     this.attackerCell = attackerCell;
     this.weapon = weapon;
     this.target = target;

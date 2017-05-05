@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class Battle2Test {
+public class BattleTest {
 
   @Mock
   private Cell attackerCell;
@@ -38,14 +38,14 @@ public class Battle2Test {
   @Mock
   private Character character2;
 
-  private Battle2 battle2;
+  private Battle battle;
 
   @Before
   public void setUp() {
-    battle2 = new Battle2(attackerCell, weapon, target, new MyFuture());
-    assertThat(battle2.getWeapon()).isSameAs(weapon);
-    assertThat(battle2.getTarget()).isSameAs(target);
-    assertThat(battle2.getFuture().isDone()).isFalse();
+    battle = new Battle(attackerCell, weapon, target, new MyFuture());
+    assertThat(battle.getWeapon()).isSameAs(weapon);
+    assertThat(battle.getTarget()).isSameAs(target);
+    assertThat(battle.getFuture().isDone()).isFalse();
   }
 
   @Test
@@ -58,7 +58,7 @@ public class Battle2Test {
     when(cell2.character()).thenReturn(Optional.of(character2));
     when(character2.getHp()).thenReturn(10);
 
-    battle2.execute();
+    battle.execute();
 
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
@@ -67,7 +67,7 @@ public class Battle2Test {
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
-    assertThat(battle2.getFuture().isDone()).isTrue();
+    assertThat(battle.getFuture().isDone()).isTrue();
   }
 
   @Test
@@ -80,7 +80,7 @@ public class Battle2Test {
     when(cell2.character()).thenReturn(Optional.of(character2));
     when(character2.getHp()).thenReturn(10);
 
-    battle2.execute();
+    battle.execute();
 
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
@@ -89,6 +89,6 @@ public class Battle2Test {
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
-    assertThat(battle2.getFuture().isDone()).isTrue();
+    assertThat(battle.getFuture().isDone()).isTrue();
   }
 }

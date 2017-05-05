@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.battle.Battle2;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -33,7 +33,7 @@ public class EffectsSystemTest {
   @Mock
   private Animations animations;
   @Mock
-  private Battle2 battle2;
+  private Battle battle;
   @Mock
   private Target target;
   @Mock
@@ -63,12 +63,12 @@ public class EffectsSystemTest {
     when(cell.getCoordinate()).thenReturn(C1);
     when(weapon.getName()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
-    when(battle2.getWeapon()).thenReturn(weapon);
-    when(battle2.getTarget()).thenReturn(target);
+    when(battle.getWeapon()).thenReturn(weapon);
+    when(battle.getTarget()).thenReturn(target);
 
-    effectsSystem.battle2(battle2);
+    effectsSystem.battle(battle);
 
-    verify(battle2, never()).execute();
+    verify(battle, never()).execute();
     assertThat(engine.getEntities()).hasSize(1);
     Entity entity = engine.getEntities().first();
     Frame frame = entity.getComponent(Frame.class);
@@ -83,7 +83,7 @@ public class EffectsSystemTest {
 
     animation.advanceTime(100);
 
-    verify(battle2).execute();
+    verify(battle).execute();
   }
 
   @Test
@@ -95,12 +95,12 @@ public class EffectsSystemTest {
     when(cell.getCoordinate()).thenReturn(C1);
     when(weapon.getName()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
-    when(battle2.getWeapon()).thenReturn(weapon);
-    when(battle2.getTarget()).thenReturn(target);
+    when(battle.getWeapon()).thenReturn(weapon);
+    when(battle.getTarget()).thenReturn(target);
 
-    effectsSystem.battle2(battle2);
+    effectsSystem.battle(battle);
 
-    verify(battle2, never()).execute();
+    verify(battle, never()).execute();
     assertThat(engine.getEntities()).hasSize(1);
     Entity entity = engine.getEntities().first();
     Frame frame = entity.getComponent(Frame.class);
@@ -115,6 +115,6 @@ public class EffectsSystemTest {
 
     animation.advanceTime(100);
 
-    verify(battle2).execute();
+    verify(battle).execute();
   }
 }
