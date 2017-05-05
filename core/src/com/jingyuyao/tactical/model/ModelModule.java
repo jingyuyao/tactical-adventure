@@ -13,7 +13,6 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
-import com.jingyuyao.tactical.model.battle.BattleModule;
 import com.jingyuyao.tactical.model.character.CharacterModule;
 import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.state.StateModule;
@@ -31,7 +30,6 @@ public class ModelModule extends AbstractModule {
   protected void configure() {
     install(new WorldModule());
     install(new CharacterModule());
-    install(new BattleModule());
     install(new TerrainModule());
     install(new ItemModule());
     install(new StateModule());

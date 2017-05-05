@@ -8,7 +8,6 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Target;
@@ -33,9 +32,6 @@ public class StateModuleTest {
   @Bind
   @Mock
   private World world;
-  @Bind
-  @Mock
-  private Battle battle;
   @Bind
   @Mock
   private Movements movements;
