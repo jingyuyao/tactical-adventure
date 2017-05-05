@@ -10,6 +10,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.SelectCell;
@@ -54,6 +55,8 @@ public class MarkerSystemTest {
   private SelectingTarget selectingTarget;
   @Mock
   private Battling battling;
+  @Mock
+  private Battle battle;
   @Mock
   private Movement movement;
   @Mock
@@ -149,7 +152,8 @@ public class MarkerSystemTest {
 
   @Test
   public void battling() {
-    when(battling.getTarget()).thenReturn(target);
+    when(battling.getBattle()).thenReturn(battle);
+    when(battle.getTarget()).thenReturn(target);
     when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell));
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell2));
     when(cell.getCoordinate()).thenReturn(C1);

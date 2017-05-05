@@ -8,6 +8,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -42,9 +43,7 @@ public class StateModuleTest {
   @Mock
   private Weapon weapon;
   @Mock
-  private ImmutableList<Target> targets;
-  @Mock
-  private Target target;
+  private Battle battle;
   @Mock
   private Movement movement;
   @Mock
@@ -68,9 +67,9 @@ public class StateModuleTest {
     stateFactory.createWaiting();
     stateFactory.createMoving(cell, movement);
     stateFactory.createMoved(cell);
-    stateFactory.createSelectingTarget(cell, weapon, targets);
+    stateFactory.createSelectingTarget(cell, weapon, ImmutableList.<Target>of());
     stateFactory.createUsingConsumable(cell, consumable);
-    stateFactory.createBattling(cell, weapon, target);
+    stateFactory.createBattling(cell, battle);
     stateFactory.createRetaliating();
   }
 }

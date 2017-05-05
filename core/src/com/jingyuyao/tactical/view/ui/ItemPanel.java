@@ -47,7 +47,7 @@ class ItemPanel extends TextPanel<Item> {
 
   @Subscribe
   void battling(Battling battling) {
-    display(battling.getWeapon());
+    display(battling.getBattle().getWeapon());
   }
 
   @Subscribe

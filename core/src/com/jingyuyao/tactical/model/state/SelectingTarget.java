@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -30,7 +31,8 @@ public class SelectingTarget extends BasePlayerState {
   public void select(Cell cell) {
     for (Target target : targets) {
       if (target.selectedBy(cell)) {
-        goTo(getStateFactory().createBattling(getPlayerCell(), weapon, target));
+        goTo(getStateFactory().createBattling(
+            getPlayerCell(), new Battle(getPlayerCell(), weapon, target)));
         return;
       }
     }

@@ -12,18 +12,12 @@ public class StartBattle {
 
   public StartBattle(final Battle battle, MyFuture future) {
     this.battle = battle;
+    // not exposed because we always want battle to execute before future finishes.
     this.future = future;
   }
 
   public Battle getBattle() {
     return battle;
-  }
-
-  /**
-   * Should only be used for testing. View should complete this event by calling {@link #start()}.
-   */
-  public MyFuture getFuture() {
-    return future;
   }
 
   /**

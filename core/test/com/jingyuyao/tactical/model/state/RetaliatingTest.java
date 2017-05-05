@@ -103,7 +103,7 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin);
+    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, battle);
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).getRetaliation(movements, cell);
     inOrder.verify(origin).moveCharacter(path);
@@ -111,8 +111,8 @@ public class RetaliatingTest {
     assertThat(argumentCaptor.getAllValues().get(2)).isInstanceOf(StartBattle.class);
     StartBattle startBattle = (StartBattle) argumentCaptor.getAllValues().get(2);
     assertThat(startBattle.getBattle()).isSameAs(battle);
-    assertThat(startBattle.getFuture().isDone()).isFalse();
-    startBattle.getFuture().done();
+    startBattle.start();
+    inOrder.verify(battle).execute();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).getRetaliation(movements, cell2);
     inOrder.verify(worldState).branchTo(waiting);

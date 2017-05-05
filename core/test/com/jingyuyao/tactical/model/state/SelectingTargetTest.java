@@ -9,6 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -20,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,6 +49,8 @@ public class SelectingTargetTest {
   private Battling battling;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<Battle> battleCaptor;
 
   private SelectingTarget selectingTarget;
 
@@ -76,10 +80,14 @@ public class SelectingTargetTest {
   @Test
   public void select_target() {
     when(target1.selectedBy(cell)).thenReturn(true);
-    when(stateFactory.createBattling(playerCell, weapon, target1)).thenReturn(battling);
+    when(stateFactory.createBattling(Mockito.eq(playerCell), Mockito.<Battle>any()))
+        .thenReturn(battling);
 
     selectingTarget.select(cell);
 
+    verify(stateFactory).createBattling(Mockito.eq(playerCell), battleCaptor.capture());
+    assertThat(battleCaptor.getValue().getWeapon()).isSameAs(weapon);
+    assertThat(battleCaptor.getValue().getTarget()).isSameAs(target1);
     verify(worldState).goTo(battling);
   }
 

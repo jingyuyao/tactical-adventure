@@ -10,11 +10,11 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.StartBattle;
-import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class BattlingTest {
   @Mock
   private Player attackingPlayer;
   @Mock
-  private Weapon weapon;
+  private Battle battle;
   @Mock
   private Target target;
   @Mock
@@ -57,7 +57,7 @@ public class BattlingTest {
   @Before
   public void setUp() {
     when(playerCell.player()).thenReturn(Optional.of(attackingPlayer));
-    battling = new Battling(modelBus, worldState, stateFactory, playerCell, weapon, target);
+    battling = new Battling(modelBus, worldState, stateFactory, playerCell, battle);
   }
 
   @Test
@@ -78,6 +78,7 @@ public class BattlingTest {
 
   @Test
   public void select_cannot_attack() {
+    when(battle.getTarget()).thenReturn(target);
     when(target.canTarget(cell)).thenReturn(false);
 
     battling.select(cell);
@@ -89,6 +90,7 @@ public class BattlingTest {
   public void select_can_attack() {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
+    when(battle.getTarget()).thenReturn(target);
     when(target.canTarget(cell)).thenReturn(true);
 
     battling.select(cell);
@@ -115,15 +117,14 @@ public class BattlingTest {
   }
 
   private void verify_attacked() {
-    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingPlayer);
+    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingPlayer, battle);
     inOrder.verify(worldState).goTo(transition);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(StartBattle.class);
     StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
-    assertThat(startBattle.getBattle().getWeapon()).isSameAs(weapon);
-    assertThat(startBattle.getBattle().getTarget()).isSameAs(target);
-    assertThat(startBattle.getFuture().isDone()).isFalse();
-    startBattle.getFuture().done();
+    assertThat(startBattle.getBattle()).isSameAs(battle);
+    startBattle.start();
+    inOrder.verify(battle).execute();
     inOrder.verify(attackingPlayer).setActionable(false);
     inOrder.verify(worldState).branchTo(waiting);
     verifyNoMoreInteractions(worldState);

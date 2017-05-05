@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -24,7 +25,7 @@ interface StateFactory {
 
   UsingConsumable createUsingConsumable(Cell cell, Consumable consumable);
 
-  Battling createBattling(Cell cell, Weapon weapon, Target target);
+  Battling createBattling(Cell cell, Battle battle);
 
   Retaliating createRetaliating();
 }

@@ -97,7 +97,7 @@ class MarkerSystem extends EntitySystem {
 
   @Subscribe
   void battling(Battling battling) {
-    Target target = battling.getTarget();
+    Target target = battling.getBattle().getTarget();
     for (Cell cell : target.getTargetCells()) {
       mark(cell, WorldZIndex.ATTACK_MARKER, markers.getAttack());
     }
