@@ -28,7 +28,7 @@ public class Target {
     return origin;
   }
 
-  public Optional<Direction> getDirection() {
+  public Optional<Direction> direction() {
     return Optional.fromNullable(direction);
   }
 

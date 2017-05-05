@@ -60,13 +60,13 @@ public class AnimationSystemTest {
 
     engine.update(0.5f);
 
-    assertThat(frame1.getTexture()).hasValue(texture1);
-    assertThat(frame2.getTexture()).hasValue(texture3);
+    assertThat(frame1.texture()).hasValue(texture1);
+    assertThat(frame2.texture()).hasValue(texture3);
 
     engine.update(1f);
 
-    assertThat(frame1.getTexture()).hasValue(texture2);
-    assertThat(frame2.getTexture()).hasValue(texture3);
+    assertThat(frame1.texture()).hasValue(texture2);
+    assertThat(frame2.texture()).hasValue(texture3);
     assertThat(entity2.getComponent(Remove.class)).isNotNull();
   }
 }

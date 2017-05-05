@@ -19,7 +19,7 @@ public class Frame implements Component, Poolable {
   private Color color = Color.WHITE;
   private Direction direction = null;
 
-  public Optional<WorldTexture> getTexture() {
+  public Optional<WorldTexture> texture() {
     return Optional.fromNullable(texture);
   }
 
@@ -47,7 +47,7 @@ public class Frame implements Component, Poolable {
     this.color = color;
   }
 
-  public Optional<Direction> getDirection() {
+  public Optional<Direction> direction() {
     return Optional.fromNullable(direction);
   }
 

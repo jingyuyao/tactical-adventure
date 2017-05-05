@@ -31,7 +31,7 @@ abstract class ButtonPanel<T> extends Container<VisTextButton> {
   }
 
   void display(T object) {
-    Optional<String> textOptional = getText(object);
+    Optional<String> textOptional = createText(object);
     if (textOptional.isPresent()) {
       this.object = object;
       button.setText(textOptional.get());
@@ -58,7 +58,7 @@ abstract class ButtonPanel<T> extends Container<VisTextButton> {
    * Called to create the text for an object. If the return value is not present, it will not be
    * displayed and the object will not be stored for future refresh.
    */
-  abstract Optional<String> getText(T object);
+  abstract Optional<String> createText(T object);
 
   /**
    * Called when this panel is clicked.

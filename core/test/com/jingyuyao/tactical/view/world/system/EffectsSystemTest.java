@@ -61,7 +61,7 @@ public class EffectsSystemTest {
     SingleAnimation animation = new SingleAnimation(10, new WorldTexture[]{worldTexture});
 
     when(target.getOrigin()).thenReturn(cell);
-    when(target.getDirection()).thenReturn(Optional.<Direction>absent());
+    when(target.direction()).thenReturn(Optional.<Direction>absent());
     when(cell.getCoordinate()).thenReturn(C1);
     when(weapon.getName()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
@@ -75,7 +75,7 @@ public class EffectsSystemTest {
     Entity entity = engine.getEntities().first();
     Frame frame = entity.getComponent(Frame.class);
     assertThat(frame).isNotNull();
-    assertThat(frame.getDirection()).isAbsent();
+    assertThat(frame.direction()).isAbsent();
     Position position = entity.getComponent(Position.class);
     assertThat(position).isNotNull();
     assertThat(position.getX()).isEqualTo((float) C1.getX());
@@ -93,7 +93,7 @@ public class EffectsSystemTest {
     SingleAnimation animation = new SingleAnimation(10, new WorldTexture[]{worldTexture});
 
     when(target.getOrigin()).thenReturn(cell);
-    when(target.getDirection()).thenReturn(Optional.of(Direction.DOWN));
+    when(target.direction()).thenReturn(Optional.of(Direction.DOWN));
     when(cell.getCoordinate()).thenReturn(C1);
     when(weapon.getName()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
@@ -107,7 +107,7 @@ public class EffectsSystemTest {
     Entity entity = engine.getEntities().first();
     Frame frame = entity.getComponent(Frame.class);
     assertThat(frame).isNotNull();
-    assertThat(frame.getDirection()).hasValue(Direction.DOWN);
+    assertThat(frame.direction()).hasValue(Direction.DOWN);
     Position position = entity.getComponent(Position.class);
     assertThat(position).isNotNull();
     assertThat(position.getX()).isEqualTo((float) C1.getX());

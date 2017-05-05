@@ -34,7 +34,7 @@ public class DirectionalWeapon extends BaseWeapon {
     int leftOverDistance = distance;
 
     while (leftOverDistance > 0) {
-      Optional<Cell> neighbor = movements.getNeighbor(current, direction);
+      Optional<Cell> neighbor = movements.neighbor(current, direction);
       if (neighbor.isPresent()) {
         current = neighbor.get();
         targetBuilder.add(current);

@@ -23,7 +23,7 @@ abstract class TextPanel<T> extends Container<VisLabel> {
   }
 
   void display(T object) {
-    Optional<String> textOptional = getText(object);
+    Optional<String> textOptional = createText(object);
     if (textOptional.isPresent()) {
       this.object = object;
       label.setText(textOptional.get());
@@ -50,5 +50,5 @@ abstract class TextPanel<T> extends Container<VisLabel> {
    * Called to create the text for an object. If the return value is not present, it will not be
    * displayed and the object will not be stored for future refresh.
    */
-  abstract Optional<String> getText(T object);
+  abstract Optional<String> createText(T object);
 }

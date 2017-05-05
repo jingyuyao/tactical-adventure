@@ -25,7 +25,7 @@ class ItemPanel extends TextPanel<Item> {
   }
 
   @Override
-  Optional<String> getText(Item item) {
+  Optional<String> createText(Item item) {
     return Optional.of(String.format(
         Locale.US, ITEM_FMT, item.getName(), item.getUsageLeft(), item.getDescription()));
   }

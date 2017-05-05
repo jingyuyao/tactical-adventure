@@ -125,14 +125,14 @@ public class WorldTest {
   public void get_cell() {
     cellMap.put(COORDINATE1, cell1);
 
-    assertThat(world.getCell(COORDINATE1.getX(), COORDINATE1.getY())).hasValue(cell1);
+    assertThat(world.cell(COORDINATE1.getX(), COORDINATE1.getY())).hasValue(cell1);
   }
 
   @Test
   public void get_cell_coordinate() {
     cellMap.put(COORDINATE1, cell1);
 
-    assertThat(world.getCell(COORDINATE1)).hasValue(cell1);
+    assertThat(world.cell(COORDINATE1)).hasValue(cell1);
   }
 
   @Test
