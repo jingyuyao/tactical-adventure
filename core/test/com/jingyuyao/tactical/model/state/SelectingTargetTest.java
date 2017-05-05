@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -31,9 +32,11 @@ public class SelectingTargetTest {
   @Mock
   private ModelBus modelBus;
   @Mock
-  private Cell cell;
+  private Cell playerCell;
   @Mock
   private Player player;
+  @Mock
+  private Cell cell;
   @Mock
   private Weapon weapon;
   @Mock
@@ -49,9 +52,9 @@ public class SelectingTargetTest {
 
   @Before
   public void setUp() {
-    selectingTarget =
-        new SelectingTarget(
-            modelBus, worldState, stateFactory, player, weapon, ImmutableList.of(target1, target2));
+    when(playerCell.player()).thenReturn(Optional.of(player));
+    selectingTarget = new SelectingTarget(
+        modelBus, worldState, stateFactory, playerCell, weapon, ImmutableList.of(target1, target2));
   }
 
   @Test
@@ -73,7 +76,7 @@ public class SelectingTargetTest {
   @Test
   public void select_target() {
     when(target1.selectedBy(cell)).thenReturn(true);
-    when(stateFactory.createBattling(player, weapon, target1)).thenReturn(battling);
+    when(stateFactory.createBattling(playerCell, weapon, target1)).thenReturn(battling);
 
     selectingTarget.select(cell);
 

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -38,6 +39,8 @@ public class BattlingTest {
   @Mock
   private Battle battle;
   @Mock
+  private Cell playerCell;
+  @Mock
   private Player attackingPlayer;
   @Mock
   private Weapon weapon;
@@ -56,9 +59,8 @@ public class BattlingTest {
 
   @Before
   public void setUp() {
-    battling = new Battling(modelBus, worldState, stateFactory, battle, attackingPlayer,
-        weapon,
-        target);
+    when(playerCell.player()).thenReturn(Optional.of(attackingPlayer));
+    battling = new Battling(modelBus, worldState, stateFactory, battle, playerCell, weapon, target);
   }
 
   @Test

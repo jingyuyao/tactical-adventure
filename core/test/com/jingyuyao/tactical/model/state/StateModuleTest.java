@@ -72,9 +72,9 @@ public class StateModuleTest {
     stateFactory.createWaiting();
     stateFactory.createMoving(cell, movement);
     stateFactory.createMoved(cell);
-    stateFactory.createSelectingTarget(player, weapon, targets);
-    stateFactory.createUsingConsumable(player, consumable);
-    stateFactory.createBattling(player, weapon, target);
+    stateFactory.createSelectingTarget(cell, weapon, targets);
+    stateFactory.createUsingConsumable(cell, consumable);
+    stateFactory.createBattling(cell, weapon, target);
     stateFactory.createRetaliating();
   }
 }

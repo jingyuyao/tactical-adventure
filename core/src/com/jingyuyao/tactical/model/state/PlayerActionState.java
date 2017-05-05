@@ -8,20 +8,18 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
-class PlayerActionState extends AbstractPlayerState {
+class PlayerActionState extends BasePlayerState {
 
   private final Movements movements;
-  private final Cell cell;
 
   PlayerActionState(
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
       Movements movements,
-      Cell cell) {
-    super(modelBus, worldState, stateFactory, cell.player().orNull());
+      Cell playerCell) {
+    super(modelBus, worldState, stateFactory, playerCell);
     this.movements = movements;
-    this.cell = cell;
   }
 
   @Override
@@ -39,12 +37,12 @@ class PlayerActionState extends AbstractPlayerState {
   }
 
   void selectWeapon(Weapon weapon) {
-    ImmutableList<Target> targets = weapon.createTargets(movements, cell);
-    goTo(getStateFactory().createSelectingTarget(getPlayer(), weapon, targets));
+    ImmutableList<Target> targets = weapon.createTargets(movements, getPlayerCell());
+    goTo(getStateFactory().createSelectingTarget(getPlayerCell(), weapon, targets));
   }
 
   void selectConsumable(Consumable consumable) {
-    goTo(getStateFactory().createUsingConsumable(getPlayer(), consumable));
+    goTo(getStateFactory().createUsingConsumable(getPlayerCell(), consumable));
   }
 
   Movements getMovements() {
