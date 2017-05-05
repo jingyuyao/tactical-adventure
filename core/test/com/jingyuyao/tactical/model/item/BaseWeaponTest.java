@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,8 +48,8 @@ public class BaseWeaponTest {
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
-    verify(attacker).damageBy(0);
-    verify(attacker).healBy(0);
+    verify(attacker, times(2)).damageBy(0);
+    verify(attacker, times(2)).healBy(0);
   }
 
   @Test
@@ -58,8 +59,9 @@ public class BaseWeaponTest {
 
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
-    verify(attacker).damageBy(0);
+    verify(attacker, times(2)).damageBy(0);
     verify(attacker).healBy(3);
+    verify(attacker).healBy(0);
   }
 
   @Test
@@ -70,6 +72,7 @@ public class BaseWeaponTest {
     verify(character1).damageBy(7);
     verify(character2).damageBy(0);
     verify(attacker).damageBy(3);
-    verify(attacker).healBy(0);
+    verify(attacker).damageBy(0);
+    verify(attacker, times(2)).healBy(0);
   }
 }
