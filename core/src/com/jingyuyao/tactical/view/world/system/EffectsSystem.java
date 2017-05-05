@@ -6,7 +6,7 @@ import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.item.Target;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;

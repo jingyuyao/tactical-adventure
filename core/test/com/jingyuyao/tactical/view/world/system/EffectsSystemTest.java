@@ -9,7 +9,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.item.Target;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;

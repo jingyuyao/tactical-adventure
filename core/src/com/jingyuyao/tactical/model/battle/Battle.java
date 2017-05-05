@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.battle;
 
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.MyFuture;
-import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 

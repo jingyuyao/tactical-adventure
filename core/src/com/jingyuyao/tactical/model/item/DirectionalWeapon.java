@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.model.world.Movements;

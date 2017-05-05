@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.item;
+package com.jingyuyao.tactical.model.battle;
 
 import static com.google.common.truth.Truth.assertThat;
 
