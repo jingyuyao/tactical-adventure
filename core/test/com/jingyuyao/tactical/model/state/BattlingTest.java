@@ -10,10 +10,9 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.battle.Battle;
+import com.jingyuyao.tactical.model.battle.Battle2;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -37,8 +36,6 @@ public class BattlingTest {
   @Mock
   private ModelBus modelBus;
   @Mock
-  private Battle battle;
-  @Mock
   private Cell playerCell;
   @Mock
   private Player attackingPlayer;
@@ -60,7 +57,7 @@ public class BattlingTest {
   @Before
   public void setUp() {
     when(playerCell.player()).thenReturn(Optional.of(attackingPlayer));
-    battling = new Battling(modelBus, worldState, stateFactory, battle, playerCell, weapon, target);
+    battling = new Battling(modelBus, worldState, stateFactory, playerCell, weapon, target);
   }
 
   @Test
@@ -93,7 +90,6 @@ public class BattlingTest {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(target.canTarget(cell)).thenReturn(true);
-    when(battle.begin(attackingPlayer, weapon, target)).thenReturn(MyFuture.immediate());
 
     battling.select(cell);
 
@@ -104,7 +100,6 @@ public class BattlingTest {
   public void attack() {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
-    when(battle.begin(attackingPlayer, weapon, target)).thenReturn(MyFuture.immediate());
 
     battling.attack();
 
@@ -120,9 +115,15 @@ public class BattlingTest {
   }
 
   private void verify_attacked() {
-    InOrder inOrder = Mockito.inOrder(worldState, weapon, attackingPlayer, battle);
+    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingPlayer);
     inOrder.verify(worldState).goTo(transition);
-    inOrder.verify(battle).begin(attackingPlayer, weapon, target);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Battle2.class);
+    Battle2 battle2 = (Battle2) argumentCaptor.getValue();
+    assertThat(battle2.getWeapon()).isSameAs(weapon);
+    assertThat(battle2.getTarget()).isSameAs(target);
+    assertThat(battle2.getFuture().isDone()).isFalse();
+    battle2.getFuture().done();
     inOrder.verify(attackingPlayer).setActionable(false);
     inOrder.verify(worldState).branchTo(waiting);
     verifyNoMoreInteractions(worldState);
