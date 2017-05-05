@@ -8,12 +8,12 @@ import com.jingyuyao.tactical.model.battle.Battle;
 public class StartBattle {
 
   private final Battle battle;
-  private final MyFuture future;
+  private final Promise promise;
 
-  public StartBattle(final Battle battle, MyFuture future) {
+  public StartBattle(final Battle battle, Promise promise) {
     this.battle = battle;
-    // not exposed because we always want battle to execute before future finishes.
-    this.future = future;
+    // not exposed because we always want battle to execute before promise finishes.
+    this.promise = promise;
   }
 
   /**
@@ -26,10 +26,10 @@ public class StartBattle {
 
   /**
    * Called when this event has been handled by the view and the battle logic may be executed.
-   * Completes the future associated with this battle.
+   * Completes the promise associated with this battle.
    */
   public void start() {
     battle.execute();
-    future.done();
+    promise.complete();
   }
 }

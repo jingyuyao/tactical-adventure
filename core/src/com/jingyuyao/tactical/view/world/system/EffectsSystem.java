@@ -43,7 +43,7 @@ class EffectsSystem extends EntitySystem {
     }
 
     SingleAnimation animation = animations.getWeapon(battle.getWeapon().getName());
-    animation.getFuture().addCallback(new Runnable() {
+    animation.getPromise().done(new Runnable() {
       @Override
       public void run() {
         startBattle.start();

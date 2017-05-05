@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -98,7 +98,7 @@ public class RetaliatingTest {
     when(retaliation2.getPath()).thenReturn(Optional.<Path>absent());
     when(retaliation2.getBattle()).thenReturn(Optional.<Battle>absent());
     when(path.getOrigin()).thenReturn(origin);
-    when(origin.moveCharacter(path)).thenReturn(MyFuture.immediate());
+    when(origin.moveCharacter(path)).thenReturn(Promise.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     retaliating.enter();

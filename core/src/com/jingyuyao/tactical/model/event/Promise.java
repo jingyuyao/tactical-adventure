@@ -7,36 +7,39 @@ import com.google.common.util.concurrent.SettableFuture;
 /**
  * Wraps Guava's {@link SettableFuture}
  */
-public class MyFuture {
+public class Promise {
 
   private final SettableFuture<Void> future;
 
-  public MyFuture() {
+  public Promise() {
     this.future = SettableFuture.create();
   }
 
-  public MyFuture(Runnable... callbacks) {
+  public Promise(Runnable... callbacks) {
     this();
     for (Runnable callback : callbacks) {
-      addCallback(callback);
+      done(callback);
     }
   }
 
-  public static MyFuture immediate() {
-    MyFuture future = new MyFuture();
-    future.done();
-    return future;
+  public static Promise immediate() {
+    Promise promise = new Promise();
+    promise.complete();
+    return promise;
   }
 
   public boolean isDone() {
     return future.isDone();
   }
 
-  public void done() {
+  public void complete() {
     future.set(null);
   }
 
-  public void addCallback(final Runnable onSuccess) {
+  /**
+   * Add a callback to run when this promise completes
+   */
+  public void done(final Runnable onSuccess) {
     Futures.addCallback(future, new FutureCallback<Void>() {
       @Override
       public void onSuccess(Void result) {
@@ -46,18 +49,6 @@ public class MyFuture {
       @Override
       public void onFailure(Throwable t) {
 
-      }
-    });
-  }
-
-  /**
-   * This {@link MyFuture} will be completed when {@code another} completes.
-   */
-  public void completedBy(MyFuture another) {
-    another.addCallback(new Runnable() {
-      @Override
-      public void run() {
-        done();
       }
     });
   }

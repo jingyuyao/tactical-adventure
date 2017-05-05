@@ -73,7 +73,7 @@ which should be less error prone.
 - Subscribes to various model events to update itself.
 - Should not hold reference to model objects (i.e. world)
   - Only react to events from the model to initialize + update itself
-- Should not change the model except to complete future events
+- Should not change the model except to complete events
 
 ## Controllers
 - Listen to user input

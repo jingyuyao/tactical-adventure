@@ -117,7 +117,7 @@ class CharacterSystem extends EntitySystem {
     Entity entity = get(moveCharacter.getCharacter());
     Moving moving = getEngine().createComponent(Moving.class);
     moving.setPath(smoothPath(moveCharacter.getPath().getTrack()));
-    moving.setFuture(moveCharacter.getFuture());
+    moving.setPromise(moveCharacter.getPromise());
     entity.add(moving);
   }
 

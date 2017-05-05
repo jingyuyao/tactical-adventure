@@ -45,7 +45,7 @@ class MovingSystem extends IteratingSystem {
       if (nextIndex < path.size()) {
         moving.setCurrentIndex(nextIndex);
       } else {
-        moving.getFuture().done();
+        moving.getPromise().complete();
         entity.remove(Moving.class);
       }
     }

@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -70,7 +70,7 @@ public class Retaliating extends BaseState {
     final Optional<Path> pathOpt = retaliation.getPath();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();
-      path.getOrigin().moveCharacter(path).addCallback(new Runnable() {
+      path.getOrigin().moveCharacter(path).done(new Runnable() {
         @Override
         public void run() {
           handleBattle(retaliation, next);
@@ -83,7 +83,7 @@ public class Retaliating extends BaseState {
 
   private void handleBattle(Retaliation retaliation, Runnable next) {
     if (retaliation.getBattle().isPresent()) {
-      post(new StartBattle(retaliation.getBattle().get(), new MyFuture(next)));
+      post(new StartBattle(retaliation.getBattle().get(), new Promise(next)));
     } else {
       next.run();
     }

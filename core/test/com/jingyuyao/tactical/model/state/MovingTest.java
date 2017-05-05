@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -149,7 +149,7 @@ public class MovingTest {
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
-    when(cell.moveCharacter(path)).thenReturn(MyFuture.immediate());
+    when(cell.moveCharacter(path)).thenReturn(Promise.immediate());
 
     moving.select(cell2);
 

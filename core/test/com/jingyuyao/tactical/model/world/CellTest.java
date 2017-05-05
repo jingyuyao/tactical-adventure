@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.event.MoveCharacter;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -118,9 +118,9 @@ public class CellTest {
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(other);
 
-    MyFuture future = cell.moveCharacter(path);
+    Promise promise = cell.moveCharacter(path);
 
-    assertThat(future.isDone()).isFalse();
+    assertThat(promise.isDone()).isFalse();
     assertThat(cell.character()).isAbsent();
     assertThat(other.character()).hasValue(player);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
@@ -134,9 +134,9 @@ public class CellTest {
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(cell);
 
-    MyFuture future = cell.moveCharacter(path);
+    Promise promise = cell.moveCharacter(path);
 
-    assertThat(future.isDone()).isTrue();
+    assertThat(promise.isDone()).isTrue();
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
     assertThat(cell.character()).hasValue(player);

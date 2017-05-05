@@ -2,14 +2,14 @@ package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.List;
 
 public class Moving implements Component, Poolable {
 
   private List<Coordinate> path = null;
-  private MyFuture future = null;
+  private Promise promise = null;
   private int currentIndex = 0;
 
   public List<Coordinate> getPath() {
@@ -20,12 +20,12 @@ public class Moving implements Component, Poolable {
     this.path = path;
   }
 
-  public MyFuture getFuture() {
-    return future;
+  public Promise getPromise() {
+    return promise;
   }
 
-  public void setFuture(MyFuture future) {
-    this.future = future;
+  public void setPromise(Promise promise) {
+    this.promise = promise;
   }
 
   public int getCurrentIndex() {
@@ -39,7 +39,7 @@ public class Moving implements Component, Poolable {
   @Override
   public void reset() {
     path = null;
-    future = null;
+    promise = null;
     currentIndex = 0;
   }
 }
