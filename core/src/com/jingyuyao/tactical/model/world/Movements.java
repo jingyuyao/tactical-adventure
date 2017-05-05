@@ -32,7 +32,7 @@ public class Movements implements GetNeighbors {
   public Iterable<Cell> getNeighbors(final Cell from) {
     List<Cell> neighbors = new ArrayList<>(Direction.values().length);
     for (Direction direction : Direction.values()) {
-      Optional<Cell> neighborOpt = getNeighbor(from, direction);
+      Optional<Cell> neighborOpt = neighbor(from, direction);
       if (neighborOpt.isPresent()) {
         neighbors.add(neighborOpt.get());
       }
@@ -40,8 +40,8 @@ public class Movements implements GetNeighbors {
     return neighbors;
   }
 
-  public Optional<Cell> getNeighbor(Cell from, Direction direction) {
-    return world.getCell(from.getCoordinate().offsetBy(direction));
+  public Optional<Cell> neighbor(Cell from, Direction direction) {
+    return world.cell(from.getCoordinate().offsetBy(direction));
   }
 
   /**

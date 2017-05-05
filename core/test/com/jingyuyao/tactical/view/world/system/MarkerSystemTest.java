@@ -89,7 +89,7 @@ public class MarkerSystemTest {
     Entity entity = entities.first();
     Frame frame = entity.getComponent(Frame.class);
     assertThat(frame).isNotNull();
-    assertThat(frame.getTexture()).hasValue(texture1);
+    assertThat(frame.texture()).hasValue(texture1);
 
     Position position = entity.getComponent(Position.class);
     assertThat(position).isNotNull();
@@ -103,7 +103,7 @@ public class MarkerSystemTest {
     assertThat(entities).hasSize(1);
     assertThat(entities.first()).isSameAs(entity);
     assertThat(entity.getComponent(Frame.class)).isSameAs(frame);
-    assertThat(frame.getTexture()).hasValue(texture1);
+    assertThat(frame.texture()).hasValue(texture1);
 
     position = entity.getComponent(Position.class);
     assertThat(position.getX()).isEqualTo((float) C2.getX());
@@ -185,8 +185,8 @@ public class MarkerSystemTest {
             && position.getX() == (float) coordinate.getX()
             && position.getY() == (float) coordinate.getY()
             && position.getZ() == zIndex
-            && frame.getTexture().isPresent()
-            && frame.getTexture().get() == worldTexture;
+            && frame.texture().isPresent()
+            && frame.texture().get() == worldTexture;
       }
     })).isTrue();
   }

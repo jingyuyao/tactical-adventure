@@ -67,7 +67,7 @@ public class Retaliating extends BaseState {
   }
 
   private void handleMoving(final Retaliation retaliation, final Runnable next) {
-    final Optional<Path> pathOpt = retaliation.getPath();
+    final Optional<Path> pathOpt = retaliation.path();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();
       path.getOrigin().moveCharacter(path).done(new Runnable() {
@@ -82,8 +82,8 @@ public class Retaliating extends BaseState {
   }
 
   private void handleBattle(Retaliation retaliation, Runnable next) {
-    if (retaliation.getBattle().isPresent()) {
-      post(new StartBattle(retaliation.getBattle().get(), new Promise(next)));
+    if (retaliation.battle().isPresent()) {
+      post(new StartBattle(retaliation.battle().get(), new Promise(next)));
     } else {
       next.run();
     }

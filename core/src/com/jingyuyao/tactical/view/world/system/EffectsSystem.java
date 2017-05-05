@@ -37,7 +37,7 @@ class EffectsSystem extends EntitySystem {
     position.set(target.getOrigin().getCoordinate(), WorldZIndex.EFFECTS);
 
     Frame frame = getEngine().createComponent(Frame.class);
-    Optional<Direction> direction = target.getDirection();
+    Optional<Direction> direction = target.direction();
     if (direction.isPresent()) {
       frame.setDirection(direction.get());
     }

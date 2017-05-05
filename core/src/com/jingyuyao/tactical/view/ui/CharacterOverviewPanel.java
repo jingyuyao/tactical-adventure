@@ -23,7 +23,7 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
   }
 
   @Override
-  Optional<String> getText(Character character) {
+  Optional<String> createText(Character character) {
     if (character.getHp() <= 0) {
       return Optional.absent();
     }

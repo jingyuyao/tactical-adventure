@@ -16,7 +16,7 @@ class TerrainOverviewPanel extends TextPanel<Terrain> {
   }
 
   @Override
-  Optional<String> getText(Terrain terrain) {
+  Optional<String> createText(Terrain terrain) {
     return Optional.of(String.format(
         Locale.US, FMT, terrain.getName(), terrain.getMovementPenalty()));
   }

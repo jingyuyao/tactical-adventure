@@ -14,11 +14,11 @@ public class Retaliation {
     this.battle = battle;
   }
 
-  public Optional<Path> getPath() {
+  public Optional<Path> path() {
     return Optional.fromNullable(path);
   }
 
-  public Optional<Battle> getBattle() {
+  public Optional<Battle> battle() {
     return Optional.fromNullable(battle);
   }
 }

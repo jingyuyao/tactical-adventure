@@ -13,7 +13,7 @@ class CoordinatePanel extends TextPanel<Coordinate> {
   }
 
   @Override
-  Optional<String> getText(Coordinate coordinate) {
+  Optional<String> createText(Coordinate coordinate) {
     return Optional.of(coordinate.toString());
   }
 }

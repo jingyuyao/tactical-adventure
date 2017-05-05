@@ -75,11 +75,11 @@ public class World {
     return maxWidth;
   }
 
-  public Optional<Cell> getCell(int x, int y) {
-    return getCell(new Coordinate(x, y));
+  public Optional<Cell> cell(int x, int y) {
+    return cell(new Coordinate(x, y));
   }
 
-  public Optional<Cell> getCell(Coordinate coordinate) {
+  public Optional<Cell> cell(Coordinate coordinate) {
     return Optional.fromNullable(cellMap.get(coordinate));
   }
 

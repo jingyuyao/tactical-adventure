@@ -60,7 +60,7 @@ public class WorldControllerTest {
   @Test
   public void touch_up_select() {
     when(cameraController.isDragged()).thenReturn(false);
-    when(world.getCell(1, 2)).thenReturn(Optional.of(cell));
+    when(world.cell(1, 2)).thenReturn(Optional.of(cell));
 
     worldController.touchUp(1, 2, 0, 0);
 

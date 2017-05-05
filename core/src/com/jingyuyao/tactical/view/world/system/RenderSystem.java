@@ -40,10 +40,10 @@ class RenderSystem extends SortedIteratingSystem {
   protected void processEntity(Entity entity, float deltaTime) {
     Position position = positionMapper.get(entity);
     Frame frame = frameMapper.get(entity);
-    Optional<Direction> direction = frame.getDirection();
+    Optional<Direction> direction = frame.direction();
     float x = position.getX();
     float y = position.getY();
-    Optional<WorldTexture> textureOptional = frame.getTexture();
+    Optional<WorldTexture> textureOptional = frame.texture();
     if (textureOptional.isPresent()) {
       batch.setColor(frame.getColor());
       if (direction.isPresent()) {

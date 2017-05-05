@@ -93,10 +93,10 @@ public class RetaliatingTest {
     when(cell2.enemy()).thenReturn(Optional.of(enemy2));
     when(enemy.getRetaliation(movements, cell)).thenReturn(retaliation);
     when(enemy2.getRetaliation(movements, cell2)).thenReturn(retaliation2);
-    when(retaliation.getPath()).thenReturn(Optional.of(path));
-    when(retaliation.getBattle()).thenReturn(Optional.of(battle));
-    when(retaliation2.getPath()).thenReturn(Optional.<Path>absent());
-    when(retaliation2.getBattle()).thenReturn(Optional.<Battle>absent());
+    when(retaliation.path()).thenReturn(Optional.of(path));
+    when(retaliation.battle()).thenReturn(Optional.of(battle));
+    when(retaliation2.path()).thenReturn(Optional.<Path>absent());
+    when(retaliation2.battle()).thenReturn(Optional.<Battle>absent());
     when(path.getOrigin()).thenReturn(origin);
     when(origin.moveCharacter(path)).thenReturn(Promise.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);

@@ -23,7 +23,7 @@ class TargetPanel extends TextPanel<Battling> {
   }
 
   @Override
-  Optional<String> getText(Battling battling) {
+  Optional<String> createText(Battling battling) {
     StringBuilder builder = new StringBuilder("Targets:\n");
     for (Cell cell : battling.getBattle().getTarget().getTargetCells()) {
       for (Character character : cell.character().asSet()) {

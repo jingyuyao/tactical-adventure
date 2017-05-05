@@ -42,7 +42,7 @@ public class WorldController extends InputAdapter {
       vector3.set(screenX, screenY, 0);
       worldView.unproject(vector3);
 
-      Optional<Cell> cellOptional = world.getCell((int) vector3.x, (int) vector3.y);
+      Optional<Cell> cellOptional = world.cell((int) vector3.x, (int) vector3.y);
       if (cellOptional.isPresent()) {
         model.select(cellOptional.get());
       }
