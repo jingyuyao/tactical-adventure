@@ -7,12 +7,12 @@ public class MoveCharacter {
 
   private final Character character;
   private final Path path;
-  private final MyFuture future;
+  private final Promise promise;
 
-  public MoveCharacter(Character character, Path path, MyFuture future) {
+  public MoveCharacter(Character character, Path path, Promise promise) {
     this.character = character;
     this.path = path;
-    this.future = future;
+    this.promise = promise;
   }
 
   public Character getCharacter() {
@@ -23,7 +23,7 @@ public class MoveCharacter {
     return path;
   }
 
-  public MyFuture getFuture() {
-    return future;
+  public Promise getPromise() {
+    return promise;
   }
 }

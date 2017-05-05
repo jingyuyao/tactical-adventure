@@ -8,7 +8,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Moving;
@@ -48,7 +48,7 @@ public class MovingSystemTest {
     position.setY(10f);
     position.setZ(WorldZIndex.CHARACTER);
     Moving moving = engine.createComponent(Moving.class);
-    moving.setFuture(new MyFuture());
+    moving.setPromise(new Promise());
     moving.setPath(ImmutableList.of(C1, C2));
     when(worldConfig.getCharacterMoveUnitPerSec()).thenReturn(1f);
     Entity entity = engine.createEntity();

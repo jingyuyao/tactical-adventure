@@ -10,45 +10,38 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MyFutureTest {
+public class PromiseTest {
 
   @Mock
   private Runnable runnable;
 
-  private MyFuture future;
+  private Promise promise;
 
   @Before
   public void setUp() {
-    future = new MyFuture();
+    promise = new Promise();
   }
 
   @Test
   public void immediate() {
-    assertThat(MyFuture.immediate().isDone()).isTrue();
+    assertThat(Promise.immediate().isDone()).isTrue();
   }
 
   @Test
   public void isDone() {
-    assertThat(future.isDone()).isFalse();
+    assertThat(promise.isDone()).isFalse();
 
-    future.done();
+    promise.complete();
 
-    assertThat(future.isDone()).isTrue();
+    assertThat(promise.isDone()).isTrue();
   }
 
   @Test
   public void callback_success() {
-    future.addCallback(runnable);
+    promise.done(runnable);
 
-    future.done();
+    promise.complete();
 
     verify(runnable).run();
-  }
-
-  @Test
-  public void complete_by() {
-    future.completedBy(MyFuture.immediate());
-
-    assertThat(future.isDone()).isTrue();
   }
 }

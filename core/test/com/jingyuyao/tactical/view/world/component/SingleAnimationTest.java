@@ -18,8 +18,6 @@ public class SingleAnimationTest {
   private WorldTexture texture1;
   @Mock
   private WorldTexture texture2;
-  @Mock
-  private Runnable runnable;
 
   private SingleAnimation singleAnimation;
 
@@ -36,7 +34,7 @@ public class SingleAnimationTest {
 
     assertThat(singleAnimation.getKeyFrame()).isSameAs(texture1);
     assertThat(singleAnimation.isDone()).isFalse();
-    assertThat(singleAnimation.getFuture().isDone()).isFalse();
+    assertThat(singleAnimation.getPromise().isDone()).isFalse();
   }
 
   @Test
@@ -45,7 +43,7 @@ public class SingleAnimationTest {
 
     assertThat(singleAnimation.getKeyFrame()).isSameAs(texture2);
     assertThat(singleAnimation.isDone()).isFalse();
-    assertThat(singleAnimation.getFuture().isDone()).isFalse();
+    assertThat(singleAnimation.getPromise().isDone()).isFalse();
   }
 
   @Test
@@ -53,6 +51,6 @@ public class SingleAnimationTest {
     singleAnimation.advanceTime(2.5f);
 
     assertThat(singleAnimation.isDone()).isTrue();
-    assertThat(singleAnimation.getFuture().isDone()).isTrue();
+    assertThat(singleAnimation.getPromise().isDone()).isTrue();
   }
 }

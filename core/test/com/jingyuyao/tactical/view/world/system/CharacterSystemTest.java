@@ -17,7 +17,7 @@ import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.event.MoveCharacter;
-import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveCharacter;
 import com.jingyuyao.tactical.model.event.SpawnCharacter;
 import com.jingyuyao.tactical.model.state.PlayerState;
@@ -90,7 +90,7 @@ public class CharacterSystemTest {
   @Mock
   private Path path;
   @Mock
-  private MyFuture future;
+  private Promise promise;
 
   private Engine engine;
   private CharacterSystem characterSystem;
@@ -209,7 +209,7 @@ public class CharacterSystemTest {
   public void move() {
     spawn_player();
     when(moveCharacter.getCharacter()).thenReturn(player);
-    when(moveCharacter.getFuture()).thenReturn(future);
+    when(moveCharacter.getPromise()).thenReturn(promise);
     when(moveCharacter.getPath()).thenReturn(path);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell3, cell4, cell5, cell6));
     when(cell3.getCoordinate()).thenReturn(T1);
@@ -225,7 +225,7 @@ public class CharacterSystemTest {
     Moving moving = entity.getComponent(Moving.class);
     assertThat(moving).isNotNull();
     assertThat(moving.getCurrentIndex()).isEqualTo(0);
-    assertThat(moving.getFuture()).isSameAs(future);
+    assertThat(moving.getPromise()).isSameAs(promise);
     assertThat(moving.getPath()).containsExactly(T3, T4).inOrder();
   }
 
