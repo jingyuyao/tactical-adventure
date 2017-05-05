@@ -13,10 +13,7 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
-import com.jingyuyao.tactical.model.character.CharacterModule;
-import com.jingyuyao.tactical.model.item.ItemModule;
 import com.jingyuyao.tactical.model.state.StateModule;
-import com.jingyuyao.tactical.model.terrain.TerrainModule;
 import com.jingyuyao.tactical.model.world.WorldModule;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -29,9 +26,6 @@ public class ModelModule extends AbstractModule {
   @Override
   protected void configure() {
     install(new WorldModule());
-    install(new CharacterModule());
-    install(new TerrainModule());
-    install(new ItemModule());
     install(new StateModule());
 
     bindListener(Matchers.any(), new ModelBusRegisterer(getProvider(ModelBus.class)));
