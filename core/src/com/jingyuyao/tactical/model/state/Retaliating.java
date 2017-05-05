@@ -1,12 +1,15 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.battle.Battle;
+import com.jingyuyao.tactical.model.battle.Battle2;
 import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.Path;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
@@ -14,7 +17,6 @@ public class Retaliating extends BaseState {
 
   private final StateFactory stateFactory;
   private final Movements movements;
-  private final Battle battle;
   private final World world;
 
   @Inject
@@ -22,11 +24,11 @@ public class Retaliating extends BaseState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Movements movements, Battle battle, World world) {
+      Movements movements,
+      World world) {
     super(modelBus, worldState);
     this.stateFactory = stateFactory;
     this.movements = movements;
-    this.battle = battle;
     this.world = world;
   }
 
@@ -36,25 +38,55 @@ public class Retaliating extends BaseState {
     retaliate(world.getCharacterSnapshot(), 0);
   }
 
+  /**
+   * Now we code like Racket!
+   */
   private void retaliate(final ImmutableList<Cell> characterSnapshot, final int i) {
     if (i == characterSnapshot.size()) {
       branchTo(stateFactory.createWaiting());
       return;
     }
 
-    Cell cell = characterSnapshot.get(i);
+    final Runnable next = new Runnable() {
+      @Override
+      public void run() {
+        retaliate(characterSnapshot, i + 1);
+      }
+    };
 
-    if (cell.enemy().isPresent()) {
-      Enemy enemy = cell.enemy().get();
+    Cell enemyCell = characterSnapshot.get(i);
+
+    if (enemyCell.enemy().isPresent()) {
+      final Enemy enemy = enemyCell.enemy().get();
       post(new ActivatedEnemy(enemy));
-      enemy.retaliate(movements, battle, cell).addCallback(new Runnable() {
+      handleRetaliation(enemy.getRetaliation(movements, enemyCell), next);
+    } else {
+      next.run();
+    }
+  }
+
+  private void handleRetaliation(final Retaliation retaliation, final Runnable next) {
+    final Optional<Path> pathOpt = retaliation.getPath();
+    if (pathOpt.isPresent()) {
+      Path path = pathOpt.get();
+      path.getOrigin().moveCharacter(path).addCallback(new Runnable() {
         @Override
         public void run() {
-          retaliate(characterSnapshot, i + 1);
+          handleBattle(retaliation, next);
         }
       });
     } else {
-      retaliate(characterSnapshot, i + 1);
+      handleBattle(retaliation, next);
+    }
+  }
+
+  private void handleBattle(Retaliation retaliation, Runnable next) {
+    if (retaliation.getBattle2().isPresent()) {
+      Battle2 battle2 = retaliation.getBattle2().get();
+      post(battle2);
+      battle2.getFuture().addCallback(next);
+    } else {
+      next.run();
     }
   }
 }
