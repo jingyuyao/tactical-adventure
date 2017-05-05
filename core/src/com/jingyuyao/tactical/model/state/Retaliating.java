@@ -60,13 +60,13 @@ public class Retaliating extends BaseState {
     if (enemyCell.enemy().isPresent()) {
       final Enemy enemy = enemyCell.enemy().get();
       post(new ActivatedEnemy(enemy));
-      handleRetaliation(enemy.getRetaliation(movements, enemyCell), next);
+      handleMoving(enemy.getRetaliation(movements, enemyCell), next);
     } else {
       next.run();
     }
   }
 
-  private void handleRetaliation(final Retaliation retaliation, final Runnable next) {
+  private void handleMoving(final Retaliation retaliation, final Runnable next) {
     final Optional<Path> pathOpt = retaliation.getPath();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();

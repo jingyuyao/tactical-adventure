@@ -16,6 +16,10 @@ public class StartBattle {
     this.future = future;
   }
 
+  /**
+   * Do not call {@link Battle#execute()} directly, instead call {@link #start()} to complete this
+   * event.
+   */
   public Battle getBattle() {
     return battle;
   }
