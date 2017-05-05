@@ -10,6 +10,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
+import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -66,7 +68,7 @@ public class EffectsSystemTest {
     when(battle.getWeapon()).thenReturn(weapon);
     when(battle.getTarget()).thenReturn(target);
 
-    effectsSystem.battle(battle);
+    effectsSystem.startBattle(new StartBattle(battle, new MyFuture()));
 
     verify(battle, never()).execute();
     assertThat(engine.getEntities()).hasSize(1);
@@ -98,7 +100,7 @@ public class EffectsSystemTest {
     when(battle.getWeapon()).thenReturn(weapon);
     when(battle.getTarget()).thenReturn(target);
 
-    effectsSystem.battle(battle);
+    effectsSystem.startBattle(new StartBattle(battle, new MyFuture()));
 
     verify(battle, never()).execute();
     assertThat(engine.getEntities()).hasSize(1);

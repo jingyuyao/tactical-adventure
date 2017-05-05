@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.battle;
 
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 
@@ -10,13 +9,11 @@ public class Battle {
   private final Cell attackerCell;
   private final Weapon weapon;
   private final Target target;
-  private final MyFuture future;
 
-  public Battle(Cell attackerCell, Weapon weapon, Target target, MyFuture future) {
+  public Battle(Cell attackerCell, Weapon weapon, Target target) {
     this.attackerCell = attackerCell;
     this.weapon = weapon;
     this.target = target;
-    this.future = future;
   }
 
   public Weapon getWeapon() {
@@ -27,12 +24,8 @@ public class Battle {
     return target;
   }
 
-  public MyFuture getFuture() {
-    return future;
-  }
-
   /**
-   * Executes the logic of this battle and completes the future.
+   * Executes the logic of this battle.
    */
   public void execute() {
     for (Character attacker : attackerCell.character().asSet()) {
@@ -50,6 +43,5 @@ public class Battle {
         attackerCell.removeCharacter();
       }
     }
-    future.done();
   }
 }

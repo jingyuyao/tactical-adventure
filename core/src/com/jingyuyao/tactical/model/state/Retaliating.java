@@ -3,10 +3,11 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
@@ -82,9 +83,7 @@ public class Retaliating extends BaseState {
 
   private void handleBattle(Retaliation retaliation, Runnable next) {
     if (retaliation.getBattle().isPresent()) {
-      Battle battle = retaliation.getBattle().get();
-      post(battle);
-      battle.getFuture().addCallback(next);
+      post(new StartBattle(retaliation.getBattle().get(), new MyFuture(next)));
     } else {
       next.run();
     }

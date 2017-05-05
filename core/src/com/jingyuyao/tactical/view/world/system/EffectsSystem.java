@@ -7,6 +7,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
+import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
@@ -28,7 +29,8 @@ class EffectsSystem extends EntitySystem {
   }
 
   @Subscribe
-  void battle(final Battle battle) {
+  void startBattle(final StartBattle startBattle) {
+    Battle battle = startBattle.getBattle();
     Target target = battle.getTarget();
 
     Position position = getEngine().createComponent(Position.class);
@@ -44,7 +46,7 @@ class EffectsSystem extends EntitySystem {
     animation.getFuture().addCallback(new Runnable() {
       @Override
       public void run() {
-        battle.execute();
+        startBattle.start();
       }
     });
 

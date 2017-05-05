@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.event.MyFuture;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
@@ -41,10 +40,9 @@ public class BattleTest {
 
   @Before
   public void setUp() {
-    battle = new Battle(attackerCell, weapon, target, new MyFuture());
+    battle = new Battle(attackerCell, weapon, target);
     assertThat(battle.getWeapon()).isSameAs(weapon);
     assertThat(battle.getTarget()).isSameAs(target);
-    assertThat(battle.getFuture().isDone()).isFalse();
   }
 
   @Test
@@ -66,7 +64,6 @@ public class BattleTest {
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
-    assertThat(battle.getFuture().isDone()).isTrue();
   }
 
   @Test
@@ -88,6 +85,5 @@ public class BattleTest {
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
-    assertThat(battle.getFuture().isDone()).isTrue();
   }
 }

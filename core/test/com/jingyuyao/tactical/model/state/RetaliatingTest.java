@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
@@ -98,7 +99,6 @@ public class RetaliatingTest {
     when(retaliation2.getBattle()).thenReturn(Optional.<Battle>absent());
     when(path.getOrigin()).thenReturn(origin);
     when(origin.moveCharacter(path)).thenReturn(MyFuture.immediate());
-    when(battle.getFuture()).thenReturn(MyFuture.immediate());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     retaliating.enter();
@@ -107,13 +107,18 @@ public class RetaliatingTest {
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).getRetaliation(movements, cell);
     inOrder.verify(origin).moveCharacter(path);
-    inOrder.verify(modelBus).post(battle);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(2)).isInstanceOf(StartBattle.class);
+    StartBattle startBattle = (StartBattle) argumentCaptor.getAllValues().get(2);
+    assertThat(startBattle.getBattle()).isSameAs(battle);
+    assertThat(startBattle.getFuture().isDone()).isFalse();
+    startBattle.getFuture().done();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).getRetaliation(movements, cell2);
     inOrder.verify(worldState).branchTo(waiting);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 3, enemy2, ActivatedEnemy.class);
   }
 
   @Test

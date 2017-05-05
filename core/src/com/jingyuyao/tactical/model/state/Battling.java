@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.MyFuture;
+import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
@@ -52,7 +53,7 @@ public class Battling extends BasePlayerState {
 
   void attack() {
     goTo(stateFactory.createTransition());
-    post(new Battle(getPlayerCell(), weapon, target, new MyFuture(new Runnable() {
+    post(new StartBattle(new Battle(getPlayerCell(), weapon, target), new MyFuture(new Runnable() {
       @Override
       public void run() {
         finish();
