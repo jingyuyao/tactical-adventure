@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.model.item;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
@@ -18,26 +20,23 @@ class BaseWeapon extends BaseItem implements Weapon {
   BaseWeapon() {
   }
 
-  BaseWeapon(
-      int attackPower,
-      float lifeStealRate,
-      float recoilRate) {
+  BaseWeapon(int attackPower, float lifeStealRate, float recoilRate) {
     this.attackPower = attackPower;
     this.lifeStealRate = lifeStealRate;
     this.recoilRate = recoilRate;
   }
 
   @Override
-  public String getDescription() {
-    StringBuilder builder = new StringBuilder();
-    builder.append(attackPower).append(" attack");
+  public Message getDescription() {
     if (lifeStealRate > 0) {
-      builder.append(", ").append((int) (lifeStealRate * 100)).append("% lifesteal");
+      return MessageBundle.ITEM_DESCRIPTION
+          .get("lifeStealWeapon", attackPower, lifeStealRate * 100);
     }
     if (recoilRate > 0) {
-      builder.append(", ").append((int) (recoilRate * 100)).append("% recoil");
+      return MessageBundle.ITEM_DESCRIPTION
+          .get("recoilWeapon", attackPower, recoilRate * 100);
     }
-    return builder.toString();
+    return MessageBundle.ITEM_DESCRIPTION.get("normalWeapon", attackPower);
   }
 
   /**

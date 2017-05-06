@@ -2,19 +2,25 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class CharacterItemsPanel extends VisTable {
 
-  CharacterItemsPanel() {
+  private final MessageLoader messageLoader;
+
+  @Inject
+  CharacterItemsPanel(MessageLoader messageLoader) {
     super(true);
+    this.messageLoader = messageLoader;
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
@@ -60,9 +66,9 @@ class CharacterItemsPanel extends VisTable {
   }
 
   private void addItem(Item item) {
-    addText(item.getName());
+    addText(messageLoader.get(item.getName()));
     addText(String.valueOf(item.getUsageLeft()));
-    addText(item.getDescription());
+    addText(messageLoader.get(item.getDescription()));
   }
 
   private void addText(String text) {

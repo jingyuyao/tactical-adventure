@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.item.Consumable;
 
 class SelectConsumableAction implements Action {
@@ -16,7 +15,7 @@ class SelectConsumableAction implements Action {
 
   @Override
   public Message getMessage() {
-    return MessageBundle.ITEM.get(consumable.getName());
+    return consumable.getName();
   }
 
   @Override

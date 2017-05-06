@@ -9,7 +9,8 @@ package com.jingyuyao.tactical.model.i18n;
  */
 public enum MessageBundle {
   ACTION("i18n/game/action/Action"),
-  ITEM("i18n/game/item/Item");
+  ITEM_NAME("i18n/game/item/ItemName"),
+  ITEM_DESCRIPTION("i18n/game/item/ItemDescription");
 
   private final String path;
 

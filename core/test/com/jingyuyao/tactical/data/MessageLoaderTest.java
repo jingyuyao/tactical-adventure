@@ -50,8 +50,8 @@ public class MessageLoaderTest {
 
   @Test
   public void get_message_no_bundle_no_args() {
-    String itemBundlePath = MessageBundle.ITEM.getPath();
-    Message message = MessageBundle.ITEM.get("testItem");
+    String itemBundlePath = MessageBundle.ITEM_NAME.getPath();
+    Message message = MessageBundle.ITEM_NAME.get("testItem");
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(itemBundlePath));
     when(assetManager.isLoaded(itemBundlePath, I18NBundle.class)).thenReturn(false);
@@ -65,8 +65,8 @@ public class MessageLoaderTest {
 
   @Test
   public void get_message_no_bundle_with_args() {
-    String itemBundlePath = MessageBundle.ITEM.getPath();
-    Message message = MessageBundle.ITEM.get("testItem2", 246);
+    String itemBundlePath = MessageBundle.ITEM_NAME.getPath();
+    Message message = MessageBundle.ITEM_NAME.get("testItem2", 246);
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(itemBundlePath));
     when(assetManager.isLoaded(itemBundlePath, I18NBundle.class)).thenReturn(false);
@@ -80,8 +80,8 @@ public class MessageLoaderTest {
 
   @Test
   public void get_message_has_bundle() {
-    String itemBundlePath = MessageBundle.ITEM.getPath();
-    Message message = MessageBundle.ITEM.get("testItem2", 246);
+    String itemBundlePath = MessageBundle.ITEM_NAME.getPath();
+    Message message = MessageBundle.ITEM_NAME.get("testItem2", 246);
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(itemBundlePath));
     when(assetManager.isLoaded(itemBundlePath, I18NBundle.class)).thenReturn(true);
