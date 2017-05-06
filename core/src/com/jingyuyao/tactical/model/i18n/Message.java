@@ -10,7 +10,7 @@ public class Message {
   private final Object[] args;
 
   /**
-   * See {@link MessageBundle#create(String, Object...)}.
+   * See {@link MessageBundle#get(String, Object...)}.
    *
    * @param bundle the {@link MessageBundle} this message belongs to
    * @param key the key to get the message from the bundle

@@ -1,6 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
+
 public interface Action {
+
+  Message getMessage();
 
   String getName();
 

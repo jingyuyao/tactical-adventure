@@ -8,7 +8,8 @@ package com.jingyuyao.tactical.model.i18n;
  * resources required by the model exists.
  */
 public enum MessageBundle {
-  ACTION("i18n/game/action/Action.properties");
+  ACTION("i18n/game/action/Action"),
+  ITEM("i18n/game/item/Item");
 
   private final String path;
 
@@ -23,7 +24,7 @@ public enum MessageBundle {
   /**
    * Create a {@link Message}.
    */
-  public Message create(String key, Object... args) {
+  public Message get(String key, Object... args) {
     return new Message(this, key, args);
   }
 }
