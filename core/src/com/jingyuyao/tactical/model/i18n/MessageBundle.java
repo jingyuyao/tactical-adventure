@@ -17,6 +17,9 @@ public enum MessageBundle {
     this.path = path;
   }
 
+  /**
+   * The absolute path to the resource file (excluding .properties extension)
+   */
   public String getPath() {
     return path;
   }
