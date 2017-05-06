@@ -37,6 +37,8 @@ public class MessageLoaderTest {
   public void setUp() {
     Guice.createInjector(new MockGameModule()).injectMembers(this);
     messageLoader = new MessageLoader(assetManager);
+    // Again, why the fuck is this a static property...
+    assertThat(I18NBundle.getExceptionOnMissingKey()).isFalse();
   }
 
   @Test

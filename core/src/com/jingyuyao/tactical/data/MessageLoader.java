@@ -15,6 +15,8 @@ public class MessageLoader {
   @Inject
   MessageLoader(AssetManager assetManager) {
     this.assetManager = assetManager;
+    // Why the fuck is this static setter...
+    I18NBundle.setExceptionOnMissingKey(false);
   }
 
   public String get(Message message) {
