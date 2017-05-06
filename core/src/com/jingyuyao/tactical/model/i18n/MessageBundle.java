@@ -10,7 +10,8 @@ package com.jingyuyao.tactical.model.i18n;
 public enum MessageBundle {
   ACTION("i18n/game/action/Action"),
   ITEM_NAME("i18n/game/item/ItemName"),
-  ITEM_DESCRIPTION("i18n/game/item/ItemDescription");
+  ITEM_DESCRIPTION("i18n/game/item/ItemDescription"),
+  TEST("i18n/Test"); // used for testing purposes
 
   private final String path;
 

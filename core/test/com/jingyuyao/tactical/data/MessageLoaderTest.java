@@ -50,46 +50,46 @@ public class MessageLoaderTest {
 
   @Test
   public void get_message_no_bundle_no_args() {
-    String itemBundlePath = MessageBundle.ITEM_NAME.getPath();
-    Message message = MessageBundle.ITEM_NAME.get("testItem");
+    String testPath = MessageBundle.TEST.getPath();
+    Message message = MessageBundle.TEST.get("test1");
     // can't mock this since I18NBundle#get() is final...
-    I18NBundle bundle = I18NBundle.createBundle(files.internal(itemBundlePath));
-    when(assetManager.isLoaded(itemBundlePath, I18NBundle.class)).thenReturn(false);
-    when(assetManager.get(itemBundlePath, I18NBundle.class)).thenReturn(bundle);
+    I18NBundle bundle = I18NBundle.createBundle(files.internal(testPath));
+    when(assetManager.isLoaded(testPath, I18NBundle.class)).thenReturn(false);
+    when(assetManager.get(testPath, I18NBundle.class)).thenReturn(bundle);
 
-    assertThat(messageLoader.get(message)).isEqualTo("Test Item");
+    assertThat(messageLoader.get(message)).isEqualTo("Test message");
 
-    verify(assetManager).load(itemBundlePath, I18NBundle.class);
-    verify(assetManager).finishLoadingAsset(itemBundlePath);
+    verify(assetManager).load(testPath, I18NBundle.class);
+    verify(assetManager).finishLoadingAsset(testPath);
   }
 
   @Test
   public void get_message_no_bundle_with_args() {
-    String itemBundlePath = MessageBundle.ITEM_NAME.getPath();
-    Message message = MessageBundle.ITEM_NAME.get("testItem2", 246);
+    String testPath = MessageBundle.TEST.getPath();
+    Message message = MessageBundle.TEST.get("test2", 246);
     // can't mock this since I18NBundle#get() is final...
-    I18NBundle bundle = I18NBundle.createBundle(files.internal(itemBundlePath));
-    when(assetManager.isLoaded(itemBundlePath, I18NBundle.class)).thenReturn(false);
-    when(assetManager.get(itemBundlePath, I18NBundle.class)).thenReturn(bundle);
+    I18NBundle bundle = I18NBundle.createBundle(files.internal(testPath));
+    when(assetManager.isLoaded(testPath, I18NBundle.class)).thenReturn(false);
+    when(assetManager.get(testPath, I18NBundle.class)).thenReturn(bundle);
 
     assertThat(messageLoader.get(message)).isEqualTo("Test 246");
 
-    verify(assetManager).load(itemBundlePath, I18NBundle.class);
-    verify(assetManager).finishLoadingAsset(itemBundlePath);
+    verify(assetManager).load(testPath, I18NBundle.class);
+    verify(assetManager).finishLoadingAsset(testPath);
   }
 
   @Test
   public void get_message_has_bundle() {
-    String itemBundlePath = MessageBundle.ITEM_NAME.getPath();
-    Message message = MessageBundle.ITEM_NAME.get("testItem2", 246);
+    String testPath = MessageBundle.TEST.getPath();
+    Message message = MessageBundle.TEST.get("test2", 246);
     // can't mock this since I18NBundle#get() is final...
-    I18NBundle bundle = I18NBundle.createBundle(files.internal(itemBundlePath));
-    when(assetManager.isLoaded(itemBundlePath, I18NBundle.class)).thenReturn(true);
-    when(assetManager.get(itemBundlePath, I18NBundle.class)).thenReturn(bundle);
+    I18NBundle bundle = I18NBundle.createBundle(files.internal(testPath));
+    when(assetManager.isLoaded(testPath, I18NBundle.class)).thenReturn(true);
+    when(assetManager.get(testPath, I18NBundle.class)).thenReturn(bundle);
 
     assertThat(messageLoader.get(message)).isEqualTo("Test 246");
 
-    verify(assetManager, never()).load(itemBundlePath, I18NBundle.class);
-    verify(assetManager, never()).finishLoadingAsset(itemBundlePath);
+    verify(assetManager, never()).load(testPath, I18NBundle.class);
+    verify(assetManager, never()).finishLoadingAsset(testPath);
   }
 }
