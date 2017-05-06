@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.item;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,14 +30,14 @@ public class BaseItemTest {
   @Test
   public void get_name() {
     Message message = item.getName();
-    assertThat(message.getBundle()).isSameAs(MessageBundle.ITEM_NAME);
+    assertThat(message.getBundle()).isSameAs(ModelBundle.ITEM_NAME);
     assertThat(message.getKey()).isEqualTo(KEY);
   }
 
   @Test
   public void get_description() {
     Message message = item.getDescription();
-    assertThat(message.getBundle()).isSameAs(MessageBundle.ITEM_DESCRIPTION);
+    assertThat(message.getBundle()).isSameAs(ModelBundle.ITEM_DESCRIPTION);
     assertThat(message.getKey()).isEqualTo(KEY);
   }
 

@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
 class AttackAction implements Action {
 
@@ -13,7 +13,7 @@ class AttackAction implements Action {
 
   @Override
   public Message getMessage() {
-    return MessageBundle.ACTION.get("attack");
+    return ModelBundle.ACTION.get("attack");
   }
 
   @Override

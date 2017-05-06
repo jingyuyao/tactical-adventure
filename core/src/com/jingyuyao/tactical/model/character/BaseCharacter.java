@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -41,7 +41,7 @@ class BaseCharacter implements Character {
 
   @Override
   public Message getName() {
-    return MessageBundle.CHARACTER_NAME.get(nameKey);
+    return ModelBundle.CHARACTER_NAME.get(nameKey);
   }
 
   @Override

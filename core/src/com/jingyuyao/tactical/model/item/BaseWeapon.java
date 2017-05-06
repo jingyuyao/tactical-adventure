@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
@@ -29,14 +29,14 @@ class BaseWeapon extends BaseItem implements Weapon {
   @Override
   public Message getDescription() {
     if (lifeStealRate > 0) {
-      return MessageBundle.ITEM_DESCRIPTION
+      return ModelBundle.ITEM_DESCRIPTION
           .get("lifeStealWeapon", attackPower, lifeStealRate * 100);
     }
     if (recoilRate > 0) {
-      return MessageBundle.ITEM_DESCRIPTION
+      return ModelBundle.ITEM_DESCRIPTION
           .get("recoilWeapon", attackPower, recoilRate * 100);
     }
-    return MessageBundle.ITEM_DESCRIPTION.get("normalWeapon", attackPower);
+    return ModelBundle.ITEM_DESCRIPTION.get("normalWeapon", attackPower);
   }
 
   /**

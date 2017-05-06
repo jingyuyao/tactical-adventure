@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
@@ -27,12 +27,12 @@ class BaseItem implements Item {
 
   @Override
   public Message getName() {
-    return MessageBundle.ITEM_NAME.get(nameKey);
+    return ModelBundle.ITEM_NAME.get(nameKey);
   }
 
   @Override
   public Message getDescription() {
-    return MessageBundle.ITEM_DESCRIPTION.get(nameKey);
+    return ModelBundle.ITEM_DESCRIPTION.get(nameKey);
   }
 
   @Override

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -46,7 +46,7 @@ public class BaseCharacterTest {
   @Test
   public void get_name() {
     Message name = character.getName();
-    assertThat(name.getBundle()).isSameAs(MessageBundle.CHARACTER_NAME);
+    assertThat(name.getBundle()).isSameAs(ModelBundle.CHARACTER_NAME);
     assertThat(name.getKey()).isEqualTo(NAME_KEY);
   }
 

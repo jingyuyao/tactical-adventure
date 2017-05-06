@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
 public class Heal extends BaseItem implements Consumable {
 
@@ -18,7 +18,7 @@ public class Heal extends BaseItem implements Consumable {
 
   @Override
   public Message getDescription() {
-    return MessageBundle.ITEM_DESCRIPTION.get("heal", amount);
+    return ModelBundle.ITEM_DESCRIPTION.get("heal", amount);
   }
 
   @Override
