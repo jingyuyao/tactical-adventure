@@ -23,8 +23,9 @@ class TerrainOverviewPanel extends TextPanel<Terrain> {
 
   @Override
   Optional<String> createText(Terrain terrain) {
-    Message message = BUNDLE
-        .get("terrainOverviewPanel", terrain.getName(), terrain.getMovementPenalty());
+    String name = messageLoader.get(terrain.getName());
+    int moveCost = terrain.getMovementPenalty();
+    Message message = BUNDLE.get("terrainOverviewPanel", name, moveCost);
     return Optional.of(messageLoader.get(message));
   }
 }

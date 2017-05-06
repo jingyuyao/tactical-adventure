@@ -11,4 +11,6 @@ public class ModelBundle {
   public static final MessageBundle ITEM_NAME = new MessageBundle("i18n/model/item/ItemName");
   public static final MessageBundle ITEM_DESCRIPTION =
       new MessageBundle("i18n/model/item/ItemDescription");
+  public static final MessageBundle TERRAIN_NAME =
+      new MessageBundle("i18n/model/terrain/TerrainName");
 }
