@@ -20,11 +20,6 @@ class SelectConsumableAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return consumable.getName();
-  }
-
-  @Override
   public void run() {
     playerActionState.selectConsumable(consumable);
   }

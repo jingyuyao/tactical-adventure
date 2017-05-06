@@ -17,11 +17,6 @@ class BackAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "back";
-  }
-
-  @Override
   public void run() {
     baseState.back();
   }

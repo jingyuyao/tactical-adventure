@@ -20,11 +20,6 @@ class SelectWeaponAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return weapon.getName();
-  }
-
-  @Override
   public void run() {
     playerActionState.selectWeapon(weapon);
   }

@@ -17,11 +17,6 @@ class AttackAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "attack";
-  }
-
-  @Override
   public void run() {
     battling.attack();
   }

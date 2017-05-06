@@ -17,11 +17,6 @@ class EndTurnAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "end";
-  }
-
-  @Override
   public void run() {
     waiting.endTurn();
   }

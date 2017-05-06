@@ -17,11 +17,6 @@ class UseConsumableAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "use";
-  }
-
-  @Override
   public void run() {
     usingConsumable.use();
   }

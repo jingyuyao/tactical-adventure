@@ -17,11 +17,6 @@ class FinishAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "finish";
-  }
-
-  @Override
   public void run() {
     playerState.finish();
   }
