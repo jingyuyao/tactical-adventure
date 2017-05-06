@@ -1,17 +1,17 @@
 package com.jingyuyao.tactical.view.ui;
 
+import static com.jingyuyao.tactical.view.ui.GameUIModule.BUNDLE;
+
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.character.Character;
-import java.util.Locale;
+import com.jingyuyao.tactical.model.i18n.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class CharacterOverviewPanel extends ButtonPanel<Character> {
-
-  private static final String FMT = "Name: %s\nHP: %d";
 
   private final LayerManager layerManager;
   private final CharacterDetailLayer characterDetailLayer;
@@ -33,8 +33,10 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
     if (character.getHp() <= 0) {
       return Optional.absent();
     }
-    return Optional.of(String
-        .format(Locale.US, FMT, messageLoader.get(character.getName()), character.getHp()));
+    String name = messageLoader.get(character.getName());
+    int hp = character.getHp();
+    Message message = BUNDLE.get("characterOverviewPanel", name, hp);
+    return Optional.of(messageLoader.get(message));
   }
 
   @Override

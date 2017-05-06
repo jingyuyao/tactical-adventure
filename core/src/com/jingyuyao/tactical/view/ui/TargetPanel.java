@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
+import static com.jingyuyao.tactical.view.ui.GameUIModule.BUNDLE;
+
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
@@ -8,9 +10,9 @@ import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.world.Cell;
-import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,7 +20,7 @@ import javax.inject.Singleton;
 @ModelBusListener
 class TargetPanel extends TextPanel<Battling> {
 
-  private static final String FMT = "%s\nHP: %d\n";
+  private static final Message HEADER = BUNDLE.get("targetPanelHeader");
 
   private final MessageLoader messageLoader;
 
@@ -30,11 +32,13 @@ class TargetPanel extends TextPanel<Battling> {
 
   @Override
   Optional<String> createText(Battling battling) {
-    StringBuilder builder = new StringBuilder("Targets:\n");
+    StringBuilder builder = new StringBuilder(messageLoader.get(HEADER));
     for (Cell cell : battling.getBattle().getTarget().getTargetCells()) {
       for (Character character : cell.character().asSet()) {
-        builder.append(String
-            .format(Locale.US, FMT, messageLoader.get(character.getName()), character.getHp()));
+        String name = messageLoader.get(character.getName());
+        int hp = character.getHp();
+        Message message = BUNDLE.get("targetPanelItem", name, hp);
+        builder.append(messageLoader.get(message));
       }
     }
     return Optional.of(builder.toString());
