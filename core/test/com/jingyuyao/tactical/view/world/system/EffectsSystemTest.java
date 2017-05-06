@@ -63,7 +63,7 @@ public class EffectsSystemTest {
     when(target.getOrigin()).thenReturn(cell);
     when(target.direction()).thenReturn(Optional.<Direction>absent());
     when(cell.getCoordinate()).thenReturn(C1);
-    when(weapon.getKey()).thenReturn("titan");
+    when(weapon.getNameKey()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
     when(battle.getWeapon()).thenReturn(weapon);
     when(battle.getTarget()).thenReturn(target);
@@ -95,7 +95,7 @@ public class EffectsSystemTest {
     when(target.getOrigin()).thenReturn(cell);
     when(target.direction()).thenReturn(Optional.of(Direction.DOWN));
     when(cell.getCoordinate()).thenReturn(C1);
-    when(weapon.getKey()).thenReturn("titan");
+    when(weapon.getNameKey()).thenReturn("titan");
     when(animations.getWeapon("titan")).thenReturn(animation);
     when(battle.getWeapon()).thenReturn(weapon);
     when(battle.getTarget()).thenReturn(target);

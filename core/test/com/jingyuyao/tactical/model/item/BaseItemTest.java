@@ -24,7 +24,7 @@ public class BaseItemTest {
 
   @Test
   public void get_key() {
-    assertThat(item.getKey()).isEqualTo(KEY);
+    assertThat(item.getNameKey()).isEqualTo(KEY);
   }
 
   @Test

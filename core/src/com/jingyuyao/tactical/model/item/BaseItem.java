@@ -9,30 +9,30 @@ import com.jingyuyao.tactical.model.i18n.MessageBundle;
  */
 class BaseItem implements Item {
 
-  private String key;
+  private String nameKey;
   private int usageLeft;
 
   BaseItem() {
   }
 
-  BaseItem(String key, int usageLeft) {
-    this.key = key;
+  BaseItem(String nameKey, int usageLeft) {
+    this.nameKey = nameKey;
     this.usageLeft = usageLeft;
   }
 
   @Override
-  public String getKey() {
-    return key;
+  public String getNameKey() {
+    return nameKey;
   }
 
   @Override
   public Message getName() {
-    return MessageBundle.ITEM_NAME.get(key);
+    return MessageBundle.ITEM_NAME.get(nameKey);
   }
 
   @Override
   public Message getDescription() {
-    return MessageBundle.ITEM_DESCRIPTION.get(key);
+    return MessageBundle.ITEM_DESCRIPTION.get(nameKey);
   }
 
   @Override

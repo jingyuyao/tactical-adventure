@@ -42,7 +42,7 @@ class EffectsSystem extends EntitySystem {
       frame.setDirection(direction.get());
     }
 
-    SingleAnimation animation = animations.getWeapon(battle.getWeapon().getKey());
+    SingleAnimation animation = animations.getWeapon(battle.getWeapon().getNameKey());
     animation.getPromise().done(new Runnable() {
       @Override
       public void run() {

@@ -13,7 +13,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "key": "pot",
+            "nameKey": "pot",
             "usageLeft": 3,
             "amount": 10
           }
@@ -21,14 +21,14 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "key": "melee",
+            "nameKey": "melee",
             "usageLeft": 15,
             "attackPower": 5,
             "distance": 1
           },
           {
             "type": "Grenade",
-            "key": "bomb",
+            "nameKey": "bomb",
             "usageLeft": 5,
             "attackPower": 4,
             "distance": 3,
@@ -38,7 +38,7 @@
         "stashedArmors": [
           {
             "type": "BodyArmor",
-            "key": "diamondArmor",
+            "nameKey": "diamondArmor",
             "usageLeft": 50,
             "defense": 100
           }
@@ -46,7 +46,7 @@
         "equippedArmors": [
           {
             "type": "BodyArmor",
-            "key": "armor",
+            "nameKey": "armor",
             "usageLeft": 50,
             "defense": 5
           }
@@ -65,7 +65,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "key": "pot",
+            "nameKey": "pot",
             "usageLeft": 3,
             "amount": 10
           }
@@ -73,14 +73,14 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "key": "melee",
+            "nameKey": "melee",
             "usageLeft": 15,
             "attackPower": 5,
             "distance": 1
           },
           {
             "type": "Grenade",
-            "key": "bomb",
+            "nameKey": "bomb",
             "usageLeft": 2,
             "attackPower": 8,
             "distance": 2,
@@ -91,13 +91,13 @@
         "equippedArmors": [
           {
             "type": "BodyArmor",
-            "key": "armor",
+            "nameKey": "armor",
             "usageLeft": 50,
             "defense": 5
           },
           {
             "type": "Helmet",
-            "key": "hat",
+            "nameKey": "hat",
             "usageLeft": 10,
             "defense": 1
           }
@@ -116,7 +116,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "key": "pot",
+            "nameKey": "pot",
             "usageLeft": 5,
             "amount": 5
           }
@@ -124,7 +124,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "key": "buzz",
+            "nameKey": "buzz",
             "usageLeft": 15,
             "attackPower": 50,
             "distance": 3,
@@ -135,7 +135,7 @@
         "equippedArmors": [
           {
             "type": "BodyArmor",
-            "key": "armor",
+            "nameKey": "armor",
             "usageLeft": 50,
             "defense": 5
           }
@@ -154,7 +154,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "key": "pot",
+            "nameKey": "pot",
             "usageLeft": 5,
             "amount": 5
           }
@@ -162,7 +162,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "key": "buzz",
+            "nameKey": "buzz",
             "usageLeft": 15,
             "attackPower": 10,
             "distance": 3,
@@ -173,7 +173,7 @@
         "equippedArmors": [
           {
             "type": "BodyArmor",
-            "key": "armor",
+            "nameKey": "armor",
             "usageLeft": 50,
             "defense": 5
           }
