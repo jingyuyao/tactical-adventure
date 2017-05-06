@@ -1,23 +1,28 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-abstract class AbstractCharacter implements Character {
+class BaseCharacter implements Character {
 
-  private String name;
+  private String nameKey;
+  private String resourceKey;
   private int maxHp;
   private int hp;
   private int moveDistance;
   private Items items;
 
-  AbstractCharacter() {
+  BaseCharacter() {
   }
 
-  AbstractCharacter(String name, int maxHp, int hp, int moveDistance, Items items) {
-    this.name = name;
+  BaseCharacter(
+      String nameKey, String resourceKey, int maxHp, int hp, int moveDistance, Items items) {
+    this.nameKey = nameKey;
+    this.resourceKey = resourceKey;
     this.maxHp = maxHp;
     this.hp = hp;
     this.moveDistance = moveDistance;
@@ -25,8 +30,18 @@ abstract class AbstractCharacter implements Character {
   }
 
   @Override
-  public String getName() {
-    return name;
+  public boolean canControl() {
+    return false;
+  }
+
+  @Override
+  public String getResourceKey() {
+    return resourceKey;
+  }
+
+  @Override
+  public Message getName() {
+    return MessageBundle.CHARACTER_NAME.get(nameKey);
   }
 
   @Override

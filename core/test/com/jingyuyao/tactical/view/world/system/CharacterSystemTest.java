@@ -115,7 +115,7 @@ public class CharacterSystemTest {
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.character()).thenReturn(Optional.<Character>of(player));
-    when(player.getName()).thenReturn("me");
+    when(player.getResourceKey()).thenReturn("me");
     when(animations.getCharacter("me")).thenReturn(animation);
 
     characterSystem.spawnCharacter(spawnCharacter);
@@ -149,7 +149,7 @@ public class CharacterSystemTest {
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell.player()).thenReturn(Optional.<Player>absent());
     when(cell.character()).thenReturn(Optional.<Character>of(enemy));
-    when(enemy.getName()).thenReturn("me");
+    when(enemy.getResourceKey()).thenReturn("me");
     when(animations.getCharacter("me")).thenReturn(animation);
 
     characterSystem.spawnCharacter(spawnCharacter);

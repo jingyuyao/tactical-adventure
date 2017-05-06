@@ -11,7 +11,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BasePlayerTest {
 
-  private static final String NAME = "yo";
+  private static final String NAME_KEY = "yo";
+  private static final String RESOURCE_KEY = "yo_face";
   private static final int MAX_HP = 20;
   private static final int HP = 10;
   private static final int MOVE_DISTANCE = 3;
@@ -23,7 +24,7 @@ public class BasePlayerTest {
 
   @Before
   public void setUp() {
-    player = new BasePlayer(NAME, MAX_HP, HP, MOVE_DISTANCE, items, true);
+    player = new BasePlayer(NAME_KEY, RESOURCE_KEY, MAX_HP, HP, MOVE_DISTANCE, items, true);
   }
 
   @Test

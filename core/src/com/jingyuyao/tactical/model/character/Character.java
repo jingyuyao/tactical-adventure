@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.character;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -12,7 +13,9 @@ public interface Character {
    */
   boolean canControl();
 
-  String getName();
+  String getResourceKey();
+
+  Message getName();
 
   /**
    * Always >= 0.

@@ -3,7 +3,8 @@
   "players": [
     {
       "type": "BasePlayer",
-      "name": "dance",
+      "nameKey": "jingyu",
+      "resourceKey": "dance",
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 4,
@@ -54,7 +55,8 @@
     },
     {
       "type": "BasePlayer",
-      "name": "dance",
+      "nameKey": "ben",
+      "resourceKey": "dance",
       "maxHp": 15,
       "hp": 15,
       "moveDistance": 4,
@@ -104,7 +106,8 @@
     },
     {
       "type": "BasePlayer",
-      "name": "stick",
+      "nameKey": "andrew",
+      "resourceKey": "stick",
       "maxHp": 20,
       "hp": 20,
       "moveDistance": 5,
@@ -141,7 +144,8 @@
     },
     {
       "type": "BasePlayer",
-      "name": "stick",
+      "nameKey": "kevin",
+      "resourceKey": "stick",
       "maxHp": 20,
       "hp": 20,
       "moveDistance": 5,

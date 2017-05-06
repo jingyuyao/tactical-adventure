@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.character.Character;
 import java.util.Locale;
 import javax.inject.Inject;
@@ -14,12 +15,17 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
 
   private final LayerManager layerManager;
   private final CharacterDetailLayer characterDetailLayer;
+  private final MessageLoader messageLoader;
 
   @Inject
-  CharacterOverviewPanel(LayerManager layerManager, CharacterDetailLayer characterDetailLayer) {
+  CharacterOverviewPanel(
+      LayerManager layerManager,
+      CharacterDetailLayer characterDetailLayer,
+      MessageLoader messageLoader) {
     super(Align.right);
     this.layerManager = layerManager;
     this.characterDetailLayer = characterDetailLayer;
+    this.messageLoader = messageLoader;
   }
 
   @Override
@@ -27,7 +33,8 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
     if (character.getHp() <= 0) {
       return Optional.absent();
     }
-    return Optional.of(String.format(Locale.US, FMT, character.getName(), character.getHp()));
+    return Optional.of(String
+        .format(Locale.US, FMT, messageLoader.get(character.getName()), character.getHp()));
   }
 
   @Override

@@ -8,7 +8,8 @@
   "enemies": {
     "1,11": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -29,7 +30,8 @@
     },
     "3,12": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -50,7 +52,8 @@
     },
     "5,14": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -71,7 +74,8 @@
     },
     "6,5": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -92,7 +96,8 @@
     },
     "10,8": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -113,7 +118,8 @@
     },
     "13,6": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -134,7 +140,8 @@
     },
     "12,10": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -155,7 +162,8 @@
     },
     "14,10": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
