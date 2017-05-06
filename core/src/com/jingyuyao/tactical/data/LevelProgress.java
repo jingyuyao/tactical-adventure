@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class LevelProgress {
+public class LevelProgress {
 
   private List<Player> inactivePlayers = new ArrayList<>();
   private Map<Coordinate, Player> activePlayers = new HashMap<>();
@@ -36,19 +36,19 @@ class LevelProgress {
     activeEnemies.putAll(levelData.getEnemies());
   }
 
-  Map<Coordinate, Player> getActivePlayers() {
+  public Map<Coordinate, Player> getActivePlayers() {
     return activePlayers;
   }
 
-  Map<Coordinate, Enemy> getActiveEnemies() {
+  public Map<Coordinate, Enemy> getActiveEnemies() {
     return activeEnemies;
   }
 
-  List<Player> getInactivePlayers() {
+  public List<Player> getInactivePlayers() {
     return inactivePlayers;
   }
 
-  Map<Coordinate, Character> getActiveCharacters() {
+  public Map<Coordinate, Character> getActiveCharacters() {
     Map<Coordinate, Character> characterMap = new HashMap<>();
     characterMap.putAll(activePlayers);
     characterMap.putAll(activeEnemies);

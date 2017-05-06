@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.menu;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,7 +10,7 @@ import com.google.inject.Guice;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.data.DataManager;
-import com.kotcrab.vis.ui.widget.VisLabel;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -20,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+// TODO: test rest button and on show
 @RunWith(MockitoJUnitRunner.class)
 public class StartMenuTest {
 
@@ -29,6 +29,8 @@ public class StartMenuTest {
   private GameState gameState;
   @Mock
   private DataManager dataManager;
+  @Mock
+  private MessageLoader messageLoader;
   @Inject
   private GL20 gl20;
   @Inject
@@ -39,21 +41,10 @@ public class StartMenuTest {
   @Before
   public void setUp() {
     Guice.createInjector(new MockGameModule()).injectMembers(this);
-    startMenu = new StartMenu(gl20, input, stage, gameState, dataManager);
+    startMenu = new StartMenu(gl20, input, stage, gameState, dataManager, messageLoader);
 
     verify(stage).addActor(startMenu.getRoot());
     assertThat(startMenu.getRoot().getTitleLabel().getText().toString()).isEqualTo("Start");
-  }
-
-  @Test
-  public void show() {
-    when(dataManager.getInfo()).thenReturn("bwa ha ha");
-
-    startMenu.show();
-
-    verify(input).setInputProcessor(stage);
-    VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
-    assertThat(infoLabel.getText().toString()).isEqualTo("bwa ha ha");
   }
 
   @Test
@@ -63,17 +54,5 @@ public class StartMenuTest {
     button.toggle();
 
     verify(gameState).play();
-  }
-
-  @Test
-  public void reset_button() {
-    when(dataManager.getInfo()).thenReturn("mango berry");
-    VisTextButton button = startMenu.getRoot().findActor("resetButton");
-
-    button.toggle();
-
-    verify(gameState).reset();
-    VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
-    assertThat(infoLabel.getText().toString()).isEqualTo("mango berry");
   }
 }

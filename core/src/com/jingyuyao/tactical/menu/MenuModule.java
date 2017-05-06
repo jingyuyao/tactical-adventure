@@ -14,17 +14,22 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
+import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 public class MenuModule extends AbstractModule {
 
+  static final MessageBundle BUNDLE = new MessageBundle("i18n/menu/Menu");
+
   @Override
   protected void configure() {
     requireBinding(Input.class);
     requireBinding(GL20.class);
     requireBinding(Batch.class);
+    requireBinding(MessageLoader.class);
     requireBinding(GameState.class);
     requireBinding(DataManager.class);
   }

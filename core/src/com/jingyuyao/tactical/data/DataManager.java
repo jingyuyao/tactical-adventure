@@ -6,7 +6,6 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.Locale;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,6 +32,10 @@ public class DataManager {
 
   public GameSave loadCurrentSave() {
     return gameSaveManager.load();
+  }
+
+  public Optional<LevelProgress> loadCurrentProgress() {
+    return levelProgressManager.load();
   }
 
   public boolean hasLevel(int level) {
@@ -97,23 +100,5 @@ public class DataManager {
 
   public void removeProgress() {
     levelProgressManager.removeSave();
-  }
-
-  public String getInfo() {
-    String progress = "No progress";
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-    if (levelProgressOptional.isPresent()) {
-      LevelProgress levelProgress = levelProgressOptional.get();
-      int activePlayers = levelProgress.getActivePlayers().size();
-      int activeEnemies = levelProgress.getActiveEnemies().size();
-      progress =
-          String.format(
-              Locale.US,
-              "%d player characters, %d enemies remaining", activePlayers, activeEnemies);
-    }
-
-    GameSave gameSave = loadCurrentSave();
-    int level = gameSave.getCurrentLevel();
-    return String.format(Locale.US, "Current level: %d\n%s", level, progress);
   }
 }
