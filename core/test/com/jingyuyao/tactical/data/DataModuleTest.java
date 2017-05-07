@@ -28,11 +28,17 @@ public class DataModuleTest {
   private Provider<Grenade> grenadeProvider;
 
   @Inject
+  private DataManager dataManager;
+  @Inject
   private GameSaveManager gameSaveManager;
   @Inject
   private LevelDataManager levelDataManager;
   @Inject
   private LevelMapManager levelMapManager;
+  @Inject
+  private LevelProgressManager levelProgressManager;
+  @Inject
+  private MessageLoader messageLoader;
 
   @Test
   public void can_create_module() {

@@ -1,5 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
+
 class AttackAction implements Action {
 
   private final Battling battling;
@@ -9,8 +12,8 @@ class AttackAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "attack";
+  public Message getMessage() {
+    return ModelBundle.ACTION.get("attack");
   }
 
   @Override

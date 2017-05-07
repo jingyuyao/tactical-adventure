@@ -2,28 +2,34 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class CharacterItemsPanel extends VisTable {
 
-  CharacterItemsPanel() {
+  private final MessageLoader messageLoader;
+
+  @Inject
+  CharacterItemsPanel(MessageLoader messageLoader) {
     super(true);
+    this.messageLoader = messageLoader;
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
   void display(Character character) {
     clearChildren();
-    addText("Item");
-    addText("Durability");
-    addText("Description");
-    addText("Action");
+    addText(messageLoader.get(UIBundle.ITEM_NAME_HEADER));
+    addText(messageLoader.get(UIBundle.ITEM_DURABILITY_HEADER));
+    addText(messageLoader.get(UIBundle.ITEM_DESCRIPTION_HEADER));
+    addText(messageLoader.get(UIBundle.ITEM_ACTION_HEADER));
     row();
 
     addEquippedArmors(character);
@@ -60,9 +66,9 @@ class CharacterItemsPanel extends VisTable {
   }
 
   private void addItem(Item item) {
-    addText(item.getName());
+    addText(messageLoader.get(item.getName()));
     addText(String.valueOf(item.getUsageLeft()));
-    addText(item.getDescription());
+    addText(messageLoader.get(item.getDescription()));
   }
 
   private void addText(String text) {
@@ -72,7 +78,7 @@ class CharacterItemsPanel extends VisTable {
   private class EquipArmor extends VisTextButton {
 
     private EquipArmor(final Character character, final Armor armor) {
-      super("Equip", new ChangeListener() {
+      super(messageLoader.get(UIBundle.EQUIP_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           character.equipArmor(armor);
@@ -87,7 +93,7 @@ class CharacterItemsPanel extends VisTable {
   private class UnequipArmor extends VisTextButton {
 
     private UnequipArmor(final Character character, final Armor armor) {
-      super("Unequip", new ChangeListener() {
+      super(messageLoader.get(UIBundle.UNEQUIP_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           character.unequipArmor(armor);

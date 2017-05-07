@@ -1,5 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
+
 class FinishAction implements Action {
 
   private final BasePlayerState playerState;
@@ -9,8 +12,8 @@ class FinishAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "finish";
+  public Message getMessage() {
+    return ModelBundle.ACTION.get("finish");
   }
 
   @Override

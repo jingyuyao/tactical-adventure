@@ -1,5 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
+
 class EndTurnAction implements Action {
 
   private final Waiting waiting;
@@ -9,8 +12,8 @@ class EndTurnAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "end";
+  public Message getMessage() {
+    return ModelBundle.ACTION.get("end");
   }
 
   @Override

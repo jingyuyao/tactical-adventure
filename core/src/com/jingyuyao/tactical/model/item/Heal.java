@@ -1,7 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.character.Character;
-import java.util.Locale;
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
 public class Heal extends BaseItem implements Consumable {
 
@@ -10,14 +11,13 @@ public class Heal extends BaseItem implements Consumable {
   Heal() {
   }
 
-  Heal(String name, int usageLeft, int amount) {
-    super(name, usageLeft);
+  Heal(int amount) {
     this.amount = amount;
   }
 
   @Override
-  public String getDescription() {
-    return String.format(Locale.US, "Heals for %d", amount);
+  public Message getDescription() {
+    return ModelBundle.ITEM_DESCRIPTION.get("heal", amount);
   }
 
   @Override

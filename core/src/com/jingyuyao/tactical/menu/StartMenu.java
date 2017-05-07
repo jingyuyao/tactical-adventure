@@ -6,8 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.google.common.base.Optional;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
+import com.jingyuyao.tactical.data.GameSave;
+import com.jingyuyao.tactical.data.LevelProgress;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
@@ -25,17 +29,20 @@ public class StartMenu extends AbstractMenu {
   private final GameState gameState;
   private final DataManager dataManager;
   private final VisLabel infoLabel;
+  private final MessageLoader messageLoader;
 
   @Inject
   StartMenu(
       GL20 gl,
       Input input,
       @MenuStage Stage stage,
-      final GameState gameState,
-      final DataManager dataManager) {
+      GameState gameState,
+      DataManager dataManager,
+      MessageLoader messageLoader) {
     super(gl, input, stage);
     this.gameState = gameState;
     this.dataManager = dataManager;
+    this.messageLoader = messageLoader;
     this.infoLabel = new VisLabel(null, Align.center);
     this.infoLabel.setName("infoLabel");
 
@@ -50,20 +57,32 @@ public class StartMenu extends AbstractMenu {
   }
 
   @Override
-  String getTitle() {
-    return "Start";
-  }
-
-  @Override
   public void show() {
     super.show();
-    infoLabel.setText(dataManager.getInfo());
+    infoLabel.setText(getInfo());
+  }
+
+  private String getInfo() {
+    String progress;
+    Optional<LevelProgress> levelProgressOptional = dataManager.loadCurrentProgress();
+    if (levelProgressOptional.isPresent()) {
+      LevelProgress levelProgress = levelProgressOptional.get();
+      int activePlayers = levelProgress.getActivePlayers().size();
+      int activeEnemies = levelProgress.getActiveEnemies().size();
+      progress = messageLoader.get(MenuBundle.HAS_PROGRESS.format(activePlayers, activeEnemies));
+    } else {
+      progress = messageLoader.get(MenuBundle.NO_PROGRESS);
+    }
+
+    GameSave gameSave = dataManager.loadCurrentSave();
+    int level = gameSave.getCurrentLevel();
+    return messageLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
 
   class PlayButton extends VisTextButton {
 
     PlayButton() {
-      super("Play", "blue", new ChangeListener() {
+      super(messageLoader.get(MenuBundle.PLAY_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.play();
@@ -77,11 +96,11 @@ public class StartMenu extends AbstractMenu {
   class ResetButton extends VisTextButton {
 
     ResetButton() {
-      super("Reset", new ChangeListener() {
+      super(messageLoader.get(MenuBundle.RESET_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.reset();
-          infoLabel.setText(dataManager.getInfo());
+          infoLabel.setText(getInfo());
         }
       });
       setName("resetButton");

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
-import java.util.Locale;
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
 class BaseArmor extends BaseItem implements Armor {
 
@@ -12,7 +13,7 @@ class BaseArmor extends BaseItem implements Armor {
   }
 
   @Override
-  public String getDescription() {
-    return String.format(Locale.US, "%d defense", defense);
+  public Message getDescription() {
+    return ModelBundle.ITEM_DESCRIPTION.get("armor", defense);
   }
 }

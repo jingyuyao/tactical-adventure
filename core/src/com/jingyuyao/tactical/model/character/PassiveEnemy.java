@@ -7,14 +7,9 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
 
-public class PassiveEnemy extends AbstractCharacter implements Enemy {
+public class PassiveEnemy extends BaseCharacter implements Enemy {
 
   PassiveEnemy() {
-  }
-
-  @Override
-  public boolean canControl() {
-    return false;
   }
 
   @Override

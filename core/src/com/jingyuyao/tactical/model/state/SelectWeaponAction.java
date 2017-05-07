@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Weapon;
 
 class SelectWeaponAction implements Action {
@@ -13,7 +14,7 @@ class SelectWeaponAction implements Action {
   }
 
   @Override
-  public String getName() {
+  public Message getMessage() {
     return weapon.getName();
   }
 

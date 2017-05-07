@@ -1,8 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
+
 public interface Action {
 
-  String getName();
+  Message getMessage();
 
   /**
    * Perform the action. <br/> Implementation should be simple method references. All complexity

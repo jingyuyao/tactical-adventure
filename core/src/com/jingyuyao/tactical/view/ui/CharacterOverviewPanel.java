@@ -2,24 +2,28 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.character.Character;
-import java.util.Locale;
+import com.jingyuyao.tactical.model.i18n.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class CharacterOverviewPanel extends ButtonPanel<Character> {
 
-  private static final String FMT = "Name: %s\nHP: %d";
-
   private final LayerManager layerManager;
   private final CharacterDetailLayer characterDetailLayer;
+  private final MessageLoader messageLoader;
 
   @Inject
-  CharacterOverviewPanel(LayerManager layerManager, CharacterDetailLayer characterDetailLayer) {
+  CharacterOverviewPanel(
+      LayerManager layerManager,
+      CharacterDetailLayer characterDetailLayer,
+      MessageLoader messageLoader) {
     super(Align.right);
     this.layerManager = layerManager;
     this.characterDetailLayer = characterDetailLayer;
+    this.messageLoader = messageLoader;
   }
 
   @Override
@@ -27,7 +31,10 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
     if (character.getHp() <= 0) {
       return Optional.absent();
     }
-    return Optional.of(String.format(Locale.US, FMT, character.getName(), character.getHp()));
+    String name = messageLoader.get(character.getName());
+    int hp = character.getHp();
+    Message message = UIBundle.OVERVIEW_PANEL.format(name, hp);
+    return Optional.of(messageLoader.get(message));
   }
 
   @Override

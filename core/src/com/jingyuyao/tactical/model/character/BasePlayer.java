@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
-public class BasePlayer extends AbstractCharacter implements Player {
+public class BasePlayer extends BaseCharacter implements Player {
 
   private boolean actionable;
 
@@ -8,8 +8,9 @@ public class BasePlayer extends AbstractCharacter implements Player {
   }
 
   BasePlayer(
-      String name, int maxHp, int hp, int moveDistance, Items items, boolean actionable) {
-    super(name, maxHp, hp, moveDistance, items);
+      String nameKey, String resourceKey, int maxHp, int hp, int moveDistance, Items items,
+      boolean actionable) {
+    super(nameKey, resourceKey, maxHp, hp, moveDistance, items);
     this.actionable = actionable;
   }
 

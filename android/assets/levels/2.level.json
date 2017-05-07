@@ -8,7 +8,8 @@
   "enemies": {
     "1,11": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -17,7 +18,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -29,7 +31,8 @@
     },
     "3,12": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -38,7 +41,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -50,7 +54,8 @@
     },
     "5,14": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -59,7 +64,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -71,7 +77,8 @@
     },
     "6,5": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -80,7 +87,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -92,7 +100,8 @@
     },
     "10,8": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -101,7 +110,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -113,7 +123,8 @@
     },
     "13,6": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -122,7 +133,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -134,7 +146,8 @@
     },
     "12,10": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -143,7 +156,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -155,7 +169,8 @@
     },
     "14,10": {
       "type": "PassiveEnemy",
-      "name": "stick",
+      "nameKey": "soldier",
+      "resourceKey": "stick",
       "maxHp": 10,
       "hp": 10,
       "moveDistance": 5,
@@ -164,7 +179,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "name": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1

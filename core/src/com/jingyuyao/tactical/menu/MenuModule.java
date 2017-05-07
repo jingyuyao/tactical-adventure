@@ -14,6 +14,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
+import com.jingyuyao.tactical.data.MessageLoader;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
@@ -25,6 +26,7 @@ public class MenuModule extends AbstractModule {
     requireBinding(Input.class);
     requireBinding(GL20.class);
     requireBinding(Batch.class);
+    requireBinding(MessageLoader.class);
     requireBinding(GameState.class);
     requireBinding(DataManager.class);
   }

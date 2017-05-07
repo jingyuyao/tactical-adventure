@@ -1,5 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
+
 class UseConsumableAction implements Action {
 
   private final UsingConsumable usingConsumable;
@@ -9,8 +12,8 @@ class UseConsumableAction implements Action {
   }
 
   @Override
-  public String getName() {
-    return "use";
+  public Message getMessage() {
+    return ModelBundle.ACTION.get("use");
   }
 
   @Override

@@ -3,31 +3,38 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
 import com.jingyuyao.tactical.model.state.UsingConsumable;
-import java.util.Locale;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 @ModelBusListener
 class ItemPanel extends TextPanel<Item> {
 
-  private static final String ITEM_FMT = "%s\nUsage: %d\n%s";
+  private final MessageLoader messageLoader;
 
-  ItemPanel() {
+  @Inject
+  ItemPanel(MessageLoader messageLoader) {
     super(Align.left);
+    this.messageLoader = messageLoader;
   }
 
   @Override
   Optional<String> createText(Item item) {
-    return Optional.of(String.format(
-        Locale.US, ITEM_FMT, item.getName(), item.getUsageLeft(), item.getDescription()));
+    String name = messageLoader.get(item.getName());
+    int usage = item.getUsageLeft();
+    String description = messageLoader.get(item.getDescription());
+    Message message = UIBundle.ITEM_PANEL.format(name, usage, description);
+    return Optional.of(messageLoader.get(message));
   }
 
   @Subscribe

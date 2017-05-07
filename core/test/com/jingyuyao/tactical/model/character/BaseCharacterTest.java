@@ -5,6 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -15,9 +17,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AbstractCharacterTest {
+public class BaseCharacterTest {
 
-  private static final String NAME = "yo";
+  private static final String NAME_KEY = "yo";
+  private static final String RESOURCE_KEY = "yo_face";
   private static final int MAX_HP = 20;
   private static final int HP = 10;
   private static final int MOVE_DISTANCE = 3;
@@ -37,12 +40,14 @@ public class AbstractCharacterTest {
 
   @Before
   public void setUp() {
-    character = new AbstractCharacter(NAME, MAX_HP, HP, MOVE_DISTANCE, items) {
-      @Override
-      public boolean canControl() {
-        return false;
-      }
-    };
+    character = new BaseCharacter(NAME_KEY, RESOURCE_KEY, MAX_HP, HP, MOVE_DISTANCE, items);
+  }
+
+  @Test
+  public void get_name() {
+    Message name = character.getName();
+    assertThat(name.getBundle()).isSameAs(ModelBundle.CHARACTER_NAME);
+    assertThat(name.getKey()).isEqualTo(NAME_KEY);
   }
 
   @Test
