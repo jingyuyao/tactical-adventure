@@ -1,10 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
-import static com.jingyuyao.tactical.view.ui.GameUIModule.BUNDLE;
-
 import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.i18n.Message;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import javax.inject.Inject;
@@ -12,10 +9,6 @@ import javax.inject.Singleton;
 
 @Singleton
 class CharacterStatsPanel extends VisTable {
-
-  private static final Message NAME_HEADER = BUNDLE.get("characterNameHeader");
-  private static final Message HP_HEADER = BUNDLE.get("characterHPHeader");
-  private static final Message MOVE_HEADER = BUNDLE.get("characterMoveHeader");
 
   private final MessageLoader messageLoader;
 
@@ -28,13 +21,13 @@ class CharacterStatsPanel extends VisTable {
 
   void display(Character character) {
     clearChildren();
-    addText(messageLoader.get(NAME_HEADER));
+    addText(messageLoader.get(UIBundle.CHARACTER_NAME_HEADER));
     addText(messageLoader.get(character.getName()));
     row();
-    addText(messageLoader.get(HP_HEADER));
+    addText(messageLoader.get(UIBundle.CHARACTER_HP_HEADER));
     addText(String.valueOf(character.getHp()));
     row();
-    addText(messageLoader.get(MOVE_HEADER));
+    addText(messageLoader.get(UIBundle.CHARACTER_MOVE_HEADER));
     addText(String.valueOf(character.getMoveDistance()));
   }
 

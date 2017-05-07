@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.view.ui;
 
-import static com.jingyuyao.tactical.view.ui.GameUIModule.BUNDLE;
-
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.MessageLoader;
@@ -35,7 +33,7 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
     }
     String name = messageLoader.get(character.getName());
     int hp = character.getHp();
-    Message message = BUNDLE.get("characterOverviewPanel", name, hp);
+    Message message = UIBundle.OVERVIEW_PANEL.format(name, hp);
     return Optional.of(messageLoader.get(message));
   }
 

@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Deque;
@@ -22,8 +21,6 @@ import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 public class GameUIModule extends AbstractModule {
-
-  static final MessageBundle BUNDLE = new MessageBundle("i18n/view/ui/UI");
 
   @Override
   protected void configure() {

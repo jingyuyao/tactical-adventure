@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.view.ui;
 
-import static com.jingyuyao.tactical.view.ui.GameUIModule.BUNDLE;
-
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.MessageLoader;
@@ -25,7 +23,7 @@ class TerrainOverviewPanel extends TextPanel<Terrain> {
   Optional<String> createText(Terrain terrain) {
     String name = messageLoader.get(terrain.getName());
     int moveCost = terrain.getMovementPenalty();
-    Message message = BUNDLE.get("terrainOverviewPanel", name, moveCost);
+    Message message = UIBundle.TERRAIN_OVERVIEW_PANEL.format(name, moveCost);
     return Optional.of(messageLoader.get(message));
   }
 }

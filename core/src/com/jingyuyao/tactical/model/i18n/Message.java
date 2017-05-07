@@ -4,7 +4,7 @@ import com.google.common.base.Objects;
 import java.util.Arrays;
 
 /**
- * A reference to an i18n message.
+ * An immutable key to an i18n message. Arguments can be provided at creation or at run time.
  */
 public class Message {
 

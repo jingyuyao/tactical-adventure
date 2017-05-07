@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.view.ui;
 
-import static com.jingyuyao.tactical.view.ui.GameUIModule.BUNDLE;
-
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
@@ -35,7 +33,7 @@ class ItemPanel extends TextPanel<Item> {
     String name = messageLoader.get(item.getName());
     int usage = item.getUsageLeft();
     String description = messageLoader.get(item.getDescription());
-    Message message = BUNDLE.get("itemPanel", name, usage, description);
+    Message message = UIBundle.ITEM_PANEL.format(name, usage, description);
     return Optional.of(messageLoader.get(message));
   }
 
