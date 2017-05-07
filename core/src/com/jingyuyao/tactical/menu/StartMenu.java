@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.menu;
 
-import static com.jingyuyao.tactical.menu.MenuModule.BUNDLE;
-
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -59,11 +57,6 @@ public class StartMenu extends AbstractMenu {
   }
 
   @Override
-  String getTitle() {
-    return "Start";
-  }
-
-  @Override
   public void show() {
     super.show();
     infoLabel.setText(getInfo());
@@ -76,20 +69,20 @@ public class StartMenu extends AbstractMenu {
       LevelProgress levelProgress = levelProgressOptional.get();
       int activePlayers = levelProgress.getActivePlayers().size();
       int activeEnemies = levelProgress.getActiveEnemies().size();
-      progress = messageLoader.get(BUNDLE.get("hasProgress", activePlayers, activeEnemies));
+      progress = messageLoader.get(MenuBundle.HAS_PROGRESS.format(activePlayers, activeEnemies));
     } else {
-      progress = messageLoader.get(BUNDLE.get("noProgress"));
+      progress = messageLoader.get(MenuBundle.NO_PROGRESS);
     }
 
     GameSave gameSave = dataManager.loadCurrentSave();
     int level = gameSave.getCurrentLevel();
-    return messageLoader.get(BUNDLE.get("levelInfo", level, progress));
+    return messageLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
 
   class PlayButton extends VisTextButton {
 
     PlayButton() {
-      super("Play", "blue", new ChangeListener() {
+      super(messageLoader.get(MenuBundle.PLAY_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.play();
@@ -103,7 +96,7 @@ public class StartMenu extends AbstractMenu {
   class ResetButton extends VisTextButton {
 
     ResetButton() {
-      super("Reset", new ChangeListener() {
+      super(messageLoader.get(MenuBundle.RESET_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.reset();

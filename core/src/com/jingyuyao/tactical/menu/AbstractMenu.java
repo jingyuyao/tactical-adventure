@@ -4,26 +4,25 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
-import com.kotcrab.vis.ui.util.TableUtils;
-import com.kotcrab.vis.ui.widget.VisWindow;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisTable;
 
 abstract class AbstractMenu extends ScreenAdapter {
 
   private final GL20 gl;
   private final Input input;
   private final Stage stage;
-  private final VisWindow root;
+  private final Table root;
 
   AbstractMenu(GL20 gl, Input input, @MenuStage Stage stage) {
     this.gl = gl;
     this.input = input;
     this.stage = stage;
-    this.root = new VisWindow(getTitle(), false);
+    this.root = new VisTable(true);
     root.setFillParent(true);
-    root.setMovable(false);
-    root.getTitleTable().padLeft(20);
-    TableUtils.setSpacingDefaults(root);
+    root.setBackground(VisUI.getSkin().getDrawable("window-bg"));
     this.stage.addActor(root);
   }
 
@@ -51,16 +50,9 @@ abstract class AbstractMenu extends ScreenAdapter {
   }
 
   /**
-   * The root window for this menu.
-   *
-   * Initially constructed with no border, default spacing, filling parent and immovable.
+   * The root table for this menu. Initially set to fill parent and a dark background.
    */
-  VisWindow getRoot() {
+  Table getRoot() {
     return root;
   }
-
-  /**
-   * The title for the root window.
-   */
-  abstract String getTitle();
 }
