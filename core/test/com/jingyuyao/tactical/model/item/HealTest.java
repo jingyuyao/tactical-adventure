@@ -12,8 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class HealTest {
 
-  private static final String NAME = "heal";
-  private static final int USAGE_LEFT = 1;
   private static final int AMOUNT = 11;
 
   @Mock
@@ -23,7 +21,7 @@ public class HealTest {
 
   @Before
   public void setUp() {
-    heal = new Heal(NAME, USAGE_LEFT, AMOUNT);
+    heal = new Heal(AMOUNT);
   }
 
   @Test

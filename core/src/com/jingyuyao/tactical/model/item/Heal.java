@@ -11,8 +11,7 @@ public class Heal extends BaseItem implements Consumable {
   Heal() {
   }
 
-  Heal(String name, int usageLeft, int amount) {
-    super(name, usageLeft);
+  Heal(int amount) {
     this.amount = amount;
   }
 

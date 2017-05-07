@@ -18,7 +18,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -40,7 +41,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -62,7 +64,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -84,7 +87,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -106,7 +110,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -128,7 +133,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -150,7 +156,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -172,7 +179,8 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "melee",
+            "nameKey": "punch",
+            "resourceKey": "melee",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1

@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.i18n.Message;
 // TODO: should probably add a constant like INFINITE for items that doesn't expire.
 public interface Item {
 
-  String getNameKey();
+  String getResourceKey();
 
   Message getName();
 

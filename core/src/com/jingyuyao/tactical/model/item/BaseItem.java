@@ -10,19 +10,21 @@ import com.jingyuyao.tactical.model.i18n.ModelBundle;
 class BaseItem implements Item {
 
   private String nameKey;
+  private String resourceKey;
   private int usageLeft;
 
   BaseItem() {
   }
 
-  BaseItem(String nameKey, int usageLeft) {
+  BaseItem(String nameKey, String resourceKey, int usageLeft) {
     this.nameKey = nameKey;
+    this.resourceKey = resourceKey;
     this.usageLeft = usageLeft;
   }
 
   @Override
-  public String getNameKey() {
-    return nameKey;
+  public String getResourceKey() {
+    return resourceKey;
   }
 
   @Override
