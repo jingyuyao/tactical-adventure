@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
@@ -30,11 +31,14 @@ public class MessageLoader {
 
   private I18NBundle getBundle(MessageBundle messageBundle) {
     String path = messageBundle.getPath();
-    if (assetManager.isLoaded(path, I18NBundle.class)) {
+    // try-catch is used instead of if/else branch to increase performance since this method
+    // could potentially be called many times per frame
+    try {
+      return assetManager.get(path, I18NBundle.class);
+    } catch (GdxRuntimeException e) {
+      assetManager.load(path, I18NBundle.class);
+      assetManager.finishLoadingAsset(path);
       return assetManager.get(path, I18NBundle.class);
     }
-    assetManager.load(path, I18NBundle.class);
-    assetManager.finishLoadingAsset(path);
-    return assetManager.get(path, I18NBundle.class);
   }
 }

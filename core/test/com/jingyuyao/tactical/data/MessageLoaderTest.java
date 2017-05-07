@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -49,8 +50,8 @@ public class MessageLoaderTest {
     Message message = TEST_BUNDLE.get("test1");
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(TEST_PATH));
-    when(assetManager.isLoaded(TEST_PATH, I18NBundle.class)).thenReturn(false);
-    when(assetManager.get(TEST_PATH, I18NBundle.class)).thenReturn(bundle);
+    when(assetManager.get(TEST_PATH, I18NBundle.class))
+        .thenThrow(new GdxRuntimeException("not loaded")).thenReturn(bundle);
 
     assertThat(messageLoader.get(message)).isEqualTo("Test message");
 
@@ -63,8 +64,8 @@ public class MessageLoaderTest {
     Message message = TEST_BUNDLE.get("test2", 246);
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(TEST_PATH));
-    when(assetManager.isLoaded(TEST_PATH, I18NBundle.class)).thenReturn(false);
-    when(assetManager.get(TEST_PATH, I18NBundle.class)).thenReturn(bundle);
+    when(assetManager.get(TEST_PATH, I18NBundle.class))
+        .thenThrow(new GdxRuntimeException("not loaded")).thenReturn(bundle);
 
     assertThat(messageLoader.get(message)).isEqualTo("Test 246");
 
@@ -77,7 +78,6 @@ public class MessageLoaderTest {
     Message message = TEST_BUNDLE.get("test2", 246);
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(TEST_PATH));
-    when(assetManager.isLoaded(TEST_PATH, I18NBundle.class)).thenReturn(true);
     when(assetManager.get(TEST_PATH, I18NBundle.class)).thenReturn(bundle);
 
     assertThat(messageLoader.get(message)).isEqualTo("Test 246");
