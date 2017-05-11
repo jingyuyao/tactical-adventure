@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,6 +26,7 @@ public class GameState {
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
   private final Model model;
   private final World world;
+  private final WorldState worldState;
 
   @Inject
   GameState(
@@ -33,18 +35,21 @@ public class GameState {
       DataManager dataManager,
       OrthogonalTiledMapRenderer tiledMapRenderer,
       Model model,
-      World world) {
+      World world,
+      WorldState worldState) {
     this.application = application;
     this.game = game;
     this.dataManager = dataManager;
     this.tiledMapRenderer = tiledMapRenderer;
     this.model = model;
     this.world = world;
+    this.worldState = worldState;
   }
 
   public void play() {
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
-    model.initialize(loadedLevel.getTerrainMap(), loadedLevel.getCharacterMap(), 1);
+    model.initialize(
+        loadedLevel.getTerrainMap(), loadedLevel.getCharacterMap(), loadedLevel.getTurn());
     game.goToWorldScreen();
   }
 
@@ -59,7 +64,7 @@ public class GameState {
   void pause() {
     if (game.isAtWorldScreen()) {
       model.prepForSave();
-      dataManager.saveProgress(world);
+      dataManager.saveProgress(world, worldState);
     }
   }
 
@@ -69,7 +74,7 @@ public class GameState {
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
       model.prepForSave();
-      dataManager.changeLevel(nextLevel, world);
+      dataManager.changeLevel(nextLevel, world, worldState);
     } else {
       dataManager.freshStart();
     }
