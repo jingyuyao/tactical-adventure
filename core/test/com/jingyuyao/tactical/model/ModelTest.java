@@ -54,10 +54,10 @@ public class ModelTest {
     Map<Coordinate, Character> characterMap = new HashMap<>();
     when(waitingProvider.get()).thenReturn(waiting);
 
-    model.initialize(terrainMap, characterMap);
+    model.initialize(terrainMap, characterMap, 5);
 
     verify(world).initialize(terrainMap, characterMap);
-    verify(worldState).initialize(waiting);
+    verify(worldState).initialize(waiting, 5);
   }
 
   @Test

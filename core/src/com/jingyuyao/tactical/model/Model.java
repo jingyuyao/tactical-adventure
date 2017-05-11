@@ -22,11 +22,7 @@ public class Model {
   private final Provider<Waiting> waitingProvider;
 
   @Inject
-  Model(
-      World world,
-      WorldState worldState,
-      ModelBus modelBus,
-      Provider<Waiting> waitingProvider) {
+  Model(World world, WorldState worldState, ModelBus modelBus, Provider<Waiting> waitingProvider) {
     this.world = world;
     this.worldState = worldState;
     this.modelBus = modelBus;
@@ -35,9 +31,10 @@ public class Model {
 
   public void initialize(
       Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Character> characterMap) {
+      Map<Coordinate, Character> characterMap,
+      int turn) {
     world.initialize(terrainMap, characterMap);
-    worldState.initialize(waitingProvider.get());
+    worldState.initialize(waitingProvider.get(), turn);
   }
 
   public void prepForSave() {

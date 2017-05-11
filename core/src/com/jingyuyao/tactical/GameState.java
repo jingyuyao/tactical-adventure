@@ -44,7 +44,7 @@ public class GameState {
 
   public void play() {
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
-    model.initialize(loadedLevel.getTerrainMap(), loadedLevel.getCharacterMap());
+    model.initialize(loadedLevel.getTerrainMap(), loadedLevel.getCharacterMap(), 1);
     game.goToWorldScreen();
   }
 

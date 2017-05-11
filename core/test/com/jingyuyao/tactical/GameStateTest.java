@@ -72,7 +72,7 @@ public class GameStateTest {
 
     gameState.play();
 
-    verify(model).initialize(terrainMap, characterMap);
+    verify(model).initialize(terrainMap, characterMap, 1);
     verify(game).goToWorldScreen();
   }
 

@@ -36,9 +36,10 @@ public class WorldStateTest {
   }
 
   @Test
-  public void initialize() throws Exception {
-    worldState.initialize(state1);
+  public void initialize() {
+    worldState.initialize(state1, 11);
 
+    assertThat(worldState.getTurn()).isEqualTo(11);
     assertThat(stateStack).containsExactly(state1);
     verify(state1).enter();
   }
@@ -51,6 +52,7 @@ public class WorldStateTest {
 
     verify(state1).exit();
     assertThat(stateStack).isEmpty();
+    assertThat(worldState.getTurn()).isEqualTo(1);
   }
 
   @Test
