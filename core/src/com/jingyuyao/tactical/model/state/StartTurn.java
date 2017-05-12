@@ -1,9 +1,11 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.script.ScriptActions;
+import com.jingyuyao.tactical.model.script.TurnScript;
 import javax.inject.Inject;
 
-public class StartTurn extends BaseState {
+public class StartTurn extends ScriptState {
 
   private final StateFactory stateFactory;
 
@@ -14,13 +16,12 @@ public class StartTurn extends BaseState {
   }
 
   @Override
-  public void enter() {
-    super.enter();
-    // TODO: check script for dialogue before finish...
-    finish();
+  ScriptActions getScriptActions(TurnScript turnScript) {
+    return turnScript.getStart();
   }
 
-  private void finish() {
+  @Override
+  void finish() {
     branchTo(stateFactory.createWaiting());
   }
 }

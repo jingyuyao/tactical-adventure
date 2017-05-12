@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -77,7 +78,8 @@ public class GameStateTest {
 
     gameState.play();
 
-    verify(model).initialize(terrainMap, characterMap, 3);
+    verify(model)
+        .initialize(eq(terrainMap), eq(characterMap), eq(3), Mockito.any(Script.class));
     verify(game).goToWorldScreen();
   }
 

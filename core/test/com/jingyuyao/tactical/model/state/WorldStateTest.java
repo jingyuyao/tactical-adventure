@@ -5,6 +5,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -30,6 +31,8 @@ public class WorldStateTest {
   private Cell cell;
   @Mock
   private StartTurn startTurn;
+  @Mock
+  private Script script;
 
   private Deque<State> stateStack;
   private WorldState worldState;
@@ -44,9 +47,10 @@ public class WorldStateTest {
   public void initialize() {
     when(stateFactory.createStartTurn()).thenReturn(startTurn);
 
-    worldState.initialize(11);
+    worldState.initialize(11, script);
 
     assertThat(worldState.getTurn()).isEqualTo(11);
+    assertThat(worldState.getScript()).isSameAs(script);
     assertThat(stateStack).containsExactly(startTurn);
     verify(startTurn).enter();
   }
@@ -66,10 +70,11 @@ public class WorldStateTest {
   public void increment_turn() {
     when(stateFactory.createStartTurn()).thenReturn(startTurn);
 
-    worldState.initialize(11);
+    worldState.initialize(11, script);
     worldState.incrementTurn();
 
     assertThat(worldState.getTurn()).isEqualTo(12);
+    assertThat(worldState.getScript()).isSameAs(script);
   }
 
   @Test
