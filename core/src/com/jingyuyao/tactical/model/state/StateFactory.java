@@ -17,6 +17,10 @@ interface StateFactory {
 
   Waiting createWaiting();
 
+  StartTurn createStartTurn();
+
+  EndTurn createEndTurn();
+
   Moving createMoving(Cell cell, Movement movement);
 
   Moved createMoved(Cell cell);

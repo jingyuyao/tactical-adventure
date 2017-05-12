@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Deque;
@@ -18,6 +19,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class WorldStateTest {
 
   @Mock
+  private StateFactory stateFactory;
+  @Mock
   private State state1;
   @Mock
   private State state2;
@@ -25,6 +28,8 @@ public class WorldStateTest {
   private State state3;
   @Mock
   private Cell cell;
+  @Mock
+  private StartTurn startTurn;
 
   private Deque<State> stateStack;
   private WorldState worldState;
@@ -32,16 +37,18 @@ public class WorldStateTest {
   @Before
   public void setUp() {
     stateStack = new LinkedList<>();
-    worldState = new WorldState(stateStack);
+    worldState = new WorldState(stateFactory, stateStack);
   }
 
   @Test
   public void initialize() {
-    worldState.initialize(state1, 11);
+    when(stateFactory.createStartTurn()).thenReturn(startTurn);
+
+    worldState.initialize(11);
 
     assertThat(worldState.getTurn()).isEqualTo(11);
-    assertThat(stateStack).containsExactly(state1);
-    verify(state1).enter();
+    assertThat(stateStack).containsExactly(startTurn);
+    verify(startTurn).enter();
   }
 
   @Test
@@ -53,6 +60,16 @@ public class WorldStateTest {
     verify(state1).exit();
     assertThat(stateStack).isEmpty();
     assertThat(worldState.getTurn()).isEqualTo(1);
+  }
+
+  @Test
+  public void increment_turn() {
+    when(stateFactory.createStartTurn()).thenReturn(startTurn);
+
+    worldState.initialize(11);
+    worldState.incrementTurn();
+
+    assertThat(worldState.getTurn()).isEqualTo(12);
   }
 
   @Test

@@ -61,4 +61,8 @@ class BaseState implements State {
   void removeSelf() {
     worldState.remove(this);
   }
+
+  void incrementTurn() {
+    worldState.incrementTurn();
+  }
 }

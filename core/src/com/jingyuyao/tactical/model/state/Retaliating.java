@@ -44,7 +44,7 @@ public class Retaliating extends BaseState {
    */
   private void retaliate(final ImmutableList<Cell> characterSnapshot, final int i) {
     if (i == characterSnapshot.size()) {
-      branchTo(stateFactory.createWaiting());
+      branchTo(stateFactory.createStartTurn());
       return;
     }
 

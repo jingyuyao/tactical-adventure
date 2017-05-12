@@ -9,11 +9,13 @@ import javax.inject.Singleton;
 @Singleton
 public class WorldState {
 
+  private final StateFactory stateFactory;
   private final Deque<State> stateStack;
   private int turn = 1;
 
   @Inject
-  public WorldState(@BackingStateStack Deque<State> stateStack) {
+  public WorldState(StateFactory stateFactory, @BackingStateStack Deque<State> stateStack) {
+    this.stateFactory = stateFactory;
     this.stateStack = stateStack;
   }
 
@@ -21,10 +23,10 @@ public class WorldState {
     return turn;
   }
 
-  public void initialize(State initialState, int turn) {
+  public void initialize(int turn) {
     this.turn = turn;
-    stateStack.push(initialState);
-    initialState.enter();
+    stateStack.push(stateFactory.createStartTurn());
+    stateStack.peek().enter();
   }
 
   public void prepForSave() {
@@ -39,6 +41,10 @@ public class WorldState {
 
   public void select(Cell cell) {
     stateStack.peek().select(cell);
+  }
+
+  void incrementTurn() {
+    turn++;
   }
 
   /**
