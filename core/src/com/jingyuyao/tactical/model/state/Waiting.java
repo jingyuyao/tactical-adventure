@@ -75,11 +75,6 @@ public class Waiting extends BaseState {
   }
 
   void endTurn() {
-    for (Cell cell : world.getCharacterSnapshot()) {
-      for (Player player : cell.player().asSet()) {
-        player.setActionable(true);
-      }
-    }
-    goTo(stateFactory.createRetaliating());
+    branchTo(stateFactory.createEndTurn());
   }
 }

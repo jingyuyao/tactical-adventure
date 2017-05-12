@@ -9,10 +9,15 @@ public class LoadedLevel {
 
   private final Map<Coordinate, Terrain> terrainMap;
   private final Map<Coordinate, Character> characterMap;
+  private final int turn;
 
-  LoadedLevel(Map<Coordinate, Terrain> terrainMap, Map<Coordinate, Character> characterMap) {
+  LoadedLevel(
+      Map<Coordinate, Terrain> terrainMap,
+      Map<Coordinate, Character> characterMap,
+      int turn) {
     this.terrainMap = terrainMap;
     this.characterMap = characterMap;
+    this.turn = turn;
   }
 
   public Map<Coordinate, Terrain> getTerrainMap() {
@@ -21,5 +26,9 @@ public class LoadedLevel {
 
   public Map<Coordinate, Character> getCharacterMap() {
     return characterMap;
+  }
+
+  public int getTurn() {
+    return turn;
   }
 }

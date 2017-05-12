@@ -53,7 +53,7 @@ public class WaitingTest {
   @Mock
   private Moving moving;
   @Mock
-  private Retaliating retaliating;
+  private EndTurn endTurn;
   @Mock
   private Movement movement;
   @Captor
@@ -143,14 +143,11 @@ public class WaitingTest {
 
   @Test
   public void end_turn() {
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.player()).thenReturn(Optional.of(player));
-    when(stateFactory.createRetaliating()).thenReturn(retaliating);
+    when(stateFactory.createEndTurn()).thenReturn(endTurn);
 
     waiting.endTurn();
 
-    verify(player).setActionable(true);
-    verify(worldState).goTo(retaliating);
+    verify(worldState).branchTo(endTurn);
   }
 
   @Test

@@ -63,7 +63,7 @@ public class RetaliatingTest {
   @Mock
   private Cell origin;
   @Mock
-  private Waiting waiting;
+  private StartTurn startTurn;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -99,7 +99,7 @@ public class RetaliatingTest {
     when(retaliation2.battle()).thenReturn(Optional.<Battle>absent());
     when(path.getOrigin()).thenReturn(origin);
     when(origin.moveCharacter(path)).thenReturn(Promise.immediate());
-    when(stateFactory.createWaiting()).thenReturn(waiting);
+    when(stateFactory.createStartTurn()).thenReturn(startTurn);
 
     retaliating.enter();
 
@@ -115,7 +115,7 @@ public class RetaliatingTest {
     inOrder.verify(battle).execute();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).getRetaliation(movements, cell2);
-    inOrder.verify(worldState).branchTo(waiting);
+    inOrder.verify(worldState).branchTo(startTurn);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
     TestHelpers.verifyObjectEvent(argumentCaptor, 3, enemy2, ActivatedEnemy.class);

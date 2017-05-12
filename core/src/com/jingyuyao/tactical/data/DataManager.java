@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.data;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
@@ -42,7 +43,7 @@ public class DataManager {
     return levelDataManager.hasLevel(level);
   }
 
-  public void changeLevel(int level, World world) {
+  public void changeLevel(int level, World world, WorldState worldState) {
     Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
     if (!levelProgressOptional.isPresent()) {
       throw new IllegalStateException(
@@ -52,7 +53,7 @@ public class DataManager {
     world.fullHealPlayers();
 
     LevelProgress levelProgress = levelProgressOptional.get();
-    levelProgress.update(world);
+    levelProgress.update(world, worldState);
 
     GameSave gameSave = gameSaveManager.load();
     gameSave.setCurrentLevel(level);
@@ -83,10 +84,10 @@ public class DataManager {
 
     Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
     Map<Coordinate, Character> characterMap = levelProgress.getActiveCharacters();
-    return new LoadedLevel(terrainMap, characterMap);
+    return new LoadedLevel(terrainMap, characterMap, levelProgress.getTurn());
   }
 
-  public void saveProgress(World world) {
+  public void saveProgress(World world, WorldState worldState) {
     Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
 
     if (!levelProgressOptional.isPresent()) {
@@ -94,7 +95,7 @@ public class DataManager {
     }
 
     LevelProgress levelProgress = levelProgressOptional.get();
-    levelProgress.update(world);
+    levelProgress.update(world, worldState);
     levelProgressManager.save(levelProgress);
   }
 

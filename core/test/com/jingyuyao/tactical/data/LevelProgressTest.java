@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
@@ -30,6 +31,8 @@ public class LevelProgressTest {
   @Mock
   private World world;
   @Mock
+  private WorldState worldState;
+  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
@@ -41,8 +44,11 @@ public class LevelProgressTest {
   private Enemy enemy1;
 
   @Test
-  public void empty() {
-    assertThat(new LevelProgress().getActiveCharacters()).isEmpty();
+  public void fresh() {
+    LevelProgress levelProgress = new LevelProgress();
+    assertThat(levelProgress.getActiveCharacters()).isEmpty();
+    assertThat(levelProgress.getInactivePlayers()).isEmpty();
+    assertThat(levelProgress.getTurn()).isEqualTo(1);
   }
 
   @Test
@@ -66,14 +72,17 @@ public class LevelProgressTest {
     when(cell2.player()).thenReturn(Optional.<Player>absent());
     when(cell2.enemy()).thenReturn(Optional.of(enemy1));
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(worldState.getTurn()).thenReturn(5, 6);
 
     LevelProgress levelProgress = new LevelProgress();
-    levelProgress.update(world);
+    levelProgress.update(world, worldState);
 
     assertThat(levelProgress.getActiveCharacters()).containsExactly(P1, player1, E1, enemy1);
+    assertThat(levelProgress.getTurn()).isEqualTo(5);
 
     // Make sure the previous things are cleared
-    levelProgress.update(world);
+    levelProgress.update(world, worldState);
     assertThat(levelProgress.getActiveCharacters()).containsExactly(P1, player1, E1, enemy1);
+    assertThat(levelProgress.getTurn()).isEqualTo(6);
   }
 }

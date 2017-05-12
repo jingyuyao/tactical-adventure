@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
@@ -45,6 +46,8 @@ public class GameStateTest {
   @Mock
   private World world;
   @Mock
+  private WorldState worldState;
+  @Mock
   private LoadedLevel loadedLevel;
   @Mock
   private GameSave gameSave;
@@ -59,7 +62,8 @@ public class GameStateTest {
 
   @Before
   public void setUp() {
-    gameState = new GameState(application, game, dataManager, tiledMapRenderer, model, world);
+    gameState =
+        new GameState(application, game, dataManager, tiledMapRenderer, model, world, worldState);
   }
 
   @Test
@@ -69,10 +73,11 @@ public class GameStateTest {
     when(dataManager.loadCurrentLevel(tiledMapRenderer)).thenReturn(loadedLevel);
     when(loadedLevel.getCharacterMap()).thenReturn(characterMap);
     when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
+    when(loadedLevel.getTurn()).thenReturn(3);
 
     gameState.play();
 
-    verify(model).initialize(terrainMap, characterMap);
+    verify(model).initialize(terrainMap, characterMap, 3);
     verify(game).goToWorldScreen();
   }
 
@@ -97,7 +102,7 @@ public class GameStateTest {
     gameState.pause();
 
     verify(model).prepForSave();
-    verify(dataManager).saveProgress(world);
+    verify(dataManager).saveProgress(world, worldState);
   }
 
   @Test
@@ -120,7 +125,7 @@ public class GameStateTest {
 
     InOrder inOrder = Mockito.inOrder(model, dataManager, game);
     inOrder.verify(model).prepForSave();
-    inOrder.verify(dataManager).changeLevel(3, world);
+    inOrder.verify(dataManager).changeLevel(3, world, worldState);
     inOrder.verify(model).reset();
     inOrder.verify(game).goToPlayMenu();
   }

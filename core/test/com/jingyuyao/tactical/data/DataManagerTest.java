@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
@@ -51,6 +52,8 @@ public class DataManagerTest {
   @Mock
   private World world;
   @Mock
+  private WorldState worldState;
+  @Mock
   private Player player1;
   @Mock
   private Player player2;
@@ -86,13 +89,13 @@ public class DataManagerTest {
     when(gameSaveManager.load()).thenReturn(gameSave);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
-    dataManager.changeLevel(2, world);
+    dataManager.changeLevel(2, world, worldState);
 
     InOrder inOrder =
         Mockito.inOrder(world, gameSave, levelProgress, gameSaveManager, levelProgressManager);
 
     inOrder.verify(world).fullHealPlayers();
-    inOrder.verify(levelProgress).update(world);
+    inOrder.verify(levelProgress).update(world, worldState);
     inOrder.verify(gameSave).setCurrentLevel(2);
     inOrder.verify(gameSave).update(levelProgress);
     inOrder.verify(gameSaveManager).save(gameSave);
@@ -116,11 +119,13 @@ public class DataManagerTest {
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
     when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(levelProgress.getActiveCharacters()).thenReturn(characterMap);
+    when(levelProgress.getTurn()).thenReturn(7);
 
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
 
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getCharacterMap()).isSameAs(characterMap);
+    assertThat(loadedLevel.getTurn()).isEqualTo(7);
   }
 
   @Test
@@ -143,15 +148,16 @@ public class DataManagerTest {
         .containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getCharacterMap()).containsExactly(SPAWN1, player1, E1, enemy1);
+    assertThat(loadedLevel.getTurn()).isEqualTo(1);
   }
 
   @Test
   public void save_progress() {
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
-    dataManager.saveProgress(world);
+    dataManager.saveProgress(world, worldState);
 
-    verify(levelProgress).update(world);
+    verify(levelProgress).update(world, worldState);
     verify(levelProgressManager).save(levelProgress);
   }
 
