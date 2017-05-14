@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.script.Script;
+import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -33,6 +34,8 @@ public class ModelTest {
   @Mock
   private Cell cell;
   @Mock
+  private Turn turn;
+  @Mock
   private Script script;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -49,10 +52,10 @@ public class ModelTest {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Character> characterMap = new HashMap<>();
 
-    model.initialize(terrainMap, characterMap, 5, script);
+    model.initialize(terrainMap, characterMap, turn, script);
 
     verify(world).initialize(terrainMap, characterMap);
-    verify(worldState).initialize(5, script);
+    verify(worldState).initialize(turn, script);
   }
 
   @Test

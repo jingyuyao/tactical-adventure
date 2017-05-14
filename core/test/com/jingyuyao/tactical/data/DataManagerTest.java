@@ -12,6 +12,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.script.Script;
+import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -62,6 +63,8 @@ public class DataManagerTest {
   private Player player2;
   @Mock
   private Enemy enemy1;
+  @Mock
+  private Turn turn;
   @Mock
   private Script script;
   @Captor
@@ -125,14 +128,14 @@ public class DataManagerTest {
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
     when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(levelProgress.getActiveCharacters()).thenReturn(characterMap);
-    when(levelProgress.getTurn()).thenReturn(7);
+    when(levelProgress.getTurn()).thenReturn(turn);
     when(scriptLoader.load(2)).thenReturn(script);
 
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
 
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getCharacterMap()).isSameAs(characterMap);
-    assertThat(loadedLevel.getTurn()).isEqualTo(7);
+    assertThat(loadedLevel.getTurn()).isSameAs(turn);
     assertThat(loadedLevel.getScript()).isSameAs(script);
   }
 
@@ -157,7 +160,7 @@ public class DataManagerTest {
         .containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getCharacterMap()).containsExactly(SPAWN1, player1, E1, enemy1);
-    assertThat(loadedLevel.getTurn()).isEqualTo(1);
+    assertThat(loadedLevel.getTurn()).isEqualTo(new Turn());
     assertThat(loadedLevel.getScript()).isSameAs(script);
   }
 

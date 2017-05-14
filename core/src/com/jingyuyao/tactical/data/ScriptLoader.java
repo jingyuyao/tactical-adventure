@@ -7,18 +7,20 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.state.Turn;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,36 +39,23 @@ class ScriptLoader {
   }
 
   Script load(int level) {
-    Map<Integer, TurnScript> turnScriptMap = new HashMap<>();
-    for (Properties dialogues : getDialogueProperties(level).asSet()) {
-      List<DialogueKey> keys = new ArrayList<>(dialogues.size());
-      for (String rawKey : dialogues.stringPropertyNames()) {
-        keys.add(new DialogueKey(rawKey));
+    Map<Turn, TurnScript> turnScriptMap = new HashMap<>();
+    for (Properties dialoguesProperties : getDialogueProperties(level).asSet()) {
+      Multimap<Turn, DialogueKey> dialogueKeys = ArrayListMultimap.create();
+      for (String rawKey : dialoguesProperties.stringPropertyNames()) {
+        DialogueKey key = new DialogueKey(rawKey);
+        dialogueKeys.put(key.turn, key);
       }
-      Collections.sort(keys);
-      Multimap<Integer, Dialogue> turnStartDialogues = ArrayListMultimap.create();
-      Multimap<Integer, Dialogue> turnEndDialogues = ArrayListMultimap.create();
-      MessageBundle bundle = new MessageBundle(dataConfig.getLevelDialogueBundle(level));
-      for (DialogueKey key : keys) {
-        Dialogue dialogue = key.toDialogue(bundle);
-        if (key.isStart) {
-          turnStartDialogues.put(key.turn, dialogue);
-        } else {
-          turnEndDialogues.put(key.turn, dialogue);
+      final MessageBundle bundle = new MessageBundle(dataConfig.getLevelDialogueBundle(level));
+      for (Entry<Turn, Collection<DialogueKey>> entry : dialogueKeys.asMap().entrySet()) {
+        List<DialogueKey> keys = (List<DialogueKey>) entry.getValue();
+        // sort the keys based on the dialogue index
+        Collections.sort(keys);
+        List<Dialogue> dialogues = new ArrayList<>(keys.size());
+        for (DialogueKey key : keys) {
+          dialogues.add(key.toDialogue(bundle));
         }
-      }
-      for (Integer turn : Sets.union(turnStartDialogues.keySet(), turnEndDialogues.keySet())) {
-        List<Dialogue> startDialogues = new ArrayList<>();
-        List<Dialogue> endDialogues = new ArrayList<>();
-        if (turnStartDialogues.containsKey(turn)) {
-          startDialogues.addAll(turnStartDialogues.get(turn));
-        }
-        if (turnEndDialogues.containsKey(turn)) {
-          endDialogues.addAll(turnEndDialogues.get(turn));
-        }
-        ScriptActions startActions = new ScriptActions(startDialogues);
-        ScriptActions endActions = new ScriptActions(endDialogues);
-        turnScriptMap.put(turn, new TurnScript(startActions, endActions));
+        turnScriptMap.put(entry.getKey(), new TurnScript(dialogues));
       }
     }
     return new Script(turnScriptMap);
@@ -88,18 +77,16 @@ class ScriptLoader {
 
   private static class DialogueKey implements Comparable<DialogueKey> {
 
-    private final int turn;
-    private final boolean isStart;
+    private final String rawKey;
+    private final Turn turn;
     private final String characterNameKey;
     private final int index;
-    private final String rawKey;
 
     private DialogueKey(String rawKey) {
       List<String> split = Splitter.on("-").splitToList(rawKey);
       Preconditions.checkArgument(split.size() == 4);
       this.rawKey = rawKey;
-      this.turn = Integer.valueOf(split.get(0));
-      this.isStart = split.get(1).equals("S");
+      this.turn = new Turn(Integer.valueOf(split.get(0)), TurnStage.valueOf(split.get(1)));
       this.characterNameKey = split.get(2);
       this.index = Integer.valueOf(split.get(3));
     }

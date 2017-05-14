@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.script.Script;
+import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -51,6 +52,8 @@ public class GameStateTest {
   @Mock
   private LoadedLevel loadedLevel;
   @Mock
+  private Turn turn;
+  @Mock
   private Script script;
   @Mock
   private GameSave gameSave;
@@ -76,12 +79,12 @@ public class GameStateTest {
     when(dataManager.loadCurrentLevel(tiledMapRenderer)).thenReturn(loadedLevel);
     when(loadedLevel.getCharacterMap()).thenReturn(characterMap);
     when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
-    when(loadedLevel.getTurn()).thenReturn(3);
+    when(loadedLevel.getTurn()).thenReturn(turn);
     when(loadedLevel.getScript()).thenReturn(script);
 
     gameState.play();
 
-    verify(model).initialize(terrainMap, characterMap, 3, script);
+    verify(model).initialize(terrainMap, characterMap, turn, script);
     verify(game).goToWorldScreen();
   }
 

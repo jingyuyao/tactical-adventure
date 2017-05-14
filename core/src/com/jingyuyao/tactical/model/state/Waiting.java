@@ -1,10 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.World;
@@ -31,6 +33,7 @@ public class Waiting extends BaseState {
 
   @Override
   public void enter() {
+    Preconditions.checkState(getTurn().getStage().equals(TurnStage.PLAYER));
     super.enter();
 
     boolean levelComplete = true;
@@ -75,6 +78,7 @@ public class Waiting extends BaseState {
   }
 
   void endTurn() {
+    getTurn().advance();
     branchTo(stateFactory.createEndTurn());
   }
 }

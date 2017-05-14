@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.script.Script;
+import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -29,7 +30,7 @@ public class Model {
   public void initialize(
       Map<Coordinate, Terrain> terrainMap,
       Map<Coordinate, Character> characterMap,
-      int turn,
+      Turn turn,
       Script script) {
     world.initialize(terrainMap, characterMap);
     worldState.initialize(turn, script);

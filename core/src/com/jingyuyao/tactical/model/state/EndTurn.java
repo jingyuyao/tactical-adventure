@@ -1,9 +1,9 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.script.ScriptActions;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
@@ -21,14 +21,15 @@ public class EndTurn extends ScriptState {
   }
 
   @Override
-  ScriptActions getScriptActions(TurnScript turnScript) {
-    return turnScript.getEnd();
+  public void enter() {
+    Preconditions.checkState(getTurn().getStage().equals(TurnStage.END));
+    super.enter();
   }
 
   @Override
   void finish() {
     makePlayersActionable();
-    incrementTurn();
+    getTurn().advance();
     branchTo(stateFactory.createRetaliating());
   }
 
@@ -39,5 +40,4 @@ public class EndTurn extends ScriptState {
       }
     }
   }
-
 }

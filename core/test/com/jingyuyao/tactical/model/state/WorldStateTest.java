@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.model.script.Script;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -32,6 +33,14 @@ public class WorldStateTest {
   @Mock
   private StartTurn startTurn;
   @Mock
+  private Waiting waiting;
+  @Mock
+  private EndTurn endTurn;
+  @Mock
+  private Retaliating retaliating;
+  @Mock
+  private Turn turn;
+  @Mock
   private Script script;
 
   private Deque<State> stateStack;
@@ -44,15 +53,55 @@ public class WorldStateTest {
   }
 
   @Test
-  public void initialize() {
+  public void initialize_to_start() {
+    when(turn.getStage()).thenReturn(TurnStage.START);
     when(stateFactory.createStartTurn()).thenReturn(startTurn);
 
-    worldState.initialize(11, script);
+    worldState.initialize(turn, script);
 
-    assertThat(worldState.getTurn()).isEqualTo(11);
+    assertThat(worldState.getTurn()).isSameAs(turn);
     assertThat(worldState.getScript()).isSameAs(script);
     assertThat(stateStack).containsExactly(startTurn);
     verify(startTurn).enter();
+  }
+
+  @Test
+  public void initialize_to_player() {
+    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
+    when(stateFactory.createWaiting()).thenReturn(waiting);
+
+    worldState.initialize(turn, script);
+
+    assertThat(worldState.getTurn()).isSameAs(turn);
+    assertThat(worldState.getScript()).isSameAs(script);
+    assertThat(stateStack).containsExactly(waiting);
+    verify(waiting).enter();
+  }
+
+  @Test
+  public void initialize_to_end() {
+    when(turn.getStage()).thenReturn(TurnStage.END);
+    when(stateFactory.createEndTurn()).thenReturn(endTurn);
+
+    worldState.initialize(turn, script);
+
+    assertThat(worldState.getTurn()).isSameAs(turn);
+    assertThat(worldState.getScript()).isSameAs(script);
+    assertThat(stateStack).containsExactly(endTurn);
+    verify(endTurn).enter();
+  }
+
+  @Test
+  public void initialize_to_enemy() {
+    when(turn.getStage()).thenReturn(TurnStage.ENEMY);
+    when(stateFactory.createRetaliating()).thenReturn(retaliating);
+
+    worldState.initialize(turn, script);
+
+    assertThat(worldState.getTurn()).isSameAs(turn);
+    assertThat(worldState.getScript()).isSameAs(script);
+    assertThat(stateStack).containsExactly(retaliating);
+    verify(retaliating).enter();
   }
 
   @Test
@@ -63,18 +112,8 @@ public class WorldStateTest {
 
     verify(state1).exit();
     assertThat(stateStack).isEmpty();
-    assertThat(worldState.getTurn()).isEqualTo(1);
-  }
-
-  @Test
-  public void increment_turn() {
-    when(stateFactory.createStartTurn()).thenReturn(startTurn);
-
-    worldState.initialize(11, script);
-    worldState.incrementTurn();
-
-    assertThat(worldState.getTurn()).isEqualTo(12);
-    assertThat(worldState.getScript()).isSameAs(script);
+    assertThat(worldState.getTurn()).isNull();
+    assertThat(worldState.getScript()).isNull();
   }
 
   @Test

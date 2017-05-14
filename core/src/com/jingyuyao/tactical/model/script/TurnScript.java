@@ -1,20 +1,17 @@
 package com.jingyuyao.tactical.model.script;
 
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+
 public class TurnScript {
 
-  private final ScriptActions start;
-  private final ScriptActions end;
+  private final List<Dialogue> dialogues;
 
-  public TurnScript(ScriptActions start, ScriptActions end) {
-    this.start = start;
-    this.end = end;
+  public TurnScript(List<Dialogue> dialogues) {
+    this.dialogues = dialogues;
   }
 
-  public ScriptActions getStart() {
-    return start;
-  }
-
-  public ScriptActions getEnd() {
-    return end;
+  public ImmutableList<Dialogue> getDialogues() {
+    return ImmutableList.copyOf(dialogues);
   }
 }
