@@ -31,6 +31,14 @@ class DataConfig {
     return "levels/" + level + ".level.tmx";
   }
 
+  String getDefaultLevelDialogueFileName(int level) {
+    return getLevelDialogueBundle(level) + ".properties";
+  }
+
+  String getLevelDialogueBundle(int level) {
+    return "i18n/model/script/dialogue/Level" + level;
+  }
+
   String getTerrainLayerKey() {
     return "terrain";
   }

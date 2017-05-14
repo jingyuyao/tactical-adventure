@@ -2,8 +2,6 @@ package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
@@ -13,11 +11,6 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
-import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptActions;
-import com.jingyuyao.tactical.model.script.TurnScript;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
@@ -59,7 +52,7 @@ public class GameState {
         loadedLevel.getTerrainMap(),
         loadedLevel.getCharacterMap(),
         loadedLevel.getTurn(),
-        getScript());
+        loadedLevel.getScript());
     game.goToWorldScreen();
   }
 
@@ -102,20 +95,5 @@ public class GameState {
   @Subscribe
   void deadEvent(DeadEvent deadEvent) {
     application.log("GameStateSubscriber", deadEvent.getEvent().toString());
-  }
-
-  // TODO: temp
-  private Script getScript() {
-    MessageBundle level1 = new MessageBundle("i18n/model/script/dialogue/Level1");
-    Dialogue dialogueS0 = new Dialogue("jingyu", level1.get("1-S-jingyu-0"));
-    Dialogue dialogueE0 = new Dialogue("ben", level1.get("1-E-ben-0"));
-    Dialogue dialogueS3 = new Dialogue("soldier", level1.get("3-S-soldier-0"));
-    return new Script(ImmutableMap.of(
-        1, new TurnScript(
-            new ScriptActions(ImmutableList.of(dialogueS0)),
-            new ScriptActions(ImmutableList.of(dialogueE0))),
-        3, new TurnScript(
-            new ScriptActions(ImmutableList.of(dialogueS3)),
-            new ScriptActions(ImmutableList.<Dialogue>of()))));
   }
 }

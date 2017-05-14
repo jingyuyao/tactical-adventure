@@ -51,6 +51,8 @@ public class GameStateTest {
   @Mock
   private LoadedLevel loadedLevel;
   @Mock
+  private Script script;
+  @Mock
   private GameSave gameSave;
   @Mock
   private LevelComplete levelComplete;
@@ -75,11 +77,11 @@ public class GameStateTest {
     when(loadedLevel.getCharacterMap()).thenReturn(characterMap);
     when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
     when(loadedLevel.getTurn()).thenReturn(3);
+    when(loadedLevel.getScript()).thenReturn(script);
 
     gameState.play();
 
-    verify(model)
-        .initialize(eq(terrainMap), eq(characterMap), eq(3), Mockito.any(Script.class));
+    verify(model).initialize(terrainMap, characterMap, 3, script);
     verify(game).goToWorldScreen();
   }
 

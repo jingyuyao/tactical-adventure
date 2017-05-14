@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -42,6 +43,8 @@ public class DataManagerTest {
   @Mock
   private LevelMapManager levelMapManager;
   @Mock
+  private ScriptLoader scriptLoader;
+  @Mock
   private GameSave gameSave;
   @Mock
   private LevelProgress levelProgress;
@@ -59,6 +62,8 @@ public class DataManagerTest {
   private Player player2;
   @Mock
   private Enemy enemy1;
+  @Mock
+  private Script script;
   @Captor
   private ArgumentCaptor<LevelProgress> levelProgressCaptor;
 
@@ -67,7 +72,8 @@ public class DataManagerTest {
   @Before
   public void setUp() {
     dataManager =
-        new DataManager(gameSaveManager, levelProgressManager, levelDataManager, levelMapManager);
+        new DataManager(
+            gameSaveManager, levelProgressManager, levelDataManager, levelMapManager, scriptLoader);
   }
 
   @Test
@@ -120,12 +126,14 @@ public class DataManagerTest {
     when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(levelProgress.getActiveCharacters()).thenReturn(characterMap);
     when(levelProgress.getTurn()).thenReturn(7);
+    when(scriptLoader.load(2)).thenReturn(script);
 
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
 
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getCharacterMap()).isSameAs(characterMap);
     assertThat(loadedLevel.getTurn()).isEqualTo(7);
+    assertThat(loadedLevel.getScript()).isSameAs(script);
   }
 
   @Test
@@ -139,6 +147,7 @@ public class DataManagerTest {
     when(levelData.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelData.getEnemies()).thenReturn(ImmutableMap.of(E1, enemy1));
     when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
+    when(scriptLoader.load(2)).thenReturn(script);
 
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
 
@@ -149,6 +158,7 @@ public class DataManagerTest {
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getCharacterMap()).containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(loadedLevel.getTurn()).isEqualTo(1);
+    assertThat(loadedLevel.getScript()).isSameAs(script);
   }
 
   @Test
