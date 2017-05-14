@@ -9,7 +9,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.io.IOException;
@@ -38,9 +38,9 @@ class ScriptLoader {
   }
 
   Script load(int level) {
-    Map<Turn, TurnScript> turnScriptMap = new HashMap<>();
+    Map<Turn, ScriptActions> turnScriptMap = new HashMap<>();
     for (Entry<Turn, Collection<Dialogue>> entry : getDialogues(level).asMap().entrySet()) {
-      turnScriptMap.put(entry.getKey(), new TurnScript((List<Dialogue>) entry.getValue()));
+      turnScriptMap.put(entry.getKey(), new ScriptActions((List<Dialogue>) entry.getValue()));
     }
     return new Script(turnScriptMap);
   }

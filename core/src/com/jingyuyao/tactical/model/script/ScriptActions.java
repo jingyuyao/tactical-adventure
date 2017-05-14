@@ -3,11 +3,11 @@ package com.jingyuyao.tactical.model.script;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
-public class TurnScript {
+public class ScriptActions {
 
   private final List<Dialogue> dialogues;
 
-  public TurnScript(List<Dialogue> dialogues) {
+  public ScriptActions(List<Dialogue> dialogues) {
     this.dialogues = dialogues;
   }
 

@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class StartTurnTest {
   @Mock
   private Script script;
   @Mock
-  private TurnScript turnScript;
+  private ScriptActions scriptActions;
   @Mock
   private Dialogue dialogue;
   @Mock
@@ -66,7 +66,7 @@ public class StartTurnTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.<TurnScript>absent());
+    when(script.turnScript(turn)).thenReturn(Optional.<ScriptActions>absent());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();
@@ -83,8 +83,8 @@ public class StartTurnTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
+    when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
+    when(scriptActions.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();
@@ -101,8 +101,8 @@ public class StartTurnTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getDialogues()).thenReturn(ImmutableList.of(dialogue));
+    when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
+    when(scriptActions.getDialogues()).thenReturn(ImmutableList.of(dialogue));
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();

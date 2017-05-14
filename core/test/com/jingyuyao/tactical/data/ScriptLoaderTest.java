@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.util.List;
@@ -52,7 +52,7 @@ public class ScriptLoaderTest {
     Script script = scriptLoader.load(2);
 
     MessageBundle bundle = new MessageBundle(PROPERTY_BUNDLE);
-    Optional<TurnScript> start1Script = script.turnScript(new Turn(1, TurnStage.START));
+    Optional<ScriptActions> start1Script = script.turnScript(new Turn(1, TurnStage.START));
     assertThat(start1Script).isPresent();
     List<Dialogue> start1Dialogues = start1Script.get().getDialogues();
     assertThat(start1Dialogues).hasSize(2);
@@ -60,7 +60,7 @@ public class ScriptLoaderTest {
     assertThat(start1Dialogues.get(0).getMessage()).isEqualTo(bundle.get("1-START-first-0"));
     assertThat(start1Dialogues.get(1).getCharacterNameKey()).isEqualTo("second");
     assertThat(start1Dialogues.get(1).getMessage()).isEqualTo(bundle.get("1-START-second-1"));
-    Optional<TurnScript> end1Script = script.turnScript(new Turn(1, TurnStage.END));
+    Optional<ScriptActions> end1Script = script.turnScript(new Turn(1, TurnStage.END));
     assertThat(end1Script).isPresent();
     List<Dialogue> end1Dialogues = end1Script.get().getDialogues();
     assertThat(end1Dialogues).hasSize(2);
@@ -68,9 +68,9 @@ public class ScriptLoaderTest {
     assertThat(end1Dialogues.get(0).getMessage()).isEqualTo(bundle.get("1-END-third-0"));
     assertThat(end1Dialogues.get(1).getCharacterNameKey()).isEqualTo("fourth");
     assertThat(end1Dialogues.get(1).getMessage()).isEqualTo(bundle.get("1-END-fourth-1"));
-    Optional<TurnScript> start2Script = script.turnScript(new Turn(2, TurnStage.START));
+    Optional<ScriptActions> start2Script = script.turnScript(new Turn(2, TurnStage.START));
     assertThat(start2Script).isAbsent();
-    Optional<TurnScript> start3Script = script.turnScript(new Turn(3, TurnStage.START));
+    Optional<ScriptActions> start3Script = script.turnScript(new Turn(3, TurnStage.START));
     assertThat(start3Script).isPresent();
     List<Dialogue> start3Dialogues = start3Script.get().getDialogues();
     assertThat(start3Dialogues).hasSize(1);

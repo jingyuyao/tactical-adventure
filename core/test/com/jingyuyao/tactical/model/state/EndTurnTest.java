@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -45,7 +45,7 @@ public class EndTurnTest {
   @Mock
   private Script script;
   @Mock
-  private TurnScript turnScript;
+  private ScriptActions scriptActions;
   @Mock
   private Turn turn;
   @Mock
@@ -75,7 +75,7 @@ public class EndTurnTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.<TurnScript>absent());
+    when(script.turnScript(turn)).thenReturn(Optional.<ScriptActions>absent());
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
@@ -95,8 +95,8 @@ public class EndTurnTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
+    when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
+    when(scriptActions.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
@@ -116,8 +116,8 @@ public class EndTurnTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getDialogues()).thenReturn(ImmutableList.of(dialogue));
+    when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
+    when(scriptActions.getDialogues()).thenReturn(ImmutableList.of(dialogue));
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);

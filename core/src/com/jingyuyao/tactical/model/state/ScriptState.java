@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import java.util.List;
 
 abstract class ScriptState extends BaseState {
@@ -17,7 +17,7 @@ abstract class ScriptState extends BaseState {
   @Override
   public void enter() {
     super.enter();
-    Optional<TurnScript> turnScriptOpt = currentTurnScript();
+    Optional<ScriptActions> turnScriptOpt = currentTurnScript();
     if (turnScriptOpt.isPresent()) {
       showDialogue(turnScriptOpt.get());
     } else {
@@ -25,9 +25,9 @@ abstract class ScriptState extends BaseState {
     }
   }
 
-  private void showDialogue(TurnScript turnScript) {
+  private void showDialogue(ScriptActions scriptActions) {
     // TODO: check if the character is in the world
-    List<Dialogue> dialogues = turnScript.getDialogues();
+    List<Dialogue> dialogues = scriptActions.getDialogues();
     if (dialogues.isEmpty()) {
       finish();
     } else {
