@@ -6,7 +6,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
@@ -14,6 +13,7 @@ import com.jingyuyao.tactical.model.script.TurnScript;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +25,6 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-// TODO: test me
 @Singleton
 class ScriptLoader {
 
@@ -40,39 +39,44 @@ class ScriptLoader {
 
   Script load(int level) {
     Map<Turn, TurnScript> turnScriptMap = new HashMap<>();
-    for (Properties dialoguesProperties : getDialogueProperties(level).asSet()) {
-      Multimap<Turn, DialogueKey> dialogueKeys = ArrayListMultimap.create();
-      for (String rawKey : dialoguesProperties.stringPropertyNames()) {
-        DialogueKey key = new DialogueKey(rawKey);
-        dialogueKeys.put(key.turn, key);
-      }
-      final MessageBundle bundle = new MessageBundle(dataConfig.getLevelDialogueBundle(level));
-      for (Entry<Turn, Collection<DialogueKey>> entry : dialogueKeys.asMap().entrySet()) {
-        List<DialogueKey> keys = (List<DialogueKey>) entry.getValue();
-        // sort the keys based on the dialogue index
-        Collections.sort(keys);
-        List<Dialogue> dialogues = new ArrayList<>(keys.size());
-        for (DialogueKey key : keys) {
-          dialogues.add(key.toDialogue(bundle));
-        }
-        turnScriptMap.put(entry.getKey(), new TurnScript(dialogues));
-      }
+    for (Entry<Turn, Collection<Dialogue>> entry : getDialogues(level).asMap().entrySet()) {
+      turnScriptMap.put(entry.getKey(), new TurnScript((List<Dialogue>) entry.getValue()));
     }
     return new Script(turnScriptMap);
   }
 
+  private ArrayListMultimap<Turn, Dialogue> getDialogues(int level) {
+    ArrayListMultimap<Turn, Dialogue> dialogueMap = ArrayListMultimap.create();
+    for (Properties dialoguesProperties : getDialogueProperties(level).asSet()) {
+      List<DialogueKey> dialogueKeys = new ArrayList<>(dialoguesProperties.size());
+      for (String rawKey : dialoguesProperties.stringPropertyNames()) {
+        dialogueKeys.add(new DialogueKey(rawKey));
+      }
+
+      Collections.sort(dialogueKeys);
+
+      final MessageBundle bundle = new MessageBundle(dataConfig.getLevelDialogueBundle(level));
+      for (DialogueKey key : dialogueKeys) {
+        dialogueMap.put(key.turn, key.toDialogue(bundle));
+      }
+    }
+    return dialogueMap;
+  }
+
   private Optional<Properties> getDialogueProperties(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getDefaultLevelDialogueFileName(level));
-    if (!fileHandle.exists()) {
-      return Optional.absent();
+    if (fileHandle.exists()) {
+      Properties properties = new Properties();
+      try {
+        InputStream stream = fileHandle.read();
+        properties.load(stream);
+        stream.close();
+      } catch (IOException e) {
+        throw new RuntimeException("error while reading dialogue property file.");
+      }
+      return Optional.of(properties);
     }
-    Properties properties = new Properties();
-    try {
-      properties.load(fileHandle.read());
-    } catch (IOException e) {
-      throw new IllegalArgumentException("error while reading dialogue property file.");
-    }
-    return Optional.of(properties);
+    return Optional.absent();
   }
 
   private static class DialogueKey implements Comparable<DialogueKey> {
@@ -97,7 +101,8 @@ class ScriptLoader {
 
     @Override
     public int compareTo(DialogueKey other) {
-      return index - other.index;
+      int turnDiff = turn.compareTo(other.turn);
+      return turnDiff == 0 ? index - other.index : turnDiff;
     }
   }
 }

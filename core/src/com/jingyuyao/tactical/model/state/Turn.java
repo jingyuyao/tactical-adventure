@@ -9,7 +9,7 @@ import java.util.List;
  * A {@link Turn} has a number and several stages. A turn's number and stage can ONLY go forward.
  * Rollbacks are not allowed so every action have a "permanent" consequence.
  */
-public class Turn {
+public class Turn implements Comparable<Turn> {
 
   private int number;
   private TurnStage stage;
@@ -63,6 +63,12 @@ public class Turn {
     return Objects.hashCode(getNumber(), getStage());
   }
 
+  @Override
+  public int compareTo(Turn other) {
+    int numDiff = number - other.number;
+    return numDiff == 0 ? TurnStage.indexOf(stage) - TurnStage.indexOf(other.stage) : numDiff;
+  }
+
   /**
    * Order sensitive. A turn must cycle through every single stage before advancing.
    */
@@ -85,6 +91,10 @@ public class Turn {
       int index = stages.indexOf(stage);
       Preconditions.checkArgument(index != -1);
       return stages.get(index + 1);
+    }
+
+    private static int indexOf(TurnStage stage) {
+      return Arrays.asList(values()).indexOf(stage);
     }
   }
 }

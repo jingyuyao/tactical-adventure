@@ -69,4 +69,14 @@ public class TurnTest {
     assertThat(turn1).isNotEqualTo(turn3);
     assertThat(turn1.hashCode()).isNotEqualTo(turn3.hashCode());
   }
+
+  @Test
+  public void compare_to() {
+    Turn turn1 = new Turn(2, TurnStage.PLAYER);
+    Turn turn2 = new Turn(3, TurnStage.START);
+    Turn turn3 = new Turn(3, TurnStage.END);
+
+    assertThat(turn1).isLessThan(turn2);
+    assertThat(turn2).isLessThan(turn3);
+  }
 }
