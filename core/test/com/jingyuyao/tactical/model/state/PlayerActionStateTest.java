@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -152,6 +153,8 @@ public class PlayerActionStateTest {
     state.finish();
 
     verify(player).setActionable(false);
+    verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     verify(worldState).branchTo(waiting);
   }
 

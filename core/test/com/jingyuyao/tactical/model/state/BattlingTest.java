@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
@@ -126,6 +127,8 @@ public class BattlingTest {
     startBattle.start();
     inOrder.verify(battle).execute();
     inOrder.verify(attackingPlayer).setActionable(false);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(waiting);
     verifyNoMoreInteractions(worldState);
   }

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.world.Cell;
 
 class BasePlayerState extends BaseState implements PlayerState {
@@ -36,6 +37,7 @@ class BasePlayerState extends BaseState implements PlayerState {
 
   void finish() {
     player.setActionable(false);
+    post(new Save());
     branchTo(stateFactory.createWaiting());
   }
 }
