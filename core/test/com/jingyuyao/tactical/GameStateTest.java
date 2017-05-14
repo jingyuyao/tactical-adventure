@@ -3,7 +3,6 @@ package com.jingyuyao.tactical;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Application;
@@ -16,6 +15,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -57,6 +57,8 @@ public class GameStateTest {
   private Script script;
   @Mock
   private GameSave gameSave;
+  @Mock
+  private Save save;
   @Mock
   private LevelComplete levelComplete;
   @Mock
@@ -103,23 +105,10 @@ public class GameStateTest {
   }
 
   @Test
-  public void pause_at_world() {
-    when(game.isAtWorldScreen()).thenReturn(true);
+  public void save() {
+    gameState.save(save);
 
-    gameState.pause();
-
-    verify(model).prepForSave();
     verify(dataManager).saveProgress(world, worldState);
-  }
-
-  @Test
-  public void pause_not_at_world() {
-    when(game.isAtWorldScreen()).thenReturn(false);
-
-    gameState.pause();
-
-    verifyZeroInteractions(model);
-    verifyZeroInteractions(dataManager);
   }
 
   @Test
@@ -131,7 +120,6 @@ public class GameStateTest {
     gameState.levelComplete(levelComplete);
 
     InOrder inOrder = Mockito.inOrder(model, dataManager, game);
-    inOrder.verify(model).prepForSave();
     inOrder.verify(dataManager).changeLevel(3, world, worldState);
     inOrder.verify(model).reset();
     inOrder.verify(game).goToPlayMenu();

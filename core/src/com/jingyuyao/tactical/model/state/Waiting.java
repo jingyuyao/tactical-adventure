@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -79,6 +80,7 @@ public class Waiting extends BaseState {
 
   void endTurn() {
     getTurn().advance();
+    post(new Save());
     branchTo(stateFactory.createEndTurn());
   }
 }

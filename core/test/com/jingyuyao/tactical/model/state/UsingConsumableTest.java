@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
@@ -73,6 +74,8 @@ public class UsingConsumableTest {
     verify(consumable).apply(player);
     verify(player).useConsumable(consumable);
     verify(player).setActionable(false);
+    verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     verify(worldState).branchTo(waiting);
   }
 

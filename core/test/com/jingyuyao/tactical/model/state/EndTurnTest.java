@@ -9,6 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
@@ -21,7 +22,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -79,8 +82,9 @@ public class EndTurnTest {
 
     endTurn.enter();
 
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues()).hasSize(1);
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(endTurn);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(Save.class);
     verify(player).setActionable(true);
     verify(turn).advance();
     verify(worldState).branchTo(retaliating);
@@ -99,8 +103,9 @@ public class EndTurnTest {
 
     endTurn.enter();
 
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues()).hasSize(1);
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(endTurn);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(Save.class);
     verify(player).setActionable(true);
     verify(turn).advance();
     verify(worldState).branchTo(retaliating);
@@ -119,13 +124,17 @@ public class EndTurnTest {
 
     endTurn.enter();
 
-    verify(modelBus, times(2)).post(argumentCaptor.capture());
+    InOrder inOrder = Mockito.inOrder(modelBus, player, turn, worldState);
+    inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(endTurn);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(ShowDialogues.class);
     ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getAllValues().get(1);
     assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
     showDialogues.complete();
-    verify(player).setActionable(true);
-    verify(turn).advance();
-    verify(worldState).branchTo(retaliating);
+    inOrder.verify(player).setActionable(true);
+    inOrder.verify(turn).advance();
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
+    inOrder.verify(worldState).branchTo(retaliating);
   }
 }

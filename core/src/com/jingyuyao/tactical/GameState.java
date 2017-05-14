@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
@@ -64,11 +65,9 @@ public class GameState {
     game.goToPlayMenu();
   }
 
-  void pause() {
-    if (game.isAtWorldScreen()) {
-      model.prepForSave();
-      dataManager.saveProgress(world, worldState);
-    }
+  @Subscribe
+  void save(Save save) {
+    dataManager.saveProgress(world, worldState);
   }
 
   @Subscribe
@@ -76,7 +75,6 @@ public class GameState {
     GameSave gameSave = dataManager.loadCurrentSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
-      model.prepForSave();
       dataManager.changeLevel(nextLevel, world, worldState);
     } else {
       dataManager.freshStart();

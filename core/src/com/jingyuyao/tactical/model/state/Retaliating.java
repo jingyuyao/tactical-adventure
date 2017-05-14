@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Promise;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -48,6 +49,7 @@ public class Retaliating extends BaseState {
   private void retaliate(final ImmutableList<Cell> characterSnapshot, final int i) {
     if (i == characterSnapshot.size()) {
       getTurn().advance();
+      post(new Save());
       branchTo(stateFactory.createStartTurn());
       return;
     }
