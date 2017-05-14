@@ -59,13 +59,6 @@ public class ModelTest {
   }
 
   @Test
-  public void prep_for_save() {
-    model.prepForSave();
-
-    verify(worldState).prepForSave();
-  }
-
-  @Test
   public void reset() {
     model.reset();
 

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Application;
@@ -106,26 +105,6 @@ public class GameStateTest {
   }
 
   @Test
-  public void pause_at_world() {
-    when(game.isAtWorldScreen()).thenReturn(true);
-
-    gameState.pause();
-
-    verify(model).prepForSave();
-    verify(dataManager).saveProgress(world, worldState);
-  }
-
-  @Test
-  public void pause_not_at_world() {
-    when(game.isAtWorldScreen()).thenReturn(false);
-
-    gameState.pause();
-
-    verifyZeroInteractions(model);
-    verifyZeroInteractions(dataManager);
-  }
-
-  @Test
   public void save() {
     gameState.save(save);
 
@@ -141,7 +120,6 @@ public class GameStateTest {
     gameState.levelComplete(levelComplete);
 
     InOrder inOrder = Mockito.inOrder(model, dataManager, game);
-    inOrder.verify(model).prepForSave();
     inOrder.verify(dataManager).changeLevel(3, world, worldState);
     inOrder.verify(model).reset();
     inOrder.verify(game).goToPlayMenu();

@@ -27,12 +27,6 @@ public class TacticalAdventure extends Game {
   }
 
   @Override
-  public void pause() {
-    super.pause();
-    gameState.pause();
-  }
-
-  @Override
   public void dispose() {
     super.dispose();
     gameScreen.dispose();
@@ -46,9 +40,5 @@ public class TacticalAdventure extends Game {
 
   void goToWorldScreen() {
     setScreen(gameScreen);
-  }
-
-  boolean isAtWorldScreen() {
-    return getScreen().equals(gameScreen);
   }
 }

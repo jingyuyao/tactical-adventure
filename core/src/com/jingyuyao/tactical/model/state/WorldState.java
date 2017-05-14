@@ -47,10 +47,6 @@ public class WorldState {
     stateStack.peek().enter();
   }
 
-  public void prepForSave() {
-    rollback();
-  }
-
   public void reset() {
     stateStack.peek().exit();
     stateStack.clear();

@@ -65,13 +65,6 @@ public class GameState {
     game.goToPlayMenu();
   }
 
-  void pause() {
-    if (game.isAtWorldScreen()) {
-      model.prepForSave();
-      dataManager.saveProgress(world, worldState);
-    }
-  }
-
   @Subscribe
   void save(Save save) {
     dataManager.saveProgress(world, worldState);
@@ -82,7 +75,6 @@ public class GameState {
     GameSave gameSave = dataManager.loadCurrentSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
-      model.prepForSave();
       dataManager.changeLevel(nextLevel, world, worldState);
     } else {
       dataManager.freshStart();

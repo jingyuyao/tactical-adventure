@@ -36,10 +36,6 @@ public class Model {
     worldState.initialize(turn, script);
   }
 
-  public void prepForSave() {
-    worldState.prepForSave();
-  }
-
   public void reset() {
     world.reset();
     worldState.reset();
