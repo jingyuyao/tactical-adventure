@@ -13,7 +13,7 @@ public class WorldState {
 
   private final StateFactory stateFactory;
   private final Deque<State> stateStack;
-  private int turn = 1;
+  private Turn turn;
   private Script script;
 
   @Inject
@@ -22,11 +22,28 @@ public class WorldState {
     this.stateStack = stateStack;
   }
 
-  public void initialize(int turn, Script script) {
+  public void initialize(Turn turn, Script script) {
     Preconditions.checkNotNull(script);
     this.turn = turn;
     this.script = script;
-    stateStack.push(stateFactory.createStartTurn());
+    State initialState;
+    switch (turn.getStage()) {
+      case START:
+        initialState = stateFactory.createStartTurn();
+        break;
+      case PLAYER:
+        initialState = stateFactory.createWaiting();
+        break;
+      case END:
+        initialState = stateFactory.createEndTurn();
+        break;
+      case ENEMY:
+        initialState = stateFactory.createRetaliating();
+        break;
+      default:
+        throw new RuntimeException("missing initial state for a turn stage");
+    }
+    stateStack.push(initialState);
     stateStack.peek().enter();
   }
 
@@ -37,19 +54,16 @@ public class WorldState {
   public void reset() {
     stateStack.peek().exit();
     stateStack.clear();
-    turn = 1;
+    turn = null;
+    script = null;
   }
 
   public void select(Cell cell) {
     stateStack.peek().select(cell);
   }
 
-  public int getTurn() {
+  public Turn getTurn() {
     return turn;
-  }
-
-  void incrementTurn() {
-    turn++;
   }
 
   Script getScript() {

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Enemy;
@@ -8,6 +9,7 @@ import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
@@ -35,6 +37,7 @@ public class Retaliating extends BaseState {
 
   @Override
   public void enter() {
+    Preconditions.checkState(getTurn().getStage().equals(TurnStage.ENEMY));
     super.enter();
     retaliate(world.getCharacterSnapshot(), 0);
   }
@@ -44,6 +47,7 @@ public class Retaliating extends BaseState {
    */
   private void retaliate(final ImmutableList<Cell> characterSnapshot, final int i) {
     if (i == characterSnapshot.size()) {
+      getTurn().advance();
       branchTo(stateFactory.createStartTurn());
       return;
     }

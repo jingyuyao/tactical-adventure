@@ -12,8 +12,8 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
@@ -44,7 +44,7 @@ public class EndTurnTest {
   @Mock
   private TurnScript turnScript;
   @Mock
-  private ScriptActions scriptActions;
+  private Turn turn;
   @Mock
   private Dialogue dialogue;
   @Mock
@@ -59,11 +59,20 @@ public class EndTurnTest {
     endTurn = new EndTurn(modelBus, worldState, stateFactory, world);
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void enter_wrong_stage() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.START);
+
+    endTurn.enter();
+  }
+
   @Test
   public void enter_no_turn_script() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(3);
-    when(script.turnScript(3)).thenReturn(Optional.<TurnScript>absent());
+    when(script.turnScript(turn)).thenReturn(Optional.<TurnScript>absent());
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
@@ -73,17 +82,17 @@ public class EndTurnTest {
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(1);
     verify(player).setActionable(true);
-    verify(worldState).incrementTurn();
+    verify(turn).advance();
     verify(worldState).branchTo(retaliating);
   }
 
   @Test
   public void enter_no_dialogue() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(3);
-    when(script.turnScript(3)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getEnd()).thenReturn(scriptActions);
-    when(scriptActions.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
+    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
+    when(turnScript.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
@@ -93,17 +102,17 @@ public class EndTurnTest {
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(1);
     verify(player).setActionable(true);
-    verify(worldState).incrementTurn();
+    verify(turn).advance();
     verify(worldState).branchTo(retaliating);
   }
 
   @Test
   public void enter_has_dialogue() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(3);
-    when(script.turnScript(3)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getEnd()).thenReturn(scriptActions);
-    when(scriptActions.getDialogues()).thenReturn(ImmutableList.of(dialogue));
+    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
+    when(turnScript.getDialogues()).thenReturn(ImmutableList.of(dialogue));
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
@@ -116,7 +125,7 @@ public class EndTurnTest {
     assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
     showDialogues.complete();
     verify(player).setActionable(true);
-    verify(worldState).incrementTurn();
+    verify(turn).advance();
     verify(worldState).branchTo(retaliating);
   }
 }

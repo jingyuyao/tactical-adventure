@@ -11,8 +11,8 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,11 +31,11 @@ public class StartTurnTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
+  private Turn turn;
+  @Mock
   private Script script;
   @Mock
   private TurnScript turnScript;
-  @Mock
-  private ScriptActions scriptActions;
   @Mock
   private Dialogue dialogue;
   @Mock
@@ -50,43 +50,54 @@ public class StartTurnTest {
     startTurn = new StartTurn(modelBus, worldState, stateFactory);
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void enter_wrong_stage() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.END);
+
+    startTurn.enter();
+  }
+
   @Test
   public void enter_no_turn_script() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(3);
-    when(script.turnScript(3)).thenReturn(Optional.<TurnScript>absent());
+    when(script.turnScript(turn)).thenReturn(Optional.<TurnScript>absent());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();
 
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(1);
+    verify(turn).advance();
     verify(worldState).branchTo(waiting);
   }
 
   @Test
   public void enter_no_dialogue() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(3);
-    when(script.turnScript(3)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getStart()).thenReturn(scriptActions);
-    when(scriptActions.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
+    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
+    when(turnScript.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();
 
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(1);
+    verify(turn).advance();
     verify(worldState).branchTo(waiting);
   }
 
   @Test
   public void enter_has_dialogue() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(3);
-    when(script.turnScript(3)).thenReturn(Optional.of(turnScript));
-    when(turnScript.getStart()).thenReturn(scriptActions);
-    when(scriptActions.getDialogues()).thenReturn(ImmutableList.of(dialogue));
+    when(script.turnScript(turn)).thenReturn(Optional.of(turnScript));
+    when(turnScript.getDialogues()).thenReturn(ImmutableList.of(dialogue));
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();
@@ -96,6 +107,7 @@ public class StartTurnTest {
     ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getAllValues().get(1);
     assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
     showDialogues.complete();
+    verify(turn).advance();
     verify(worldState).branchTo(waiting);
   }
 }

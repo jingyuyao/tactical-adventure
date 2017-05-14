@@ -4,8 +4,9 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.jingyuyao.tactical.model.script.ScriptActions;
+import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.TurnScript;
+import java.util.List;
 
 abstract class ScriptState extends BaseState {
 
@@ -18,18 +19,19 @@ abstract class ScriptState extends BaseState {
     super.enter();
     Optional<TurnScript> turnScriptOpt = currentTurnScript();
     if (turnScriptOpt.isPresent()) {
-      showDialogue(getScriptActions(turnScriptOpt.get()));
+      showDialogue(turnScriptOpt.get());
     } else {
       finish();
     }
   }
 
-  private void showDialogue(ScriptActions scriptActions) {
+  private void showDialogue(TurnScript turnScript) {
     // TODO: check if the character is in the world
-    if (scriptActions.getDialogues().isEmpty()) {
+    List<Dialogue> dialogues = turnScript.getDialogues();
+    if (dialogues.isEmpty()) {
       finish();
     } else {
-      post(new ShowDialogues(scriptActions.getDialogues(), new Promise(new Runnable() {
+      post(new ShowDialogues(dialogues, new Promise(new Runnable() {
         @Override
         public void run() {
           finish();
@@ -37,11 +39,6 @@ abstract class ScriptState extends BaseState {
       })));
     }
   }
-
-  /**
-   * Function to get the {@link ScriptActions} from the current {@link TurnScript}
-   */
-  abstract ScriptActions getScriptActions(TurnScript turnScript);
 
   /**
    * Called when all the script stuff finished executing. Branch away here.

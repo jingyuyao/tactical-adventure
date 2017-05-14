@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
@@ -44,6 +45,8 @@ public class RetaliatingTest {
   private Movements movements;
   @Mock
   private World world;
+  @Mock
+  private Turn turn;
   @Mock
   private Cell cell;
   @Mock
@@ -86,8 +89,18 @@ public class RetaliatingTest {
     assertThat(retaliating.getActions()).isEmpty();
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void enter_wrong_stage() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
+
+    retaliating.enter();
+  }
+
   @Test
   public void enter() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.ENEMY);
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell2.enemy()).thenReturn(Optional.of(enemy2));
@@ -103,7 +116,7 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, battle);
+    InOrder inOrder = Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, battle, turn);
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).getRetaliation(movements, cell);
     inOrder.verify(origin).moveCharacter(path);
@@ -115,6 +128,7 @@ public class RetaliatingTest {
     inOrder.verify(battle).execute();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(enemy2).getRetaliation(movements, cell2);
+    inOrder.verify(turn).advance();
     inOrder.verify(worldState).branchTo(startTurn);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
     TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);

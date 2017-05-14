@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -42,13 +43,17 @@ public class LevelProgressTest {
   private Player player2;
   @Mock
   private Enemy enemy1;
+  @Mock
+  private Turn turn1;
+  @Mock
+  private Turn turn2;
 
   @Test
   public void fresh() {
     LevelProgress levelProgress = new LevelProgress();
     assertThat(levelProgress.getActiveCharacters()).isEmpty();
     assertThat(levelProgress.getInactivePlayers()).isEmpty();
-    assertThat(levelProgress.getTurn()).isEqualTo(1);
+    assertThat(levelProgress.getTurn()).isEqualTo(new Turn());
   }
 
   @Test
@@ -72,17 +77,17 @@ public class LevelProgressTest {
     when(cell2.player()).thenReturn(Optional.<Player>absent());
     when(cell2.enemy()).thenReturn(Optional.of(enemy1));
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
-    when(worldState.getTurn()).thenReturn(5, 6);
+    when(worldState.getTurn()).thenReturn(turn1, turn2);
 
     LevelProgress levelProgress = new LevelProgress();
     levelProgress.update(world, worldState);
 
     assertThat(levelProgress.getActiveCharacters()).containsExactly(P1, player1, E1, enemy1);
-    assertThat(levelProgress.getTurn()).isEqualTo(5);
+    assertThat(levelProgress.getTurn()).isSameAs(turn1);
 
     // Make sure the previous things are cleared
     levelProgress.update(world, worldState);
     assertThat(levelProgress.getActiveCharacters()).containsExactly(P1, player1, E1, enemy1);
-    assertThat(levelProgress.getTurn()).isEqualTo(6);
+    assertThat(levelProgress.getTurn()).isSameAs(turn2);
   }
 }

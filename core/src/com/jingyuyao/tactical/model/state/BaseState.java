@@ -64,8 +64,8 @@ class BaseState implements State {
     worldState.remove(this);
   }
 
-  void incrementTurn() {
-    worldState.incrementTurn();
+  Turn getTurn() {
+    return worldState.getTurn();
   }
 
   Optional<TurnScript> currentTurnScript() {

@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -43,6 +44,8 @@ public class WaitingTest {
   @Mock
   private Movements movements;
   @Mock
+  private Turn turn;
+  @Mock
   private Cell cell;
   @Mock
   private Cell cell2;
@@ -66,8 +69,18 @@ public class WaitingTest {
     waiting = new Waiting(modelBus, worldState, stateFactory, world, movements);
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void enter_wrong_stage() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.ENEMY);
+
+    waiting.enter();
+  }
+
   @Test
   public void enter_not_complete() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
@@ -82,6 +95,8 @@ public class WaitingTest {
 
   @Test
   public void enter_level_complete() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
@@ -97,6 +112,8 @@ public class WaitingTest {
 
   @Test
   public void enter_level_failed() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.<Player>absent());
     when(cell.enemy()).thenReturn(Optional.of(enemy));
@@ -143,10 +160,12 @@ public class WaitingTest {
 
   @Test
   public void end_turn() {
+    when(worldState.getTurn()).thenReturn(turn);
     when(stateFactory.createEndTurn()).thenReturn(endTurn);
 
     waiting.endTurn();
 
+    verify(turn).advance();
     verify(worldState).branchTo(endTurn);
   }
 
