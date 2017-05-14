@@ -22,6 +22,10 @@ public class MessageBundle {
     return path;
   }
 
+  public String getPathWithExtensions() {
+    return path + ".properties";
+  }
+
   /**
    * Create a {@link Message}.
    */

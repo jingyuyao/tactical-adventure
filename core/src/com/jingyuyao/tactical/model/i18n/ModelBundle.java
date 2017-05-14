@@ -13,4 +13,10 @@ public class ModelBundle {
       new MessageBundle("i18n/model/item/ItemDescription");
   public static final MessageBundle TERRAIN_NAME =
       new MessageBundle("i18n/model/terrain/TerrainName");
+  public static final MessageBundle DEATH_DIALOGUE =
+      new MessageBundle("i18n/model/script/dialogue/Death");
+
+  public static MessageBundle getLevelDialogue(int level) {
+    return new MessageBundle("i18n/model/script/dialogue/Level" + level);
+  }
 }
