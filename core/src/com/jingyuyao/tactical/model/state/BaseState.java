@@ -1,8 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.script.TurnScript;
 import com.jingyuyao.tactical.model.world.Cell;
 
 class BaseState implements State {
@@ -64,5 +66,9 @@ class BaseState implements State {
 
   void incrementTurn() {
     worldState.incrementTurn();
+  }
+
+  Optional<TurnScript> currentTurnScript() {
+    return worldState.getScript().turnScript(worldState.getTurn());
   }
 }

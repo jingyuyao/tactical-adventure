@@ -18,17 +18,20 @@ public class DataManager {
   private final LevelProgressManager levelProgressManager;
   private final LevelDataManager levelDataManager;
   private final LevelMapManager levelMapManager;
+  private final ScriptLoader scriptLoader;
 
   @Inject
   DataManager(
       GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
       LevelDataManager levelDataManager,
-      LevelMapManager levelMapManager) {
+      LevelMapManager levelMapManager,
+      ScriptLoader scriptLoader) {
     this.gameSaveManager = gameSaveManager;
     this.levelProgressManager = levelProgressManager;
     this.levelDataManager = levelDataManager;
     this.levelMapManager = levelMapManager;
+    this.scriptLoader = scriptLoader;
   }
 
   public GameSave loadCurrentSave() {
@@ -84,7 +87,8 @@ public class DataManager {
 
     Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
     Map<Coordinate, Character> characterMap = levelProgress.getActiveCharacters();
-    return new LoadedLevel(terrainMap, characterMap, levelProgress.getTurn());
+    int turn = levelProgress.getTurn();
+    return new LoadedLevel(terrainMap, characterMap, turn, scriptLoader.load(level));
   }
 
   public void saveProgress(World world, WorldState worldState) {

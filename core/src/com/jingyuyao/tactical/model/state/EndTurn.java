@@ -2,11 +2,13 @@ package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.script.ScriptActions;
+import com.jingyuyao.tactical.model.script.TurnScript;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class EndTurn extends BaseState {
+public class EndTurn extends ScriptState {
 
   private final StateFactory stateFactory;
   private final World world;
@@ -19,11 +21,15 @@ public class EndTurn extends BaseState {
   }
 
   @Override
-  public void enter() {
-    super.enter();
+  ScriptActions getScriptActions(TurnScript turnScript) {
+    return turnScript.getEnd();
+  }
+
+  @Override
+  void finish() {
     makePlayersActionable();
-    // TODO: check script for dialogue before finishing
-    finish();
+    incrementTurn();
+    branchTo(stateFactory.createRetaliating());
   }
 
   private void makePlayersActionable() {
@@ -34,8 +40,4 @@ public class EndTurn extends BaseState {
     }
   }
 
-  private void finish() {
-    incrementTurn();
-    branchTo(stateFactory.createRetaliating());
-  }
 }
