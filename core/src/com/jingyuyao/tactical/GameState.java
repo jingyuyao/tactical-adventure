@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
@@ -69,6 +70,11 @@ public class GameState {
       model.prepForSave();
       dataManager.saveProgress(world, worldState);
     }
+  }
+
+  @Subscribe
+  void save(Save save) {
+    dataManager.saveProgress(world, worldState);
   }
 
   @Subscribe

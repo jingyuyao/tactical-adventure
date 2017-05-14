@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -57,6 +58,8 @@ public class GameStateTest {
   private Script script;
   @Mock
   private GameSave gameSave;
+  @Mock
+  private Save save;
   @Mock
   private LevelComplete levelComplete;
   @Mock
@@ -120,6 +123,13 @@ public class GameStateTest {
 
     verifyZeroInteractions(model);
     verifyZeroInteractions(dataManager);
+  }
+
+  @Test
+  public void save() {
+    gameState.save(save);
+
+    verify(dataManager).saveProgress(world, worldState);
   }
 
   @Test
