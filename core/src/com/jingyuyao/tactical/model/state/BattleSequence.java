@@ -1,18 +1,18 @@
-package com.jingyuyao.tactical.model.battle;
+package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.script.ScriptActions;
-import com.jingyuyao.tactical.model.state.WorldState;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class BattleSequence {
+class BattleSequence {
 
   private final ModelBus modelBus;
   private final WorldState worldState;
@@ -23,7 +23,7 @@ public class BattleSequence {
     this.worldState = worldState;
   }
 
-  public void start(final Battle battle, final Runnable done) {
+  void start(final Battle battle, final Runnable done) {
     modelBus.post(new StartBattle(battle, new Promise(new Runnable() {
       @Override
       public void run() {

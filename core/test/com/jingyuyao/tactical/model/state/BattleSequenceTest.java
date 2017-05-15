@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.battle;
+package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -7,11 +7,11 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
-import com.jingyuyao.tactical.model.state.WorldState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

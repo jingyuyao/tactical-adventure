@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.battle.BattleSequence;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
