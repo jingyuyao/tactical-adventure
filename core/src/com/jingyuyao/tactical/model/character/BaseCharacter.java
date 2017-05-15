@@ -35,6 +35,11 @@ class BaseCharacter implements Character {
   }
 
   @Override
+  public String getNameKey() {
+    return nameKey;
+  }
+
+  @Override
   public String getResourceKey() {
     return resourceKey;
   }

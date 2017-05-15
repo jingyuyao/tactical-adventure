@@ -4,12 +4,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.battle.BattleSequence;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
-import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -22,6 +21,7 @@ public class Retaliating extends BaseState {
   private final StateFactory stateFactory;
   private final Movements movements;
   private final World world;
+  private final BattleSequence battleSequence;
 
   @Inject
   Retaliating(
@@ -29,11 +29,13 @@ public class Retaliating extends BaseState {
       WorldState worldState,
       StateFactory stateFactory,
       Movements movements,
-      World world) {
+      World world,
+      BattleSequence battleSequence) {
     super(modelBus, worldState);
     this.stateFactory = stateFactory;
     this.movements = movements;
     this.world = world;
+    this.battleSequence = battleSequence;
   }
 
   @Override
@@ -89,7 +91,7 @@ public class Retaliating extends BaseState {
 
   private void handleBattle(Retaliation retaliation, Runnable next) {
     if (retaliation.battle().isPresent()) {
-      post(new StartBattle(retaliation.battle().get(), new Promise(next)));
+      battleSequence.start(retaliation.battle().get(), next);
     } else {
       next.run();
     }

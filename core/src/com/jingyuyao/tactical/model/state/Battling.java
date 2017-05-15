@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.event.Promise;
-import com.jingyuyao.tactical.model.event.StartBattle;
+import com.jingyuyao.tactical.model.battle.BattleSequence;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
 public class Battling extends BasePlayerState {
 
   private final StateFactory stateFactory;
+  private final BattleSequence battleSequence;
   private final Battle battle;
 
   @Inject
@@ -19,10 +19,12 @@ public class Battling extends BasePlayerState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
+      BattleSequence battleSequence,
       @Assisted Cell playerCell,
       @Assisted Battle battle) {
     super(modelBus, worldState, stateFactory, playerCell);
     this.stateFactory = stateFactory;
+    this.battleSequence = battleSequence;
     this.battle = battle;
   }
 
@@ -44,11 +46,11 @@ public class Battling extends BasePlayerState {
 
   void attack() {
     goTo(stateFactory.createTransition());
-    post(new StartBattle(battle, new Promise(new Runnable() {
+    battleSequence.start(battle, new Runnable() {
       @Override
       public void run() {
         finish();
       }
-    })));
+    });
   }
 }

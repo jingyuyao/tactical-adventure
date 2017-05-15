@@ -11,11 +11,11 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
+import com.jingyuyao.tactical.model.battle.BattleSequence;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +37,8 @@ public class BattlingTest {
   @Mock
   private ModelBus modelBus;
   @Mock
+  private BattleSequence battleSequence;
+  @Mock
   private Cell playerCell;
   @Mock
   private Player attackingPlayer;
@@ -52,13 +54,15 @@ public class BattlingTest {
   private Transition transition;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<Runnable> runnableCaptor;
 
   private Battling battling;
 
   @Before
   public void setUp() {
     when(playerCell.player()).thenReturn(Optional.of(attackingPlayer));
-    battling = new Battling(modelBus, worldState, stateFactory, playerCell, battle);
+    battling = new Battling(modelBus, worldState, stateFactory, battleSequence, playerCell, battle);
   }
 
   @Test
@@ -118,14 +122,10 @@ public class BattlingTest {
   }
 
   private void verify_attacked() {
-    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingPlayer, battle);
+    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingPlayer, battleSequence);
     inOrder.verify(worldState).goTo(transition);
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(StartBattle.class);
-    StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
-    assertThat(startBattle.getBattle()).isSameAs(battle);
-    startBattle.start();
-    inOrder.verify(battle).execute();
+    inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
+    runnableCaptor.getValue().run();
     inOrder.verify(attackingPlayer).setActionable(false);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);

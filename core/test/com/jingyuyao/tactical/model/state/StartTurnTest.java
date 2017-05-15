@@ -6,11 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -40,11 +37,11 @@ public class StartTurnTest {
   @Mock
   private ScriptActions scriptActions;
   @Mock
-  private Dialogue dialogue;
-  @Mock
   private Waiting waiting;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<Runnable> runnableCaptor;
 
   private StartTurn startTurn;
 
@@ -62,7 +59,7 @@ public class StartTurnTest {
   }
 
   @Test
-  public void enter_no_turn_script() {
+  public void enter_no_script() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
@@ -79,41 +76,20 @@ public class StartTurnTest {
   }
 
   @Test
-  public void enter_no_dialogue() {
+  public void enter_has_script() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.START);
     when(worldState.getScript()).thenReturn(script);
     when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
-    when(scriptActions.getDialogues()).thenReturn(ImmutableList.<Dialogue>of());
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     startTurn.enter();
 
-    verify(modelBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(startTurn);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(Save.class);
-    verify(turn).advance();
-    verify(worldState).branchTo(waiting);
-  }
-
-  @Test
-  public void enter_has_dialogue() {
-    when(worldState.getTurn()).thenReturn(turn);
-    when(turn.getStage()).thenReturn(TurnStage.START);
-    when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
-    when(scriptActions.getDialogues()).thenReturn(ImmutableList.of(dialogue));
-    when(stateFactory.createWaiting()).thenReturn(waiting);
-
-    startTurn.enter();
-
-    InOrder inOrder = Mockito.inOrder(modelBus, turn, worldState);
-    inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(startTurn);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(ShowDialogues.class);
-    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getAllValues().get(1);
-    assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
-    showDialogues.complete();
+    InOrder inOrder = Mockito.inOrder(modelBus, turn, worldState, scriptActions);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isSameAs(startTurn);
+    inOrder.verify(scriptActions).execute(Mockito.eq(modelBus), runnableCaptor.capture());
+    runnableCaptor.getValue().run();
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);

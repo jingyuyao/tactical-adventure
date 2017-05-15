@@ -62,7 +62,7 @@ public class WorldState {
     return turn;
   }
 
-  Script getScript() {
+  public Script getScript() {
     return script;
   }
 

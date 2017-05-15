@@ -40,6 +40,10 @@ class BaseState implements State {
     return ImmutableList.of();
   }
 
+  ModelBus getModelBus() {
+    return modelBus;
+  }
+
   void post(Object event) {
     modelBus.post(event);
   }
