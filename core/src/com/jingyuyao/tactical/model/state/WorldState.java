@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.StateModule.BackingStateStack;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -13,13 +15,18 @@ public class WorldState {
 
   private final StateFactory stateFactory;
   private final Deque<State> stateStack;
+  private final ModelBus modelBus;
   private Turn turn;
   private Script script;
 
   @Inject
-  public WorldState(StateFactory stateFactory, @BackingStateStack Deque<State> stateStack) {
+  public WorldState(
+      StateFactory stateFactory,
+      @BackingStateStack Deque<State> stateStack,
+      ModelBus modelBus) {
     this.stateFactory = stateFactory;
     this.stateStack = stateStack;
+    this.modelBus = modelBus;
   }
 
   public void initialize(Turn turn, Script script) {
@@ -55,6 +62,7 @@ public class WorldState {
   }
 
   public void select(Cell cell) {
+    modelBus.post(new SelectCell(cell));
     stateStack.peek().select(cell);
   }
 

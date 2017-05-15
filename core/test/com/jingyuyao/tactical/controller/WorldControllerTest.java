@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.math.Vector3;
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.WorldView;
@@ -27,9 +27,9 @@ public class WorldControllerTest {
   @Mock
   private WorldView worldView;
   @Mock
-  private Model model;
-  @Mock
   private World world;
+  @Mock
+  private WorldState worldState;
   @Mock
   private Cell cell;
   @Captor
@@ -39,7 +39,7 @@ public class WorldControllerTest {
 
   @Before
   public void setUp() {
-    worldController = new WorldController(cameraController, worldView, model, world);
+    worldController = new WorldController(cameraController, worldView, world, worldState);
   }
 
   @Test
@@ -54,7 +54,7 @@ public class WorldControllerTest {
     worldController.touchUp(0, 0, 0, 0);
 
     verifyZeroInteractions(world);
-    verifyZeroInteractions(model);
+    verifyZeroInteractions(worldState);
   }
 
   @Test
@@ -68,6 +68,6 @@ public class WorldControllerTest {
     Vector3 vector3 = vector3Captor.getValue();
     assertThat(vector3.x).isEqualTo(1.0f);
     assertThat(vector3.y).isEqualTo(2.0f);
-    verify(model).select(cell);
+    verify(worldState).select(cell);
   }
 }

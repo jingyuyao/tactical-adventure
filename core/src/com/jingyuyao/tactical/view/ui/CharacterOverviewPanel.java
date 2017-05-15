@@ -11,17 +11,14 @@ import javax.inject.Singleton;
 @Singleton
 class CharacterOverviewPanel extends ButtonPanel<Character> {
 
-  private final LayerManager layerManager;
   private final CharacterDetailLayer characterDetailLayer;
   private final MessageLoader messageLoader;
 
   @Inject
   CharacterOverviewPanel(
-      LayerManager layerManager,
       CharacterDetailLayer characterDetailLayer,
       MessageLoader messageLoader) {
     super(Align.right);
-    this.layerManager = layerManager;
     this.characterDetailLayer = characterDetailLayer;
     this.messageLoader = messageLoader;
   }
@@ -40,6 +37,5 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
   @Override
   void click(Character character) {
     characterDetailLayer.display(character);
-    layerManager.open(characterDetailLayer);
   }
 }

@@ -40,7 +40,7 @@ class CharacterDetailLayer extends VisTable {
 
     VisScrollPane scrollPane = new VisScrollPane(scrollTable);
     scrollPane.setScrollingDisabled(true, false);
-    add(scrollPane).expand().fill().center();
+    add(scrollPane).grow().center();
     row();
     add(this.new CloseButton()).bottom().right();
   }
@@ -48,6 +48,7 @@ class CharacterDetailLayer extends VisTable {
   void display(Character character) {
     characterStatsPanel.display(character);
     characterItemsPanel.display(character);
+    layerManager.open(this);
   }
 
   private class CloseButton extends VisTextButton {

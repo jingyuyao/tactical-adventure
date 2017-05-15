@@ -7,7 +7,6 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
-import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
@@ -25,7 +24,6 @@ public class GameState {
   private final TacticalAdventure game;
   private final DataManager dataManager;
   private final OrthogonalTiledMapRenderer tiledMapRenderer;
-  private final Model model;
   private final World world;
   private final WorldState worldState;
 
@@ -35,26 +33,24 @@ public class GameState {
       TacticalAdventure game,
       DataManager dataManager,
       OrthogonalTiledMapRenderer tiledMapRenderer,
-      Model model,
       World world,
       WorldState worldState) {
     this.application = application;
     this.game = game;
     this.dataManager = dataManager;
     this.tiledMapRenderer = tiledMapRenderer;
-    this.model = model;
     this.world = world;
     this.worldState = worldState;
   }
 
   public void play() {
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
-    model.initialize(
-        loadedLevel.getTerrainMap(),
-        loadedLevel.getCharacterMap(),
-        loadedLevel.getTurn(),
-        loadedLevel.getScript());
+    // Order is important: world must be populated before we go to the screen since the screen
+    // needs the world size, state need to start after we are in the screen so all the UI can
+    // receive events properly
+    world.initialize(loadedLevel.getTerrainMap(), loadedLevel.getCharacterMap());
     game.goToWorldScreen();
+    worldState.initialize(loadedLevel.getTurn(), loadedLevel.getScript());
   }
 
   public void reset() {
@@ -79,14 +75,16 @@ public class GameState {
     } else {
       dataManager.freshStart();
     }
-    model.reset();
+    world.reset();
+    worldState.reset();
     game.goToPlayMenu();
   }
 
   @Subscribe
   void levelFailed(LevelFailed levelFailed) {
     dataManager.removeProgress();
-    model.reset();
+    world.reset();
+    worldState.reset();
     game.goToPlayMenu();
   }
 

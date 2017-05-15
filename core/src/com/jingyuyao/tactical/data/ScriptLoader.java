@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
@@ -59,7 +60,7 @@ class ScriptLoader {
     if (dialogueProperties.isPresent()) {
       for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
         // supports only one death dialogue per character
-        dialogueMap.put(nameKey, new Dialogue(nameKey, bundle.get(nameKey)));
+        dialogueMap.put(nameKey, create(nameKey, bundle.get(nameKey)));
       }
     } else {
       throw new RuntimeException("death dialogue properties does not exists");
@@ -79,7 +80,7 @@ class ScriptLoader {
       Collections.sort(dialogueKeys);
 
       for (DialogueKey key : dialogueKeys) {
-        dialogueMap.put(key.turn, key.toDialogue(bundle));
+        dialogueMap.put(key.turn, create(key.nameKey, bundle.get(key.rawKey)));
       }
     }
     return dialogueMap;
@@ -104,11 +105,15 @@ class ScriptLoader {
     return Optional.absent();
   }
 
+  private Dialogue create(String nameKey, Message message) {
+    return new Dialogue(dataConfig.getCharacterNameBundle().get(nameKey), message);
+  }
+
   private static class DialogueKey implements Comparable<DialogueKey> {
 
     private final String rawKey;
     private final Turn turn;
-    private final String characterNameKey;
+    private final String nameKey;
     private final int index;
 
     private DialogueKey(String rawKey) {
@@ -116,12 +121,8 @@ class ScriptLoader {
       Preconditions.checkArgument(split.size() == 4);
       this.rawKey = rawKey;
       this.turn = new Turn(Integer.valueOf(split.get(0)), TurnStage.valueOf(split.get(1)));
-      this.characterNameKey = split.get(2);
+      this.nameKey = split.get(2);
       this.index = Integer.valueOf(split.get(3));
-    }
-
-    private Dialogue toDialogue(MessageBundle bundle) {
-      return new Dialogue(characterNameKey, bundle.get(rawKey));
     }
 
     @Override

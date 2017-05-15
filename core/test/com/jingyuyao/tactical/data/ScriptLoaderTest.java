@@ -29,6 +29,7 @@ public class ScriptLoaderTest {
 
   private static final MessageBundle LEVEL_DIALOGUE = new MessageBundle("i18n/TestLevelDialogue");
   private static final MessageBundle DEATH_DIALOGUE = new MessageBundle("i18n/TestDeathDialogue");
+  private static final MessageBundle NAME = new MessageBundle("i18n/TestCharacterName");
 
   @Mock
   private DataConfig dataConfig;
@@ -48,6 +49,7 @@ public class ScriptLoaderTest {
   public void load_level_dialogues() {
     when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
     when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
+    when(dataConfig.getCharacterNameBundle()).thenReturn(NAME);
 
     Script script = scriptLoader.load(2);
 
@@ -55,10 +57,10 @@ public class ScriptLoaderTest {
     assertThat(start1Script).isPresent();
     List<Dialogue> start1Dialogues = start1Script.get().getDialogues();
     assertThat(start1Dialogues).hasSize(2);
-    assertThat(start1Dialogues.get(0).getCharacterNameKey()).isEqualTo("first");
+    assertThat(start1Dialogues.get(0).getName()).isEqualTo(NAME.get("first"));
     assertThat(start1Dialogues.get(0).getMessage())
         .isEqualTo(LEVEL_DIALOGUE.get("1-START-first-0"));
-    assertThat(start1Dialogues.get(1).getCharacterNameKey()).isEqualTo("second");
+    assertThat(start1Dialogues.get(1).getName()).isEqualTo(NAME.get("second"));
     assertThat(start1Dialogues.get(1).getMessage())
         .isEqualTo(LEVEL_DIALOGUE.get("1-START-second-1"));
 
@@ -66,9 +68,9 @@ public class ScriptLoaderTest {
     assertThat(end1Script).isPresent();
     List<Dialogue> end1Dialogues = end1Script.get().getDialogues();
     assertThat(end1Dialogues).hasSize(2);
-    assertThat(end1Dialogues.get(0).getCharacterNameKey()).isEqualTo("third");
+    assertThat(end1Dialogues.get(0).getName()).isEqualTo(NAME.get("third"));
     assertThat(end1Dialogues.get(0).getMessage()).isEqualTo(LEVEL_DIALOGUE.get("1-END-third-0"));
-    assertThat(end1Dialogues.get(1).getCharacterNameKey()).isEqualTo("fourth");
+    assertThat(end1Dialogues.get(1).getName()).isEqualTo(NAME.get("fourth"));
     assertThat(end1Dialogues.get(1).getMessage()).isEqualTo(LEVEL_DIALOGUE.get("1-END-fourth-1"));
 
     Optional<ScriptActions> start2Script = script.turnScript(new Turn(2, TurnStage.START));
@@ -78,7 +80,7 @@ public class ScriptLoaderTest {
     assertThat(start3Script).isPresent();
     List<Dialogue> start3Dialogues = start3Script.get().getDialogues();
     assertThat(start3Dialogues).hasSize(1);
-    assertThat(start3Dialogues.get(0).getCharacterNameKey()).isEqualTo("fifth");
+    assertThat(start3Dialogues.get(0).getName()).isEqualTo(NAME.get("fifth"));
     assertThat(start3Dialogues.get(0).getMessage())
         .isEqualTo(LEVEL_DIALOGUE.get("3-START-fifth-0"));
 
@@ -89,6 +91,7 @@ public class ScriptLoaderTest {
   public void load_death_dialogues() {
     when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
     when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
+    when(dataConfig.getCharacterNameBundle()).thenReturn(NAME);
 
     Script script = scriptLoader.load(2);
 
@@ -96,14 +99,14 @@ public class ScriptLoaderTest {
     assertThat(dead).isPresent();
     List<Dialogue> deadDialogues = dead.get().getDialogues();
     assertThat(deadDialogues).hasSize(1);
-    assertThat(deadDialogues.get(0).getCharacterNameKey()).isEqualTo("dead");
+    assertThat(deadDialogues.get(0).getName()).isEqualTo(NAME.get("dead"));
     assertThat(deadDialogues.get(0).getMessage()).isEqualTo(DEATH_DIALOGUE.get("dead"));
 
     Optional<ScriptActions> dead2 = script.deathScript("dead2");
     assertThat(dead2).isPresent();
     List<Dialogue> dead2Dialogues = dead2.get().getDialogues();
     assertThat(dead2Dialogues).hasSize(1);
-    assertThat(dead2Dialogues.get(0).getCharacterNameKey()).isEqualTo("dead2");
+    assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
     assertThat(dead2Dialogues.get(0).getMessage()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
 
     assertThat(script.deathScript("never-gonna-give-you-up")).isAbsent();
