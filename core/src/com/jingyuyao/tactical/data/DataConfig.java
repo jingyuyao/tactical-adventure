@@ -48,4 +48,8 @@ class DataConfig {
   MessageBundle getDeathDialogueBundle() {
     return ModelBundle.DEATH_DIALOGUE;
   }
+
+  MessageBundle getCharacterNameBundle() {
+    return ModelBundle.CHARACTER_NAME;
+  }
 }

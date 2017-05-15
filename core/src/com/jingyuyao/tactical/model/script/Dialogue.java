@@ -4,16 +4,16 @@ import com.jingyuyao.tactical.model.i18n.Message;
 
 public class Dialogue {
 
-  private final String characterNameKey;
+  private final Message name;
   private final Message message;
 
-  public Dialogue(String characterNameKey, Message message) {
-    this.characterNameKey = characterNameKey;
+  public Dialogue(Message name, Message message) {
+    this.name = name;
     this.message = message;
   }
 
-  public String getCharacterNameKey() {
-    return characterNameKey;
+  public Message getName() {
+    return name;
   }
 
   public Message getMessage() {
