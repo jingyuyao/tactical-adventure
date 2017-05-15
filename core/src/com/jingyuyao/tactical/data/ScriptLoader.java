@@ -6,21 +6,20 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.jingyuyao.tactical.model.i18n.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -38,16 +37,40 @@ class ScriptLoader {
   }
 
   Script load(int level) {
-    Map<Turn, TurnScript> turnScriptMap = new HashMap<>();
-    for (Entry<Turn, Collection<Dialogue>> entry : getDialogues(level).asMap().entrySet()) {
-      turnScriptMap.put(entry.getKey(), new TurnScript((List<Dialogue>) entry.getValue()));
+    // looks a bit verbose right now because we eventually want to add more than just dialogues
+    // to the scripts
+    Map<Turn, ScriptActions> turnScripts = new HashMap<>();
+    ListMultimap<Turn, Dialogue> levelDialogues = getLevelDialogues(level);
+    for (Turn turn : levelDialogues.keySet()) {
+      turnScripts.put(turn, new ScriptActions(levelDialogues.get(turn)));
     }
-    return new Script(turnScriptMap);
+    Map<String, ScriptActions> deathScripts = new HashMap<>();
+    ListMultimap<String, Dialogue> deathDialogues = getDeathDialogues();
+    for (String nameKey : deathDialogues.keySet()) {
+      deathScripts.put(nameKey, new ScriptActions(deathDialogues.get(nameKey)));
+    }
+    return new Script(turnScripts, deathScripts);
   }
 
-  private ArrayListMultimap<Turn, Dialogue> getDialogues(int level) {
-    ArrayListMultimap<Turn, Dialogue> dialogueMap = ArrayListMultimap.create();
-    for (Properties dialoguesProperties : getDialogueProperties(level).asSet()) {
+  private ListMultimap<String, Dialogue> getDeathDialogues() {
+    ListMultimap<String, Dialogue> dialogueMap = ArrayListMultimap.create();
+    MessageBundle bundle = dataConfig.getDeathDialogueBundle();
+    Optional<Properties> dialogueProperties = getProperties(bundle);
+    if (dialogueProperties.isPresent()) {
+      for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
+        // supports only one death dialogue per character
+        dialogueMap.put(nameKey, new Dialogue(nameKey, bundle.get(nameKey)));
+      }
+    } else {
+      throw new RuntimeException("death dialogue properties does not exists");
+    }
+    return dialogueMap;
+  }
+
+  private ListMultimap<Turn, Dialogue> getLevelDialogues(int level) {
+    ListMultimap<Turn, Dialogue> dialogueMap = ArrayListMultimap.create();
+    MessageBundle bundle = dataConfig.getLevelDialogueBundle(level);
+    for (Properties dialoguesProperties : getProperties(bundle).asSet()) {
       List<DialogueKey> dialogueKeys = new ArrayList<>(dialoguesProperties.size());
       for (String rawKey : dialoguesProperties.stringPropertyNames()) {
         dialogueKeys.add(new DialogueKey(rawKey));
@@ -55,7 +78,6 @@ class ScriptLoader {
 
       Collections.sort(dialogueKeys);
 
-      final MessageBundle bundle = new MessageBundle(dataConfig.getLevelDialogueBundle(level));
       for (DialogueKey key : dialogueKeys) {
         dialogueMap.put(key.turn, key.toDialogue(bundle));
       }
@@ -63,8 +85,11 @@ class ScriptLoader {
     return dialogueMap;
   }
 
-  private Optional<Properties> getDialogueProperties(int level) {
-    FileHandle fileHandle = files.internal(dataConfig.getDefaultLevelDialogueFileName(level));
+  /**
+   * Return the default properties file for a given {@link MessageBundle}
+   */
+  private Optional<Properties> getProperties(MessageBundle bundle) {
+    FileHandle fileHandle = files.internal(bundle.getPathWithExtensions());
     if (fileHandle.exists()) {
       Properties properties = new Properties();
       try {

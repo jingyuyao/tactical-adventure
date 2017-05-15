@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.script.TurnScript;
+import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.world.Cell;
 
 class BaseState implements State {
@@ -40,6 +40,10 @@ class BaseState implements State {
     return ImmutableList.of();
   }
 
+  ModelBus getModelBus() {
+    return modelBus;
+  }
+
   void post(Object event) {
     modelBus.post(event);
   }
@@ -68,7 +72,7 @@ class BaseState implements State {
     return worldState.getTurn();
   }
 
-  Optional<TurnScript> currentTurnScript() {
+  Optional<ScriptActions> currentTurnScript() {
     return worldState.getScript().turnScript(worldState.getTurn());
   }
 }

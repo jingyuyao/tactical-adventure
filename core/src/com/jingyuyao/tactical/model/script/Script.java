@@ -6,13 +6,19 @@ import java.util.Map;
 
 public class Script {
 
-  private final Map<Turn, TurnScript> turnScripts;
+  private final Map<Turn, ScriptActions> turnScripts;
+  private final Map<String, ScriptActions> deathScripts;
 
-  public Script(Map<Turn, TurnScript> turnScripts) {
+  public Script(Map<Turn, ScriptActions> turnScripts, Map<String, ScriptActions> deathScripts) {
     this.turnScripts = turnScripts;
+    this.deathScripts = deathScripts;
   }
 
-  public Optional<TurnScript> turnScript(Turn turn) {
+  public Optional<ScriptActions> turnScript(Turn turn) {
     return Optional.fromNullable(turnScripts.get(turn));
+  }
+
+  public Optional<ScriptActions> deathScript(String nameKey) {
+    return Optional.fromNullable(deathScripts.get(nameKey));
   }
 }

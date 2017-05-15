@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.data;
 
+import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -31,19 +33,19 @@ class DataConfig {
     return "levels/" + level + ".level.tmx";
   }
 
-  String getDefaultLevelDialogueFileName(int level) {
-    return getLevelDialogueBundle(level) + ".properties";
-  }
-
-  String getLevelDialogueBundle(int level) {
-    return "i18n/model/script/dialogue/Level" + level;
-  }
-
   String getTerrainLayerKey() {
     return "terrain";
   }
 
   String getTerrainTypeKey() {
     return "type";
+  }
+
+  MessageBundle getLevelDialogueBundle(int level) {
+    return ModelBundle.getLevelDialogue(level);
+  }
+
+  MessageBundle getDeathDialogueBundle() {
+    return ModelBundle.DEATH_DIALOGUE;
   }
 }

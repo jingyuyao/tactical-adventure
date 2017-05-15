@@ -64,6 +64,7 @@ public class BattleTest {
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
+    assertThat(battle.getDeath()).containsExactly(character1);
   }
 
   @Test
@@ -85,5 +86,6 @@ public class BattleTest {
     verify(character2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
+    assertThat(battle.getDeath()).containsExactly(attacker, character1);
   }
 }
