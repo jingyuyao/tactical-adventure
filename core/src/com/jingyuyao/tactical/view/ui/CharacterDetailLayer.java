@@ -48,6 +48,7 @@ class CharacterDetailLayer extends VisTable {
   void display(Character character) {
     characterStatsPanel.display(character);
     characterItemsPanel.display(character);
+    layerManager.open(this);
   }
 
   private class CloseButton extends VisTextButton {
