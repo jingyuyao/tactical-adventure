@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.controller;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector3;
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.WorldView;
@@ -15,20 +15,20 @@ public class WorldController extends InputAdapter {
 
   private final CameraController cameraController;
   private final WorldView worldView;
-  private final Model model;
   private final World world;
+  private final WorldState worldState;
   private final Vector3 vector3 = new Vector3();
 
   @Inject
   WorldController(
       CameraController cameraController,
       WorldView worldView,
-      Model model,
-      World world) {
+      World world,
+      WorldState worldState) {
     this.worldView = worldView;
     this.cameraController = cameraController;
-    this.model = model;
     this.world = world;
+    this.worldState = worldState;
   }
 
   @Override
@@ -44,7 +44,7 @@ public class WorldController extends InputAdapter {
 
       Optional<Cell> cellOptional = world.cell((int) vector3.x, (int) vector3.y);
       if (cellOptional.isPresent()) {
-        model.select(cellOptional.get());
+        worldState.select(cellOptional.get());
       }
     }
     return true;

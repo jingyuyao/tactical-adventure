@@ -11,7 +11,6 @@ import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
-import com.jingyuyao.tactical.model.Model;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
@@ -44,8 +43,6 @@ public class GameStateTest {
   @Mock
   private OrthogonalTiledMapRenderer tiledMapRenderer;
   @Mock
-  private Model model;
-  @Mock
   private World world;
   @Mock
   private WorldState worldState;
@@ -70,8 +67,7 @@ public class GameStateTest {
 
   @Before
   public void setUp() {
-    gameState =
-        new GameState(application, game, dataManager, tiledMapRenderer, model, world, worldState);
+    gameState = new GameState(application, game, dataManager, tiledMapRenderer, world, worldState);
   }
 
   @Test
@@ -86,8 +82,10 @@ public class GameStateTest {
 
     gameState.play();
 
-    verify(model).initialize(terrainMap, characterMap, turn, script);
-    verify(game).goToWorldScreen();
+    InOrder inOrder = Mockito.inOrder(world, worldState, game);
+    inOrder.verify(world).initialize(terrainMap, characterMap);
+    inOrder.verify(game).goToWorldScreen();
+    inOrder.verify(worldState).initialize(turn, script);
   }
 
   @Test
@@ -119,9 +117,10 @@ public class GameStateTest {
 
     gameState.levelComplete(levelComplete);
 
-    InOrder inOrder = Mockito.inOrder(model, dataManager, game);
+    InOrder inOrder = Mockito.inOrder(world, worldState, dataManager, game);
     inOrder.verify(dataManager).changeLevel(3, world, worldState);
-    inOrder.verify(model).reset();
+    inOrder.verify(world).reset();
+    inOrder.verify(worldState).reset();
     inOrder.verify(game).goToPlayMenu();
   }
 
@@ -134,7 +133,8 @@ public class GameStateTest {
     gameState.levelComplete(levelComplete);
 
     verify(dataManager).freshStart();
-    verify(model).reset();
+    verify(world).reset();
+    verify(worldState).reset();
     verify(game).goToPlayMenu();
   }
 
@@ -143,7 +143,8 @@ public class GameStateTest {
     gameState.levelFailed(levelFailed);
 
     verify(dataManager).removeProgress();
-    verify(model).reset();
+    verify(world).reset();
+    verify(worldState).reset();
     verify(game).goToPlayMenu();
   }
 

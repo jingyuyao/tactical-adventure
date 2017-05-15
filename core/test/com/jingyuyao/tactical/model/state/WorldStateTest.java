@@ -5,6 +5,9 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.SelectCell;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -13,6 +16,8 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -22,6 +27,8 @@ public class WorldStateTest {
 
   @Mock
   private StateFactory stateFactory;
+  @Mock
+  private ModelBus modelBus;
   @Mock
   private State state1;
   @Mock
@@ -42,6 +49,8 @@ public class WorldStateTest {
   private Turn turn;
   @Mock
   private Script script;
+  @Captor
+  private ArgumentCaptor<Object> argumentCaptor;
 
   private Deque<State> stateStack;
   private WorldState worldState;
@@ -49,7 +58,7 @@ public class WorldStateTest {
   @Before
   public void setUp() {
     stateStack = new LinkedList<>();
-    worldState = new WorldState(stateFactory, stateStack);
+    worldState = new WorldState(stateFactory, stateStack, modelBus);
   }
 
   @Test
@@ -122,6 +131,8 @@ public class WorldStateTest {
 
     worldState.select(cell);
 
+    verify(modelBus).post(argumentCaptor.capture());
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SelectCell.class);
     verify(state1).select(cell);
   }
 

@@ -4,7 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.model.Model;
+import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
@@ -18,10 +18,10 @@ public class ControllerModuleTest {
 
   @Bind
   @Mock
-  private Model model;
+  private World world;
   @Bind
   @Mock
-  private World world;
+  private WorldState worldState;
   @Bind
   @Mock
   private WorldView worldView;
