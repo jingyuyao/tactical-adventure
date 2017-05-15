@@ -45,22 +45,22 @@ class ScriptLoader {
     for (Turn turn : levelDialogues.keySet()) {
       turnScripts.put(turn, new ScriptActions(levelDialogues.get(turn)));
     }
-    Map<String, ScriptActions> deathScripts = new HashMap<>();
-    ListMultimap<String, Dialogue> deathDialogues = getDeathDialogues();
-    for (String nameKey : deathDialogues.keySet()) {
-      deathScripts.put(nameKey, new ScriptActions(deathDialogues.get(nameKey)));
+    Map<Message, ScriptActions> deathScripts = new HashMap<>();
+    ListMultimap<Message, Dialogue> deathDialogues = getDeathDialogues();
+    for (Message name : deathDialogues.keySet()) {
+      deathScripts.put(name, new ScriptActions(deathDialogues.get(name)));
     }
     return new Script(turnScripts, deathScripts);
   }
 
-  private ListMultimap<String, Dialogue> getDeathDialogues() {
-    ListMultimap<String, Dialogue> dialogueMap = ArrayListMultimap.create();
+  private ListMultimap<Message, Dialogue> getDeathDialogues() {
+    ListMultimap<Message, Dialogue> dialogueMap = ArrayListMultimap.create();
     MessageBundle bundle = dataConfig.getDeathDialogueBundle();
     Optional<Properties> dialogueProperties = getProperties(bundle);
     if (dialogueProperties.isPresent()) {
       for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
         // supports only one death dialogue per character
-        dialogueMap.put(nameKey, create(nameKey, bundle.get(nameKey)));
+        dialogueMap.put(getName(nameKey), create(nameKey, bundle.get(nameKey)));
       }
     } else {
       throw new RuntimeException("death dialogue properties does not exists");
@@ -106,7 +106,11 @@ class ScriptLoader {
   }
 
   private Dialogue create(String nameKey, Message message) {
-    return new Dialogue(dataConfig.getCharacterNameBundle().get(nameKey), message);
+    return new Dialogue(getName(nameKey), message);
+  }
+
+  private Message getName(String nameKey) {
+    return dataConfig.getCharacterNameBundle().get(nameKey);
   }
 
   private static class DialogueKey implements Comparable<DialogueKey> {

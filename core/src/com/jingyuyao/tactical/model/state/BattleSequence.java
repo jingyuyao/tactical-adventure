@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import java.util.List;
 import javax.inject.Inject;
@@ -35,8 +36,8 @@ class BattleSequence {
   private void executeActionsAsync(
       final List<Character> death, final int index, final Runnable done) {
     if (index < death.size()) {
-      String nameKey = death.get(index).getNameKey();
-      Optional<ScriptActions> actionsOpt = worldState.getScript().deathScript(nameKey);
+      Message name = death.get(index).getName();
+      Optional<ScriptActions> actionsOpt = worldState.getScript().deathScript(name);
       if (actionsOpt.isPresent()) {
         actionsOpt.get().execute(modelBus, new Runnable() {
           @Override

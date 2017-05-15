@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.event.StartBattle;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import org.junit.Before;
@@ -40,6 +41,12 @@ public class BattleSequenceTest {
   @Mock
   private Character character3;
   @Mock
+  private Message name1;
+  @Mock
+  private Message name2;
+  @Mock
+  private Message name3;
+  @Mock
   private ScriptActions actions1;
   @Mock
   private ScriptActions actions3;
@@ -61,12 +68,12 @@ public class BattleSequenceTest {
   public void start() {
     when(worldState.getScript()).thenReturn(script);
     when(battle.getDeath()).thenReturn(ImmutableList.of(character1, character2, character3));
-    when(character1.getNameKey()).thenReturn("character1");
-    when(character2.getNameKey()).thenReturn("character2");
-    when(character3.getNameKey()).thenReturn("character3");
-    when(script.deathScript("character1")).thenReturn(Optional.of(actions1));
-    when(script.deathScript("character2")).thenReturn(Optional.<ScriptActions>absent());
-    when(script.deathScript("character3")).thenReturn(Optional.of(actions3));
+    when(character1.getName()).thenReturn(name1);
+    when(character2.getName()).thenReturn(name2);
+    when(character3.getName()).thenReturn(name3);
+    when(script.deathScript(name1)).thenReturn(Optional.of(actions1));
+    when(script.deathScript(name2)).thenReturn(Optional.<ScriptActions>absent());
+    when(script.deathScript(name3)).thenReturn(Optional.of(actions3));
 
     battleSequence.start(battle, done);
 

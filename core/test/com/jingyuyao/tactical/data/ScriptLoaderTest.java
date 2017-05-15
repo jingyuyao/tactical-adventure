@@ -95,20 +95,20 @@ public class ScriptLoaderTest {
 
     Script script = scriptLoader.load(2);
 
-    Optional<ScriptActions> dead = script.deathScript("dead");
+    Optional<ScriptActions> dead = script.deathScript(NAME.get("dead"));
     assertThat(dead).isPresent();
     List<Dialogue> deadDialogues = dead.get().getDialogues();
     assertThat(deadDialogues).hasSize(1);
     assertThat(deadDialogues.get(0).getName()).isEqualTo(NAME.get("dead"));
     assertThat(deadDialogues.get(0).getMessage()).isEqualTo(DEATH_DIALOGUE.get("dead"));
 
-    Optional<ScriptActions> dead2 = script.deathScript("dead2");
+    Optional<ScriptActions> dead2 = script.deathScript(NAME.get("dead2"));
     assertThat(dead2).isPresent();
     List<Dialogue> dead2Dialogues = dead2.get().getDialogues();
     assertThat(dead2Dialogues).hasSize(1);
     assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
     assertThat(dead2Dialogues.get(0).getMessage()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
 
-    assertThat(script.deathScript("never-gonna-give-you-up")).isAbsent();
+    assertThat(script.deathScript(NAME.get("never-gonna-give-you-up"))).isAbsent();
   }
 }

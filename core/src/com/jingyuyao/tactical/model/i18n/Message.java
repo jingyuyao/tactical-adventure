@@ -70,6 +70,6 @@ public class Message {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getBundle(), getKey(), getArgs());
+    return Objects.hashCode(getBundle(), getKey(), Arrays.hashCode(getArgs()));
   }
 }

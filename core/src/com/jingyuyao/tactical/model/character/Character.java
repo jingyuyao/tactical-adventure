@@ -13,8 +13,6 @@ public interface Character {
    */
   boolean canControl();
 
-  String getNameKey();
-
   String getResourceKey();
 
   Message getName();
