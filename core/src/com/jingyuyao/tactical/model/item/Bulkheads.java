@@ -1,5 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-public class Helmet extends BaseArmor {
+public class Bulkheads extends BaseArmor {
 
 }

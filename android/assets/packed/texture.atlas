@@ -95,48 +95,41 @@ weapon/buzz
   orig: 96, 32
   offset: 0, 0
   index: 6
-weapon/melee
+weapon/shotgun
   rotate: false
   xy: 884, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-weapon/melee
+weapon/shotgun
   rotate: false
   xy: 982, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-weapon/melee
+weapon/shotgun
   rotate: false
   xy: 918, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-weapon/melee
+weapon/shotgun
   rotate: false
   xy: 952, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
-weapon/melee
+weapon/shotgun
   rotate: false
   xy: 590, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
-weapon/melee
-  rotate: false
-  xy: 624, 2
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
 
 texture2.png
 size: 512,64

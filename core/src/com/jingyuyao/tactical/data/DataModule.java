@@ -9,12 +9,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.Armor;
-import com.jingyuyao.tactical.model.item.BodyArmor;
+import com.jingyuyao.tactical.model.item.Bomb;
+import com.jingyuyao.tactical.model.item.Bulkheads;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
-import com.jingyuyao.tactical.model.item.Grenade;
 import com.jingyuyao.tactical.model.item.Heal;
-import com.jingyuyao.tactical.model.item.Helmet;
+import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.BasePlayer;
 import com.jingyuyao.tactical.model.ship.Enemy;
@@ -55,13 +55,13 @@ public class DataModule extends AbstractModule {
         RuntimeTypeAdapterFactory
             .of(Weapon.class)
             .registerSubtype(DirectionalWeapon.class)
-            .registerSubtype(Grenade.class)
+            .registerSubtype(Bomb.class)
     );
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Armor.class)
-            .registerSubtype(BodyArmor.class)
-            .registerSubtype(Helmet.class)
+            .registerSubtype(Hull.class)
+            .registerSubtype(Bulkheads.class)
     );
     return builder.create();
   }
