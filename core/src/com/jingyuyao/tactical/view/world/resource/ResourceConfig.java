@@ -19,7 +19,7 @@ class ResourceConfig {
     return "ship/";
   }
 
-  int getWeaponFPS() {
+  int getItemFPS() {
     return 10;
   }
 

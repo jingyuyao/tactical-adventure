@@ -15,7 +15,7 @@ import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -41,7 +41,7 @@ public class StartMenuTest {
   @Mock
   private DataManager dataManager;
   @Mock
-  private MessageLoader messageLoader;
+  private TextLoader textLoader;
   @Mock
   private GameSave gameSave;
   @Mock
@@ -58,10 +58,10 @@ public class StartMenuTest {
   @Before
   public void setUp() {
     Guice.createInjector(new MockGameModule()).injectMembers(this);
-    when(messageLoader.get(MenuBundle.PLAY_BTN)).thenReturn(PLAY_BTN);
-    when(messageLoader.get(MenuBundle.RESET_BTN)).thenReturn(RESET_BTN);
+    when(textLoader.get(MenuBundle.PLAY_BTN)).thenReturn(PLAY_BTN);
+    when(textLoader.get(MenuBundle.RESET_BTN)).thenReturn(RESET_BTN);
 
-    startMenu = new StartMenu(gl20, input, stage, gameState, dataManager, messageLoader);
+    startMenu = new StartMenu(gl20, input, stage, gameState, dataManager, textLoader);
 
     verify(stage).addActor(startMenu.getRoot());
   }
@@ -74,8 +74,8 @@ public class StartMenuTest {
         .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
     when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Enemy>of());
     when(gameSave.getCurrentLevel()).thenReturn(2);
-    when(messageLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
-    when(messageLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
+    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
+    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
 
     startMenu.show();
 
@@ -102,8 +102,8 @@ public class StartMenuTest {
         .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
     when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Enemy>of());
     when(gameSave.getCurrentLevel()).thenReturn(2);
-    when(messageLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
-    when(messageLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
+    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
+    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
     VisTextButton button = startMenu.getRoot().findActor("resetButton");
     assertThat(button.getText().toString()).isEqualTo(RESET_BTN);
 

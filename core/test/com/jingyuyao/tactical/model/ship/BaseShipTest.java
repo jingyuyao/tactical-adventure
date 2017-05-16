@@ -5,12 +5,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BaseShipTest {
 
-  private static final String NAME_KEY = "yo";
-  private static final String RESOURCE_KEY = "yo_face";
+  private static final String NAME = "yo";
 
   @Mock
   private Stats stats;
@@ -42,14 +41,14 @@ public class BaseShipTest {
 
   @Before
   public void setUp() {
-    ship = new BaseShip(NAME_KEY, RESOURCE_KEY, stats, cockpit, items);
+    ship = new BaseShip(NAME, stats, cockpit, items);
   }
 
   @Test
   public void get_name() {
-    Message name = ship.getName();
+    ResourceKey name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
-    assertThat(name.getKey()).isEqualTo(NAME_KEY);
+    assertThat(name.getId()).isEqualTo(NAME);
   }
 
   @Test

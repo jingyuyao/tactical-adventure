@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -27,7 +27,7 @@ class BaseWeapon extends BaseItem implements Weapon {
   }
 
   @Override
-  public Message getDescription() {
+  public ResourceKey getDescription() {
     if (lifeStealRate > 0) {
       return ModelBundle.ITEM_DESCRIPTION
           .get("lifeStealWeapon", attackPower, lifeStealRate * 100);

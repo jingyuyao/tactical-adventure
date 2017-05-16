@@ -1,20 +1,19 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 /**
  * A {@link Ship} that can't be controlled.
  */
 class BaseShip implements Ship {
 
-  private String nameKey;
-  private String resourceKey;
+  private String name;
   private Stats stats;  // required
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
@@ -22,9 +21,8 @@ class BaseShip implements Ship {
   BaseShip() {
   }
 
-  BaseShip(String nameKey, String resourceKey, Stats stats, Cockpit cockpit, Items items) {
-    this.nameKey = nameKey;
-    this.resourceKey = resourceKey;
+  BaseShip(String name, Stats stats, Cockpit cockpit, Items items) {
+    this.name = name;
     this.stats = stats;
     this.cockpit = cockpit;
     this.items = items;
@@ -36,13 +34,13 @@ class BaseShip implements Ship {
   }
 
   @Override
-  public String getResourceKey() {
-    return resourceKey;
+  public ResourceKey getAnimation() {
+    return ModelBundle.SHIP_ANIMATIONS.get(name);
   }
 
   @Override
-  public Message getName() {
-    return ModelBundle.SHIP_NAME.get(nameKey);
+  public ResourceKey getName() {
+    return ModelBundle.SHIP_NAME.get(name);
   }
 
   @Override

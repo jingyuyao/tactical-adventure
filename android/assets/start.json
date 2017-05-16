@@ -3,8 +3,7 @@
   "players": [
     {
       "type": "BasePlayer",
-      "nameKey": "adder",
-      "resourceKey": "adder",
+      "name": "adder",
       "actionable": true,
       "stats": {
         "maxHp": 15,
@@ -15,7 +14,7 @@
         "pilots": [
           {
             "type": "Hero",
-            "nameKey": "jingyu"
+            "name": "jingyu"
           }
         ]
       },
@@ -23,8 +22,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "nameKey": "healthPack",
-            "resourceKey": "healthPack",
+            "name": "healthPack",
             "usageLeft": 3,
             "amount": 10
           }
@@ -32,16 +30,14 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 15,
             "attackPower": 5,
             "distance": 1
           },
           {
             "type": "Bomb",
-            "nameKey": "bomb",
-            "resourceKey": "bomb",
+            "name": "bomb",
             "usageLeft": 5,
             "attackPower": 4,
             "distance": 3,
@@ -51,8 +47,7 @@
         "stashedArmors": [
           {
             "type": "Hull",
-            "nameKey": "diamondHull",
-            "resourceKey": "diamondHull",
+            "name": "diamondHull",
             "usageLeft": 50,
             "defense": 100
           }
@@ -60,8 +55,7 @@
         "equippedArmors": [
           {
             "type": "Hull",
-            "nameKey": "hull",
-            "resourceKey": "hull",
+            "name": "hull",
             "usageLeft": 50,
             "defense": 5
           }
@@ -70,8 +64,7 @@
     },
     {
       "type": "BasePlayer",
-      "nameKey": "adder",
-      "resourceKey": "adder",
+      "name": "adder",
       "actionable": true,
       "stats": {
         "maxHp": 15,
@@ -82,7 +75,7 @@
         "pilots": [
           {
             "type": "Hero",
-            "nameKey": "ben"
+            "name": "ben"
           }
         ]
       },
@@ -90,8 +83,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "nameKey": "healthPack",
-            "resourceKey": "healthPack",
+            "name": "healthPack",
             "usageLeft": 3,
             "amount": 10
           }
@@ -99,16 +91,14 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 15,
             "attackPower": 5,
             "distance": 1
           },
           {
             "type": "Bomb",
-            "nameKey": "bomb",
-            "resourceKey": "bomb",
+            "name": "bomb",
             "usageLeft": 2,
             "attackPower": 8,
             "distance": 2,
@@ -119,15 +109,13 @@
         "equippedArmors": [
           {
             "type": "Hull",
-            "nameKey": "hull",
-            "resourceKey": "hull",
+            "name": "hull",
             "usageLeft": 50,
             "defense": 5
           },
           {
             "type": "Bulkheads",
-            "nameKey": "bulkheads",
-            "resourceKey": "bulkheads",
+            "name": "bulkheads",
             "usageLeft": 10,
             "defense": 1
           }
@@ -136,8 +124,7 @@
     },
     {
       "type": "BasePlayer",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "actionable": true,
       "stats": {
         "maxHp": 20,
@@ -148,7 +135,7 @@
         "pilots": [
           {
             "type": "Hero",
-            "nameKey": "andrew"
+            "name": "andrew"
           }
         ]
       },
@@ -156,8 +143,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "nameKey": "healthPack",
-            "resourceKey": "healthPack",
+            "name": "healthPack",
             "usageLeft": 5,
             "amount": 5
           }
@@ -165,8 +151,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "lightning",
-            "resourceKey": "buzz",
+            "name": "lightning",
             "usageLeft": 15,
             "attackPower": 50,
             "distance": 3,
@@ -177,8 +162,7 @@
         "equippedArmors": [
           {
             "type": "Hull",
-            "nameKey": "hull",
-            "resourceKey": "hull",
+            "name": "hull",
             "usageLeft": 50,
             "defense": 5
           }
@@ -187,8 +171,7 @@
     },
     {
       "type": "BasePlayer",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "actionable": true,
       "stats": {
         "maxHp": 20,
@@ -199,7 +182,7 @@
         "pilots": [
           {
             "type": "Hero",
-            "nameKey": "kevin"
+            "name": "kevin"
           }
         ]
       },
@@ -207,8 +190,7 @@
         "consumables": [
           {
             "type": "Heal",
-            "nameKey": "healthPack",
-            "resourceKey": "healthPack",
+            "name": "healthPack",
             "usageLeft": 5,
             "amount": 5
           }
@@ -216,8 +198,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "lightning",
-            "resourceKey": "buzz",
+            "name": "lightning",
             "usageLeft": 15,
             "attackPower": 10,
             "distance": 3,
@@ -228,8 +209,7 @@
         "equippedArmors": [
           {
             "type": "Hull",
-            "nameKey": "hull",
-            "resourceKey": "hull",
+            "name": "hull",
             "usageLeft": 50,
             "defense": 5
           }

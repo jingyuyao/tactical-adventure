@@ -7,10 +7,8 @@ public class BasePlayer extends BaseShip implements Player {
   BasePlayer() {
   }
 
-  BasePlayer(
-      String nameKey, String resourceKey, boolean actionable,
-      Stats stats, Cockpit cockpit, Items items) {
-    super(nameKey, resourceKey, stats, cockpit, items);
+  BasePlayer(String nameKey, boolean actionable, Stats stats, Cockpit cockpit, Items items) {
+    super(nameKey, stats, cockpit, items);
     this.actionable = actionable;
   }
 

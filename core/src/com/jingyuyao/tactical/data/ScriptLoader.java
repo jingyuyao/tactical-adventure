@@ -7,8 +7,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
@@ -45,17 +45,17 @@ class ScriptLoader {
     for (Turn turn : levelDialogues.keySet()) {
       turnScripts.put(turn, new ScriptActions(levelDialogues.get(turn)));
     }
-    Map<Message, ScriptActions> deathScripts = new HashMap<>();
-    ListMultimap<Message, Dialogue> deathDialogues = getDeathDialogues();
-    for (Message name : deathDialogues.keySet()) {
+    Map<ResourceKey, ScriptActions> deathScripts = new HashMap<>();
+    ListMultimap<ResourceKey, Dialogue> deathDialogues = getDeathDialogues();
+    for (ResourceKey name : deathDialogues.keySet()) {
       deathScripts.put(name, new ScriptActions(deathDialogues.get(name)));
     }
     return new Script(turnScripts, deathScripts);
   }
 
-  private ListMultimap<Message, Dialogue> getDeathDialogues() {
-    ListMultimap<Message, Dialogue> dialogueMap = ArrayListMultimap.create();
-    MessageBundle bundle = dataConfig.getDeathDialogueBundle();
+  private ListMultimap<ResourceKey, Dialogue> getDeathDialogues() {
+    ListMultimap<ResourceKey, Dialogue> dialogueMap = ArrayListMultimap.create();
+    ResourceKeyBundle bundle = dataConfig.getDeathDialogueBundle();
     Optional<Properties> dialogueProperties = getProperties(bundle);
     if (dialogueProperties.isPresent()) {
       for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
@@ -70,7 +70,7 @@ class ScriptLoader {
 
   private ListMultimap<Turn, Dialogue> getLevelDialogues(int level) {
     ListMultimap<Turn, Dialogue> dialogueMap = ArrayListMultimap.create();
-    MessageBundle bundle = dataConfig.getLevelDialogueBundle(level);
+    ResourceKeyBundle bundle = dataConfig.getLevelDialogueBundle(level);
     for (Properties dialoguesProperties : getProperties(bundle).asSet()) {
       List<DialogueKey> dialogueKeys = new ArrayList<>(dialoguesProperties.size());
       for (String rawKey : dialoguesProperties.stringPropertyNames()) {
@@ -87,9 +87,9 @@ class ScriptLoader {
   }
 
   /**
-   * Return the default properties file for a given {@link MessageBundle}
+   * Return the default properties file for a given {@link ResourceKeyBundle}
    */
-  private Optional<Properties> getProperties(MessageBundle bundle) {
+  private Optional<Properties> getProperties(ResourceKeyBundle bundle) {
     FileHandle fileHandle = files.internal(bundle.getPathWithExtensions());
     if (fileHandle.exists()) {
       Properties properties = new Properties();
@@ -105,11 +105,11 @@ class ScriptLoader {
     return Optional.absent();
   }
 
-  private Dialogue create(String nameKey, Message message) {
-    return new Dialogue(getName(nameKey), message);
+  private Dialogue create(String nameKey, ResourceKey resourceKey) {
+    return new Dialogue(getName(nameKey), resourceKey);
   }
 
-  private Message getName(String nameKey) {
+  private ResourceKey getName(String nameKey) {
     return dataConfig.getPersonNameBundle().get(nameKey);
   }
 

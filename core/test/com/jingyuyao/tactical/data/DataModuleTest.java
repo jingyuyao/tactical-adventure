@@ -21,7 +21,7 @@ public class DataModuleTest {
   @Inject
   private LevelProgressManager levelProgressManager;
   @Inject
-  private MessageLoader messageLoader;
+  private TextLoader textLoader;
 
   @Test
   public void can_create_module() {

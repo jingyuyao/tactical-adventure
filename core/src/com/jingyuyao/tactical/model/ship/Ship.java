@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 public interface Ship {
 
@@ -14,9 +14,9 @@ public interface Ship {
    */
   boolean canControl();
 
-  String getResourceKey();
+  ResourceKey getAnimation();
 
-  Message getName();
+  ResourceKey getName();
 
   /**
    * Always >= 0.

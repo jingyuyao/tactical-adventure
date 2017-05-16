@@ -3,12 +3,12 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
@@ -20,21 +20,21 @@ import javax.inject.Singleton;
 @ModelBusListener
 class ItemPanel extends TextPanel<Item> {
 
-  private final MessageLoader messageLoader;
+  private final TextLoader textLoader;
 
   @Inject
-  ItemPanel(MessageLoader messageLoader) {
+  ItemPanel(TextLoader textLoader) {
     super(Align.left);
-    this.messageLoader = messageLoader;
+    this.textLoader = textLoader;
   }
 
   @Override
   Optional<String> createText(Item item) {
-    String name = messageLoader.get(item.getName());
+    String name = textLoader.get(item.getName());
     int usage = item.getUsageLeft();
-    String description = messageLoader.get(item.getDescription());
-    Message message = UIBundle.ITEM_PANEL.format(name, usage, description);
-    return Optional.of(messageLoader.get(message));
+    String description = textLoader.get(item.getDescription());
+    ResourceKey resourceKey = UIBundle.ITEM_PANEL.format(name, usage, description);
+    return Optional.of(textLoader.get(resourceKey));
   }
 
   @Subscribe

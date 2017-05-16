@@ -24,7 +24,7 @@ import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {
 
-  private static final String TEXTURE_ATLAS = "packed/texture.atlas";
+  private static final String TEXTURE_ATLAS = "drawable/texture.atlas";
 
   private final TacticalAdventure game;
 

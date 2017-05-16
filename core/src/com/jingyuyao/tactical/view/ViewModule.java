@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.view.ui.GameUIModule;
 import com.jingyuyao.tactical.view.world.WorldViewModule;
 
@@ -17,7 +17,7 @@ public class ViewModule extends AbstractModule {
     requireBinding(GL20.class);
     requireBinding(Input.class);
     requireBinding(Batch.class);
-    requireBinding(MessageLoader.class);
+    requireBinding(TextLoader.class);
     requireBinding(WorldController.class);
     requireBinding(CameraController.class);
 

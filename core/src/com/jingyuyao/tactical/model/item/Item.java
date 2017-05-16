@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 
 /**
@@ -9,11 +9,11 @@ import com.jingyuyao.tactical.model.ship.Ship;
 // TODO: should probably add a constant like INFINITE for items that doesn't expire.
 public interface Item {
 
-  String getResourceKey();
+  ResourceKey getAnimation();
 
-  Message getName();
+  ResourceKey getName();
 
-  Message getDescription();
+  ResourceKey getDescription();
 
   int getUsageLeft();
 

@@ -115,8 +115,7 @@ public class ShipSystemTest {
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.ship()).thenReturn(Optional.<Ship>of(player));
-    when(player.getResourceKey()).thenReturn("me");
-    when(animations.getShip("me")).thenReturn(animation);
+    when(animations.get(player)).thenReturn(animation);
 
     shipSystem.spawnShip(spawnShip);
 
@@ -149,8 +148,7 @@ public class ShipSystemTest {
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell.player()).thenReturn(Optional.<Player>absent());
     when(cell.ship()).thenReturn(Optional.<Ship>of(enemy));
-    when(enemy.getResourceKey()).thenReturn("me");
-    when(animations.getShip("me")).thenReturn(animation);
+    when(animations.get(enemy)).thenReturn(animation);
 
     shipSystem.spawnShip(spawnShip);
 

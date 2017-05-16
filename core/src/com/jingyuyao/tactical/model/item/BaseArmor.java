@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class BaseArmor extends BaseItem implements Armor {
 
@@ -13,7 +13,7 @@ class BaseArmor extends BaseItem implements Armor {
   }
 
   @Override
-  public Message getDescription() {
+  public ResourceKey getDescription() {
     return ModelBundle.ITEM_DESCRIPTION.get("armor", defense);
   }
 }
