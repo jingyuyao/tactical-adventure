@@ -65,6 +65,13 @@ public class ItemsTest {
   }
 
   @Test
+  public void get_defense() {
+    when(hull1.getDefense()).thenReturn(123);
+
+    assertThat(items.getDefense()).isEqualTo(123);
+  }
+
+  @Test
   public void use_consumable() {
     when(consumable1.getUsageLeft()).thenReturn(1);
 

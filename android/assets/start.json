@@ -5,10 +5,20 @@
       "type": "BasePlayer",
       "nameKey": "adder",
       "resourceKey": "adder",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 4,
       "actionable": true,
+      "stats": {
+        "maxHp": 15,
+        "hp": 15,
+        "moveDistance": 4
+      },
+      "cockpit": {
+        "pilots": [
+          {
+            "type": "Hero",
+            "nameKey": "jingyu"
+          }
+        ]
+      },
       "items": {
         "consumables": [
           {
@@ -62,10 +72,20 @@
       "type": "BasePlayer",
       "nameKey": "adder",
       "resourceKey": "adder",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 4,
       "actionable": true,
+      "stats": {
+        "maxHp": 15,
+        "hp": 15,
+        "moveDistance": 4
+      },
+      "cockpit": {
+        "pilots": [
+          {
+            "type": "Hero",
+            "nameKey": "ben"
+          }
+        ]
+      },
       "items": {
         "consumables": [
           {
@@ -118,10 +138,20 @@
       "type": "BasePlayer",
       "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 20,
-      "hp": 20,
-      "moveDistance": 5,
       "actionable": true,
+      "stats": {
+        "maxHp": 20,
+        "hp": 20,
+        "moveDistance": 5
+      },
+      "cockpit": {
+        "pilots": [
+          {
+            "type": "Hero",
+            "nameKey": "andrew"
+          }
+        ]
+      },
       "items": {
         "consumables": [
           {
@@ -159,10 +189,20 @@
       "type": "BasePlayer",
       "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 20,
-      "hp": 20,
-      "moveDistance": 5,
       "actionable": true,
+      "stats": {
+        "maxHp": 20,
+        "hp": 20,
+        "moveDistance": 5
+      },
+      "cockpit": {
+        "pilots": [
+          {
+            "type": "Hero",
+            "nameKey": "kevin"
+          }
+        ]
+      },
       "items": {
         "consumables": [
           {
