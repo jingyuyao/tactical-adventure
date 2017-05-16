@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.person;
 
-import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.resource.Message;
 
 public interface Person {
 

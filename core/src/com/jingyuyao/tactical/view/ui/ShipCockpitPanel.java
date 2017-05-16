@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;

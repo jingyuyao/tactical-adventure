@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.i18n;
+package com.jingyuyao.tactical.model.resource;
 
 /**
  * Contains a list of {@link MessageBundle} for the model.

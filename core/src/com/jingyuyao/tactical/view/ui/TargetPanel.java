@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.world.Cell;

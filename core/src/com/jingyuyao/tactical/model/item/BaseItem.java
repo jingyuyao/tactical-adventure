@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.

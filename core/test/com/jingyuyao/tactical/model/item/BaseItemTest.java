@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.model.item;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

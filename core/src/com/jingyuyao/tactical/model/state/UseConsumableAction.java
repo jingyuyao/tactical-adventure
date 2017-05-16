@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
 
 class UseConsumableAction implements Action {
 

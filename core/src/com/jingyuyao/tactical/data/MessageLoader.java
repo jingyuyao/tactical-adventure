@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.data;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.MessageBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.i18n;
+package com.jingyuyao.tactical.model.resource;
 
 import com.google.common.base.Objects;
 

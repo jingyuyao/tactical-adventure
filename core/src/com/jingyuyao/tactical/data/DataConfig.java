@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
-import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.resource.MessageBundle;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

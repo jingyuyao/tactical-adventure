@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.state.Turn;
 import java.util.Map;
 

@@ -7,7 +7,7 @@ import com.badlogic.gdx.Files;
 import com.google.common.base.Optional;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.resource.MessageBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;

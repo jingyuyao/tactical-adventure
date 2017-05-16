@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.script;
 
-import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.resource.Message;
 
 public class Dialogue {
 

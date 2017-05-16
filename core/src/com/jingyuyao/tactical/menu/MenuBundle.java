@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.menu;
 
-import com.jingyuyao.tactical.model.i18n.Message;
-import com.jingyuyao.tactical.model.i18n.MessageBundle;
+import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.MessageBundle;
 
 class MenuBundle {
 
