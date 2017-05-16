@@ -59,7 +59,7 @@ class ScriptLoader {
     Optional<Properties> dialogueProperties = getProperties(bundle);
     if (dialogueProperties.isPresent()) {
       for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
-        // supports only one death dialogue per character
+        // supports only one death dialogue per person
         dialogueMap.put(getName(nameKey), create(nameKey, bundle.get(nameKey)));
       }
     } else {
@@ -110,7 +110,7 @@ class ScriptLoader {
   }
 
   private Message getName(String nameKey) {
-    return dataConfig.getShipNameBundle().get(nameKey);
+    return dataConfig.getPersonNameBundle().get(nameKey);
   }
 
   private static class DialogueKey implements Comparable<DialogueKey> {

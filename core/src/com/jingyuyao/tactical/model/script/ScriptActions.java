@@ -19,7 +19,7 @@ public class ScriptActions {
   }
 
   public void execute(ModelBus modelBus, Runnable done) {
-    // TODO: check if the character is in the world
+    // TODO: check if the person is in the world
     if (dialogues.isEmpty()) {
       done.run();
     } else {
