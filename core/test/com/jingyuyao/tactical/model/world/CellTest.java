@@ -7,13 +7,13 @@ import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
-import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.InstantMoveShip;
+import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
-import com.jingyuyao.tactical.model.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.event.RemoveShip;
+import com.jingyuyao.tactical.model.event.SpawnShip;
+import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,98 +48,98 @@ public class CellTest {
     cell = new Cell(modelBus, COORDINATE, terrain);
     assertThat(cell.getCoordinate()).isEqualTo(COORDINATE);
     assertThat(cell.getTerrain()).isSameAs(terrain);
-    assertThat(cell.character()).isAbsent();
+    assertThat(cell.ship()).isAbsent();
     assertThat(cell.player()).isAbsent();
     assertThat(cell.enemy()).isAbsent();
   }
 
   @Test
   public void spawn_player() {
-    cell.spawnCharacter(player);
+    cell.spawnShip(player);
 
-    assertThat(cell.character()).hasValue(player);
+    assertThat(cell.ship()).hasValue(player);
     assertThat(cell.player()).hasValue(player);
     assertThat(cell.enemy()).isAbsent();
     verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
   }
 
   @Test
   public void spawn_enemy() {
-    cell.spawnCharacter(enemy);
+    cell.spawnShip(enemy);
 
-    assertThat(cell.character()).hasValue(enemy);
+    assertThat(cell.ship()).hasValue(enemy);
     assertThat(cell.enemy()).hasValue(enemy);
     assertThat(cell.player()).isAbsent();
     verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
   }
 
   @Test
-  public void remove_character() {
-    cell.spawnCharacter(player);
-    cell.removeCharacter();
+  public void remove_ship() {
+    cell.spawnShip(player);
+    cell.removeShip();
 
     verify(modelBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, RemoveCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, RemoveShip.class);
   }
 
   @Test
-  public void instant_move_character() {
+  public void instant_move_ship() {
     Cell other = new Cell(modelBus, COORDINATE, terrain);
-    cell.spawnCharacter(player);
+    cell.spawnShip(player);
 
-    cell.instantMoveCharacter(other);
+    cell.instantMoveShip(other);
 
-    assertThat(cell.character()).isAbsent();
-    assertThat(other.character()).hasValue(player);
+    assertThat(cell.ship()).isAbsent();
+    assertThat(other.ship()).hasValue(player);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(InstantMoveCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(InstantMoveShip.class);
   }
 
   @Test
   public void instant_move_same_cell() {
-    cell.spawnCharacter(player);
+    cell.spawnShip(player);
 
-    cell.instantMoveCharacter(cell);
+    cell.instantMoveShip(cell);
 
     verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    assertThat(cell.character()).hasValue(player);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
+    assertThat(cell.ship()).hasValue(player);
     assertThat(cell.player()).hasValue(player);
   }
 
   @Test
-  public void move_character() {
+  public void move_ship() {
     Cell other = new Cell(modelBus, COORDINATE, terrain);
-    cell.spawnCharacter(player);
+    cell.spawnShip(player);
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(other);
 
-    Promise promise = cell.moveCharacter(path);
+    Promise promise = cell.moveShip(path);
 
     assertThat(promise.isDone()).isFalse();
-    assertThat(cell.character()).isAbsent();
-    assertThat(other.character()).hasValue(player);
+    assertThat(cell.ship()).isAbsent();
+    assertThat(other.ship()).hasValue(player);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(MoveCharacter.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(MoveShip.class);
   }
 
   @Test
-  public void move_character_same_cell() {
-    cell.spawnCharacter(player);
+  public void move_ship_same_cell() {
+    cell.spawnShip(player);
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(cell);
 
-    Promise promise = cell.moveCharacter(path);
+    Promise promise = cell.moveShip(path);
 
     assertThat(promise.isDone()).isTrue();
     verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnCharacter.class);
-    assertThat(cell.character()).hasValue(player);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
+    assertThat(cell.ship()).hasValue(player);
     assertThat(cell.player()).hasValue(player);
   }
 }

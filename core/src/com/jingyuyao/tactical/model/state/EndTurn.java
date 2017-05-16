@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -36,7 +36,7 @@ public class EndTurn extends ScriptState {
   }
 
   private void makePlayersActionable() {
-    for (Cell cell : world.getCharacterSnapshot()) {
+    for (Cell cell : world.getShipSnapshot()) {
       for (Player player : cell.player().asSet()) {
         player.setActionable(true);
       }

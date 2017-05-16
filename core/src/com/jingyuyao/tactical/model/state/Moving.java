@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -29,7 +29,7 @@ public class Moving extends PlayerActionState {
   @Override
   public void canceled() {
     if (prevMove != null) {
-      prevMove.instantMoveCharacter(movement.getStartingCell());
+      prevMove.instantMoveShip(movement.getStartingCell());
     }
   }
 
@@ -48,7 +48,7 @@ public class Moving extends PlayerActionState {
         Path path = movement.pathTo(cell);
         prevMove = cell;
         goTo(getStateFactory().createTransition());
-        movement.getStartingCell().moveCharacter(path).done(new Runnable() {
+        movement.getStartingCell().moveShip(path).done(new Runnable() {
           @Override
           public void run() {
             goTo(getStateFactory().createMoved(cell));

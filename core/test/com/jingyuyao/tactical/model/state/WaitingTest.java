@@ -11,12 +11,12 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
@@ -82,7 +82,7 @@ public class WaitingTest {
   public void enter_not_complete() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
+    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
     when(cell2.player()).thenReturn(Optional.<Player>absent());
@@ -98,7 +98,7 @@ public class WaitingTest {
   public void enter_level_complete() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
 
@@ -115,7 +115,7 @@ public class WaitingTest {
   public void enter_level_failed() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.<Player>absent());
     when(cell.enemy()).thenReturn(Optional.of(enemy));
 

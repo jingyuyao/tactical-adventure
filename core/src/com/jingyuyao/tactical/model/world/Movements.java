@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetNeighbors;
@@ -45,13 +45,13 @@ public class Movements implements GetNeighbors {
   }
 
   /**
-   * Create a {@link Movement} for the {@link Character} contained in the given {@link Cell}
+   * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell}
    */
   public Movement distanceFrom(Cell cell) {
-    Preconditions.checkArgument(cell.character().isPresent());
-    Character character = cell.character().get();
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Ship ship = cell.ship().get();
     return new Movement(
-        distanceFrom(new CharacterCost(character), cell, character.getMoveDistance()));
+        distanceFrom(new ShipCost(ship), cell, ship.getMoveDistance()));
   }
 
   /**
@@ -65,18 +65,18 @@ public class Movements implements GetNeighbors {
     return dijkstra.minPathSearch(this, getEdgeCost, startingCell, distance);
   }
 
-  static class CharacterCost implements GetEdgeCost {
+  static class ShipCost implements GetEdgeCost {
 
-    private final Character walker;
+    private final Ship walker;
 
-    CharacterCost(Character walker) {
+    ShipCost(Ship walker) {
       this.walker = walker;
     }
 
     @Override
     public int getEdgeCost(Cell cell) {
       Terrain terrain = cell.getTerrain();
-      if (cell.character().isPresent() || !terrain.canHold(walker)) {
+      if (cell.ship().isPresent() || !terrain.canHold(walker)) {
         return GetEdgeCost.NO_EDGE;
       }
       return terrain.getMovementPenalty();

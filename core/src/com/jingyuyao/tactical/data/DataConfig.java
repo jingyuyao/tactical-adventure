@@ -49,7 +49,7 @@ class DataConfig {
     return ModelBundle.DEATH_DIALOGUE;
   }
 
-  MessageBundle getCharacterNameBundle() {
-    return ModelBundle.CHARACTER_NAME;
+  MessageBundle getShipNameBundle() {
+    return ModelBundle.SHIP_NAME;
   }
 }

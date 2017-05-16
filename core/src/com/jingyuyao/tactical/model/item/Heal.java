@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.i18n.ModelBundle;
+import com.jingyuyao.tactical.model.ship.Ship;
 
 public class Heal extends BaseItem implements Consumable {
 
@@ -21,7 +21,7 @@ public class Heal extends BaseItem implements Consumable {
   }
 
   @Override
-  public void apply(Character character) {
-    character.healBy(amount);
+  public void apply(Ship ship) {
+    ship.healBy(amount);
   }
 }

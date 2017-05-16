@@ -11,12 +11,12 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Retaliation;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Retaliation;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -106,7 +106,7 @@ public class RetaliatingTest {
   public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
+    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell2.enemy()).thenReturn(Optional.of(enemy2));
     when(enemy.getRetaliation(movements, cell)).thenReturn(retaliation);
@@ -116,7 +116,7 @@ public class RetaliatingTest {
     when(retaliation2.path()).thenReturn(Optional.<Path>absent());
     when(retaliation2.battle()).thenReturn(Optional.<Battle>absent());
     when(path.getOrigin()).thenReturn(origin);
-    when(origin.moveCharacter(path)).thenReturn(Promise.immediate());
+    when(origin.moveShip(path)).thenReturn(Promise.immediate());
     when(stateFactory.createStartTurn()).thenReturn(startTurn);
 
     retaliating.enter();
@@ -125,7 +125,7 @@ public class RetaliatingTest {
         Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence);
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
     inOrder.verify(enemy).getRetaliation(movements, cell);
-    inOrder.verify(origin).moveCharacter(path);
+    inOrder.verify(origin).moveShip(path);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());

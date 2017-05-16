@@ -14,10 +14,10 @@ class UIBundle {
   static final Message ITEM_ACTION_HEADER = BUNDLE.get("itemActionHeader");
   static final Message EQUIP_BTN = BUNDLE.get("equipBtn");
   static final Message UNEQUIP_BTN = BUNDLE.get("unequipBtn");
-  static final Message OVERVIEW_PANEL = BUNDLE.get("characterOverviewPanel");
-  static final Message CHARACTER_NAME_HEADER = BUNDLE.get("characterNameHeader");
-  static final Message CHARACTER_HP_HEADER = BUNDLE.get("characterHPHeader");
-  static final Message CHARACTER_MOVE_HEADER = BUNDLE.get("characterMoveHeader");
+  static final Message OVERVIEW_PANEL = BUNDLE.get("shipOverviewPanel");
+  static final Message SHIP_NAME_HEADER = BUNDLE.get("shipNameHeader");
+  static final Message SHIP_HP_HEADER = BUNDLE.get("shipHPHeader");
+  static final Message SHIP_MOVE_HEADER = BUNDLE.get("shipMoveHeader");
   static final Message ITEM_PANEL = BUNDLE.get("itemPanel");
   static final Message TARGET_PANEL_HEADER = BUNDLE.get("targetPanelHeader");
   static final Message TARGET_PANEL_ITEM = BUNDLE.get("targetPanelItem");

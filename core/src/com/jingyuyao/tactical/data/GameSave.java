@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.ship.Player;
 import java.util.ArrayList;
 import java.util.List;
 

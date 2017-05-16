@@ -8,10 +8,10 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,9 +42,9 @@ public class WorldTest {
   @Mock
   private Terrain terrain2;
   @Mock
-  private Character character1;
+  private Ship ship1;
   @Mock
-  private Character character2;
+  private Ship ship2;
   @Mock
   private Player player;
   @Captor
@@ -62,25 +62,25 @@ public class WorldTest {
   @Test
   public void initialize() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Character> characterMap = new HashMap<>();
+    Map<Coordinate, Ship> shipMap = new HashMap<>();
     terrainMap.put(COORDINATE1, terrain1);
     terrainMap.put(COORDINATE2, terrain2);
-    characterMap.put(COORDINATE1, character1);
-    characterMap.put(COORDINATE2, character2);
+    shipMap.put(COORDINATE1, ship1);
+    shipMap.put(COORDINATE2, ship2);
     when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
     when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
-    when(cell1.character())
-        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character1));
-    when(cell2.character())
-        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character2));
+    when(cell1.ship())
+        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
+    when(cell2.ship())
+        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
 
-    world.initialize(terrainMap, characterMap);
+    world.initialize(terrainMap, shipMap);
 
     assertThat(cellMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
     assertThat(world.getMaxHeight()).isEqualTo(COORDINATE1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
-    verify(cell1).spawnCharacter(character1);
-    verify(cell2).spawnCharacter(character2);
+    verify(cell1).spawnShip(ship1);
+    verify(cell2).spawnShip(ship2);
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
   }
@@ -88,19 +88,19 @@ public class WorldTest {
   @Test
   public void reset() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Character> characterMap = new HashMap<>();
+    Map<Coordinate, Ship> shipMap = new HashMap<>();
     terrainMap.put(COORDINATE1, terrain1);
     terrainMap.put(COORDINATE2, terrain2);
-    characterMap.put(COORDINATE1, character1);
-    characterMap.put(COORDINATE2, character2);
+    shipMap.put(COORDINATE1, ship1);
+    shipMap.put(COORDINATE2, ship2);
     when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
     when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
-    when(cell1.character())
-        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character1));
-    when(cell2.character())
-        .thenReturn(Optional.<Character>absent()).thenReturn(Optional.of(character2));
+    when(cell1.ship())
+        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
+    when(cell2.ship())
+        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
 
-    world.initialize(terrainMap, characterMap);
+    world.initialize(terrainMap, shipMap);
     world.reset();
 
     assertThat(cellMap).isEmpty();
@@ -112,13 +112,13 @@ public class WorldTest {
   }
 
   @Test
-  public void get_character_snapshot() {
+  public void get_ship_snapshot() {
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
-    when(cell1.character()).thenReturn(Optional.of(character1));
-    when(cell2.character()).thenReturn(Optional.of(character2));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
 
-    assertThat(world.getCharacterSnapshot()).containsExactly(cell1, cell2);
+    assertThat(world.getShipSnapshot()).containsExactly(cell1, cell2);
   }
 
   @Test

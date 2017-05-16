@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.jingyuyao.tactical.view.world.WorldConfig;
-import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Markers;
@@ -33,7 +33,7 @@ public class SystemModule extends AbstractModule {
     });
     requireBinding(new Key<ComponentMapper<Moving>>() {
     });
-    requireBinding(new Key<ComponentMapper<CharacterComponent>>() {
+    requireBinding(new Key<ComponentMapper<ShipComponent>>() {
     });
     requireBinding(new Key<ComponentMapper<PlayerComponent>>() {
     });

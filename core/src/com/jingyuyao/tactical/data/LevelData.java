@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.character.Enemy;
+import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.ArrayList;
 import java.util.HashMap;

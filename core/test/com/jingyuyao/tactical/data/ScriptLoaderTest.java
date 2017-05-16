@@ -29,7 +29,7 @@ public class ScriptLoaderTest {
 
   private static final MessageBundle LEVEL_DIALOGUE = new MessageBundle("i18n/TestLevelDialogue");
   private static final MessageBundle DEATH_DIALOGUE = new MessageBundle("i18n/TestDeathDialogue");
-  private static final MessageBundle NAME = new MessageBundle("i18n/TestCharacterName");
+  private static final MessageBundle NAME = new MessageBundle("i18n/TestShipName");
 
   @Mock
   private DataConfig dataConfig;
@@ -49,7 +49,7 @@ public class ScriptLoaderTest {
   public void load_level_dialogues() {
     when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
     when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getCharacterNameBundle()).thenReturn(NAME);
+    when(dataConfig.getShipNameBundle()).thenReturn(NAME);
 
     Script script = scriptLoader.load(2);
 
@@ -91,7 +91,7 @@ public class ScriptLoaderTest {
   public void load_death_dialogues() {
     when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
     when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getCharacterNameBundle()).thenReturn(NAME);
+    when(dataConfig.getShipNameBundle()).thenReturn(NAME);
 
     Script script = scriptLoader.load(2);
 

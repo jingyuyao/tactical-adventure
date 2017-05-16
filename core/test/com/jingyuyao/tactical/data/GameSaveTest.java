@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import org.junit.Before;
 import org.junit.Test;

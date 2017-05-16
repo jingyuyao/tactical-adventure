@@ -8,10 +8,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.script.Script;
+import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -122,19 +122,19 @@ public class DataManagerTest {
   @Test
   public void load_level_has_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Character> characterMap = new HashMap<>();
+    Map<Coordinate, Ship> shipMap = new HashMap<>();
     when(gameSaveManager.load()).thenReturn(gameSave);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
     when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
-    when(levelProgress.getActiveCharacters()).thenReturn(characterMap);
+    when(levelProgress.getActiveShips()).thenReturn(shipMap);
     when(levelProgress.getTurn()).thenReturn(turn);
     when(scriptLoader.load(2)).thenReturn(script);
 
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
 
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
-    assertThat(loadedLevel.getCharacterMap()).isSameAs(characterMap);
+    assertThat(loadedLevel.getShipMap()).isSameAs(shipMap);
     assertThat(loadedLevel.getTurn()).isSameAs(turn);
     assertThat(loadedLevel.getScript()).isSameAs(script);
   }
@@ -156,10 +156,10 @@ public class DataManagerTest {
 
     verify(levelProgressManager).save(levelProgressCaptor.capture());
     assertThat(levelProgressCaptor.getValue().getInactivePlayers()).containsExactly(player2);
-    assertThat(levelProgressCaptor.getValue().getActiveCharacters())
+    assertThat(levelProgressCaptor.getValue().getActiveShips())
         .containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
-    assertThat(loadedLevel.getCharacterMap()).containsExactly(SPAWN1, player1, E1, enemy1);
+    assertThat(loadedLevel.getShipMap()).containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(loadedLevel.getTurn()).isEqualTo(new Turn());
     assertThat(loadedLevel.getScript()).isSameAs(script);
   }

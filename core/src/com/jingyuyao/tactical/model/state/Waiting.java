@@ -3,10 +3,10 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -39,7 +39,7 @@ public class Waiting extends BaseState {
 
     boolean levelComplete = true;
     boolean levelFailed = true;
-    for (Cell cell : world.getCharacterSnapshot()) {
+    for (Cell cell : world.getShipSnapshot()) {
       if (cell.player().isPresent()) {
         levelFailed = false;
       }
@@ -50,7 +50,7 @@ public class Waiting extends BaseState {
     }
 
     if (levelFailed || levelComplete) {
-      for (Cell cell : world.getCharacterSnapshot()) {
+      for (Cell cell : world.getShipSnapshot()) {
         for (Player player : cell.player().asSet()) {
           player.setActionable(true);
         }

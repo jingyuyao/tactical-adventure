@@ -11,12 +11,12 @@ class ResourceConfig {
 
   }
 
-  int getCharacterIdleFPS() {
+  int getShipIdleFPS() {
     return 5;
   }
 
-  String getCharacterAssetPrefix() {
-    return "character/";
+  String getShipAssetPrefix() {
+    return "ship/";
   }
 
   int getWeaponFPS() {

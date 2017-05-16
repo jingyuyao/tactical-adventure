@@ -6,10 +6,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.terrain.Land;
+import com.jingyuyao.tactical.model.terrain.Blocked;
 import com.jingyuyao.tactical.model.terrain.Obstructed;
+import com.jingyuyao.tactical.model.terrain.Space;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.terrain.Water;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,15 +59,15 @@ class LevelMapManager {
       String type = tileProperties.get(dataConfig.getTerrainTypeKey(), String.class);
       if (type != null) {
         switch (type) {
-          case "OBSTRUCTED":
+          case "obstructed":
             return new Obstructed();
-          case "WATER":
-            return new Water();
+          case "blocked":
+            return new Blocked();
           default:
             throw new IllegalArgumentException("Unrecognized terrain type: " + type);
         }
       }
     }
-    return new Land();
+    return new Space();
   }
 }

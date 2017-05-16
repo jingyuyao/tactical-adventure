@@ -110,7 +110,7 @@ class ScriptLoader {
   }
 
   private Message getName(String nameKey) {
-    return dataConfig.getCharacterNameBundle().get(nameKey);
+    return dataConfig.getShipNameBundle().get(nameKey);
   }
 
   private static class DialogueKey implements Comparable<DialogueKey> {

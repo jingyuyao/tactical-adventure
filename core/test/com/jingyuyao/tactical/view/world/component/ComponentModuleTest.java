@@ -11,7 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ComponentModuleTest {
 
   @Inject
-  private ComponentMapper<CharacterComponent> characterComponentComponentMapper;
+  private ComponentMapper<ShipComponent> shipComponentMapper;
   @Inject
   private ComponentMapper<Frame> frameComponentMapper;
   @Inject

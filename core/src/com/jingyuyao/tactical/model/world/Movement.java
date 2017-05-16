@@ -6,7 +6,7 @@ import com.google.common.graph.Graph;
 import java.util.Set;
 
 /**
- * A snapshot of all the things a character currently can target or move to on the map.
+ * A snapshot of all the things a ship currently can target or move to on the map.
  */
 public class Movement {
 

@@ -5,10 +5,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
+import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class World {
 
   public void initialize(
       Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Character> characterMap) {
+      Map<Coordinate, Ship> shipMap) {
     for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (cellMap.containsKey(coordinate)) {
@@ -46,16 +46,16 @@ public class World {
       maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
       maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
     }
-    for (Entry<Coordinate, Character> entry : characterMap.entrySet()) {
+    for (Entry<Coordinate, Ship> entry : shipMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (!cellMap.containsKey(coordinate)) {
-        throw new IllegalArgumentException("Character not on a terrain");
+        throw new IllegalArgumentException("Ship not on a terrain");
       }
       Cell cell = cellMap.get(coordinate);
-      if (cell.character().isPresent()) {
-        throw new IllegalArgumentException("Character occupying same space as another");
+      if (cell.ship().isPresent()) {
+        throw new IllegalArgumentException("Ship occupying same space as another");
       }
-      cell.spawnCharacter(entry.getValue());
+      cell.spawnShip(entry.getValue());
     }
     modelBus.post(new WorldLoad(cellMap.values()));
   }
@@ -83,12 +83,12 @@ public class World {
     return Optional.fromNullable(cellMap.get(coordinate));
   }
 
-  public ImmutableList<Cell> getCharacterSnapshot() {
+  public ImmutableList<Cell> getShipSnapshot() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
-            return input.character().isPresent();
+            return input.ship().isPresent();
           }
         }).toList();
   }

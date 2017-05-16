@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.character.Character;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -51,11 +51,11 @@ public class LevelProgress {
     return inactivePlayers;
   }
 
-  public Map<Coordinate, Character> getActiveCharacters() {
-    Map<Coordinate, Character> characterMap = new HashMap<>();
-    characterMap.putAll(activePlayers);
-    characterMap.putAll(activeEnemies);
-    return characterMap;
+  public Map<Coordinate, Ship> getActiveShips() {
+    Map<Coordinate, Ship> shipMap = new HashMap<>();
+    shipMap.putAll(activePlayers);
+    shipMap.putAll(activeEnemies);
+    return shipMap;
   }
 
   public Turn getTurn() {
@@ -65,7 +65,7 @@ public class LevelProgress {
   void update(World world, WorldState worldState) {
     activePlayers.clear();
     activeEnemies.clear();
-    for (Cell cell : world.getCharacterSnapshot()) {
+    for (Cell cell : world.getShipSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
       for (Player player : cell.player().asSet()) {
         activePlayers.put(coordinate, player);

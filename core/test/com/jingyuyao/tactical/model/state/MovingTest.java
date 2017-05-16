@@ -10,11 +10,11 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -96,7 +96,7 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(cell2).instantMoveCharacter(cell);
+    verify(cell2).instantMoveShip(cell);
   }
 
   @Test
@@ -149,13 +149,13 @@ public class MovingTest {
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
-    when(cell.moveCharacter(path)).thenReturn(Promise.immediate());
+    when(cell.moveShip(path)).thenReturn(Promise.immediate());
 
     moving.select(cell2);
 
     InOrder inOrder = Mockito.inOrder(player, cell, worldState);
     inOrder.verify(worldState).goTo(transition);
-    inOrder.verify(cell).moveCharacter(path);
+    inOrder.verify(cell).moveShip(path);
     inOrder.verify(worldState).goTo(moved);
     verifyNoMoreInteractions(worldState);
   }

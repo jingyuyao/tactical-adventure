@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -87,9 +87,9 @@ public class DataManager {
     }
 
     Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
-    Map<Coordinate, Character> characterMap = levelProgress.getActiveCharacters();
+    Map<Coordinate, Ship> shipMap = levelProgress.getActiveShips();
     Turn turn = levelProgress.getTurn();
-    return new LoadedLevel(terrainMap, characterMap, turn, scriptLoader.load(level));
+    return new LoadedLevel(terrainMap, shipMap, turn, scriptLoader.load(level));
   }
 
   public void saveProgress(World world, WorldState worldState) {
