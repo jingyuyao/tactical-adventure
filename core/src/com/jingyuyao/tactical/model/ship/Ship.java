@@ -14,7 +14,7 @@ public interface Ship {
    */
   boolean canControl();
 
-  String getResourceKey();
+  ResourceKey getAnimation();
 
   ResourceKey getName();
 

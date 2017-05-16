@@ -8,8 +8,7 @@
   "enemies": {
     "9,12": {
       "type": "PassiveEnemy",
-      "nameKey": "adder",
-      "resourceKey": "adder",
+      "name": "adder",
       "stats": {
         "maxHp": 50,
         "hp": 50,
@@ -19,7 +18,7 @@
         "pilots": [
           {
             "type": "Villain",
-            "nameKey": "ryan"
+            "name": "ryan"
           }
         ]
       },
@@ -27,8 +26,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -38,8 +36,7 @@
     },
     "8,12": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -49,8 +46,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -60,8 +56,7 @@
     },
     "9,11": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -71,8 +66,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -82,8 +76,7 @@
     },
     "2,12": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -93,8 +86,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -104,8 +96,7 @@
     },
     "4,10": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -115,8 +106,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -126,8 +116,7 @@
     },
     "6,8": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -137,8 +126,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -148,8 +136,7 @@
     },
     "8,6": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -159,8 +146,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1
@@ -170,8 +156,7 @@
     },
     "10,4": {
       "type": "PassiveEnemy",
-      "nameKey": "eagle",
-      "resourceKey": "eagle",
+      "name": "eagle",
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -181,8 +166,7 @@
         "weapons": [
           {
             "type": "DirectionalWeapon",
-            "nameKey": "shotgun",
-            "resourceKey": "shotgun",
+            "name": "shotgun",
             "usageLeft": 10,
             "attackPower": 10,
             "distance": 1

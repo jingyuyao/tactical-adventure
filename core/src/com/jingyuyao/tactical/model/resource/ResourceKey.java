@@ -4,25 +4,25 @@ import com.google.common.base.Objects;
 import java.util.Arrays;
 
 /**
- * An immutable key to resource. The resource is identified by a path and a key. Arguments can be
+ * An immutable id to resource. The resource is identified by a path and a id. Arguments can be
  * provided at creation or at run time.
  */
 public class ResourceKey {
 
   private final ResourceKeyBundle bundle;
-  private final String key;
+  private final String id;
   private final Object[] args;
 
   /**
    * See {@link ResourceKeyBundle#get(String, Object...)}.
    *
    * @param bundle the {@link ResourceKeyBundle} this key belongs to
-   * @param key the key to get the key from the bundle
+   * @param id the id this key
    * @param args the arguments for the resource, optional
    */
-  ResourceKey(ResourceKeyBundle bundle, String key, Object... args) {
+  ResourceKey(ResourceKeyBundle bundle, String id, Object... args) {
     this.bundle = bundle;
-    this.key = key;
+    this.id = id;
     this.args = args;
   }
 
@@ -34,10 +34,10 @@ public class ResourceKey {
   }
 
   /**
-   * Return the key used to get the key from the bundle.
+   * Return the id used to get the id from the bundle.
    */
-  public String getKey() {
-    return key;
+  public String getId() {
+    return id;
   }
 
   /**
@@ -48,10 +48,17 @@ public class ResourceKey {
   }
 
   /**
+   * Return the id joined with the bundle's path using {@code /} as separator.
+   */
+  public String getRaw() {
+    return bundle.getPath() + '/' + id;
+  }
+
+  /**
    * Create a new {@link ResourceKey} from this key with the {@code newArgs}.
    */
   public ResourceKey format(Object... newArgs) {
-    return new ResourceKey(bundle, key, newArgs);
+    return new ResourceKey(bundle, id, newArgs);
   }
 
   @Override
@@ -64,12 +71,12 @@ public class ResourceKey {
     }
     ResourceKey resourceKey = (ResourceKey) o;
     return Objects.equal(getBundle(), resourceKey.getBundle()) &&
-        Objects.equal(getKey(), resourceKey.getKey()) &&
+        Objects.equal(getId(), resourceKey.getId()) &&
         Arrays.equals(getArgs(), resourceKey.getArgs());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getBundle(), getKey(), Arrays.hashCode(getArgs()));
+    return Objects.hashCode(getBundle(), getId(), Arrays.hashCode(getArgs()));
   }
 }

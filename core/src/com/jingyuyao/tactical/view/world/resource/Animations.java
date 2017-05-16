@@ -3,6 +3,8 @@ package com.jingyuyao.tactical.view.world.resource;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
+import com.jingyuyao.tactical.model.item.Item;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule.AtlasRegionsCache;
@@ -34,16 +36,12 @@ public class Animations {
     this.atlasRegionsCache = atlasRegionsCache;
   }
 
-  public LoopAnimation getShip(String shipName) {
-    return getLoop(
-        resourceConfig.getShipIdleFPS(),
-        resourceConfig.getShipAssetPrefix() + shipName);
+  public LoopAnimation get(Ship ship) {
+    return getLoop(resourceConfig.getShipIdleFPS(), ship.getAnimation().getRaw());
   }
 
-  public SingleAnimation getWeapon(String weaponName) {
-    return getSingle(
-        resourceConfig.getWeaponFPS(),
-        resourceConfig.getWeaponAssetPrefix() + weaponName);
+  public SingleAnimation get(Item item) {
+    return getSingle(resourceConfig.getItemFPS(), item.getAnimation().getRaw());
   }
 
   private SingleAnimation getSingle(int fps, String assetPath) {

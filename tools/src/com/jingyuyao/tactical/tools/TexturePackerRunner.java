@@ -2,11 +2,10 @@ package com.jingyuyao.tactical.tools;
 
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 
-// TODO: separate packed by level + default
 public class TexturePackerRunner {
 
-  private static final String INPUT_DIR = "android/assets_raw/unpacked/";
-  private static final String OUTPUT_DIR = "android/assets/packed/";
+  private static final String INPUT_DIR = "android/assets_raw/drawable/";
+  private static final String OUTPUT_DIR = "android/assets/drawable/";
   private static final String FILE_NAME = "texture";
 
   public static void main(String[] args) {

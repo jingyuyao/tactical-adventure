@@ -87,7 +87,7 @@ class ShipSystem extends EntitySystem {
     entity.add(position);
     entity.add(shipComponent);
     entity.add(frame);
-    entity.add(animations.getShip(cell.ship().get().getResourceKey()));
+    entity.add(animations.get(cell.ship().get()));
     for (Player player : cell.player().asSet()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
       playerComponent.setPlayer(player);

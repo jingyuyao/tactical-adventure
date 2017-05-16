@@ -36,56 +36,56 @@ public class MarkersTest {
 
   @Test
   public void get_highlight() {
-    when(textureAtlas.findRegion("marking/highlight")).thenReturn(atlasRegion);
+    when(textureAtlas.findRegion("texture/ui/marking/highlight")).thenReturn(atlasRegion);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
     WorldTexture texture = markers.getHighlight();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("marking/highlight", worldTexture);
+    assertThat(textureCache).containsExactly("texture/ui/marking/highlight", worldTexture);
   }
 
   @Test
   public void get_activate() {
-    when(textureAtlas.findRegion("marking/activated")).thenReturn(atlasRegion);
+    when(textureAtlas.findRegion("texture/ui/marking/activated")).thenReturn(atlasRegion);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
     WorldTexture texture = markers.getActivated();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("marking/activated", worldTexture);
+    assertThat(textureCache).containsExactly("texture/ui/marking/activated", worldTexture);
   }
 
   @Test
   public void get_move() {
-    when(textureAtlas.findRegion("marking/move")).thenReturn(atlasRegion);
+    when(textureAtlas.findRegion("texture/ui/marking/move")).thenReturn(atlasRegion);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
     WorldTexture texture = markers.getMove();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("marking/move", worldTexture);
+    assertThat(textureCache).containsExactly("texture/ui/marking/move", worldTexture);
   }
 
   @Test
   public void get_target_select() {
-    when(textureAtlas.findRegion("marking/target_select")).thenReturn(atlasRegion);
+    when(textureAtlas.findRegion("texture/ui/marking/target_select")).thenReturn(atlasRegion);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
     WorldTexture texture = markers.getTargetSelect();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("marking/target_select", worldTexture);
+    assertThat(textureCache).containsExactly("texture/ui/marking/target_select", worldTexture);
   }
 
   @Test
   public void get_attack() {
-    when(textureAtlas.findRegion("marking/attack")).thenReturn(atlasRegion);
+    when(textureAtlas.findRegion("texture/ui/marking/attack")).thenReturn(atlasRegion);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
     WorldTexture texture = markers.getAttack();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("marking/attack", worldTexture);
+    assertThat(textureCache).containsExactly("texture/ui/marking/attack", worldTexture);
   }
 }

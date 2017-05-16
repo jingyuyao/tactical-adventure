@@ -24,31 +24,32 @@ public class Markers {
   }
 
   public WorldTexture getHighlight() {
-    return get("marking/highlight");
+    return get("highlight");
   }
 
   public WorldTexture getActivated() {
-    return get("marking/activated");
+    return get("activated");
   }
 
   public WorldTexture getMove() {
-    return get("marking/move");
+    return get("move");
   }
 
   public WorldTexture getTargetSelect() {
-    return get("marking/target_select");
+    return get("target_select");
   }
 
   public WorldTexture getAttack() {
-    return get("marking/attack");
+    return get("attack");
   }
 
-  private WorldTexture get(String fileName) {
-    if (markerTextureCache.containsKey(fileName)) {
-      return markerTextureCache.get(fileName);
+  private WorldTexture get(String markerName) {
+    String resourceName = "texture/ui/marking/" + markerName;
+    if (markerTextureCache.containsKey(resourceName)) {
+      return markerTextureCache.get(resourceName);
     } else {
-      WorldTexture texture = textureFactory.create(textureAtlas.findRegion(fileName));
-      markerTextureCache.put(fileName, texture);
+      WorldTexture texture = textureFactory.create(textureAtlas.findRegion(resourceName));
+      markerTextureCache.put(resourceName, texture);
       return texture;
     }
   }

@@ -5,10 +5,10 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class BasePerson implements Person {
 
-  private String nameKey;
+  private String name;
 
   @Override
   public ResourceKey getName() {
-    return ModelBundle.PERSON_NAME.get(nameKey);
+    return ModelBundle.PERSON_NAME.get(name);
   }
 }

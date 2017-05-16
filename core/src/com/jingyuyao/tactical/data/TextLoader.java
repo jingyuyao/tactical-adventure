@@ -23,9 +23,9 @@ public class TextLoader {
   public String get(ResourceKey resourceKey) {
     I18NBundle bundle = getBundle(resourceKey.getBundle());
     if (resourceKey.getArgs().length == 0) {
-      return bundle.get(resourceKey.getKey());
+      return bundle.get(resourceKey.getId());
     } else {
-      return bundle.format(resourceKey.getKey(), resourceKey.getArgs());
+      return bundle.format(resourceKey.getId(), resourceKey.getArgs());
     }
   }
 

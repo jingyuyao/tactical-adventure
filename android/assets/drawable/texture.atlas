@@ -4,126 +4,126 @@ size: 1024,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-weapon/bomb
+animation/model/weapon/bomb
   rotate: false
   xy: 2, 6
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
-weapon/bomb
+animation/model/weapon/bomb
   rotate: false
   xy: 100, 6
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
-weapon/bomb
+animation/model/weapon/bomb
   rotate: false
   xy: 198, 6
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
-weapon/bomb
+animation/model/weapon/bomb
   rotate: false
   xy: 296, 6
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
-weapon/bomb
+animation/model/weapon/bomb
   rotate: false
   xy: 394, 6
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 4
-weapon/bomb
+animation/model/weapon/bomb
   rotate: false
   xy: 492, 6
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 5
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 590, 70
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 0
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 590, 36
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 1
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 688, 70
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 2
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 688, 36
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 3
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 786, 70
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 4
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 786, 36
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 5
-weapon/buzz
+animation/model/weapon/lightning
   rotate: false
   xy: 884, 70
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 6
-weapon/shotgun
+animation/model/weapon/shotgun
   rotate: false
   xy: 884, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-weapon/shotgun
+animation/model/weapon/shotgun
   rotate: false
   xy: 982, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-weapon/shotgun
+animation/model/weapon/shotgun
   rotate: false
   xy: 918, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-weapon/shotgun
+animation/model/weapon/shotgun
   rotate: false
   xy: 952, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
-weapon/shotgun
+animation/model/weapon/shotgun
   rotate: false
   xy: 590, 2
   size: 32, 32
@@ -136,84 +136,84 @@ size: 512,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-ship/adder
+animation/model/ship/adder
   rotate: false
   xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-ship/adder
+animation/model/ship/adder
   rotate: false
   xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-ship/adder
+animation/model/ship/adder
   rotate: false
   xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
-ship/adder
+animation/model/ship/adder
   rotate: false
   xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-ship/adder
+animation/model/ship/adder
   rotate: false
   xy: 104, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
-ship/adder
+animation/model/ship/adder
   rotate: false
   xy: 138, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
-ship/eagle
+animation/model/ship/eagle
   rotate: false
   xy: 172, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-ship/eagle
+animation/model/ship/eagle
   rotate: false
   xy: 206, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-ship/eagle
+animation/model/ship/eagle
   rotate: false
   xy: 206, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
-ship/eagle
+animation/model/ship/eagle
   rotate: false
   xy: 240, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-ship/eagle
+animation/model/ship/eagle
   rotate: false
   xy: 274, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
-ship/eagle
+animation/model/ship/eagle
   rotate: false
   xy: 308, 2
   size: 32, 32
@@ -226,42 +226,42 @@ size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-marking/activated
+texture/ui/marking/activated
   rotate: false
   xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-marking/attack
+texture/ui/marking/attack
   rotate: false
   xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-marking/highlight
+texture/ui/marking/highlight
   rotate: false
   xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-marking/hit
+texture/ui/marking/hit
   rotate: false
   xy: 104, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-marking/move
+texture/ui/marking/move
   rotate: false
   xy: 138, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-marking/target_select
+texture/ui/marking/target_select
   rotate: false
   xy: 172, 2
   size: 32, 32

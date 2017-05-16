@@ -10,6 +10,11 @@ public class ResourceKeyBundle {
 
   private final String path;
 
+  /**
+   * Create a bundle that points to a group of {@link ResourceKey} at a location.
+   *
+   * @param path the path to the bundle
+   */
   public ResourceKeyBundle(String path) {
     this.path = path;
   }

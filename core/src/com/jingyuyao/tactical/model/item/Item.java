@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 // TODO: should probably add a constant like INFINITE for items that doesn't expire.
 public interface Item {
 
-  String getResourceKey();
+  ResourceKey getAnimation();
 
   ResourceKey getName();
 

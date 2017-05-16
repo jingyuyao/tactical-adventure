@@ -9,32 +9,30 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
  */
 class BaseItem implements Item {
 
-  private String nameKey;
-  private String resourceKey;
+  private String name;
   private int usageLeft;
 
   BaseItem() {
   }
 
-  BaseItem(String nameKey, String resourceKey, int usageLeft) {
-    this.nameKey = nameKey;
-    this.resourceKey = resourceKey;
+  BaseItem(String name, int usageLeft) {
+    this.name = name;
     this.usageLeft = usageLeft;
   }
 
   @Override
-  public String getResourceKey() {
-    return resourceKey;
+  public ResourceKey getAnimation() {
+    return ModelBundle.WEAPON_ANIMATIONS.get(name);
   }
 
   @Override
   public ResourceKey getName() {
-    return ModelBundle.ITEM_NAME.get(nameKey);
+    return ModelBundle.ITEM_NAME.get(name);
   }
 
   @Override
   public ResourceKey getDescription() {
-    return ModelBundle.ITEM_DESCRIPTION.get(nameKey);
+    return ModelBundle.ITEM_DESCRIPTION.get(name);
   }
 
   @Override

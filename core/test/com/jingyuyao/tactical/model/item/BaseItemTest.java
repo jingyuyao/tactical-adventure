@@ -12,34 +12,35 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BaseItemTest {
 
-  private static final String NAME_KEY = "item_name";
-  private static final String RESOURCE_KEY = "item_resource";
+  private static final String name = "item_name";
   private static final int USAGE_LEFT = 1;
 
   private BaseItem item;
 
   @Before
   public void setUp() {
-    item = new BaseItem(NAME_KEY, RESOURCE_KEY, USAGE_LEFT);
+    item = new BaseItem(name, USAGE_LEFT);
   }
 
   @Test
   public void get_resource_key() {
-    assertThat(item.getResourceKey()).isEqualTo(RESOURCE_KEY);
+    ResourceKey resourceKey = item.getAnimation();
+    assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.WEAPON_ANIMATIONS);
+    assertThat(resourceKey.getId()).isEqualTo(name);
   }
 
   @Test
   public void get_name() {
     ResourceKey resourceKey = item.getName();
     assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.ITEM_NAME);
-    assertThat(resourceKey.getKey()).isEqualTo(NAME_KEY);
+    assertThat(resourceKey.getId()).isEqualTo(name);
   }
 
   @Test
   public void get_description() {
     ResourceKey resourceKey = item.getDescription();
     assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.ITEM_DESCRIPTION);
-    assertThat(resourceKey.getKey()).isEqualTo(NAME_KEY);
+    assertThat(resourceKey.getId()).isEqualTo(name);
   }
 
   @Test

@@ -13,8 +13,7 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
  */
 class BaseShip implements Ship {
 
-  private String nameKey;
-  private String resourceKey;
+  private String name;
   private Stats stats;  // required
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
@@ -22,9 +21,8 @@ class BaseShip implements Ship {
   BaseShip() {
   }
 
-  BaseShip(String nameKey, String resourceKey, Stats stats, Cockpit cockpit, Items items) {
-    this.nameKey = nameKey;
-    this.resourceKey = resourceKey;
+  BaseShip(String name, Stats stats, Cockpit cockpit, Items items) {
+    this.name = name;
     this.stats = stats;
     this.cockpit = cockpit;
     this.items = items;
@@ -36,13 +34,13 @@ class BaseShip implements Ship {
   }
 
   @Override
-  public String getResourceKey() {
-    return resourceKey;
+  public ResourceKey getAnimation() {
+    return ModelBundle.SHIP_ANIMATIONS.get(name);
   }
 
   @Override
   public ResourceKey getName() {
-    return ModelBundle.SHIP_NAME.get(nameKey);
+    return ModelBundle.SHIP_NAME.get(name);
   }
 
   @Override

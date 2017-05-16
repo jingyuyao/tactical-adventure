@@ -20,8 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BaseShipTest {
 
-  private static final String NAME_KEY = "yo";
-  private static final String RESOURCE_KEY = "yo_face";
+  private static final String NAME = "yo";
 
   @Mock
   private Stats stats;
@@ -42,14 +41,14 @@ public class BaseShipTest {
 
   @Before
   public void setUp() {
-    ship = new BaseShip(NAME_KEY, RESOURCE_KEY, stats, cockpit, items);
+    ship = new BaseShip(NAME, stats, cockpit, items);
   }
 
   @Test
   public void get_name() {
     ResourceKey name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
-    assertThat(name.getKey()).isEqualTo(NAME_KEY);
+    assertThat(name.getId()).isEqualTo(NAME);
   }
 
   @Test
