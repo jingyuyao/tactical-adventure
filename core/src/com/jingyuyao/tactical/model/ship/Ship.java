@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.character;
+package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.i18n.Message;

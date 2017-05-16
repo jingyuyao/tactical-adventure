@@ -4,14 +4,14 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Enemy;
-import com.jingyuyao.tactical.model.character.Player;
-import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
+import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
 

@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.character.Ship;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;

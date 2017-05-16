@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;

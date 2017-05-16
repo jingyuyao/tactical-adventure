@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.character.Ship;
+import com.jingyuyao.tactical.model.ship.Ship;
 
 /**
  * An {@link Item} that can be used be used on a {@link Ship}.

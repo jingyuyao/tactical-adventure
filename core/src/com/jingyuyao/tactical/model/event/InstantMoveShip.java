@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.character.Ship;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 
 public class InstantMoveShip {

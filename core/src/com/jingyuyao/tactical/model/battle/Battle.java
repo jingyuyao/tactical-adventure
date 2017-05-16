@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.ArrayList;
 import java.util.List;

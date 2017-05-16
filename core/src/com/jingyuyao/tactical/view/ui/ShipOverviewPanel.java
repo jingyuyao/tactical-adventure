@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.i18n.Message;
+import com.jingyuyao.tactical.model.ship.Ship;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

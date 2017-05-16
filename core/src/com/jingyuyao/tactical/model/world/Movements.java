@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.character.Ship;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetNeighbors;

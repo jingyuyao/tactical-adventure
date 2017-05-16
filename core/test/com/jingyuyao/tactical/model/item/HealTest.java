@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import static org.mockito.Mockito.verify;
 
-import com.jingyuyao.tactical.model.character.Ship;
+import com.jingyuyao.tactical.model.ship.Ship;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

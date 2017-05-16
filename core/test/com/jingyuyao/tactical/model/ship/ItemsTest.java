@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.character;
+package com.jingyuyao.tactical.model.ship;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;

@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.character;
+package com.jingyuyao.tactical.model.ship;
 
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;

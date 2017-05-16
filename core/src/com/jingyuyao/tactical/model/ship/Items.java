@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.character;
+package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
