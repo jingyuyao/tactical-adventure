@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseCharacterTest {
+public class BaseShipTest {
 
   private static final String NAME_KEY = "yo";
   private static final String RESOURCE_KEY = "yo_face";
@@ -36,16 +36,16 @@ public class BaseCharacterTest {
   @Mock
   private Consumable consumable1;
 
-  private Character character;
+  private Ship ship;
 
   @Before
   public void setUp() {
-    character = new BaseCharacter(NAME_KEY, RESOURCE_KEY, MAX_HP, HP, MOVE_DISTANCE, items);
+    ship = new BaseShip(NAME_KEY, RESOURCE_KEY, MAX_HP, HP, MOVE_DISTANCE, items);
   }
 
   @Test
   public void get_name() {
-    Message name = character.getName();
+    Message name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.CHARACTER_NAME);
     assertThat(name.getKey()).isEqualTo(NAME_KEY);
   }
@@ -56,97 +56,97 @@ public class BaseCharacterTest {
     when(armor1.getDefense()).thenReturn(11);
     when(armor2.getDefense()).thenReturn(13);
 
-    assertThat(character.getDefense()).isEqualTo(24);
+    assertThat(ship.getDefense()).isEqualTo(24);
   }
 
   @Test
   public void damage_by() {
-    character.damageBy(5);
+    ship.damageBy(5);
 
-    assertThat(character.getHp()).isEqualTo(HP - 5);
+    assertThat(ship.getHp()).isEqualTo(HP - 5);
 
-    character.damageBy(1000);
+    ship.damageBy(1000);
 
-    assertThat(character.getHp()).isEqualTo(0);
+    assertThat(ship.getHp()).isEqualTo(0);
   }
 
   @Test
   public void heal_by() {
-    character.healBy(5);
+    ship.healBy(5);
 
-    assertThat(character.getHp()).isEqualTo(HP + 5);
+    assertThat(ship.getHp()).isEqualTo(HP + 5);
 
-    character.healBy(1000);
+    ship.healBy(1000);
 
-    assertThat(character.getHp()).isEqualTo(MAX_HP);
+    assertThat(ship.getHp()).isEqualTo(MAX_HP);
   }
 
   @Test
   public void full_heal() {
-    character.fullHeal();
+    ship.fullHeal();
 
-    assertThat(character.getHp()).isEqualTo(MAX_HP);
+    assertThat(ship.getHp()).isEqualTo(MAX_HP);
   }
 
   @Test
   public void get_consumables() {
     when(items.getConsumables()).thenReturn(ImmutableList.of(consumable1));
 
-    assertThat(character.getConsumables()).containsExactly(consumable1);
+    assertThat(ship.getConsumables()).containsExactly(consumable1);
   }
 
   @Test
   public void get_weapons() {
     when(items.getWeapons()).thenReturn(ImmutableList.of(weapon1));
 
-    assertThat(character.getWeapons()).containsExactly(weapon1);
+    assertThat(ship.getWeapons()).containsExactly(weapon1);
   }
 
   @Test
   public void get_equipped_armors() {
     when(items.getEquippedArmors()).thenReturn(ImmutableList.of(armor1));
 
-    assertThat(character.getEquippedArmors()).containsExactly(armor1);
+    assertThat(ship.getEquippedArmors()).containsExactly(armor1);
   }
 
   @Test
   public void get_stashed_armors() {
     when(items.getStashedArmors()).thenReturn(ImmutableList.of(armor1));
 
-    assertThat(character.getStashedArmors()).containsExactly(armor1);
+    assertThat(ship.getStashedArmors()).containsExactly(armor1);
   }
 
   @Test
   public void use_consumable() {
-    character.useConsumable(consumable1);
+    ship.useConsumable(consumable1);
 
     verify(items).useConsumable(consumable1);
   }
 
   @Test
   public void use_weapon() {
-    character.useWeapon(weapon1);
+    ship.useWeapon(weapon1);
 
     verify(items).useWeapon(weapon1);
   }
 
   @Test
   public void use_equipped_armors() {
-    character.useEquippedArmors();
+    ship.useEquippedArmors();
 
     verify(items).useEquippedArmors();
   }
 
   @Test
   public void equip_armor() {
-    character.equipArmor(armor1);
+    ship.equipArmor(armor1);
 
     verify(items).equipArmor(armor1);
   }
 
   @Test
   public void unequip_armor() {
-    character.unequipArmor(armor1);
+    ship.unequipArmor(armor1);
 
     verify(items).unequipArmor(armor1);
   }

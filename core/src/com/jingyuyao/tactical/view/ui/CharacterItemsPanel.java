@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -24,7 +24,7 @@ class CharacterItemsPanel extends VisTable {
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
-  void display(Character character) {
+  void display(Ship ship) {
     clearChildren();
     addText(messageLoader.get(UIBundle.ITEM_NAME_HEADER));
     addText(messageLoader.get(UIBundle.ITEM_DURABILITY_HEADER));
@@ -32,10 +32,10 @@ class CharacterItemsPanel extends VisTable {
     addText(messageLoader.get(UIBundle.ITEM_ACTION_HEADER));
     row();
 
-    addEquippedArmors(character);
-    addStashedArmors(character);
-    addItemsNoAction(character.getWeapons());
-    addItemsNoAction(character.getConsumables());
+    addEquippedArmors(ship);
+    addStashedArmors(ship);
+    addItemsNoAction(ship.getWeapons());
+    addItemsNoAction(ship.getConsumables());
     add();
     add();
     add().expand();
@@ -49,18 +49,18 @@ class CharacterItemsPanel extends VisTable {
     }
   }
 
-  private void addEquippedArmors(Character character) {
-    for (Armor armor : character.getEquippedArmors()) {
+  private void addEquippedArmors(Ship ship) {
+    for (Armor armor : ship.getEquippedArmors()) {
       addItem(armor);
-      add(this.new UnequipArmor(character, armor));
+      add(this.new UnequipArmor(ship, armor));
       row();
     }
   }
 
-  private void addStashedArmors(Character character) {
-    for (Armor armor : character.getStashedArmors()) {
+  private void addStashedArmors(Ship ship) {
+    for (Armor armor : ship.getStashedArmors()) {
       addItem(armor);
-      add(this.new EquipArmor(character, armor));
+      add(this.new EquipArmor(ship, armor));
       row();
     }
   }
@@ -77,31 +77,31 @@ class CharacterItemsPanel extends VisTable {
 
   private class EquipArmor extends VisTextButton {
 
-    private EquipArmor(final Character character, final Armor armor) {
+    private EquipArmor(final Ship ship, final Armor armor) {
       super(messageLoader.get(UIBundle.EQUIP_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-          character.equipArmor(armor);
+          ship.equipArmor(armor);
           // refresh
-          CharacterItemsPanel.this.display(character);
+          CharacterItemsPanel.this.display(ship);
         }
       });
-      setDisabled(!character.canControl());
+      setDisabled(!ship.canControl());
     }
   }
 
   private class UnequipArmor extends VisTextButton {
 
-    private UnequipArmor(final Character character, final Armor armor) {
+    private UnequipArmor(final Ship ship, final Armor armor) {
       super(messageLoader.get(UIBundle.UNEQUIP_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-          character.unequipArmor(armor);
+          ship.unequipArmor(armor);
           // refresh
-          CharacterItemsPanel.this.display(character);
+          CharacterItemsPanel.this.display(ship);
         }
       });
-      setDisabled(!character.canControl());
+      setDisabled(!ship.canControl());
     }
   }
 }

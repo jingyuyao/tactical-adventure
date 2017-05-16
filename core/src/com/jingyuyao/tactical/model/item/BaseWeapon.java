@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -43,7 +43,7 @@ class BaseWeapon extends BaseItem implements Weapon {
    * Apply pre-damage, damage, and post-damage effects to each targeted cell.
    */
   @Override
-  public void apply(Character attacker, Target target) {
+  public void apply(Ship attacker, Target target) {
     for (Cell cell : target.getTargetCells()) {
       int damage = getDamage(attacker, cell);
       preDamage(attacker, cell, damage);
@@ -61,8 +61,8 @@ class BaseWeapon extends BaseItem implements Weapon {
    * Default implementation damage the character in the target cell if there any.
    * Override me to change damage application.
    */
-  void damage(Character attacker, Cell target, int damage) {
-    for (Character defender : target.character().asSet()) {
+  void damage(Ship attacker, Cell target, int damage) {
+    for (Ship defender : target.character().asSet()) {
       defender.damageBy(damage);
     }
   }
@@ -71,14 +71,14 @@ class BaseWeapon extends BaseItem implements Weapon {
    * Default implementation does nothing.
    * Override me to add pre-damage effects.
    */
-  void preDamage(Character attacker, Cell target, int damage) {
+  void preDamage(Ship attacker, Cell target, int damage) {
   }
 
   /**
    * Default implementation does nothing.
    * Override me to add post-damage effects.
    */
-  void postDamage(Character attacker, Cell target, int damage) {
+  void postDamage(Ship attacker, Cell target, int damage) {
     // can't life steal if there is nobody to steal it from
     if (target.character().isPresent()) {
       attacker.healBy((int) (lifeStealRate * damage));
@@ -91,7 +91,7 @@ class BaseWeapon extends BaseItem implements Weapon {
    * Default implementation reduces attack power by the character's defense if there are any.
    * Override me to change damage calculation.
    */
-  int getDamage(Character attacker, Cell target) {
+  int getDamage(Ship attacker, Cell target) {
     if (target.character().isPresent()) {
       return Math.max(attackPower - target.character().get().getDefense(), 0);
     }

@@ -4,7 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
 import com.jingyuyao.tactical.model.world.Movements.CharacterCost;
@@ -27,7 +27,7 @@ public class MovementsTest {
   @Mock
   private Terrain terrain;
   @Mock
-  private Character character;
+  private Ship ship;
 
   private Movements movements;
 
@@ -38,33 +38,33 @@ public class MovementsTest {
 
   @Test
   public void edge_cost_function_has_character() {
-    when(cell.character()).thenReturn(Optional.of(character));
+    when(cell.character()).thenReturn(Optional.of(ship));
     when(cell.getTerrain()).thenReturn(terrain);
 
-    GetEdgeCost function = new CharacterCost(character);
+    GetEdgeCost function = new CharacterCost(ship);
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(GetEdgeCost.NO_EDGE);
   }
 
   @Test
   public void edge_cost_function_cannot_hold() {
-    when(cell.character()).thenReturn(Optional.<Character>absent());
+    when(cell.character()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
-    when(terrain.canHold(character)).thenReturn(false);
+    when(terrain.canHold(ship)).thenReturn(false);
 
-    GetEdgeCost function = new CharacterCost(character);
+    GetEdgeCost function = new CharacterCost(ship);
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(GetEdgeCost.NO_EDGE);
   }
 
   @Test
   public void edge_cost_function_penalty() {
-    when(cell.character()).thenReturn(Optional.<Character>absent());
+    when(cell.character()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
-    when(terrain.canHold(character)).thenReturn(true);
+    when(terrain.canHold(ship)).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(10);
 
-    GetEdgeCost function = new CharacterCost(character);
+    GetEdgeCost function = new CharacterCost(ship);
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(10);
   }

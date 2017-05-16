@@ -3,13 +3,13 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.i18n.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterOverviewPanel extends ButtonPanel<Character> {
+class CharacterOverviewPanel extends ButtonPanel<Ship> {
 
   private final CharacterDetailLayer characterDetailLayer;
   private final MessageLoader messageLoader;
@@ -24,18 +24,18 @@ class CharacterOverviewPanel extends ButtonPanel<Character> {
   }
 
   @Override
-  Optional<String> createText(Character character) {
-    if (character.getHp() <= 0) {
+  Optional<String> createText(Ship ship) {
+    if (ship.getHp() <= 0) {
       return Optional.absent();
     }
-    String name = messageLoader.get(character.getName());
-    int hp = character.getHp();
+    String name = messageLoader.get(ship.getName());
+    int hp = ship.getHp();
     Message message = UIBundle.OVERVIEW_PANEL.format(name, hp);
     return Optional.of(messageLoader.get(message));
   }
 
   @Override
-  void click(Character character) {
-    characterDetailLayer.display(character);
+  void click(Ship ship) {
+    characterDetailLayer.display(ship);
   }
 }

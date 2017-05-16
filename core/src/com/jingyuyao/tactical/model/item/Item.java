@@ -1,9 +1,10 @@
 package com.jingyuyao.tactical.model.item;
 
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.i18n.Message;
 
 /**
- * The most basic thing a {@link com.jingyuyao.tactical.model.character.Character} could own.
+ * The most basic thing a {@link Ship} could own.
  */
 // TODO: should probably add a constant like INFINITE for items that doesn't expire.
 public interface Item {

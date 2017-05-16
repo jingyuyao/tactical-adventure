@@ -10,9 +10,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
@@ -114,7 +114,7 @@ public class CharacterSystemTest {
     when(spawnCharacter.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.character()).thenReturn(Optional.<Character>of(player));
+    when(cell.character()).thenReturn(Optional.<Ship>of(player));
     when(player.getResourceKey()).thenReturn("me");
     when(animations.getShip("me")).thenReturn(animation);
 
@@ -135,7 +135,7 @@ public class CharacterSystemTest {
     assertThat(loopAnimation).isEqualTo(animation);
     CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
     assertThat(characterComponent).isNotNull();
-    assertThat(characterComponent.getCharacter()).isEqualTo(player);
+    assertThat(characterComponent.getShip()).isEqualTo(player);
     PlayerComponent playerComponent = entity.getComponent(PlayerComponent.class);
     assertThat(playerComponent).isNotNull();
     assertThat(playerComponent.getPlayer()).isEqualTo(player);
@@ -148,7 +148,7 @@ public class CharacterSystemTest {
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell.player()).thenReturn(Optional.<Player>absent());
-    when(cell.character()).thenReturn(Optional.<Character>of(enemy));
+    when(cell.character()).thenReturn(Optional.<Ship>of(enemy));
     when(enemy.getResourceKey()).thenReturn("me");
     when(animations.getShip("me")).thenReturn(animation);
 
@@ -169,7 +169,7 @@ public class CharacterSystemTest {
     assertThat(loopAnimation).isEqualTo(animation);
     CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
     assertThat(characterComponent).isNotNull();
-    assertThat(characterComponent.getCharacter()).isEqualTo(enemy);
+    assertThat(characterComponent.getShip()).isEqualTo(enemy);
     assertThat(entity.getComponent(PlayerComponent.class)).isNull();
   }
 
@@ -189,7 +189,7 @@ public class CharacterSystemTest {
   @Test
   public void instant_move() {
     spawn_player();
-    when(instantMoveCharacter.getCharacter()).thenReturn(player);
+    when(instantMoveCharacter.getShip()).thenReturn(player);
     when(instantMoveCharacter.getDestination()).thenReturn(cell2);
     when(cell2.getCoordinate()).thenReturn(C2);
 
@@ -208,7 +208,7 @@ public class CharacterSystemTest {
   @Test
   public void move() {
     spawn_player();
-    when(moveCharacter.getCharacter()).thenReturn(player);
+    when(moveCharacter.getShip()).thenReturn(player);
     when(moveCharacter.getPromise()).thenReturn(promise);
     when(moveCharacter.getPath()).thenReturn(path);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell3, cell4, cell5, cell6));

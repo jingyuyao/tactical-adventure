@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
@@ -22,7 +22,7 @@ public class BattleTest {
   @Mock
   private Cell attackerCell;
   @Mock
-  private Character attacker;
+  private Ship attacker;
   @Mock
   private Weapon weapon;
   @Mock
@@ -32,9 +32,9 @@ public class BattleTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Character character1;
+  private Ship ship1;
   @Mock
-  private Character character2;
+  private Ship ship2;
 
   private Battle battle;
 
@@ -50,21 +50,21 @@ public class BattleTest {
     when(attackerCell.character()).thenReturn(Optional.of(attacker));
     when(attacker.getHp()).thenReturn(10);
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.character()).thenReturn(Optional.of(character1));
-    when(character1.getHp()).thenReturn(0);
-    when(cell2.character()).thenReturn(Optional.of(character2));
-    when(character2.getHp()).thenReturn(10);
+    when(cell1.character()).thenReturn(Optional.of(ship1));
+    when(ship1.getHp()).thenReturn(0);
+    when(cell2.character()).thenReturn(Optional.of(ship2));
+    when(ship2.getHp()).thenReturn(10);
 
     battle.execute();
 
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
     verify(attackerCell, never()).removeCharacter();
-    verify(character1).useEquippedArmors();
-    verify(character2).useEquippedArmors();
+    verify(ship1).useEquippedArmors();
+    verify(ship2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
-    assertThat(battle.getDeath()).containsExactly(character1);
+    assertThat(battle.getDeath()).containsExactly(ship1);
   }
 
   @Test
@@ -72,20 +72,20 @@ public class BattleTest {
     when(attackerCell.character()).thenReturn(Optional.of(attacker));
     when(attacker.getHp()).thenReturn(0);
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.character()).thenReturn(Optional.of(character1));
-    when(character1.getHp()).thenReturn(0);
-    when(cell2.character()).thenReturn(Optional.of(character2));
-    when(character2.getHp()).thenReturn(10);
+    when(cell1.character()).thenReturn(Optional.of(ship1));
+    when(ship1.getHp()).thenReturn(0);
+    when(cell2.character()).thenReturn(Optional.of(ship2));
+    when(ship2.getHp()).thenReturn(10);
 
     battle.execute();
 
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
     verify(attackerCell).removeCharacter();
-    verify(character1).useEquippedArmors();
-    verify(character2).useEquippedArmors();
+    verify(ship1).useEquippedArmors();
+    verify(ship2).useEquippedArmors();
     verify(cell1).removeCharacter();
     verify(cell2, never()).removeCharacter();
-    assertThat(battle.getDeath()).containsExactly(attacker, character1);
+    assertThat(battle.getDeath()).containsExactly(attacker, ship1);
   }
 }

@@ -11,7 +11,7 @@ import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.event.Save;
@@ -72,7 +72,7 @@ public class GameStateTest {
 
   @Test
   public void play() {
-    Map<Coordinate, Character> characterMap = new HashMap<>();
+    Map<Coordinate, Ship> characterMap = new HashMap<>();
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     when(dataManager.loadCurrentLevel(tiledMapRenderer)).thenReturn(loadedLevel);
     when(loadedLevel.getCharacterMap()).thenReturn(characterMap);

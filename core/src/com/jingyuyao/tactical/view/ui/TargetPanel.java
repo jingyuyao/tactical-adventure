@@ -5,7 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.MessageLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.i18n.Message;
@@ -30,9 +30,9 @@ class TargetPanel extends TextPanel<Battling> {
   Optional<String> createText(Battling battling) {
     StringBuilder builder = new StringBuilder(messageLoader.get(UIBundle.TARGET_PANEL_HEADER));
     for (Cell cell : battling.getBattle().getTarget().getTargetCells()) {
-      for (Character character : cell.character().asSet()) {
-        String name = messageLoader.get(character.getName());
-        int hp = character.getHp();
+      for (Ship ship : cell.character().asSet()) {
+        String name = messageLoader.get(ship.getName());
+        int hp = ship.getHp();
         Message message = UIBundle.TARGET_PANEL_ITEM.format(name, hp);
         builder.append(messageLoader.get(message));
       }

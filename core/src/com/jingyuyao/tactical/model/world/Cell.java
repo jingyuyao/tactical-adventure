@@ -4,9 +4,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Enemy;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
 import com.jingyuyao.tactical.model.event.MoveCharacter;
 import com.jingyuyao.tactical.model.event.Promise;
@@ -20,7 +20,7 @@ public class Cell {
   private final ModelBus modelBus;
   private final Coordinate coordinate;
   private final Terrain terrain;
-  private Character character;
+  private Ship ship;
 
   @Inject
   Cell(ModelBus modelBus, @Assisted Coordinate coordinate, @Assisted Terrain terrain) {
@@ -37,55 +37,55 @@ public class Cell {
     return terrain;
   }
 
-  public Optional<Character> character() {
-    return Optional.fromNullable(character);
+  public Optional<Ship> character() {
+    return Optional.fromNullable(ship);
   }
 
   public Optional<Player> player() {
-    if (character != null && character instanceof Player) {
-      return Optional.of((Player) character);
+    if (ship != null && ship instanceof Player) {
+      return Optional.of((Player) ship);
     }
     return Optional.absent();
   }
 
   public Optional<Enemy> enemy() {
-    if (character != null && character instanceof Enemy) {
-      return Optional.of((Enemy) character);
+    if (ship != null && ship instanceof Enemy) {
+      return Optional.of((Enemy) ship);
     }
     return Optional.absent();
   }
 
-  public void spawnCharacter(Character character) {
-    Preconditions.checkState(this.character == null);
-    Preconditions.checkNotNull(character);
+  public void spawnCharacter(Ship ship) {
+    Preconditions.checkState(this.ship == null);
+    Preconditions.checkNotNull(ship);
 
-    this.character = character;
+    this.ship = ship;
     modelBus.post(new SpawnCharacter(this));
   }
 
   public void removeCharacter() {
-    Preconditions.checkState(character != null);
+    Preconditions.checkState(ship != null);
 
-    modelBus.post(new RemoveCharacter(character));
-    this.character = null;
+    modelBus.post(new RemoveCharacter(ship));
+    this.ship = null;
   }
 
   public void instantMoveCharacter(Cell destination) {
-    Preconditions.checkState(character != null);
+    Preconditions.checkState(ship != null);
 
     if (destination.equals(this)) {
       return;
     }
 
-    Preconditions.checkArgument(destination.character == null);
+    Preconditions.checkArgument(destination.ship == null);
 
-    modelBus.post(new InstantMoveCharacter(character, destination));
-    destination.character = character;
-    character = null;
+    modelBus.post(new InstantMoveCharacter(ship, destination));
+    destination.ship = ship;
+    ship = null;
   }
 
   public Promise moveCharacter(Path path) {
-    Preconditions.checkState(character != null);
+    Preconditions.checkState(ship != null);
     Preconditions.checkArgument(path.getOrigin().equals(this));
 
     Cell destination = path.getDestination();
@@ -93,12 +93,12 @@ public class Cell {
       return Promise.immediate();
     }
 
-    Preconditions.checkArgument(destination.character == null);
+    Preconditions.checkArgument(destination.ship == null);
 
     Promise promise = new Promise();
-    modelBus.post(new MoveCharacter(character, path, promise));
-    path.getDestination().character = character;
-    character = null;
+    modelBus.post(new MoveCharacter(ship, path, promise));
+    path.getDestination().ship = ship;
+    ship = null;
     return promise;
   }
 }

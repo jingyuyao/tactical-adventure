@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.i18n.Message;
@@ -34,7 +34,7 @@ class BattleSequence {
   }
 
   private void executeActionsAsync(
-      final List<Character> death, final int index, final Runnable done) {
+      final List<Ship> death, final int index, final Runnable done) {
     if (index < death.size()) {
       Message name = death.get(index).getName();
       Optional<ScriptActions> actionsOpt = worldState.getScript().deathScript(name);

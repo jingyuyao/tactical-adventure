@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import javax.inject.Inject;
@@ -19,16 +19,16 @@ class CharacterStatsPanel extends VisTable {
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
-  void display(Character character) {
+  void display(Ship ship) {
     clearChildren();
     addText(messageLoader.get(UIBundle.CHARACTER_NAME_HEADER));
-    addText(messageLoader.get(character.getName()));
+    addText(messageLoader.get(ship.getName()));
     row();
     addText(messageLoader.get(UIBundle.CHARACTER_HP_HEADER));
-    addText(String.valueOf(character.getHp()));
+    addText(String.valueOf(ship.getHp()));
     row();
     addText(messageLoader.get(UIBundle.CHARACTER_MOVE_HEADER));
-    addText(String.valueOf(character.getMoveDistance()));
+    addText(String.valueOf(ship.getMoveDistance()));
   }
 
   private void addText(String text) {

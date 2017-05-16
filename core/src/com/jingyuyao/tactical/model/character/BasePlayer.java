@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.character;
 
-public class BasePlayer extends BaseCharacter implements Player {
+public class BasePlayer extends BaseShip implements Player {
 
   private boolean actionable;
 

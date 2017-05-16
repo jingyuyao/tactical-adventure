@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-public interface Character {
+public interface Ship {
 
   /**
    * Return whether or not this character can currently be controlled by the player.

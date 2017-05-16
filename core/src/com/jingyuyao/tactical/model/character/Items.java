@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Internal representation of all the {@link Item} a {@link Character} holds.
+ * Internal representation of all the {@link Item} a {@link Ship} holds.
  */
 class Items {
 

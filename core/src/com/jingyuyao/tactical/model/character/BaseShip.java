@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 
-class BaseCharacter implements Character {
+class BaseShip implements Ship {
 
   private String nameKey;
   private String resourceKey;
@@ -16,10 +16,10 @@ class BaseCharacter implements Character {
   private int moveDistance;
   private Items items;
 
-  BaseCharacter() {
+  BaseShip() {
   }
 
-  BaseCharacter(
+  BaseShip(
       String nameKey, String resourceKey, int maxHp, int hp, int moveDistance, Items items) {
     this.nameKey = nameKey;
     this.resourceKey = resourceKey;

@@ -1,20 +1,20 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 
 public class InstantMoveCharacter {
 
-  private final Character character;
+  private final Ship ship;
   private final Cell destination;
 
-  public InstantMoveCharacter(Character character, Cell destination) {
-    this.character = character;
+  public InstantMoveCharacter(Ship ship, Cell destination) {
+    this.ship = ship;
     this.destination = destination;
   }
 
-  public Character getCharacter() {
-    return character;
+  public Ship getShip() {
+    return ship;
   }
 
   public Cell getDestination() {

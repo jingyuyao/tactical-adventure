@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.battle.Target;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,21 +25,21 @@ public class BaseWeaponTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Character attacker;
+  private Ship attacker;
   @Mock
-  private Character character1;
+  private Ship ship1;
   @Mock
-  private Character character2;
+  private Ship ship2;
 
   private BaseWeapon baseWeapon;
 
   @Before
   public void setUp() {
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.character()).thenReturn(Optional.of(character1));
-    when(cell2.character()).thenReturn(Optional.of(character2));
-    when(character1.getDefense()).thenReturn(3);
-    when(character2.getDefense()).thenReturn(100);
+    when(cell1.character()).thenReturn(Optional.of(ship1));
+    when(cell2.character()).thenReturn(Optional.of(ship2));
+    when(ship1.getDefense()).thenReturn(3);
+    when(ship2.getDefense()).thenReturn(100);
   }
 
   @Test
@@ -47,8 +47,8 @@ public class BaseWeaponTest {
     baseWeapon = new BaseWeapon(10, 0, 0);
     baseWeapon.apply(attacker, target);
 
-    verify(character1).damageBy(7);
-    verify(character2).damageBy(0);
+    verify(ship1).damageBy(7);
+    verify(ship2).damageBy(0);
     verify(attacker, times(2)).damageBy(0);
     verify(attacker, times(2)).healBy(0);
   }
@@ -58,8 +58,8 @@ public class BaseWeaponTest {
     baseWeapon = new BaseWeapon(10, 0.5f, 0);
     baseWeapon.apply(attacker, target);
 
-    verify(character1).damageBy(7);
-    verify(character2).damageBy(0);
+    verify(ship1).damageBy(7);
+    verify(ship2).damageBy(0);
     verify(attacker, times(2)).damageBy(0);
     verify(attacker).healBy(3);
     verify(attacker).healBy(0);
@@ -70,8 +70,8 @@ public class BaseWeaponTest {
     baseWeapon = new BaseWeapon(10, 0, 0.5f);
     baseWeapon.apply(attacker, target);
 
-    verify(character1).damageBy(7);
-    verify(character2).damageBy(0);
+    verify(ship1).damageBy(7);
+    verify(ship2).damageBy(0);
     verify(attacker).damageBy(3);
     verify(attacker).damageBy(0);
     verify(attacker, times(2)).healBy(0);

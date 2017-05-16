@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class Battle {
   private final Cell attackerCell;
   private final Weapon weapon;
   private final Target target;
-  private final List<Character> death;
+  private final List<Ship> death;
 
   public Battle(Cell attackerCell, Weapon weapon, Target target) {
     this.attackerCell = attackerCell;
@@ -29,7 +29,7 @@ public class Battle {
     return target;
   }
 
-  public ImmutableList<Character> getDeath() {
+  public ImmutableList<Ship> getDeath() {
     return ImmutableList.copyOf(death);
   }
 
@@ -37,12 +37,12 @@ public class Battle {
    * Executes the logic of this battle.
    */
   public void execute() {
-    for (Character attacker : attackerCell.character().asSet()) {
+    for (Ship attacker : attackerCell.character().asSet()) {
       weapon.apply(attacker, target);
       attacker.useWeapon(weapon);
       for (Cell cell : target.getTargetCells()) {
-        for (Character character : cell.character().asSet()) {
-          character.useEquippedArmors();
+        for (Ship ship : cell.character().asSet()) {
+          ship.useEquippedArmors();
         }
         checkDeath(cell);
       }
@@ -51,10 +51,10 @@ public class Battle {
   }
 
   private void checkDeath(Cell cell) {
-    for (Character character : cell.character().asSet()) {
-      if (character.getHp() == 0) {
+    for (Ship ship : cell.character().asSet()) {
+      if (ship.getHp() == 0) {
         cell.removeCharacter();
-        death.add(character);
+        death.add(ship);
       }
     }
   }

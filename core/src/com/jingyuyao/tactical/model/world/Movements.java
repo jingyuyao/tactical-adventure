@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetNeighbors;
@@ -45,13 +45,13 @@ public class Movements implements GetNeighbors {
   }
 
   /**
-   * Create a {@link Movement} for the {@link Character} contained in the given {@link Cell}
+   * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell}
    */
   public Movement distanceFrom(Cell cell) {
     Preconditions.checkArgument(cell.character().isPresent());
-    Character character = cell.character().get();
+    Ship ship = cell.character().get();
     return new Movement(
-        distanceFrom(new CharacterCost(character), cell, character.getMoveDistance()));
+        distanceFrom(new CharacterCost(ship), cell, ship.getMoveDistance()));
   }
 
   /**
@@ -67,9 +67,9 @@ public class Movements implements GetNeighbors {
 
   static class CharacterCost implements GetEdgeCost {
 
-    private final Character walker;
+    private final Ship walker;
 
-    CharacterCost(Character walker) {
+    CharacterCost(Ship walker) {
       this.walker = walker;
     }
 

@@ -12,8 +12,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
@@ -74,7 +74,7 @@ class CharacterSystem extends EntitySystem {
     position.set(cell.getCoordinate(), WorldZIndex.CHARACTER);
 
     CharacterComponent characterComponent = getEngine().createComponent(CharacterComponent.class);
-    characterComponent.setCharacter(cell.character().get());
+    characterComponent.setShip(cell.character().get());
 
     Frame frame = getEngine().createComponent(Frame.class);
     if (cell.player().isPresent()) {
@@ -105,7 +105,7 @@ class CharacterSystem extends EntitySystem {
 
   @Subscribe
   void instantMoveCharacter(InstantMoveCharacter instantMoveCharacter) {
-    Entity entity = get(instantMoveCharacter.getCharacter());
+    Entity entity = get(instantMoveCharacter.getShip());
     Coordinate destination = instantMoveCharacter.getDestination().getCoordinate();
     Position position = getEngine().createComponent(Position.class);
     position.set(destination, WorldZIndex.CHARACTER);
@@ -114,7 +114,7 @@ class CharacterSystem extends EntitySystem {
 
   @Subscribe
   void moveCharacter(MoveCharacter moveCharacter) {
-    Entity entity = get(moveCharacter.getCharacter());
+    Entity entity = get(moveCharacter.getShip());
     Moving moving = getEngine().createComponent(Moving.class);
     moving.setPath(smoothPath(moveCharacter.getPath().getTrack()));
     moving.setPromise(moveCharacter.getPromise());
@@ -142,19 +142,19 @@ class CharacterSystem extends EntitySystem {
    * Could be constant time if we keep a map but then we would be holding references to entities
    * outside of the engine which is a bad practice.
    */
-  private Entity get(final Character character) {
+  private Entity get(final Ship ship) {
     return Iterables.find(entities, new Predicate<Entity>() {
       @Override
       public boolean apply(Entity input) {
         CharacterComponent component = characterMapper.get(input);
-        return component != null && component.getCharacter().equals(character);
+        return component != null && component.getShip().equals(ship);
       }
     });
   }
 
-  private void activate(Character character) {
+  private void activate(Ship ship) {
     deactivate();
-    Entity entity = get(character);
+    Entity entity = get(ship);
     Frame frame = frameMapper.get(entity);
     frame.addOverlay(markers.getActivated());
   }

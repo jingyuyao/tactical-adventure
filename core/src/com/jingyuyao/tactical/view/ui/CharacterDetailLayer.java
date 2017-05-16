@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -45,9 +45,9 @@ class CharacterDetailLayer extends VisTable {
     add(this.new CloseButton()).bottom().right();
   }
 
-  void display(Character character) {
-    characterStatsPanel.display(character);
-    characterItemsPanel.display(character);
+  void display(Ship ship) {
+    characterStatsPanel.display(ship);
+    characterItemsPanel.display(ship);
     layerManager.open(this);
   }
 

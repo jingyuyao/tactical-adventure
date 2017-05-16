@@ -2,22 +2,22 @@ package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 
 public class CharacterComponent implements Component, Poolable {
 
-  private Character character;
+  private Ship ship;
 
-  public Character getCharacter() {
-    return character;
+  public Ship getShip() {
+    return ship;
   }
 
-  public void setCharacter(Character character) {
-    this.character = character;
+  public void setShip(Ship ship) {
+    this.ship = ship;
   }
 
   @Override
   public void reset() {
-    character = null;
+    ship = null;
   }
 }

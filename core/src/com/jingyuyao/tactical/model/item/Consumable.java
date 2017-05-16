@@ -1,14 +1,14 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.character.Character;
+import com.jingyuyao.tactical.model.character.Ship;
 
 /**
- * An {@link Item} that can be used be used on a {@link Character}.
+ * An {@link Item} that can be used be used on a {@link Ship}.
  */
 public interface Consumable extends Item {
 
   /**
    * Apply this {@link Item}'s effects to {@code character}.
    */
-  void apply(Character character);
+  void apply(Ship ship);
 }

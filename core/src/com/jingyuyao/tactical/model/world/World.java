@@ -5,8 +5,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.character.Player;
+import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -34,7 +34,7 @@ public class World {
 
   public void initialize(
       Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Character> characterMap) {
+      Map<Coordinate, Ship> characterMap) {
     for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (cellMap.containsKey(coordinate)) {
@@ -46,7 +46,7 @@ public class World {
       maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
       maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
     }
-    for (Entry<Coordinate, Character> entry : characterMap.entrySet()) {
+    for (Entry<Coordinate, Ship> entry : characterMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (!cellMap.containsKey(coordinate)) {
         throw new IllegalArgumentException("Character not on a terrain");
