@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import org.junit.Before;
@@ -41,11 +41,11 @@ public class BattleSequenceTest {
   @Mock
   private Person person3;
   @Mock
-  private Message name1;
+  private ResourceKey name1;
   @Mock
-  private Message name2;
+  private ResourceKey name2;
   @Mock
-  private Message name3;
+  private ResourceKey name3;
   @Mock
   private ScriptActions actions1;
   @Mock

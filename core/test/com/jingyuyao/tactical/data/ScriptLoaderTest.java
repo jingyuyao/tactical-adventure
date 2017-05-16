@@ -7,7 +7,7 @@ import com.badlogic.gdx.Files;
 import com.google.common.base.Optional;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.model.resource.MessageBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
@@ -27,9 +27,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ScriptLoaderTest {
 
-  private static final MessageBundle LEVEL_DIALOGUE = new MessageBundle("i18n/TestLevelDialogue");
-  private static final MessageBundle DEATH_DIALOGUE = new MessageBundle("i18n/TestDeathDialogue");
-  private static final MessageBundle NAME = new MessageBundle("i18n/TestShipName");
+  private static final ResourceKeyBundle LEVEL_DIALOGUE = new ResourceKeyBundle(
+      "i18n/TestLevelDialogue");
+  private static final ResourceKeyBundle DEATH_DIALOGUE = new ResourceKeyBundle(
+      "i18n/TestDeathDialogue");
+  private static final ResourceKeyBundle NAME = new ResourceKeyBundle("i18n/TestShipName");
 
   @Mock
   private DataConfig dataConfig;
@@ -58,10 +60,10 @@ public class ScriptLoaderTest {
     List<Dialogue> start1Dialogues = start1Script.get().getDialogues();
     assertThat(start1Dialogues).hasSize(2);
     assertThat(start1Dialogues.get(0).getName()).isEqualTo(NAME.get("first"));
-    assertThat(start1Dialogues.get(0).getMessage())
+    assertThat(start1Dialogues.get(0).getResourceKey())
         .isEqualTo(LEVEL_DIALOGUE.get("1-START-first-0"));
     assertThat(start1Dialogues.get(1).getName()).isEqualTo(NAME.get("second"));
-    assertThat(start1Dialogues.get(1).getMessage())
+    assertThat(start1Dialogues.get(1).getResourceKey())
         .isEqualTo(LEVEL_DIALOGUE.get("1-START-second-1"));
 
     Optional<ScriptActions> end1Script = script.turnScript(new Turn(1, TurnStage.END));
@@ -69,9 +71,11 @@ public class ScriptLoaderTest {
     List<Dialogue> end1Dialogues = end1Script.get().getDialogues();
     assertThat(end1Dialogues).hasSize(2);
     assertThat(end1Dialogues.get(0).getName()).isEqualTo(NAME.get("third"));
-    assertThat(end1Dialogues.get(0).getMessage()).isEqualTo(LEVEL_DIALOGUE.get("1-END-third-0"));
+    assertThat(end1Dialogues.get(0).getResourceKey())
+        .isEqualTo(LEVEL_DIALOGUE.get("1-END-third-0"));
     assertThat(end1Dialogues.get(1).getName()).isEqualTo(NAME.get("fourth"));
-    assertThat(end1Dialogues.get(1).getMessage()).isEqualTo(LEVEL_DIALOGUE.get("1-END-fourth-1"));
+    assertThat(end1Dialogues.get(1).getResourceKey())
+        .isEqualTo(LEVEL_DIALOGUE.get("1-END-fourth-1"));
 
     Optional<ScriptActions> start2Script = script.turnScript(new Turn(2, TurnStage.START));
     assertThat(start2Script).isAbsent();
@@ -81,7 +85,7 @@ public class ScriptLoaderTest {
     List<Dialogue> start3Dialogues = start3Script.get().getDialogues();
     assertThat(start3Dialogues).hasSize(1);
     assertThat(start3Dialogues.get(0).getName()).isEqualTo(NAME.get("fifth"));
-    assertThat(start3Dialogues.get(0).getMessage())
+    assertThat(start3Dialogues.get(0).getResourceKey())
         .isEqualTo(LEVEL_DIALOGUE.get("3-START-fifth-0"));
 
     assertThat(script.turnScript(new Turn(9001, TurnStage.START))).isAbsent();
@@ -100,14 +104,14 @@ public class ScriptLoaderTest {
     List<Dialogue> deadDialogues = dead.get().getDialogues();
     assertThat(deadDialogues).hasSize(1);
     assertThat(deadDialogues.get(0).getName()).isEqualTo(NAME.get("dead"));
-    assertThat(deadDialogues.get(0).getMessage()).isEqualTo(DEATH_DIALOGUE.get("dead"));
+    assertThat(deadDialogues.get(0).getResourceKey()).isEqualTo(DEATH_DIALOGUE.get("dead"));
 
     Optional<ScriptActions> dead2 = script.deathScript(NAME.get("dead2"));
     assertThat(dead2).isPresent();
     List<Dialogue> dead2Dialogues = dead2.get().getDialogues();
     assertThat(dead2Dialogues).hasSize(1);
     assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
-    assertThat(dead2Dialogues.get(0).getMessage()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
+    assertThat(dead2Dialogues.get(0).getResourceKey()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
 
     assertThat(script.deathScript(NAME.get("never-gonna-give-you-up"))).isAbsent();
   }

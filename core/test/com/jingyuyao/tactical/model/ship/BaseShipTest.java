@@ -9,8 +9,8 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ public class BaseShipTest {
 
   @Test
   public void get_name() {
-    Message name = ship.getName();
+    ResourceKey name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
     assertThat(name.getKey()).isEqualTo(NAME_KEY);
   }

@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
-import com.jingyuyao.tactical.data.MessageLoader;
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.data.TextLoader;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -11,12 +11,12 @@ import javax.inject.Singleton;
 @Singleton
 class ShipStatsPanel extends VisTable {
 
-  private final MessageLoader messageLoader;
+  private final TextLoader textLoader;
 
   @Inject
-  ShipStatsPanel(MessageLoader messageLoader) {
+  ShipStatsPanel(TextLoader textLoader) {
     super(true);
-    this.messageLoader = messageLoader;
+    this.textLoader = textLoader;
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
@@ -32,8 +32,8 @@ class ShipStatsPanel extends VisTable {
     addText(ship.getMoveDistance());
   }
 
-  private void addText(Message message) {
-    add(new VisLabel(messageLoader.get(message)));
+  private void addText(ResourceKey resourceKey) {
+    add(new VisLabel(textLoader.get(resourceKey)));
   }
 
   private void addText(int number) {

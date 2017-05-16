@@ -3,15 +3,14 @@ package com.jingyuyao.tactical.model.resource;
 import com.google.common.base.Objects;
 
 /**
- * This class is used instead of {@link java.util.ResourceBundle} so the view can handle
- * actually getting the messages. The model just need to provide a key (and optional args) for
- * getting the messages. The view is responsible for verifying all the required by the model exists.
+ * This class enables the delegation of getting resources to other packages. The model just need to
+ * provide a key (and optional args) for getting the resources.
  */
-public class MessageBundle {
+public class ResourceKeyBundle {
 
   private final String path;
 
-  public MessageBundle(String path) {
+  public ResourceKeyBundle(String path) {
     this.path = path;
   }
 
@@ -27,10 +26,10 @@ public class MessageBundle {
   }
 
   /**
-   * Create a {@link Message}.
+   * Create a {@link ResourceKey}.
    */
-  public Message get(String key, Object... args) {
-    return new Message(this, key, args);
+  public ResourceKey get(String key, Object... args) {
+    return new ResourceKey(this, key, args);
   }
 
   @Override
@@ -41,7 +40,7 @@ public class MessageBundle {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MessageBundle that = (MessageBundle) o;
+    ResourceKeyBundle that = (ResourceKeyBundle) o;
     return Objects.equal(getPath(), that.getPath());
   }
 

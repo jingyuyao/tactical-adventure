@@ -1,22 +1,22 @@
 package com.jingyuyao.tactical.model.script;
 
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 public class Dialogue {
 
-  private final Message name;
-  private final Message message;
+  private final ResourceKey name;
+  private final ResourceKey resourceKey;
 
-  public Dialogue(Message name, Message message) {
+  public Dialogue(ResourceKey name, ResourceKey resourceKey) {
     this.name = name;
-    this.message = message;
+    this.resourceKey = resourceKey;
   }
 
-  public Message getName() {
+  public ResourceKey getName() {
     return name;
   }
 
-  public Message getMessage() {
-    return message;
+  public ResourceKey getResourceKey() {
+    return resourceKey;
   }
 }

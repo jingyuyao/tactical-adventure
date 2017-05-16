@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Deque;
@@ -25,7 +25,7 @@ public class GameUIModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(Batch.class);
-    requireBinding(MessageLoader.class);
+    requireBinding(TextLoader.class);
   }
 
   @Provides

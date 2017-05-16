@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
@@ -29,7 +29,7 @@ public class StartMenu extends AbstractMenu {
   private final GameState gameState;
   private final DataManager dataManager;
   private final VisLabel infoLabel;
-  private final MessageLoader messageLoader;
+  private final TextLoader textLoader;
 
   @Inject
   StartMenu(
@@ -38,11 +38,11 @@ public class StartMenu extends AbstractMenu {
       @MenuStage Stage stage,
       GameState gameState,
       DataManager dataManager,
-      MessageLoader messageLoader) {
+      TextLoader textLoader) {
     super(gl, input, stage);
     this.gameState = gameState;
     this.dataManager = dataManager;
-    this.messageLoader = messageLoader;
+    this.textLoader = textLoader;
     this.infoLabel = new VisLabel(null, Align.center);
     this.infoLabel.setName("infoLabel");
 
@@ -69,20 +69,20 @@ public class StartMenu extends AbstractMenu {
       LevelProgress levelProgress = levelProgressOptional.get();
       int activePlayers = levelProgress.getActivePlayers().size();
       int activeEnemies = levelProgress.getActiveEnemies().size();
-      progress = messageLoader.get(MenuBundle.HAS_PROGRESS.format(activePlayers, activeEnemies));
+      progress = textLoader.get(MenuBundle.HAS_PROGRESS.format(activePlayers, activeEnemies));
     } else {
-      progress = messageLoader.get(MenuBundle.NO_PROGRESS);
+      progress = textLoader.get(MenuBundle.NO_PROGRESS);
     }
 
     GameSave gameSave = dataManager.loadCurrentSave();
     int level = gameSave.getCurrentLevel();
-    return messageLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
+    return textLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
 
   class PlayButton extends VisTextButton {
 
     PlayButton() {
-      super(messageLoader.get(MenuBundle.PLAY_BTN), "blue", new ChangeListener() {
+      super(textLoader.get(MenuBundle.PLAY_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.play();
@@ -96,7 +96,7 @@ public class StartMenu extends AbstractMenu {
   class ResetButton extends VisTextButton {
 
     ResetButton() {
-      super(messageLoader.get(MenuBundle.RESET_BTN), new ChangeListener() {
+      super(textLoader.get(MenuBundle.RESET_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.reset();

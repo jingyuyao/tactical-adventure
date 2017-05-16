@@ -5,8 +5,8 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 /**
  * A {@link Ship} that can't be controlled.
@@ -41,7 +41,7 @@ class BaseShip implements Ship {
   }
 
   @Override
-  public Message getName() {
+  public ResourceKey getName() {
     return ModelBundle.SHIP_NAME.get(nameKey);
   }
 

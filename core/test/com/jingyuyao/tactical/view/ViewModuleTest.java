@@ -6,7 +6,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ public class ViewModuleTest {
 
   @Bind
   @Mock
-  private MessageLoader messageLoader;
+  private TextLoader textLoader;
   @Bind
   @Mock
   private WorldController worldController;

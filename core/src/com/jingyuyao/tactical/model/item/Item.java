@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 
 /**
@@ -11,9 +11,9 @@ public interface Item {
 
   String getResourceKey();
 
-  Message getName();
+  ResourceKey getName();
 
-  Message getDescription();
+  ResourceKey getDescription();
 
   int getUsageLeft();
 

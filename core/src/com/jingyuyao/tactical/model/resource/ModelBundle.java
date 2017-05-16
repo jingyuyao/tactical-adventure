@@ -1,22 +1,25 @@
 package com.jingyuyao.tactical.model.resource;
 
 /**
- * Contains a list of {@link MessageBundle} for the model.
+ * Contains a list of {@link ResourceKeyBundle} for the model.
  */
 public class ModelBundle {
 
-  public static final MessageBundle ACTION = new MessageBundle("i18n/model/state/Action");
-  public static final MessageBundle DEATH_DIALOGUE =
-      new MessageBundle("i18n/model/script/dialogue/Death");
-  public static final MessageBundle ITEM_NAME = new MessageBundle("i18n/model/item/ItemName");
-  public static final MessageBundle ITEM_DESCRIPTION =
-      new MessageBundle("i18n/model/item/ItemDescription");
-  public static final MessageBundle PERSON_NAME = new MessageBundle("i18n/model/person/PersonName");
-  public static final MessageBundle SHIP_NAME = new MessageBundle("i18n/model/ship/ShipName");
-  public static final MessageBundle TERRAIN_NAME =
-      new MessageBundle("i18n/model/terrain/TerrainName");
+  public static final ResourceKeyBundle ACTION = new ResourceKeyBundle("i18n/model/state/Action");
+  public static final ResourceKeyBundle DEATH_DIALOGUE =
+      new ResourceKeyBundle("i18n/model/script/dialogue/Death");
+  public static final ResourceKeyBundle ITEM_NAME = new ResourceKeyBundle(
+      "i18n/model/item/ItemName");
+  public static final ResourceKeyBundle ITEM_DESCRIPTION =
+      new ResourceKeyBundle("i18n/model/item/ItemDescription");
+  public static final ResourceKeyBundle PERSON_NAME = new ResourceKeyBundle(
+      "i18n/model/person/PersonName");
+  public static final ResourceKeyBundle SHIP_NAME = new ResourceKeyBundle(
+      "i18n/model/ship/ShipName");
+  public static final ResourceKeyBundle TERRAIN_NAME =
+      new ResourceKeyBundle("i18n/model/terrain/TerrainName");
 
-  public static MessageBundle getLevelDialogue(int level) {
-    return new MessageBundle("i18n/model/script/dialogue/Level" + level);
+  public static ResourceKeyBundle getLevelDialogue(int level) {
+    return new ResourceKeyBundle("i18n/model/script/dialogue/Level" + level);
   }
 }

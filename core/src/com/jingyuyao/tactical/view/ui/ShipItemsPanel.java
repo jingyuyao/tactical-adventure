@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -16,12 +16,12 @@ import javax.inject.Singleton;
 @Singleton
 class ShipItemsPanel extends VisTable {
 
-  private final MessageLoader messageLoader;
+  private final TextLoader textLoader;
 
   @Inject
-  ShipItemsPanel(MessageLoader messageLoader) {
+  ShipItemsPanel(TextLoader textLoader) {
     super(true);
-    this.messageLoader = messageLoader;
+    this.textLoader = textLoader;
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
@@ -72,8 +72,8 @@ class ShipItemsPanel extends VisTable {
     addText(item.getDescription());
   }
 
-  private void addText(Message message) {
-    add(new VisLabel(messageLoader.get(message)));
+  private void addText(ResourceKey resourceKey) {
+    add(new VisLabel(textLoader.get(resourceKey)));
   }
 
   private void addText(int number) {
@@ -83,7 +83,7 @@ class ShipItemsPanel extends VisTable {
   private class EquipArmor extends VisTextButton {
 
     private EquipArmor(final Ship ship, final Armor armor) {
-      super(messageLoader.get(UIBundle.EQUIP_BTN), new ChangeListener() {
+      super(textLoader.get(UIBundle.EQUIP_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           ship.equipArmor(armor);
@@ -98,7 +98,7 @@ class ShipItemsPanel extends VisTable {
   private class UnequipArmor extends VisTextButton {
 
     private UnequipArmor(final Ship ship, final Armor armor) {
-      super(messageLoader.get(UIBundle.UNEQUIP_BTN), new ChangeListener() {
+      super(textLoader.get(UIBundle.UNEQUIP_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           ship.unequipArmor(armor);

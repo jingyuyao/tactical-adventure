@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 public interface Ship {
 
@@ -16,7 +16,7 @@ public interface Ship {
 
   String getResourceKey();
 
-  Message getName();
+  ResourceKey getName();
 
   /**
    * Always >= 0.

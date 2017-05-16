@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -19,11 +19,11 @@ import javax.inject.Singleton;
 @ModelBusListener
 class ActionGroup extends VerticalGroup {
 
-  private final MessageLoader messageLoader;
+  private final TextLoader textLoader;
 
   @Inject
-  ActionGroup(MessageLoader messageLoader) {
-    this.messageLoader = messageLoader;
+  ActionGroup(TextLoader textLoader) {
+    this.textLoader = textLoader;
     space(25);
     columnRight();
   }
@@ -31,7 +31,7 @@ class ActionGroup extends VerticalGroup {
   @Subscribe
   void state(State state) {
     for (final Action action : state.getActions()) {
-      String text = messageLoader.get(action.getMessage());
+      String text = textLoader.get(action.getText());
       VisTextButton button = new VisTextButton(text, new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {

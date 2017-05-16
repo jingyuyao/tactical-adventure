@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 /**
  * An {@link Item} that can be used and has a limited number of usages.
@@ -28,12 +28,12 @@ class BaseItem implements Item {
   }
 
   @Override
-  public Message getName() {
+  public ResourceKey getName() {
     return ModelBundle.ITEM_NAME.get(nameKey);
   }
 
   @Override
-  public Message getDescription() {
+  public ResourceKey getDescription() {
     return ModelBundle.ITEM_DESCRIPTION.get(nameKey);
   }
 

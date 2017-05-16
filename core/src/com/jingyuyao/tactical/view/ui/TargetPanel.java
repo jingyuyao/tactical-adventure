@@ -3,11 +3,11 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.resource.Message;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -18,23 +18,23 @@ import javax.inject.Singleton;
 @ModelBusListener
 class TargetPanel extends TextPanel<Battling> {
 
-  private final MessageLoader messageLoader;
+  private final TextLoader textLoader;
 
   @Inject
-  TargetPanel(MessageLoader messageLoader) {
+  TargetPanel(TextLoader textLoader) {
     super(Align.left);
-    this.messageLoader = messageLoader;
+    this.textLoader = textLoader;
   }
 
   @Override
   Optional<String> createText(Battling battling) {
-    StringBuilder builder = new StringBuilder(messageLoader.get(UIBundle.TARGET_PANEL_HEADER));
+    StringBuilder builder = new StringBuilder(textLoader.get(UIBundle.TARGET_PANEL_HEADER));
     for (Cell cell : battling.getBattle().getTarget().getTargetCells()) {
       for (Ship ship : cell.ship().asSet()) {
-        String name = messageLoader.get(ship.getName());
+        String name = textLoader.get(ship.getName());
         int hp = ship.getHp();
-        Message message = UIBundle.TARGET_PANEL_ITEM.format(name, hp);
-        builder.append(messageLoader.get(message));
+        ResourceKey resourceKey = UIBundle.TARGET_PANEL_ITEM.format(name, hp);
+        builder.append(textLoader.get(resourceKey));
       }
     }
     return Optional.of(builder.toString());

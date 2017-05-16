@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.model.item;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,16 +30,16 @@ public class BaseItemTest {
 
   @Test
   public void get_name() {
-    Message message = item.getName();
-    assertThat(message.getBundle()).isSameAs(ModelBundle.ITEM_NAME);
-    assertThat(message.getKey()).isEqualTo(NAME_KEY);
+    ResourceKey resourceKey = item.getName();
+    assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.ITEM_NAME);
+    assertThat(resourceKey.getKey()).isEqualTo(NAME_KEY);
   }
 
   @Test
   public void get_description() {
-    Message message = item.getDescription();
-    assertThat(message.getBundle()).isSameAs(ModelBundle.ITEM_DESCRIPTION);
-    assertThat(message.getKey()).isEqualTo(NAME_KEY);
+    ResourceKey resourceKey = item.getDescription();
+    assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.ITEM_DESCRIPTION);
+    assertThat(resourceKey.getKey()).isEqualTo(NAME_KEY);
   }
 
   @Test

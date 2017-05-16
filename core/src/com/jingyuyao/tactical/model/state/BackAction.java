@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class BackAction implements Action {
 
@@ -12,7 +12,7 @@ class BackAction implements Action {
   }
 
   @Override
-  public Message getMessage() {
+  public ResourceKey getText() {
     return ModelBundle.ACTION.get("back");
   }
 

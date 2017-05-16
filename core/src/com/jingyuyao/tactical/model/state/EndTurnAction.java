@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.resource.Message;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class EndTurnAction implements Action {
 
@@ -12,7 +12,7 @@ class EndTurnAction implements Action {
   }
 
   @Override
-  public Message getMessage() {
+  public ResourceKey getText() {
     return ModelBundle.ACTION.get("end");
   }
 
