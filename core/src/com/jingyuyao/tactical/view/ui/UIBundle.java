@@ -8,6 +8,7 @@ class UIBundle {
   private static final MessageBundle BUNDLE = new MessageBundle("i18n/view/ui/UI");
   static final Message CLOSE_BTN = BUNDLE.get("closeBtn");
   static final Message NEXT_BTN = BUNDLE.get("nextBtn");
+  static final Message PILOT_NAME_HEADER = BUNDLE.get("pilotNameHeader");
   static final Message ITEM_NAME_HEADER = BUNDLE.get("itemNameHeader");
   static final Message ITEM_DURABILITY_HEADER = BUNDLE.get("itemDurabilityHeader");
   static final Message ITEM_DESCRIPTION_HEADER = BUNDLE.get("itemDescriptionHeader");
