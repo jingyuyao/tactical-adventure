@@ -41,14 +41,14 @@ public class Retaliating extends BaseState {
   public void enter() {
     Preconditions.checkState(getTurn().getStage().equals(TurnStage.ENEMY));
     super.enter();
-    retaliate(world.getCharacterSnapshot(), 0);
+    retaliate(world.getShipSnapshot(), 0);
   }
 
   /**
    * Now we code like Racket!
    */
-  private void retaliate(final ImmutableList<Cell> characterSnapshot, final int i) {
-    if (i == characterSnapshot.size()) {
+  private void retaliate(final ImmutableList<Cell> shipSnapshot, final int i) {
+    if (i == shipSnapshot.size()) {
       getTurn().advance();
       post(new Save());
       branchTo(stateFactory.createStartTurn());
@@ -58,11 +58,11 @@ public class Retaliating extends BaseState {
     final Runnable next = new Runnable() {
       @Override
       public void run() {
-        retaliate(characterSnapshot, i + 1);
+        retaliate(shipSnapshot, i + 1);
       }
     };
 
-    Cell enemyCell = characterSnapshot.get(i);
+    Cell enemyCell = shipSnapshot.get(i);
 
     if (enemyCell.enemy().isPresent()) {
       final Enemy enemy = enemyCell.enemy().get();
@@ -77,7 +77,7 @@ public class Retaliating extends BaseState {
     final Optional<Path> pathOpt = retaliation.path();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();
-      path.getOrigin().moveCharacter(path).done(new Runnable() {
+      path.getOrigin().moveShip(path).done(new Runnable() {
         @Override
         public void run() {
           handleBattle(retaliation, next);

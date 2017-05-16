@@ -41,7 +41,7 @@ public class PassiveEnemy extends BaseShip implements Enemy {
       }
     }
 
-    // Don't hit friendly characters?
+    // Don't hit friendly ships?
     return !containsEnemy && containsPlayer;
   }
 }

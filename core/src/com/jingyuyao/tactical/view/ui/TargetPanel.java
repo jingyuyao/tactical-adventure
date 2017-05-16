@@ -30,7 +30,7 @@ class TargetPanel extends TextPanel<Battling> {
   Optional<String> createText(Battling battling) {
     StringBuilder builder = new StringBuilder(messageLoader.get(UIBundle.TARGET_PANEL_HEADER));
     for (Cell cell : battling.getBattle().getTarget().getTargetCells()) {
-      for (Ship ship : cell.character().asSet()) {
+      for (Ship ship : cell.ship().asSet()) {
         String name = messageLoader.get(ship.getName());
         int hp = ship.getHp();
         Message message = UIBundle.TARGET_PANEL_ITEM.format(name, hp);

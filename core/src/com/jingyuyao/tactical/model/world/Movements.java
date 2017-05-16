@@ -48,10 +48,10 @@ public class Movements implements GetNeighbors {
    * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell}
    */
   public Movement distanceFrom(Cell cell) {
-    Preconditions.checkArgument(cell.character().isPresent());
-    Ship ship = cell.character().get();
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Ship ship = cell.ship().get();
     return new Movement(
-        distanceFrom(new CharacterCost(ship), cell, ship.getMoveDistance()));
+        distanceFrom(new ShipCost(ship), cell, ship.getMoveDistance()));
   }
 
   /**
@@ -65,18 +65,18 @@ public class Movements implements GetNeighbors {
     return dijkstra.minPathSearch(this, getEdgeCost, startingCell, distance);
   }
 
-  static class CharacterCost implements GetEdgeCost {
+  static class ShipCost implements GetEdgeCost {
 
     private final Ship walker;
 
-    CharacterCost(Ship walker) {
+    ShipCost(Ship walker) {
       this.walker = walker;
     }
 
     @Override
     public int getEdgeCost(Cell cell) {
       Terrain terrain = cell.getTerrain();
-      if (cell.character().isPresent() || !terrain.canHold(walker)) {
+      if (cell.ship().isPresent() || !terrain.canHold(walker)) {
         return GetEdgeCost.NO_EDGE;
       }
       return terrain.getMovementPenalty();

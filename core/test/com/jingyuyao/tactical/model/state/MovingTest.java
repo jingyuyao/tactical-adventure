@@ -96,7 +96,7 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(cell2).instantMoveCharacter(cell);
+    verify(cell2).instantMoveShip(cell);
   }
 
   @Test
@@ -149,13 +149,13 @@ public class MovingTest {
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
-    when(cell.moveCharacter(path)).thenReturn(Promise.immediate());
+    when(cell.moveShip(path)).thenReturn(Promise.immediate());
 
     moving.select(cell2);
 
     InOrder inOrder = Mockito.inOrder(player, cell, worldState);
     inOrder.verify(worldState).goTo(transition);
-    inOrder.verify(cell).moveCharacter(path);
+    inOrder.verify(cell).moveShip(path);
     inOrder.verify(worldState).goTo(moved);
     verifyNoMoreInteractions(worldState);
   }

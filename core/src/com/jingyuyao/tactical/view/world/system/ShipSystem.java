@@ -16,20 +16,20 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
-import com.jingyuyao.tactical.model.event.MoveCharacter;
-import com.jingyuyao.tactical.model.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.event.InstantMoveShip;
+import com.jingyuyao.tactical.model.event.MoveShip;
+import com.jingyuyao.tactical.model.event.RemoveShip;
+import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Direction;
-import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
+import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
@@ -39,42 +39,42 @@ import javax.inject.Singleton;
 
 @Singleton
 @ModelBusListener
-class CharacterSystem extends EntitySystem {
+class ShipSystem extends EntitySystem {
 
   private final Markers markers;
   private final Animations animations;
-  private final ComponentMapper<CharacterComponent> characterMapper;
+  private final ComponentMapper<ShipComponent> shipMapper;
   private final ComponentMapper<Frame> frameMapper;
   private ImmutableArray<Entity> entities;
 
   @Inject
-  CharacterSystem(
+  ShipSystem(
       Markers markers,
       Animations animations,
-      ComponentMapper<CharacterComponent> characterMapper,
+      ComponentMapper<ShipComponent> shipMapper,
       ComponentMapper<Frame> frameMapper) {
-    super(SystemPriority.CHARACTER);
+    super(SystemPriority.SHIP);
     this.markers = markers;
     this.animations = animations;
-    this.characterMapper = characterMapper;
+    this.shipMapper = shipMapper;
     this.frameMapper = frameMapper;
   }
 
   @Override
   public void addedToEngine(Engine engine) {
-    entities = engine.getEntitiesFor(Family.all(CharacterComponent.class).get());
+    entities = engine.getEntitiesFor(Family.all(ShipComponent.class).get());
   }
 
   @Subscribe
-  void spawnCharacter(SpawnCharacter spawnCharacter) {
-    Cell cell = spawnCharacter.getObject();
-    Preconditions.checkArgument(cell.character().isPresent());
+  void spawnShip(SpawnShip spawnShip) {
+    Cell cell = spawnShip.getObject();
+    Preconditions.checkArgument(cell.ship().isPresent());
 
     Position position = getEngine().createComponent(Position.class);
-    position.set(cell.getCoordinate(), WorldZIndex.CHARACTER);
+    position.set(cell.getCoordinate(), WorldZIndex.SHIP);
 
-    CharacterComponent characterComponent = getEngine().createComponent(CharacterComponent.class);
-    characterComponent.setShip(cell.character().get());
+    ShipComponent shipComponent = getEngine().createComponent(ShipComponent.class);
+    shipComponent.setShip(cell.ship().get());
 
     Frame frame = getEngine().createComponent(Frame.class);
     if (cell.player().isPresent()) {
@@ -85,9 +85,9 @@ class CharacterSystem extends EntitySystem {
 
     Entity entity = getEngine().createEntity();
     entity.add(position);
-    entity.add(characterComponent);
+    entity.add(shipComponent);
     entity.add(frame);
-    entity.add(animations.getShip(cell.character().get().getResourceKey()));
+    entity.add(animations.getShip(cell.ship().get().getResourceKey()));
     for (Player player : cell.player().asSet()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
       playerComponent.setPlayer(player);
@@ -98,26 +98,26 @@ class CharacterSystem extends EntitySystem {
   }
 
   @Subscribe
-  void removeCharacter(RemoveCharacter removeCharacter) {
-    Entity entity = get(removeCharacter.getObject());
+  void removeShip(RemoveShip removeShip) {
+    Entity entity = get(removeShip.getObject());
     entity.add(getEngine().createComponent(Remove.class));
   }
 
   @Subscribe
-  void instantMoveCharacter(InstantMoveCharacter instantMoveCharacter) {
-    Entity entity = get(instantMoveCharacter.getShip());
-    Coordinate destination = instantMoveCharacter.getDestination().getCoordinate();
+  void instantMoveShip(InstantMoveShip instantMoveShip) {
+    Entity entity = get(instantMoveShip.getShip());
+    Coordinate destination = instantMoveShip.getDestination().getCoordinate();
     Position position = getEngine().createComponent(Position.class);
-    position.set(destination, WorldZIndex.CHARACTER);
+    position.set(destination, WorldZIndex.SHIP);
     entity.add(position);
   }
 
   @Subscribe
-  void moveCharacter(MoveCharacter moveCharacter) {
-    Entity entity = get(moveCharacter.getShip());
+  void moveShip(MoveShip moveShip) {
+    Entity entity = get(moveShip.getShip());
     Moving moving = getEngine().createComponent(Moving.class);
-    moving.setPath(smoothPath(moveCharacter.getPath().getTrack()));
-    moving.setPromise(moveCharacter.getPromise());
+    moving.setPath(smoothPath(moveShip.getPath().getTrack()));
+    moving.setPromise(moveShip.getPromise());
     entity.add(moving);
   }
 
@@ -146,7 +146,7 @@ class CharacterSystem extends EntitySystem {
     return Iterables.find(entities, new Predicate<Entity>() {
       @Override
       public boolean apply(Entity input) {
-        CharacterComponent component = characterMapper.get(input);
+        ShipComponent component = shipMapper.get(input);
         return component != null && component.getShip().equals(ship);
       }
     });
@@ -167,7 +167,7 @@ class CharacterSystem extends EntitySystem {
   }
 
   /**
-   * Smooth out a track for animating the character. Removes any intermediate coordinate
+   * Smooth out a track for animating the ship. Removes any intermediate coordinate
    * that are part of the same straight line. This will reduce the amount of animation hiccups.
    */
   private List<Coordinate> smoothPath(List<Cell> track) {

@@ -3,12 +3,12 @@ package com.jingyuyao.tactical.model.event;
 import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 
-public class InstantMoveCharacter {
+public class InstantMoveShip {
 
   private final Ship ship;
   private final Cell destination;
 
-  public InstantMoveCharacter(Ship ship, Cell destination) {
+  public InstantMoveShip(Ship ship, Cell destination) {
     this.ship = ship;
     this.destination = destination;
   }

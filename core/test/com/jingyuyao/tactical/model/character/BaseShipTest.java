@@ -46,7 +46,7 @@ public class BaseShipTest {
   @Test
   public void get_name() {
     Message name = ship.getName();
-    assertThat(name.getBundle()).isSameAs(ModelBundle.CHARACTER_NAME);
+    assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
     assertThat(name.getKey()).isEqualTo(NAME_KEY);
   }
 

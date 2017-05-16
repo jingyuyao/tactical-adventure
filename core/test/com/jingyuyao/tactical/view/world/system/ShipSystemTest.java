@@ -15,22 +15,22 @@ import com.jingyuyao.tactical.model.character.Player;
 import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.InstantMoveCharacter;
-import com.jingyuyao.tactical.model.event.MoveCharacter;
+import com.jingyuyao.tactical.model.event.InstantMoveShip;
+import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
-import com.jingyuyao.tactical.model.event.RemoveCharacter;
-import com.jingyuyao.tactical.model.event.SpawnCharacter;
+import com.jingyuyao.tactical.model.event.RemoveShip;
+import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Path;
-import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
+import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
@@ -42,7 +42,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CharacterSystemTest {
+public class ShipSystemTest {
 
   private static final Coordinate C1 = new Coordinate(5, 5);
   private static final Coordinate C2 = new Coordinate(6, 6);
@@ -74,13 +74,13 @@ public class CharacterSystemTest {
   @Mock
   private WorldTexture texture;
   @Mock
-  private SpawnCharacter spawnCharacter;
+  private SpawnShip spawnShip;
   @Mock
-  private RemoveCharacter removeCharacter;
+  private RemoveShip removeShip;
   @Mock
-  private InstantMoveCharacter instantMoveCharacter;
+  private InstantMoveShip instantMoveShip;
   @Mock
-  private MoveCharacter moveCharacter;
+  private MoveShip moveShip;
   @Mock
   private PlayerState playerState;
   @Mock
@@ -93,32 +93,32 @@ public class CharacterSystemTest {
   private Promise promise;
 
   private Engine engine;
-  private CharacterSystem characterSystem;
+  private ShipSystem shipSystem;
 
   @Before
   public void setUp() {
     engine = new PooledEngine();
-    characterSystem =
-        new CharacterSystem(
+    shipSystem =
+        new ShipSystem(
             markers,
             animations,
-            ComponentMapper.getFor(CharacterComponent.class),
+            ComponentMapper.getFor(ShipComponent.class),
             ComponentMapper.getFor(Frame.class));
-    assertThat(characterSystem.priority).isEqualTo(SystemPriority.CHARACTER);
-    engine.addSystem(characterSystem);
+    assertThat(shipSystem.priority).isEqualTo(SystemPriority.SHIP);
+    engine.addSystem(shipSystem);
   }
 
   @Test
   public void spawn_player() {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
-    when(spawnCharacter.getObject()).thenReturn(cell);
+    when(spawnShip.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.character()).thenReturn(Optional.<Ship>of(player));
+    when(cell.ship()).thenReturn(Optional.<Ship>of(player));
     when(player.getResourceKey()).thenReturn("me");
     when(animations.getShip("me")).thenReturn(animation);
 
-    characterSystem.spawnCharacter(spawnCharacter);
+    shipSystem.spawnShip(spawnShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -127,15 +127,15 @@ public class CharacterSystemTest {
     assertThat(position).isNotNull();
     assertThat(position.getX()).isEqualTo((float) C1.getX());
     assertThat(position.getY()).isEqualTo((float) C1.getY());
-    assertThat(position.getZ()).isEqualTo(WorldZIndex.CHARACTER);
+    assertThat(position.getZ()).isEqualTo(WorldZIndex.SHIP);
     Frame frame = entity.getComponent(Frame.class);
     assertThat(frame).isNotNull();
     assertThat(frame.getColor()).isEqualTo(Colors.BLUE_300);
     LoopAnimation loopAnimation = entity.getComponent(LoopAnimation.class);
     assertThat(loopAnimation).isEqualTo(animation);
-    CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
-    assertThat(characterComponent).isNotNull();
-    assertThat(characterComponent.getShip()).isEqualTo(player);
+    ShipComponent shipComponent = entity.getComponent(ShipComponent.class);
+    assertThat(shipComponent).isNotNull();
+    assertThat(shipComponent.getShip()).isEqualTo(player);
     PlayerComponent playerComponent = entity.getComponent(PlayerComponent.class);
     assertThat(playerComponent).isNotNull();
     assertThat(playerComponent.getPlayer()).isEqualTo(player);
@@ -144,15 +144,15 @@ public class CharacterSystemTest {
   @Test
   public void spawn_enemy() {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
-    when(spawnCharacter.getObject()).thenReturn(cell);
+    when(spawnShip.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.enemy()).thenReturn(Optional.of(enemy));
     when(cell.player()).thenReturn(Optional.<Player>absent());
-    when(cell.character()).thenReturn(Optional.<Ship>of(enemy));
+    when(cell.ship()).thenReturn(Optional.<Ship>of(enemy));
     when(enemy.getResourceKey()).thenReturn("me");
     when(animations.getShip("me")).thenReturn(animation);
 
-    characterSystem.spawnCharacter(spawnCharacter);
+    shipSystem.spawnShip(spawnShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -161,24 +161,24 @@ public class CharacterSystemTest {
     assertThat(position).isNotNull();
     assertThat(position.getX()).isEqualTo((float) C1.getX());
     assertThat(position.getY()).isEqualTo((float) C1.getY());
-    assertThat(position.getZ()).isEqualTo(WorldZIndex.CHARACTER);
+    assertThat(position.getZ()).isEqualTo(WorldZIndex.SHIP);
     Frame frame = entity.getComponent(Frame.class);
     assertThat(frame).isNotNull();
     assertThat(frame.getColor()).isEqualTo(Colors.RED_500);
     LoopAnimation loopAnimation = entity.getComponent(LoopAnimation.class);
     assertThat(loopAnimation).isEqualTo(animation);
-    CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
-    assertThat(characterComponent).isNotNull();
-    assertThat(characterComponent.getShip()).isEqualTo(enemy);
+    ShipComponent shipComponent = entity.getComponent(ShipComponent.class);
+    assertThat(shipComponent).isNotNull();
+    assertThat(shipComponent.getShip()).isEqualTo(enemy);
     assertThat(entity.getComponent(PlayerComponent.class)).isNull();
   }
 
   @Test
   public void remove_character() {
     spawn_enemy();
-    when(removeCharacter.getObject()).thenReturn(enemy);
+    when(removeShip.getObject()).thenReturn(enemy);
 
-    characterSystem.removeCharacter(removeCharacter);
+    shipSystem.removeShip(removeShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -189,11 +189,11 @@ public class CharacterSystemTest {
   @Test
   public void instant_move() {
     spawn_player();
-    when(instantMoveCharacter.getShip()).thenReturn(player);
-    when(instantMoveCharacter.getDestination()).thenReturn(cell2);
+    when(instantMoveShip.getShip()).thenReturn(player);
+    when(instantMoveShip.getDestination()).thenReturn(cell2);
     when(cell2.getCoordinate()).thenReturn(C2);
 
-    characterSystem.instantMoveCharacter(instantMoveCharacter);
+    shipSystem.instantMoveShip(instantMoveShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -202,22 +202,22 @@ public class CharacterSystemTest {
     assertThat(position).isNotNull();
     assertThat(position.getX()).isEqualTo((float) C2.getX());
     assertThat(position.getY()).isEqualTo((float) C2.getY());
-    assertThat(position.getZ()).isEqualTo(WorldZIndex.CHARACTER);
+    assertThat(position.getZ()).isEqualTo(WorldZIndex.SHIP);
   }
 
   @Test
   public void move() {
     spawn_player();
-    when(moveCharacter.getShip()).thenReturn(player);
-    when(moveCharacter.getPromise()).thenReturn(promise);
-    when(moveCharacter.getPath()).thenReturn(path);
+    when(moveShip.getShip()).thenReturn(player);
+    when(moveShip.getPromise()).thenReturn(promise);
+    when(moveShip.getPath()).thenReturn(path);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell3, cell4, cell5, cell6));
     when(cell3.getCoordinate()).thenReturn(T1);
     when(cell4.getCoordinate()).thenReturn(T2);
     when(cell5.getCoordinate()).thenReturn(T3);
     when(cell6.getCoordinate()).thenReturn(T4);
 
-    characterSystem.moveCharacter(moveCharacter);
+    shipSystem.moveShip(moveShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -235,7 +235,7 @@ public class CharacterSystemTest {
     when(playerState.getPlayer()).thenReturn(player);
     when(markers.getActivated()).thenReturn(texture);
 
-    characterSystem.playerState(playerState);
+    shipSystem.playerState(playerState);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -244,7 +244,7 @@ public class CharacterSystemTest {
     assertThat(frame).isNotNull();
     assertThat(frame.getOverlays()).containsExactly(texture);
 
-    characterSystem.playerState(playerState);
+    shipSystem.playerState(playerState);
 
     assertThat(frame.getOverlays()).containsExactly(texture);
   }
@@ -255,7 +255,7 @@ public class CharacterSystemTest {
     when(activatedEnemy.getObject()).thenReturn(enemy);
     when(markers.getActivated()).thenReturn(texture);
 
-    characterSystem.activatedEnemy(activatedEnemy);
+    shipSystem.activatedEnemy(activatedEnemy);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -264,7 +264,7 @@ public class CharacterSystemTest {
     assertThat(frame).isNotNull();
     assertThat(frame.getOverlays()).containsExactly(texture);
 
-    characterSystem.activatedEnemy(activatedEnemy);
+    shipSystem.activatedEnemy(activatedEnemy);
 
     assertThat(frame.getOverlays()).containsExactly(texture);
   }
@@ -275,7 +275,7 @@ public class CharacterSystemTest {
     when(activatedEnemy.getObject()).thenReturn(enemy);
     when(markers.getActivated()).thenReturn(texture);
 
-    characterSystem.activatedEnemy(activatedEnemy);
+    shipSystem.activatedEnemy(activatedEnemy);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -284,7 +284,7 @@ public class CharacterSystemTest {
     assertThat(frame).isNotNull();
     assertThat(frame.getOverlays()).containsExactly(texture);
 
-    characterSystem.exitState(exitState);
+    shipSystem.exitState(exitState);
 
     assertThat(frame.getOverlays()).isEmpty();
   }

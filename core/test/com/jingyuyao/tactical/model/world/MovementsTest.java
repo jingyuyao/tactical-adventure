@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.character.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
-import com.jingyuyao.tactical.model.world.Movements.CharacterCost;
+import com.jingyuyao.tactical.model.world.Movements.ShipCost;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,34 +37,34 @@ public class MovementsTest {
   }
 
   @Test
-  public void edge_cost_function_has_character() {
-    when(cell.character()).thenReturn(Optional.of(ship));
+  public void edge_cost_function_has_ship() {
+    when(cell.ship()).thenReturn(Optional.of(ship));
     when(cell.getTerrain()).thenReturn(terrain);
 
-    GetEdgeCost function = new CharacterCost(ship);
+    GetEdgeCost function = new ShipCost(ship);
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(GetEdgeCost.NO_EDGE);
   }
 
   @Test
   public void edge_cost_function_cannot_hold() {
-    when(cell.character()).thenReturn(Optional.<Ship>absent());
+    when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(ship)).thenReturn(false);
 
-    GetEdgeCost function = new CharacterCost(ship);
+    GetEdgeCost function = new ShipCost(ship);
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(GetEdgeCost.NO_EDGE);
   }
 
   @Test
   public void edge_cost_function_penalty() {
-    when(cell.character()).thenReturn(Optional.<Ship>absent());
+    when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(ship)).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(10);
 
-    GetEdgeCost function = new CharacterCost(ship);
+    GetEdgeCost function = new ShipCost(ship);
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(10);
   }

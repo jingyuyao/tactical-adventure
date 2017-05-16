@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.character.Ship;
 public interface Consumable extends Item {
 
   /**
-   * Apply this {@link Item}'s effects to {@code character}.
+   * Apply this {@link Item}'s effects to {@code ship}.
    */
   void apply(Ship ship);
 }

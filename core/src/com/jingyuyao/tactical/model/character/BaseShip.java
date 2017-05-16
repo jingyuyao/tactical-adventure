@@ -41,7 +41,7 @@ class BaseShip implements Ship {
 
   @Override
   public Message getName() {
-    return ModelBundle.CHARACTER_NAME.get(nameKey);
+    return ModelBundle.SHIP_NAME.get(nameKey);
   }
 
   @Override

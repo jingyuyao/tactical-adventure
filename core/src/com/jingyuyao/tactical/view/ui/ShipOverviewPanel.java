@@ -9,17 +9,17 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterOverviewPanel extends ButtonPanel<Ship> {
+class ShipOverviewPanel extends ButtonPanel<Ship> {
 
-  private final CharacterDetailLayer characterDetailLayer;
+  private final ShipDetailLayer shipDetailLayer;
   private final MessageLoader messageLoader;
 
   @Inject
-  CharacterOverviewPanel(
-      CharacterDetailLayer characterDetailLayer,
+  ShipOverviewPanel(
+      ShipDetailLayer shipDetailLayer,
       MessageLoader messageLoader) {
     super(Align.right);
-    this.characterDetailLayer = characterDetailLayer;
+    this.shipDetailLayer = shipDetailLayer;
     this.messageLoader = messageLoader;
   }
 
@@ -36,6 +36,6 @@ class CharacterOverviewPanel extends ButtonPanel<Ship> {
 
   @Override
   void click(Ship ship) {
-    characterDetailLayer.display(ship);
+    shipDetailLayer.display(ship);
   }
 }

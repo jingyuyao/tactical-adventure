@@ -39,7 +39,7 @@ public class Waiting extends BaseState {
 
     boolean levelComplete = true;
     boolean levelFailed = true;
-    for (Cell cell : world.getCharacterSnapshot()) {
+    for (Cell cell : world.getShipSnapshot()) {
       if (cell.player().isPresent()) {
         levelFailed = false;
       }
@@ -50,7 +50,7 @@ public class Waiting extends BaseState {
     }
 
     if (levelFailed || levelComplete) {
-      for (Cell cell : world.getCharacterSnapshot()) {
+      for (Cell cell : world.getShipSnapshot()) {
         for (Player player : cell.player().asSet()) {
           player.setActionable(true);
         }

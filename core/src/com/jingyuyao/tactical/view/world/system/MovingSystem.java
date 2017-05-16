@@ -61,7 +61,7 @@ class MovingSystem extends IteratingSystem {
     float py = position.getY();
     float tx = target.getX();
     float ty = target.getY();
-    float distance = delta * worldConfig.getCharacterMoveUnitPerSec();
+    float distance = delta * worldConfig.getShipMoveUnitPerSec();
 
     if (px < tx) {
       position.setX(Math.min(px + distance, tx));

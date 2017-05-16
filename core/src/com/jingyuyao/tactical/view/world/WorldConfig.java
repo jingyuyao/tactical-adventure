@@ -15,7 +15,7 @@ public class WorldConfig {
     return 32;
   }
 
-  public float getCharacterMoveUnitPerSec() {
+  public float getShipMoveUnitPerSec() {
     return 8f;
   }
 

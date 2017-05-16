@@ -7,12 +7,12 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.view.world.WorldConfig;
-import com.jingyuyao.tactical.view.world.component.CharacterComponent;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Markers;
@@ -48,8 +48,7 @@ public class SystemModuleTest {
   @Bind
   private ComponentMapper<Moving> movingMapper = ComponentMapper.getFor(Moving.class);
   @Bind
-  private ComponentMapper<CharacterComponent> characterMapper =
-      ComponentMapper.getFor(CharacterComponent.class);
+  private ComponentMapper<ShipComponent> shipMapper = ComponentMapper.getFor(ShipComponent.class);
   @Bind
   private ComponentMapper<PlayerComponent> playerMapper =
       ComponentMapper.getFor(PlayerComponent.class);
@@ -59,7 +58,7 @@ public class SystemModuleTest {
   @Inject
   private AnimationSystem animationSystem;
   @Inject
-  private CharacterSystem characterSystem;
+  private ShipSystem shipSystem;
   @Inject
   private EffectsSystem effectsSystem;
   @Inject

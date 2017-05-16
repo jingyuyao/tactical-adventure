@@ -51,11 +51,11 @@ public class LevelProgress {
     return inactivePlayers;
   }
 
-  public Map<Coordinate, Ship> getActiveCharacters() {
-    Map<Coordinate, Ship> characterMap = new HashMap<>();
-    characterMap.putAll(activePlayers);
-    characterMap.putAll(activeEnemies);
-    return characterMap;
+  public Map<Coordinate, Ship> getActiveShips() {
+    Map<Coordinate, Ship> shipMap = new HashMap<>();
+    shipMap.putAll(activePlayers);
+    shipMap.putAll(activeEnemies);
+    return shipMap;
   }
 
   public Turn getTurn() {
@@ -65,7 +65,7 @@ public class LevelProgress {
   void update(World world, WorldState worldState) {
     activePlayers.clear();
     activeEnemies.clear();
-    for (Cell cell : world.getCharacterSnapshot()) {
+    for (Cell cell : world.getShipSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
       for (Player player : cell.player().asSet()) {
         activePlayers.put(coordinate, player);

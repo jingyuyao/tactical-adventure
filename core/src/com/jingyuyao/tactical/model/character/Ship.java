@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 public interface Ship {
 
   /**
-   * Return whether or not this character can currently be controlled by the player.
+   * Return whether or not this ship can currently be controlled by the player.
    */
   boolean canControl();
 

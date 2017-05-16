@@ -18,7 +18,7 @@ public class Systems {
   @Inject
   Systems(
       AnimationSystem animationSystem,
-      CharacterSystem characterSystem,
+      ShipSystem shipSystem,
       EffectsSystem effectsSystem,
       MarkerSystem markerSystem,
       MovingSystem movingSystem,
@@ -27,7 +27,7 @@ public class Systems {
       RenderSystem renderSystem) {
     this.systems = ImmutableList.of(
         animationSystem,
-        characterSystem,
+        shipSystem,
         effectsSystem,
         markerSystem,
         movingSystem,

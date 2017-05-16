@@ -46,11 +46,11 @@ public class MovingSystemTest {
     Position position = engine.createComponent(Position.class);
     position.setX(10f);
     position.setY(10f);
-    position.setZ(WorldZIndex.CHARACTER);
+    position.setZ(WorldZIndex.SHIP);
     Moving moving = engine.createComponent(Moving.class);
     moving.setPromise(new Promise());
     moving.setPath(ImmutableList.of(C1, C2));
-    when(worldConfig.getCharacterMoveUnitPerSec()).thenReturn(1f);
+    when(worldConfig.getShipMoveUnitPerSec()).thenReturn(1f);
     Entity entity = engine.createEntity();
     entity.add(position);
     entity.add(moving);

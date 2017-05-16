@@ -87,9 +87,9 @@ public class DataManager {
     }
 
     Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
-    Map<Coordinate, Ship> characterMap = levelProgress.getActiveCharacters();
+    Map<Coordinate, Ship> shipMap = levelProgress.getActiveShips();
     Turn turn = levelProgress.getTurn();
-    return new LoadedLevel(terrainMap, characterMap, turn, scriptLoader.load(level));
+    return new LoadedLevel(terrainMap, shipMap, turn, scriptLoader.load(level));
   }
 
   public void saveProgress(World world, WorldState worldState) {

@@ -37,11 +37,11 @@ public class Battle {
    * Executes the logic of this battle.
    */
   public void execute() {
-    for (Ship attacker : attackerCell.character().asSet()) {
+    for (Ship attacker : attackerCell.ship().asSet()) {
       weapon.apply(attacker, target);
       attacker.useWeapon(weapon);
       for (Cell cell : target.getTargetCells()) {
-        for (Ship ship : cell.character().asSet()) {
+        for (Ship ship : cell.ship().asSet()) {
           ship.useEquippedArmors();
         }
         checkDeath(cell);
@@ -51,9 +51,9 @@ public class Battle {
   }
 
   private void checkDeath(Cell cell) {
-    for (Ship ship : cell.character().asSet()) {
+    for (Ship ship : cell.ship().asSet()) {
       if (ship.getHp() == 0) {
-        cell.removeCharacter();
+        cell.removeShip();
         death.add(ship);
       }
     }

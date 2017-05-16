@@ -58,11 +58,11 @@ class BaseWeapon extends BaseItem implements Weapon {
   }
 
   /**
-   * Default implementation damage the character in the target cell if there any.
+   * Default implementation damage the ship in the target cell if there any.
    * Override me to change damage application.
    */
   void damage(Ship attacker, Cell target, int damage) {
-    for (Ship defender : target.character().asSet()) {
+    for (Ship defender : target.ship().asSet()) {
       defender.damageBy(damage);
     }
   }
@@ -80,7 +80,7 @@ class BaseWeapon extends BaseItem implements Weapon {
    */
   void postDamage(Ship attacker, Cell target, int damage) {
     // can't life steal if there is nobody to steal it from
-    if (target.character().isPresent()) {
+    if (target.ship().isPresent()) {
       attacker.healBy((int) (lifeStealRate * damage));
     }
     attacker.damageBy((int) (recoilRate * damage));
@@ -88,12 +88,12 @@ class BaseWeapon extends BaseItem implements Weapon {
 
   /**
    * Get the damage attack to inflict upon target cell for this weapon.
-   * Default implementation reduces attack power by the character's defense if there are any.
+   * Default implementation reduces attack power by the ship's defense if there are any.
    * Override me to change damage calculation.
    */
   int getDamage(Ship attacker, Cell target) {
-    if (target.character().isPresent()) {
-      return Math.max(attackPower - target.character().get().getDefense(), 0);
+    if (target.ship().isPresent()) {
+      return Math.max(attackPower - target.ship().get().getDefense(), 0);
     }
     return 0;
   }

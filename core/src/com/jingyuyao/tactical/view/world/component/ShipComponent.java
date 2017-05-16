@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.jingyuyao.tactical.model.character.Ship;
 
-public class CharacterComponent implements Component, Poolable {
+public class ShipComponent implements Component, Poolable {
 
   private Ship ship;
 

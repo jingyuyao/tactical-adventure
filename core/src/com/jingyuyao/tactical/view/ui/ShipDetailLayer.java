@@ -11,23 +11,23 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterDetailLayer extends VisTable {
+class ShipDetailLayer extends VisTable {
 
   private final LayerManager layerManager;
-  private final CharacterStatsPanel characterStatsPanel;
-  private final CharacterItemsPanel characterItemsPanel;
+  private final ShipStatsPanel shipStatsPanel;
+  private final ShipItemsPanel shipItemsPanel;
   private final MessageLoader messageLoader;
 
   @Inject
-  CharacterDetailLayer(
+  ShipDetailLayer(
       LayerManager layerManager,
-      CharacterStatsPanel characterStatsPanel,
-      CharacterItemsPanel characterItemsPanel,
+      ShipStatsPanel shipStatsPanel,
+      ShipItemsPanel shipItemsPanel,
       MessageLoader messageLoader) {
     super(true);
     this.layerManager = layerManager;
-    this.characterStatsPanel = characterStatsPanel;
-    this.characterItemsPanel = characterItemsPanel;
+    this.shipStatsPanel = shipStatsPanel;
+    this.shipItemsPanel = shipItemsPanel;
     this.messageLoader = messageLoader;
     setFillParent(true);
     setBackground("window-bg");
@@ -35,8 +35,8 @@ class CharacterDetailLayer extends VisTable {
 
     VisTable scrollTable = new VisTable(true);
     scrollTable.defaults().top().left();
-    scrollTable.add(characterStatsPanel);
-    scrollTable.add(characterItemsPanel).expand().fill();
+    scrollTable.add(shipStatsPanel);
+    scrollTable.add(shipItemsPanel).expand().fill();
 
     VisScrollPane scrollPane = new VisScrollPane(scrollTable);
     scrollPane.setScrollingDisabled(true, false);
@@ -46,8 +46,8 @@ class CharacterDetailLayer extends VisTable {
   }
 
   void display(Ship ship) {
-    characterStatsPanel.display(ship);
-    characterItemsPanel.display(ship);
+    shipStatsPanel.display(ship);
+    shipItemsPanel.display(ship);
     layerManager.open(this);
   }
 
@@ -57,7 +57,7 @@ class CharacterDetailLayer extends VisTable {
       super(messageLoader.get(UIBundle.CLOSE_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-          layerManager.close(CharacterDetailLayer.this);
+          layerManager.close(ShipDetailLayer.this);
         }
       });
       pad(20);

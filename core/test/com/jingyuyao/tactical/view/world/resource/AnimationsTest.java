@@ -24,13 +24,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AnimationsTest {
 
-  private static final String CHARACTER_ASSET_PREFIX = "character/";
-  private static final String CHARACTER_NAME = "me";
-  private static final String CHARACTER_ASSET = CHARACTER_ASSET_PREFIX + CHARACTER_NAME;
+  private static final String SHIP_ASSET_PREFIX = "ship/";
+  private static final String SHIP_NAME = "me";
+  private static final String SHIP_ASSET = SHIP_ASSET_PREFIX + SHIP_NAME;
   private static final String WEAPON_ASSET_PREFIX = "weapon/";
   private static final String WEAPON_NAME = "sword";
   private static final String WEAPON_ASSET = WEAPON_ASSET_PREFIX + WEAPON_NAME;
-  private static final int CHARACTER_IDLE_FPS = 5;
+  private static final int SHIP_IDLE_FPS = 5;
   private static final int WEAPON_FPS = 10;
 
   @Mock
@@ -67,47 +67,47 @@ public class AnimationsTest {
   }
 
   @Test
-  public void get_character_empty_no_regions() {
-    when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(resourceConfig.getShipIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
-    when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
-    when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
-    when(textureAtlas.findRegions(CHARACTER_ASSET)).thenReturn(atlasRegions);
+  public void get_ship_empty_no_regions() {
+    when(resourceConfig.getShipAssetPrefix()).thenReturn(SHIP_ASSET_PREFIX);
+    when(resourceConfig.getShipIdleFPS()).thenReturn(SHIP_IDLE_FPS);
+    when(loopAnimationCache.containsKey(SHIP_ASSET)).thenReturn(false);
+    when(worldTextureCache.containsKey(SHIP_ASSET)).thenReturn(false);
+    when(textureAtlas.findRegions(SHIP_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
-    LoopAnimation animation = animations.getShip(CHARACTER_NAME);
+    LoopAnimation animation = animations.getShip(SHIP_NAME);
 
-    verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
-    verify(worldTextureCache).put(eq(CHARACTER_ASSET), worldTexturesCaptor.capture());
+    verify(loopAnimationCache).put(eq(SHIP_ASSET), animationCaptor.capture());
+    verify(worldTextureCache).put(eq(SHIP_ASSET), worldTexturesCaptor.capture());
     assertThat(animationCaptor.getValue()).isSameAs(animation);
     assertThat(worldTexturesCaptor.getValue()).asList().containsExactly(worldTexture);
   }
 
   @Test
-  public void get_character_empty_has_regions() {
-    when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(resourceConfig.getShipIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
-    when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
-    when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
+  public void get_ship_empty_has_regions() {
+    when(resourceConfig.getShipAssetPrefix()).thenReturn(SHIP_ASSET_PREFIX);
+    when(resourceConfig.getShipIdleFPS()).thenReturn(SHIP_IDLE_FPS);
+    when(loopAnimationCache.containsKey(SHIP_ASSET)).thenReturn(false);
+    when(worldTextureCache.containsKey(SHIP_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
-    when(worldTextureCache.get(CHARACTER_ASSET)).thenReturn(cached);
+    when(worldTextureCache.get(SHIP_ASSET)).thenReturn(cached);
 
-    LoopAnimation animation = animations.getShip(CHARACTER_NAME);
+    LoopAnimation animation = animations.getShip(SHIP_NAME);
 
-    verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
+    verify(loopAnimationCache).put(eq(SHIP_ASSET), animationCaptor.capture());
     verifyZeroInteractions(textureAtlas);
     assertThat(animationCaptor.getValue()).isSameAs(animation);
   }
 
   @Test
-  public void get_character_not_empty() {
-    when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
-    when(loopAnimationCache.get(CHARACTER_ASSET)).thenReturn(mockLoopAnimation);
+  public void get_ship_not_empty() {
+    when(resourceConfig.getShipAssetPrefix()).thenReturn(SHIP_ASSET_PREFIX);
+    when(loopAnimationCache.containsKey(SHIP_ASSET)).thenReturn(true);
+    when(loopAnimationCache.get(SHIP_ASSET)).thenReturn(mockLoopAnimation);
 
-    assertThat(animations.getShip(CHARACTER_NAME)).isSameAs(mockLoopAnimation);
-    verify(loopAnimationCache).containsKey(CHARACTER_ASSET);
-    verify(loopAnimationCache).get(CHARACTER_ASSET);
+    assertThat(animations.getShip(SHIP_NAME)).isSameAs(mockLoopAnimation);
+    verify(loopAnimationCache).containsKey(SHIP_ASSET);
+    verify(loopAnimationCache).get(SHIP_ASSET);
     verifyNoMoreInteractions(loopAnimationCache);
     verifyZeroInteractions(textureAtlas);
   }

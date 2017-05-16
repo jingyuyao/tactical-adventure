@@ -36,8 +36,8 @@ public class BaseWeaponTest {
   @Before
   public void setUp() {
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.character()).thenReturn(Optional.of(ship1));
-    when(cell2.character()).thenReturn(Optional.of(ship2));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.getDefense()).thenReturn(3);
     when(ship2.getDefense()).thenReturn(100);
   }

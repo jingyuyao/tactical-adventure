@@ -74,7 +74,7 @@ public class EndTurnTest {
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
     when(script.turnScript(turn)).thenReturn(Optional.<ScriptActions>absent());
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
@@ -94,7 +94,7 @@ public class EndTurnTest {
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
     when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
-    when(world.getCharacterSnapshot()).thenReturn(ImmutableList.of(cell));
+    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 

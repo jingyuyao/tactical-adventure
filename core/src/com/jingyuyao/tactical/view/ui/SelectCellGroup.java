@@ -14,22 +14,22 @@ import javax.inject.Singleton;
 @ModelBusListener
 class SelectCellGroup extends VerticalGroup {
 
-  private final CharacterOverviewPanel characterOverviewPanel;
+  private final ShipOverviewPanel shipOverviewPanel;
   private final TerrainOverviewPanel terrainOverviewPanel;
   private final CoordinatePanel coordinatePanel;
   private Cell cell;
 
   @Inject
   SelectCellGroup(
-      CharacterOverviewPanel characterOverviewPanel,
+      ShipOverviewPanel shipOverviewPanel,
       TerrainOverviewPanel terrainOverviewPanel,
       CoordinatePanel coordinatePanel) {
-    this.characterOverviewPanel = characterOverviewPanel;
+    this.shipOverviewPanel = shipOverviewPanel;
     this.terrainOverviewPanel = terrainOverviewPanel;
     this.coordinatePanel = coordinatePanel;
     space(10);
     columnRight();
-    addActor(characterOverviewPanel);
+    addActor(shipOverviewPanel);
     addActor(terrainOverviewPanel);
     addActor(coordinatePanel);
   }
@@ -49,17 +49,17 @@ class SelectCellGroup extends VerticalGroup {
   @Subscribe
   void worldReset(WorldReset worldReset) {
     cell = null;
-    characterOverviewPanel.clearDisplay();
+    shipOverviewPanel.clearDisplay();
     terrainOverviewPanel.clearDisplay();
     coordinatePanel.clearDisplay();
   }
 
   private void display(Cell cell) {
     this.cell = cell;
-    if (cell.character().isPresent()) {
-      characterOverviewPanel.display(cell.character().get());
+    if (cell.ship().isPresent()) {
+      shipOverviewPanel.display(cell.ship().get());
     } else {
-      characterOverviewPanel.clearDisplay();
+      shipOverviewPanel.clearDisplay();
     }
     terrainOverviewPanel.display(cell.getTerrain());
     coordinatePanel.display(cell.getCoordinate());

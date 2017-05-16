@@ -72,10 +72,10 @@ public class GameStateTest {
 
   @Test
   public void play() {
-    Map<Coordinate, Ship> characterMap = new HashMap<>();
+    Map<Coordinate, Ship> shipMap = new HashMap<>();
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     when(dataManager.loadCurrentLevel(tiledMapRenderer)).thenReturn(loadedLevel);
-    when(loadedLevel.getCharacterMap()).thenReturn(characterMap);
+    when(loadedLevel.getShipMap()).thenReturn(shipMap);
     when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
     when(loadedLevel.getTurn()).thenReturn(turn);
     when(loadedLevel.getScript()).thenReturn(script);
@@ -83,7 +83,7 @@ public class GameStateTest {
     gameState.play();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
-    inOrder.verify(world).initialize(terrainMap, characterMap);
+    inOrder.verify(world).initialize(terrainMap, shipMap);
     inOrder.verify(game).goToWorldScreen();
     inOrder.verify(worldState).initialize(turn, script);
   }

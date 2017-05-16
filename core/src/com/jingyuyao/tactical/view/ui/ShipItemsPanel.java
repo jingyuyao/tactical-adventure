@@ -13,12 +13,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class CharacterItemsPanel extends VisTable {
+class ShipItemsPanel extends VisTable {
 
   private final MessageLoader messageLoader;
 
   @Inject
-  CharacterItemsPanel(MessageLoader messageLoader) {
+  ShipItemsPanel(MessageLoader messageLoader) {
     super(true);
     this.messageLoader = messageLoader;
     defaults().top().left().pad(0, 0, 10, 10);
@@ -83,7 +83,7 @@ class CharacterItemsPanel extends VisTable {
         public void changed(ChangeEvent event, Actor actor) {
           ship.equipArmor(armor);
           // refresh
-          CharacterItemsPanel.this.display(ship);
+          ShipItemsPanel.this.display(ship);
         }
       });
       setDisabled(!ship.canControl());
@@ -98,7 +98,7 @@ class CharacterItemsPanel extends VisTable {
         public void changed(ChangeEvent event, Actor actor) {
           ship.unequipArmor(armor);
           // refresh
-          CharacterItemsPanel.this.display(ship);
+          ShipItemsPanel.this.display(ship);
         }
       });
       setDisabled(!ship.canControl());

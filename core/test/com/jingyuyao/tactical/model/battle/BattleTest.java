@@ -47,45 +47,45 @@ public class BattleTest {
 
   @Test
   public void execute_attacker_alive() {
-    when(attackerCell.character()).thenReturn(Optional.of(attacker));
+    when(attackerCell.ship()).thenReturn(Optional.of(attacker));
     when(attacker.getHp()).thenReturn(10);
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.character()).thenReturn(Optional.of(ship1));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(ship1.getHp()).thenReturn(0);
-    when(cell2.character()).thenReturn(Optional.of(ship2));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship2.getHp()).thenReturn(10);
 
     battle.execute();
 
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
-    verify(attackerCell, never()).removeCharacter();
+    verify(attackerCell, never()).removeShip();
     verify(ship1).useEquippedArmors();
     verify(ship2).useEquippedArmors();
-    verify(cell1).removeCharacter();
-    verify(cell2, never()).removeCharacter();
+    verify(cell1).removeShip();
+    verify(cell2, never()).removeShip();
     assertThat(battle.getDeath()).containsExactly(ship1);
   }
 
   @Test
   public void execute_attacker_dead() {
-    when(attackerCell.character()).thenReturn(Optional.of(attacker));
+    when(attackerCell.ship()).thenReturn(Optional.of(attacker));
     when(attacker.getHp()).thenReturn(0);
     when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
-    when(cell1.character()).thenReturn(Optional.of(ship1));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(ship1.getHp()).thenReturn(0);
-    when(cell2.character()).thenReturn(Optional.of(ship2));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship2.getHp()).thenReturn(10);
 
     battle.execute();
 
     verify(weapon).apply(attacker, target);
     verify(attacker).useWeapon(weapon);
-    verify(attackerCell).removeCharacter();
+    verify(attackerCell).removeShip();
     verify(ship1).useEquippedArmors();
     verify(ship2).useEquippedArmors();
-    verify(cell1).removeCharacter();
-    verify(cell2, never()).removeCharacter();
+    verify(cell1).removeShip();
+    verify(cell2, never()).removeShip();
     assertThat(battle.getDeath()).containsExactly(attacker, ship1);
   }
 }

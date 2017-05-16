@@ -10,17 +10,17 @@ import java.util.Map;
 public class LoadedLevel {
 
   private final Map<Coordinate, Terrain> terrainMap;
-  private final Map<Coordinate, Ship> characterMap;
+  private final Map<Coordinate, Ship> shipMap;
   private final Turn turn;
   private final Script script;
 
   LoadedLevel(
       Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Ship> characterMap,
+      Map<Coordinate, Ship> shipMap,
       Turn turn,
       Script script) {
     this.terrainMap = terrainMap;
-    this.characterMap = characterMap;
+    this.shipMap = shipMap;
     this.turn = turn;
     this.script = script;
   }
@@ -29,8 +29,8 @@ public class LoadedLevel {
     return terrainMap;
   }
 
-  public Map<Coordinate, Ship> getCharacterMap() {
-    return characterMap;
+  public Map<Coordinate, Ship> getShipMap() {
+    return shipMap;
   }
 
   public Turn getTurn() {
