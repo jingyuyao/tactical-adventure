@@ -4,11 +4,11 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
-public class Water implements Terrain {
+public class Blocked implements Terrain {
 
   @Override
   public Message getName() {
-    return ModelBundle.TERRAIN_NAME.get("water");
+    return ModelBundle.TERRAIN_NAME.get("blocked");
   }
 
   @Override

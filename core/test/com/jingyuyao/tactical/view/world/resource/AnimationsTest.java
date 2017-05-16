@@ -68,14 +68,14 @@ public class AnimationsTest {
 
   @Test
   public void get_character_empty_no_regions() {
-    when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
+    when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
+    when(resourceConfig.getShipIdelFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
 
-    LoopAnimation animation = animations.getCharacter(CHARACTER_NAME);
+    LoopAnimation animation = animations.getShip(CHARACTER_NAME);
 
     verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
     verify(worldTextureCache).put(eq(CHARACTER_ASSET), worldTexturesCaptor.capture());
@@ -85,14 +85,14 @@ public class AnimationsTest {
 
   @Test
   public void get_character_empty_has_regions() {
-    when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(resourceConfig.getCharacterIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
+    when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
+    when(resourceConfig.getShipIdelFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(CHARACTER_ASSET)).thenReturn(cached);
 
-    LoopAnimation animation = animations.getCharacter(CHARACTER_NAME);
+    LoopAnimation animation = animations.getShip(CHARACTER_NAME);
 
     verify(loopAnimationCache).put(eq(CHARACTER_ASSET), animationCaptor.capture());
     verifyZeroInteractions(textureAtlas);
@@ -101,11 +101,11 @@ public class AnimationsTest {
 
   @Test
   public void get_character_not_empty() {
-    when(resourceConfig.getCharacterAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
+    when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
     when(loopAnimationCache.get(CHARACTER_ASSET)).thenReturn(mockLoopAnimation);
 
-    assertThat(animations.getCharacter(CHARACTER_NAME)).isSameAs(mockLoopAnimation);
+    assertThat(animations.getShip(CHARACTER_NAME)).isSameAs(mockLoopAnimation);
     verify(loopAnimationCache).containsKey(CHARACTER_ASSET);
     verify(loopAnimationCache).get(CHARACTER_ASSET);
     verifyNoMoreInteractions(loopAnimationCache);

@@ -34,10 +34,10 @@ public class Animations {
     this.atlasRegionsCache = atlasRegionsCache;
   }
 
-  public LoopAnimation getCharacter(String characterName) {
+  public LoopAnimation getShip(String shipName) {
     return getLoop(
-        resourceConfig.getCharacterIdleFPS(),
-        resourceConfig.getCharacterAssetPrefix() + characterName);
+        resourceConfig.getShipIdelFPS(),
+        resourceConfig.getShipAssetPrefix() + shipName);
   }
 
   public SingleAnimation getWeapon(String weaponName) {

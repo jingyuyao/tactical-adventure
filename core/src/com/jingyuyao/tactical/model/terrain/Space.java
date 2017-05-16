@@ -4,11 +4,11 @@ import com.jingyuyao.tactical.model.character.Character;
 import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.i18n.ModelBundle;
 
-public class Land implements Terrain {
+public class Space implements Terrain {
 
   @Override
   public Message getName() {
-    return ModelBundle.TERRAIN_NAME.get("land");
+    return ModelBundle.TERRAIN_NAME.get("space");
   }
 
   @Override

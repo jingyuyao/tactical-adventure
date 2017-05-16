@@ -116,7 +116,7 @@ public class CharacterSystemTest {
     when(cell.player()).thenReturn(Optional.of(player));
     when(cell.character()).thenReturn(Optional.<Character>of(player));
     when(player.getResourceKey()).thenReturn("me");
-    when(animations.getCharacter("me")).thenReturn(animation);
+    when(animations.getShip("me")).thenReturn(animation);
 
     characterSystem.spawnCharacter(spawnCharacter);
 
@@ -150,7 +150,7 @@ public class CharacterSystemTest {
     when(cell.player()).thenReturn(Optional.<Player>absent());
     when(cell.character()).thenReturn(Optional.<Character>of(enemy));
     when(enemy.getResourceKey()).thenReturn("me");
-    when(animations.getCharacter("me")).thenReturn(animation);
+    when(animations.getShip("me")).thenReturn(animation);
 
     characterSystem.spawnCharacter(spawnCharacter);
 

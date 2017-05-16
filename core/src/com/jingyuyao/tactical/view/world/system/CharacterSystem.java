@@ -87,7 +87,7 @@ class CharacterSystem extends EntitySystem {
     entity.add(position);
     entity.add(characterComponent);
     entity.add(frame);
-    entity.add(animations.getCharacter(cell.character().get().getResourceKey()));
+    entity.add(animations.getShip(cell.character().get().getResourceKey()));
     for (Player player : cell.player().asSet()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
       playerComponent.setPlayer(player);
