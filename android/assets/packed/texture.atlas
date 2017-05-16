@@ -139,6 +139,96 @@ weapon/melee
   index: 5
 
 texture2.png
+size: 512,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ship/adder
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+ship/adder
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+ship/adder
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+ship/adder
+  rotate: false
+  xy: 70, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+ship/adder
+  rotate: false
+  xy: 104, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+ship/adder
+  rotate: false
+  xy: 138, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+ship/eagle
+  rotate: false
+  xy: 172, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+ship/eagle
+  rotate: false
+  xy: 206, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+ship/eagle
+  rotate: false
+  xy: 206, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+ship/eagle
+  rotate: false
+  xy: 240, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+ship/eagle
+  rotate: false
+  xy: 274, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+ship/eagle
+  rotate: false
+  xy: 308, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+
+texture3.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -186,7 +276,7 @@ marking/target_select
   offset: 0, 0
   index: -1
 
-texture3.png
+texture4.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
