@@ -36,7 +36,7 @@ public class Animations {
 
   public LoopAnimation getShip(String shipName) {
     return getLoop(
-        resourceConfig.getShipIdelFPS(),
+        resourceConfig.getShipIdleFPS(),
         resourceConfig.getShipAssetPrefix() + shipName);
   }
 

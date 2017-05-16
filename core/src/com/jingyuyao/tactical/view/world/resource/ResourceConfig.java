@@ -11,7 +11,7 @@ class ResourceConfig {
 
   }
 
-  int getShipIdelFPS() {
+  int getShipIdleFPS() {
     return 5;
   }
 

@@ -69,7 +69,7 @@ public class AnimationsTest {
   @Test
   public void get_character_empty_no_regions() {
     when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(resourceConfig.getShipIdelFPS()).thenReturn(CHARACTER_IDLE_FPS);
+    when(resourceConfig.getShipIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(CHARACTER_ASSET)).thenReturn(atlasRegions);
@@ -86,7 +86,7 @@ public class AnimationsTest {
   @Test
   public void get_character_empty_has_regions() {
     when(resourceConfig.getShipAssetPrefix()).thenReturn(CHARACTER_ASSET_PREFIX);
-    when(resourceConfig.getShipIdelFPS()).thenReturn(CHARACTER_IDLE_FPS);
+    when(resourceConfig.getShipIdleFPS()).thenReturn(CHARACTER_IDLE_FPS);
     when(loopAnimationCache.containsKey(CHARACTER_ASSET)).thenReturn(false);
     when(worldTextureCache.containsKey(CHARACTER_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
