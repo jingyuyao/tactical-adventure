@@ -15,7 +15,6 @@ android {
         instrumentTest.setRoot('tests')
     }
     packagingOptions {
-        exclude 'META-INF/robovm/ios/robovm.xml'
         // From the Guice libraries
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
