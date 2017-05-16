@@ -33,8 +33,7 @@ class BattleSequence {
     })));
   }
 
-  private void executeActionsAsync(
-      final List<Ship> death, final int index, final Runnable done) {
+  private void executeActionsAsync(final List<Ship> death, final int index, final Runnable done) {
     if (index < death.size()) {
       Message name = death.get(index).getName();
       Optional<ScriptActions> actionsOpt = worldState.getScript().deathScript(name);
