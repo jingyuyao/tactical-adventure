@@ -174,7 +174,7 @@ public class ShipSystemTest {
   }
 
   @Test
-  public void remove_character() {
+  public void remove_ship() {
     spawn_enemy();
     when(removeShip.getObject()).thenReturn(enemy);
 
