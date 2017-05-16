@@ -18,13 +18,17 @@ public class BasePlayerTest {
   private static final int MOVE_DISTANCE = 3;
 
   @Mock
+  private Stats stats;
+  @Mock
+  private Cockpit cockpit;
+  @Mock
   private Items items;
 
   private Player player;
 
   @Before
   public void setUp() {
-    player = new BasePlayer(NAME_KEY, RESOURCE_KEY, MAX_HP, HP, MOVE_DISTANCE, items, true);
+    player = new BasePlayer(NAME_KEY, RESOURCE_KEY, true, stats, cockpit, items);
   }
 
   @Test

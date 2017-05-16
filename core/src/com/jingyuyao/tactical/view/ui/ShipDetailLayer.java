@@ -15,6 +15,7 @@ class ShipDetailLayer extends VisTable {
 
   private final LayerManager layerManager;
   private final ShipStatsPanel shipStatsPanel;
+  private final ShipCockpitPanel shipCockpitPanel;
   private final ShipItemsPanel shipItemsPanel;
   private final MessageLoader messageLoader;
 
@@ -22,11 +23,13 @@ class ShipDetailLayer extends VisTable {
   ShipDetailLayer(
       LayerManager layerManager,
       ShipStatsPanel shipStatsPanel,
+      ShipCockpitPanel shipCockpitPanel,
       ShipItemsPanel shipItemsPanel,
       MessageLoader messageLoader) {
     super(true);
     this.layerManager = layerManager;
     this.shipStatsPanel = shipStatsPanel;
+    this.shipCockpitPanel = shipCockpitPanel;
     this.shipItemsPanel = shipItemsPanel;
     this.messageLoader = messageLoader;
     setFillParent(true);
@@ -36,6 +39,9 @@ class ShipDetailLayer extends VisTable {
     VisTable scrollTable = new VisTable(true);
     scrollTable.defaults().top().left();
     scrollTable.add(shipStatsPanel);
+    scrollTable.add(shipCockpitPanel);
+    scrollTable.row();
+    scrollTable.add();
     scrollTable.add(shipItemsPanel).expand().fill();
 
     VisScrollPane scrollPane = new VisScrollPane(scrollTable);
@@ -47,6 +53,7 @@ class ShipDetailLayer extends VisTable {
 
   void display(Ship ship) {
     shipStatsPanel.display(ship);
+    shipCockpitPanel.display(ship);
     shipItemsPanel.display(ship);
     layerManager.open(this);
   }

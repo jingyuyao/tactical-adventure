@@ -8,13 +8,22 @@
   "enemies": {
     "9,12": {
       "type": "PassiveEnemy",
-      "nameKey": "boss",
+      "nameKey": "adder",
       "resourceKey": "adder",
-      "maxHp": 50,
-      "hp": 50,
-      "moveDistance": 3,
+      "stats": {
+        "maxHp": 50,
+        "hp": 50,
+        "moveDistance": 3
+      },
+      "cockpit": {
+        "pilots": [
+          {
+            "type": "Villain",
+            "nameKey": "ryan"
+          }
+        ]
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -24,20 +33,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "8,12": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 10,
-      "hp": 10,
-      "moveDistance": 5,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -47,20 +55,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "9,11": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 10,
-      "hp": 10,
-      "moveDistance": 5,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -70,20 +77,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "2,12": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 3,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -93,20 +99,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "4,10": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 3,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -116,20 +121,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "6,8": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 3,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -139,20 +143,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "8,6": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 3,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -162,20 +165,19 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     },
     "10,4": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
-      "maxHp": 15,
-      "hp": 15,
-      "moveDistance": 3,
+      "stats": {
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
       "items": {
-        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -185,9 +187,7 @@
             "attackPower": 10,
             "distance": 1
           }
-        ],
-        "stashedArmors": [],
-        "equippedArmors": []
+        ]
       }
     }
   }

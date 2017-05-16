@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.data.MessageLoader;
+import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -26,10 +27,10 @@ class ShipItemsPanel extends VisTable {
 
   void display(Ship ship) {
     clearChildren();
-    addText(messageLoader.get(UIBundle.ITEM_NAME_HEADER));
-    addText(messageLoader.get(UIBundle.ITEM_DURABILITY_HEADER));
-    addText(messageLoader.get(UIBundle.ITEM_DESCRIPTION_HEADER));
-    addText(messageLoader.get(UIBundle.ITEM_ACTION_HEADER));
+    addText(UIBundle.ITEM_NAME_HEADER);
+    addText(UIBundle.ITEM_DURABILITY_HEADER);
+    addText(UIBundle.ITEM_DESCRIPTION_HEADER);
+    addText(UIBundle.ITEM_ACTION_HEADER);
     row();
 
     addEquippedArmors(ship);
@@ -66,13 +67,17 @@ class ShipItemsPanel extends VisTable {
   }
 
   private void addItem(Item item) {
-    addText(messageLoader.get(item.getName()));
-    addText(String.valueOf(item.getUsageLeft()));
-    addText(messageLoader.get(item.getDescription()));
+    addText(item.getName());
+    addText(item.getUsageLeft());
+    addText(item.getDescription());
   }
 
-  private void addText(String text) {
-    add(new VisLabel(text));
+  private void addText(Message message) {
+    add(new VisLabel(messageLoader.get(message)));
+  }
+
+  private void addText(int number) {
+    add(new VisLabel(String.valueOf(number)));
   }
 
   private class EquipArmor extends VisTextButton {

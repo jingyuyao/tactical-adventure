@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.i18n.Message;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.person.Person;
 
 public interface Ship {
 
@@ -34,6 +35,8 @@ public interface Ship {
   void healBy(int delta);
 
   void fullHeal();
+
+  ImmutableList<Person> getPilots();
 
   ImmutableList<Consumable> getConsumables();
 

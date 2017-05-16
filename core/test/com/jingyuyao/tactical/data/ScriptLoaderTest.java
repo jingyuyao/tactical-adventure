@@ -49,7 +49,7 @@ public class ScriptLoaderTest {
   public void load_level_dialogues() {
     when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
     when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getShipNameBundle()).thenReturn(NAME);
+    when(dataConfig.getPersonNameBundle()).thenReturn(NAME);
 
     Script script = scriptLoader.load(2);
 
@@ -91,7 +91,7 @@ public class ScriptLoaderTest {
   public void load_death_dialogues() {
     when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
     when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getShipNameBundle()).thenReturn(NAME);
+    when(dataConfig.getPersonNameBundle()).thenReturn(NAME);
 
     Script script = scriptLoader.load(2);
 

@@ -6,26 +6,27 @@ import com.jingyuyao.tactical.model.i18n.ModelBundle;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.person.Person;
 
+/**
+ * A {@link Ship} that can't be controlled.
+ */
 class BaseShip implements Ship {
 
   private String nameKey;
   private String resourceKey;
-  private int maxHp;
-  private int hp;
-  private int moveDistance;
-  private Items items;
+  private Stats stats;  // required
+  private Cockpit cockpit = new Cockpit();
+  private Items items = new Items();
 
   BaseShip() {
   }
 
-  BaseShip(
-      String nameKey, String resourceKey, int maxHp, int hp, int moveDistance, Items items) {
+  BaseShip(String nameKey, String resourceKey, Stats stats, Cockpit cockpit, Items items) {
     this.nameKey = nameKey;
     this.resourceKey = resourceKey;
-    this.maxHp = maxHp;
-    this.hp = hp;
-    this.moveDistance = moveDistance;
+    this.stats = stats;
+    this.cockpit = cockpit;
     this.items = items;
   }
 
@@ -46,36 +47,37 @@ class BaseShip implements Ship {
 
   @Override
   public int getHp() {
-    return hp;
+    return stats.getHp();
   }
 
   @Override
   public int getMoveDistance() {
-    return moveDistance;
+    return stats.getMoveDistance();
   }
 
   @Override
   public int getDefense() {
-    int defense = 0;
-    for (Armor armor : getEquippedArmors()) {
-      defense += armor.getDefense();
-    }
-    return defense;
+    return items.getDefense();
   }
 
   @Override
   public void damageBy(int delta) {
-    hp = Math.max(hp - delta, 0);
+    stats.damageBy(delta);
   }
 
   @Override
   public void healBy(int delta) {
-    hp = Math.min(hp + delta, maxHp);
+    stats.healBy(delta);
   }
 
   @Override
   public void fullHeal() {
-    hp = maxHp;
+    stats.fullHeal();
+  }
+
+  @Override
+  public ImmutableList<Person> getPilots() {
+    return cockpit.getPilots();
   }
 
   @Override
