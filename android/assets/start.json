@@ -3,7 +3,7 @@
   "players": [
     {
       "type": "BasePlayer",
-      "nameKey": "jingyu",
+      "nameKey": "adder",
       "resourceKey": "adder",
       "maxHp": 15,
       "hp": 15,
@@ -60,7 +60,7 @@
     },
     {
       "type": "BasePlayer",
-      "nameKey": "ben",
+      "nameKey": "adder",
       "resourceKey": "adder",
       "maxHp": 15,
       "hp": 15,
@@ -116,7 +116,7 @@
     },
     {
       "type": "BasePlayer",
-      "nameKey": "andrew",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 20,
       "hp": 20,
@@ -157,7 +157,7 @@
     },
     {
       "type": "BasePlayer",
-      "nameKey": "kevin",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 20,
       "hp": 20,

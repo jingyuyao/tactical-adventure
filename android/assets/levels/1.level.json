@@ -8,7 +8,7 @@
   "enemies": {
     "9,12": {
       "type": "PassiveEnemy",
-      "nameKey": "boss",
+      "nameKey": "adder",
       "resourceKey": "adder",
       "maxHp": 50,
       "hp": 50,
@@ -31,7 +31,7 @@
     },
     "8,12": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 10,
       "hp": 10,
@@ -54,7 +54,7 @@
     },
     "9,11": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 10,
       "hp": 10,
@@ -77,7 +77,7 @@
     },
     "2,12": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 15,
       "hp": 15,
@@ -100,7 +100,7 @@
     },
     "4,10": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 15,
       "hp": 15,
@@ -123,7 +123,7 @@
     },
     "6,8": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 15,
       "hp": 15,
@@ -146,7 +146,7 @@
     },
     "8,6": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 15,
       "hp": 15,
@@ -169,7 +169,7 @@
     },
     "10,4": {
       "type": "PassiveEnemy",
-      "nameKey": "soldier",
+      "nameKey": "eagle",
       "resourceKey": "eagle",
       "maxHp": 15,
       "hp": 15,
