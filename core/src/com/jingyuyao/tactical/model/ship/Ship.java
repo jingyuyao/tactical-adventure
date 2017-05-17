@@ -18,6 +18,8 @@ public interface Ship {
    */
   boolean isControllable();
 
+  void setControllable(boolean controllable);
+
   /**
    * Always >= 0.
    */

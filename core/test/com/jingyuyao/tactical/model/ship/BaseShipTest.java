@@ -41,7 +41,7 @@ public class BaseShipTest {
 
   @Before
   public void setUp() {
-    ship = new BaseShip(NAME, stats, cockpit, items);
+    ship = new BaseShip(NAME, true, stats, cockpit, items);
   }
 
   @Test
@@ -49,6 +49,18 @@ public class BaseShipTest {
     ResourceKey name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
     assertThat(name.getId()).isEqualTo(NAME);
+  }
+
+  @Test
+  public void get_actionable() {
+    assertThat(ship.isControllable()).isTrue();
+  }
+
+  @Test
+  public void set_actionable() {
+    ship.setControllable(false);
+
+    assertThat(ship.isControllable()).isFalse();
   }
 
   @Test

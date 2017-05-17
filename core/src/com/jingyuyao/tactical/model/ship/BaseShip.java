@@ -8,12 +8,10 @@ import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 
-/**
- * A {@link Ship} that can't be controlled.
- */
 class BaseShip implements Ship {
 
   private String name;
+  private boolean controllable;
   private Stats stats;  // required
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
@@ -21,16 +19,12 @@ class BaseShip implements Ship {
   BaseShip() {
   }
 
-  BaseShip(String name, Stats stats, Cockpit cockpit, Items items) {
+  BaseShip(String name, boolean controllable, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;
+    this.controllable = controllable;
     this.stats = stats;
     this.cockpit = cockpit;
     this.items = items;
-  }
-
-  @Override
-  public boolean isControllable() {
-    return false;
   }
 
   @Override
@@ -41,6 +35,16 @@ class BaseShip implements Ship {
   @Override
   public ResourceKey getName() {
     return ModelBundle.SHIP_NAME.get(name);
+  }
+
+  @Override
+  public boolean isControllable() {
+    return controllable;
+  }
+
+  @Override
+  public void setControllable(boolean controllable) {
+    this.controllable = controllable;
   }
 
   @Override
