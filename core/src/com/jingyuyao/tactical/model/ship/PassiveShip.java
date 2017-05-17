@@ -7,9 +7,9 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
 
-public class PassiveEnemy extends BaseShip {
+public class PassiveShip extends BasicShip {
 
-  PassiveEnemy() {
+  PassiveShip() {
   }
 
   @Override

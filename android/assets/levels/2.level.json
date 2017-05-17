@@ -7,7 +7,7 @@
   ],
   "enemies": {
     "1,11": {
-      "type": "PassiveEnemy",
+      "type": "PassiveShip",
       "name": "eagle",
       "stats": {
         "maxHp": 10,
@@ -27,7 +27,7 @@
       }
     },
     "3,12": {
-      "type": "PassiveEnemy",
+      "type": "PassiveShip",
       "name": "eagle",
       "stats": {
         "maxHp": 10,
@@ -47,7 +47,7 @@
       }
     },
     "5,14": {
-      "type": "PassiveEnemy",
+      "type": "PassiveShip",
       "name": "eagle",
       "stats": {
         "maxHp": 10,
@@ -67,7 +67,7 @@
       }
     },
     "6,5": {
-      "type": "PassiveEnemy",
+      "type": "PassiveShip",
       "name": "eagle",
       "stats": {
         "maxHp": 10,
@@ -87,7 +87,7 @@
       }
     },
     "14,10": {
-      "type": "PassiveEnemy",
+      "type": "PassiveShip",
       "name": "eagle",
       "stats": {
         "maxHp": 10,

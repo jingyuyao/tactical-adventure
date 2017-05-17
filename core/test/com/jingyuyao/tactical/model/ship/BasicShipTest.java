@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseShipTest {
+public class BasicShipTest {
 
   private static final String NAME = "yo";
 
@@ -41,7 +41,7 @@ public class BaseShipTest {
 
   @Before
   public void setUp() {
-    ship = new BaseShip(NAME, stats, cockpit, items);
+    ship = new BasicShip(NAME, stats, cockpit, items);
   }
 
   @Test

@@ -2,7 +2,7 @@
   "currentLevel": 1,
   "players": [
     {
-      "type": "BasePlayer",
+      "type": "BasicShip",
       "name": "adder",
       "stats": {
         "allegiance": "PLAYER",
@@ -64,7 +64,7 @@
       }
     },
     {
-      "type": "BasePlayer",
+      "type": "BasicShip",
       "name": "adder",
       "stats": {
         "allegiance": "PLAYER",
@@ -124,7 +124,7 @@
       }
     },
     {
-      "type": "BasePlayer",
+      "type": "BasicShip",
       "name": "eagle",
       "stats": {
         "allegiance": "PLAYER",
@@ -171,7 +171,7 @@
       }
     },
     {
-      "type": "BasePlayer",
+      "type": "BasicShip",
       "name": "eagle",
       "stats": {
         "allegiance": "PLAYER",

@@ -11,17 +11,17 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
-class BaseShip implements Ship {
+public class BasicShip implements Ship {
 
   private String name;
   private Stats stats = new Stats();
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
 
-  BaseShip() {
+  BasicShip() {
   }
 
-  BaseShip(String name, Stats stats, Cockpit cockpit, Items items) {
+  BasicShip(String name, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;
     this.stats = stats;
     this.cockpit = cockpit;
