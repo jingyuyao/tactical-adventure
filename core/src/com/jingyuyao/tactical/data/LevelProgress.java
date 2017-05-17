@@ -65,12 +65,15 @@ public class LevelProgress {
     activeEnemies.clear();
     for (Cell cell : world.getShipSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
-      for (Ship player : cell.player().asSet()) {
-        activePlayers.put(coordinate, player);
-      }
-
-      for (Ship enemy : cell.enemy().asSet()) {
-        activeEnemies.put(coordinate, enemy);
+      for (Ship ship : cell.ship().asSet()) {
+        switch (ship.getAllegiance()) {
+          case PLAYER:
+            activePlayers.put(coordinate, ship);
+            break;
+          case ENEMY:
+            activeEnemies.put(coordinate, ship);
+            break;
+        }
       }
     }
     turn = worldState.getTurn();
