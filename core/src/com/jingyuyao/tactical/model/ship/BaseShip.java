@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -13,17 +14,15 @@ import com.jingyuyao.tactical.model.world.Movements;
 class BaseShip implements Ship {
 
   private String name;
-  private boolean controllable;
-  private Stats stats;  // required
+  private Stats stats = new Stats();
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
 
   BaseShip() {
   }
 
-  BaseShip(String name, boolean controllable, Stats stats, Cockpit cockpit, Items items) {
+  BaseShip(String name, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;
-    this.controllable = controllable;
     this.stats = stats;
     this.cockpit = cockpit;
     this.items = items;
@@ -40,13 +39,18 @@ class BaseShip implements Ship {
   }
 
   @Override
+  public Allegiance getAllegiance() {
+    return stats.getAllegiance();
+  }
+
+  @Override
   public boolean isControllable() {
-    return controllable;
+    return stats.isControllable();
   }
 
   @Override
   public void setControllable(boolean controllable) {
-    this.controllable = controllable;
+    stats.setControllable(controllable);
   }
 
   @Override
