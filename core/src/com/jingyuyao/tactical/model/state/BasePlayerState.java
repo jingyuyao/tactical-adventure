@@ -36,7 +36,7 @@ class BasePlayerState extends BaseState implements PlayerState {
   }
 
   void finish() {
-    player.setActionable(false);
+    player.setControllable(false);
     post(new Save());
     branchTo(stateFactory.createWaiting());
   }

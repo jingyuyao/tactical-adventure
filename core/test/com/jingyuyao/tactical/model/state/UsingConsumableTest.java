@@ -73,7 +73,7 @@ public class UsingConsumableTest {
 
     verify(consumable).apply(player);
     verify(player).useConsumable(consumable);
-    verify(player).setActionable(false);
+    verify(player).setControllable(false);
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     verify(worldState).branchTo(waiting);

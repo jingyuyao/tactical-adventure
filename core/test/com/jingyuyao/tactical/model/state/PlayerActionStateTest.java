@@ -152,7 +152,7 @@ public class PlayerActionStateTest {
 
     state.finish();
 
-    verify(player).setActionable(false);
+    verify(player).setControllable(false);
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     verify(worldState).branchTo(waiting);

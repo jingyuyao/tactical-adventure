@@ -52,7 +52,7 @@ public class Waiting extends BaseState {
     if (levelFailed || levelComplete) {
       for (Cell cell : world.getShipSnapshot()) {
         for (Player player : cell.player().asSet()) {
-          player.setActionable(true);
+          player.setControllable(true);
         }
       }
     }

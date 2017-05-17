@@ -38,7 +38,7 @@ public class EndTurn extends ScriptState {
   private void makePlayersActionable() {
     for (Cell cell : world.getShipSnapshot()) {
       for (Player player : cell.player().asSet()) {
-        player.setActionable(true);
+        player.setControllable(true);
       }
     }
   }

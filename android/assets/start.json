@@ -4,7 +4,7 @@
     {
       "type": "BasePlayer",
       "name": "adder",
-      "actionable": true,
+      "controllable": true,
       "stats": {
         "maxHp": 15,
         "hp": 15,
@@ -65,7 +65,7 @@
     {
       "type": "BasePlayer",
       "name": "adder",
-      "actionable": true,
+      "controllable": true,
       "stats": {
         "maxHp": 15,
         "hp": 15,
@@ -125,7 +125,7 @@
     {
       "type": "BasePlayer",
       "name": "eagle",
-      "actionable": true,
+      "controllable": true,
       "stats": {
         "maxHp": 20,
         "hp": 20,
@@ -172,7 +172,7 @@
     {
       "type": "BasePlayer",
       "name": "eagle",
-      "actionable": true,
+      "controllable": true,
       "stats": {
         "maxHp": 20,
         "hp": 20,

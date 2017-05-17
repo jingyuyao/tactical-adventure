@@ -83,7 +83,7 @@ public class EndTurnTest {
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(endTurn);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(Save.class);
-    verify(player).setActionable(true);
+    verify(player).setControllable(true);
     verify(turn).advance();
     verify(worldState).branchTo(retaliating);
   }
@@ -105,7 +105,7 @@ public class EndTurnTest {
     assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
     inOrder.verify(scriptActions).execute(Mockito.eq(modelBus), runnableCaptor.capture());
     runnableCaptor.getValue().run();
-    inOrder.verify(player).setActionable(true);
+    inOrder.verify(player).setControllable(true);
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);

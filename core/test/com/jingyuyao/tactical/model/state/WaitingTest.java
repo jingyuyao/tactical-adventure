@@ -104,7 +104,7 @@ public class WaitingTest {
 
     waiting.enter();
 
-    verify(player).setActionable(true);
+    verify(player).setControllable(true);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);

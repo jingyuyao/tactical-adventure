@@ -125,7 +125,7 @@ public class BattlingTest {
     inOrder.verify(worldState).goTo(transition);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
-    inOrder.verify(attackingPlayer).setActionable(false);
+    inOrder.verify(attackingPlayer).setControllable(false);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(waiting);

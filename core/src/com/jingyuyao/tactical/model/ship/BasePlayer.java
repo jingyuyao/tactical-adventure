@@ -2,23 +2,23 @@ package com.jingyuyao.tactical.model.ship;
 
 public class BasePlayer extends BaseShip implements Player {
 
-  private boolean actionable;
+  private boolean controllable;
 
   BasePlayer() {
   }
 
-  BasePlayer(String nameKey, boolean actionable, Stats stats, Cockpit cockpit, Items items) {
+  BasePlayer(String nameKey, boolean controllable, Stats stats, Cockpit cockpit, Items items) {
     super(nameKey, stats, cockpit, items);
-    this.actionable = actionable;
+    this.controllable = controllable;
   }
 
   @Override
   public boolean isControllable() {
-    return actionable;
+    return controllable;
   }
 
   @Override
-  public void setActionable(boolean actionable) {
-    this.actionable = actionable;
+  public void setControllable(boolean controllable) {
+    this.controllable = controllable;
   }
 }

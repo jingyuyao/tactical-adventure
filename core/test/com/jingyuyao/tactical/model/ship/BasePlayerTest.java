@@ -34,7 +34,7 @@ public class BasePlayerTest {
 
   @Test
   public void set_actionable() {
-    player.setActionable(false);
+    player.setControllable(false);
 
     assertThat(player.isControllable()).isFalse();
   }
