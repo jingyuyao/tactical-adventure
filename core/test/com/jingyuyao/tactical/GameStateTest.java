@@ -11,8 +11,8 @@ import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
-import com.jingyuyao.tactical.model.event.LevelComplete;
-import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.LevelLost;
+import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -57,9 +57,9 @@ public class GameStateTest {
   @Mock
   private Save save;
   @Mock
-  private LevelComplete levelComplete;
+  private LevelWon levelWon;
   @Mock
-  private LevelFailed levelFailed;
+  private LevelLost levelLost;
   @Mock
   private DeadEvent deadEvent;
 
@@ -115,7 +115,7 @@ public class GameStateTest {
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(dataManager.hasLevel(3)).thenReturn(true);
 
-    gameState.levelComplete(levelComplete);
+    gameState.levelWon(levelWon);
 
     InOrder inOrder = Mockito.inOrder(world, worldState, dataManager, game);
     inOrder.verify(dataManager).changeLevel(3, world, worldState);
@@ -130,7 +130,7 @@ public class GameStateTest {
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(dataManager.hasLevel(3)).thenReturn(false);
 
-    gameState.levelComplete(levelComplete);
+    gameState.levelWon(levelWon);
 
     verify(dataManager).freshStart();
     verify(world).reset();
@@ -140,7 +140,7 @@ public class GameStateTest {
 
   @Test
   public void level_failed() {
-    gameState.levelFailed(levelFailed);
+    gameState.levelLost(levelLost);
 
     verify(dataManager).removeProgress();
     verify(world).reset();

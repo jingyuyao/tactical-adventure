@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.event.LevelComplete;
-import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.LevelLost;
+import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -64,9 +64,9 @@ public class Waiting extends BaseState {
     }
 
     if (levelFailed) {
-      post(new LevelFailed());
+      post(new LevelLost());
     } else if (levelComplete) {
-      post(new LevelComplete());
+      post(new LevelWon());
     }
   }
 

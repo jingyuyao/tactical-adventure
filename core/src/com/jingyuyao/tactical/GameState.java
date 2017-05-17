@@ -8,8 +8,8 @@ import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.ModelBusListener;
-import com.jingyuyao.tactical.model.event.LevelComplete;
-import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.LevelLost;
+import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
@@ -67,7 +67,7 @@ public class GameState {
   }
 
   @Subscribe
-  void levelComplete(LevelComplete levelComplete) {
+  void levelWon(LevelWon levelWon) {
     GameSave gameSave = dataManager.loadCurrentSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
@@ -81,7 +81,7 @@ public class GameState {
   }
 
   @Subscribe
-  void levelFailed(LevelFailed levelFailed) {
+  void levelLost(LevelLost levelLost) {
     dataManager.removeProgress();
     world.reset();
     worldState.reset();

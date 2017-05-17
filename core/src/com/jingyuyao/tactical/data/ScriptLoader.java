@@ -10,6 +10,7 @@ import com.google.common.collect.ListMultimap;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import com.jingyuyao.tactical.model.script.LevelTrigger;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -43,12 +44,12 @@ class ScriptLoader {
     Map<Turn, ScriptActions> turnScripts = new HashMap<>();
     ListMultimap<Turn, Dialogue> levelDialogues = getLevelDialogues(level);
     for (Turn turn : levelDialogues.keySet()) {
-      turnScripts.put(turn, new ScriptActions(levelDialogues.get(turn)));
+      turnScripts.put(turn, new ScriptActions(levelDialogues.get(turn), LevelTrigger.NONE));
     }
     Map<ResourceKey, ScriptActions> deathScripts = new HashMap<>();
     ListMultimap<ResourceKey, Dialogue> deathDialogues = getDeathDialogues();
     for (ResourceKey name : deathDialogues.keySet()) {
-      deathScripts.put(name, new ScriptActions(deathDialogues.get(name)));
+      deathScripts.put(name, new ScriptActions(deathDialogues.get(name), LevelTrigger.NONE));
     }
     return new Script(turnScripts, deathScripts);
   }

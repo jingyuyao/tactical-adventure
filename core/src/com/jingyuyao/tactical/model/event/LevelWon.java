@@ -1,5 +1,5 @@
 package com.jingyuyao.tactical.model.event;
 
-public class LevelFailed {
+public class LevelWon {
 
 }

@@ -13,8 +13,8 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.LevelComplete;
-import com.jingyuyao.tactical.model.event.LevelFailed;
+import com.jingyuyao.tactical.model.event.LevelLost;
+import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -108,7 +108,7 @@ public class WaitingTest {
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelComplete.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelWon.class);
   }
 
   @Test
@@ -124,7 +124,7 @@ public class WaitingTest {
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelFailed.class);
+    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelLost.class);
   }
 
   @Test
