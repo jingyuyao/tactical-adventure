@@ -35,11 +35,11 @@ public class Moving extends ControllingActionState {
 
   @Override
   public void select(final Cell cell) {
-    if (cell.player().isPresent()) {
-      Ship player = cell.player().get();
-      if (!player.equals(getShip())) {
+    if (cell.ship().isPresent()) {
+      Ship ship = cell.ship().get();
+      if (!getShip().equals(ship)) {
         rollback();
-        if (player.isControllable()) {
+        if (ship.isControllable()) {
           goTo(getStateFactory().createMoving(cell, getMovements().distanceFrom(cell)));
         }
       }

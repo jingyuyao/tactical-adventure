@@ -47,7 +47,7 @@ public class MovingTest {
   @Mock
   private Ship ship;
   @Mock
-  private Ship otherPlayer;
+  private Ship otherShip;
   @Mock
   private Moved moved;
   @Mock
@@ -110,29 +110,29 @@ public class MovingTest {
   }
 
   @Test
-  public void select_player() {
-    when(cell.player()).thenReturn(Optional.of(ship));
+  public void select_same_ship() {
+    when(cell2.ship()).thenReturn(Optional.of(ship));
 
-    moving.select(cell);
+    moving.select(cell2);
 
     verifyZeroInteractions(worldState);
   }
 
   @Test
-  public void select_other_player_not_actionable() {
-    when(cell.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.isControllable()).thenReturn(false);
+  public void select_other_ship_not_controllable() {
+    when(cell2.ship()).thenReturn(Optional.of(otherShip));
+    when(otherShip.isControllable()).thenReturn(false);
 
-    moving.select(cell);
+    moving.select(cell2);
 
     verify(worldState).rollback();
     verifyNoMoreInteractions(worldState);
   }
 
   @Test
-  public void select_other_player_actionable() {
-    when(cell2.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.isControllable()).thenReturn(true);
+  public void select_other_ship_controllable() {
+    when(cell2.ship()).thenReturn(Optional.of(otherShip));
+    when(otherShip.isControllable()).thenReturn(true);
     when(movements.distanceFrom(cell2)).thenReturn(otherMovement);
     when(stateFactory.createMoving(cell2, otherMovement)).thenReturn(anotherMoving);
 
@@ -145,7 +145,7 @@ public class MovingTest {
 
   @Test
   public void select_can_move() {
-    when(cell2.player()).thenReturn(Optional.<Ship>absent());
+    when(cell2.ship()).thenReturn(Optional.<Ship>absent());
     when(movement.getStartingCell()).thenReturn(cell);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
@@ -164,7 +164,7 @@ public class MovingTest {
 
   @Test
   public void select_cannot_move() {
-    when(cell2.player()).thenReturn(Optional.<Ship>absent());
+    when(cell2.ship()).thenReturn(Optional.<Ship>absent());
     when(movement.canMoveTo(cell2)).thenReturn(false);
 
     moving.select(cell2);
