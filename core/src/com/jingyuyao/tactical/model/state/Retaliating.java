@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Retaliation;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -67,30 +67,30 @@ public class Retaliating extends BaseState {
     if (enemyCell.enemy().isPresent()) {
       final Enemy enemy = enemyCell.enemy().get();
       post(new ActivatedEnemy(enemy));
-      handleMoving(enemy.getRetaliation(movements, enemyCell), next);
+      handleMoving(enemy.getAutoPilot(movements, enemyCell), next);
     } else {
       next.run();
     }
   }
 
-  private void handleMoving(final Retaliation retaliation, final Runnable next) {
-    final Optional<Path> pathOpt = retaliation.path();
+  private void handleMoving(final AutoPilot autoPilot, final Runnable next) {
+    final Optional<Path> pathOpt = autoPilot.path();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();
       path.getOrigin().moveShip(path).done(new Runnable() {
         @Override
         public void run() {
-          handleBattle(retaliation, next);
+          handleBattle(autoPilot, next);
         }
       });
     } else {
-      handleBattle(retaliation, next);
+      handleBattle(autoPilot, next);
     }
   }
 
-  private void handleBattle(Retaliation retaliation, Runnable next) {
-    if (retaliation.battle().isPresent()) {
-      battleSequence.start(retaliation.battle().get(), next);
+  private void handleBattle(AutoPilot autoPilot, Runnable next) {
+    if (autoPilot.battle().isPresent()) {
+      battleSequence.start(autoPilot.battle().get(), next);
     } else {
       next.run();
     }

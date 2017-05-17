@@ -13,18 +13,18 @@ public class PassiveEnemy extends BaseShip implements Enemy {
   }
 
   @Override
-  public Retaliation getRetaliation(Movements movements, Cell starting) {
+  public AutoPilot getAutoPilot(Movements movements, Cell starting) {
     Movement movement = movements.distanceFrom(starting);
     for (Cell moveCell : movement.getCells()) {
       for (final Weapon weapon : getWeapons()) {
         for (final Target target : weapon.createTargets(movements, moveCell)) {
           if (canTarget(target)) {
-            return new Retaliation(movement.pathTo(moveCell), new Battle(moveCell, weapon, target));
+            return new AutoPilot(movement.pathTo(moveCell), new Battle(moveCell, weapon, target));
           }
         }
       }
     }
-    return new Retaliation(null, null);
+    return new AutoPilot(null, null);
   }
 
   private boolean canTarget(Target target) {
