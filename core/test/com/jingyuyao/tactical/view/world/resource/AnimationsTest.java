@@ -79,7 +79,7 @@ public class AnimationsTest {
     when(textureAtlas.findRegions(SHIP_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
     when(ship.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getRaw()).thenReturn(SHIP_ASSET);
+    when(resourceKey.getPath()).thenReturn(SHIP_ASSET);
 
     LoopAnimation animation = animations.get(ship);
 
@@ -97,7 +97,7 @@ public class AnimationsTest {
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(SHIP_ASSET)).thenReturn(cached);
     when(ship.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getRaw()).thenReturn(SHIP_ASSET);
+    when(resourceKey.getPath()).thenReturn(SHIP_ASSET);
 
     LoopAnimation animation = animations.get(ship);
 
@@ -111,7 +111,7 @@ public class AnimationsTest {
     when(loopAnimationCache.containsKey(SHIP_ASSET)).thenReturn(true);
     when(loopAnimationCache.get(SHIP_ASSET)).thenReturn(mockLoopAnimation);
     when(ship.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getRaw()).thenReturn(SHIP_ASSET);
+    when(resourceKey.getPath()).thenReturn(SHIP_ASSET);
 
     assertThat(animations.get(ship)).isSameAs(mockLoopAnimation);
     verify(loopAnimationCache).containsKey(SHIP_ASSET);
@@ -127,7 +127,7 @@ public class AnimationsTest {
     when(textureAtlas.findRegions(ITEM_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
     when(item.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getRaw()).thenReturn(ITEM_ASSET);
+    when(resourceKey.getPath()).thenReturn(ITEM_ASSET);
 
     SingleAnimation animation = animations.get(item);
 
@@ -143,7 +143,7 @@ public class AnimationsTest {
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(ITEM_ASSET)).thenReturn(cached);
     when(item.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getRaw()).thenReturn(ITEM_ASSET);
+    when(resourceKey.getPath()).thenReturn(ITEM_ASSET);
 
     SingleAnimation animation = animations.get(item);
 

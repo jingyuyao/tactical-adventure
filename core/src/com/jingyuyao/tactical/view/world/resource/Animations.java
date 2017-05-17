@@ -37,11 +37,11 @@ public class Animations {
   }
 
   public LoopAnimation get(Ship ship) {
-    return getLoop(resourceConfig.getShipIdleFPS(), ship.getAnimation().getRaw());
+    return getLoop(resourceConfig.getShipIdleFPS(), ship.getAnimation().getPath());
   }
 
   public SingleAnimation get(Item item) {
-    return getSingle(resourceConfig.getItemFPS(), item.getAnimation().getRaw());
+    return getSingle(resourceConfig.getItemFPS(), item.getAnimation().getPath());
   }
 
   private SingleAnimation getSingle(int fps, String assetPath) {

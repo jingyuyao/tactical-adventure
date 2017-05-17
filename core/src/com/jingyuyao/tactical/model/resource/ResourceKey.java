@@ -50,7 +50,7 @@ public class ResourceKey {
   /**
    * Return the id joined with the bundle's path using {@code /} as separator.
    */
-  public String getRaw() {
+  public String getPath() {
     return bundle.getPath() + '/' + id;
   }
 
