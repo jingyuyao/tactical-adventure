@@ -54,8 +54,8 @@ public class BasicShip implements Ship {
   }
 
   @Override
-  public AutoPilot getAutoPilot(Movements movements, Cell starting) {
-    return new AutoPilot(null, null);
+  public PilotResponse getPilotResponse(Movements movements, Cell starting) {
+    return new PilotResponse(null, null);
   }
 
   @Override

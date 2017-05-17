@@ -13,18 +13,19 @@ public class PassiveShip extends BasicShip {
   }
 
   @Override
-  public AutoPilot getAutoPilot(Movements movements, Cell starting) {
+  public PilotResponse getPilotResponse(Movements movements, Cell starting) {
     Movement movement = movements.distanceFrom(starting);
     for (Cell moveCell : movement.getCells()) {
       for (final Weapon weapon : getWeapons()) {
         for (final Target target : weapon.createTargets(movements, moveCell)) {
           if (canTarget(target)) {
-            return new AutoPilot(movement.pathTo(moveCell), new Battle(moveCell, weapon, target));
+            return new PilotResponse(movement.pathTo(moveCell),
+                new Battle(moveCell, weapon, target));
           }
         }
       }
     }
-    return new AutoPilot(null, null);
+    return new PilotResponse(null, null);
   }
 
   private boolean canTarget(Target target) {

@@ -4,12 +4,12 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.world.Path;
 
-public class AutoPilot {
+public class PilotResponse {
 
   private final Path path;
   private final Battle battle;
 
-  AutoPilot(Path path, Battle battle) {
+  PilotResponse(Path path, Battle battle) {
     this.path = path;
     this.battle = battle;
   }

@@ -25,7 +25,7 @@ public interface Ship {
 
   void setControllable(boolean controllable);
 
-  AutoPilot getAutoPilot(Movements movements, Cell starting);
+  PilotResponse getPilotResponse(Movements movements, Cell starting);
 
   /**
    * Always >= 0.
