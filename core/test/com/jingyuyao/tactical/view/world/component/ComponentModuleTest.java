@@ -19,8 +19,6 @@ public class ComponentModuleTest {
   @Inject
   private ComponentMapper<Moving> movingComponentMapper;
   @Inject
-  private ComponentMapper<PlayerComponent> playerComponentComponentMapper;
-  @Inject
   private ComponentMapper<Position> positionComponentMapper;
   @Inject
   private ComponentMapper<Remove> removeComponentMapper;

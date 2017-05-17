@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
-import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
@@ -49,9 +48,6 @@ public class SystemModuleTest {
   private ComponentMapper<Moving> movingMapper = ComponentMapper.getFor(Moving.class);
   @Bind
   private ComponentMapper<ShipComponent> shipMapper = ComponentMapper.getFor(ShipComponent.class);
-  @Bind
-  private ComponentMapper<PlayerComponent> playerMapper =
-      ComponentMapper.getFor(PlayerComponent.class);
 
   @Inject
   private Systems systems;
@@ -65,8 +61,6 @@ public class SystemModuleTest {
   private MarkerSystem markerSystem;
   @Inject
   private MovingSystem movingSystem;
-  @Inject
-  private PlayerSystem playerSystem;
   @Inject
   private RemoveSystem removeSystem;
   @Inject
