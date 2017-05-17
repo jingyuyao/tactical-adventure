@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
-public interface Enemy extends Ship {
+public interface AutoPilot {
 
-  Retaliation getRetaliation(Movements movements, Cell starting);
+  PilotResponse getResponse(Cell shipCell, Movements movements);
 }

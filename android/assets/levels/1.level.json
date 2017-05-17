@@ -7,8 +7,11 @@
   ],
   "enemies": {
     "9,12": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "adder",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 50,
         "hp": 50,
@@ -35,8 +38,11 @@
       }
     },
     "8,12": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -55,8 +61,11 @@
       }
     },
     "9,11": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -75,8 +84,11 @@
       }
     },
     "2,12": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -95,8 +107,11 @@
       }
     },
     "4,10": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -115,8 +130,11 @@
       }
     },
     "6,8": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -135,8 +153,11 @@
       }
     },
     "8,6": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -155,8 +176,11 @@
       }
     },
     "10,4": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,

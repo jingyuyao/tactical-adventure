@@ -1,22 +1,31 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 
 public interface Ship {
-
-  /**
-   * Return whether or not this ship can currently be controlled by the player.
-   */
-  boolean canControl();
 
   ResourceKey getAnimation();
 
   ResourceKey getName();
+
+  Allegiance getAllegiance();
+
+  PilotResponse getAutoPilotResponse(Cell startingCell, Movements movements);
+
+  /**
+   * Return whether or not this ship can currently be controlled by the player.
+   */
+  boolean isControllable();
+
+  void setControllable(boolean controllable);
 
   /**
    * Always >= 0.

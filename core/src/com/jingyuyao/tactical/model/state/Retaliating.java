@@ -3,11 +3,12 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Retaliation;
+import com.jingyuyao.tactical.model.ship.PilotResponse;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -62,35 +63,35 @@ public class Retaliating extends BaseState {
       }
     };
 
-    Cell enemyCell = shipSnapshot.get(i);
-
-    if (enemyCell.enemy().isPresent()) {
-      final Enemy enemy = enemyCell.enemy().get();
+    Cell cell = shipSnapshot.get(i);
+    Optional<Ship> shipOpt = cell.ship();
+    if (shipOpt.isPresent() && shipOpt.get().getAllegiance().equals(Allegiance.ENEMY)) {
+      Ship enemy = shipOpt.get();
       post(new ActivatedEnemy(enemy));
-      handleMoving(enemy.getRetaliation(movements, enemyCell), next);
+      handleMoving(enemy.getAutoPilotResponse(cell, movements), next);
     } else {
       next.run();
     }
   }
 
-  private void handleMoving(final Retaliation retaliation, final Runnable next) {
-    final Optional<Path> pathOpt = retaliation.path();
+  private void handleMoving(final PilotResponse pilotResponse, final Runnable next) {
+    final Optional<Path> pathOpt = pilotResponse.path();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();
       path.getOrigin().moveShip(path).done(new Runnable() {
         @Override
         public void run() {
-          handleBattle(retaliation, next);
+          handleBattle(pilotResponse, next);
         }
       });
     } else {
-      handleBattle(retaliation, next);
+      handleBattle(pilotResponse, next);
     }
   }
 
-  private void handleBattle(Retaliation retaliation, Runnable next) {
-    if (retaliation.battle().isPresent()) {
-      battleSequence.start(retaliation.battle().get(), next);
+  private void handleBattle(PilotResponse pilotResponse, Runnable next) {
+    if (pilotResponse.battle().isPresent()) {
+      battleSequence.start(pilotResponse.battle().get(), next);
     } else {
       next.run();
     }

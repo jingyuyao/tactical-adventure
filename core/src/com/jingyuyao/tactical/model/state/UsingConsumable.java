@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class UsingConsumable extends BasePlayerState {
+public class UsingConsumable extends ControllingState {
 
   private final Consumable consumable;
 
@@ -16,9 +16,9 @@ public class UsingConsumable extends BasePlayerState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      @Assisted Cell playerCell,
+      @Assisted Cell cell,
       @Assisted Consumable consumable) {
-    super(modelBus, worldState, stateFactory, playerCell);
+    super(modelBus, worldState, stateFactory, cell);
     this.consumable = consumable;
   }
 
@@ -35,8 +35,8 @@ public class UsingConsumable extends BasePlayerState {
   }
 
   void use() {
-    consumable.apply(getPlayer());
-    getPlayer().useConsumable(consumable);
+    consumable.apply(getShip());
+    getShip().useConsumable(consumable);
     finish();
   }
 }

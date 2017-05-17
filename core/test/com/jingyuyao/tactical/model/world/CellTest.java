@@ -12,8 +12,7 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,9 +32,7 @@ public class CellTest {
   @Mock
   private Terrain terrain;
   @Mock
-  private Player player;
-  @Mock
-  private Enemy enemy;
+  private Ship ship;
   @Mock
   private Path path;
   @Captor
@@ -49,51 +46,36 @@ public class CellTest {
     assertThat(cell.getCoordinate()).isEqualTo(COORDINATE);
     assertThat(cell.getTerrain()).isSameAs(terrain);
     assertThat(cell.ship()).isAbsent();
-    assertThat(cell.player()).isAbsent();
-    assertThat(cell.enemy()).isAbsent();
   }
 
   @Test
-  public void spawn_player() {
-    cell.spawnShip(player);
+  public void spawn_ship() {
+    cell.spawnShip(ship);
 
-    assertThat(cell.ship()).hasValue(player);
-    assertThat(cell.player()).hasValue(player);
-    assertThat(cell.enemy()).isAbsent();
-    verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
-  }
-
-  @Test
-  public void spawn_enemy() {
-    cell.spawnShip(enemy);
-
-    assertThat(cell.ship()).hasValue(enemy);
-    assertThat(cell.enemy()).hasValue(enemy);
-    assertThat(cell.player()).isAbsent();
+    assertThat(cell.ship()).hasValue(ship);
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
   }
 
   @Test
   public void remove_ship() {
-    cell.spawnShip(player);
+    cell.spawnShip(ship);
     cell.removeShip();
 
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, player, RemoveShip.class);
+    TestHelpers.verifyObjectEvent(argumentCaptor, 1, ship, RemoveShip.class);
   }
 
   @Test
   public void instant_move_ship() {
     Cell other = new Cell(modelBus, COORDINATE, terrain);
-    cell.spawnShip(player);
+    cell.spawnShip(ship);
 
     cell.instantMoveShip(other);
 
     assertThat(cell.ship()).isAbsent();
-    assertThat(other.ship()).hasValue(player);
+    assertThat(other.ship()).hasValue(ship);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(InstantMoveShip.class);
@@ -101,20 +83,19 @@ public class CellTest {
 
   @Test
   public void instant_move_same_cell() {
-    cell.spawnShip(player);
+    cell.spawnShip(ship);
 
     cell.instantMoveShip(cell);
 
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
-    assertThat(cell.ship()).hasValue(player);
-    assertThat(cell.player()).hasValue(player);
+    assertThat(cell.ship()).hasValue(ship);
   }
 
   @Test
   public void move_ship() {
     Cell other = new Cell(modelBus, COORDINATE, terrain);
-    cell.spawnShip(player);
+    cell.spawnShip(ship);
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(other);
 
@@ -122,7 +103,7 @@ public class CellTest {
 
     assertThat(promise.isDone()).isFalse();
     assertThat(cell.ship()).isAbsent();
-    assertThat(other.ship()).hasValue(player);
+    assertThat(other.ship()).hasValue(ship);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
     assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(MoveShip.class);
@@ -130,7 +111,7 @@ public class CellTest {
 
   @Test
   public void move_ship_same_cell() {
-    cell.spawnShip(player);
+    cell.spawnShip(ship);
     when(path.getOrigin()).thenReturn(cell);
     when(path.getDestination()).thenReturn(cell);
 
@@ -139,7 +120,6 @@ public class CellTest {
     assertThat(promise.isDone()).isTrue();
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SpawnShip.class);
-    assertThat(cell.ship()).hasValue(player);
-    assertThat(cell.player()).hasValue(player);
+    assertThat(cell.ship()).hasValue(ship);
   }
 }

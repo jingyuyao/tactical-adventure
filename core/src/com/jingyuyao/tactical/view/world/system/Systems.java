@@ -22,7 +22,6 @@ public class Systems {
       EffectsSystem effectsSystem,
       MarkerSystem markerSystem,
       MovingSystem movingSystem,
-      PlayerSystem playerSystem,
       RemoveSystem removeSystem,
       RenderSystem renderSystem) {
     this.systems = ImmutableList.of(
@@ -31,7 +30,6 @@ public class Systems {
         effectsSystem,
         markerSystem,
         movingSystem,
-        playerSystem,
         removeSystem,
         renderSystem
     );

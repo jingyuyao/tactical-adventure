@@ -1,36 +1,34 @@
 package com.jingyuyao.tactical.model.ship;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 
-/**
- * A {@link Ship} that can't be controlled.
- */
-class BaseShip implements Ship {
+public class BasicShip implements Ship {
 
   private String name;
-  private Stats stats;  // required
+  private AutoPilot autoPilot = new NoAutoPilot();
+  private Stats stats = new Stats();
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
 
-  BaseShip() {
+  BasicShip() {
   }
 
-  BaseShip(String name, Stats stats, Cockpit cockpit, Items items) {
+  BasicShip(String name, AutoPilot autoPilot, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;
+    this.autoPilot = autoPilot;
     this.stats = stats;
     this.cockpit = cockpit;
     this.items = items;
-  }
-
-  @Override
-  public boolean canControl() {
-    return false;
   }
 
   @Override
@@ -41,6 +39,28 @@ class BaseShip implements Ship {
   @Override
   public ResourceKey getName() {
     return ModelBundle.SHIP_NAME.get(name);
+  }
+
+  @Override
+  public Allegiance getAllegiance() {
+    return stats.getAllegiance();
+  }
+
+  @Override
+  public PilotResponse getAutoPilotResponse(Cell cell, Movements movements) {
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Preconditions.checkArgument(cell.ship().get().equals(this));
+    return autoPilot.getResponse(cell, movements);
+  }
+
+  @Override
+  public boolean isControllable() {
+    return stats.isControllable();
+  }
+
+  @Override
+  public void setControllable(boolean controllable) {
+    stats.setControllable(controllable);
   }
 
   @Override

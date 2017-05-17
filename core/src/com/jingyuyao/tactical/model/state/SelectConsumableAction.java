@@ -5,10 +5,10 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class SelectConsumableAction implements Action {
 
-  private final PlayerActionState playerActionState;
+  private final ControllingActionState playerActionState;
   private final Consumable consumable;
 
-  SelectConsumableAction(PlayerActionState playerActionState, Consumable consumable) {
+  SelectConsumableAction(ControllingActionState playerActionState, Consumable consumable) {
     this.playerActionState = playerActionState;
     this.consumable = consumable;
   }

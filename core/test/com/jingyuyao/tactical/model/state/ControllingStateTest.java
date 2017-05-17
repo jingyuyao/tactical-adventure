@@ -5,15 +5,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -22,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UsingConsumableTest {
+public class ControllingStateTest {
 
   @Mock
   private ModelBus modelBus;
@@ -35,57 +30,42 @@ public class UsingConsumableTest {
   @Mock
   private Ship ship;
   @Mock
-  private Consumable consumable;
-  @Mock
   private Waiting waiting;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private UsingConsumable usingConsumable;
-
-  @Before
-  public void setUp() {
+  @Test
+  public void good_cell() {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
-    usingConsumable = new UsingConsumable(modelBus, worldState, stateFactory, cell, consumable);
+    new ControllingState(modelBus, worldState, stateFactory, cell);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void no_ship() {
+    when(cell.ship()).thenReturn(Optional.<Ship>absent());
+    new ControllingState(modelBus, worldState, stateFactory, cell);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void cant_control() {
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(false);
+    new ControllingState(modelBus, worldState, stateFactory, cell);
   }
 
   @Test
-  public void enter() {
-    usingConsumable.enter();
-
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isSameAs(usingConsumable);
-  }
-
-  @Test
-  public void exit() {
-    usingConsumable.exit();
-
-    verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, usingConsumable, ExitState.class);
-  }
-
-  @Test
-  public void use_consumable() {
+  public void finish() {
     when(stateFactory.createWaiting()).thenReturn(waiting);
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
+    ControllingState state = new ControllingState(modelBus, worldState, stateFactory, cell);
 
-    usingConsumable.use();
+    state.finish();
 
-    verify(consumable).apply(ship);
-    verify(ship).useConsumable(consumable);
     verify(ship).setControllable(false);
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     verify(worldState).branchTo(waiting);
-  }
-
-  @Test
-  public void actions() {
-    ImmutableList<Action> actions = usingConsumable.getActions();
-
-    assertThat(actions).hasSize(2);
-    assertThat(actions.get(0)).isInstanceOf(UseConsumableAction.class);
-    assertThat(actions.get(1)).isInstanceOf(BackAction.class);
   }
 }

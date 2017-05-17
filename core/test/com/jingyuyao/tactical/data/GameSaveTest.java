@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,9 +21,9 @@ public class GameSaveTest {
   @Mock
   private LevelProgress levelProgress;
   @Mock
-  private Player player1;
+  private Ship player1;
   @Mock
-  private Player player2;
+  private Ship player2;
 
   private GameSave gameSave;
 

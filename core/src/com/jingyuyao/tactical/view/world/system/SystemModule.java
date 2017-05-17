@@ -8,7 +8,6 @@ import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
-import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
@@ -34,8 +33,6 @@ public class SystemModule extends AbstractModule {
     requireBinding(new Key<ComponentMapper<Moving>>() {
     });
     requireBinding(new Key<ComponentMapper<ShipComponent>>() {
-    });
-    requireBinding(new Key<ComponentMapper<PlayerComponent>>() {
     });
   }
 }

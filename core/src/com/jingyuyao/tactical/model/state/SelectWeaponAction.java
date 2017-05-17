@@ -5,10 +5,10 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class SelectWeaponAction implements Action {
 
-  private final PlayerActionState playerActionState;
+  private final ControllingActionState playerActionState;
   private final Weapon weapon;
 
-  SelectWeaponAction(PlayerActionState playerActionState, Weapon weapon) {
+  SelectWeaponAction(ControllingActionState playerActionState, Weapon weapon) {
     this.playerActionState = playerActionState;
     this.weapon = weapon;
   }

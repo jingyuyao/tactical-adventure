@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.ship;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.jingyuyao.tactical.model.Allegiance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,23 @@ public class StatsTest {
   @Before
   public void setUp() {
     stats = new Stats(MAX_HP, HP, MOVE_DISTANCE);
+  }
+
+  @Test
+  public void get_allegiance() {
+    assertThat(stats.getAllegiance()).isSameAs(Allegiance.ENEMY);
+  }
+
+  @Test
+  public void is_controllable() {
+    assertThat(stats.isControllable()).isFalse();
+  }
+
+  @Test
+  public void set_controllable() {
+    stats.setControllable(true);
+
+    assertThat(stats.isControllable()).isTrue();
   }
 
   @Test

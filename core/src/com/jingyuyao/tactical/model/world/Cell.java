@@ -9,8 +9,6 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
@@ -39,20 +37,6 @@ public class Cell {
 
   public Optional<Ship> ship() {
     return Optional.fromNullable(ship);
-  }
-
-  public Optional<Player> player() {
-    if (ship != null && ship instanceof Player) {
-      return Optional.of((Player) ship);
-    }
-    return Optional.absent();
-  }
-
-  public Optional<Enemy> enemy() {
-    if (ship != null && ship instanceof Enemy) {
-      return Optional.of((Enemy) ship);
-    }
-    return Optional.absent();
   }
 
   public void spawnShip(Ship ship) {

@@ -7,8 +7,11 @@
   ],
   "enemies": {
     "1,11": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -27,8 +30,11 @@
       }
     },
     "3,12": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -47,8 +53,11 @@
       }
     },
     "5,14": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -67,8 +76,11 @@
       }
     },
     "6,5": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,
@@ -87,8 +99,11 @@
       }
     },
     "14,10": {
-      "type": "PassiveEnemy",
+      "type": "BasicShip",
       "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
       "stats": {
         "maxHp": 10,
         "hp": 10,

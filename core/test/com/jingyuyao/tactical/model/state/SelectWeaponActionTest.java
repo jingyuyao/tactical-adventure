@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SelectWeaponActionTest {
 
   @Mock
-  private PlayerActionState playerActionState;
+  private ControllingActionState playerActionState;
   @Mock
   private Weapon weapon;
 

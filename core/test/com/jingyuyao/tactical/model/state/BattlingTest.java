@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,15 +38,15 @@ public class BattlingTest {
   @Mock
   private BattleSequence battleSequence;
   @Mock
-  private Cell playerCell;
+  private Cell cell;
   @Mock
-  private Player attackingPlayer;
+  private Ship attackingShip;
   @Mock
   private Battle battle;
   @Mock
   private Target target;
   @Mock
-  private Cell cell;
+  private Cell selectCell;
   @Mock
   private Waiting waiting;
   @Mock
@@ -60,8 +60,9 @@ public class BattlingTest {
 
   @Before
   public void setUp() {
-    when(playerCell.player()).thenReturn(Optional.of(attackingPlayer));
-    battling = new Battling(modelBus, worldState, stateFactory, battleSequence, playerCell, battle);
+    when(cell.ship()).thenReturn(Optional.of(attackingShip));
+    when(attackingShip.isControllable()).thenReturn(true);
+    battling = new Battling(modelBus, worldState, stateFactory, battleSequence, cell, battle);
   }
 
   @Test
@@ -83,9 +84,9 @@ public class BattlingTest {
   @Test
   public void select_cannot_attack() {
     when(battle.getTarget()).thenReturn(target);
-    when(target.canTarget(cell)).thenReturn(false);
+    when(target.canTarget(selectCell)).thenReturn(false);
 
-    battling.select(cell);
+    battling.select(selectCell);
 
     verifyZeroInteractions(worldState);
   }
@@ -95,9 +96,9 @@ public class BattlingTest {
     when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(battle.getTarget()).thenReturn(target);
-    when(target.canTarget(cell)).thenReturn(true);
+    when(target.canTarget(selectCell)).thenReturn(true);
 
-    battling.select(cell);
+    battling.select(selectCell);
 
     verify_attacked();
   }
@@ -121,11 +122,11 @@ public class BattlingTest {
   }
 
   private void verify_attacked() {
-    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingPlayer, battleSequence);
+    InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingShip, battleSequence);
     inOrder.verify(worldState).goTo(transition);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
-    inOrder.verify(attackingPlayer).setActionable(false);
+    inOrder.verify(attackingShip).setControllable(false);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(waiting);

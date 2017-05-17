@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -41,9 +41,9 @@ public class MovedTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Player player;
+  private Ship ship;
   @Mock
-  private Player otherPlayer;
+  private Ship otherShip;
   @Mock
   private Movement movement;
   @Mock
@@ -59,7 +59,8 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
     moved = new Moved(modelBus, worldState, stateFactory, movements, cell);
   }
 
@@ -80,29 +81,29 @@ public class MovedTest {
   }
 
   @Test
-  public void select_player() {
-    when(cell.player()).thenReturn(Optional.of(player));
+  public void select_same_ship() {
+    when(cell2.ship()).thenReturn(Optional.of(ship));
 
-    moved.select(cell);
+    moved.select(cell2);
 
     verifyZeroInteractions(worldState);
   }
 
   @Test
-  public void select_other_player_not_actionable() {
-    when(cell.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.canControl()).thenReturn(false);
+  public void select_other_ship_not_controllable() {
+    when(cell2.ship()).thenReturn(Optional.of(otherShip));
+    when(otherShip.isControllable()).thenReturn(false);
 
-    moved.select(cell);
+    moved.select(cell2);
 
     verify(worldState).rollback();
     verifyNoMoreInteractions(worldState);
   }
 
   @Test
-  public void select_other_player_actionable() {
-    when(cell2.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.canControl()).thenReturn(true);
+  public void select_other_ship_controllable() {
+    when(cell2.ship()).thenReturn(Optional.of(otherShip));
+    when(otherShip.isControllable()).thenReturn(true);
     when(movements.distanceFrom(cell2)).thenReturn(movement);
     when(stateFactory.createMoving(cell2, movement)).thenReturn(moving);
 
@@ -115,8 +116,8 @@ public class MovedTest {
 
   @Test
   public void actions() {
-    when(player.getWeapons()).thenReturn(ImmutableList.of(weapon));
-    when(player.getConsumables()).thenReturn(ImmutableList.of(consumable));
+    when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
+    when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
 
     ImmutableList<Action> actions = moved.getActions();
 

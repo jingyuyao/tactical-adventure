@@ -4,10 +4,10 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
@@ -95,8 +95,10 @@ public class World {
 
   public void fullHealPlayers() {
     for (Cell cell : cellMap.values()) {
-      for (Player player : cell.player().asSet()) {
-        player.fullHeal();
+      for (Ship ship : cell.ship().asSet()) {
+        if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+          ship.fullHeal();
+        }
       }
     }
   }

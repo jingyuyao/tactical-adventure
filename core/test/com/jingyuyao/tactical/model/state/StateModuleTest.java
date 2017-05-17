@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -39,7 +39,7 @@ public class StateModuleTest {
   @Mock
   private Cell cell;
   @Mock
-  private Player player;
+  private Ship ship;
   @Mock
   private Weapon weapon;
   @Mock
@@ -61,7 +61,8 @@ public class StateModuleTest {
 
   @Test
   public void state_factory() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
 
     stateFactory.createTransition();
     stateFactory.createWaiting();

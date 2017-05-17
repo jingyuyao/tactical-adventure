@@ -10,6 +10,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
@@ -17,17 +18,14 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Path;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
-import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.component.ShipComponent;
@@ -68,9 +66,7 @@ public class ShipSystemTest {
   @Mock
   private Cell cell6;
   @Mock
-  private Player player;
-  @Mock
-  private Enemy enemy;
+  private Ship ship;
   @Mock
   private WorldTexture texture;
   @Mock
@@ -82,7 +78,7 @@ public class ShipSystemTest {
   @Mock
   private MoveShip moveShip;
   @Mock
-  private PlayerState playerState;
+  private ControllingState controllingState;
   @Mock
   private ActivatedEnemy activatedEnemy;
   @Mock
@@ -109,46 +105,59 @@ public class ShipSystemTest {
   }
 
   @Test
-  public void spawn_player() {
-    LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
-    when(spawnShip.getObject()).thenReturn(cell);
-    when(cell.getCoordinate()).thenReturn(C1);
-    when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.ship()).thenReturn(Optional.<Ship>of(player));
-    when(animations.get(player)).thenReturn(animation);
+  public void process_entities_enemy() {
+    when(ship.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    ShipComponent shipComponent = new ShipComponent();
+    shipComponent.setShip(ship);
+    Frame frame = new Frame();
+    Entity entity = new Entity();
+    entity.add(shipComponent);
+    entity.add(frame);
 
-    shipSystem.spawnShip(spawnShip);
+    shipSystem.processEntity(entity, 0f);
 
-    ImmutableArray<Entity> entities = engine.getEntities();
-    assertThat(entities).hasSize(1);
-    Entity entity = entities.first();
-    Position position = entity.getComponent(Position.class);
-    assertThat(position).isNotNull();
-    assertThat(position.getX()).isEqualTo((float) C1.getX());
-    assertThat(position.getY()).isEqualTo((float) C1.getY());
-    assertThat(position.getZ()).isEqualTo(WorldZIndex.SHIP);
-    Frame frame = entity.getComponent(Frame.class);
-    assertThat(frame).isNotNull();
-    assertThat(frame.getColor()).isEqualTo(Colors.BLUE_300);
-    LoopAnimation loopAnimation = entity.getComponent(LoopAnimation.class);
-    assertThat(loopAnimation).isEqualTo(animation);
-    ShipComponent shipComponent = entity.getComponent(ShipComponent.class);
-    assertThat(shipComponent).isNotNull();
-    assertThat(shipComponent.getShip()).isEqualTo(player);
-    PlayerComponent playerComponent = entity.getComponent(PlayerComponent.class);
-    assertThat(playerComponent).isNotNull();
-    assertThat(playerComponent.getPlayer()).isEqualTo(player);
+    assertThat(frame.getColor()).isEqualTo(Colors.RED_500);
   }
 
   @Test
-  public void spawn_enemy() {
+  public void process_entities_player_controllable() {
+    when(ship.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship.isControllable()).thenReturn(true);
+    ShipComponent shipComponent = new ShipComponent();
+    shipComponent.setShip(ship);
+    Frame frame = new Frame();
+    Entity entity = new Entity();
+    entity.add(shipComponent);
+    entity.add(frame);
+
+    shipSystem.processEntity(entity, 0f);
+
+    assertThat(frame.getColor()).isEqualTo(Colors.BLUE_300);
+  }
+
+  @Test
+  public void process_entities_player_uncontrollable() {
+    when(ship.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship.isControllable()).thenReturn(false);
+    ShipComponent shipComponent = new ShipComponent();
+    shipComponent.setShip(ship);
+    Frame frame = new Frame();
+    Entity entity = new Entity();
+    entity.add(shipComponent);
+    entity.add(frame);
+
+    shipSystem.processEntity(entity, 0f);
+
+    assertThat(frame.getColor()).isEqualTo(Colors.GREY_500);
+  }
+
+  @Test
+  public void spawn_ship() {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
     when(spawnShip.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
-    when(cell.enemy()).thenReturn(Optional.of(enemy));
-    when(cell.player()).thenReturn(Optional.<Player>absent());
-    when(cell.ship()).thenReturn(Optional.<Ship>of(enemy));
-    when(animations.get(enemy)).thenReturn(animation);
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(animations.get(ship)).thenReturn(animation);
 
     shipSystem.spawnShip(spawnShip);
 
@@ -162,19 +171,17 @@ public class ShipSystemTest {
     assertThat(position.getZ()).isEqualTo(WorldZIndex.SHIP);
     Frame frame = entity.getComponent(Frame.class);
     assertThat(frame).isNotNull();
-    assertThat(frame.getColor()).isEqualTo(Colors.RED_500);
     LoopAnimation loopAnimation = entity.getComponent(LoopAnimation.class);
     assertThat(loopAnimation).isEqualTo(animation);
     ShipComponent shipComponent = entity.getComponent(ShipComponent.class);
     assertThat(shipComponent).isNotNull();
-    assertThat(shipComponent.getShip()).isEqualTo(enemy);
-    assertThat(entity.getComponent(PlayerComponent.class)).isNull();
+    assertThat(shipComponent.getShip()).isEqualTo(ship);
   }
 
   @Test
   public void remove_ship() {
-    spawn_enemy();
-    when(removeShip.getObject()).thenReturn(enemy);
+    spawn_ship();
+    when(removeShip.getObject()).thenReturn(ship);
 
     shipSystem.removeShip(removeShip);
 
@@ -186,8 +193,8 @@ public class ShipSystemTest {
 
   @Test
   public void instant_move() {
-    spawn_player();
-    when(instantMoveShip.getShip()).thenReturn(player);
+    spawn_ship();
+    when(instantMoveShip.getShip()).thenReturn(ship);
     when(instantMoveShip.getDestination()).thenReturn(cell2);
     when(cell2.getCoordinate()).thenReturn(C2);
 
@@ -205,8 +212,8 @@ public class ShipSystemTest {
 
   @Test
   public void move() {
-    spawn_player();
-    when(moveShip.getShip()).thenReturn(player);
+    spawn_ship();
+    when(moveShip.getShip()).thenReturn(ship);
     when(moveShip.getPromise()).thenReturn(promise);
     when(moveShip.getPath()).thenReturn(path);
     when(path.getTrack()).thenReturn(ImmutableList.of(cell3, cell4, cell5, cell6));
@@ -229,11 +236,11 @@ public class ShipSystemTest {
 
   @Test
   public void player_state() {
-    spawn_player();
-    when(playerState.getPlayer()).thenReturn(player);
+    spawn_ship();
+    when(controllingState.getShip()).thenReturn(ship);
     when(markers.getActivated()).thenReturn(texture);
 
-    shipSystem.playerState(playerState);
+    shipSystem.playerState(controllingState);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -242,15 +249,15 @@ public class ShipSystemTest {
     assertThat(frame).isNotNull();
     assertThat(frame.getOverlays()).containsExactly(texture);
 
-    shipSystem.playerState(playerState);
+    shipSystem.playerState(controllingState);
 
     assertThat(frame.getOverlays()).containsExactly(texture);
   }
 
   @Test
   public void activated_enemy() {
-    spawn_enemy();
-    when(activatedEnemy.getObject()).thenReturn(enemy);
+    spawn_ship();
+    when(activatedEnemy.getObject()).thenReturn(ship);
     when(markers.getActivated()).thenReturn(texture);
 
     shipSystem.activatedEnemy(activatedEnemy);
@@ -269,8 +276,8 @@ public class ShipSystemTest {
 
   @Test
   public void exit_state() {
-    spawn_enemy();
-    when(activatedEnemy.getObject()).thenReturn(enemy);
+    spawn_ship();
+    when(activatedEnemy.getObject()).thenReturn(ship);
     when(markers.getActivated()).thenReturn(texture);
 
     shipSystem.activatedEnemy(activatedEnemy);

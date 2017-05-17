@@ -1,11 +1,9 @@
 package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -18,15 +16,13 @@ import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Moving;
-import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.component.ShipComponent;
@@ -39,13 +35,12 @@ import javax.inject.Singleton;
 
 @Singleton
 @ModelBusListener
-class ShipSystem extends EntitySystem {
+class ShipSystem extends IteratingSystem {
 
   private final Markers markers;
   private final Animations animations;
   private final ComponentMapper<ShipComponent> shipMapper;
   private final ComponentMapper<Frame> frameMapper;
-  private ImmutableArray<Entity> entities;
 
   @Inject
   ShipSystem(
@@ -53,7 +48,7 @@ class ShipSystem extends EntitySystem {
       Animations animations,
       ComponentMapper<ShipComponent> shipMapper,
       ComponentMapper<Frame> frameMapper) {
-    super(SystemPriority.SHIP);
+    super(Family.all(ShipComponent.class, Frame.class).get(), SystemPriority.SHIP);
     this.markers = markers;
     this.animations = animations;
     this.shipMapper = shipMapper;
@@ -61,38 +56,43 @@ class ShipSystem extends EntitySystem {
   }
 
   @Override
-  public void addedToEngine(Engine engine) {
-    entities = engine.getEntitiesFor(Family.all(ShipComponent.class).get());
+  protected void processEntity(Entity entity, float deltaTime) {
+    ShipComponent shipComponent = shipMapper.get(entity);
+    Frame frame = frameMapper.get(entity);
+    Ship ship = shipComponent.getShip();
+    switch (ship.getAllegiance()) {
+      case PLAYER:
+        if (ship.isControllable()) {
+          frame.setColor(Colors.BLUE_300);
+        } else {
+          frame.setColor(Colors.GREY_500);
+        }
+        break;
+      case ENEMY:
+        frame.setColor(Colors.RED_500);
+        break;
+    }
   }
 
   @Subscribe
   void spawnShip(SpawnShip spawnShip) {
     Cell cell = spawnShip.getObject();
     Preconditions.checkArgument(cell.ship().isPresent());
+    Ship ship = cell.ship().get();
 
     Position position = getEngine().createComponent(Position.class);
     position.set(cell.getCoordinate(), WorldZIndex.SHIP);
 
     ShipComponent shipComponent = getEngine().createComponent(ShipComponent.class);
-    shipComponent.setShip(cell.ship().get());
+    shipComponent.setShip(ship);
 
     Frame frame = getEngine().createComponent(Frame.class);
-    if (cell.player().isPresent()) {
-      frame.setColor(Colors.BLUE_300);
-    } else if (cell.enemy().isPresent()) {
-      frame.setColor(Colors.RED_500);
-    }
 
     Entity entity = getEngine().createEntity();
     entity.add(position);
     entity.add(shipComponent);
     entity.add(frame);
-    entity.add(animations.get(cell.ship().get()));
-    for (Player player : cell.player().asSet()) {
-      PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
-      playerComponent.setPlayer(player);
-      entity.add(playerComponent);
-    }
+    entity.add(animations.get(ship));
 
     getEngine().addEntity(entity);
   }
@@ -122,8 +122,8 @@ class ShipSystem extends EntitySystem {
   }
 
   @Subscribe
-  void playerState(PlayerState playerState) {
-    activate(playerState.getPlayer());
+  void playerState(ControllingState controllingState) {
+    activate(controllingState.getShip());
   }
 
   @Subscribe
@@ -143,7 +143,7 @@ class ShipSystem extends EntitySystem {
    * outside of the engine which is a bad practice.
    */
   private Entity get(final Ship ship) {
-    return Iterables.find(entities, new Predicate<Entity>() {
+    return Iterables.find(getEntities(), new Predicate<Entity>() {
       @Override
       public boolean apply(Entity input) {
         ShipComponent component = shipMapper.get(input);
@@ -160,7 +160,7 @@ class ShipSystem extends EntitySystem {
   }
 
   private void deactivate() {
-    for (Entity entity : entities) {
+    for (Entity entity : getEntities()) {
       Frame frame = frameMapper.get(entity);
       frame.removeOverlay(markers.getActivated());
     }

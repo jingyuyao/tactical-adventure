@@ -16,8 +16,7 @@ import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.TextLoader;
-import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -47,7 +46,7 @@ public class StartMenuTest {
   @Mock
   private LevelProgress levelProgress;
   @Mock
-  private Player player;
+  private Ship player;
   @Inject
   private GL20 gl20;
   @Inject
@@ -72,7 +71,7 @@ public class StartMenuTest {
     when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
     when(levelProgress.getActivePlayers())
         .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
-    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Enemy>of());
+    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
@@ -100,7 +99,7 @@ public class StartMenuTest {
     when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
     when(levelProgress.getActivePlayers())
         .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
-    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Enemy>of());
+    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
