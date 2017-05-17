@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
-class ControllingActionState extends BaseControllingState {
+class ControllingActionState extends ControllingState {
 
   private final Movements movements;
 

@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class SelectingTarget extends BaseControllingState {
+public class SelectingTarget extends ControllingState {
 
   private final Weapon weapon;
   private final ImmutableList<Target> targets;

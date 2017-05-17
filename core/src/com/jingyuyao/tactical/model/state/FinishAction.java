@@ -5,9 +5,9 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 class FinishAction implements Action {
 
-  private final BaseControllingState playerState;
+  private final ControllingState playerState;
 
-  FinishAction(BaseControllingState playerState) {
+  FinishAction(ControllingState playerState) {
     this.playerState = playerState;
   }
 

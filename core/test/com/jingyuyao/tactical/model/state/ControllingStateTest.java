@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseControllingStateTest {
+public class ControllingStateTest {
 
   @Mock
   private ModelBus modelBus;
@@ -38,20 +38,20 @@ public class BaseControllingStateTest {
   public void good_cell() {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
-    new BaseControllingState(modelBus, worldState, stateFactory, cell);
+    new ControllingState(modelBus, worldState, stateFactory, cell);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void no_ship() {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
-    new BaseControllingState(modelBus, worldState, stateFactory, cell);
+    new ControllingState(modelBus, worldState, stateFactory, cell);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void cant_control() {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(false);
-    new BaseControllingState(modelBus, worldState, stateFactory, cell);
+    new ControllingState(modelBus, worldState, stateFactory, cell);
   }
 
   @Test
@@ -59,7 +59,7 @@ public class BaseControllingStateTest {
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
-    BaseControllingState state = new BaseControllingState(modelBus, worldState, stateFactory, cell);
+    ControllingState state = new ControllingState(modelBus, worldState, stateFactory, cell);
 
     state.finish();
 

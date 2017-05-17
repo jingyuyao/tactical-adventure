@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class UsingConsumable extends BaseControllingState {
+public class UsingConsumable extends ControllingState {
 
   private final Consumable consumable;
 

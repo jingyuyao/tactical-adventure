@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class Battling extends BaseControllingState {
+public class Battling extends ControllingState {
 
   private final StateFactory stateFactory;
   private final BattleSequence battleSequence;
