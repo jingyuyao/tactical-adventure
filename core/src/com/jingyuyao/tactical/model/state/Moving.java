@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
 import javax.inject.Inject;
 
-public class Moving extends PlayerActionState {
+public class Moving extends ControllingActionState {
 
   private final Movement movement;
   private Cell prevMove;
@@ -37,7 +37,7 @@ public class Moving extends PlayerActionState {
   public void select(final Cell cell) {
     if (cell.player().isPresent()) {
       Ship player = cell.player().get();
-      if (!player.equals(getPlayer())) {
+      if (!player.equals(getShip())) {
         rollback();
         if (player.isControllable()) {
           goTo(getStateFactory().createMoving(cell, getMovements().distanceFrom(cell)));

@@ -19,7 +19,7 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Direction;
@@ -121,8 +121,8 @@ class ShipSystem extends EntitySystem {
   }
 
   @Subscribe
-  void playerState(PlayerState playerState) {
-    activate(playerState.getPlayer());
+  void playerState(ControllingState controllingState) {
+    activate(controllingState.getShip());
   }
 
   @Subscribe

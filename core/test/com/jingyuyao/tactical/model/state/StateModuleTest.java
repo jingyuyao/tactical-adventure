@@ -39,7 +39,7 @@ public class StateModuleTest {
   @Mock
   private Cell cell;
   @Mock
-  private Ship player;
+  private Ship ship;
   @Mock
   private Weapon weapon;
   @Mock
@@ -61,7 +61,8 @@ public class StateModuleTest {
 
   @Test
   public void state_factory() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
 
     stateFactory.createTransition();
     stateFactory.createWaiting();

@@ -9,7 +9,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class SelectingTarget extends BasePlayerState {
+public class SelectingTarget extends BaseControllingState {
 
   private final Weapon weapon;
   private final ImmutableList<Target> targets;
@@ -19,10 +19,10 @@ public class SelectingTarget extends BasePlayerState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      @Assisted Cell playerCell,
+      @Assisted Cell cell,
       @Assisted Weapon weapon,
       @Assisted ImmutableList<Target> targets) {
-    super(modelBus, worldState, stateFactory, playerCell);
+    super(modelBus, worldState, stateFactory, cell);
     this.weapon = weapon;
     this.targets = targets;
   }
@@ -32,7 +32,7 @@ public class SelectingTarget extends BasePlayerState {
     for (Target target : targets) {
       if (target.selectedBy(cell)) {
         goTo(getStateFactory().createBattling(
-            getPlayerCell(), new Battle(getPlayerCell(), weapon, target)));
+            getCell(), new Battle(getCell(), weapon, target)));
         return;
       }
     }

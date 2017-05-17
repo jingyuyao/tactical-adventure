@@ -6,29 +6,30 @@ import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 
-class BasePlayerState extends BaseState implements PlayerState {
+class BaseControllingState extends BaseState implements ControllingState {
 
   private final StateFactory stateFactory;
-  private final Cell playerCell;
-  private final Ship player;
+  private final Cell cell;
+  private final Ship ship;
 
-  BasePlayerState(
-      ModelBus modelBus, WorldState worldState, StateFactory stateFactory, Cell playerCell) {
+  BaseControllingState(
+      ModelBus modelBus, WorldState worldState, StateFactory stateFactory, Cell cell) {
     super(modelBus, worldState);
-    Preconditions.checkArgument(playerCell.player().isPresent());
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Preconditions.checkArgument(cell.ship().get().isControllable());
     this.stateFactory = stateFactory;
-    this.playerCell = playerCell;
-    this.player = playerCell.player().get();
+    this.cell = cell;
+    this.ship = cell.ship().get();
   }
 
   @Override
-  public Cell getPlayerCell() {
-    return playerCell;
+  public Cell getCell() {
+    return cell;
   }
 
   @Override
-  public Ship getPlayer() {
-    return player;
+  public Ship getShip() {
+    return ship;
   }
 
   StateFactory getStateFactory() {
@@ -36,7 +37,7 @@ class BasePlayerState extends BaseState implements PlayerState {
   }
 
   void finish() {
-    player.setControllable(false);
+    ship.setControllable(false);
     post(new Save());
     branchTo(stateFactory.createWaiting());
   }

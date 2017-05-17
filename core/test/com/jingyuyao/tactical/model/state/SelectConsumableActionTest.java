@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SelectConsumableActionTest {
 
   @Mock
-  private PlayerActionState playerActionState;
+  private ControllingActionState playerActionState;
   @Mock
   private Consumable consumable;
 

@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.world.Cell;
 import javax.inject.Inject;
 
-public class Battling extends BasePlayerState {
+public class Battling extends BaseControllingState {
 
   private final StateFactory stateFactory;
   private final BattleSequence battleSequence;
@@ -19,9 +19,9 @@ public class Battling extends BasePlayerState {
       WorldState worldState,
       StateFactory stateFactory,
       BattleSequence battleSequence,
-      @Assisted Cell playerCell,
+      @Assisted Cell cell,
       @Assisted Battle battle) {
-    super(modelBus, worldState, stateFactory, playerCell);
+    super(modelBus, worldState, stateFactory, cell);
     this.stateFactory = stateFactory;
     this.battleSequence = battleSequence;
     this.battle = battle;

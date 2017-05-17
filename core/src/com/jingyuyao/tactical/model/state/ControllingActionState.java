@@ -8,27 +8,27 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 
-class PlayerActionState extends BasePlayerState {
+class ControllingActionState extends BaseControllingState {
 
   private final Movements movements;
 
-  PlayerActionState(
+  ControllingActionState(
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
       Movements movements,
-      Cell playerCell) {
-    super(modelBus, worldState, stateFactory, playerCell);
+      Cell cell) {
+    super(modelBus, worldState, stateFactory, cell);
     this.movements = movements;
   }
 
   @Override
   public ImmutableList<Action> getActions() {
     ImmutableList.Builder<Action> builder = ImmutableList.builder();
-    for (Weapon weapon : getPlayer().getWeapons()) {
+    for (Weapon weapon : getShip().getWeapons()) {
       builder.add(new SelectWeaponAction(this, weapon));
     }
-    for (Consumable consumable : getPlayer().getConsumables()) {
+    for (Consumable consumable : getShip().getConsumables()) {
       builder.add(new SelectConsumableAction(this, consumable));
     }
     builder.add(new FinishAction(this));
@@ -37,12 +37,12 @@ class PlayerActionState extends BasePlayerState {
   }
 
   void selectWeapon(Weapon weapon) {
-    ImmutableList<Target> targets = weapon.createTargets(movements, getPlayerCell());
-    goTo(getStateFactory().createSelectingTarget(getPlayerCell(), weapon, targets));
+    ImmutableList<Target> targets = weapon.createTargets(movements, getCell());
+    goTo(getStateFactory().createSelectingTarget(getCell(), weapon, targets));
   }
 
   void selectConsumable(Consumable consumable) {
-    goTo(getStateFactory().createUsingConsumable(getPlayerCell(), consumable));
+    goTo(getStateFactory().createUsingConsumable(getCell(), consumable));
   }
 
   Movements getMovements() {

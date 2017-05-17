@@ -34,11 +34,11 @@ public class SelectingTargetTest {
   @Mock
   private ModelBus modelBus;
   @Mock
-  private Cell playerCell;
-  @Mock
-  private Ship player;
-  @Mock
   private Cell cell;
+  @Mock
+  private Ship ship;
+  @Mock
+  private Cell selectCell;
   @Mock
   private Weapon weapon;
   @Mock
@@ -56,9 +56,10 @@ public class SelectingTargetTest {
 
   @Before
   public void setUp() {
-    when(playerCell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
     selectingTarget = new SelectingTarget(
-        modelBus, worldState, stateFactory, playerCell, weapon, ImmutableList.of(target1, target2));
+        modelBus, worldState, stateFactory, cell, weapon, ImmutableList.of(target1, target2));
   }
 
   @Test
@@ -79,13 +80,13 @@ public class SelectingTargetTest {
 
   @Test
   public void select_target() {
-    when(target1.selectedBy(cell)).thenReturn(true);
-    when(stateFactory.createBattling(Mockito.eq(playerCell), Mockito.<Battle>any()))
+    when(target1.selectedBy(selectCell)).thenReturn(true);
+    when(stateFactory.createBattling(Mockito.eq(cell), Mockito.<Battle>any()))
         .thenReturn(battling);
 
-    selectingTarget.select(cell);
+    selectingTarget.select(selectCell);
 
-    verify(stateFactory).createBattling(Mockito.eq(playerCell), battleCaptor.capture());
+    verify(stateFactory).createBattling(Mockito.eq(cell), battleCaptor.capture());
     assertThat(battleCaptor.getValue().getWeapon()).isSameAs(weapon);
     assertThat(battleCaptor.getValue().getTarget()).isSameAs(target1);
     verify(worldState).goTo(battling);
@@ -93,7 +94,7 @@ public class SelectingTargetTest {
 
   @Test
   public void select_no_select() {
-    selectingTarget.select(cell);
+    selectingTarget.select(selectCell);
 
     verifyZeroInteractions(worldState);
   }

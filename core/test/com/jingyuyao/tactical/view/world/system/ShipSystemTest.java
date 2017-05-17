@@ -18,7 +18,7 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.state.PlayerState;
+import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Path;
@@ -80,7 +80,7 @@ public class ShipSystemTest {
   @Mock
   private MoveShip moveShip;
   @Mock
-  private PlayerState playerState;
+  private ControllingState controllingState;
   @Mock
   private ActivatedEnemy activatedEnemy;
   @Mock
@@ -228,10 +228,10 @@ public class ShipSystemTest {
   @Test
   public void player_state() {
     spawn_player();
-    when(playerState.getPlayer()).thenReturn(player);
+    when(controllingState.getShip()).thenReturn(player);
     when(markers.getActivated()).thenReturn(texture);
 
-    shipSystem.playerState(playerState);
+    shipSystem.playerState(controllingState);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -240,7 +240,7 @@ public class ShipSystemTest {
     assertThat(frame).isNotNull();
     assertThat(frame.getOverlays()).containsExactly(texture);
 
-    shipSystem.playerState(playerState);
+    shipSystem.playerState(controllingState);
 
     assertThat(frame.getOverlays()).containsExactly(texture);
   }

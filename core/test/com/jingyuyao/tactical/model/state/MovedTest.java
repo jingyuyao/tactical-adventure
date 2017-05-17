@@ -41,7 +41,7 @@ public class MovedTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Ship player;
+  private Ship ship;
   @Mock
   private Ship otherPlayer;
   @Mock
@@ -59,7 +59,8 @@ public class MovedTest {
 
   @Before
   public void setUp() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
     moved = new Moved(modelBus, worldState, stateFactory, movements, cell);
   }
 
@@ -81,7 +82,7 @@ public class MovedTest {
 
   @Test
   public void select_player() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.player()).thenReturn(Optional.of(ship));
 
     moved.select(cell);
 
@@ -115,8 +116,8 @@ public class MovedTest {
 
   @Test
   public void actions() {
-    when(player.getWeapons()).thenReturn(ImmutableList.of(weapon));
-    when(player.getConsumables()).thenReturn(ImmutableList.of(consumable));
+    when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
+    when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
 
     ImmutableList<Action> actions = moved.getActions();
 

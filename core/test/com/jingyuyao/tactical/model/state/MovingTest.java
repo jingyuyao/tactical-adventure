@@ -45,7 +45,7 @@ public class MovingTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Ship player;
+  private Ship ship;
   @Mock
   private Ship otherPlayer;
   @Mock
@@ -71,7 +71,8 @@ public class MovingTest {
 
   @Before
   public void setUp() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(ship.isControllable()).thenReturn(true);
     moving = new Moving(modelBus, worldState, stateFactory, movements, cell, movement);
   }
 
@@ -87,7 +88,8 @@ public class MovingTest {
   public void canceled_nothing() {
     moving.canceled();
 
-    verifyZeroInteractions(player);
+    verify(ship).isControllable();
+    verifyZeroInteractions(ship);
   }
 
   @Test
@@ -109,7 +111,7 @@ public class MovingTest {
 
   @Test
   public void select_player() {
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.player()).thenReturn(Optional.of(ship));
 
     moving.select(cell);
 
@@ -153,7 +155,7 @@ public class MovingTest {
 
     moving.select(cell2);
 
-    InOrder inOrder = Mockito.inOrder(player, cell, worldState);
+    InOrder inOrder = Mockito.inOrder(ship, cell, worldState);
     inOrder.verify(worldState).goTo(transition);
     inOrder.verify(cell).moveShip(path);
     inOrder.verify(worldState).goTo(moved);
@@ -172,8 +174,8 @@ public class MovingTest {
 
   @Test
   public void actions() {
-    when(player.getWeapons()).thenReturn(ImmutableList.of(weapon));
-    when(player.getConsumables()).thenReturn(ImmutableList.of(consumable));
+    when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
+    when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
 
     ImmutableList<Action> actions = moving.getActions();
 

@@ -10,7 +10,7 @@ import javax.inject.Inject;
 /**
  * Can only perform actions after moving.
  */
-public class Moved extends PlayerActionState {
+public class Moved extends ControllingActionState {
 
   @Inject
   Moved(
@@ -25,7 +25,7 @@ public class Moved extends PlayerActionState {
   @Override
   public void select(Cell cell) {
     for (Ship player : cell.player().asSet()) {
-      if (!getPlayer().equals(player)) {
+      if (!getShip().equals(player)) {
         rollback();
         if (player.isControllable()) {
           goTo(getStateFactory().createMoving(cell, getMovements().distanceFrom(cell)));
