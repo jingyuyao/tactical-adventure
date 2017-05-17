@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Save;
@@ -62,12 +63,12 @@ public class Retaliating extends BaseState {
       }
     };
 
-    Cell enemyCell = shipSnapshot.get(i);
-
-    if (enemyCell.enemy().isPresent()) {
-      final Ship enemy = enemyCell.enemy().get();
+    Cell cell = shipSnapshot.get(i);
+    Optional<Ship> shipOpt = cell.ship();
+    if (shipOpt.isPresent() && shipOpt.get().getAllegiance().equals(Allegiance.ENEMY)) {
+      Ship enemy = shipOpt.get();
       post(new ActivatedEnemy(enemy));
-      handleMoving(enemy.getAutoPilot(movements, enemyCell), next);
+      handleMoving(enemy.getAutoPilot(movements, cell), next);
     } else {
       next.run();
     }

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
@@ -38,20 +37,6 @@ public class Cell {
 
   public Optional<Ship> ship() {
     return Optional.fromNullable(ship);
-  }
-
-  public Optional<Ship> player() {
-    if (ship != null && ship.getAllegiance().equals(Allegiance.PLAYER)) {
-      return Optional.of(ship);
-    }
-    return Optional.absent();
-  }
-
-  public Optional<Ship> enemy() {
-    if (ship != null && ship.getAllegiance().equals(Allegiance.ENEMY)) {
-      return Optional.of(ship);
-    }
-    return Optional.absent();
   }
 
   public void spawnShip(Ship ship) {
