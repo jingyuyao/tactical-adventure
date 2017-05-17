@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
@@ -40,19 +41,24 @@ public class Waiting extends BaseState {
     boolean levelComplete = true;
     boolean levelFailed = true;
     for (Cell cell : world.getShipSnapshot()) {
-      if (cell.player().isPresent()) {
-        levelFailed = false;
-      }
-
-      if (cell.enemy().isPresent()) {
-        levelComplete = false;
+      for (Ship ship : cell.ship().asSet()) {
+        switch (ship.getAllegiance()) {
+          case PLAYER:
+            levelFailed = false;
+            break;
+          case ENEMY:
+            levelComplete = false;
+            break;
+        }
       }
     }
 
     if (levelFailed || levelComplete) {
       for (Cell cell : world.getShipSnapshot()) {
-        for (Ship player : cell.player().asSet()) {
-          player.setControllable(true);
+        for (Ship ship : cell.ship().asSet()) {
+          if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+            ship.setControllable(true);
+          }
         }
       }
     }
@@ -66,8 +72,8 @@ public class Waiting extends BaseState {
 
   @Override
   public void select(Cell cell) {
-    for (Ship player : cell.player().asSet()) {
-      if (player.isControllable()) {
+    for (Ship ship : cell.ship().asSet()) {
+      if (ship.isControllable()) {
         goTo(stateFactory.createMoving(cell, movements.distanceFrom(cell)));
       }
     }

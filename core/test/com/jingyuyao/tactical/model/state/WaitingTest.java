@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
@@ -50,9 +51,9 @@ public class WaitingTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Ship player;
+  private Ship playerShip;
   @Mock
-  private Ship enemy;
+  private Ship enemyShip;
   @Mock
   private Moving moving;
   @Mock
@@ -82,10 +83,10 @@ public class WaitingTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
-    when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.enemy()).thenReturn(Optional.<Ship>absent());
-    when(cell2.player()).thenReturn(Optional.<Ship>absent());
-    when(cell2.enemy()).thenReturn(Optional.of(enemy));
+    when(cell.ship()).thenReturn(Optional.of(playerShip));
+    when(playerShip.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(cell2.ship()).thenReturn(Optional.of(enemyShip));
+    when(enemyShip.getAllegiance()).thenReturn(Allegiance.ENEMY);
 
     waiting.enter();
 
@@ -98,12 +99,12 @@ public class WaitingTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.enemy()).thenReturn(Optional.<Ship>absent());
+    when(cell.ship()).thenReturn(Optional.of(playerShip));
+    when(playerShip.getAllegiance()).thenReturn(Allegiance.PLAYER);
 
     waiting.enter();
 
-    verify(player).setControllable(true);
+    verify(playerShip).setControllable(true);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getAllValues()).hasSize(2);
     assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
@@ -115,8 +116,8 @@ public class WaitingTest {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.player()).thenReturn(Optional.<Ship>absent());
-    when(cell.enemy()).thenReturn(Optional.of(enemy));
+    when(cell.ship()).thenReturn(Optional.of(enemyShip));
+    when(enemyShip.getAllegiance()).thenReturn(Allegiance.ENEMY);
 
     waiting.enter();
 
@@ -135,11 +136,11 @@ public class WaitingTest {
   }
 
   @Test
-  public void select_player_actionable() {
-    when(player.isControllable()).thenReturn(true);
+  public void select_player_controllable() {
     when(movements.distanceFrom(cell)).thenReturn(movement);
     when(stateFactory.createMoving(cell, movement)).thenReturn(moving);
-    when(cell.player()).thenReturn(Optional.of(player));
+    when(cell.ship()).thenReturn(Optional.of(playerShip));
+    when(playerShip.isControllable()).thenReturn(true);
 
     waiting.select(cell);
 
@@ -148,9 +149,9 @@ public class WaitingTest {
   }
 
   @Test
-  public void select_player_not_actionable() {
-    when(player.isControllable()).thenReturn(false);
-    when(cell.player()).thenReturn(Optional.of(player));
+  public void select_player_not_controllable() {
+    when(cell.ship()).thenReturn(Optional.of(playerShip));
+    when(playerShip.isControllable()).thenReturn(false);
 
     waiting.select(cell);
 
