@@ -6,6 +6,8 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 
 public interface Ship {
 
@@ -19,6 +21,8 @@ public interface Ship {
   boolean isControllable();
 
   void setControllable(boolean controllable);
+
+  AutoPilot getAutoPilot(Movements movements, Cell starting);
 
   /**
    * Always >= 0.

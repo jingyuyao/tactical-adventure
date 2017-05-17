@@ -7,6 +7,8 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 
 class BaseShip implements Ship {
 
@@ -45,6 +47,11 @@ class BaseShip implements Ship {
   @Override
   public void setControllable(boolean controllable) {
     this.controllable = controllable;
+  }
+
+  @Override
+  public AutoPilot getAutoPilot(Movements movements, Cell starting) {
+    return new AutoPilot(null, null);
   }
 
   @Override
