@@ -1,12 +1,14 @@
 package com.jingyuyao.tactical.model.world;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.TestHelpers;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
@@ -44,8 +46,6 @@ public class WorldTest {
   private Ship ship1;
   @Mock
   private Ship ship2;
-  @Mock
-  private Ship player;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -136,13 +136,16 @@ public class WorldTest {
 
   @Test
   public void full_heal_players() {
-    when(cell1.player()).thenReturn(Optional.of(player));
-    when(cell2.player()).thenReturn(Optional.<Ship>absent());
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
+    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
 
     world.fullHealPlayers();
 
-    verify(player).fullHeal();
+    verify(ship1).fullHeal();
+    verify(ship2, never()).fullHeal();
   }
 }
