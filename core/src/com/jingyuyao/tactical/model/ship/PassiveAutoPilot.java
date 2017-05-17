@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.ship;
 
+import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -7,16 +8,15 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
 
-public class PassiveShip extends BasicShip {
-
-  PassiveShip() {
-  }
+public class PassiveAutoPilot implements AutoPilot {
 
   @Override
-  public PilotResponse getPilotResponse(Movements movements, Cell starting) {
-    Movement movement = movements.distanceFrom(starting);
+  public PilotResponse getResponse(Cell shipCell, Movements movements) {
+    Preconditions.checkArgument(shipCell.ship().isPresent());
+    Ship ship = shipCell.ship().get();
+    Movement movement = movements.distanceFrom(shipCell);
     for (Cell moveCell : movement.getCells()) {
-      for (final Weapon weapon : getWeapons()) {
+      for (final Weapon weapon : ship.getWeapons()) {
         for (final Target target : weapon.createTargets(movements, moveCell)) {
           if (canTarget(target)) {
             return new PilotResponse(movement.pathTo(moveCell),

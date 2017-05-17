@@ -8,12 +8,11 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
 
 public class BasicShip implements Ship {
 
   private String name;
+  private AutoPilot autoPilot = new NoAutoPilot();
   private Stats stats = new Stats();
   private Cockpit cockpit = new Cockpit();
   private Items items = new Items();
@@ -44,6 +43,11 @@ public class BasicShip implements Ship {
   }
 
   @Override
+  public AutoPilot getAutoPilot() {
+    return autoPilot;
+  }
+
+  @Override
   public boolean isControllable() {
     return stats.isControllable();
   }
@@ -51,11 +55,6 @@ public class BasicShip implements Ship {
   @Override
   public void setControllable(boolean controllable) {
     stats.setControllable(controllable);
-  }
-
-  @Override
-  public PilotResponse getPilotResponse(Movements movements, Cell starting) {
-    return new PilotResponse(null, null);
   }
 
   @Override

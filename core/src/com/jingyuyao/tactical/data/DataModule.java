@@ -19,8 +19,10 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Hero;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.person.Villain;
+import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.BasicShip;
-import com.jingyuyao.tactical.model.ship.PassiveShip;
+import com.jingyuyao.tactical.model.ship.NoAutoPilot;
+import com.jingyuyao.tactical.model.ship.PassiveAutoPilot;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Singleton;
@@ -50,8 +52,13 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Ship.class)
-            .registerSubtype(BasicShip.class)
-            .registerSubtype(PassiveShip.class));
+            .registerSubtype(BasicShip.class));
+
+    builder.registerTypeAdapterFactory(
+        RuntimeTypeAdapterFactory
+            .of(AutoPilot.class)
+            .registerSubtype(NoAutoPilot.class)
+            .registerSubtype(PassiveAutoPilot.class));
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
