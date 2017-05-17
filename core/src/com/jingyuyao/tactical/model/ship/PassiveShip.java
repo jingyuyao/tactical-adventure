@@ -32,12 +32,15 @@ public class PassiveShip extends BasicShip {
     boolean containsEnemy = false;
 
     for (Cell cell : target.getTargetCells()) {
-      if (cell.player().isPresent()) {
-        containsPlayer = true;
-      }
-
-      if (cell.enemy().isPresent()) {
-        containsEnemy = true;
+      for (Ship ship : cell.ship().asSet()) {
+        switch (ship.getAllegiance()) {
+          case PLAYER:
+            containsPlayer = true;
+            break;
+          case ENEMY:
+            containsEnemy = true;
+            break;
+        }
       }
     }
 

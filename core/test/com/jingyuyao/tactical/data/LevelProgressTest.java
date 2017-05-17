@@ -74,7 +74,7 @@ public class LevelProgressTest {
     when(cell1.ship()).thenReturn(Optional.of(player1));
     when(player1.getAllegiance()).thenReturn(Allegiance.PLAYER);
     when(cell2.getCoordinate()).thenReturn(E1);
-    when(cell1.ship()).thenReturn(Optional.of(enemy1));
+    when(cell2.ship()).thenReturn(Optional.of(enemy1));
     when(enemy1.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
     when(worldState.getTurn()).thenReturn(turn1, turn2);
