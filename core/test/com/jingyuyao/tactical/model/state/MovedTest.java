@@ -43,7 +43,7 @@ public class MovedTest {
   @Mock
   private Ship ship;
   @Mock
-  private Ship otherPlayer;
+  private Ship otherShip;
   @Mock
   private Movement movement;
   @Mock
@@ -81,29 +81,29 @@ public class MovedTest {
   }
 
   @Test
-  public void select_player() {
-    when(cell.player()).thenReturn(Optional.of(ship));
+  public void select_same_ship() {
+    when(cell2.ship()).thenReturn(Optional.of(ship));
 
-    moved.select(cell);
+    moved.select(cell2);
 
     verifyZeroInteractions(worldState);
   }
 
   @Test
-  public void select_other_player_not_actionable() {
-    when(cell.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.isControllable()).thenReturn(false);
+  public void select_other_ship_not_controllable() {
+    when(cell2.ship()).thenReturn(Optional.of(otherShip));
+    when(otherShip.isControllable()).thenReturn(false);
 
-    moved.select(cell);
+    moved.select(cell2);
 
     verify(worldState).rollback();
     verifyNoMoreInteractions(worldState);
   }
 
   @Test
-  public void select_other_player_actionable() {
-    when(cell2.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.isControllable()).thenReturn(true);
+  public void select_other_ship_controllable() {
+    when(cell2.ship()).thenReturn(Optional.of(otherShip));
+    when(otherShip.isControllable()).thenReturn(true);
     when(movements.distanceFrom(cell2)).thenReturn(movement);
     when(stateFactory.createMoving(cell2, movement)).thenReturn(moving);
 
