@@ -29,7 +29,7 @@ class BaseShip implements Ship {
   }
 
   @Override
-  public boolean canControl() {
+  public boolean isControllable() {
     return false;
   }
 

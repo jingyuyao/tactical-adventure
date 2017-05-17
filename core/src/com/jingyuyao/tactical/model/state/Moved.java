@@ -27,7 +27,7 @@ public class Moved extends PlayerActionState {
     for (Player player : cell.player().asSet()) {
       if (!getPlayer().equals(player)) {
         rollback();
-        if (player.canControl()) {
+        if (player.isControllable()) {
           goTo(getStateFactory().createMoving(cell, getMovements().distanceFrom(cell)));
         }
       }

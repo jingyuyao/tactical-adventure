@@ -13,7 +13,7 @@ public class BasePlayer extends BaseShip implements Player {
   }
 
   @Override
-  public boolean canControl() {
+  public boolean isControllable() {
     return actionable;
   }
 

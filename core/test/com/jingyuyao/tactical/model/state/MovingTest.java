@@ -119,7 +119,7 @@ public class MovingTest {
   @Test
   public void select_other_player_not_actionable() {
     when(cell.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.canControl()).thenReturn(false);
+    when(otherPlayer.isControllable()).thenReturn(false);
 
     moving.select(cell);
 
@@ -130,7 +130,7 @@ public class MovingTest {
   @Test
   public void select_other_player_actionable() {
     when(cell2.player()).thenReturn(Optional.of(otherPlayer));
-    when(otherPlayer.canControl()).thenReturn(true);
+    when(otherPlayer.isControllable()).thenReturn(true);
     when(movements.distanceFrom(cell2)).thenReturn(otherMovement);
     when(stateFactory.createMoving(cell2, otherMovement)).thenReturn(anotherMoving);
 

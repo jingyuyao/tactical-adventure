@@ -37,7 +37,7 @@ public class PlayerSystemTest {
 
   @Test
   public void update() {
-    when(player.canControl()).thenReturn(true, false);
+    when(player.isControllable()).thenReturn(true, false);
     Entity entity = engine.createEntity();
     Frame frame = engine.createComponent(Frame.class);
     entity.add(frame);

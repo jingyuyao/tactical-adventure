@@ -9,14 +9,14 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 public interface Ship {
 
-  /**
-   * Return whether or not this ship can currently be controlled by the player.
-   */
-  boolean canControl();
-
   ResourceKey getAnimation();
 
   ResourceKey getName();
+
+  /**
+   * Return whether or not this ship can currently be controlled by the player.
+   */
+  boolean isControllable();
 
   /**
    * Always >= 0.

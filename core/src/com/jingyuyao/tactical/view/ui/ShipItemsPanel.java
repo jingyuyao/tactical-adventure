@@ -91,7 +91,7 @@ class ShipItemsPanel extends VisTable {
           ShipItemsPanel.this.display(ship);
         }
       });
-      setDisabled(!ship.canControl());
+      setDisabled(!ship.isControllable());
     }
   }
 
@@ -106,7 +106,7 @@ class ShipItemsPanel extends VisTable {
           ShipItemsPanel.this.display(ship);
         }
       });
-      setDisabled(!ship.canControl());
+      setDisabled(!ship.isControllable());
     }
   }
 }
