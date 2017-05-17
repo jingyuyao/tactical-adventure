@@ -68,7 +68,7 @@ public class Retaliating extends BaseState {
     if (shipOpt.isPresent() && shipOpt.get().getAllegiance().equals(Allegiance.ENEMY)) {
       Ship enemy = shipOpt.get();
       post(new ActivatedEnemy(enemy));
-      handleMoving(enemy.getAutoPilot().getResponse(cell, movements), next);
+      handleMoving(enemy.getAutoPilotResponse(cell, movements), next);
     } else {
       next.run();
     }

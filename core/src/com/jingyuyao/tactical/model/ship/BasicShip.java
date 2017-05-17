@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.ship;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
@@ -8,6 +9,8 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 
 public class BasicShip implements Ship {
 
@@ -20,8 +23,9 @@ public class BasicShip implements Ship {
   BasicShip() {
   }
 
-  BasicShip(String name, Stats stats, Cockpit cockpit, Items items) {
+  BasicShip(String name, AutoPilot autoPilot, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;
+    this.autoPilot = autoPilot;
     this.stats = stats;
     this.cockpit = cockpit;
     this.items = items;
@@ -43,8 +47,10 @@ public class BasicShip implements Ship {
   }
 
   @Override
-  public AutoPilot getAutoPilot() {
-    return autoPilot;
+  public PilotResponse getAutoPilotResponse(Cell cell, Movements movements) {
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Preconditions.checkArgument(cell.ship().get().equals(this));
+    return autoPilot.getResponse(cell, movements);
   }
 
   @Override

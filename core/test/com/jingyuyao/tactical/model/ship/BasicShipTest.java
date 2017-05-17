@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -11,6 +12,8 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.world.Cell;
+import com.jingyuyao.tactical.model.world.Movements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +25,8 @@ public class BasicShipTest {
 
   private static final String NAME = "yo";
 
+  @Mock
+  private AutoPilot autoPilot;
   @Mock
   private Stats stats;
   @Mock
@@ -36,12 +41,20 @@ public class BasicShipTest {
   private Consumable consumable;
   @Mock
   private Person person;
+  @Mock
+  private Cell cell;
+  @Mock
+  private Movements movements;
+  @Mock
+  private Ship anotherShip;
+  @Mock
+  private PilotResponse pilotResponse;
 
   private Ship ship;
 
   @Before
   public void setUp() {
-    ship = new BasicShip(NAME, stats, cockpit, items);
+    ship = new BasicShip(NAME, autoPilot, stats, cockpit, items);
   }
 
   @Test
@@ -49,6 +62,28 @@ public class BasicShipTest {
     ResourceKey name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
     assertThat(name.getId()).isEqualTo(NAME);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void auto_pilot_response_no_ship() {
+    when(cell.ship()).thenReturn(Optional.<Ship>absent());
+
+    ship.getAutoPilotResponse(cell, movements);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void auto_pilot_response_wrong_ship() {
+    when(cell.ship()).thenReturn(Optional.of(anotherShip));
+
+    ship.getAutoPilotResponse(cell, movements);
+  }
+
+  @Test
+  public void auto_pilot_response() {
+    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(autoPilot.getResponse(cell, movements)).thenReturn(pilotResponse);
+
+    assertThat(ship.getAutoPilotResponse(cell, movements)).isSameAs(pilotResponse);
   }
 
   @Test

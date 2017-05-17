@@ -16,7 +16,6 @@ import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -59,10 +58,6 @@ public class RetaliatingTest {
   private Ship enemy;
   @Mock
   private Ship enemy2;
-  @Mock
-  private AutoPilot autoPilot;
-  @Mock
-  private AutoPilot autoPilot2;
   @Mock
   private PilotResponse pilotResponse;
   @Mock
@@ -117,10 +112,8 @@ public class RetaliatingTest {
     when(cell2.ship()).thenReturn(Optional.of(enemy2));
     when(enemy.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(enemy2.getAllegiance()).thenReturn(Allegiance.ENEMY);
-    when(enemy.getAutoPilot()).thenReturn(autoPilot);
-    when(enemy2.getAutoPilot()).thenReturn(autoPilot2);
-    when(autoPilot.getResponse(cell, movements)).thenReturn(pilotResponse);
-    when(autoPilot2.getResponse(cell2, movements)).thenReturn(pilotResponse2);
+    when(enemy.getAutoPilotResponse(cell, movements)).thenReturn(pilotResponse);
+    when(enemy2.getAutoPilotResponse(cell2, movements)).thenReturn(pilotResponse2);
     when(pilotResponse.path()).thenReturn(Optional.of(path));
     when(pilotResponse.battle()).thenReturn(Optional.of(battle));
     when(pilotResponse2.path()).thenReturn(Optional.<Path>absent());
@@ -132,14 +125,14 @@ public class RetaliatingTest {
     retaliating.enter();
 
     InOrder inOrder =
-        Mockito.inOrder(autoPilot, autoPilot2, worldState, modelBus, origin, turn, battleSequence);
+        Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence);
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
-    inOrder.verify(autoPilot).getResponse(cell, movements);
+    inOrder.verify(enemy).getAutoPilotResponse(cell, movements);
     inOrder.verify(origin).moveShip(path);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    inOrder.verify(autoPilot2).getResponse(cell2, movements);
+    inOrder.verify(enemy2).getAutoPilotResponse(cell2, movements);
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(worldState).branchTo(startTurn);
