@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -16,7 +15,7 @@ public class LevelProgress {
 
   private List<Ship> inactivePlayers = new ArrayList<>();
   private Map<Coordinate, Ship> activePlayers = new HashMap<>();
-  private Map<Coordinate, Enemy> activeEnemies = new HashMap<>();
+  private Map<Coordinate, Ship> activeEnemies = new HashMap<>();
   private Turn turn = new Turn();
 
   LevelProgress() {
@@ -42,7 +41,7 @@ public class LevelProgress {
     return activePlayers;
   }
 
-  public Map<Coordinate, Enemy> getActiveEnemies() {
+  public Map<Coordinate, Ship> getActiveEnemies() {
     return activeEnemies;
   }
 
@@ -70,7 +69,7 @@ public class LevelProgress {
         activePlayers.put(coordinate, player);
       }
 
-      for (Enemy enemy : cell.enemy().asSet()) {
+      for (Ship enemy : cell.enemy().asSet()) {
         activeEnemies.put(coordinate, enemy);
       }
     }

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -42,7 +41,7 @@ public class LevelProgressTest {
   @Mock
   private Ship player2;
   @Mock
-  private Enemy enemy1;
+  private Ship enemy1;
   @Mock
   private Turn turn1;
   @Mock
@@ -72,7 +71,7 @@ public class LevelProgressTest {
   public void update() {
     when(cell1.getCoordinate()).thenReturn(P1);
     when(cell1.player()).thenReturn(Optional.of(player1));
-    when(cell1.enemy()).thenReturn(Optional.<Enemy>absent());
+    when(cell1.enemy()).thenReturn(Optional.<Ship>absent());
     when(cell2.getCoordinate()).thenReturn(E1);
     when(cell2.player()).thenReturn(Optional.<Ship>absent());
     when(cell2.enemy()).thenReturn(Optional.of(enemy1));

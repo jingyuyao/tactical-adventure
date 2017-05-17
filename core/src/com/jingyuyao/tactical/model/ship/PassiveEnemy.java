@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
 
-public class PassiveEnemy extends BaseShip implements Enemy {
+public class PassiveEnemy extends BaseShip {
 
   PassiveEnemy() {
   }

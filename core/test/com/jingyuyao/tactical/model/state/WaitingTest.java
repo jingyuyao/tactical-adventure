@@ -15,7 +15,6 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -53,7 +52,7 @@ public class WaitingTest {
   @Mock
   private Ship player;
   @Mock
-  private Enemy enemy;
+  private Ship enemy;
   @Mock
   private Moving moving;
   @Mock
@@ -84,7 +83,7 @@ public class WaitingTest {
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
     when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
+    when(cell.enemy()).thenReturn(Optional.<Ship>absent());
     when(cell2.player()).thenReturn(Optional.<Ship>absent());
     when(cell2.enemy()).thenReturn(Optional.of(enemy));
 
@@ -100,7 +99,7 @@ public class WaitingTest {
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
     when(cell.player()).thenReturn(Optional.of(player));
-    when(cell.enemy()).thenReturn(Optional.<Enemy>absent());
+    when(cell.enemy()).thenReturn(Optional.<Ship>absent());
 
     waiting.enter();
 

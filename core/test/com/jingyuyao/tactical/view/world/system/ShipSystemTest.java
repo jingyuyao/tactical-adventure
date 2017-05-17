@@ -17,7 +17,6 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -69,7 +68,7 @@ public class ShipSystemTest {
   @Mock
   private Ship player;
   @Mock
-  private Enemy enemy;
+  private Ship enemy;
   @Mock
   private WorldTexture texture;
   @Mock

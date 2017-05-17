@@ -20,7 +20,6 @@ import com.jingyuyao.tactical.model.person.Hero;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.person.Villain;
 import com.jingyuyao.tactical.model.ship.BasePlayer;
-import com.jingyuyao.tactical.model.ship.Enemy;
 import com.jingyuyao.tactical.model.ship.PassiveEnemy;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -52,11 +51,6 @@ public class DataModule extends AbstractModule {
         RuntimeTypeAdapterFactory
             .of(Ship.class)
             .registerSubtype(BasePlayer.class)
-            .registerSubtype(PassiveEnemy.class));
-
-    builder.registerTypeAdapterFactory(
-        RuntimeTypeAdapterFactory
-            .of(Enemy.class)
             .registerSubtype(PassiveEnemy.class));
 
     builder.registerTypeAdapterFactory(

@@ -1,10 +1,10 @@
 package com.jingyuyao.tactical.model.event;
 
-import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Ship;
 
-public class ActivatedEnemy extends ObjectEvent<Enemy> {
+public class ActivatedEnemy extends ObjectEvent<Ship> {
 
-  public ActivatedEnemy(Enemy object) {
+  public ActivatedEnemy(Ship object) {
     super(object);
   }
 }

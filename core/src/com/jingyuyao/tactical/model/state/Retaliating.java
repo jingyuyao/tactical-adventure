@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
-import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -65,7 +65,7 @@ public class Retaliating extends BaseState {
     Cell enemyCell = shipSnapshot.get(i);
 
     if (enemyCell.enemy().isPresent()) {
-      final Enemy enemy = enemyCell.enemy().get();
+      final Ship enemy = enemyCell.enemy().get();
       post(new ActivatedEnemy(enemy));
       handleMoving(enemy.getAutoPilot(movements, enemyCell), next);
     } else {

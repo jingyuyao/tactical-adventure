@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
-import com.jingyuyao.tactical.model.ship.Enemy;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -54,9 +54,9 @@ public class RetaliatingTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Enemy enemy;
+  private Ship enemy;
   @Mock
-  private Enemy enemy2;
+  private Ship enemy2;
   @Mock
   private AutoPilot autoPilot;
   @Mock
