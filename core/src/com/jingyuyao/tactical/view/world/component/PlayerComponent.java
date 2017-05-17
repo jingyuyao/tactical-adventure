@@ -2,17 +2,17 @@ package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 
 public class PlayerComponent implements Component, Poolable {
 
-  private Player player;
+  private Ship player;
 
-  public Player getPlayer() {
+  public Ship getPlayer() {
     return player;
   }
 
-  public void setPlayer(Player player) {
+  public void setPlayer(Ship player) {
     this.player = player;
   }
 

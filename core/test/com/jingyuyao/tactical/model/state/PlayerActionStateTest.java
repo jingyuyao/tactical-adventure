@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class PlayerActionStateTest {
   @Mock
   private Cell playerCell;
   @Mock
-  private Player player;
+  private Ship player;
   @Mock
   private Waiting waiting;
   @Mock
@@ -66,7 +66,7 @@ public class PlayerActionStateTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void setUp_no_player() {
-    when(playerCell.player()).thenReturn(Optional.<Player>absent());
+    when(playerCell.player()).thenReturn(Optional.<Ship>absent());
     state = new PlayerActionState(modelBus, worldState, stateFactory, movements, playerCell);
   }
 

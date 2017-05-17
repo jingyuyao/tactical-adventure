@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -41,9 +41,9 @@ public class MovedTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Player player;
+  private Ship player;
   @Mock
-  private Player otherPlayer;
+  private Ship otherPlayer;
   @Mock
   private Movement movement;
   @Mock

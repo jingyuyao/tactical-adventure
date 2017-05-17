@@ -17,7 +17,7 @@ import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -47,7 +47,7 @@ public class StartMenuTest {
   @Mock
   private LevelProgress levelProgress;
   @Mock
-  private Player player;
+  private Ship player;
   @Inject
   private GL20 gl20;
   @Inject

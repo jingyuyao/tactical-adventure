@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -45,9 +45,9 @@ public class MovingTest {
   @Mock
   private Cell cell2;
   @Mock
-  private Player player;
+  private Ship player;
   @Mock
-  private Player otherPlayer;
+  private Ship otherPlayer;
   @Mock
   private Moved moved;
   @Mock
@@ -143,7 +143,7 @@ public class MovingTest {
 
   @Test
   public void select_can_move() {
-    when(cell2.player()).thenReturn(Optional.<Player>absent());
+    when(cell2.player()).thenReturn(Optional.<Ship>absent());
     when(movement.getStartingCell()).thenReturn(cell);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
@@ -162,7 +162,7 @@ public class MovingTest {
 
   @Test
   public void select_cannot_move() {
-    when(cell2.player()).thenReturn(Optional.<Player>absent());
+    when(cell2.player()).thenReturn(Optional.<Ship>absent());
     when(movement.canMoveTo(cell2)).thenReturn(false);
 
     moving.select(cell2);

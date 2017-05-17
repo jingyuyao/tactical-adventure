@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.data;
 
 import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -15,8 +14,8 @@ import java.util.Map;
 
 public class LevelProgress {
 
-  private List<Player> inactivePlayers = new ArrayList<>();
-  private Map<Coordinate, Player> activePlayers = new HashMap<>();
+  private List<Ship> inactivePlayers = new ArrayList<>();
+  private Map<Coordinate, Ship> activePlayers = new HashMap<>();
   private Map<Coordinate, Enemy> activeEnemies = new HashMap<>();
   private Turn turn = new Turn();
 
@@ -26,10 +25,10 @@ public class LevelProgress {
 
   // TODO: should be able to choose which player goes to which spawn
   LevelProgress(GameSave gameSave, LevelData levelData) {
-    List<Player> players = gameSave.getPlayers();
+    List<Ship> players = gameSave.getPlayers();
     List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
     for (int i = 0; i < players.size(); i++) {
-      Player player = players.get(i);
+      Ship player = players.get(i);
       if (i < playerSpawns.size()) {
         activePlayers.put(playerSpawns.get(i), player);
       } else {
@@ -39,7 +38,7 @@ public class LevelProgress {
     activeEnemies.putAll(levelData.getEnemies());
   }
 
-  public Map<Coordinate, Player> getActivePlayers() {
+  public Map<Coordinate, Ship> getActivePlayers() {
     return activePlayers;
   }
 
@@ -47,7 +46,7 @@ public class LevelProgress {
     return activeEnemies;
   }
 
-  public List<Player> getInactivePlayers() {
+  public List<Ship> getInactivePlayers() {
     return inactivePlayers;
   }
 
@@ -67,7 +66,7 @@ public class LevelProgress {
     activeEnemies.clear();
     for (Cell cell : world.getShipSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
-      for (Player player : cell.player().asSet()) {
+      for (Ship player : cell.player().asSet()) {
         activePlayers.put(coordinate, player);
       }
 

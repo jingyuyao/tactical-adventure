@@ -1,13 +1,13 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameSave {
 
   private int currentLevel = 1;
-  private List<Player> players = new ArrayList<>();
+  private List<Ship> players = new ArrayList<>();
 
   public int getCurrentLevel() {
     return currentLevel;
@@ -17,7 +17,7 @@ public class GameSave {
     this.currentLevel = currentLevel;
   }
 
-  List<Player> getPlayers() {
+  List<Ship> getPlayers() {
     return players;
   }
 

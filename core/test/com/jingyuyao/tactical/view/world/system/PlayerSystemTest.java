@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.PlayerComponent;
 import com.jingyuyao.tactical.view.world.resource.Colors;
@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class PlayerSystemTest {
 
   @Mock
-  private Player player;
+  private Ship player;
 
   private PooledEngine engine;
 

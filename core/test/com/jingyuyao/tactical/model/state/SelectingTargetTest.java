@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class SelectingTargetTest {
   @Mock
   private Cell playerCell;
   @Mock
-  private Player player;
+  private Ship player;
   @Mock
   private Cell cell;
   @Mock

@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -58,9 +57,9 @@ public class DataManagerTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private Player player1;
+  private Ship player1;
   @Mock
-  private Player player2;
+  private Ship player2;
   @Mock
   private Enemy enemy1;
   @Mock

@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ public class Moved extends PlayerActionState {
 
   @Override
   public void select(Cell cell) {
-    for (Player player : cell.player().asSet()) {
+    for (Ship player : cell.player().asSet()) {
       if (!getPlayer().equals(player)) {
         rollback();
         if (player.isControllable()) {

@@ -18,7 +18,6 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -68,7 +67,7 @@ public class ShipSystemTest {
   @Mock
   private Cell cell6;
   @Mock
-  private Player player;
+  private Ship player;
   @Mock
   private Enemy enemy;
   @Mock
@@ -146,7 +145,7 @@ public class ShipSystemTest {
     when(spawnShip.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.enemy()).thenReturn(Optional.of(enemy));
-    when(cell.player()).thenReturn(Optional.<Player>absent());
+    when(cell.player()).thenReturn(Optional.<Ship>absent());
     when(cell.ship()).thenReturn(Optional.<Ship>of(enemy));
     when(animations.get(enemy)).thenReturn(animation);
 

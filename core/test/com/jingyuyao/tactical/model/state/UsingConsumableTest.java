@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class UsingConsumableTest {
   @Mock
   private Cell cell;
   @Mock
-  private Player player;
+  private Ship player;
   @Mock
   private Consumable consumable;
   @Mock

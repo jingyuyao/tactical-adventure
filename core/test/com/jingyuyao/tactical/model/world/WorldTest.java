@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoad;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class WorldTest {
   @Mock
   private Ship ship2;
   @Mock
-  private Player player;
+  private Ship player;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -138,7 +137,7 @@ public class WorldTest {
   @Test
   public void full_heal_players() {
     when(cell1.player()).thenReturn(Optional.of(player));
-    when(cell2.player()).thenReturn(Optional.<Player>absent());
+    when(cell2.player()).thenReturn(Optional.<Ship>absent());
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
 

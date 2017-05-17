@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelComplete;
 import com.jingyuyao.tactical.model.event.LevelFailed;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -51,7 +51,7 @@ public class Waiting extends BaseState {
 
     if (levelFailed || levelComplete) {
       for (Cell cell : world.getShipSnapshot()) {
-        for (Player player : cell.player().asSet()) {
+        for (Ship player : cell.player().asSet()) {
           player.setControllable(true);
         }
       }
@@ -66,7 +66,7 @@ public class Waiting extends BaseState {
 
   @Override
   public void select(Cell cell) {
-    for (Player player : cell.player().asSet()) {
+    for (Ship player : cell.player().asSet()) {
       if (player.isControllable()) {
         goTo(stateFactory.createMoving(cell, movements.distanceFrom(cell)));
       }

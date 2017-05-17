@@ -18,7 +18,6 @@ import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.PlayerState;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -88,7 +87,7 @@ class ShipSystem extends EntitySystem {
     entity.add(shipComponent);
     entity.add(frame);
     entity.add(animations.get(cell.ship().get()));
-    for (Player player : cell.player().asSet()) {
+    for (Ship player : cell.player().asSet()) {
       PlayerComponent playerComponent = getEngine().createComponent(PlayerComponent.class);
       playerComponent.setPlayer(player);
       entity.add(playerComponent);

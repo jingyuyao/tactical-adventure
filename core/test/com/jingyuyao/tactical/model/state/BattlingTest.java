@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.Player;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class BattlingTest {
   @Mock
   private Cell playerCell;
   @Mock
-  private Player attackingPlayer;
+  private Ship attackingPlayer;
   @Mock
   private Battle battle;
   @Mock

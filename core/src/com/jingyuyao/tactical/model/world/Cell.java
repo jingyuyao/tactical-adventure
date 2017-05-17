@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.inject.assistedinject.Assisted;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
@@ -10,7 +11,6 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.ship.Enemy;
-import com.jingyuyao.tactical.model.ship.Player;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import javax.inject.Inject;
@@ -41,9 +41,9 @@ public class Cell {
     return Optional.fromNullable(ship);
   }
 
-  public Optional<Player> player() {
-    if (ship != null && ship instanceof Player) {
-      return Optional.of((Player) ship);
+  public Optional<Ship> player() {
+    if (ship != null && ship.getAllegiance().equals(Allegiance.PLAYER)) {
+      return Optional.of(ship);
     }
     return Optional.absent();
   }
