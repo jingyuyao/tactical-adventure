@@ -7,9 +7,9 @@ import java.util.Map;
 
 class LevelScript {
 
-  private Map<Turn, LevelTrigger> levelTriggers = new HashMap<>();
+  private Map<Turn, LevelTrigger> turnTriggers = new HashMap<>();
 
-  Map<Turn, LevelTrigger> getLevelTriggers() {
-    return levelTriggers;
+  Map<Turn, LevelTrigger> getTurnTriggers() {
+    return turnTriggers;
   }
 }

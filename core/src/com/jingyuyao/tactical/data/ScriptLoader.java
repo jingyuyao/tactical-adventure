@@ -46,7 +46,7 @@ class ScriptLoader {
   private Map<Turn, ScriptActions> loadTurnScripts(int level) {
     Map<Turn, ScriptActions> turnScripts = new HashMap<>();
     LevelScript levelScript = levelDataLoader.loadScript(level);
-    Map<Turn, LevelTrigger> levelTriggers = levelScript.getLevelTriggers();
+    Map<Turn, LevelTrigger> levelTriggers = levelScript.getTurnTriggers();
     ListMultimap<Turn, Dialogue> levelDialogues = dialogueLoader.getLevelDialogues(level);
 
     Set<Turn> actionTurns = Sets.union(levelTriggers.keySet(), levelDialogues.keySet());

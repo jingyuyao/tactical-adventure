@@ -77,7 +77,7 @@ public class ScriptLoaderTest {
     List<String> keepAlive = ImmutableList.of("name1", "name2");
 
     when(levelDataLoader.loadScript(2)).thenReturn(levelScript);
-    when(levelScript.getLevelTriggers()).thenReturn(levelTriggers);
+    when(levelScript.getTurnTriggers()).thenReturn(levelTriggers);
     when(dialogueLoader.getLevelDialogues(2)).thenReturn(levelDialogues);
     when(dialogueLoader.getDeathDialogues()).thenReturn(deathDialogues);
     when(dataConfig.getPersonNameBundle()).thenReturn(bundle);
