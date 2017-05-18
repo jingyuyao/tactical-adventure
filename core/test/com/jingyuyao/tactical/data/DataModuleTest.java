@@ -17,7 +17,7 @@ public class DataModuleTest {
   @Inject
   private LevelInitLoader levelInitLoader;
   @Inject
-  private LevelMapLoader levelMapLoader;
+  private LevelTerrainsLoader levelTerrainsLoader;
   @Inject
   private LevelProgressManager levelProgressManager;
   @Inject
