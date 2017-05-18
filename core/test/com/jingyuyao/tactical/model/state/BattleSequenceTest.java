@@ -67,7 +67,7 @@ public class BattleSequenceTest {
   @Test
   public void start() {
     when(worldState.getScript()).thenReturn(script);
-    when(battle.getDeath()).thenReturn(ImmutableList.of(dead1, dead2, dead3));
+    when(battle.getDeaths()).thenReturn(ImmutableList.of(dead1, dead2, dead3));
     when(dead1.getName()).thenReturn(name1);
     when(dead2.getName()).thenReturn(name2);
     when(dead3.getName()).thenReturn(name3);

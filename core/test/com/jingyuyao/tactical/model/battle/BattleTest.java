@@ -71,7 +71,7 @@ public class BattleTest {
     verify(ship2).useEquippedArmors();
     verify(cell1).removeShip();
     verify(cell2, never()).removeShip();
-    assertThat(battle.getDeath()).containsExactly(person1);
+    assertThat(battle.getDeaths()).containsExactly(person1);
   }
 
   @Test
@@ -95,6 +95,6 @@ public class BattleTest {
     verify(ship2).useEquippedArmors();
     verify(cell1).removeShip();
     verify(cell2, never()).removeShip();
-    assertThat(battle.getDeath()).containsExactly(person1, person2);
+    assertThat(battle.getDeaths()).containsExactly(person1, person2);
   }
 }
