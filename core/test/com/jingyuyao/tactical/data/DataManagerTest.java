@@ -147,7 +147,7 @@ public class DataManagerTest {
     when(levelDataLoader.loadInit(2)).thenReturn(levelInit);
     when(gameSave.getPlayers()).thenReturn(ImmutableList.of(player1, player2));
     when(levelInit.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
-    when(levelInit.getEnemies()).thenReturn(ImmutableMap.of(E1, enemy1));
+    when(levelInit.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(scriptLoader.load(2)).thenReturn(script);
 

@@ -60,7 +60,7 @@ public class LevelProgressTest {
   public void from_game_save_and_level_data() {
     when(gameSave.getPlayers()).thenReturn(ImmutableList.of(player1, player2));
     when(levelInit.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
-    when(levelInit.getEnemies()).thenReturn(ImmutableMap.of(E1, enemy1));
+    when(levelInit.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
 
     LevelProgress levelProgress = new LevelProgress(gameSave, levelInit);
 

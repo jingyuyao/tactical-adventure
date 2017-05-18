@@ -34,7 +34,7 @@ public class LevelProgress {
         inactivePlayers.add(player);
       }
     }
-    activeEnemies.putAll(levelInit.getEnemies());
+    activeEnemies.putAll(levelInit.getShips());
   }
 
   public Map<Coordinate, Ship> getActivePlayers() {

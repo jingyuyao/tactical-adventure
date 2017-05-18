@@ -5,7 +5,7 @@
     "5,2",
     "4,3"
   ],
-  "enemies": {
+  "ships": {
     "9,12": {
       "type": "BasicShip",
       "name": "adder",

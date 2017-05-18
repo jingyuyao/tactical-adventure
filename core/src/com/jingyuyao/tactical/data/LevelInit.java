@@ -10,13 +10,13 @@ import java.util.Map;
 class LevelInit {
 
   private List<Coordinate> playerSpawns = new ArrayList<>();
-  private Map<Coordinate, Ship> enemies = new HashMap<>();
+  private Map<Coordinate, Ship> ships = new HashMap<>();
 
   List<Coordinate> getPlayerSpawns() {
     return playerSpawns;
   }
 
-  Map<Coordinate, Ship> getEnemies() {
-    return enemies;
+  Map<Coordinate, Ship> getShips() {
+    return ships;
   }
 }

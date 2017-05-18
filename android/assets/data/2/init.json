@@ -5,7 +5,7 @@
     "2,3",
     "2,1"
   ],
-  "enemies": {
+  "ships": {
     "1,11": {
       "type": "BasicShip",
       "name": "eagle",
