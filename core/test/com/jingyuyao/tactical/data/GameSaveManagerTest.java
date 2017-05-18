@@ -53,7 +53,7 @@ public class GameSaveManagerTest {
   @Test
   public void load_start() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
-    when(dataConfig.getStartSaveFileName()).thenReturn(START);
+    when(dataConfig.getInitFileName()).thenReturn(START);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(files.internal(START)).thenReturn(fileHandle2);
     when(fileHandle2.exists()).thenReturn(true);
