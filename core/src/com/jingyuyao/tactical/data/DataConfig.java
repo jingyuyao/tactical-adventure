@@ -25,12 +25,12 @@ class DataConfig {
     return "main.progress.save.json";
   }
 
-  String getLevelDataFileName(int level) {
-    return "levels/" + level + ".level.json";
+  String getLevelShipsFileName(int level) {
+    return "levels/" + level + "/ships.json";
   }
 
-  String getLevelMapFileName(int level) {
-    return "levels/" + level + ".level.tmx";
+  String getLevelTerrainFileName(int level) {
+    return "levels/" + level + "/terrains.tmx";
   }
 
   String getTerrainLayerKey() {

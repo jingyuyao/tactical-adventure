@@ -20,7 +20,7 @@ class LevelDataManager {
   }
 
   LevelData load(int level) {
-    FileHandle fileHandle = files.internal(dataConfig.getLevelDataFileName(level));
+    FileHandle fileHandle = files.internal(dataConfig.getLevelShipsFileName(level));
     if (fileHandle.exists()) {
       return myGson.fromJson(fileHandle.readString(), LevelData.class);
     }
@@ -28,7 +28,7 @@ class LevelDataManager {
   }
 
   boolean hasLevel(int level) {
-    FileHandle fileHandle = files.internal(dataConfig.getLevelDataFileName(level));
+    FileHandle fileHandle = files.internal(dataConfig.getLevelShipsFileName(level));
     return fileHandle.exists();
   }
 }

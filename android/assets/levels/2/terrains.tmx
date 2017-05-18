@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="space" tilewidth="32" tileheight="32" tilecount="9" columns="3">
-  <image source="../tilesets/space.png" width="96" height="96"/>
+  <image source="../../tilesets/space.png" width="96" height="96"/>
   <tile id="2">
    <properties>
     <property name="type" value="blocked"/>

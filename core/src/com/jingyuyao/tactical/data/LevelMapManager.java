@@ -30,7 +30,7 @@ class LevelMapManager {
   }
 
   Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
-    String levelFileName = dataConfig.getLevelMapFileName(level);
+    String levelFileName = dataConfig.getLevelTerrainFileName(level);
     assetManager.load(levelFileName, TiledMap.class);
     assetManager.finishLoadingAsset(levelFileName);
     TiledMap tiledMap = assetManager.get(levelFileName);

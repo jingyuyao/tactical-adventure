@@ -37,7 +37,7 @@ public class LevelDataManagerTest {
 
   @Test
   public void load() {
-    when(dataConfig.getLevelDataFileName(2)).thenReturn(LEVEL);
+    when(dataConfig.getLevelShipsFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle.readString()).thenReturn(DATA);
@@ -48,7 +48,7 @@ public class LevelDataManagerTest {
 
   @Test
   public void has_level() {
-    when(dataConfig.getLevelDataFileName(2)).thenReturn(LEVEL);
+    when(dataConfig.getLevelShipsFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
 
