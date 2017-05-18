@@ -1,8 +1,5 @@
 {
-  "playerSpawns": [
-    "4,1",
-    "3,2",
-    "5,2",
-    "4,3"
-  ]
+  "levelTriggers": {
+    "10-END": "LOST"
+  }
 }

@@ -1,14 +1,15 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.world.Coordinate;
-import java.util.ArrayList;
-import java.util.List;
+import com.jingyuyao.tactical.model.script.LevelTrigger;
+import com.jingyuyao.tactical.model.state.Turn;
+import java.util.HashMap;
+import java.util.Map;
 
 class LevelScript {
 
-  private List<Coordinate> playerSpawns = new ArrayList<>();
+  private Map<Turn, LevelTrigger> levelTriggers = new HashMap<>();
 
-  public List<Coordinate> getPlayerSpawns() {
-    return playerSpawns;
+  public Map<Turn, LevelTrigger> getLevelTriggers() {
+    return levelTriggers;
   }
 }

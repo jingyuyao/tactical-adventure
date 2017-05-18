@@ -1,8 +1,5 @@
 {
-  "playerSpawns": [
-    "1,2",
-    "3,2",
-    "2,3",
-    "2,1"
-  ]
+  "levelTriggers": {
+    "8-START": "WON"
+  }
 }

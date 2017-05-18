@@ -5,10 +5,12 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import com.jingyuyao.tactical.model.script.LevelTrigger;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -35,6 +37,10 @@ public class ScriptLoaderTest {
 
   @Mock
   private DataConfig dataConfig;
+  @Mock
+  private LevelDataLoader levelDataLoader;
+  @Mock
+  private LevelScript levelScript;
 
   @Inject
   private Files files;
@@ -44,15 +50,21 @@ public class ScriptLoaderTest {
   @Before
   public void setUp() {
     Guice.createInjector(new MockGameModule()).injectMembers(this);
-    scriptLoader = new ScriptLoader(dataConfig, files);
+    scriptLoader = new ScriptLoader(dataConfig, files, levelDataLoader);
+
+    // each test loads the same script but assets different aspects of it
+    when(levelDataLoader.loadScript(2)).thenReturn(levelScript);
+    when(levelScript.getLevelTriggers())
+        .thenReturn(ImmutableMap.of(
+            new Turn(1, TurnStage.START), LevelTrigger.WON,
+            new Turn(5, TurnStage.END), LevelTrigger.LOST));
+    when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
+    when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
+    when(dataConfig.getPersonNameBundle()).thenReturn(NAME);
   }
 
   @Test
   public void load_level_dialogues() {
-    when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
-    when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getPersonNameBundle()).thenReturn(NAME);
-
     Script script = scriptLoader.load(2);
 
     Optional<ScriptActions> start1Script = script.turnScript(new Turn(1, TurnStage.START));
@@ -92,11 +104,20 @@ public class ScriptLoaderTest {
   }
 
   @Test
-  public void load_death_dialogues() {
-    when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
-    when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getPersonNameBundle()).thenReturn(NAME);
+  public void load_level_triggers() {
+    Script script = scriptLoader.load(2);
 
+    Optional<ScriptActions> start1Script = script.turnScript(new Turn(1, TurnStage.START));
+    assertThat(start1Script).isPresent();
+    assertThat(start1Script.get().getLevelTrigger()).isSameAs(LevelTrigger.WON);
+
+    Optional<ScriptActions> end5Script = script.turnScript(new Turn(5, TurnStage.END));
+    assertThat(end5Script).isPresent();
+    assertThat(end5Script.get().getLevelTrigger()).isSameAs(LevelTrigger.LOST);
+  }
+
+  @Test
+  public void load_death_dialogues() {
     Script script = scriptLoader.load(2);
 
     Optional<ScriptActions> dead = script.deathScript(NAME.get("dead"));
