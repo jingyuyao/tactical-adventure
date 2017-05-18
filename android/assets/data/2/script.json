@@ -1,5 +1,6 @@
 {
   "turnTriggers": {
     "8-START": "WON"
-  }
+  },
+  "keepAlive": []
 }
