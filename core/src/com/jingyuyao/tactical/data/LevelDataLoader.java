@@ -29,6 +29,14 @@ class LevelDataLoader {
     if (fileHandle.exists()) {
       return myGson.fromJson(fileHandle.readString(), LevelInit.class);
     }
-    throw new IllegalArgumentException("level " + level + " does not exist");
+    throw new IllegalArgumentException("init file for " + level + " does not exist");
+  }
+
+  LevelScript loadScript(int level) {
+    FileHandle fileHandle = files.internal(dataConfig.getLevelScriptFileName(level));
+    if (fileHandle.exists()) {
+      return myGson.fromJson(fileHandle.readString(), LevelScript.class);
+    }
+    throw new IllegalArgumentException("script file for " + level + " does not exist");
   }
 }

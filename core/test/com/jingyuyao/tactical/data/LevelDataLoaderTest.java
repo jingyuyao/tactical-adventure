@@ -28,6 +28,8 @@ public class LevelDataLoaderTest {
   private FileHandle fileHandle;
   @Mock
   private LevelInit levelInit;
+  @Mock
+  private LevelScript levelScript;
 
   private LevelDataLoader levelDataLoader;
 
@@ -46,7 +48,7 @@ public class LevelDataLoaderTest {
   }
 
   @Test
-  public void load() {
+  public void load_init() {
     when(dataConfig.getLevelInitFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
@@ -54,5 +56,16 @@ public class LevelDataLoaderTest {
     when(myGson.fromJson(DATA, LevelInit.class)).thenReturn(levelInit);
 
     assertThat(levelDataLoader.loadInit(2)).isSameAs(levelInit);
+  }
+
+  @Test
+  public void load_script() {
+    when(dataConfig.getLevelScriptFileName(2)).thenReturn(LEVEL);
+    when(files.internal(LEVEL)).thenReturn(fileHandle);
+    when(fileHandle.exists()).thenReturn(true);
+    when(fileHandle.readString()).thenReturn(DATA);
+    when(myGson.fromJson(DATA, LevelScript.class)).thenReturn(levelScript);
+
+    assertThat(levelDataLoader.loadScript(2)).isSameAs(levelScript);
   }
 }
