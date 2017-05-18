@@ -15,6 +15,8 @@ public class ModelBundle {
       new ResourceKeyBundle("i18n/model/item/ItemDescription");
   public static final ResourceKeyBundle PERSON_NAME =
       new ResourceKeyBundle("i18n/model/person/PersonName");
+  public static final ResourceKeyBundle PERSON_ROLE =
+      new ResourceKeyBundle("i18n/model/person/PersonRole");
   public static final ResourceKeyBundle SHIP_NAME =
       new ResourceKeyBundle("i18n/model/ship/ShipName");
   public static final ResourceKeyBundle TERRAIN_NAME =

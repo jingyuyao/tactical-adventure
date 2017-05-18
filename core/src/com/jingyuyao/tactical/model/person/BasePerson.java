@@ -3,13 +3,17 @@ package com.jingyuyao.tactical.model.person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 
-/**
- * A {@link Person} that can pilot a ship.
- */
-public class Pilot extends BasePerson {
+class BasePerson implements Person {
+
+  private String name;
+
+  @Override
+  public ResourceKey getName() {
+    return ModelBundle.PERSON_NAME.get(name);
+  }
 
   @Override
   public ResourceKey getRole() {
-    return ModelBundle.PERSON_ROLE.get("pilot");
+    return ModelBundle.PERSON_ROLE.get("none");
   }
 }
