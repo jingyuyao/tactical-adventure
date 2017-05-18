@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LevelDataManagerTest {
+public class LevelInitLoaderTest {
 
   private static final String LEVEL = "levels/1.level.json";
   private static final String DATA = "goodbye world!";
@@ -26,32 +26,32 @@ public class LevelDataManagerTest {
   @Mock
   private FileHandle fileHandle;
   @Mock
-  private LevelData levelData;
+  private LevelInit levelInit;
 
-  private LevelDataManager levelDataManager;
+  private LevelInitLoader levelInitLoader;
 
   @Before
   public void setUp() {
-    levelDataManager = new LevelDataManager(dataConfig, myGson, files);
+    levelInitLoader = new LevelInitLoader(dataConfig, myGson, files);
   }
 
   @Test
   public void load() {
-    when(dataConfig.getLevelShipsFileName(2)).thenReturn(LEVEL);
+    when(dataConfig.getLevelInitFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle.readString()).thenReturn(DATA);
-    when(myGson.fromJson(DATA, LevelData.class)).thenReturn(levelData);
+    when(myGson.fromJson(DATA, LevelInit.class)).thenReturn(levelInit);
 
-    assertThat(levelDataManager.load(2)).isSameAs(levelData);
+    assertThat(levelInitLoader.load(2)).isSameAs(levelInit);
   }
 
   @Test
   public void has_level() {
-    when(dataConfig.getLevelShipsFileName(2)).thenReturn(LEVEL);
+    when(dataConfig.getLevelInitFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
 
-    assertThat(levelDataManager.hasLevel(2)).isTrue();
+    assertThat(levelInitLoader.hasLevel(2)).isTrue();
   }
 }

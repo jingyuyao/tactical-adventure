@@ -17,7 +17,7 @@ public class DataManager {
 
   private final GameSaveManager gameSaveManager;
   private final LevelProgressManager levelProgressManager;
-  private final LevelDataManager levelDataManager;
+  private final LevelInitLoader levelInitLoader;
   private final LevelMapManager levelMapManager;
   private final ScriptLoader scriptLoader;
 
@@ -25,12 +25,12 @@ public class DataManager {
   DataManager(
       GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
-      LevelDataManager levelDataManager,
+      LevelInitLoader levelInitLoader,
       LevelMapManager levelMapManager,
       ScriptLoader scriptLoader) {
     this.gameSaveManager = gameSaveManager;
     this.levelProgressManager = levelProgressManager;
-    this.levelDataManager = levelDataManager;
+    this.levelInitLoader = levelInitLoader;
     this.levelMapManager = levelMapManager;
     this.scriptLoader = scriptLoader;
   }
@@ -44,7 +44,7 @@ public class DataManager {
   }
 
   public boolean hasLevel(int level) {
-    return levelDataManager.hasLevel(level);
+    return levelInitLoader.hasLevel(level);
   }
 
   public void changeLevel(int level, World world, WorldState worldState) {
@@ -81,8 +81,8 @@ public class DataManager {
     if (levelProgressOptional.isPresent()) {
       levelProgress = levelProgressOptional.get();
     } else {
-      LevelData levelData = levelDataManager.load(level);
-      levelProgress = new LevelProgress(gameSave, levelData);
+      LevelInit levelInit = levelInitLoader.load(level);
+      levelProgress = new LevelProgress(gameSave, levelInit);
       levelProgressManager.save(levelProgress);
     }
 

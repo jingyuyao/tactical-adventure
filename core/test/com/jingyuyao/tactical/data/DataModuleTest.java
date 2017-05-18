@@ -15,7 +15,7 @@ public class DataModuleTest {
   @Inject
   private GameSaveManager gameSaveManager;
   @Inject
-  private LevelDataManager levelDataManager;
+  private LevelInitLoader levelInitLoader;
   @Inject
   private LevelMapManager levelMapManager;
   @Inject

@@ -23,9 +23,9 @@ public class LevelProgress {
   }
 
   // TODO: should be able to choose which player goes to which spawn
-  LevelProgress(GameSave gameSave, LevelData levelData) {
+  LevelProgress(GameSave gameSave, LevelInit levelInit) {
     List<Ship> players = gameSave.getPlayers();
-    List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
+    List<Coordinate> playerSpawns = levelInit.getPlayerSpawns();
     for (int i = 0; i < players.size(); i++) {
       Ship player = players.get(i);
       if (i < playerSpawns.size()) {
@@ -34,7 +34,7 @@ public class LevelProgress {
         inactivePlayers.add(player);
       }
     }
-    activeEnemies.putAll(levelData.getEnemies());
+    activeEnemies.putAll(levelInit.getEnemies());
   }
 
   public Map<Coordinate, Ship> getActivePlayers() {
