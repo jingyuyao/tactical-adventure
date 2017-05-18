@@ -135,13 +135,15 @@ class ScriptLoader {
 
   private static class DialogueKey implements Comparable<DialogueKey> {
 
+    private static final Splitter SPLITTER = Splitter.on('-').trimResults().omitEmptyStrings();
+
     private final String rawKey;
     private final Turn turn;
     private final String nameKey;
     private final int index;
 
     private DialogueKey(String rawKey) {
-      List<String> split = Splitter.on("-").splitToList(rawKey);
+      List<String> split = SPLITTER.splitToList(rawKey);
       Preconditions.checkArgument(split.size() == 4);
       this.rawKey = rawKey;
       this.turn = new Turn(Integer.valueOf(split.get(0)), TurnStage.valueOf(split.get(1)));
