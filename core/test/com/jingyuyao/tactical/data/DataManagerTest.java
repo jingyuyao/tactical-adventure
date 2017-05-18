@@ -38,7 +38,7 @@ public class DataManagerTest {
   @Mock
   private LevelProgressManager levelProgressManager;
   @Mock
-  private LevelInitLoader levelInitLoader;
+  private LevelDataLoader levelDataLoader;
   @Mock
   private LevelTerrainsLoader levelTerrainsLoader;
   @Mock
@@ -74,7 +74,7 @@ public class DataManagerTest {
   public void setUp() {
     dataManager =
         new DataManager(
-            gameSaveManager, levelProgressManager, levelInitLoader, levelTerrainsLoader,
+            gameSaveManager, levelProgressManager, levelDataLoader, levelTerrainsLoader,
             scriptLoader);
   }
 
@@ -87,7 +87,7 @@ public class DataManagerTest {
 
   @Test
   public void has_level() {
-    when(levelInitLoader.hasLevel(2)).thenReturn(true);
+    when(levelDataLoader.hasLevel(2)).thenReturn(true);
 
     assertThat(dataManager.hasLevel(2)).isTrue();
   }
@@ -144,7 +144,7 @@ public class DataManagerTest {
     when(gameSaveManager.load()).thenReturn(gameSave);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.<LevelProgress>absent());
-    when(levelInitLoader.load(2)).thenReturn(levelInit);
+    when(levelDataLoader.loadInit(2)).thenReturn(levelInit);
     when(gameSave.getPlayers()).thenReturn(ImmutableList.of(player1, player2));
     when(levelInit.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelInit.getEnemies()).thenReturn(ImmutableMap.of(E1, enemy1));

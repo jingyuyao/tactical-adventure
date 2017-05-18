@@ -25,16 +25,20 @@ class DataConfig {
     return "save/main.progress.save.json";
   }
 
+  String getLevelDir(int level) {
+    return "data/" + level + "/";
+  }
+
   String getLevelInitFileName(int level) {
-    return "data/" + level + "/init.json";
+    return getLevelDir(level) + "init.json";
   }
 
   String getLevelScriptFileName(int level) {
-    return "data/" + level + "/script.json";
+    return getLevelDir(level) + "script.json";
   }
 
   String getLevelTerrainFileName(int level) {
-    return "data/" + level + "/terrains.tmx";
+    return getLevelDir(level) + "terrains.tmx";
   }
 
   String getTerrainLayerKey() {

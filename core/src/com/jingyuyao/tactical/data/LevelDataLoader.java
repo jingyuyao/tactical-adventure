@@ -6,29 +6,29 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class LevelInitLoader {
+class LevelDataLoader {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
   private final Files files;
 
   @Inject
-  LevelInitLoader(DataConfig dataConfig, MyGson myGson, Files files) {
+  LevelDataLoader(DataConfig dataConfig, MyGson myGson, Files files) {
     this.dataConfig = dataConfig;
     this.myGson = myGson;
     this.files = files;
   }
 
-  LevelInit load(int level) {
+  boolean hasLevel(int level) {
+    FileHandle fileHandle = files.internal(dataConfig.getLevelDir(level));
+    return fileHandle.exists();
+  }
+
+  LevelInit loadInit(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelInitFileName(level));
     if (fileHandle.exists()) {
       return myGson.fromJson(fileHandle.readString(), LevelInit.class);
     }
     throw new IllegalArgumentException("level " + level + " does not exist");
-  }
-
-  boolean hasLevel(int level) {
-    FileHandle fileHandle = files.internal(dataConfig.getLevelInitFileName(level));
-    return fileHandle.exists();
   }
 }
