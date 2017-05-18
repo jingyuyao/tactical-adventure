@@ -15,7 +15,6 @@ import com.jingyuyao.tactical.model.script.LevelTrigger;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
-import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,15 +73,15 @@ public class ScriptLoaderTest {
     deathDialogues.put(name3, dialogue4);
     Map<Turn, LevelTrigger> levelTriggers =
         ImmutableMap.of(start1, LevelTrigger.WON, start3, LevelTrigger.LOST);
-    List<String> keepAlive = ImmutableList.of("name1", "name2");
 
+    when(gameDataManager.loadScript()).thenReturn(gameScript);
+    when(gameScript.getKeepAlive()).thenReturn(ImmutableList.of("name1"));
     when(levelDataLoader.loadScript(2)).thenReturn(levelScript);
     when(levelScript.getTurnTriggers()).thenReturn(levelTriggers);
+    when(levelScript.getKeepAlive()).thenReturn(ImmutableList.of("name2"));
     when(dialogueLoader.getLevelDialogues(2)).thenReturn(levelDialogues);
     when(dialogueLoader.getDeathDialogues()).thenReturn(deathDialogues);
     when(dataConfig.getPersonNameBundle()).thenReturn(bundle);
-    when(gameDataManager.loadScript()).thenReturn(gameScript);
-    when(gameScript.getKeepAlive()).thenReturn(keepAlive);
 
     Script script = scriptLoader.load(2);
 

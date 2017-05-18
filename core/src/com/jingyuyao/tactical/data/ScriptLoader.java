@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
@@ -38,16 +39,21 @@ class ScriptLoader {
   }
 
   Script load(int level) {
-    Map<Turn, ScriptActions> turnScripts = loadTurnScripts(level);
-    Map<ResourceKey, ScriptActions> deathScripts = loadDeathScripts();
+    GameScript gameScript = gameDataManager.loadScript();
+    LevelScript levelScript = levelDataLoader.loadScript(level);
+    ListMultimap<Turn, Dialogue> levelDialogues = dialogueLoader.getLevelDialogues(level);
+    ListMultimap<ResourceKey, Dialogue> deathDialogues = dialogueLoader.getDeathDialogues();
+
+    Map<Turn, ScriptActions> turnScripts = loadTurnScripts(levelScript, levelDialogues);
+    Map<ResourceKey, ScriptActions> deathScripts =
+        loadDeathScripts(gameScript, levelScript, deathDialogues);
     return new Script(turnScripts, deathScripts);
   }
 
-  private Map<Turn, ScriptActions> loadTurnScripts(int level) {
+  private Map<Turn, ScriptActions> loadTurnScripts(
+      LevelScript levelScript, ListMultimap<Turn, Dialogue> levelDialogues) {
     Map<Turn, ScriptActions> turnScripts = new HashMap<>();
-    LevelScript levelScript = levelDataLoader.loadScript(level);
     Map<Turn, LevelTrigger> levelTriggers = levelScript.getTurnTriggers();
-    ListMultimap<Turn, Dialogue> levelDialogues = dialogueLoader.getLevelDialogues(level);
 
     Set<Turn> actionTurns = Sets.union(levelTriggers.keySet(), levelDialogues.keySet());
     for (Turn turn : actionTurns) {
@@ -59,11 +65,13 @@ class ScriptLoader {
     return turnScripts;
   }
 
-  private Map<ResourceKey, ScriptActions> loadDeathScripts() {
+  private Map<ResourceKey, ScriptActions> loadDeathScripts(
+      GameScript gameScript,
+      LevelScript levelScript,
+      ListMultimap<ResourceKey, Dialogue> deathDialogues) {
     Map<ResourceKey, ScriptActions> deathScripts = new HashMap<>();
-    GameScript gameScript = gameDataManager.loadScript();
-    Set<ResourceKey> keepAlive = getKeepAlive(gameScript);
-    ListMultimap<ResourceKey, Dialogue> deathDialogues = dialogueLoader.getDeathDialogues();
+    Set<ResourceKey> keepAlive =
+        toResourceKey(Iterables.concat(gameScript.getKeepAlive(), levelScript.getKeepAlive()));
 
     Set<ResourceKey> actionNames = Sets.union(keepAlive, deathDialogues.keySet());
     for (ResourceKey name : actionNames) {
@@ -74,10 +82,10 @@ class ScriptLoader {
     return deathScripts;
   }
 
-  private Set<ResourceKey> getKeepAlive(GameScript gameScript) {
+  private Set<ResourceKey> toResourceKey(Iterable<String> nameKeys) {
     Set<ResourceKey> keepAlive = new HashSet<>();
     ResourceKeyBundle personNameBundle = dataConfig.getPersonNameBundle();
-    for (String nameKey : gameScript.getKeepAlive()) {
+    for (String nameKey : nameKeys) {
       keepAlive.add(personNameBundle.get(nameKey));
     }
     return keepAlive;
