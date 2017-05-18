@@ -1,6 +1,6 @@
 {
   "currentLevel": 1,
-  "players": [
+  "playerShips": [
     {
       "type": "BasicShip",
       "name": "adder",

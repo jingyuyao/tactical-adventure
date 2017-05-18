@@ -26,9 +26,9 @@ public class LevelProgressTest {
   private static final Coordinate E1 = new Coordinate(3, 3);
 
   @Mock
-  private GameSave gameSave;
+  private GameData gameData;
   @Mock
-  private LevelInit levelInit;
+  private LevelData levelData;
   @Mock
   private World world;
   @Mock
@@ -51,21 +51,21 @@ public class LevelProgressTest {
   @Test
   public void fresh() {
     LevelProgress levelProgress = new LevelProgress();
-    assertThat(levelProgress.getActiveShips()).isEmpty();
-    assertThat(levelProgress.getInactivePlayers()).isEmpty();
+    assertThat(levelProgress.getShips()).isEmpty();
+    assertThat(levelProgress.getReservedPlayerShips()).isEmpty();
     assertThat(levelProgress.getTurn()).isEqualTo(new Turn());
   }
 
   @Test
   public void from_game_save_and_level_data() {
-    when(gameSave.getPlayers()).thenReturn(ImmutableList.of(player1, player2));
-    when(levelInit.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
-    when(levelInit.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
+    when(gameData.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
+    when(levelData.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
+    when(levelData.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
 
-    LevelProgress levelProgress = new LevelProgress(gameSave, levelInit);
+    LevelProgress levelProgress = new LevelProgress(gameData, levelData);
 
-    assertThat(levelProgress.getActiveShips()).containsExactly(SPAWN1, player1, E1, enemy1);
-    assertThat(levelProgress.getInactivePlayers()).containsExactly(player2);
+    assertThat(levelProgress.getShips()).containsExactly(SPAWN1, player1, E1, enemy1);
+    assertThat(levelProgress.getReservedPlayerShips()).containsExactly(player2);
   }
 
   @Test
@@ -82,12 +82,12 @@ public class LevelProgressTest {
     LevelProgress levelProgress = new LevelProgress();
     levelProgress.update(world, worldState);
 
-    assertThat(levelProgress.getActiveShips()).containsExactly(P1, player1, E1, enemy1);
+    assertThat(levelProgress.getShips()).containsExactly(P1, player1, E1, enemy1);
     assertThat(levelProgress.getTurn()).isSameAs(turn1);
 
     // Make sure the previous things are cleared
     levelProgress.update(world, worldState);
-    assertThat(levelProgress.getActiveShips()).containsExactly(P1, player1, E1, enemy1);
+    assertThat(levelProgress.getShips()).containsExactly(P1, player1, E1, enemy1);
     assertThat(levelProgress.getTurn()).isSameAs(turn2);
   }
 }

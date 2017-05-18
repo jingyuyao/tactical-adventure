@@ -27,7 +27,7 @@ public class LevelDataLoaderTest {
   @Mock
   private FileHandle fileHandle;
   @Mock
-  private LevelInit levelInit;
+  private LevelData levelData;
   @Mock
   private LevelScript levelScript;
 
@@ -53,9 +53,9 @@ public class LevelDataLoaderTest {
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle.readString()).thenReturn(DATA);
-    when(myGson.fromJson(DATA, LevelInit.class)).thenReturn(levelInit);
+    when(myGson.fromJson(DATA, LevelData.class)).thenReturn(levelData);
 
-    assertThat(levelDataLoader.loadInit(2)).isSameAs(levelInit);
+    assertThat(levelDataLoader.loadInit(2)).isSameAs(levelData);
   }
 
   @Test

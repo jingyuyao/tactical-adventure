@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GameSaveManagerTest {
+public class GameDataManagerTest {
 
   private static final String MAIN = "main.save.json";
   private static final String START = "start.json";
@@ -26,17 +26,17 @@ public class GameSaveManagerTest {
   @Mock
   private Files files;
   @Mock
-  private GameSave gameSave;
+  private GameData gameData;
   @Mock
   private FileHandle fileHandle1;
   @Mock
   private FileHandle fileHandle2;
 
-  private GameSaveManager gameSaveManager;
+  private GameDataManager gameDataManager;
 
   @Before
   public void setUp() {
-    gameSaveManager = new GameSaveManager(dataConfig, myGson, files);
+    gameDataManager = new GameDataManager(dataConfig, myGson, files);
   }
 
   @Test
@@ -45,9 +45,9 @@ public class GameSaveManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.readString()).thenReturn(DATA);
-    when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
+    when(myGson.fromJson(DATA, GameData.class)).thenReturn(gameData);
 
-    assertThat(gameSaveManager.load()).isSameAs(gameSave);
+    assertThat(gameDataManager.load()).isSameAs(gameData);
   }
 
   @Test
@@ -58,18 +58,18 @@ public class GameSaveManagerTest {
     when(files.internal(START)).thenReturn(fileHandle2);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.readString()).thenReturn(DATA);
-    when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
+    when(myGson.fromJson(DATA, GameData.class)).thenReturn(gameData);
 
-    assertThat(gameSaveManager.load()).isSameAs(gameSave);
+    assertThat(gameDataManager.load()).isSameAs(gameData);
   }
 
   @Test
   public void save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
-    when(myGson.toJson(gameSave)).thenReturn(DATA);
+    when(myGson.toJson(gameData)).thenReturn(DATA);
 
-    gameSaveManager.save(gameSave);
+    gameDataManager.save(gameData);
 
     verify(fileHandle1).writeString(DATA, false);
   }
@@ -80,7 +80,7 @@ public class GameSaveManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
 
-    gameSaveManager.removeSave();
+    gameDataManager.removeSave();
 
     verify(fileHandle1).delete();
   }

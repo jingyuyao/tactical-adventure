@@ -11,11 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Contains the current progress of a level. Basically a merger of {@link GameData} and {@link
+ * LevelData}.
+ */
 public class LevelProgress {
 
-  private List<Ship> inactivePlayers = new ArrayList<>();
-  private Map<Coordinate, Ship> activePlayers = new HashMap<>();
-  private Map<Coordinate, Ship> activeEnemies = new HashMap<>();
+  private List<Ship> reservedPlayerShips = new ArrayList<>();
+  private Map<Coordinate, Ship> playerShips = new HashMap<>();
+  private Map<Coordinate, Ship> enemyShips = new HashMap<>();
   private Turn turn = new Turn();
 
   LevelProgress() {
@@ -23,36 +27,36 @@ public class LevelProgress {
   }
 
   // TODO: should be able to choose which player goes to which spawn
-  LevelProgress(GameSave gameSave, LevelInit levelInit) {
-    List<Ship> players = gameSave.getPlayers();
-    List<Coordinate> playerSpawns = levelInit.getPlayerSpawns();
-    for (int i = 0; i < players.size(); i++) {
-      Ship player = players.get(i);
+  LevelProgress(GameData gameData, LevelData levelData) {
+    List<Ship> playerShips = gameData.getPlayerShips();
+    List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
+    for (int i = 0; i < playerShips.size(); i++) {
+      Ship player = playerShips.get(i);
       if (i < playerSpawns.size()) {
-        activePlayers.put(playerSpawns.get(i), player);
+        this.playerShips.put(playerSpawns.get(i), player);
       } else {
-        inactivePlayers.add(player);
+        reservedPlayerShips.add(player);
       }
     }
-    activeEnemies.putAll(levelInit.getShips());
+    enemyShips.putAll(levelData.getShips());
   }
 
-  public Map<Coordinate, Ship> getActivePlayers() {
-    return activePlayers;
+  public List<Ship> getReservedPlayerShips() {
+    return reservedPlayerShips;
   }
 
-  public Map<Coordinate, Ship> getActiveEnemies() {
-    return activeEnemies;
+  public Map<Coordinate, Ship> getPlayerShips() {
+    return playerShips;
   }
 
-  public List<Ship> getInactivePlayers() {
-    return inactivePlayers;
+  public Map<Coordinate, Ship> getEnemyShips() {
+    return enemyShips;
   }
 
-  public Map<Coordinate, Ship> getActiveShips() {
+  public Map<Coordinate, Ship> getShips() {
     Map<Coordinate, Ship> shipMap = new HashMap<>();
-    shipMap.putAll(activePlayers);
-    shipMap.putAll(activeEnemies);
+    shipMap.putAll(playerShips);
+    shipMap.putAll(enemyShips);
     return shipMap;
   }
 
@@ -61,17 +65,17 @@ public class LevelProgress {
   }
 
   void update(World world, WorldState worldState) {
-    activePlayers.clear();
-    activeEnemies.clear();
+    playerShips.clear();
+    enemyShips.clear();
     for (Cell cell : world.getShipSnapshot()) {
       Coordinate coordinate = cell.getCoordinate();
       for (Ship ship : cell.ship().asSet()) {
         switch (ship.getAllegiance()) {
           case PLAYER:
-            activePlayers.put(coordinate, ship);
+            playerShips.put(coordinate, ship);
             break;
           case ENEMY:
-            activeEnemies.put(coordinate, ship);
+            enemyShips.put(coordinate, ship);
             break;
         }
       }

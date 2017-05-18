@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GameSaveTest {
+public class GameDataTest {
 
   private static final Coordinate P2 = new Coordinate(3, 3);
 
@@ -25,25 +25,25 @@ public class GameSaveTest {
   @Mock
   private Ship player2;
 
-  private GameSave gameSave;
+  private GameData gameData;
 
   @Before
   public void setUp() {
-    gameSave = new GameSave();
+    gameData = new GameData();
   }
 
   @Test
   public void update() {
-    when(levelProgress.getInactivePlayers()).thenReturn(ImmutableList.of(player1));
-    when(levelProgress.getActivePlayers()).thenReturn(ImmutableMap.of(P2, player2));
+    when(levelProgress.getReservedPlayerShips()).thenReturn(ImmutableList.of(player1));
+    when(levelProgress.getPlayerShips()).thenReturn(ImmutableMap.of(P2, player2));
 
-    gameSave.update(levelProgress);
+    gameData.update(levelProgress);
 
-    assertThat(gameSave.getPlayers()).containsExactly(player2, player1).inOrder();
+    assertThat(gameData.getPlayerShips()).containsExactly(player2, player1).inOrder();
 
     // tests the previous changes are cleared
-    gameSave.update(levelProgress);
+    gameData.update(levelProgress);
 
-    assertThat(gameSave.getPlayers()).containsExactly(player2, player1).inOrder();
+    assertThat(gameData.getPlayerShips()).containsExactly(player2, player1).inOrder();
   }
 }

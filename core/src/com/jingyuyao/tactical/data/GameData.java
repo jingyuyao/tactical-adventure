@@ -4,10 +4,13 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSave {
+/**
+ * The main game data;
+ */
+public class GameData {
 
   private int currentLevel = 1;
-  private List<Ship> players = new ArrayList<>();
+  private List<Ship> playerShips = new ArrayList<>();
 
   public int getCurrentLevel() {
     return currentLevel;
@@ -17,13 +20,13 @@ public class GameSave {
     this.currentLevel = currentLevel;
   }
 
-  List<Ship> getPlayers() {
-    return players;
+  List<Ship> getPlayerShips() {
+    return playerShips;
   }
 
   void update(LevelProgress levelProgress) {
-    players.clear();
-    players.addAll(levelProgress.getActivePlayers().values());
-    players.addAll(levelProgress.getInactivePlayers());
+    playerShips.clear();
+    playerShips.addAll(levelProgress.getPlayerShips().values());
+    playerShips.addAll(levelProgress.getReservedPlayerShips());
   }
 }

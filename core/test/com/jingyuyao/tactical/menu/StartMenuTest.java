@@ -13,7 +13,7 @@ import com.google.inject.Guice;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameSave;
+import com.jingyuyao.tactical.data.GameData;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -42,7 +42,7 @@ public class StartMenuTest {
   @Mock
   private TextLoader textLoader;
   @Mock
-  private GameSave gameSave;
+  private GameData gameData;
   @Mock
   private LevelProgress levelProgress;
   @Mock
@@ -67,12 +67,12 @@ public class StartMenuTest {
 
   @Test
   public void on_show() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameSave);
+    when(dataManager.loadCurrentSave()).thenReturn(gameData);
     when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
-    when(levelProgress.getActivePlayers())
+    when(levelProgress.getPlayerShips())
         .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
-    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
-    when(gameSave.getCurrentLevel()).thenReturn(2);
+    when(levelProgress.getEnemyShips()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
+    when(gameData.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
 
@@ -95,12 +95,12 @@ public class StartMenuTest {
 
   @Test
   public void reset_button() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameSave);
+    when(dataManager.loadCurrentSave()).thenReturn(gameData);
     when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
-    when(levelProgress.getActivePlayers())
+    when(levelProgress.getPlayerShips())
         .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
-    when(levelProgress.getActiveEnemies()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
-    when(gameSave.getCurrentLevel()).thenReturn(2);
+    when(levelProgress.getEnemyShips()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
+    when(gameData.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
     VisTextButton button = startMenu.getRoot().findActor("resetButton");

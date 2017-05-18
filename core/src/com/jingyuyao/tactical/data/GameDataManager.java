@@ -7,28 +7,28 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class GameSaveManager {
+class GameDataManager {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
   private final Files files;
 
   @Inject
-  GameSaveManager(DataConfig dataConfig, MyGson myGson, Files files) {
+  GameDataManager(DataConfig dataConfig, MyGson myGson, Files files) {
     this.dataConfig = dataConfig;
     this.myGson = myGson;
     this.files = files;
   }
 
-  GameSave load() {
-    Optional<GameSave> main = load(dataConfig.getMainSaveFileName(), false);
+  GameData load() {
+    Optional<GameData> main = load(dataConfig.getMainSaveFileName(), false);
     if (main.isPresent()) {
       return main.get();
     }
 
-    Optional<GameSave> start = load(dataConfig.getInitFileName(), true);
+    Optional<GameData> start = load(dataConfig.getInitFileName(), true);
     if (start.isPresent()) {
-      GameSave startSave = start.get();
+      GameData startSave = start.get();
       save(startSave);
       return startSave;
     }
@@ -36,9 +36,9 @@ class GameSaveManager {
     throw new IllegalStateException("Could not find a suitable save file!");
   }
 
-  void save(GameSave gameSave) {
+  void save(GameData gameData) {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
-    fileHandle.writeString(myGson.toJson(gameSave), false);
+    fileHandle.writeString(myGson.toJson(gameData), false);
   }
 
   void removeSave() {
@@ -48,10 +48,10 @@ class GameSaveManager {
     }
   }
 
-  private Optional<GameSave> load(String fileName, boolean internal) {
+  private Optional<GameData> load(String fileName, boolean internal) {
     FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(myGson.fromJson(fileHandle.readString(), GameSave.class));
+      return Optional.of(myGson.fromJson(fileHandle.readString(), GameData.class));
     }
     return Optional.absent();
   }

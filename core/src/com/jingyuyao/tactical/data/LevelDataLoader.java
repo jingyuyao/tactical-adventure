@@ -24,10 +24,10 @@ class LevelDataLoader {
     return fileHandle.exists();
   }
 
-  LevelInit loadInit(int level) {
+  LevelData loadInit(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelInitFileName(level));
     if (fileHandle.exists()) {
-      return myGson.fromJson(fileHandle.readString(), LevelInit.class);
+      return myGson.fromJson(fileHandle.readString(), LevelData.class);
     }
     throw new IllegalArgumentException("init file for " + level + " does not exist");
   }
