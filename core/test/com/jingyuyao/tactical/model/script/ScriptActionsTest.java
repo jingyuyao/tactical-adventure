@@ -64,7 +64,6 @@ public class ScriptActionsTest {
     actions.execute(modelBus, runnable);
 
     InOrder inOrder = Mockito.inOrder(modelBus, runnable);
-    verifyZeroInteractions(runnable);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
     ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
@@ -72,7 +71,7 @@ public class ScriptActionsTest {
     showDialogues.complete();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(LevelWon.class);
-    inOrder.verify(runnable).run();
+    verifyZeroInteractions(runnable);
   }
 
   @Test
@@ -83,6 +82,6 @@ public class ScriptActionsTest {
 
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(LevelLost.class);
-    verify(runnable).run();
+    verifyZeroInteractions(runnable);
   }
 }

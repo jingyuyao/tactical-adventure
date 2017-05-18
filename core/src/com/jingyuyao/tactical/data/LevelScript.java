@@ -9,7 +9,7 @@ class LevelScript {
 
   private Map<Turn, LevelTrigger> levelTriggers = new HashMap<>();
 
-  public Map<Turn, LevelTrigger> getLevelTriggers() {
+  Map<Turn, LevelTrigger> getLevelTriggers() {
     return levelTriggers;
   }
 }

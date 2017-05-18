@@ -26,12 +26,14 @@ public class ScriptActions {
     return levelTrigger;
   }
 
+  /**
+   * Executes this action. {@code done} is only called if this action does not complete the level.
+   */
   public void execute(final ModelBus modelBus, final Runnable done) {
     processDialogues(modelBus).done(new Runnable() {
       @Override
       public void run() {
-        processTrigger(modelBus);
-        done.run();
+        processTrigger(modelBus, done);
       }
     });
   }
@@ -46,8 +48,13 @@ public class ScriptActions {
     return promise;
   }
 
-  private void processTrigger(ModelBus modelBus) {
+  private void processTrigger(ModelBus modelBus, Runnable done) {
     switch (levelTrigger) {
+      case NONE:
+        // We only continue if the level is not completed by this action.
+        // Continuing after level completion will result in undefined behavior or null-pointers
+        done.run();
+        break;
       case WON:
         modelBus.post(new LevelWon());
         break;
