@@ -1,15 +1,15 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.person.Pilot;
 import java.util.ArrayList;
 import java.util.List;
 
 class Cockpit {
 
-  private List<Person> pilots = new ArrayList<>();
+  private List<Pilot> pilots = new ArrayList<>();
 
-  ImmutableList<Person> getPilots() {
+  ImmutableList<Pilot> getPilots() {
     return ImmutableList.copyOf(pilots);
   }
 }

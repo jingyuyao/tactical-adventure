@@ -20,7 +20,7 @@
       "cockpit": {
         "pilots": [
           {
-            "type": "Villain",
+            "type": "Pilot",
             "name": "ryan"
           }
         ]

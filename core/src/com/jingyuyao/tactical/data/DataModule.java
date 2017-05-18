@@ -16,9 +16,6 @@ import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.person.Hero;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.person.Villain;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.BasicShip;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
@@ -44,12 +41,6 @@ public class DataModule extends AbstractModule {
     builder.enableComplexMapKeySerialization();
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapter(Turn.class, new TurnAdapter());
-
-    builder.registerTypeAdapterFactory(
-        RuntimeTypeAdapterFactory
-            .of(Person.class)
-            .registerSubtype(Hero.class)
-            .registerSubtype(Villain.class));
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory

@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.person.Pilot;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -40,7 +40,7 @@ public class BasicShipTest {
   @Mock
   private Consumable consumable;
   @Mock
-  private Person person;
+  private Pilot pilot;
   @Mock
   private Cell cell;
   @Mock
@@ -116,9 +116,9 @@ public class BasicShipTest {
 
   @Test
   public void get_pilots() {
-    when(cockpit.getPilots()).thenReturn(ImmutableList.of(person));
+    when(cockpit.getPilots()).thenReturn(ImmutableList.of(pilot));
 
-    assertThat(ship.getPilots()).containsExactly(person);
+    assertThat(ship.getPilots()).containsExactly(pilot);
   }
 
   @Test
