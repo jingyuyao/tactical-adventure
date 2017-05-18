@@ -39,7 +39,7 @@ public class DataManager {
   }
 
   public GameData loadCurrentSave() {
-    return gameDataManager.load();
+    return gameDataManager.loadData();
   }
 
   public Optional<LevelProgress> loadCurrentProgress() {
@@ -62,20 +62,20 @@ public class DataManager {
     LevelProgress levelProgress = levelProgressOptional.get();
     levelProgress.update(world, worldState);
 
-    GameData gameData = gameDataManager.load();
+    GameData gameData = gameDataManager.loadData();
     gameData.setCurrentLevel(level);
     gameData.update(levelProgress);
-    gameDataManager.save(gameData);
+    gameDataManager.saveData(gameData);
     levelProgressManager.removeSave();
   }
 
   public void freshStart() {
     levelProgressManager.removeSave();
-    gameDataManager.removeSave();
+    gameDataManager.removeSavedData();
   }
 
   public LoadedLevel loadCurrentLevel(OrthogonalTiledMapRenderer tiledMapRenderer) {
-    GameData gameData = gameDataManager.load();
+    GameData gameData = gameDataManager.loadData();
     int level = gameData.getCurrentLevel();
 
     LevelProgress levelProgress;

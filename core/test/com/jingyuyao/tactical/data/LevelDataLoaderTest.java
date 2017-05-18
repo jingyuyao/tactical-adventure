@@ -51,7 +51,6 @@ public class LevelDataLoaderTest {
   public void load_init() {
     when(dataConfig.getLevelInitFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
-    when(fileHandle.exists()).thenReturn(true);
     when(fileHandle.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, LevelData.class)).thenReturn(levelData);
 
@@ -62,7 +61,6 @@ public class LevelDataLoaderTest {
   public void load_script() {
     when(dataConfig.getLevelScriptFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
-    when(fileHandle.exists()).thenReturn(true);
     when(fileHandle.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, LevelScript.class)).thenReturn(levelScript);
 

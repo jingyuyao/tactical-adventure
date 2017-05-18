@@ -17,6 +17,7 @@ public class GameDataManagerTest {
 
   private static final String MAIN = "main.save.json";
   private static final String START = "start.json";
+  private static final String SCRIPT = "script.json";
   private static final String DATA = "hello world!";
 
   @Mock
@@ -27,6 +28,8 @@ public class GameDataManagerTest {
   private Files files;
   @Mock
   private GameData gameData;
+  @Mock
+  private GameScript gameScript;
   @Mock
   private FileHandle fileHandle1;
   @Mock
@@ -40,18 +43,18 @@ public class GameDataManagerTest {
   }
 
   @Test
-  public void load() {
+  public void load_init() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameData.class)).thenReturn(gameData);
 
-    assertThat(gameDataManager.load()).isSameAs(gameData);
+    assertThat(gameDataManager.loadData()).isSameAs(gameData);
   }
 
   @Test
-  public void load_start() {
+  public void load_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(dataConfig.getInitFileName()).thenReturn(START);
     when(files.local(MAIN)).thenReturn(fileHandle1);
@@ -60,7 +63,17 @@ public class GameDataManagerTest {
     when(fileHandle2.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameData.class)).thenReturn(gameData);
 
-    assertThat(gameDataManager.load()).isSameAs(gameData);
+    assertThat(gameDataManager.loadData()).isSameAs(gameData);
+  }
+
+  @Test
+  public void load_script() {
+    when(dataConfig.getScriptFileName()).thenReturn(SCRIPT);
+    when(files.internal(SCRIPT)).thenReturn(fileHandle1);
+    when(fileHandle1.readString()).thenReturn(DATA);
+    when(myGson.fromJson(DATA, GameScript.class)).thenReturn(gameScript);
+
+    assertThat(gameDataManager.loadScript()).isSameAs(gameScript);
   }
 
   @Test
@@ -69,7 +82,7 @@ public class GameDataManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(myGson.toJson(gameData)).thenReturn(DATA);
 
-    gameDataManager.save(gameData);
+    gameDataManager.saveData(gameData);
 
     verify(fileHandle1).writeString(DATA, false);
   }
@@ -80,7 +93,7 @@ public class GameDataManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
 
-    gameDataManager.removeSave();
+    gameDataManager.removeSavedData();
 
     verify(fileHandle1).delete();
   }

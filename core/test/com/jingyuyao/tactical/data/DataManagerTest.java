@@ -80,7 +80,7 @@ public class DataManagerTest {
 
   @Test
   public void load_current_save() {
-    when(gameDataManager.load()).thenReturn(gameData);
+    when(gameDataManager.loadData()).thenReturn(gameData);
 
     assertThat(dataManager.loadCurrentSave()).isSameAs(gameData);
   }
@@ -94,7 +94,7 @@ public class DataManagerTest {
 
   @Test
   public void change_level() {
-    when(gameDataManager.load()).thenReturn(gameData);
+    when(gameDataManager.loadData()).thenReturn(gameData);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
     dataManager.changeLevel(2, world, worldState);
@@ -106,7 +106,7 @@ public class DataManagerTest {
     inOrder.verify(levelProgress).update(world, worldState);
     inOrder.verify(gameData).setCurrentLevel(2);
     inOrder.verify(gameData).update(levelProgress);
-    inOrder.verify(gameDataManager).save(gameData);
+    inOrder.verify(gameDataManager).saveData(gameData);
     inOrder.verify(levelProgressManager).removeSave();
   }
 
@@ -114,7 +114,7 @@ public class DataManagerTest {
   public void fresh_start() {
     dataManager.freshStart();
 
-    verify(gameDataManager).removeSave();
+    verify(gameDataManager).removeSavedData();
     verify(levelProgressManager).removeSave();
   }
 
@@ -122,7 +122,7 @@ public class DataManagerTest {
   public void load_level_has_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Ship> shipMap = new HashMap<>();
-    when(gameDataManager.load()).thenReturn(gameData);
+    when(gameDataManager.loadData()).thenReturn(gameData);
     when(gameData.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
@@ -141,7 +141,7 @@ public class DataManagerTest {
   @Test
   public void load_level_no_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    when(gameDataManager.load()).thenReturn(gameData);
+    when(gameDataManager.loadData()).thenReturn(gameData);
     when(gameData.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.<LevelProgress>absent());
     when(levelDataLoader.loadInit(2)).thenReturn(levelData);
