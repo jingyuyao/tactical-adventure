@@ -17,21 +17,21 @@ public class DataManager {
 
   private final GameSaveManager gameSaveManager;
   private final LevelProgressManager levelProgressManager;
-  private final LevelDataManager levelDataManager;
-  private final LevelMapManager levelMapManager;
+  private final LevelDataLoader levelDataLoader;
+  private final LevelTerrainsLoader levelTerrainsLoader;
   private final ScriptLoader scriptLoader;
 
   @Inject
   DataManager(
       GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
-      LevelDataManager levelDataManager,
-      LevelMapManager levelMapManager,
+      LevelDataLoader levelDataLoader,
+      LevelTerrainsLoader levelTerrainsLoader,
       ScriptLoader scriptLoader) {
     this.gameSaveManager = gameSaveManager;
     this.levelProgressManager = levelProgressManager;
-    this.levelDataManager = levelDataManager;
-    this.levelMapManager = levelMapManager;
+    this.levelDataLoader = levelDataLoader;
+    this.levelTerrainsLoader = levelTerrainsLoader;
     this.scriptLoader = scriptLoader;
   }
 
@@ -44,7 +44,7 @@ public class DataManager {
   }
 
   public boolean hasLevel(int level) {
-    return levelDataManager.hasLevel(level);
+    return levelDataLoader.hasLevel(level);
   }
 
   public void changeLevel(int level, World world, WorldState worldState) {
@@ -81,12 +81,12 @@ public class DataManager {
     if (levelProgressOptional.isPresent()) {
       levelProgress = levelProgressOptional.get();
     } else {
-      LevelData levelData = levelDataManager.load(level);
-      levelProgress = new LevelProgress(gameSave, levelData);
+      LevelInit levelInit = levelDataLoader.loadInit(level);
+      levelProgress = new LevelProgress(gameSave, levelInit);
       levelProgressManager.save(levelProgress);
     }
 
-    Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
+    Map<Coordinate, Terrain> terrainMap = levelTerrainsLoader.load(level, tiledMapRenderer);
     Map<Coordinate, Ship> shipMap = levelProgress.getActiveShips();
     Turn turn = levelProgress.getTurn();
     return new LoadedLevel(terrainMap, shipMap, turn, scriptLoader.load(level));

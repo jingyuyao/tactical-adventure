@@ -18,19 +18,19 @@ import javax.inject.Singleton;
 
 // TODO: test me
 @Singleton
-class LevelMapManager {
+class LevelTerrainsLoader {
 
   private final DataConfig dataConfig;
   private final AssetManager assetManager;
 
   @Inject
-  LevelMapManager(DataConfig dataConfig, AssetManager assetManager) {
+  LevelTerrainsLoader(DataConfig dataConfig, AssetManager assetManager) {
     this.dataConfig = dataConfig;
     this.assetManager = assetManager;
   }
 
   Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
-    String levelFileName = dataConfig.getLevelMapFileName(level);
+    String levelFileName = dataConfig.getLevelTerrainFileName(level);
     assetManager.load(levelFileName, TiledMap.class);
     assetManager.finishLoadingAsset(levelFileName);
     TiledMap tiledMap = assetManager.get(levelFileName);

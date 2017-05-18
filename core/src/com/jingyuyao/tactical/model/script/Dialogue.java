@@ -5,18 +5,18 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 public class Dialogue {
 
   private final ResourceKey name;
-  private final ResourceKey resourceKey;
+  private final ResourceKey text;
 
-  public Dialogue(ResourceKey name, ResourceKey resourceKey) {
+  public Dialogue(ResourceKey name, ResourceKey text) {
     this.name = name;
-    this.resourceKey = resourceKey;
+    this.text = text;
   }
 
   public ResourceKey getName() {
     return name;
   }
 
-  public ResourceKey getResourceKey() {
-    return resourceKey;
+  public ResourceKey getText() {
+    return text;
   }
 }

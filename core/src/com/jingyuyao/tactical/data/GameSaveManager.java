@@ -26,7 +26,7 @@ class GameSaveManager {
       return main.get();
     }
 
-    Optional<GameSave> start = load(dataConfig.getStartSaveFileName(), true);
+    Optional<GameSave> start = load(dataConfig.getInitFileName(), true);
     if (start.isPresent()) {
       GameSave startSave = start.get();
       save(startSave);

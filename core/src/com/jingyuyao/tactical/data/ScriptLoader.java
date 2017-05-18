@@ -7,9 +7,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Sets;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import com.jingyuyao.tactical.model.script.LevelTrigger;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -22,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -30,42 +33,35 @@ class ScriptLoader {
 
   private final DataConfig dataConfig;
   private final Files files;
+  private final LevelDataLoader levelDataLoader;
 
   @Inject
-  ScriptLoader(DataConfig dataConfig, Files files) {
+  ScriptLoader(DataConfig dataConfig, Files files, LevelDataLoader levelDataLoader) {
     this.dataConfig = dataConfig;
     this.files = files;
+    this.levelDataLoader = levelDataLoader;
   }
 
   Script load(int level) {
-    // looks a bit verbose right now because we eventually want to add more than just dialogues
-    // to the scripts
-    Map<Turn, ScriptActions> turnScripts = new HashMap<>();
-    ListMultimap<Turn, Dialogue> levelDialogues = getLevelDialogues(level);
-    for (Turn turn : levelDialogues.keySet()) {
-      turnScripts.put(turn, new ScriptActions(levelDialogues.get(turn)));
-    }
-    Map<ResourceKey, ScriptActions> deathScripts = new HashMap<>();
-    ListMultimap<ResourceKey, Dialogue> deathDialogues = getDeathDialogues();
-    for (ResourceKey name : deathDialogues.keySet()) {
-      deathScripts.put(name, new ScriptActions(deathDialogues.get(name)));
-    }
+    Map<Turn, ScriptActions> turnScripts = loadTurnScripts(level);
+    Map<ResourceKey, ScriptActions> deathScripts = loadDeathScripts();
     return new Script(turnScripts, deathScripts);
   }
 
-  private ListMultimap<ResourceKey, Dialogue> getDeathDialogues() {
-    ListMultimap<ResourceKey, Dialogue> dialogueMap = ArrayListMultimap.create();
-    ResourceKeyBundle bundle = dataConfig.getDeathDialogueBundle();
-    Optional<Properties> dialogueProperties = getProperties(bundle);
-    if (dialogueProperties.isPresent()) {
-      for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
-        // supports only one death dialogue per person
-        dialogueMap.put(getName(nameKey), create(nameKey, bundle.get(nameKey)));
-      }
-    } else {
-      throw new RuntimeException("death dialogue properties does not exists");
+  private Map<Turn, ScriptActions> loadTurnScripts(int level) {
+    Map<Turn, ScriptActions> turnScripts = new HashMap<>();
+    LevelScript levelScript = levelDataLoader.loadScript(level);
+    Map<Turn, LevelTrigger> levelTriggers = levelScript.getLevelTriggers();
+    ListMultimap<Turn, Dialogue> levelDialogues = getLevelDialogues(level);
+
+    Set<Turn> actionTurns = Sets.union(levelTriggers.keySet(), levelDialogues.keySet());
+    for (Turn turn : actionTurns) {
+      List<Dialogue> dialogues = levelDialogues.get(turn);
+      LevelTrigger levelTrigger =
+          levelTriggers.containsKey(turn) ? levelTriggers.get(turn) : LevelTrigger.NONE;
+      turnScripts.put(turn, new ScriptActions(dialogues, levelTrigger));
     }
-    return dialogueMap;
+    return turnScripts;
   }
 
   private ListMultimap<Turn, Dialogue> getLevelDialogues(int level) {
@@ -82,6 +78,30 @@ class ScriptLoader {
       for (DialogueKey key : dialogueKeys) {
         dialogueMap.put(key.turn, create(key.nameKey, bundle.get(key.rawKey)));
       }
+    }
+    return dialogueMap;
+  }
+
+  private Map<ResourceKey, ScriptActions> loadDeathScripts() {
+    Map<ResourceKey, ScriptActions> deathScripts = new HashMap<>();
+    ListMultimap<ResourceKey, Dialogue> deathDialogues = getDeathDialogues();
+    for (ResourceKey name : deathDialogues.keySet()) {
+      deathScripts.put(name, new ScriptActions(deathDialogues.get(name), LevelTrigger.NONE));
+    }
+    return deathScripts;
+  }
+
+  private ListMultimap<ResourceKey, Dialogue> getDeathDialogues() {
+    ListMultimap<ResourceKey, Dialogue> dialogueMap = ArrayListMultimap.create();
+    ResourceKeyBundle bundle = dataConfig.getDeathDialogueBundle();
+    Optional<Properties> dialogueProperties = getProperties(bundle);
+    if (dialogueProperties.isPresent()) {
+      for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
+        // supports only one death dialogue per person
+        dialogueMap.put(getName(nameKey), create(nameKey, bundle.get(nameKey)));
+      }
+    } else {
+      throw new RuntimeException("death dialogue properties does not exists");
     }
     return dialogueMap;
   }
@@ -115,13 +135,15 @@ class ScriptLoader {
 
   private static class DialogueKey implements Comparable<DialogueKey> {
 
+    private static final Splitter SPLITTER = Splitter.on('-').trimResults().omitEmptyStrings();
+
     private final String rawKey;
     private final Turn turn;
     private final String nameKey;
     private final int index;
 
     private DialogueKey(String rawKey) {
-      List<String> split = Splitter.on("-").splitToList(rawKey);
+      List<String> split = SPLITTER.splitToList(rawKey);
       Preconditions.checkArgument(split.size() == 4);
       this.rawKey = rawKey;
       this.turn = new Turn(Integer.valueOf(split.get(0)), TurnStage.valueOf(split.get(1)));

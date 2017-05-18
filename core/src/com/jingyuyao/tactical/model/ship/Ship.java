@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.person.Pilot;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movements;
@@ -45,7 +45,7 @@ public interface Ship {
 
   void fullHeal();
 
-  ImmutableList<Person> getPilots();
+  ImmutableList<Pilot> getPilots();
 
   ImmutableList<Consumable> getConsumables();
 

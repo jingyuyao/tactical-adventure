@@ -56,7 +56,7 @@ class DialogueLayer extends VisTable {
     if (index < showDialogues.getDialogues().size()) {
       Dialogue dialogue = showDialogues.getDialogues().get(index);
       name.setText(textLoader.get(dialogue.getName()));
-      text.setText(textLoader.get(dialogue.getResourceKey()));
+      text.setText(textLoader.get(dialogue.getText()));
       index++;
     } else {
       layerManager.close(this);

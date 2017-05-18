@@ -1,43 +1,12 @@
 {
   "playerSpawns": [
-    "4,1",
+    "1,2",
     "3,2",
-    "5,2",
-    "4,3"
+    "2,3",
+    "2,1"
   ],
-  "enemies": {
-    "9,12": {
-      "type": "BasicShip",
-      "name": "adder",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "maxHp": 50,
-        "hp": 50,
-        "moveDistance": 3
-      },
-      "cockpit": {
-        "pilots": [
-          {
-            "type": "Villain",
-            "name": "ryan"
-          }
-        ]
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "8,12": {
+  "ships": {
+    "1,11": {
       "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
@@ -60,7 +29,7 @@
         ]
       }
     },
-    "9,11": {
+    "3,12": {
       "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
@@ -83,7 +52,7 @@
         ]
       }
     },
-    "2,12": {
+    "5,14": {
       "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
@@ -106,7 +75,7 @@
         ]
       }
     },
-    "4,10": {
+    "6,5": {
       "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
@@ -129,53 +98,7 @@
         ]
       }
     },
-    "6,8": {
-      "type": "BasicShip",
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "8,6": {
-      "type": "BasicShip",
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "10,4": {
+    "14,10": {
       "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {

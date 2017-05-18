@@ -14,7 +14,7 @@
       "cockpit": {
         "pilots": [
           {
-            "type": "Hero",
+            "type": "Pilot",
             "name": "jingyu"
           }
         ]
@@ -76,7 +76,7 @@
       "cockpit": {
         "pilots": [
           {
-            "type": "Hero",
+            "type": "Pilot",
             "name": "ben"
           }
         ]
@@ -136,7 +136,7 @@
       "cockpit": {
         "pilots": [
           {
-            "type": "Hero",
+            "type": "Pilot",
             "name": "andrew"
           }
         ]
@@ -183,7 +183,7 @@
       "cockpit": {
         "pilots": [
           {
-            "type": "Hero",
+            "type": "Pilot",
             "name": "kevin"
           }
         ]

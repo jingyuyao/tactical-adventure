@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.jingyuyao.tactical.data.TextLoader;
-import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.person.Pilot;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -24,7 +24,7 @@ class ShipCockpitPanel extends VisTable {
     clearChildren();
     addText(UIBundle.PILOT_NAME_HEADER);
     row();
-    for (Person pilot : ship.getPilots()) {
+    for (Pilot pilot : ship.getPilots()) {
       addText(pilot.getName());
       row();
     }

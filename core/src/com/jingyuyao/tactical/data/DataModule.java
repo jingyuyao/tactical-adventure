@@ -16,14 +16,12 @@ import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.person.Hero;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.person.Villain;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.BasicShip;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
 import com.jingyuyao.tactical.model.ship.PassiveAutoPilot;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Singleton;
 
@@ -42,12 +40,7 @@ public class DataModule extends AbstractModule {
     builder.setPrettyPrinting();
     builder.enableComplexMapKeySerialization();
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
-
-    builder.registerTypeAdapterFactory(
-        RuntimeTypeAdapterFactory
-            .of(Person.class)
-            .registerSubtype(Hero.class)
-            .registerSubtype(Villain.class));
+    builder.registerTypeAdapter(Turn.class, new TurnAdapter());
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
