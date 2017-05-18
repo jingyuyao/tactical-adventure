@@ -18,13 +18,13 @@ import javax.inject.Singleton;
 
 // TODO: test me
 @Singleton
-class LevelMapManager {
+class LevelMapLoader {
 
   private final DataConfig dataConfig;
   private final AssetManager assetManager;
 
   @Inject
-  LevelMapManager(DataConfig dataConfig, AssetManager assetManager) {
+  LevelMapLoader(DataConfig dataConfig, AssetManager assetManager) {
     this.dataConfig = dataConfig;
     this.assetManager = assetManager;
   }

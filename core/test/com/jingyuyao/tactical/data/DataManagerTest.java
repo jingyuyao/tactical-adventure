@@ -40,7 +40,7 @@ public class DataManagerTest {
   @Mock
   private LevelInitLoader levelInitLoader;
   @Mock
-  private LevelMapManager levelMapManager;
+  private LevelMapLoader levelMapLoader;
   @Mock
   private ScriptLoader scriptLoader;
   @Mock
@@ -74,7 +74,7 @@ public class DataManagerTest {
   public void setUp() {
     dataManager =
         new DataManager(
-            gameSaveManager, levelProgressManager, levelInitLoader, levelMapManager, scriptLoader);
+            gameSaveManager, levelProgressManager, levelInitLoader, levelMapLoader, scriptLoader);
   }
 
   @Test
@@ -124,7 +124,7 @@ public class DataManagerTest {
     when(gameSaveManager.load()).thenReturn(gameSave);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
-    when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
+    when(levelMapLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(levelProgress.getActiveShips()).thenReturn(shipMap);
     when(levelProgress.getTurn()).thenReturn(turn);
     when(scriptLoader.load(2)).thenReturn(script);
@@ -147,7 +147,7 @@ public class DataManagerTest {
     when(gameSave.getPlayers()).thenReturn(ImmutableList.of(player1, player2));
     when(levelInit.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelInit.getEnemies()).thenReturn(ImmutableMap.of(E1, enemy1));
-    when(levelMapManager.load(2, tiledMapRenderer)).thenReturn(terrainMap);
+    when(levelMapLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(scriptLoader.load(2)).thenReturn(script);
 
     LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);

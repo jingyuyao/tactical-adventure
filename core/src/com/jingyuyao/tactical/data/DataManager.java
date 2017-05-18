@@ -18,7 +18,7 @@ public class DataManager {
   private final GameSaveManager gameSaveManager;
   private final LevelProgressManager levelProgressManager;
   private final LevelInitLoader levelInitLoader;
-  private final LevelMapManager levelMapManager;
+  private final LevelMapLoader levelMapLoader;
   private final ScriptLoader scriptLoader;
 
   @Inject
@@ -26,12 +26,12 @@ public class DataManager {
       GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
       LevelInitLoader levelInitLoader,
-      LevelMapManager levelMapManager,
+      LevelMapLoader levelMapLoader,
       ScriptLoader scriptLoader) {
     this.gameSaveManager = gameSaveManager;
     this.levelProgressManager = levelProgressManager;
     this.levelInitLoader = levelInitLoader;
-    this.levelMapManager = levelMapManager;
+    this.levelMapLoader = levelMapLoader;
     this.scriptLoader = scriptLoader;
   }
 
@@ -86,7 +86,7 @@ public class DataManager {
       levelProgressManager.save(levelProgress);
     }
 
-    Map<Coordinate, Terrain> terrainMap = levelMapManager.load(level, tiledMapRenderer);
+    Map<Coordinate, Terrain> terrainMap = levelMapLoader.load(level, tiledMapRenderer);
     Map<Coordinate, Ship> shipMap = levelProgress.getActiveShips();
     Turn turn = levelProgress.getTurn();
     return new LoadedLevel(terrainMap, shipMap, turn, scriptLoader.load(level));
