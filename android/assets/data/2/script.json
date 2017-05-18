@@ -1,5 +1,6 @@
 {
-  "levelTriggers": {
-    "8-START": "WON"
-  }
+  "turnTriggers": {
+    "15-START": "WON"
+  },
+  "keepAlive": []
 }

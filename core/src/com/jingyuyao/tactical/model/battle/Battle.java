@@ -30,7 +30,7 @@ public class Battle {
     return target;
   }
 
-  public ImmutableList<Person> getDeath() {
+  public ImmutableList<Person> getDeaths() {
     return ImmutableList.copyOf(death);
   }
 

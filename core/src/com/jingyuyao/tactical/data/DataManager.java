@@ -12,10 +12,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * Public api of all game data related functions.
+ */
 @Singleton
 public class DataManager {
 
-  private final GameSaveManager gameSaveManager;
+  private final GameDataManager gameDataManager;
   private final LevelProgressManager levelProgressManager;
   private final LevelDataLoader levelDataLoader;
   private final LevelTerrainsLoader levelTerrainsLoader;
@@ -23,20 +26,20 @@ public class DataManager {
 
   @Inject
   DataManager(
-      GameSaveManager gameSaveManager,
+      GameDataManager gameDataManager,
       LevelProgressManager levelProgressManager,
       LevelDataLoader levelDataLoader,
       LevelTerrainsLoader levelTerrainsLoader,
       ScriptLoader scriptLoader) {
-    this.gameSaveManager = gameSaveManager;
+    this.gameDataManager = gameDataManager;
     this.levelProgressManager = levelProgressManager;
     this.levelDataLoader = levelDataLoader;
     this.levelTerrainsLoader = levelTerrainsLoader;
     this.scriptLoader = scriptLoader;
   }
 
-  public GameSave loadCurrentSave() {
-    return gameSaveManager.load();
+  public GameData loadCurrentSave() {
+    return gameDataManager.loadData();
   }
 
   public Optional<LevelProgress> loadCurrentProgress() {
@@ -59,21 +62,21 @@ public class DataManager {
     LevelProgress levelProgress = levelProgressOptional.get();
     levelProgress.update(world, worldState);
 
-    GameSave gameSave = gameSaveManager.load();
-    gameSave.setCurrentLevel(level);
-    gameSave.update(levelProgress);
-    gameSaveManager.save(gameSave);
+    GameData gameData = gameDataManager.loadData();
+    gameData.setCurrentLevel(level);
+    gameData.update(levelProgress);
+    gameDataManager.saveData(gameData);
     levelProgressManager.removeSave();
   }
 
   public void freshStart() {
     levelProgressManager.removeSave();
-    gameSaveManager.removeSave();
+    gameDataManager.removeSavedData();
   }
 
   public LoadedLevel loadCurrentLevel(OrthogonalTiledMapRenderer tiledMapRenderer) {
-    GameSave gameSave = gameSaveManager.load();
-    int level = gameSave.getCurrentLevel();
+    GameData gameData = gameDataManager.loadData();
+    int level = gameData.getCurrentLevel();
 
     LevelProgress levelProgress;
     Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
@@ -81,13 +84,13 @@ public class DataManager {
     if (levelProgressOptional.isPresent()) {
       levelProgress = levelProgressOptional.get();
     } else {
-      LevelInit levelInit = levelDataLoader.loadInit(level);
-      levelProgress = new LevelProgress(gameSave, levelInit);
+      LevelData levelData = levelDataLoader.loadInit(level);
+      levelProgress = new LevelProgress(gameData, levelData);
       levelProgressManager.save(levelProgress);
     }
 
     Map<Coordinate, Terrain> terrainMap = levelTerrainsLoader.load(level, tiledMapRenderer);
-    Map<Coordinate, Ship> shipMap = levelProgress.getActiveShips();
+    Map<Coordinate, Ship> shipMap = levelProgress.getShips();
     Turn turn = levelProgress.getTurn();
     return new LoadedLevel(terrainMap, shipMap, turn, scriptLoader.load(level));
   }

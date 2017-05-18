@@ -9,10 +9,11 @@ import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameSave;
+import com.jingyuyao.tactical.data.GameData;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
@@ -67,15 +68,25 @@ public class StartMenu extends AbstractMenu {
     Optional<LevelProgress> levelProgressOptional = dataManager.loadCurrentProgress();
     if (levelProgressOptional.isPresent()) {
       LevelProgress levelProgress = levelProgressOptional.get();
-      int activePlayers = levelProgress.getActivePlayers().size();
-      int activeEnemies = levelProgress.getActiveEnemies().size();
+      int activePlayers = 0;
+      int activeEnemies = 0;
+      for (Ship ship : levelProgress.getShips().values()) {
+        switch (ship.getAllegiance()) {
+          case PLAYER:
+            activePlayers++;
+            break;
+          case ENEMY:
+            activeEnemies++;
+            break;
+        }
+      }
       progress = textLoader.get(MenuBundle.HAS_PROGRESS.format(activePlayers, activeEnemies));
     } else {
       progress = textLoader.get(MenuBundle.NO_PROGRESS);
     }
 
-    GameSave gameSave = dataManager.loadCurrentSave();
-    int level = gameSave.getCurrentLevel();
+    GameData gameData = dataManager.loadCurrentSave();
+    int level = gameData.getCurrentLevel();
     return textLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
 

@@ -24,19 +24,13 @@ class LevelDataLoader {
     return fileHandle.exists();
   }
 
-  LevelInit loadInit(int level) {
+  LevelData loadInit(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelInitFileName(level));
-    if (fileHandle.exists()) {
-      return myGson.fromJson(fileHandle.readString(), LevelInit.class);
-    }
-    throw new IllegalArgumentException("init file for " + level + " does not exist");
+    return myGson.fromJson(fileHandle.readString(), LevelData.class);
   }
 
   LevelScript loadScript(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelScriptFileName(level));
-    if (fileHandle.exists()) {
-      return myGson.fromJson(fileHandle.readString(), LevelScript.class);
-    }
-    throw new IllegalArgumentException("script file for " + level + " does not exist");
+    return myGson.fromJson(fileHandle.readString(), LevelScript.class);
   }
 }

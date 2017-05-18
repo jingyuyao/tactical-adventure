@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameSave;
+import com.jingyuyao.tactical.data.GameData;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelLost;
@@ -68,8 +68,8 @@ public class GameState {
 
   @Subscribe
   void levelWon(LevelWon levelWon) {
-    GameSave gameSave = dataManager.loadCurrentSave();
-    int nextLevel = gameSave.getCurrentLevel() + 1;
+    GameData gameData = dataManager.loadCurrentSave();
+    int nextLevel = gameData.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
       dataManager.changeLevel(nextLevel, world, worldState);
     } else {

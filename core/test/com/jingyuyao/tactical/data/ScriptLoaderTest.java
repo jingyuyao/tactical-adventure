@@ -3,137 +3,116 @@ package com.jingyuyao.tactical.data;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.Files;
 import com.google.common.base.Optional;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Guice;
-import com.jingyuyao.tactical.MockGameModule;
+import com.google.common.collect.ListMultimap;
+import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.LevelTrigger;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.state.Turn;
-import com.jingyuyao.tactical.model.state.Turn.TurnStage;
-import java.util.List;
-import javax.inject.Inject;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-/**
- * All tests require working directory to be in android/assets
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ScriptLoaderTest {
-
-  private static final ResourceKeyBundle LEVEL_DIALOGUE = new ResourceKeyBundle(
-      "i18n/TestLevelDialogue");
-  private static final ResourceKeyBundle DEATH_DIALOGUE = new ResourceKeyBundle(
-      "i18n/TestDeathDialogue");
-  private static final ResourceKeyBundle NAME = new ResourceKeyBundle("i18n/TestShipName");
 
   @Mock
   private DataConfig dataConfig;
   @Mock
+  private DialogueLoader dialogueLoader;
+  @Mock
   private LevelDataLoader levelDataLoader;
   @Mock
+  private GameDataManager gameDataManager;
+  @Mock
   private LevelScript levelScript;
-
-  @Inject
-  private Files files;
+  @Mock
+  private GameScript gameScript;
+  @Mock
+  private Dialogue dialogue1;
+  @Mock
+  private Dialogue dialogue2;
+  @Mock
+  private Dialogue dialogue3;
+  @Mock
+  private Dialogue dialogue4;
+  @Mock
+  private Turn start1;
+  @Mock
+  private Turn end1;
+  @Mock
+  private Turn start3;
 
   private ScriptLoader scriptLoader;
 
   @Before
   public void setUp() {
-    Guice.createInjector(new MockGameModule()).injectMembers(this);
-    scriptLoader = new ScriptLoader(dataConfig, files, levelDataLoader);
+    scriptLoader = new ScriptLoader(dataConfig, dialogueLoader, levelDataLoader, gameDataManager);
+  }
 
-    // each test loads the same script but assets different aspects of it
+  @Test
+  public void load() {
+    ResourceKeyBundle bundle = new ResourceKeyBundle("test/test");
+    ResourceKey name1 = bundle.get("name1");
+    ResourceKey name2 = bundle.get("name2");
+    ResourceKey name3 = bundle.get("name3");
+    ListMultimap<Turn, Dialogue> levelDialogues = ArrayListMultimap.create();
+    levelDialogues.put(start1, dialogue1);
+    levelDialogues.put(end1, dialogue2);
+    ListMultimap<ResourceKey, Dialogue> deathDialogues = ArrayListMultimap.create();
+    deathDialogues.put(name1, dialogue3);
+    deathDialogues.put(name3, dialogue4);
+    Map<Turn, LevelTrigger> levelTriggers =
+        ImmutableMap.of(start1, LevelTrigger.WON, start3, LevelTrigger.LOST);
+
+    when(gameDataManager.loadScript()).thenReturn(gameScript);
+    when(gameScript.getKeepAlive()).thenReturn(ImmutableList.of("name1"));
     when(levelDataLoader.loadScript(2)).thenReturn(levelScript);
-    when(levelScript.getLevelTriggers())
-        .thenReturn(ImmutableMap.of(
-            new Turn(1, TurnStage.START), LevelTrigger.WON,
-            new Turn(5, TurnStage.END), LevelTrigger.LOST));
-    when(dataConfig.getLevelDialogueBundle(2)).thenReturn(LEVEL_DIALOGUE);
-    when(dataConfig.getDeathDialogueBundle()).thenReturn(DEATH_DIALOGUE);
-    when(dataConfig.getPersonNameBundle()).thenReturn(NAME);
-  }
+    when(levelScript.getTurnTriggers()).thenReturn(levelTriggers);
+    when(levelScript.getKeepAlive()).thenReturn(ImmutableList.of("name2"));
+    when(dialogueLoader.getLevelDialogues(2)).thenReturn(levelDialogues);
+    when(dialogueLoader.getDeathDialogues()).thenReturn(deathDialogues);
+    when(dataConfig.getPersonNameBundle()).thenReturn(bundle);
 
-  @Test
-  public void load_level_dialogues() {
     Script script = scriptLoader.load(2);
 
-    Optional<ScriptActions> start1Script = script.turnScript(new Turn(1, TurnStage.START));
-    assertThat(start1Script).isPresent();
-    List<Dialogue> start1Dialogues = start1Script.get().getDialogues();
-    assertThat(start1Dialogues).hasSize(2);
-    assertThat(start1Dialogues.get(0).getName()).isEqualTo(NAME.get("first"));
-    assertThat(start1Dialogues.get(0).getText())
-        .isEqualTo(LEVEL_DIALOGUE.get("1-START-first-0"));
-    assertThat(start1Dialogues.get(1).getName()).isEqualTo(NAME.get("second"));
-    assertThat(start1Dialogues.get(1).getText())
-        .isEqualTo(LEVEL_DIALOGUE.get("1-START-second-1"));
+    Optional<ScriptActions> start1Actions = script.turnScript(start1);
+    assertThat(start1Actions).isPresent();
+    assertThat(start1Actions.get().getDialogues()).containsExactly(dialogue1);
+    assertThat(start1Actions.get().getLevelTrigger()).isSameAs(LevelTrigger.WON);
 
-    Optional<ScriptActions> end1Script = script.turnScript(new Turn(1, TurnStage.END));
-    assertThat(end1Script).isPresent();
-    List<Dialogue> end1Dialogues = end1Script.get().getDialogues();
-    assertThat(end1Dialogues).hasSize(2);
-    assertThat(end1Dialogues.get(0).getName()).isEqualTo(NAME.get("third"));
-    assertThat(end1Dialogues.get(0).getText())
-        .isEqualTo(LEVEL_DIALOGUE.get("1-END-third-0"));
-    assertThat(end1Dialogues.get(1).getName()).isEqualTo(NAME.get("fourth"));
-    assertThat(end1Dialogues.get(1).getText())
-        .isEqualTo(LEVEL_DIALOGUE.get("1-END-fourth-1"));
+    Optional<ScriptActions> end1Actions = script.turnScript(end1);
+    assertThat(end1Actions).isPresent();
+    assertThat(end1Actions.get().getDialogues()).containsExactly(dialogue2);
+    assertThat(end1Actions.get().getLevelTrigger()).isSameAs(LevelTrigger.NONE);
 
-    Optional<ScriptActions> start2Script = script.turnScript(new Turn(2, TurnStage.START));
-    assertThat(start2Script).isAbsent();
+    Optional<ScriptActions> start3Actions = script.turnScript(start3);
+    assertThat(start3Actions).isPresent();
+    assertThat(start3Actions.get().getDialogues()).isEmpty();
+    assertThat(start3Actions.get().getLevelTrigger()).isSameAs(LevelTrigger.LOST);
 
-    Optional<ScriptActions> start3Script = script.turnScript(new Turn(3, TurnStage.START));
-    assertThat(start3Script).isPresent();
-    List<Dialogue> start3Dialogues = start3Script.get().getDialogues();
-    assertThat(start3Dialogues).hasSize(1);
-    assertThat(start3Dialogues.get(0).getName()).isEqualTo(NAME.get("fifth"));
-    assertThat(start3Dialogues.get(0).getText())
-        .isEqualTo(LEVEL_DIALOGUE.get("3-START-fifth-0"));
+    Optional<ScriptActions> name1Actions = script.deathScript(name1);
+    assertThat(name1Actions).isPresent();
+    assertThat(name1Actions.get().getDialogues()).containsExactly(dialogue3);
+    assertThat(name1Actions.get().getLevelTrigger()).isSameAs(LevelTrigger.LOST);
 
-    assertThat(script.turnScript(new Turn(9001, TurnStage.START))).isAbsent();
-  }
+    Optional<ScriptActions> name2Actions = script.deathScript(name2);
+    assertThat(name2Actions).isPresent();
+    assertThat(name2Actions.get().getDialogues()).isEmpty();
+    assertThat(name2Actions.get().getLevelTrigger()).isSameAs(LevelTrigger.LOST);
 
-  @Test
-  public void load_level_triggers() {
-    Script script = scriptLoader.load(2);
-
-    Optional<ScriptActions> start1Script = script.turnScript(new Turn(1, TurnStage.START));
-    assertThat(start1Script).isPresent();
-    assertThat(start1Script.get().getLevelTrigger()).isSameAs(LevelTrigger.WON);
-
-    Optional<ScriptActions> end5Script = script.turnScript(new Turn(5, TurnStage.END));
-    assertThat(end5Script).isPresent();
-    assertThat(end5Script.get().getLevelTrigger()).isSameAs(LevelTrigger.LOST);
-  }
-
-  @Test
-  public void load_death_dialogues() {
-    Script script = scriptLoader.load(2);
-
-    Optional<ScriptActions> dead = script.deathScript(NAME.get("dead"));
-    assertThat(dead).isPresent();
-    List<Dialogue> deadDialogues = dead.get().getDialogues();
-    assertThat(deadDialogues).hasSize(1);
-    assertThat(deadDialogues.get(0).getName()).isEqualTo(NAME.get("dead"));
-    assertThat(deadDialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead"));
-
-    Optional<ScriptActions> dead2 = script.deathScript(NAME.get("dead2"));
-    assertThat(dead2).isPresent();
-    List<Dialogue> dead2Dialogues = dead2.get().getDialogues();
-    assertThat(dead2Dialogues).hasSize(1);
-    assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
-    assertThat(dead2Dialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
-
-    assertThat(script.deathScript(NAME.get("never-gonna-give-you-up"))).isAbsent();
+    Optional<ScriptActions> name3Actions = script.deathScript(name3);
+    assertThat(name3Actions).isPresent();
+    assertThat(name3Actions.get().getDialogues()).containsExactly(dialogue4);
+    assertThat(name3Actions.get().getLevelTrigger()).isSameAs(LevelTrigger.NONE);
   }
 }

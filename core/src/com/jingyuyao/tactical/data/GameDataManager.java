@@ -7,51 +7,56 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class GameSaveManager {
+class GameDataManager {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
   private final Files files;
 
   @Inject
-  GameSaveManager(DataConfig dataConfig, MyGson myGson, Files files) {
+  GameDataManager(DataConfig dataConfig, MyGson myGson, Files files) {
     this.dataConfig = dataConfig;
     this.myGson = myGson;
     this.files = files;
   }
 
-  GameSave load() {
-    Optional<GameSave> main = load(dataConfig.getMainSaveFileName(), false);
+  GameData loadData() {
+    Optional<GameData> main = loadData(dataConfig.getMainSaveFileName(), false);
     if (main.isPresent()) {
       return main.get();
     }
 
-    Optional<GameSave> start = load(dataConfig.getInitFileName(), true);
+    Optional<GameData> start = loadData(dataConfig.getInitFileName(), true);
     if (start.isPresent()) {
-      GameSave startSave = start.get();
-      save(startSave);
+      GameData startSave = start.get();
+      saveData(startSave);
       return startSave;
     }
 
-    throw new IllegalStateException("Could not find a suitable save file!");
+    throw new IllegalStateException("Could not find main init or save file!");
   }
 
-  void save(GameSave gameSave) {
+  GameScript loadScript() {
+    FileHandle fileHandle = files.internal(dataConfig.getScriptFileName());
+    return myGson.fromJson(fileHandle.readString(), GameScript.class);
+  }
+
+  void saveData(GameData gameData) {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
-    fileHandle.writeString(myGson.toJson(gameSave), false);
+    fileHandle.writeString(myGson.toJson(gameData), false);
   }
 
-  void removeSave() {
+  void removeSavedData() {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
     if (fileHandle.exists()) {
       fileHandle.delete();
     }
   }
 
-  private Optional<GameSave> load(String fileName, boolean internal) {
+  private Optional<GameData> loadData(String fileName, boolean internal) {
     FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(myGson.fromJson(fileHandle.readString(), GameSave.class));
+      return Optional.of(myGson.fromJson(fileHandle.readString(), GameData.class));
     }
     return Optional.absent();
   }

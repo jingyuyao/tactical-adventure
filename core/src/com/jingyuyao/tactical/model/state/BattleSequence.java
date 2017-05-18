@@ -28,12 +28,12 @@ class BattleSequence {
     modelBus.post(new StartBattle(battle, new Promise(new Runnable() {
       @Override
       public void run() {
-        executeActionsAsync(battle.getDeath(), 0, done);
+        processDeaths(battle.getDeaths(), 0, done);
       }
     })));
   }
 
-  private void executeActionsAsync(final List<Person> death, final int index, final Runnable done) {
+  private void processDeaths(final List<Person> death, final int index, final Runnable done) {
     if (index < death.size()) {
       ResourceKey name = death.get(index).getName();
       Optional<ScriptActions> actionsOpt = worldState.getScript().deathScript(name);
@@ -41,11 +41,11 @@ class BattleSequence {
         actionsOpt.get().execute(modelBus, new Runnable() {
           @Override
           public void run() {
-            executeActionsAsync(death, index + 1, done);
+            processDeaths(death, index + 1, done);
           }
         });
       } else {
-        executeActionsAsync(death, index + 1, done);
+        processDeaths(death, index + 1, done);
       }
     } else {
       done.run();

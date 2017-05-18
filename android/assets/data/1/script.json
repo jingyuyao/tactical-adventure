@@ -1,5 +1,8 @@
 {
-  "levelTriggers": {
+  "turnTriggers": {
     "10-END": "LOST"
-  }
+  },
+  "keepAlive": [
+    "andrew"
+  ]
 }
