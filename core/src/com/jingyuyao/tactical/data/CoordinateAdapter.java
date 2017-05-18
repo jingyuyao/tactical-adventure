@@ -1,13 +1,19 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.io.IOException;
+import java.util.List;
 
 class CoordinateAdapter extends TypeAdapter<Coordinate> {
+
+  private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
+  private static final Joiner JOINER = Joiner.on(',');
 
   @Override
   public Coordinate read(JsonReader in) throws IOException {
@@ -15,14 +21,9 @@ class CoordinateAdapter extends TypeAdapter<Coordinate> {
       in.nextNull();
       return null;
     }
-    String xy = in.nextString();
-    if (xy.length() < 3) {
-      throw new IOException(
-          "Coordinate in JSON should be at least three characters long i.e \"1,2\"");
-    }
-    String[] parts = xy.split(",");
-    int x = Integer.parseInt(parts[0]);
-    int y = Integer.parseInt(parts[1]);
+    List<String> xy = SPLITTER.splitToList(in.nextString());
+    int x = Integer.parseInt(xy.get(0));
+    int y = Integer.parseInt(xy.get(1));
     return new Coordinate(x, y);
   }
 
@@ -32,7 +33,6 @@ class CoordinateAdapter extends TypeAdapter<Coordinate> {
       out.nullValue();
       return;
     }
-    String xy = value.getX() + "," + value.getY();
-    out.value(xy);
+    out.value(JOINER.join(value.getX(), value.getY()));
   }
 }
