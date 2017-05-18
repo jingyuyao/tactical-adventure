@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.person.Pilot;
+import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class Battle {
   private final Cell attackerCell;
   private final Weapon weapon;
   private final Target target;
-  private final List<Pilot> death;
+  private final List<Person> death;
 
   public Battle(Cell attackerCell, Weapon weapon, Target target) {
     this.attackerCell = attackerCell;
@@ -30,7 +30,7 @@ public class Battle {
     return target;
   }
 
-  public ImmutableList<Pilot> getDeath() {
+  public ImmutableList<Person> getDeath() {
     return ImmutableList.copyOf(death);
   }
 
@@ -55,7 +55,7 @@ public class Battle {
     for (Ship ship : cell.ship().asSet()) {
       if (ship.getHp() == 0) {
         cell.removeShip();
-        death.addAll(ship.getPilots());
+        death.addAll(ship.getCrew());
       }
     }
   }

@@ -8,7 +8,8 @@ class UIBundle {
   private static final ResourceKeyBundle BUNDLE = new ResourceKeyBundle("i18n/view/ui/UI");
   static final ResourceKey CLOSE_BTN = BUNDLE.get("closeBtn");
   static final ResourceKey NEXT_BTN = BUNDLE.get("nextBtn");
-  static final ResourceKey PILOT_NAME_HEADER = BUNDLE.get("pilotNameHeader");
+  static final ResourceKey PERSON_NAME_HEADER = BUNDLE.get("personNameHeader");
+  static final ResourceKey PERSON_ROLE_HEADER = BUNDLE.get("personRoleHeader");
   static final ResourceKey ITEM_NAME_HEADER = BUNDLE.get("itemNameHeader");
   static final ResourceKey ITEM_DURABILITY_HEADER = BUNDLE.get("itemDurabilityHeader");
   static final ResourceKey ITEM_DESCRIPTION_HEADER = BUNDLE.get("itemDescriptionHeader");

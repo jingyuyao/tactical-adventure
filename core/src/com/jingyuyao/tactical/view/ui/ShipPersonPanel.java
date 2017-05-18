@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.view.ui;
 
 import com.jingyuyao.tactical.data.TextLoader;
-import com.jingyuyao.tactical.model.person.Pilot;
+import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -10,22 +10,24 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class ShipCockpitPanel extends VisTable {
+class ShipPersonPanel extends VisTable {
 
   private final TextLoader textLoader;
 
   @Inject
-  ShipCockpitPanel(TextLoader textLoader) {
+  ShipPersonPanel(TextLoader textLoader) {
     this.textLoader = textLoader;
     defaults().top().left().pad(0, 0, 10, 10);
   }
 
   void display(Ship ship) {
     clearChildren();
-    addText(UIBundle.PILOT_NAME_HEADER);
+    addText(UIBundle.PERSON_NAME_HEADER);
+    addText(UIBundle.PERSON_ROLE_HEADER);
     row();
-    for (Pilot pilot : ship.getPilots()) {
-      addText(pilot.getName());
+    for (Person person : ship.getCrew()) {
+      addText(person.getName());
+      addText(person.getRole());
       row();
     }
   }

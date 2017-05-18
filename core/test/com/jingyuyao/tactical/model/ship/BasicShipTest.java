@@ -118,7 +118,7 @@ public class BasicShipTest {
   public void get_pilots() {
     when(cockpit.getPilots()).thenReturn(ImmutableList.of(pilot));
 
-    assertThat(ship.getPilots()).containsExactly(pilot);
+    assertThat(ship.getCrew()).containsExactly(pilot);
   }
 
   @Test
