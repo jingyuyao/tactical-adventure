@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import org.junit.Before;
@@ -21,9 +22,9 @@ public class GameDataTest {
   @Mock
   private LevelProgress levelProgress;
   @Mock
-  private Ship player1;
+  private Ship ship1;
   @Mock
-  private Ship player2;
+  private Ship ship2;
 
   private GameData gameData;
 
@@ -34,16 +35,17 @@ public class GameDataTest {
 
   @Test
   public void update() {
-    when(levelProgress.getReservedPlayerShips()).thenReturn(ImmutableList.of(player1));
-    when(levelProgress.getPlayerShips()).thenReturn(ImmutableMap.of(P2, player2));
+    when(levelProgress.getReservedPlayerShips()).thenReturn(ImmutableList.of(ship1));
+    when(levelProgress.getShips()).thenReturn(ImmutableMap.of(P2, ship2));
+    when(ship2.getAllegiance()).thenReturn(Allegiance.PLAYER);
 
     gameData.update(levelProgress);
 
-    assertThat(gameData.getPlayerShips()).containsExactly(player2, player1).inOrder();
+    assertThat(gameData.getPlayerShips()).containsExactly(ship1, ship2).inOrder();
 
     // tests the previous changes are cleared
     gameData.update(levelProgress);
 
-    assertThat(gameData.getPlayerShips()).containsExactly(player2, player1).inOrder();
+    assertThat(gameData.getPlayerShips()).containsExactly(ship1, ship2).inOrder();
   }
 }

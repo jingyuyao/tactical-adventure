@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.data;
 
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,11 @@ public class GameData {
 
   void update(LevelProgress levelProgress) {
     playerShips.clear();
-    playerShips.addAll(levelProgress.getPlayerShips().values());
     playerShips.addAll(levelProgress.getReservedPlayerShips());
+    for (Ship ship : levelProgress.getShips().values()) {
+      if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+        playerShips.add(ship);
+      }
+    }
   }
 }

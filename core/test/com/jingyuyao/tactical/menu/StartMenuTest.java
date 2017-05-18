@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameData;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.TextLoader;
+import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -46,7 +47,9 @@ public class StartMenuTest {
   @Mock
   private LevelProgress levelProgress;
   @Mock
-  private Ship player;
+  private Ship ship1;
+  @Mock
+  private Ship ship2;
   @Inject
   private GL20 gl20;
   @Inject
@@ -69,12 +72,15 @@ public class StartMenuTest {
   public void on_show() {
     when(dataManager.loadCurrentSave()).thenReturn(gameData);
     when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
-    when(levelProgress.getPlayerShips())
-        .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
-    when(levelProgress.getEnemyShips()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
+    when(levelProgress.getShips())
+        .thenReturn(ImmutableMap.of(
+            new Coordinate(0, 0), ship1,
+            new Coordinate(0, 1), ship2));
+    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(gameData.getCurrentLevel()).thenReturn(2);
-    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
-    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
+    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
+    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
 
     startMenu.show();
 
@@ -97,12 +103,15 @@ public class StartMenuTest {
   public void reset_button() {
     when(dataManager.loadCurrentSave()).thenReturn(gameData);
     when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
-    when(levelProgress.getPlayerShips())
-        .thenReturn(ImmutableMap.of(new Coordinate(0, 0), player));
-    when(levelProgress.getEnemyShips()).thenReturn(ImmutableMap.<Coordinate, Ship>of());
+    when(levelProgress.getShips())
+        .thenReturn(ImmutableMap.of(
+            new Coordinate(0, 0), ship1,
+            new Coordinate(0, 1), ship2));
+    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(gameData.getCurrentLevel()).thenReturn(2);
-    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 0))).thenReturn("1 p 0 e");
-    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 0 e"))).thenReturn("success");
+    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
+    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
     VisTextButton button = startMenu.getRoot().findActor("resetButton");
     assertThat(button.getText().toString()).isEqualTo(RESET_BTN);
 

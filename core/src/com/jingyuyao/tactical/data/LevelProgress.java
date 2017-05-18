@@ -18,8 +18,7 @@ import java.util.Map;
 public class LevelProgress {
 
   private List<Ship> reservedPlayerShips = new ArrayList<>();
-  private Map<Coordinate, Ship> playerShips = new HashMap<>();
-  private Map<Coordinate, Ship> enemyShips = new HashMap<>();
+  private Map<Coordinate, Ship> ships = new HashMap<>();
   private Turn turn = new Turn();
 
   LevelProgress() {
@@ -33,31 +32,20 @@ public class LevelProgress {
     for (int i = 0; i < playerShips.size(); i++) {
       Ship player = playerShips.get(i);
       if (i < playerSpawns.size()) {
-        this.playerShips.put(playerSpawns.get(i), player);
+        ships.put(playerSpawns.get(i), player);
       } else {
         reservedPlayerShips.add(player);
       }
     }
-    enemyShips.putAll(levelData.getShips());
+    ships.putAll(levelData.getShips());
   }
 
   public List<Ship> getReservedPlayerShips() {
     return reservedPlayerShips;
   }
 
-  public Map<Coordinate, Ship> getPlayerShips() {
-    return playerShips;
-  }
-
-  public Map<Coordinate, Ship> getEnemyShips() {
-    return enemyShips;
-  }
-
   public Map<Coordinate, Ship> getShips() {
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    shipMap.putAll(playerShips);
-    shipMap.putAll(enemyShips);
-    return shipMap;
+    return ships;
   }
 
   public Turn getTurn() {
@@ -65,19 +53,10 @@ public class LevelProgress {
   }
 
   void update(World world, WorldState worldState) {
-    playerShips.clear();
-    enemyShips.clear();
+    ships.clear();
     for (Cell cell : world.getShipSnapshot()) {
-      Coordinate coordinate = cell.getCoordinate();
       for (Ship ship : cell.ship().asSet()) {
-        switch (ship.getAllegiance()) {
-          case PLAYER:
-            playerShips.put(coordinate, ship);
-            break;
-          case ENEMY:
-            enemyShips.put(coordinate, ship);
-            break;
-        }
+        ships.put(cell.getCoordinate(), ship);
       }
     }
     turn = worldState.getTurn();
