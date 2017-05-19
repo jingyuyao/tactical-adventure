@@ -66,12 +66,16 @@ public class WorldTest {
     terrainMap.put(COORDINATE2, terrain2);
     shipMap.put(COORDINATE1, ship1);
     shipMap.put(COORDINATE2, ship2);
-    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
     when(cell1.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
     when(cell2.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
+    when(cell1.getTerrain()).thenReturn(terrain1);
+    when(cell2.getTerrain()).thenReturn(terrain2);
+    when(terrain1.canHold(ship1)).thenReturn(true);
+    when(terrain2.canHold(ship2)).thenReturn(true);
+    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
+    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap);
 
@@ -93,12 +97,16 @@ public class WorldTest {
     terrainMap.put(COORDINATE2, terrain2);
     shipMap.put(COORDINATE1, ship1);
     shipMap.put(COORDINATE2, ship2);
-    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
     when(cell1.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
     when(cell2.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
+    when(cell1.getTerrain()).thenReturn(terrain1);
+    when(cell2.getTerrain()).thenReturn(terrain2);
+    when(terrain1.canHold(ship1)).thenReturn(true);
+    when(terrain2.canHold(ship2)).thenReturn(true);
+    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
+    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap);
     world.reset();
