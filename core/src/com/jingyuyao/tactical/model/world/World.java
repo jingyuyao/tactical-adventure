@@ -54,7 +54,12 @@ public class World {
       if (cell.ship().isPresent()) {
         throw new IllegalArgumentException("Ship occupying same space as another");
       }
-      cell.spawnShip(entry.getValue());
+      Ship ship = entry.getValue();
+      if (cell.getTerrain().canHold(ship)) {
+        cell.spawnShip(ship);
+      } else {
+        throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
+      }
     }
     modelBus.post(new WorldLoaded(this));
   }
