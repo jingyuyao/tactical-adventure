@@ -2,17 +2,18 @@ package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.event.ShowDialogues;
+import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptActions;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -35,6 +36,8 @@ public class EndTurnTest {
   @Mock
   private WorldState worldState;
   @Mock
+  private LevelComplete levelComplete;
+  @Mock
   private StateFactory stateFactory;
   @Mock
   private World world;
@@ -49,7 +52,7 @@ public class EndTurnTest {
   @Mock
   private Script script;
   @Mock
-  private ScriptActions scriptActions;
+  private Dialogue dialogue;
   @Mock
   private Turn turn;
   @Mock
@@ -63,7 +66,7 @@ public class EndTurnTest {
 
   @Before
   public void setUp() {
-    endTurn = new EndTurn(modelBus, worldState, stateFactory, world);
+    endTurn = new EndTurn(modelBus, worldState, levelComplete, stateFactory, world);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -75,11 +78,11 @@ public class EndTurnTest {
   }
 
   @Test
-  public void enter_no_script() {
+  public void enter_no_dialogue() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.<ScriptActions>absent());
+    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.<Turn, Dialogue>of());
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
@@ -89,21 +92,25 @@ public class EndTurnTest {
 
     endTurn.enter();
 
-    verify(modelBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(endTurn);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(Save.class);
-    verify(ship1).setControllable(true);
+    InOrder inOrder = Mockito.inOrder(modelBus, ship1, levelComplete, turn, worldState);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
+    inOrder.verify(levelComplete).check(runnableCaptor.capture());
+    runnableCaptor.getValue().run();
+    inOrder.verify(ship1).setControllable(true);
+    inOrder.verify(turn).advance();
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
+    inOrder.verify(worldState).branchTo(retaliating);
     verify(ship2, never()).setControllable(true);
-    verify(turn).advance();
-    verify(worldState).branchTo(retaliating);
   }
 
   @Test
-  public void enter_has_script() {
+  public void enter_has_dialogue() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.END);
     when(worldState.getScript()).thenReturn(script);
-    when(script.turnScript(turn)).thenReturn(Optional.of(scriptActions));
+    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.of(turn, dialogue));
     when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
@@ -113,10 +120,15 @@ public class EndTurnTest {
 
     endTurn.enter();
 
-    InOrder inOrder = Mockito.inOrder(modelBus, ship1, turn, worldState, scriptActions);
+    InOrder inOrder = Mockito.inOrder(modelBus, ship1, turn, worldState);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
-    inOrder.verify(scriptActions).execute(Mockito.eq(modelBus), runnableCaptor.capture());
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
+    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
+    assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
+    showDialogues.complete();
+    verify(levelComplete).check(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(ship1).setControllable(true);
     verify(ship2, never()).setControllable(true);

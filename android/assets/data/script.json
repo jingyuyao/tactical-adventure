@@ -1,5 +1,10 @@
 {
-  "keepAlive": [
-    "jingyu"
+  "loseConditions": [
+    {
+      "type": "AnyDied",
+      "names": [
+        "jingyu"
+      ]
+    }
   ]
 }

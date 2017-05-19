@@ -1,8 +1,23 @@
 {
-  "turnTriggers": {
-    "10-END": "LOST"
-  },
-  "keepAlive": [
-    "andrew"
+  "loseConditions": [
+    {
+      "type": "AllDied",
+      "names": [
+        "andrew",
+        "ben"
+      ]
+    },
+    {
+      "type": "OnTurn",
+      "turn": "20-END"
+    }
+  ],
+  "winConditions": [
+    {
+      "type": "AnyDied",
+      "names": [
+        "ryan"
+      ]
+    }
   ]
 }

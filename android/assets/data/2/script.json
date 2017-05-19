@@ -1,6 +1,9 @@
 {
-  "turnTriggers": {
-    "15-START": "WON"
-  },
-  "keepAlive": []
+  "loseConditions": [],
+  "winConditions": [
+    {
+      "type": "OnTurn",
+      "turn": "18-START"
+    }
+  ]
 }

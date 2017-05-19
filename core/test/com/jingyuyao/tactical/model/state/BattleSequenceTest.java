@@ -4,15 +4,16 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
+import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptActions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,8 @@ public class BattleSequenceTest {
   @Mock
   private WorldState worldState;
   @Mock
+  private LevelComplete levelComplete;
+  @Mock
   private Script script;
   @Mock
   private Battle battle;
@@ -47,21 +50,19 @@ public class BattleSequenceTest {
   @Mock
   private ResourceKey name3;
   @Mock
-  private ScriptActions actions1;
+  private Dialogue dialogue1;
   @Mock
-  private ScriptActions actions3;
+  private Dialogue dialogue3;
   @Mock
   private Runnable done;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
-  @Captor
-  private ArgumentCaptor<Runnable> runnableCaptor;
 
   private BattleSequence battleSequence;
 
   @Before
   public void setUp() {
-    battleSequence = new BattleSequence(modelBus, worldState);
+    battleSequence = new BattleSequence(modelBus, worldState, levelComplete);
   }
 
   @Test
@@ -71,25 +72,28 @@ public class BattleSequenceTest {
     when(dead1.getName()).thenReturn(name1);
     when(dead2.getName()).thenReturn(name2);
     when(dead3.getName()).thenReturn(name3);
-    when(script.deathScript(name1)).thenReturn(Optional.of(actions1));
-    when(script.deathScript(name2)).thenReturn(Optional.<ScriptActions>absent());
-    when(script.deathScript(name3)).thenReturn(Optional.of(actions3));
+    when(script.getDeathDialogues())
+        .thenReturn(ImmutableListMultimap.of(name1, dialogue1, name3, dialogue3));
 
     battleSequence.start(battle, done);
 
-    InOrder inOrder = Mockito.inOrder(modelBus, actions1, actions3, battle, done);
-    verifyZeroInteractions(done);
-    verifyZeroInteractions(actions1);
-    verifyZeroInteractions(actions3);
+    InOrder inOrder = Mockito.inOrder(modelBus, battle, levelComplete);
+    verifyZeroInteractions(levelComplete);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(StartBattle.class);
     StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
     startBattle.start();
     inOrder.verify(battle).execute();
-    inOrder.verify(actions1).execute(Mockito.eq(modelBus), runnableCaptor.capture());
-    runnableCaptor.getValue().run();
-    inOrder.verify(actions3).execute(Mockito.eq(modelBus), runnableCaptor.capture());
-    runnableCaptor.getValue().run();
-    inOrder.verify(done).run();
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
+    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
+    assertThat(showDialogues.getDialogues()).containsExactly(dialogue1);
+    showDialogues.complete();
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
+    ShowDialogues showDialogues2 = (ShowDialogues) argumentCaptor.getValue();
+    assertThat(showDialogues2.getDialogues()).containsExactly(dialogue3);
+    showDialogues2.complete();
+    inOrder.verify(levelComplete).check(done);
   }
 }

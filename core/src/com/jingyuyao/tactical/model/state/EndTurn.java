@@ -16,8 +16,13 @@ public class EndTurn extends ScriptState {
   private final World world;
 
   @Inject
-  EndTurn(ModelBus modelBus, WorldState worldState, StateFactory stateFactory, World world) {
-    super(modelBus, worldState);
+  EndTurn(
+      ModelBus modelBus,
+      WorldState worldState,
+      LevelComplete levelComplete,
+      StateFactory stateFactory,
+      World world) {
+    super(modelBus, worldState, levelComplete);
     this.stateFactory = stateFactory;
     this.world = world;
   }
