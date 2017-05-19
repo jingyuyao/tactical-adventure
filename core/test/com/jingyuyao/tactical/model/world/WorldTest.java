@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -81,7 +81,8 @@ public class WorldTest {
     verify(cell1).spawnShip(ship1);
     verify(cell2).spawnShip(ship2);
     verify(modelBus).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
+    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor.getValue(), WorldLoaded.class);
+    assertThat(worldLoaded.getWorld()).isSameAs(world);
   }
 
   @Test
@@ -106,8 +107,10 @@ public class WorldTest {
     assertThat(world.getMaxHeight()).isEqualTo(0);
     assertThat(world.getMaxWidth()).isEqualTo(0);
     verify(modelBus, times(2)).post(argumentCaptor.capture());
-    TestHelpers.verifyObjectEvent(argumentCaptor, 0, cellMap.values(), WorldLoad.class);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(WorldReset.class);
+    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 0, WorldLoaded.class);
+    assertThat(worldLoaded.getWorld()).isSameAs(world);
+    WorldReset worldReset = TestHelpers.assertClass(argumentCaptor, 1, WorldReset.class);
+    assertThat(worldReset.getWorld()).isSameAs(world);
   }
 
   @Test

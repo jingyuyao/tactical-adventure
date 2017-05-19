@@ -7,7 +7,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
@@ -56,14 +56,14 @@ public class World {
       }
       cell.spawnShip(entry.getValue());
     }
-    modelBus.post(new WorldLoad(cellMap.values()));
+    modelBus.post(new WorldLoaded(this));
   }
 
   public void reset() {
     cellMap.clear();
     maxWidth = 0;
     maxHeight = 0;
-    modelBus.post(new WorldReset());
+    modelBus.post(new WorldReset(this));
   }
 
   public int getMaxHeight() {

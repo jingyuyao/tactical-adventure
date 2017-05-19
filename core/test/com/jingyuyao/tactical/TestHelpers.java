@@ -12,6 +12,26 @@ import org.mockito.ArgumentCaptor;
 public class TestHelpers {
 
   /**
+   * Asserts that the given {@code object} is of {@code clazz} and then return the casted object.
+   * Throws {@link AssertionError} if {@code object} is not of {@code clazz}.
+   */
+  public static <T> T assertClass(Object object, Class<T> clazz) {
+    try {
+      return clazz.cast(object);
+    } catch (ClassCastException e) {
+      throw new AssertionError("Object: " + object.toString() + " is not of " + clazz.toString());
+    }
+  }
+
+  /**
+   * {@link ArgumentCaptor} variant of {@link #assertClass(Object, Class)}.
+   */
+  public static <T> T assertClass(ArgumentCaptor<Object> captor, int index, Class<T> clazz) {
+    assertThat(captor.getAllValues().size()).isGreaterThan(index);
+    return assertClass(captor.getAllValues().get(index), clazz);
+  }
+
+  /**
    * Verifies {@code captor} holds an {@link ObjectEvent} of {@code clazz} at {@code index} and it
    * contains {@code target} as its object.
    */
