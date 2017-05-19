@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.world.World;
 import java.util.Set;
 
 /**
- * A {@link Condition} that is met when any of the {@link Person} in {@code names} is dead.
+ * Met when any of the {@link Person} in {@code names} are dead.
  */
 public class AnyDied implements Condition {
 

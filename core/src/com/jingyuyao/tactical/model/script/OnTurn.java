@@ -4,7 +4,7 @@ import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
 /**
- * Create a {@link Condition} that is met when it reaches {@code target}
+ * Met when the current turn reaches the set turn.
  */
 public class OnTurn implements Condition {
 
