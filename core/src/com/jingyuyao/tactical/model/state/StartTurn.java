@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import javax.inject.Inject;
 
-public class StartTurn extends ScriptState {
+public class StartTurn extends TurnScriptState {
 
   private final StateFactory stateFactory;
 
@@ -27,7 +27,7 @@ public class StartTurn extends ScriptState {
   }
 
   @Override
-  void finish() {
+  void scriptDone() {
     getTurn().advance();
     post(new Save());
     branchTo(stateFactory.createWaiting());

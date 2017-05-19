@@ -6,11 +6,11 @@ import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import java.util.List;
 
-abstract class ScriptState extends BaseState {
+abstract class TurnScriptState extends BaseState {
 
   private final LevelComplete levelComplete;
 
-  ScriptState(ModelBus modelBus, WorldState worldState, LevelComplete levelComplete) {
+  TurnScriptState(ModelBus modelBus, WorldState worldState, LevelComplete levelComplete) {
     super(modelBus, worldState);
     this.levelComplete = levelComplete;
   }
@@ -21,7 +21,7 @@ abstract class ScriptState extends BaseState {
     processTurn(new Runnable() {
       @Override
       public void run() {
-        finish();
+        scriptDone();
       }
     });
   }
@@ -43,5 +43,5 @@ abstract class ScriptState extends BaseState {
   /**
    * Called when all the script stuff finished executing. Branch away here.
    */
-  abstract void finish();
+  abstract void scriptDone();
 }
