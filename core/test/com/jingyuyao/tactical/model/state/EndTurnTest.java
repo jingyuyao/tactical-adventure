@@ -1,15 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableListMultimap;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
@@ -36,10 +31,6 @@ public class EndTurnTest {
   @Mock
   private World world;
   @Mock
-  private Script script;
-  @Mock
-  private Dialogue dialogue;
-  @Mock
   private Turn turn;
   @Mock
   private Retaliating retaliating;
@@ -64,11 +55,9 @@ public class EndTurnTest {
   }
 
   @Test
-  public void enter_no_dialogue() {
+  public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.END);
-    when(worldState.getScript()).thenReturn(script);
-    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.<Turn, Dialogue>of());
     when(stateFactory.createRetaliating()).thenReturn(retaliating);
 
     endTurn.enter();
@@ -76,34 +65,7 @@ public class EndTurnTest {
     InOrder inOrder = Mockito.inOrder(modelBus, world, scriptRunner, turn, worldState);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
-    inOrder.verify(scriptRunner).check(runnableCaptor.capture());
-    runnableCaptor.getValue().run();
-    inOrder.verify(world).makeAllPlayerShipsControllable();
-    inOrder.verify(turn).advance();
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
-    inOrder.verify(worldState).branchTo(retaliating);
-  }
-
-  @Test
-  public void enter_has_dialogue() {
-    when(worldState.getTurn()).thenReturn(turn);
-    when(turn.getStage()).thenReturn(TurnStage.END);
-    when(worldState.getScript()).thenReturn(script);
-    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.of(turn, dialogue));
-    when(stateFactory.createRetaliating()).thenReturn(retaliating);
-
-    endTurn.enter();
-
-    InOrder inOrder = Mockito.inOrder(modelBus, world, turn, worldState);
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
-    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
-    assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
-    showDialogues.complete();
-    verify(scriptRunner).check(runnableCaptor.capture());
+    inOrder.verify(scriptRunner).triggerTurn(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(world).makeAllPlayerShipsControllable();
     inOrder.verify(turn).advance();
