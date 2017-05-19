@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
@@ -23,14 +24,20 @@ import javax.inject.Singleton;
 public class World implements GetNeighbors {
 
   private final ModelBus modelBus;
+  private final Dijkstra dijkstra;
   private final CellFactory cellFactory;
   private final Map<Coordinate, Cell> cellMap;
   private int maxHeight;
   private int maxWidth;
 
   @Inject
-  World(ModelBus modelBus, CellFactory cellFactory, @BackingCellMap Map<Coordinate, Cell> cellMap) {
+  World(
+      ModelBus modelBus,
+      Dijkstra dijkstra,
+      CellFactory cellFactory,
+      @BackingCellMap Map<Coordinate, Cell> cellMap) {
     this.modelBus = modelBus;
+    this.dijkstra = dijkstra;
     this.cellFactory = cellFactory;
     this.cellMap = cellMap;
   }
@@ -106,6 +113,22 @@ public class World implements GetNeighbors {
   }
 
   /**
+   * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell}
+   */
+  public Movement getShipMovement(Cell cell) {
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Ship ship = cell.ship().get();
+    return createMovement(new ShipCost(ship), cell, ship.getMoveDistance());
+  }
+
+  /**
+   * Create a {@link Movement} from cell spanning a set distance with a cost of one per cell.
+   */
+  public Movement getUnimpededMovement(Cell cell, int distance) {
+    return createMovement(new OneCost(), cell, distance);
+  }
+
+  /**
    * Return a snapshot of all the ships in the world.
    */
   public ImmutableMap<Cell, Ship> getShipSnapshot() {
@@ -129,5 +152,9 @@ public class World implements GetNeighbors {
         ship.setControllable(true);
       }
     }
+  }
+
+  private Movement createMovement(GetEdgeCost getEdgeCost, Cell startingCell, int distance) {
+    return new Movement(dijkstra.minPathSearch(this, getEdgeCost, startingCell, distance));
   }
 }

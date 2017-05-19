@@ -7,12 +7,15 @@ import static com.jingyuyao.tactical.model.world.CoordinateTest.C1_1;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C1_2;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C2_0;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C2_1;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
+import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -36,6 +39,8 @@ public class WorldTest {
   @Mock
   private ModelBus modelBus;
   @Mock
+  private Dijkstra dijkstra;
+  @Mock
   private CellFactory cellFactory;
   @Mock
   private Cell cell1;
@@ -55,8 +60,12 @@ public class WorldTest {
   private Ship ship1;
   @Mock
   private Ship ship2;
+  @Mock
+  private ValueGraph<Cell, Integer> graph;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<GetEdgeCost> edgeCostCaptor;
 
   private Map<Coordinate, Cell> cellMap;
   private World world;
@@ -64,7 +73,7 @@ public class WorldTest {
   @Before
   public void setUp() {
     cellMap = new HashMap<>();
-    world = new World(modelBus, cellFactory, cellMap);
+    world = new World(modelBus, dijkstra, cellFactory, cellMap);
   }
 
   @Test
@@ -169,6 +178,32 @@ public class WorldTest {
     assertThat(world.neighbor(cell1, Direction.DOWN)).isAbsent();
     assertThat(world.neighbor(cell1, Direction.LEFT)).isAbsent();
     assertThat(world.neighbor(cell1, Direction.RIGHT)).isAbsent();
+  }
+
+  @Test
+  public void get_ship_movement() {
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(ship1.getMoveDistance()).thenReturn(5);
+    when(dijkstra.minPathSearch(eq(world), any(GetEdgeCost.class), eq(cell1), eq(5)))
+        .thenReturn(graph);
+
+    Movement movement = world.getShipMovement(cell1);
+
+    assertThat(movement.getMoveGraph()).isSameAs(graph);
+    verify(dijkstra).minPathSearch(eq(world), edgeCostCaptor.capture(), eq(cell1), eq(5));
+    assertThat(edgeCostCaptor.getValue()).isInstanceOf(ShipCost.class);
+  }
+
+  @Test
+  public void get_unimpeded_movement() {
+    when(dijkstra.minPathSearch(eq(world), any(GetEdgeCost.class), eq(cell1), eq(5)))
+        .thenReturn(graph);
+
+    Movement movement = world.getUnimpededMovement(cell1, 5);
+
+    assertThat(movement.getMoveGraph()).isSameAs(graph);
+    verify(dijkstra).minPathSearch(eq(world), edgeCostCaptor.capture(), eq(cell1), eq(5));
+    assertThat(edgeCostCaptor.getValue()).isInstanceOf(OneCost.class);
   }
 
   @Test
