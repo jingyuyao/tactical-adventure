@@ -10,7 +10,6 @@ import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.Iterator;
@@ -20,7 +19,6 @@ import javax.inject.Inject;
 public class Retaliating extends BaseState {
 
   private final StateFactory stateFactory;
-  private final Movements movements;
   private final World world;
   private final BattleSequence battleSequence;
 
@@ -29,12 +27,10 @@ public class Retaliating extends BaseState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Movements movements,
       World world,
       BattleSequence battleSequence) {
     super(modelBus, worldState);
     this.stateFactory = stateFactory;
-    this.movements = movements;
     this.world = world;
     this.battleSequence = battleSequence;
   }
@@ -66,7 +62,7 @@ public class Retaliating extends BaseState {
     Ship ship = entry.getValue();
     if (ship.getAllegiance().equals(Allegiance.ENEMY)) {
       post(new ActivatedEnemy(ship));
-      handleMoving(ship.getAutoPilotResponse(cell, movements), next);
+      handleMoving(ship.getAutoPilotResponse(world, cell), next);
     } else {
       next.run();
     }

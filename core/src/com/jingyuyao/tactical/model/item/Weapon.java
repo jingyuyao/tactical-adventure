@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 /**
  * An {@link Item} that can affect a {@link Ship}'s HP and status. Not a {@link Consumable}
@@ -18,5 +18,5 @@ public interface Weapon extends Item {
    */
   void apply(Ship attacker, Target target);
 
-  ImmutableList<Target> createTargets(Movements movements, Cell from);
+  ImmutableList<Target> createTargets(World world, Cell from);
 }

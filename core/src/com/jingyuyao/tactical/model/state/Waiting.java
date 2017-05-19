@@ -7,23 +7,23 @@ import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
 public class Waiting extends BaseState {
 
   private final StateFactory stateFactory;
-  private final Movements movements;
+  private final World world;
 
   @Inject
   Waiting(
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Movements movements) {
+      World world) {
     super(modelBus, worldState);
     this.stateFactory = stateFactory;
-    this.movements = movements;
+    this.world = world;
   }
 
   @Override
@@ -36,7 +36,7 @@ public class Waiting extends BaseState {
   public void select(Cell cell) {
     for (Ship ship : cell.ship().asSet()) {
       if (ship.isControllable()) {
-        goTo(stateFactory.createMoving(cell, movements.distanceFrom(cell)));
+        goTo(stateFactory.createMoving(cell, world.getShipMovement(cell)));
       }
     }
   }

@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +35,7 @@ public class MovedTest {
   @Mock
   private ModelBus modelBus;
   @Mock
-  private Movements movements;
+  private World world;
   @Mock
   private Cell cell;
   @Mock
@@ -61,7 +61,7 @@ public class MovedTest {
   public void setUp() {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
-    moved = new Moved(modelBus, worldState, stateFactory, movements, cell);
+    moved = new Moved(modelBus, worldState, stateFactory, world, cell);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class MovedTest {
   public void select_other_ship_controllable() {
     when(cell2.ship()).thenReturn(Optional.of(otherShip));
     when(otherShip.isControllable()).thenReturn(true);
-    when(movements.distanceFrom(cell2)).thenReturn(movement);
+    when(world.getShipMovement(cell2)).thenReturn(movement);
     when(stateFactory.createMoving(cell2, movement)).thenReturn(moving);
 
     moved.select(cell2);

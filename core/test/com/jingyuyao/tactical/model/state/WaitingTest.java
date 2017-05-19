@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class WaitingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private Movements movements;
+  private World world;
   @Mock
   private Turn turn;
   @Mock
@@ -54,7 +54,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(modelBus, worldState, stateFactory, movements);
+    waiting = new Waiting(modelBus, worldState, stateFactory, world);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -75,7 +75,7 @@ public class WaitingTest {
 
   @Test
   public void select_player_controllable() {
-    when(movements.distanceFrom(cell)).thenReturn(movement);
+    when(world.getShipMovement(cell)).thenReturn(movement);
     when(stateFactory.createMoving(cell, movement)).thenReturn(moving);
     when(cell.ship()).thenReturn(Optional.of(playerShip));
     when(playerShip.isControllable()).thenReturn(true);

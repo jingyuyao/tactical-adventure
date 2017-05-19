@@ -6,18 +6,18 @@ import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 public class PassiveAutoPilot implements AutoPilot {
 
   @Override
-  public PilotResponse getResponse(Cell shipCell, Movements movements) {
+  public PilotResponse getResponse(World world, Cell shipCell) {
     Preconditions.checkArgument(shipCell.ship().isPresent());
     Ship ship = shipCell.ship().get();
-    Movement movement = movements.distanceFrom(shipCell);
+    Movement movement = world.getShipMovement(shipCell);
     for (Cell moveCell : movement.getCells()) {
       for (final Weapon weapon : ship.getWeapons()) {
-        for (final Target target : weapon.createTargets(movements, moveCell)) {
+        for (final Target target : weapon.createTargets(world, moveCell)) {
           if (canTarget(target)) {
             return new PilotResponse(movement.pathTo(moveCell),
                 new Battle(moveCell, weapon, target));

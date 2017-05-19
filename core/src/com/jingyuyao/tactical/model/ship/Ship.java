@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 public interface Ship {
 
@@ -18,7 +18,7 @@ public interface Ship {
 
   Allegiance getAllegiance();
 
-  PilotResponse getAutoPilotResponse(Cell startingCell, Movements movements);
+  PilotResponse getAutoPilotResponse(World world, Cell startingCell);
 
   /**
    * Return whether or not this ship can currently be controlled by the player.
