@@ -3,6 +3,7 @@ package com.jingyuyao.tactical;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
+import com.google.inject.Stage;
 import com.jingyuyao.tactical.menu.StartMenu;
 import com.jingyuyao.tactical.view.GameScreen;
 import javax.inject.Inject;
@@ -21,7 +22,7 @@ public class TacticalAdventure extends Game {
 
   @Override
   public void create() {
-    Guice.createInjector(new GameModule(this)).injectMembers(this);
+    Guice.createInjector(Stage.PRODUCTION, new GameModule(this)).injectMembers(this);
 
     gameState.start();
   }
