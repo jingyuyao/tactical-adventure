@@ -1,22 +1,19 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.script.LevelTrigger;
-import com.jingyuyao.tactical.model.state.Turn;
+import com.jingyuyao.tactical.model.script.Condition;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 class LevelScript {
 
-  private Map<Turn, LevelTrigger> turnTriggers = new HashMap<>();
-  private List<String> keepAlive = new ArrayList<>();
+  private List<Condition> loseConditions = new ArrayList<>();
+  private List<Condition> winConditions = new ArrayList<>();
 
-  Map<Turn, LevelTrigger> getTurnTriggers() {
-    return turnTriggers;
+  List<Condition> getLoseConditions() {
+    return loseConditions;
   }
 
-  List<String> getKeepAlive() {
-    return keepAlive;
+  List<Condition> getWinConditions() {
+    return winConditions;
   }
 }

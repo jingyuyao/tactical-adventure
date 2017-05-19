@@ -1,6 +1,13 @@
 {
-  "turnTriggers": {
-    "15-START": "WON"
-  },
-  "keepAlive": []
+  "loseConditions": [],
+  "winConditions": [
+    {
+      "type": "OutOfAllegiance",
+      "allegiance": "ENEMY"
+    },
+    {
+      "type": "OnTurn",
+      "turn": "18-START"
+    }
+  ]
 }

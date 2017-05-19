@@ -1,13 +1,13 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.Promise;
+import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.script.ScriptActions;
+import com.jingyuyao.tactical.model.script.Dialogue;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,11 +17,13 @@ class BattleSequence {
 
   private final ModelBus modelBus;
   private final WorldState worldState;
+  private final LevelComplete levelComplete;
 
   @Inject
-  BattleSequence(ModelBus modelBus, WorldState worldState) {
+  BattleSequence(ModelBus modelBus, WorldState worldState, LevelComplete levelComplete) {
     this.modelBus = modelBus;
     this.worldState = worldState;
+    this.levelComplete = levelComplete;
   }
 
   void start(final Battle battle, final Runnable done) {
@@ -36,19 +38,19 @@ class BattleSequence {
   private void processDeaths(final List<Person> death, final int index, final Runnable done) {
     if (index < death.size()) {
       ResourceKey name = death.get(index).getName();
-      Optional<ScriptActions> actionsOpt = worldState.getScript().deathScript(name);
-      if (actionsOpt.isPresent()) {
-        actionsOpt.get().execute(modelBus, new Runnable() {
+      List<Dialogue> dialogues = worldState.getScript().getDeathDialogues().get(name);
+      if (dialogues.isEmpty()) {
+        processDeaths(death, index + 1, done);
+      } else {
+        modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
           @Override
           public void run() {
             processDeaths(death, index + 1, done);
           }
-        });
-      } else {
-        processDeaths(death, index + 1, done);
+        })));
       }
     } else {
-      done.run();
+      levelComplete.check(done);
     }
   }
 }

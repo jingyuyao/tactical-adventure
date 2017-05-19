@@ -11,8 +11,12 @@ public class StartTurn extends ScriptState {
   private final StateFactory stateFactory;
 
   @Inject
-  StartTurn(ModelBus modelBus, WorldState worldState, StateFactory stateFactory) {
-    super(modelBus, worldState);
+  StartTurn(
+      ModelBus modelBus,
+      WorldState worldState,
+      LevelComplete levelComplete,
+      StateFactory stateFactory) {
+    super(modelBus, worldState, levelComplete);
     this.stateFactory = stateFactory;
   }
 

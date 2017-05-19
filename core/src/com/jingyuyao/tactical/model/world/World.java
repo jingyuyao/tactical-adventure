@@ -93,11 +93,12 @@ public class World {
         }).toList();
   }
 
-  public void fullHealPlayers() {
+  public void resetPlayerShipStats() {
     for (Cell cell : cellMap.values()) {
       for (Ship ship : cell.ship().asSet()) {
         if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
           ship.fullHeal();
+          ship.setControllable(true);
         }
       }
     }

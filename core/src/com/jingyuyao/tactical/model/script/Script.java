@@ -1,26 +1,43 @@
 package com.jingyuyao.tactical.model.script;
 
-import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.Multimap;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.state.Turn;
-import java.util.Map;
+import java.util.List;
 
 public class Script {
 
-  private final Map<Turn, ScriptActions> turnScripts;
-  private final Map<ResourceKey, ScriptActions> deathScripts;
+  private final List<Condition> winConditions;
+  private final List<Condition> loseConditions;
+  private final Multimap<Turn, Dialogue> turnDialogues;
+  private final Multimap<ResourceKey, Dialogue> deathDialogues;
 
-  public Script(Map<Turn, ScriptActions> turnScripts,
-      Map<ResourceKey, ScriptActions> deathScripts) {
-    this.turnScripts = turnScripts;
-    this.deathScripts = deathScripts;
+  public Script(
+      List<Condition> winConditions,
+      List<Condition> loseConditions,
+      Multimap<Turn, Dialogue> turnDialogues,
+      Multimap<ResourceKey, Dialogue> deathDialogues) {
+    this.winConditions = winConditions;
+    this.loseConditions = loseConditions;
+    this.turnDialogues = turnDialogues;
+    this.deathDialogues = deathDialogues;
   }
 
-  public Optional<ScriptActions> turnScript(Turn turn) {
-    return Optional.fromNullable(turnScripts.get(turn));
+  public ImmutableList<Condition> getWinConditions() {
+    return ImmutableList.copyOf(winConditions);
   }
 
-  public Optional<ScriptActions> deathScript(ResourceKey name) {
-    return Optional.fromNullable(deathScripts.get(name));
+  public ImmutableList<Condition> getLoseConditions() {
+    return ImmutableList.copyOf(loseConditions);
+  }
+
+  public ImmutableListMultimap<Turn, Dialogue> getTurnDialogues() {
+    return ImmutableListMultimap.copyOf(turnDialogues);
+  }
+
+  public ImmutableListMultimap<ResourceKey, Dialogue> getDeathDialogues() {
+    return ImmutableListMultimap.copyOf(deathDialogues);
   }
 }

@@ -1,27 +1,20 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.LevelLost;
-import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.Movements;
-import com.jingyuyao.tactical.model.world.World;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,19 +34,13 @@ public class WaitingTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private World world;
-  @Mock
   private Movements movements;
   @Mock
   private Turn turn;
   @Mock
   private Cell cell;
   @Mock
-  private Cell cell2;
-  @Mock
   private Ship playerShip;
-  @Mock
-  private Ship enemyShip;
   @Mock
   private Moving moving;
   @Mock
@@ -67,7 +54,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(modelBus, worldState, stateFactory, world, movements);
+    waiting = new Waiting(modelBus, worldState, stateFactory, movements);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -76,55 +63,6 @@ public class WaitingTest {
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
 
     waiting.enter();
-  }
-
-  @Test
-  public void enter_not_complete() {
-    when(worldState.getTurn()).thenReturn(turn);
-    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
-    when(cell.ship()).thenReturn(Optional.of(playerShip));
-    when(playerShip.getAllegiance()).thenReturn(Allegiance.PLAYER);
-    when(cell2.ship()).thenReturn(Optional.of(enemyShip));
-    when(enemyShip.getAllegiance()).thenReturn(Allegiance.ENEMY);
-
-    waiting.enter();
-
-    verify(modelBus).post(waiting);
-    verifyNoMoreInteractions(modelBus);
-  }
-
-  @Test
-  public void enter_level_complete() {
-    when(worldState.getTurn()).thenReturn(turn);
-    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.ship()).thenReturn(Optional.of(playerShip));
-    when(playerShip.getAllegiance()).thenReturn(Allegiance.PLAYER);
-
-    waiting.enter();
-
-    verify(playerShip).setControllable(true);
-    verify(modelBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues()).hasSize(2);
-    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelWon.class);
-  }
-
-  @Test
-  public void enter_level_failed() {
-    when(worldState.getTurn()).thenReturn(turn);
-    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell));
-    when(cell.ship()).thenReturn(Optional.of(enemyShip));
-    when(enemyShip.getAllegiance()).thenReturn(Allegiance.ENEMY);
-
-    waiting.enter();
-
-    verify(modelBus, times(2)).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getAllValues()).hasSize(2);
-    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(waiting);
-    assertThat(argumentCaptor.getAllValues().get(1)).isInstanceOf(LevelLost.class);
   }
 
   @Test

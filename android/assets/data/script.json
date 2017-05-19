@@ -1,5 +1,14 @@
 {
-  "keepAlive": [
-    "jingyu"
+  "loseConditions": [
+    {
+      "type": "OutOfAllegiance",
+      "allegiance": "PLAYER"
+    },
+    {
+      "type": "AnyDied",
+      "names": [
+        "jingyu"
+      ]
+    }
   ]
 }

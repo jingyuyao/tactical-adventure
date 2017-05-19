@@ -135,7 +135,7 @@ public class WorldTest {
   }
 
   @Test
-  public void full_heal_players() {
+  public void reset_player_ships() {
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
@@ -143,9 +143,10 @@ public class WorldTest {
     cellMap.put(COORDINATE1, cell1);
     cellMap.put(COORDINATE2, cell2);
 
-    world.fullHealPlayers();
+    world.resetPlayerShipStats();
 
     verify(ship1).fullHeal();
+    verify(ship1).setControllable(true);
     verify(ship2, never()).fullHeal();
   }
 }
