@@ -32,7 +32,7 @@ public class BattleSequenceTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private LevelComplete levelComplete;
+  private ScriptRunner scriptRunner;
   @Mock
   private Script script;
   @Mock
@@ -62,7 +62,7 @@ public class BattleSequenceTest {
 
   @Before
   public void setUp() {
-    battleSequence = new BattleSequence(modelBus, worldState, levelComplete);
+    battleSequence = new BattleSequence(modelBus, worldState, scriptRunner);
   }
 
   @Test
@@ -77,8 +77,8 @@ public class BattleSequenceTest {
 
     battleSequence.start(battle, done);
 
-    InOrder inOrder = Mockito.inOrder(modelBus, battle, levelComplete);
-    verifyZeroInteractions(levelComplete);
+    InOrder inOrder = Mockito.inOrder(modelBus, battle, scriptRunner);
+    verifyZeroInteractions(scriptRunner);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(StartBattle.class);
     StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
@@ -94,6 +94,6 @@ public class BattleSequenceTest {
     ShowDialogues showDialogues2 = (ShowDialogues) argumentCaptor.getValue();
     assertThat(showDialogues2.getDialogues()).containsExactly(dialogue3);
     showDialogues2.complete();
-    inOrder.verify(levelComplete).check(done);
+    inOrder.verify(scriptRunner).check(done);
   }
 }

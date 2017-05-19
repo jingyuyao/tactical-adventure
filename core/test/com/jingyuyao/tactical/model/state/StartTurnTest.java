@@ -28,7 +28,7 @@ public class StartTurnTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private LevelComplete levelComplete;
+  private ScriptRunner scriptRunner;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -48,7 +48,7 @@ public class StartTurnTest {
 
   @Before
   public void setUp() {
-    startTurn = new StartTurn(modelBus, worldState, levelComplete, stateFactory);
+    startTurn = new StartTurn(modelBus, worldState, scriptRunner, stateFactory);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -69,10 +69,10 @@ public class StartTurnTest {
 
     startTurn.enter();
 
-    InOrder inOrder = Mockito.inOrder(modelBus, levelComplete, turn, worldState);
+    InOrder inOrder = Mockito.inOrder(modelBus, scriptRunner, turn, worldState);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(startTurn);
-    inOrder.verify(levelComplete).check(runnableCaptor.capture());
+    inOrder.verify(scriptRunner).check(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
@@ -90,7 +90,7 @@ public class StartTurnTest {
 
     startTurn.enter();
 
-    InOrder inOrder = Mockito.inOrder(modelBus, turn, worldState, levelComplete);
+    InOrder inOrder = Mockito.inOrder(modelBus, turn, worldState, scriptRunner);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(startTurn);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
@@ -98,7 +98,7 @@ public class StartTurnTest {
     ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
     assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
     showDialogues.complete();
-    inOrder.verify(levelComplete).check(runnableCaptor.capture());
+    inOrder.verify(scriptRunner).check(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());

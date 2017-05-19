@@ -8,11 +8,11 @@ import java.util.List;
 
 abstract class TurnScriptState extends BaseState {
 
-  private final LevelComplete levelComplete;
+  private final ScriptRunner scriptRunner;
 
-  TurnScriptState(ModelBus modelBus, WorldState worldState, LevelComplete levelComplete) {
+  TurnScriptState(ModelBus modelBus, WorldState worldState, ScriptRunner scriptRunner) {
     super(modelBus, worldState);
-    this.levelComplete = levelComplete;
+    this.scriptRunner = scriptRunner;
   }
 
   @Override
@@ -29,12 +29,12 @@ abstract class TurnScriptState extends BaseState {
   private void processTurn(final Runnable done) {
     List<Dialogue> dialogues = getScript().getTurnDialogues().get(getTurn());
     if (dialogues.isEmpty()) {
-      levelComplete.check(done);
+      scriptRunner.check(done);
     } else {
       post(new ShowDialogues(dialogues, new Promise(new Runnable() {
         @Override
         public void run() {
-          levelComplete.check(done);
+          scriptRunner.check(done);
         }
       })));
     }

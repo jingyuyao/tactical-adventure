@@ -18,13 +18,13 @@ class BattleSequence {
 
   private final ModelBus modelBus;
   private final WorldState worldState;
-  private final LevelComplete levelComplete;
+  private final ScriptRunner scriptRunner;
 
   @Inject
-  BattleSequence(ModelBus modelBus, WorldState worldState, LevelComplete levelComplete) {
+  BattleSequence(ModelBus modelBus, WorldState worldState, ScriptRunner scriptRunner) {
     this.modelBus = modelBus;
     this.worldState = worldState;
-    this.levelComplete = levelComplete;
+    this.scriptRunner = scriptRunner;
   }
 
   void start(final Battle battle, final Runnable done) {
@@ -51,7 +51,7 @@ class BattleSequence {
         })));
       }
     } else {
-      levelComplete.check(done);
+      scriptRunner.check(done);
     }
   }
 }

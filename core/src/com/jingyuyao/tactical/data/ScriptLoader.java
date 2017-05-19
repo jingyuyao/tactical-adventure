@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Condition;
@@ -37,7 +38,9 @@ class ScriptLoader {
     loseConditions.addAll(levelScript.getLoseConditions());
     ListMultimap<Turn, Dialogue> levelDialogues = dialogueLoader.getLevelDialogues(level);
     ListMultimap<ResourceKey, Dialogue> deathDialogues = dialogueLoader.getDeathDialogues();
+    // TODO: temp
+    ListMultimap<Condition, Dialogue> dialogues = ArrayListMultimap.create();
 
-    return new Script(winConditions, loseConditions, levelDialogues, deathDialogues);
+    return new Script(winConditions, loseConditions, dialogues, levelDialogues, deathDialogues);
   }
 }

@@ -10,14 +10,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class LevelComplete {
+class ScriptRunner {
 
   private final ModelBus modelBus;
   private final World world;
   private final WorldState worldState;
 
   @Inject
-  LevelComplete(ModelBus modelBus, World world, WorldState worldState) {
+  ScriptRunner(ModelBus modelBus, World world, WorldState worldState) {
     this.modelBus = modelBus;
     this.world = world;
     this.worldState = worldState;

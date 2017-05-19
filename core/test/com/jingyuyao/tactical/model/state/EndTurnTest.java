@@ -30,7 +30,7 @@ public class EndTurnTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private LevelComplete levelComplete;
+  private ScriptRunner scriptRunner;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -52,7 +52,7 @@ public class EndTurnTest {
 
   @Before
   public void setUp() {
-    endTurn = new EndTurn(modelBus, worldState, levelComplete, stateFactory, world);
+    endTurn = new EndTurn(modelBus, worldState, scriptRunner, stateFactory, world);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -73,10 +73,10 @@ public class EndTurnTest {
 
     endTurn.enter();
 
-    InOrder inOrder = Mockito.inOrder(modelBus, world, levelComplete, turn, worldState);
+    InOrder inOrder = Mockito.inOrder(modelBus, world, scriptRunner, turn, worldState);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
-    inOrder.verify(levelComplete).check(runnableCaptor.capture());
+    inOrder.verify(scriptRunner).check(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(world).makeAllPlayerShipsControllable();
     inOrder.verify(turn).advance();
@@ -103,7 +103,7 @@ public class EndTurnTest {
     ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
     assertThat(showDialogues.getDialogues()).containsExactly(dialogue);
     showDialogues.complete();
-    verify(levelComplete).check(runnableCaptor.capture());
+    verify(scriptRunner).check(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(world).makeAllPlayerShipsControllable();
     inOrder.verify(turn).advance();

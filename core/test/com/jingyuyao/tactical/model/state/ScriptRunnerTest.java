@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LevelCompleteTest {
+public class ScriptRunnerTest {
 
   @Mock
   private ModelBus modelBus;
@@ -43,11 +43,11 @@ public class LevelCompleteTest {
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
-  private LevelComplete levelComplete;
+  private ScriptRunner scriptRunner;
 
   @Before
   public void setUp() {
-    levelComplete = new LevelComplete(modelBus, world, worldState);
+    scriptRunner = new ScriptRunner(modelBus, world, worldState);
   }
 
   @Test
@@ -57,7 +57,7 @@ public class LevelCompleteTest {
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(loseCondition.isMet(turn, world)).thenReturn(true);
 
-    levelComplete.check(runnable);
+    scriptRunner.check(runnable);
 
     verify(script, never()).getWinConditions();
     verify(modelBus).post(argumentCaptor.capture());
@@ -74,7 +74,7 @@ public class LevelCompleteTest {
     when(loseCondition.isMet(turn, world)).thenReturn(false);
     when(winCondition.isMet(turn, world)).thenReturn(true);
 
-    levelComplete.check(runnable);
+    scriptRunner.check(runnable);
 
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(LevelWon.class);
@@ -90,7 +90,7 @@ public class LevelCompleteTest {
     when(loseCondition.isMet(turn, world)).thenReturn(false);
     when(winCondition.isMet(turn, world)).thenReturn(false);
 
-    levelComplete.check(runnable);
+    scriptRunner.check(runnable);
 
     verifyZeroInteractions(modelBus);
     verify(runnable).run();

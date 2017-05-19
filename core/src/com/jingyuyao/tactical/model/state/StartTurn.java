@@ -14,9 +14,9 @@ public class StartTurn extends TurnScriptState {
   StartTurn(
       ModelBus modelBus,
       WorldState worldState,
-      LevelComplete levelComplete,
+      ScriptRunner scriptRunner,
       StateFactory stateFactory) {
-    super(modelBus, worldState, levelComplete);
+    super(modelBus, worldState, scriptRunner);
     this.stateFactory = stateFactory;
   }
 

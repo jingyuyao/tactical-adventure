@@ -16,10 +16,10 @@ public class EndTurn extends TurnScriptState {
   EndTurn(
       ModelBus modelBus,
       WorldState worldState,
-      LevelComplete levelComplete,
+      ScriptRunner scriptRunner,
       StateFactory stateFactory,
       World world) {
-    super(modelBus, worldState, levelComplete);
+    super(modelBus, worldState, scriptRunner);
     this.stateFactory = stateFactory;
     this.world = world;
   }
