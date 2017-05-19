@@ -12,13 +12,15 @@ import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class World {
+public class World implements GetNeighbors {
 
   private final ModelBus modelBus;
   private final CellFactory cellFactory;
@@ -85,6 +87,22 @@ public class World {
 
   public Optional<Cell> cell(Coordinate coordinate) {
     return Optional.fromNullable(cellMap.get(coordinate));
+  }
+
+  @Override
+  public Iterable<Cell> getNeighbors(Cell from) {
+    List<Cell> neighbors = new ArrayList<>(Direction.values().length);
+    for (Direction direction : Direction.values()) {
+      Optional<Cell> neighborOpt = neighbor(from, direction);
+      if (neighborOpt.isPresent()) {
+        neighbors.add(neighborOpt.get());
+      }
+    }
+    return neighbors;
+  }
+
+  public Optional<Cell> neighbor(Cell from, Direction direction) {
+    return cell(from.getCoordinate().offsetBy(direction));
   }
 
   /**

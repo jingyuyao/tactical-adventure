@@ -1,6 +1,12 @@
 package com.jingyuyao.tactical.model.world;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C1_0;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C1_1;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C1_2;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C2_0;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C2_1;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,9 +33,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldTest {
 
-  private static final Coordinate COORDINATE1 = new Coordinate(1, 1);
-  private static final Coordinate COORDINATE2 = new Coordinate(2, 0);
-
   @Mock
   private ModelBus modelBus;
   @Mock
@@ -38,6 +41,12 @@ public class WorldTest {
   private Cell cell1;
   @Mock
   private Cell cell2;
+  @Mock
+  private Cell cell3;
+  @Mock
+  private Cell cell4;
+  @Mock
+  private Cell cell5;
   @Mock
   private Terrain terrain1;
   @Mock
@@ -62,10 +71,10 @@ public class WorldTest {
   public void initialize() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Ship> shipMap = new HashMap<>();
-    terrainMap.put(COORDINATE1, terrain1);
-    terrainMap.put(COORDINATE2, terrain2);
-    shipMap.put(COORDINATE1, ship1);
-    shipMap.put(COORDINATE2, ship2);
+    terrainMap.put(C1_1, terrain1);
+    terrainMap.put(C2_0, terrain2);
+    shipMap.put(C1_1, ship1);
+    shipMap.put(C2_0, ship2);
     when(cell1.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
     when(cell2.ship())
@@ -74,14 +83,14 @@ public class WorldTest {
     when(cell2.getTerrain()).thenReturn(terrain2);
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
-    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
+    when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
+    when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap);
 
-    assertThat(cellMap).containsExactly(COORDINATE1, cell1, COORDINATE2, cell2);
-    assertThat(world.getMaxHeight()).isEqualTo(COORDINATE1.getY() + 1);
-    assertThat(world.getMaxWidth()).isEqualTo(COORDINATE2.getX() + 1);
+    assertThat(cellMap).containsExactly(C1_1, cell1, C2_0, cell2);
+    assertThat(world.getMaxHeight()).isEqualTo(C1_1.getY() + 1);
+    assertThat(world.getMaxWidth()).isEqualTo(C2_0.getX() + 1);
     verify(cell1).spawnShip(ship1);
     verify(cell2).spawnShip(ship2);
     verify(modelBus).post(argumentCaptor.capture());
@@ -93,10 +102,10 @@ public class WorldTest {
   public void reset() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Ship> shipMap = new HashMap<>();
-    terrainMap.put(COORDINATE1, terrain1);
-    terrainMap.put(COORDINATE2, terrain2);
-    shipMap.put(COORDINATE1, ship1);
-    shipMap.put(COORDINATE2, ship2);
+    terrainMap.put(C1_1, terrain1);
+    terrainMap.put(C2_0, terrain2);
+    shipMap.put(C1_1, ship1);
+    shipMap.put(C2_0, ship2);
     when(cell1.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
     when(cell2.ship())
@@ -105,8 +114,8 @@ public class WorldTest {
     when(cell2.getTerrain()).thenReturn(terrain2);
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
-    when(cellFactory.create(COORDINATE1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(COORDINATE2, terrain2)).thenReturn(cell2);
+    when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
+    when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap);
     world.reset();
@@ -123,22 +132,49 @@ public class WorldTest {
 
   @Test
   public void get_cell() {
-    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(C1_1, cell1);
 
-    assertThat(world.cell(COORDINATE1.getX(), COORDINATE1.getY())).hasValue(cell1);
+    assertThat(world.cell(C1_1.getX(), C1_1.getY())).hasValue(cell1);
   }
 
   @Test
   public void get_cell_coordinate() {
-    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(C1_1, cell1);
 
-    assertThat(world.cell(COORDINATE1)).hasValue(cell1);
+    assertThat(world.cell(C1_1)).hasValue(cell1);
+  }
+
+  @Test
+  public void get_neighbors() {
+    cellMap.put(C1_1, cell1);
+    cellMap.put(C1_2, cell2); // up
+    cellMap.put(C1_0, cell3); // down
+    cellMap.put(C0_1, cell4); // left
+    cellMap.put(C2_1, cell5); // right
+    when(cell1.getCoordinate()).thenReturn(C1_1);
+
+    assertThat(world.neighbor(cell1, Direction.UP)).hasValue(cell2);
+    assertThat(world.neighbor(cell1, Direction.DOWN)).hasValue(cell3);
+    assertThat(world.neighbor(cell1, Direction.LEFT)).hasValue(cell4);
+    assertThat(world.neighbor(cell1, Direction.RIGHT)).hasValue(cell5);
+  }
+
+  @Test
+  public void neighbor() {
+    cellMap.put(C1_1, cell1);
+    cellMap.put(C1_2, cell2);
+    when(cell1.getCoordinate()).thenReturn(C1_1);
+
+    assertThat(world.neighbor(cell1, Direction.UP)).hasValue(cell2);
+    assertThat(world.neighbor(cell1, Direction.DOWN)).isAbsent();
+    assertThat(world.neighbor(cell1, Direction.LEFT)).isAbsent();
+    assertThat(world.neighbor(cell1, Direction.RIGHT)).isAbsent();
   }
 
   @Test
   public void get_ships() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
+    cellMap.put(C1_1, cell1);
+    cellMap.put(C2_0, cell2);
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
 
@@ -147,8 +183,8 @@ public class WorldTest {
 
   @Test
   public void make_all_player_ships_controllable() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
+    cellMap.put(C1_1, cell1);
+    cellMap.put(C2_0, cell2);
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
