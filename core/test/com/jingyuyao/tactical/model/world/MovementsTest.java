@@ -6,8 +6,6 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
-import com.jingyuyao.tactical.model.world.Movements.ShipCost;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

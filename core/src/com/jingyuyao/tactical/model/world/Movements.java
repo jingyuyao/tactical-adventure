@@ -4,9 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.graph.Graph;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
-import com.jingyuyao.tactical.model.world.Dijkstra.GetNeighbors;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -63,31 +60,5 @@ public class Movements implements GetNeighbors {
 
   private Graph<Cell> distanceFrom(GetEdgeCost getEdgeCost, Cell startingCell, int distance) {
     return dijkstra.minPathSearch(this, getEdgeCost, startingCell, distance);
-  }
-
-  static class ShipCost implements GetEdgeCost {
-
-    private final Ship walker;
-
-    ShipCost(Ship walker) {
-      this.walker = walker;
-    }
-
-    @Override
-    public int getEdgeCost(Cell cell) {
-      Terrain terrain = cell.getTerrain();
-      if (cell.ship().isPresent() || !terrain.canHold(walker)) {
-        return GetEdgeCost.NO_EDGE;
-      }
-      return terrain.getMovementPenalty();
-    }
-  }
-
-  private static class OneCost implements GetEdgeCost {
-
-    @Override
-    public int getEdgeCost(Cell cell) {
-      return 1;
-    }
   }
 }

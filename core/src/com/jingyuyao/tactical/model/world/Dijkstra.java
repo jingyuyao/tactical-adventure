@@ -91,18 +91,6 @@ class Dijkstra {
     return graph;
   }
 
-  interface GetEdgeCost {
-
-    int NO_EDGE = -1;
-
-    int getEdgeCost(Cell cell);
-  }
-
-  interface GetNeighbors {
-
-    Iterable<Cell> getNeighbors(Cell cell);
-  }
-
   /**
    * Store an object with an integer value. Identity of this object is based off {@link #object}.
    * {@link #value} is not part of the identity. Used for {@link PriorityQueue} sorting.
