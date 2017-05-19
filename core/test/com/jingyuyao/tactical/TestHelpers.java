@@ -19,7 +19,7 @@ public class TestHelpers {
     try {
       return clazz.cast(object);
     } catch (ClassCastException e) {
-      throw new AssertionError("Object: " + object.toString() + " is not of " + clazz.toString());
+      throw new AssertionError("Object: " + object + " is not of " + clazz);
     }
   }
 
