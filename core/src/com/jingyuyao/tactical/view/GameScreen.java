@@ -18,7 +18,6 @@ public class GameScreen extends ScreenAdapter {
   private final Input input;
   private final WorldView worldView;
   private final GameUI gameUI;
-  private final CameraController cameraController;
   private final InputMultiplexer inputMultiplexer;
 
   @Inject
@@ -33,15 +32,12 @@ public class GameScreen extends ScreenAdapter {
     this.input = input;
     this.worldView = worldView;
     this.gameUI = gameUI;
-    this.cameraController = cameraController;
     this.inputMultiplexer =
         new InputMultiplexer(gameUI.getInputProcessor(), cameraController, worldController);
   }
 
   @Override
   public void show() {
-    cameraController.center();
-    gameUI.init();
     input.setInputProcessor(inputMultiplexer);
   }
 
