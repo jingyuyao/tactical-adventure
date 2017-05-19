@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Direction;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 /**
  * A weapon that can be targeted in all directions in {@link Direction#values()}.
@@ -17,10 +17,10 @@ public class DirectionalWeapon extends BaseWeapon {
   private int distance;
 
   @Override
-  public ImmutableList<Target> createTargets(Movements movements, Cell from) {
+  public ImmutableList<Target> createTargets(World world, Cell from) {
     ImmutableList.Builder<Target> builder = ImmutableList.builder();
     for (Direction direction : Direction.values()) {
-      Optional<Target> targetOptional = createTarget(movements, from, direction);
+      Optional<Target> targetOptional = createTarget(world, from, direction);
       if (targetOptional.isPresent()) {
         builder.add(targetOptional.get());
       }
@@ -28,13 +28,13 @@ public class DirectionalWeapon extends BaseWeapon {
     return builder.build();
   }
 
-  private Optional<Target> createTarget(Movements movements, Cell from, Direction direction) {
+  private Optional<Target> createTarget(World world, Cell from, Direction direction) {
     ImmutableSet.Builder<Cell> targetBuilder = ImmutableSet.builder();
     Cell current = from;
     int leftOverDistance = distance;
 
     while (leftOverDistance > 0) {
-      Optional<Cell> neighbor = movements.neighbor(current, direction);
+      Optional<Cell> neighbor = world.neighbor(current, direction);
       if (neighbor.isPresent()) {
         current = neighbor.get();
         targetBuilder.add(current);

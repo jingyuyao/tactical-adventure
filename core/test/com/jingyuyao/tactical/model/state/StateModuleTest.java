@@ -15,7 +15,6 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
-import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -33,9 +32,6 @@ public class StateModuleTest {
   @Bind
   @Mock
   private World world;
-  @Bind
-  @Mock
-  private Movements movements;
   @Mock
   private Cell cell;
   @Mock

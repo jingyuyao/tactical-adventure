@@ -2,11 +2,15 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.ModelBusListener;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.view.ui.GameUIModule.UIStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
+@ModelBusListener
 public class GameUI {
 
   private final Stage stage;
@@ -24,10 +28,6 @@ public class GameUI {
     return stage;
   }
 
-  public void init() {
-    layerManager.init(mainLayer);
-  }
-
   public void act(float delta) {
     stage.act(delta);
   }
@@ -43,5 +43,10 @@ public class GameUI {
 
   public void dispose() {
     stage.dispose();
+  }
+
+  @Subscribe
+  void worldLoaded(WorldLoaded worldLoaded) {
+    layerManager.init(mainLayer);
   }
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Contains the current progress of a level. Basically a merger of {@link GameData} and {@link
@@ -54,10 +55,8 @@ public class LevelProgress {
 
   void update(World world, WorldState worldState) {
     ships.clear();
-    for (Cell cell : world.getShipSnapshot()) {
-      for (Ship ship : cell.ship().asSet()) {
-        ships.put(cell.getCoordinate(), ship);
-      }
+    for (Entry<Cell, Ship> entry : world.getShipSnapshot().entrySet()) {
+      ships.put(entry.getKey().getCoordinate(), entry.getValue());
     }
     turn = worldState.getTurn();
   }

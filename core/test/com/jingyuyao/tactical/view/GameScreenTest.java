@@ -54,7 +54,6 @@ public class GameScreenTest {
   public void show() {
     gameScreen.show();
 
-    verify(cameraController).center();
     verify(input).setInputProcessor(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
     InputMultiplexer multiplexer = (InputMultiplexer) argumentCaptor.getValue();

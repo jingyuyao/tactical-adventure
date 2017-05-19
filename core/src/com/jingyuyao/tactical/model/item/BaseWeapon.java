@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 /**
  * A basic {@link Weapon} that does constant damage to all the {@link Target}.
@@ -53,7 +53,7 @@ class BaseWeapon extends BaseItem implements Weapon {
   }
 
   @Override
-  public ImmutableList<Target> createTargets(Movements movements, Cell from) {
+  public ImmutableList<Target> createTargets(World world, Cell from) {
     throw new UnsupportedOperationException("override me!");
   }
 

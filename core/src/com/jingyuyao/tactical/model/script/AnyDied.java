@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.script;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
-import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.Set;
 
@@ -24,12 +23,10 @@ public class AnyDied implements Condition {
   @Override
   public boolean isMet(Turn turn, World world) {
     int met = 0;
-    for (Cell cell : world.getShipSnapshot()) {
-      for (Ship ship : cell.ship().asSet()) {
-        for (Person crew : ship.getCrew()) {
-          if (names.contains(crew.getName().getId())) {
-            met++;
-          }
+    for (Ship ship : world.getShipSnapshot().values()) {
+      for (Person crew : ship.getCrew()) {
+        if (names.contains(crew.getName().getId())) {
+          met++;
         }
       }
     }

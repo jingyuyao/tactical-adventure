@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.ModelBusListener;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
+import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.WorldViewModule.WorldEngine;
 import com.jingyuyao.tactical.view.world.WorldViewModule.WorldViewport;
 import com.jingyuyao.tactical.view.world.system.Systems;
@@ -13,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
+@ModelBusListener
 public class WorldView {
 
   private final Batch batch;
@@ -89,5 +94,11 @@ public class WorldView {
     Vector3 position = viewport.getCamera().position;
     position.x = x;
     position.y = y;
+  }
+
+  @Subscribe
+  void worldLoaded(WorldLoaded worldLoaded) {
+    World world = worldLoaded.getWorld();
+    setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
   }
 }

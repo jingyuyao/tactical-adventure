@@ -6,22 +6,14 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import com.jingyuyao.tactical.model.world.Dijkstra.GetEdgeCost;
-import com.jingyuyao.tactical.model.world.Movements.ShipCost;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-// TODO: finish me
-public class MovementsTest {
+public class ShipCostTest {
 
-  @Mock
-  private World world;
-  @Mock
-  private Dijkstra dijkstra;
   @Mock
   private Cell cell;
   @Mock
@@ -29,15 +21,8 @@ public class MovementsTest {
   @Mock
   private Ship ship;
 
-  private Movements movements;
-
-  @Before
-  public void setUp() {
-    movements = new Movements(world, dijkstra);
-  }
-
   @Test
-  public void edge_cost_function_has_ship() {
+  public void has_ship() {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(cell.getTerrain()).thenReturn(terrain);
 
@@ -47,7 +32,7 @@ public class MovementsTest {
   }
 
   @Test
-  public void edge_cost_function_cannot_hold() {
+  public void cannot_hold() {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(ship)).thenReturn(false);
@@ -58,7 +43,7 @@ public class MovementsTest {
   }
 
   @Test
-  public void edge_cost_function_penalty() {
+  public void no_ship_can_hold() {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHold(ship)).thenReturn(true);

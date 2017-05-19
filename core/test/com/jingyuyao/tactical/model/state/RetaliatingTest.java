@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -20,7 +20,6 @@ import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
@@ -42,8 +41,6 @@ public class RetaliatingTest {
   private WorldState worldState;
   @Mock
   private StateFactory stateFactory;
-  @Mock
-  private Movements movements;
   @Mock
   private World world;
   @Mock
@@ -80,7 +77,7 @@ public class RetaliatingTest {
   @Before
   public void setUp() {
     retaliating =
-        new Retaliating(modelBus, worldState, stateFactory, movements, world, battleSequence);
+        new Retaliating(modelBus, worldState, stateFactory, world, battleSequence);
   }
 
   @Test
@@ -107,13 +104,11 @@ public class RetaliatingTest {
   public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
-    when(cell.ship()).thenReturn(Optional.of(enemy));
-    when(cell2.ship()).thenReturn(Optional.of(enemy2));
+    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
     when(enemy.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(enemy2.getAllegiance()).thenReturn(Allegiance.ENEMY);
-    when(enemy.getAutoPilotResponse(cell, movements)).thenReturn(pilotResponse);
-    when(enemy2.getAutoPilotResponse(cell2, movements)).thenReturn(pilotResponse2);
+    when(enemy.getAutoPilotResponse(world, cell)).thenReturn(pilotResponse);
+    when(enemy2.getAutoPilotResponse(world, cell2)).thenReturn(pilotResponse2);
     when(pilotResponse.path()).thenReturn(Optional.of(path));
     when(pilotResponse.battle()).thenReturn(Optional.of(battle));
     when(pilotResponse2.path()).thenReturn(Optional.<Path>absent());
@@ -127,12 +122,12 @@ public class RetaliatingTest {
     InOrder inOrder =
         Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence);
     inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
-    inOrder.verify(enemy).getAutoPilotResponse(cell, movements);
+    inOrder.verify(enemy).getAutoPilotResponse(world, cell);
     inOrder.verify(origin).moveShip(path);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    inOrder.verify(enemy2).getAutoPilotResponse(cell2, movements);
+    inOrder.verify(enemy2).getAutoPilotResponse(world, cell2);
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     inOrder.verify(worldState).branchTo(startTurn);

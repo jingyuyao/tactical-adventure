@@ -9,7 +9,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.World;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -23,7 +22,6 @@ public class StateModule extends AbstractModule {
   @Override
   protected void configure() {
     requireBinding(ModelBus.class);
-    requireBinding(Movements.class);
     requireBinding(World.class);
 
     install(new FactoryModuleBuilder().build(StateFactory.class));

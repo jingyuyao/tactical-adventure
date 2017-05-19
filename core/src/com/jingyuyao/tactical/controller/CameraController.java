@@ -67,10 +67,6 @@ public class CameraController extends InputAdapter {
     return false;
   }
 
-  public void center() {
-    worldView.setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
-  }
-
   boolean isDragged() {
     return dragged;
   }

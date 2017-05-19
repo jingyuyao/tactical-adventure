@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,22 +31,22 @@ class BattleSequence {
     modelBus.post(new StartBattle(battle, new Promise(new Runnable() {
       @Override
       public void run() {
-        processDeaths(battle.getDeaths(), 0, done);
+        processDeaths(battle.getDeaths().iterator(), done);
       }
     })));
   }
 
-  private void processDeaths(final List<Person> death, final int index, final Runnable done) {
-    if (index < death.size()) {
-      ResourceKey name = death.get(index).getName();
+  private void processDeaths(final Iterator<Person> deathIterator, final Runnable done) {
+    if (deathIterator.hasNext()) {
+      ResourceKey name = deathIterator.next().getName();
       List<Dialogue> dialogues = worldState.getScript().getDeathDialogues().get(name);
       if (dialogues.isEmpty()) {
-        processDeaths(death, index + 1, done);
+        processDeaths(deathIterator, done);
       } else {
         modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
           @Override
           public void run() {
-            processDeaths(death, index + 1, done);
+            processDeaths(deathIterator, done);
           }
         })));
       }

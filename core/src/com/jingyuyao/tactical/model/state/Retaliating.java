@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
@@ -11,15 +10,15 @@ import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 
 public class Retaliating extends BaseState {
 
   private final StateFactory stateFactory;
-  private final Movements movements;
   private final World world;
   private final BattleSequence battleSequence;
 
@@ -28,12 +27,10 @@ public class Retaliating extends BaseState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Movements movements,
       World world,
       BattleSequence battleSequence) {
     super(modelBus, worldState);
     this.stateFactory = stateFactory;
-    this.movements = movements;
     this.world = world;
     this.battleSequence = battleSequence;
   }
@@ -42,33 +39,30 @@ public class Retaliating extends BaseState {
   public void enter() {
     Preconditions.checkState(getTurn().getStage().equals(TurnStage.ENEMY));
     super.enter();
-    retaliate(world.getShipSnapshot(), 0);
+    retaliate(world.getShipSnapshot().entrySet().iterator());
   }
 
-  /**
-   * Now we code like Racket!
-   */
-  private void retaliate(final ImmutableList<Cell> shipSnapshot, final int i) {
-    if (i == shipSnapshot.size()) {
+  private void retaliate(final Iterator<Entry<Cell, Ship>> shipsIterator) {
+    if (!shipsIterator.hasNext()) {
       getTurn().advance();
       post(new Save());
       branchTo(stateFactory.createStartTurn());
       return;
     }
 
-    final Runnable next = new Runnable() {
+    Runnable next = new Runnable() {
       @Override
       public void run() {
-        retaliate(shipSnapshot, i + 1);
+        retaliate(shipsIterator);
       }
     };
 
-    Cell cell = shipSnapshot.get(i);
-    Optional<Ship> shipOpt = cell.ship();
-    if (shipOpt.isPresent() && shipOpt.get().getAllegiance().equals(Allegiance.ENEMY)) {
-      Ship enemy = shipOpt.get();
-      post(new ActivatedEnemy(enemy));
-      handleMoving(enemy.getAutoPilotResponse(cell, movements), next);
+    Entry<Cell, Ship> entry = shipsIterator.next();
+    Cell cell = entry.getKey();
+    Ship ship = entry.getValue();
+    if (ship.getAllegiance().equals(Allegiance.ENEMY)) {
+      post(new ActivatedEnemy(ship));
+      handleMoving(ship.getAutoPilotResponse(world, cell), next);
     } else {
       next.run();
     }

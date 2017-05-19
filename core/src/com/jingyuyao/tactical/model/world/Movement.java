@@ -46,6 +46,10 @@ public class Movement {
     return new Path(getTrackTo(moveGraph, cell));
   }
 
+  Graph<Cell> getMoveGraph() {
+    return moveGraph;
+  }
+
   /**
    * Get the track from the starting {@link Cell} in the {@code graph} to {@code target}.
    * {@code target} must exist in the {@code graph} or an exception will be thrown.

@@ -4,23 +4,32 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
+/**
+ * Also contains a list of coordinate for other tests to use.
+ */
 public class CoordinateTest {
 
-  private static final Coordinate C1 = new Coordinate(0, 1);
-  private static final Coordinate C2 = new Coordinate(0, 1);
-  private static final Coordinate C3 = new Coordinate(2, 2);
+  public static final Coordinate C0_0 = new Coordinate(0, 0);
+  public static final Coordinate C0_1 = new Coordinate(0, 1);
+  public static final Coordinate C0_2 = new Coordinate(0, 2);
+  public static final Coordinate C1_0 = new Coordinate(1, 0);
+  public static final Coordinate C1_1 = new Coordinate(1, 1);
+  public static final Coordinate C1_2 = new Coordinate(1, 2);
+  public static final Coordinate C2_0 = new Coordinate(2, 0);
+  public static final Coordinate C2_1 = new Coordinate(2, 1);
+  public static final Coordinate C2_2 = new Coordinate(2, 2);
 
   @Test
   public void equality() {
-    assertThat(C1).isEqualTo(C2);
-    assertThat(C2).isNotEqualTo(C3);
-    assertThat(C1).isEqualTo(C1);
+    assertThat(C0_1).isEqualTo(new Coordinate(0, 1));
+    assertThat(C0_1).isNotEqualTo(C2_2);
+    assertThat(C0_1).isEqualTo(C0_1);
   }
 
   @Test
   public void hash() {
-    assertThat(C1.hashCode()).isEqualTo(C2.hashCode());
-    assertThat(C2.hashCode()).isNotEqualTo(C3.hashCode());
-    assertThat(C1.hashCode()).isEqualTo(C1.hashCode());
+    assertThat(C0_1.hashCode()).isEqualTo(new Coordinate(0, 1).hashCode());
+    assertThat(C0_1.hashCode()).isNotEqualTo(C2_2.hashCode());
+    assertThat(C0_1.hashCode()).isEqualTo(C0_1.hashCode());
   }
 }

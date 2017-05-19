@@ -1,40 +1,48 @@
 package com.jingyuyao.tactical.model.world;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.event.WorldLoad;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class World {
+public class World implements GetNeighbors {
 
   private final ModelBus modelBus;
+  private final Dijkstra dijkstra;
   private final CellFactory cellFactory;
   private final Map<Coordinate, Cell> cellMap;
   private int maxHeight;
   private int maxWidth;
 
   @Inject
-  World(ModelBus modelBus, CellFactory cellFactory, @BackingCellMap Map<Coordinate, Cell> cellMap) {
+  World(
+      ModelBus modelBus,
+      Dijkstra dijkstra,
+      CellFactory cellFactory,
+      @BackingCellMap Map<Coordinate, Cell> cellMap) {
     this.modelBus = modelBus;
+    this.dijkstra = dijkstra;
     this.cellFactory = cellFactory;
     this.cellMap = cellMap;
   }
 
-  public void initialize(
-      Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Ship> shipMap) {
+  public void initialize(Map<Coordinate, Terrain> terrainMap, Map<Coordinate, Ship> shipMap) {
     for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (cellMap.containsKey(coordinate)) {
@@ -55,16 +63,21 @@ public class World {
       if (cell.ship().isPresent()) {
         throw new IllegalArgumentException("Ship occupying same space as another");
       }
-      cell.spawnShip(entry.getValue());
+      Ship ship = entry.getValue();
+      if (cell.getTerrain().canHold(ship)) {
+        cell.spawnShip(ship);
+      } else {
+        throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
+      }
     }
-    modelBus.post(new WorldLoad(cellMap.values()));
+    modelBus.post(new WorldLoaded(this));
   }
 
   public void reset() {
     cellMap.clear();
     maxWidth = 0;
     maxHeight = 0;
-    modelBus.post(new WorldReset());
+    modelBus.post(new WorldReset(this));
   }
 
   public int getMaxHeight() {
@@ -83,24 +96,65 @@ public class World {
     return Optional.fromNullable(cellMap.get(coordinate));
   }
 
-  public ImmutableList<Cell> getShipSnapshot() {
+  @Override
+  public Iterable<Cell> getNeighbors(Cell from) {
+    List<Cell> neighbors = new ArrayList<>(Direction.values().length);
+    for (Direction direction : Direction.values()) {
+      Optional<Cell> neighborOpt = neighbor(from, direction);
+      if (neighborOpt.isPresent()) {
+        neighbors.add(neighborOpt.get());
+      }
+    }
+    return neighbors;
+  }
+
+  public Optional<Cell> neighbor(Cell from, Direction direction) {
+    return cell(from.getCoordinate().offsetBy(direction));
+  }
+
+  /**
+   * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell}
+   */
+  public Movement getShipMovement(Cell cell) {
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Ship ship = cell.ship().get();
+    return createMovement(new ShipCost(ship), cell, ship.getMoveDistance());
+  }
+
+  /**
+   * Create a {@link Movement} from cell spanning a set distance with a cost of one per cell.
+   */
+  public Movement getUnimpededMovement(Cell cell, int distance) {
+    return createMovement(new OneCost(), cell, distance);
+  }
+
+  /**
+   * Return a snapshot of all the ships in the world.
+   */
+  public ImmutableMap<Cell, Ship> getShipSnapshot() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
             return input.ship().isPresent();
           }
-        }).toList();
+        }).toMap(new Function<Cell, Ship>() {
+          @Override
+          public Ship apply(Cell input) {
+            return input.ship().get();  // ignore IDE, always present
+          }
+        });
   }
 
-  public void resetPlayerShipStats() {
-    for (Cell cell : cellMap.values()) {
-      for (Ship ship : cell.ship().asSet()) {
-        if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
-          ship.fullHeal();
-          ship.setControllable(true);
-        }
+  public void makeAllPlayerShipsControllable() {
+    for (Ship ship : getShipSnapshot().values()) {
+      if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+        ship.setControllable(true);
       }
     }
+  }
+
+  private Movement createMovement(GetEdgeCost getEdgeCost, Cell startingCell, int distance) {
+    return new Movement(dijkstra.minPathSearch(this, getEdgeCost, startingCell, distance));
   }
 }

@@ -102,7 +102,7 @@ public class DataManagerTest {
     InOrder inOrder =
         Mockito.inOrder(world, gameData, levelProgress, gameDataManager, levelProgressManager);
 
-    inOrder.verify(world).resetPlayerShipStats();
+    inOrder.verify(world).makeAllPlayerShipsControllable();
     inOrder.verify(levelProgress).update(world, worldState);
     inOrder.verify(gameData).setCurrentLevel(2);
     inOrder.verify(gameData).update(levelProgress);

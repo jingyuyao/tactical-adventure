@@ -12,7 +12,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class ControllingActionStateTest {
   @Mock
   private StateFactory stateFactory;
   @Mock
-  private Movements movements;
+  private World world;
   @Mock
   private Cell cell;
   @Mock
@@ -51,7 +51,7 @@ public class ControllingActionStateTest {
   public void setUp() {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
-    state = new ControllingActionState(modelBus, worldState, stateFactory, movements, cell);
+    state = new ControllingActionState(modelBus, worldState, stateFactory, world, cell);
   }
 
   @Test
@@ -61,7 +61,7 @@ public class ControllingActionStateTest {
 
   @Test
   public void select_weapon() {
-    when(weapon.createTargets(movements, cell)).thenReturn(targets);
+    when(weapon.createTargets(world, cell)).thenReturn(targets);
     when(stateFactory.createSelectingTarget(cell, weapon, targets))
         .thenReturn(selectingTarget);
 

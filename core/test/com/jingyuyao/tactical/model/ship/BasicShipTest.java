@@ -13,7 +13,7 @@ import com.jingyuyao.tactical.model.person.Pilot;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +44,7 @@ public class BasicShipTest {
   @Mock
   private Cell cell;
   @Mock
-  private Movements movements;
+  private World world;
   @Mock
   private Ship anotherShip;
   @Mock
@@ -68,22 +68,22 @@ public class BasicShipTest {
   public void auto_pilot_response_no_ship() {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
 
-    ship.getAutoPilotResponse(cell, movements);
+    ship.getAutoPilotResponse(world, cell);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void auto_pilot_response_wrong_ship() {
     when(cell.ship()).thenReturn(Optional.of(anotherShip));
 
-    ship.getAutoPilotResponse(cell, movements);
+    ship.getAutoPilotResponse(world, cell);
   }
 
   @Test
   public void auto_pilot_response() {
     when(cell.ship()).thenReturn(Optional.of(ship));
-    when(autoPilot.getResponse(cell, movements)).thenReturn(pilotResponse);
+    when(autoPilot.getResponse(world, cell)).thenReturn(pilotResponse);
 
-    assertThat(ship.getAutoPilotResponse(cell, movements)).isSameAs(pilotResponse);
+    assertThat(ship.getAutoPilotResponse(world, cell)).isSameAs(pilotResponse);
   }
 
   @Test

@@ -6,20 +6,20 @@ import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 class ControllingActionState extends ControllingState {
 
-  private final Movements movements;
+  private final World world;
 
   ControllingActionState(
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Movements movements,
+      World world,
       Cell cell) {
     super(modelBus, worldState, stateFactory, cell);
-    this.movements = movements;
+    this.world = world;
   }
 
   @Override
@@ -37,7 +37,7 @@ class ControllingActionState extends ControllingState {
   }
 
   void selectWeapon(Weapon weapon) {
-    ImmutableList<Target> targets = weapon.createTargets(movements, getCell());
+    ImmutableList<Target> targets = weapon.createTargets(world, getCell());
     goTo(getStateFactory().createSelectingTarget(getCell(), weapon, targets));
   }
 
@@ -45,7 +45,7 @@ class ControllingActionState extends ControllingState {
     goTo(getStateFactory().createUsingConsumable(getCell(), consumable));
   }
 
-  Movements getMovements() {
-    return movements;
+  World getWorld() {
+    return world;
   }
 }

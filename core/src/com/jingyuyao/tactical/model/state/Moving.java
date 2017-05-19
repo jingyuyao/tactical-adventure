@@ -5,8 +5,8 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
-import com.jingyuyao.tactical.model.world.Movements;
 import com.jingyuyao.tactical.model.world.Path;
+import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
 public class Moving extends ControllingActionState {
@@ -19,10 +19,10 @@ public class Moving extends ControllingActionState {
       ModelBus modelBus,
       WorldState worldState,
       StateFactory stateFactory,
-      Movements movements,
+      World world,
       @Assisted Cell cell,
       @Assisted Movement movement) {
-    super(modelBus, worldState, stateFactory, movements, cell);
+    super(modelBus, worldState, stateFactory, world, cell);
     this.movement = movement;
   }
 
@@ -40,7 +40,7 @@ public class Moving extends ControllingActionState {
       if (!getShip().equals(ship)) {
         rollback();
         if (ship.isControllable()) {
-          goTo(getStateFactory().createMoving(cell, getMovements().distanceFrom(cell)));
+          goTo(getStateFactory().createMoving(cell, getWorld().getShipMovement(cell)));
         }
       }
     } else {

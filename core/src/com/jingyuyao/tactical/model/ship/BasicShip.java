@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Movements;
+import com.jingyuyao.tactical.model.world.World;
 
 public class BasicShip implements Ship {
 
@@ -47,10 +47,10 @@ public class BasicShip implements Ship {
   }
 
   @Override
-  public PilotResponse getAutoPilotResponse(Cell cell, Movements movements) {
+  public PilotResponse getAutoPilotResponse(World world, Cell cell) {
     Preconditions.checkArgument(cell.ship().isPresent());
     Preconditions.checkArgument(cell.ship().get().equals(this));
-    return autoPilot.getResponse(cell, movements);
+    return autoPilot.getResponse(world, cell);
   }
 
   @Override
