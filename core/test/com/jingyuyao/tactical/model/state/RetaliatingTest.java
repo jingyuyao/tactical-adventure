@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -107,9 +107,7 @@ public class RetaliatingTest {
   public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell, cell2));
-    when(cell.ship()).thenReturn(Optional.of(enemy));
-    when(cell2.ship()).thenReturn(Optional.of(enemy2));
+    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
     when(enemy.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(enemy2.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(enemy.getAutoPilotResponse(cell, movements)).thenReturn(pilotResponse);

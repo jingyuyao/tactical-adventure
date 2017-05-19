@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.model.script;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
@@ -51,9 +51,7 @@ public class AllDiedTest {
 
   @Test
   public void is_met() {
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
-    when(cell1.ship()).thenReturn(Optional.of(ship1));
-    when(cell2.ship()).thenReturn(Optional.of(ship2));
+    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
     when(ship1.getCrew()).thenReturn(ImmutableList.of(crew1));
     when(ship2.getCrew()).thenReturn(ImmutableList.of(crew2));
     when(crew1.getName()).thenReturn(key1);
@@ -66,9 +64,7 @@ public class AllDiedTest {
 
   @Test
   public void is_not_met() {
-    when(world.getShipSnapshot()).thenReturn(ImmutableList.of(cell1, cell2));
-    when(cell1.ship()).thenReturn(Optional.of(ship1));
-    when(cell2.ship()).thenReturn(Optional.of(ship2));
+    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
     when(ship1.getCrew()).thenReturn(ImmutableList.of(crew1));
     when(ship2.getCrew()).thenReturn(ImmutableList.of(crew2));
     when(crew1.getName()).thenReturn(key1);

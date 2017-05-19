@@ -1,9 +1,10 @@
 package com.jingyuyao.tactical.model.world;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoad;
@@ -32,9 +33,7 @@ public class World {
     this.cellMap = cellMap;
   }
 
-  public void initialize(
-      Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Ship> shipMap) {
+  public void initialize(Map<Coordinate, Terrain> terrainMap, Map<Coordinate, Ship> shipMap) {
     for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (cellMap.containsKey(coordinate)) {
@@ -83,23 +82,28 @@ public class World {
     return Optional.fromNullable(cellMap.get(coordinate));
   }
 
-  public ImmutableList<Cell> getShipSnapshot() {
+  /**
+   * Return a snapshot of all the ships in the world.
+   */
+  public ImmutableMap<Cell, Ship> getShipSnapshot() {
     return FluentIterable.from(cellMap.values())
         .filter(new Predicate<Cell>() {
           @Override
           public boolean apply(Cell input) {
             return input.ship().isPresent();
           }
-        }).toList();
+        }).toMap(new Function<Cell, Ship>() {
+          @Override
+          public Ship apply(Cell input) {
+            return input.ship().get();  // ignore IDE, always present
+          }
+        });
   }
 
-  public void resetPlayerShipStats() {
-    for (Cell cell : cellMap.values()) {
-      for (Ship ship : cell.ship().asSet()) {
-        if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
-          ship.fullHeal();
-          ship.setControllable(true);
-        }
+  public void makeAllPlayerShipsControllable() {
+    for (Ship ship : getShipSnapshot().values()) {
+      if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+        ship.setControllable(true);
       }
     }
   }

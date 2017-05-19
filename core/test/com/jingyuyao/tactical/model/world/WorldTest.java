@@ -111,16 +111,6 @@ public class WorldTest {
   }
 
   @Test
-  public void get_ship_snapshot() {
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
-    when(cell1.ship()).thenReturn(Optional.of(ship1));
-    when(cell2.ship()).thenReturn(Optional.of(ship2));
-
-    assertThat(world.getShipSnapshot()).containsExactly(cell1, cell2);
-  }
-
-  @Test
   public void get_cell() {
     cellMap.put(COORDINATE1, cell1);
 
@@ -135,18 +125,27 @@ public class WorldTest {
   }
 
   @Test
-  public void reset_player_ships() {
+  public void get_ships() {
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
+
+    assertThat(world.getShipSnapshot()).containsExactly(cell1, ship1, cell2, ship2);
+  }
+
+  @Test
+  public void make_all_player_ships_controllable() {
+    cellMap.put(COORDINATE1, cell1);
+    cellMap.put(COORDINATE2, cell2);
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
     when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
-    cellMap.put(COORDINATE1, cell1);
-    cellMap.put(COORDINATE2, cell2);
 
-    world.resetPlayerShipStats();
+    world.makeAllPlayerShipsControllable();
 
-    verify(ship1).fullHeal();
     verify(ship1).setControllable(true);
-    verify(ship2, never()).fullHeal();
+    verify(ship2, never()).setControllable(true);
   }
 }

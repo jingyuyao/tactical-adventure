@@ -57,7 +57,7 @@ public class DataManager {
           "An existing level progress file is needed for changing levels.");
     }
 
-    world.resetPlayerShipStats();
+    world.makeAllPlayerShipsControllable();
 
     LevelProgress levelProgress = levelProgressOptional.get();
     levelProgress.update(world, worldState);
