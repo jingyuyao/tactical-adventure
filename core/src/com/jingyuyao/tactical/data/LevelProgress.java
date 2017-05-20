@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 
 /**
  * Contains the current progress of a level. Basically a merger of {@link GameData} and {@link
- * LevelData}.
+ * LevelWorld}.
  */
 public class LevelProgress {
 
@@ -27,9 +27,9 @@ public class LevelProgress {
   }
 
   // TODO: should be able to choose which player goes to which spawn
-  LevelProgress(GameData gameData, LevelData levelData) {
+  LevelProgress(GameData gameData, LevelWorld levelWorld) {
     List<Ship> playerShips = gameData.getPlayerShips();
-    List<Coordinate> playerSpawns = levelData.getPlayerSpawns();
+    List<Coordinate> playerSpawns = levelWorld.getPlayerSpawns();
     for (int i = 0; i < playerShips.size(); i++) {
       Ship player = playerShips.get(i);
       if (i < playerSpawns.size()) {
@@ -38,7 +38,7 @@ public class LevelProgress {
         reservedPlayerShips.add(player);
       }
     }
-    ships.putAll(levelData.getShips());
+    ships.putAll(levelWorld.getShips());
   }
 
   public List<Ship> getReservedPlayerShips() {

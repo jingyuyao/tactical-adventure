@@ -24,9 +24,9 @@ class LevelDataLoader {
     return fileHandle.exists();
   }
 
-  LevelData loadInit(int level) {
-    FileHandle fileHandle = files.internal(dataConfig.getLevelInitFileName(level));
-    return myGson.fromJson(fileHandle.readString(), LevelData.class);
+  LevelWorld loadWorld(int level) {
+    FileHandle fileHandle = files.internal(dataConfig.getLevelWorldFileName(level));
+    return myGson.fromJson(fileHandle.readString(), LevelWorld.class);
   }
 
   LevelScript loadScript(int level) {

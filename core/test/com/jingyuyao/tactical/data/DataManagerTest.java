@@ -48,7 +48,7 @@ public class DataManagerTest {
   @Mock
   private LevelProgress levelProgress;
   @Mock
-  private LevelData levelData;
+  private LevelWorld levelWorld;
   @Mock
   private OrthogonalTiledMapRenderer tiledMapRenderer;
   @Mock
@@ -144,10 +144,10 @@ public class DataManagerTest {
     when(gameDataManager.loadData()).thenReturn(gameData);
     when(gameData.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.<LevelProgress>absent());
-    when(levelDataLoader.loadInit(2)).thenReturn(levelData);
+    when(levelDataLoader.loadWorld(2)).thenReturn(levelWorld);
     when(gameData.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
-    when(levelData.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
-    when(levelData.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
+    when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
+    when(levelWorld.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(scriptLoader.load(2)).thenReturn(script);
 

@@ -26,7 +26,7 @@ public class LevelProgressTest {
   @Mock
   private GameData gameData;
   @Mock
-  private LevelData levelData;
+  private LevelWorld levelWorld;
   @Mock
   private World world;
   @Mock
@@ -57,10 +57,10 @@ public class LevelProgressTest {
   @Test
   public void from_game_save_and_level_data() {
     when(gameData.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
-    when(levelData.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
-    when(levelData.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
+    when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
+    when(levelWorld.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
 
-    LevelProgress levelProgress = new LevelProgress(gameData, levelData);
+    LevelProgress levelProgress = new LevelProgress(gameData, levelWorld);
 
     assertThat(levelProgress.getShips()).containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(levelProgress.getReservedPlayerShips()).containsExactly(player2);

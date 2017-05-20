@@ -84,8 +84,8 @@ public class DataManager {
     if (levelProgressOptional.isPresent()) {
       levelProgress = levelProgressOptional.get();
     } else {
-      LevelData levelData = levelDataLoader.loadInit(level);
-      levelProgress = new LevelProgress(gameData, levelData);
+      LevelWorld levelWorld = levelDataLoader.loadWorld(level);
+      levelProgress = new LevelProgress(gameData, levelWorld);
       levelProgressManager.save(levelProgress);
     }
 

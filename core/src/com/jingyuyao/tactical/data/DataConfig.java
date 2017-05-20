@@ -33,8 +33,8 @@ class DataConfig {
     return "data/" + level + "/";
   }
 
-  String getLevelInitFileName(int level) {
-    return getLevelDir(level) + "init.json";
+  String getLevelWorldFileName(int level) {
+    return getLevelDir(level) + "world.json";
   }
 
   String getLevelScriptFileName(int level) {

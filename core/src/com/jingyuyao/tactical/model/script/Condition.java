@@ -3,6 +3,9 @@ package com.jingyuyao.tactical.model.script;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
+/**
+ * A condition that can trigger some script actions. A condition should only be triggered once.
+ */
 public interface Condition {
 
   /**

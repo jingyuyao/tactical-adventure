@@ -27,7 +27,7 @@ public class LevelDataLoaderTest {
   @Mock
   private FileHandle fileHandle;
   @Mock
-  private LevelData levelData;
+  private LevelWorld levelWorld;
   @Mock
   private LevelScript levelScript;
 
@@ -49,12 +49,12 @@ public class LevelDataLoaderTest {
 
   @Test
   public void load_init() {
-    when(dataConfig.getLevelInitFileName(2)).thenReturn(LEVEL);
+    when(dataConfig.getLevelWorldFileName(2)).thenReturn(LEVEL);
     when(files.internal(LEVEL)).thenReturn(fileHandle);
     when(fileHandle.readString()).thenReturn(DATA);
-    when(myGson.fromJson(DATA, LevelData.class)).thenReturn(levelData);
+    when(myGson.fromJson(DATA, LevelWorld.class)).thenReturn(levelWorld);
 
-    assertThat(levelDataLoader.loadInit(2)).isSameAs(levelData);
+    assertThat(levelDataLoader.loadWorld(2)).isSameAs(levelWorld);
   }
 
   @Test
