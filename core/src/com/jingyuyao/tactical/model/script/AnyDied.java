@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Met when any of the {@link Person} in {@code names} are no longer in {@link World}.
  */
-public class AnyDied implements Condition {
+public class AnyDied extends BaseCondition {
 
   private Set<String> names;
 

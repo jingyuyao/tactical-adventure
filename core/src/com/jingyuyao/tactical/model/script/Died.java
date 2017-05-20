@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.world.World;
 /**
  * Met when a {@link Person} with {@code name} is no longer in the {@link World}.
  */
-public class Died implements Condition {
+public class Died extends BaseCondition {
 
   private String name;
 

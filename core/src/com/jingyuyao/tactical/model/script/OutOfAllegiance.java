@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.world.World;
 /**
  * Met when there are no ships of the given {@link Allegiance} in the world.
  */
-public class OutOfAllegiance implements Condition {
+public class OutOfAllegiance extends BaseCondition {
 
   private Allegiance allegiance;
 

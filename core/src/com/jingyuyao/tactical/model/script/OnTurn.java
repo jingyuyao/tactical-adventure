@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.world.World;
 /**
  * Met when the current turn reaches the set turn.
  */
-public class OnTurn implements Condition {
+public class OnTurn extends BaseCondition {
 
   private Turn turn;
 
