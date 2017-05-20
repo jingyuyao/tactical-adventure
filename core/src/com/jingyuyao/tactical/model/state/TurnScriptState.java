@@ -5,6 +5,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 abstract class TurnScriptState extends BaseState {
 
   private final ScriptRunner scriptRunner;
+  private boolean triggered = false;
 
   TurnScriptState(ModelBus modelBus, WorldState worldState, ScriptRunner scriptRunner) {
     super(modelBus, worldState);
@@ -14,12 +15,17 @@ abstract class TurnScriptState extends BaseState {
   @Override
   public void enter() {
     super.enter();
-    scriptRunner.triggerTurn(new Runnable() {
-      @Override
-      public void run() {
-        scriptDone();
-      }
-    });
+    // enter() could be called again if the next state cancels, but we don't want to trigger
+    // the same script twice.
+    if (!triggered) {
+      triggered = true;
+      scriptRunner.triggerTurn(new Runnable() {
+        @Override
+        public void run() {
+          scriptDone();
+        }
+      });
+    }
   }
 
   /**

@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 
-public class Retaliating extends BaseState {
+public class Retaliating extends TurnScriptState {
 
   private final StateFactory stateFactory;
   private final World world;
@@ -26,10 +26,11 @@ public class Retaliating extends BaseState {
   Retaliating(
       ModelBus modelBus,
       WorldState worldState,
+      ScriptRunner scriptRunner,
       StateFactory stateFactory,
       World world,
       BattleSequence battleSequence) {
-    super(modelBus, worldState);
+    super(modelBus, worldState, scriptRunner);
     this.stateFactory = stateFactory;
     this.world = world;
     this.battleSequence = battleSequence;
@@ -39,6 +40,10 @@ public class Retaliating extends BaseState {
   public void enter() {
     Preconditions.checkState(getTurn().getStage().equals(TurnStage.ENEMY));
     super.enter();
+  }
+
+  @Override
+  void scriptDone() {
     retaliate(world.getShipSnapshot().entrySet().iterator());
   }
 

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.model.ModelBus;
@@ -68,5 +69,11 @@ public class StartTurnTest {
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(waiting);
+
+    startTurn.enter();
+
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isSameAs(startTurn);
+    verifyNoMoreInteractions(scriptRunner);
   }
 }
