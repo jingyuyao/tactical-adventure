@@ -1,13 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.StartBattle;
-import com.jingyuyao.tactical.model.person.Person;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +38,6 @@ public class BattleSequenceTest {
 
   @Test
   public void start() {
-    ImmutableList<Person> deaths = ImmutableList.of();
-    when(battle.getDeaths()).thenReturn(deaths);
-
     battleSequence.start(battle, done);
 
     InOrder inOrder = Mockito.inOrder(modelBus, battle, scriptRunner);
@@ -52,6 +46,6 @@ public class BattleSequenceTest {
     StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
     startBattle.start();
     inOrder.verify(battle).execute();
-    inOrder.verify(scriptRunner).triggerDeaths(deaths, done);
+    inOrder.verify(scriptRunner).triggerScripts(done);
   }
 }

@@ -5,8 +5,6 @@ import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
@@ -31,49 +29,40 @@ class ScriptRunner {
   }
 
   /**
-   * Trigger any script action at the current turn. {@code keepGoing} is called if the level is not
-   * terminated at this turn.
+   * Trigger scripts given the current {@link Turn} and {@link World}.
    */
-  void triggerTurn(final Runnable keepGoing) {
-    Script script = worldState.getScript();
-    Turn turn = worldState.getTurn();
-    List<Dialogue> dialogues = script.getTurnDialogues().get(turn);
-    if (dialogues.isEmpty()) {
-      triggerWinLose(keepGoing);
-    } else {
-      modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
-        @Override
-        public void run() {
-          triggerWinLose(keepGoing);
-        }
-      })));
-    }
+  void triggerScripts(final Runnable keepGoing) {
+    triggerDialogues(new Runnable() {
+      @Override
+      public void run() {
+        triggerWinLose(keepGoing);
+      }
+    });
   }
 
-  /**
-   * Trigger any script action for the persons just died. {@code keepGoing} is called if the level
-   * is not terminated by the deaths.
-   */
-  void triggerDeaths(List<Person> deaths, Runnable keepGoing) {
-    triggerDeaths(deaths.iterator(), keepGoing);
+  private void triggerDialogues(Runnable done) {
+    triggerDialogues(worldState.getScript().getDialogues().keySet().iterator(), done);
   }
 
-  private void triggerDeaths(final Iterator<Person> deathIterator, final Runnable keepGoing) {
-    if (deathIterator.hasNext()) {
-      ResourceKey name = deathIterator.next().getName();
-      List<Dialogue> dialogues = worldState.getScript().getDeathDialogues().get(name);
-      if (dialogues.isEmpty()) {
-        triggerDeaths(deathIterator, keepGoing);
-      } else {
+  private void triggerDialogues(final Iterator<Condition> conditions, final Runnable done) {
+    if (conditions.hasNext()) {
+      Turn turn = worldState.getTurn();
+      final Condition condition = conditions.next();
+      if (!condition.isTriggered() && condition.isMet(turn, world)) {
+        List<Dialogue> dialogues = worldState.getScript().getDialogues().get(condition);
         modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
           @Override
           public void run() {
-            triggerDeaths(deathIterator, keepGoing);
+            // can't consider a dialogue trigger until it finishes showing
+            condition.triggered();
+            triggerDialogues(conditions, done);
           }
         })));
+      } else {
+        triggerDialogues(conditions, done);
       }
     } else {
-      triggerWinLose(keepGoing);
+      done.run();
     }
   }
 
@@ -83,12 +72,20 @@ class ScriptRunner {
     // lose condition goes first so YOLOs are not encouraged
     for (Condition condition : script.getLoseConditions()) {
       if (condition.isMet(turn, world)) {
+        if (condition.isTriggered()) {
+          throw new RuntimeException("Lose condition should not trigger twice!");
+        }
+        condition.triggered();
         modelBus.post(new LevelLost());
         return;
       }
     }
     for (Condition condition : script.getWinConditions()) {
       if (condition.isMet(turn, world)) {
+        if (condition.isTriggered()) {
+          throw new RuntimeException("Win condition should not trigger twice!");
+        }
+        condition.triggered();
         modelBus.post(new LevelWon());
         return;
       }

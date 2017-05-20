@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -76,11 +75,7 @@ public class WaitingTest {
 
     waiting.enter();
 
-    verify(scriptRunner).triggerTurn(Mockito.any(Runnable.class));
-
-    waiting.enter();
-
-    verifyNoMoreInteractions(scriptRunner);
+    verify(scriptRunner).triggerScripts(Mockito.any(Runnable.class));
   }
 
   @Test

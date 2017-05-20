@@ -23,7 +23,7 @@ class BattleSequence {
     modelBus.post(new StartBattle(battle, new Promise(new Runnable() {
       @Override
       public void run() {
-        scriptRunner.triggerDeaths(battle.getDeaths(), done);
+        scriptRunner.triggerScripts(done);
       }
     })));
   }

@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -126,7 +125,7 @@ public class RetaliatingTest {
         inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence, scriptRunner);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(retaliating);
-    inOrder.verify(scriptRunner).triggerTurn(runnableCaptor.capture());
+    inOrder.verify(scriptRunner).triggerScripts(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     ActivatedEnemy activatedEnemy1 =
@@ -145,12 +144,6 @@ public class RetaliatingTest {
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(startTurn);
-
-    retaliating.enter();
-
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isSameAs(retaliating);
-    verifyNoMoreInteractions(scriptRunner);
   }
 
   @Test

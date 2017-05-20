@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.model.ModelBus;
@@ -66,18 +65,12 @@ public class EndTurnTest {
     InOrder inOrder = Mockito.inOrder(modelBus, world, scriptRunner, turn, worldState);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
-    inOrder.verify(scriptRunner).triggerTurn(runnableCaptor.capture());
+    inOrder.verify(scriptRunner).triggerScripts(runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(world).makeAllPlayerShipsControllable();
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(retaliating);
-
-    endTurn.enter();
-
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isSameAs(endTurn);
-    verifyNoMoreInteractions(scriptRunner);
   }
 }
