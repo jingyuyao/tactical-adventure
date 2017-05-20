@@ -28,7 +28,7 @@ public class LevelProgress {
 
   // TODO: should be able to choose which player goes to which spawn
   LevelProgress(GameSave gameSave, LevelWorld levelWorld) {
-    List<Ship> playerShips = gameSave.getPlayerShips();
+    List<Ship> playerShips = gameSave.getInactiveShips();
     List<Coordinate> playerSpawns = levelWorld.getPlayerSpawns();
     for (int i = 0; i < playerShips.size(); i++) {
       Ship player = playerShips.get(i);

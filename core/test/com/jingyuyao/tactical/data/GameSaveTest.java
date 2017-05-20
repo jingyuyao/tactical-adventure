@@ -41,11 +41,11 @@ public class GameSaveTest {
 
     gameSave.update(levelProgress);
 
-    assertThat(gameSave.getPlayerShips()).containsExactly(ship1, ship2).inOrder();
+    assertThat(gameSave.getInactiveShips()).containsExactly(ship1, ship2).inOrder();
 
     // tests the previous changes are cleared
     gameSave.update(levelProgress);
 
-    assertThat(gameSave.getPlayerShips()).containsExactly(ship1, ship2).inOrder();
+    assertThat(gameSave.getInactiveShips()).containsExactly(ship1, ship2).inOrder();
   }
 }

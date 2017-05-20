@@ -80,7 +80,7 @@ public class DataManagerTest {
 
   @Test
   public void load_current_save() {
-    when(gameSaveManager.loadData()).thenReturn(gameSave);
+    when(gameSaveManager.load()).thenReturn(gameSave);
 
     assertThat(dataManager.loadCurrentSave()).isSameAs(gameSave);
   }
@@ -94,7 +94,7 @@ public class DataManagerTest {
 
   @Test
   public void change_level() {
-    when(gameSaveManager.loadData()).thenReturn(gameSave);
+    when(gameSaveManager.load()).thenReturn(gameSave);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
     dataManager.changeLevel(2, world, worldState);
@@ -106,7 +106,7 @@ public class DataManagerTest {
     inOrder.verify(levelProgress).update(world, worldState);
     inOrder.verify(gameSave).setCurrentLevel(2);
     inOrder.verify(gameSave).update(levelProgress);
-    inOrder.verify(gameSaveManager).saveData(gameSave);
+    inOrder.verify(gameSaveManager).save(gameSave);
     inOrder.verify(levelProgressManager).removeSave();
   }
 
@@ -122,7 +122,7 @@ public class DataManagerTest {
   public void load_level_has_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Ship> shipMap = new HashMap<>();
-    when(gameSaveManager.loadData()).thenReturn(gameSave);
+    when(gameSaveManager.load()).thenReturn(gameSave);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
@@ -141,11 +141,11 @@ public class DataManagerTest {
   @Test
   public void load_level_no_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    when(gameSaveManager.loadData()).thenReturn(gameSave);
+    when(gameSaveManager.load()).thenReturn(gameSave);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.<LevelProgress>absent());
     when(levelDataLoader.loadWorld(2)).thenReturn(levelWorld);
-    when(gameSave.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
+    when(gameSave.getInactiveShips()).thenReturn(ImmutableList.of(player1, player2));
     when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelWorld.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);

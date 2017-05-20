@@ -47,7 +47,7 @@ public class GameSaveManagerTest {
     when(fileHandle1.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
 
-    assertThat(gameSaveManager.loadData()).isSameAs(gameSave);
+    assertThat(gameSaveManager.load()).isSameAs(gameSave);
   }
 
   @Test
@@ -60,7 +60,7 @@ public class GameSaveManagerTest {
     when(fileHandle2.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
 
-    assertThat(gameSaveManager.loadData()).isSameAs(gameSave);
+    assertThat(gameSaveManager.load()).isSameAs(gameSave);
   }
 
   @Test
@@ -69,7 +69,7 @@ public class GameSaveManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(myGson.toJson(gameSave)).thenReturn(DATA);
 
-    gameSaveManager.saveData(gameSave);
+    gameSaveManager.save(gameSave);
 
     verify(fileHandle1).writeString(DATA, false);
   }

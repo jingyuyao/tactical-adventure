@@ -56,7 +56,7 @@ public class LevelProgressTest {
 
   @Test
   public void from_game_save_and_level_data() {
-    when(gameSave.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
+    when(gameSave.getInactiveShips()).thenReturn(ImmutableList.of(player1, player2));
     when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelWorld.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
 

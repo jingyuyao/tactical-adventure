@@ -11,7 +11,8 @@ import java.util.List;
 public class GameSave {
 
   private int currentLevel = 1;
-  private List<Ship> playerShips = new ArrayList<>();
+  private List<Ship> inactiveShips = new ArrayList<>();
+  private List<Ship> activeShips = new ArrayList<>();
 
   public int getCurrentLevel() {
     return currentLevel;
@@ -21,16 +22,20 @@ public class GameSave {
     this.currentLevel = currentLevel;
   }
 
-  List<Ship> getPlayerShips() {
-    return playerShips;
+  List<Ship> getInactiveShips() {
+    return inactiveShips;
+  }
+
+  List<Ship> getActiveShips() {
+    return activeShips;
   }
 
   void update(LevelProgress levelProgress) {
-    playerShips.clear();
-    playerShips.addAll(levelProgress.getReservedPlayerShips());
+    inactiveShips.clear();
+    inactiveShips.addAll(levelProgress.getReservedPlayerShips());
     for (Ship ship : levelProgress.getShips().values()) {
       if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
-        playerShips.add(ship);
+        inactiveShips.add(ship);
       }
     }
   }

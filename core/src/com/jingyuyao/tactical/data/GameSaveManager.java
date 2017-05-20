@@ -20,23 +20,23 @@ class GameSaveManager {
     this.files = files;
   }
 
-  GameSave loadData() {
-    Optional<GameSave> main = loadData(dataConfig.getMainSaveFileName(), false);
+  GameSave load() {
+    Optional<GameSave> main = load(dataConfig.getMainSaveFileName(), false);
     if (main.isPresent()) {
       return main.get();
     }
 
-    Optional<GameSave> start = loadData(dataConfig.getInitFileName(), true);
+    Optional<GameSave> start = load(dataConfig.getInitFileName(), true);
     if (start.isPresent()) {
       GameSave startSave = start.get();
-      saveData(startSave);
+      save(startSave);
       return startSave;
     }
 
     throw new IllegalStateException("Could not find main init or save file!");
   }
 
-  void saveData(GameSave gameSave) {
+  void save(GameSave gameSave) {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
     fileHandle.writeString(myGson.toJson(gameSave), false);
   }
@@ -48,7 +48,7 @@ class GameSaveManager {
     }
   }
 
-  private Optional<GameSave> loadData(String fileName, boolean internal) {
+  private Optional<GameSave> load(String fileName, boolean internal) {
     FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
       return Optional.of(myGson.fromJson(fileHandle.readString(), GameSave.class));
