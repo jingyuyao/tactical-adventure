@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class EndTurn extends ScriptState {
+public class EndTurn extends TurnScriptState {
 
   private final StateFactory stateFactory;
   private final World world;
@@ -16,10 +16,10 @@ public class EndTurn extends ScriptState {
   EndTurn(
       ModelBus modelBus,
       WorldState worldState,
-      LevelComplete levelComplete,
+      ScriptRunner scriptRunner,
       StateFactory stateFactory,
       World world) {
-    super(modelBus, worldState, levelComplete);
+    super(modelBus, worldState, scriptRunner);
     this.stateFactory = stateFactory;
     this.world = world;
   }
@@ -31,7 +31,7 @@ public class EndTurn extends ScriptState {
   }
 
   @Override
-  void finish() {
+  void scriptDone() {
     world.makeAllPlayerShipsControllable();
     getTurn().advance();
     post(new Save());

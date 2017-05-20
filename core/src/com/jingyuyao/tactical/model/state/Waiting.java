@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class Waiting extends BaseState {
+public class Waiting extends TurnScriptState {
 
   private final StateFactory stateFactory;
   private final World world;
@@ -19,9 +19,10 @@ public class Waiting extends BaseState {
   Waiting(
       ModelBus modelBus,
       WorldState worldState,
+      ScriptRunner scriptRunner,
       StateFactory stateFactory,
       World world) {
-    super(modelBus, worldState);
+    super(modelBus, worldState, scriptRunner);
     this.stateFactory = stateFactory;
     this.world = world;
   }
@@ -30,6 +31,10 @@ public class Waiting extends BaseState {
   public void enter() {
     Preconditions.checkState(getTurn().getStage().equals(TurnStage.PLAYER));
     super.enter();
+  }
+
+  @Override
+  void scriptDone() {
   }
 
   @Override

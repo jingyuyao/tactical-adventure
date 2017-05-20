@@ -1,8 +1,9 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +40,8 @@ public class RetaliatingTest {
   private ModelBus modelBus;
   @Mock
   private WorldState worldState;
+  @Mock
+  private ScriptRunner scriptRunner;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -77,7 +80,7 @@ public class RetaliatingTest {
   @Before
   public void setUp() {
     retaliating =
-        new Retaliating(modelBus, worldState, stateFactory, world, battleSequence);
+        new Retaliating(modelBus, worldState, scriptRunner, stateFactory, world, battleSequence);
   }
 
   @Test
@@ -120,21 +123,34 @@ public class RetaliatingTest {
     retaliating.enter();
 
     InOrder inOrder =
-        Mockito.inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence);
-    inOrder.verify(modelBus, times(2)).post(argumentCaptor.capture());
+        inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence, scriptRunner);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isSameAs(retaliating);
+    inOrder.verify(scriptRunner).triggerTurn(runnableCaptor.capture());
+    runnableCaptor.getValue().run();
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    ActivatedEnemy activatedEnemy1 =
+        TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedEnemy.class);
+    assertThat(activatedEnemy1.getObject()).isSameAs(enemy);
     inOrder.verify(enemy).getAutoPilotResponse(world, cell);
     inOrder.verify(origin).moveShip(path);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
+    ActivatedEnemy activatedEnemy2 =
+        TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedEnemy.class);
+    assertThat(activatedEnemy2.getObject()).isSameAs(enemy2);
     inOrder.verify(enemy2).getAutoPilotResponse(world, cell2);
     inOrder.verify(turn).advance();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(startTurn);
-    assertThat(argumentCaptor.getAllValues().get(0)).isSameAs(retaliating);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 1, enemy, ActivatedEnemy.class);
-    TestHelpers.verifyObjectEvent(argumentCaptor, 2, enemy2, ActivatedEnemy.class);
-    assertThat(argumentCaptor.getAllValues().get(3)).isInstanceOf(Save.class);
+
+    retaliating.enter();
+
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isSameAs(retaliating);
+    verifyNoMoreInteractions(scriptRunner);
   }
 
   @Test

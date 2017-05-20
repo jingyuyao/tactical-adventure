@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -31,6 +33,8 @@ public class WaitingTest {
   private ModelBus modelBus;
   @Mock
   private WorldState worldState;
+  @Mock
+  private ScriptRunner scriptRunner;
   @Mock
   private StateFactory stateFactory;
   @Mock
@@ -54,7 +58,7 @@ public class WaitingTest {
 
   @Before
   public void setUp() {
-    waiting = new Waiting(modelBus, worldState, stateFactory, world);
+    waiting = new Waiting(modelBus, worldState, scriptRunner, stateFactory, world);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -63,6 +67,20 @@ public class WaitingTest {
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
 
     waiting.enter();
+  }
+
+  @Test
+  public void enter() {
+    when(worldState.getTurn()).thenReturn(turn);
+    when(turn.getStage()).thenReturn(TurnStage.PLAYER);
+
+    waiting.enter();
+
+    verify(scriptRunner).triggerTurn(Mockito.any(Runnable.class));
+
+    waiting.enter();
+
+    verifyNoMoreInteractions(scriptRunner);
   }
 
   @Test

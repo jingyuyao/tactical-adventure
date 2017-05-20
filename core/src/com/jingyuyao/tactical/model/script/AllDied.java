@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.world.World;
 import java.util.Set;
 
 /**
- * Met when all of the {@link Person} in {@code names} are dead.
+ * Met when all of the {@link Person} in {@code names} are no longer in {@link World}.
  */
 public class AllDied implements Condition {
 

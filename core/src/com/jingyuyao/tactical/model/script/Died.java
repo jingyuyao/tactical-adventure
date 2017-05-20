@@ -4,32 +4,30 @@ import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.Set;
 
 /**
- * Met when any of the {@link Person} in {@code names} are no longer in {@link World}.
+ * Met when a {@link Person} with {@code name} is no longer in the {@link World}.
  */
-public class AnyDied implements Condition {
+public class Died implements Condition {
 
-  private Set<String> names;
+  private String name;
 
-  AnyDied() {
+  Died() {
   }
 
-  AnyDied(Set<String> names) {
-    this.names = names;
+  Died(String name) {
+    this.name = name;
   }
 
   @Override
   public boolean isMet(Turn turn, World world) {
-    int met = 0;
     for (Ship ship : world.getShipSnapshot().values()) {
       for (Person crew : ship.getCrew()) {
-        if (names.contains(crew.getName().getId())) {
-          met++;
+        if (name.equals(crew.getName().getId())) {
+          return false;
         }
       }
     }
-    return names.size() != met;
+    return true;
   }
 }

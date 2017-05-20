@@ -18,10 +18,8 @@
       "allegiance": "ENEMY"
     },
     {
-      "type": "AnyDied",
-      "names": [
-        "ryan"
-      ]
+      "type": "Died",
+      "name": "ryan"
     }
   ]
 }
