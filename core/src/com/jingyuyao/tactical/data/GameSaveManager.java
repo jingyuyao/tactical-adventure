@@ -7,28 +7,28 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class GameDataManager {
+class GameSaveManager {
 
   private final DataConfig dataConfig;
   private final MyGson myGson;
   private final Files files;
 
   @Inject
-  GameDataManager(DataConfig dataConfig, MyGson myGson, Files files) {
+  GameSaveManager(DataConfig dataConfig, MyGson myGson, Files files) {
     this.dataConfig = dataConfig;
     this.myGson = myGson;
     this.files = files;
   }
 
-  GameData loadData() {
-    Optional<GameData> main = loadData(dataConfig.getMainSaveFileName(), false);
+  GameSave loadData() {
+    Optional<GameSave> main = loadData(dataConfig.getMainSaveFileName(), false);
     if (main.isPresent()) {
       return main.get();
     }
 
-    Optional<GameData> start = loadData(dataConfig.getInitFileName(), true);
+    Optional<GameSave> start = loadData(dataConfig.getInitFileName(), true);
     if (start.isPresent()) {
-      GameData startSave = start.get();
+      GameSave startSave = start.get();
       saveData(startSave);
       return startSave;
     }
@@ -36,9 +36,9 @@ class GameDataManager {
     throw new IllegalStateException("Could not find main init or save file!");
   }
 
-  void saveData(GameData gameData) {
+  void saveData(GameSave gameSave) {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
-    fileHandle.writeString(myGson.toJson(gameData), false);
+    fileHandle.writeString(myGson.toJson(gameSave), false);
   }
 
   void removeSavedData() {
@@ -48,10 +48,10 @@ class GameDataManager {
     }
   }
 
-  private Optional<GameData> loadData(String fileName, boolean internal) {
+  private Optional<GameSave> loadData(String fileName, boolean internal) {
     FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(myGson.fromJson(fileHandle.readString(), GameData.class));
+      return Optional.of(myGson.fromJson(fileHandle.readString(), GameSave.class));
     }
     return Optional.absent();
   }

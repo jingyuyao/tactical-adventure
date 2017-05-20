@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameData;
+import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelProgress;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
@@ -85,8 +85,8 @@ public class StartMenu extends AbstractMenu {
       progress = textLoader.get(MenuBundle.NO_PROGRESS);
     }
 
-    GameData gameData = dataManager.loadCurrentSave();
-    int level = gameData.getCurrentLevel();
+    GameSave gameSave = dataManager.loadCurrentSave();
+    int level = gameSave.getCurrentLevel();
     return textLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
 

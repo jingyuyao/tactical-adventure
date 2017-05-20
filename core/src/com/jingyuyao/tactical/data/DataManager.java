@@ -18,7 +18,7 @@ import javax.inject.Singleton;
 @Singleton
 public class DataManager {
 
-  private final GameDataManager gameDataManager;
+  private final GameSaveManager gameSaveManager;
   private final LevelProgressManager levelProgressManager;
   private final LevelDataLoader levelDataLoader;
   private final LevelTerrainsLoader levelTerrainsLoader;
@@ -26,20 +26,20 @@ public class DataManager {
 
   @Inject
   DataManager(
-      GameDataManager gameDataManager,
+      GameSaveManager gameSaveManager,
       LevelProgressManager levelProgressManager,
       LevelDataLoader levelDataLoader,
       LevelTerrainsLoader levelTerrainsLoader,
       ScriptLoader scriptLoader) {
-    this.gameDataManager = gameDataManager;
+    this.gameSaveManager = gameSaveManager;
     this.levelProgressManager = levelProgressManager;
     this.levelDataLoader = levelDataLoader;
     this.levelTerrainsLoader = levelTerrainsLoader;
     this.scriptLoader = scriptLoader;
   }
 
-  public GameData loadCurrentSave() {
-    return gameDataManager.loadData();
+  public GameSave loadCurrentSave() {
+    return gameSaveManager.loadData();
   }
 
   public Optional<LevelProgress> loadCurrentProgress() {
@@ -62,21 +62,21 @@ public class DataManager {
     LevelProgress levelProgress = levelProgressOptional.get();
     levelProgress.update(world, worldState);
 
-    GameData gameData = gameDataManager.loadData();
-    gameData.setCurrentLevel(level);
-    gameData.update(levelProgress);
-    gameDataManager.saveData(gameData);
+    GameSave gameSave = gameSaveManager.loadData();
+    gameSave.setCurrentLevel(level);
+    gameSave.update(levelProgress);
+    gameSaveManager.saveData(gameSave);
     levelProgressManager.removeSave();
   }
 
   public void freshStart() {
     levelProgressManager.removeSave();
-    gameDataManager.removeSavedData();
+    gameSaveManager.removeSavedData();
   }
 
   public LoadedLevel loadCurrentLevel(OrthogonalTiledMapRenderer tiledMapRenderer) {
-    GameData gameData = gameDataManager.loadData();
-    int level = gameData.getCurrentLevel();
+    GameSave gameSave = gameSaveManager.loadData();
+    int level = gameSave.getCurrentLevel();
 
     LevelProgress levelProgress;
     Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
@@ -85,7 +85,7 @@ public class DataManager {
       levelProgress = levelProgressOptional.get();
     } else {
       LevelWorld levelWorld = levelDataLoader.loadWorld(level);
-      levelProgress = new LevelProgress(gameData, levelWorld);
+      levelProgress = new LevelProgress(gameSave, levelWorld);
       levelProgressManager.save(levelProgress);
     }
 

@@ -9,7 +9,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameData;
+import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
@@ -53,7 +53,7 @@ public class GameStateTest {
   @Mock
   private Script script;
   @Mock
-  private GameData gameData;
+  private GameSave gameSave;
   @Mock
   private Save save;
   @Mock
@@ -111,8 +111,8 @@ public class GameStateTest {
 
   @Test
   public void level_complete_has_level() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameData);
-    when(gameData.getCurrentLevel()).thenReturn(2);
+    when(dataManager.loadCurrentSave()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(dataManager.hasLevel(3)).thenReturn(true);
 
     gameState.levelWon(levelWon);
@@ -126,8 +126,8 @@ public class GameStateTest {
 
   @Test
   public void level_complete_no_level() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameData);
-    when(gameData.getCurrentLevel()).thenReturn(2);
+    when(dataManager.loadCurrentSave()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(dataManager.hasLevel(3)).thenReturn(false);
 
     gameState.levelWon(levelWon);

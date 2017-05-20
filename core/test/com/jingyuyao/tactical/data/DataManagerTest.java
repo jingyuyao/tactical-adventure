@@ -34,7 +34,7 @@ public class DataManagerTest {
   private static final Coordinate E1 = new Coordinate(3, 3);
 
   @Mock
-  private GameDataManager gameDataManager;
+  private GameSaveManager gameSaveManager;
   @Mock
   private LevelProgressManager levelProgressManager;
   @Mock
@@ -44,7 +44,7 @@ public class DataManagerTest {
   @Mock
   private ScriptLoader scriptLoader;
   @Mock
-  private GameData gameData;
+  private GameSave gameSave;
   @Mock
   private LevelProgress levelProgress;
   @Mock
@@ -74,15 +74,15 @@ public class DataManagerTest {
   public void setUp() {
     dataManager =
         new DataManager(
-            gameDataManager, levelProgressManager, levelDataLoader, levelTerrainsLoader,
+            gameSaveManager, levelProgressManager, levelDataLoader, levelTerrainsLoader,
             scriptLoader);
   }
 
   @Test
   public void load_current_save() {
-    when(gameDataManager.loadData()).thenReturn(gameData);
+    when(gameSaveManager.loadData()).thenReturn(gameSave);
 
-    assertThat(dataManager.loadCurrentSave()).isSameAs(gameData);
+    assertThat(dataManager.loadCurrentSave()).isSameAs(gameSave);
   }
 
   @Test
@@ -94,19 +94,19 @@ public class DataManagerTest {
 
   @Test
   public void change_level() {
-    when(gameDataManager.loadData()).thenReturn(gameData);
+    when(gameSaveManager.loadData()).thenReturn(gameSave);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
 
     dataManager.changeLevel(2, world, worldState);
 
     InOrder inOrder =
-        Mockito.inOrder(world, gameData, levelProgress, gameDataManager, levelProgressManager);
+        Mockito.inOrder(world, gameSave, levelProgress, gameSaveManager, levelProgressManager);
 
     inOrder.verify(world).makeAllPlayerShipsControllable();
     inOrder.verify(levelProgress).update(world, worldState);
-    inOrder.verify(gameData).setCurrentLevel(2);
-    inOrder.verify(gameData).update(levelProgress);
-    inOrder.verify(gameDataManager).saveData(gameData);
+    inOrder.verify(gameSave).setCurrentLevel(2);
+    inOrder.verify(gameSave).update(levelProgress);
+    inOrder.verify(gameSaveManager).saveData(gameSave);
     inOrder.verify(levelProgressManager).removeSave();
   }
 
@@ -114,7 +114,7 @@ public class DataManagerTest {
   public void fresh_start() {
     dataManager.freshStart();
 
-    verify(gameDataManager).removeSavedData();
+    verify(gameSaveManager).removeSavedData();
     verify(levelProgressManager).removeSave();
   }
 
@@ -122,8 +122,8 @@ public class DataManagerTest {
   public void load_level_has_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     Map<Coordinate, Ship> shipMap = new HashMap<>();
-    when(gameDataManager.loadData()).thenReturn(gameData);
-    when(gameData.getCurrentLevel()).thenReturn(2);
+    when(gameSaveManager.loadData()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.of(levelProgress));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
     when(levelProgress.getShips()).thenReturn(shipMap);
@@ -141,11 +141,11 @@ public class DataManagerTest {
   @Test
   public void load_level_no_progress() {
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    when(gameDataManager.loadData()).thenReturn(gameData);
-    when(gameData.getCurrentLevel()).thenReturn(2);
+    when(gameSaveManager.loadData()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(levelProgressManager.load()).thenReturn(Optional.<LevelProgress>absent());
     when(levelDataLoader.loadWorld(2)).thenReturn(levelWorld);
-    when(gameData.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
+    when(gameSave.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
     when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelWorld.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
     when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);

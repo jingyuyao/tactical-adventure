@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The main game data;
+ * The main game save
  */
-public class GameData {
+public class GameSave {
 
   private int currentLevel = 1;
   private List<Ship> playerShips = new ArrayList<>();

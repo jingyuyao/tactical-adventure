@@ -24,7 +24,7 @@ public class LevelProgressTest {
   private static final Coordinate E1 = new Coordinate(3, 3);
 
   @Mock
-  private GameData gameData;
+  private GameSave gameSave;
   @Mock
   private LevelWorld levelWorld;
   @Mock
@@ -56,11 +56,11 @@ public class LevelProgressTest {
 
   @Test
   public void from_game_save_and_level_data() {
-    when(gameData.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
+    when(gameSave.getPlayerShips()).thenReturn(ImmutableList.of(player1, player2));
     when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(SPAWN1));
     when(levelWorld.getShips()).thenReturn(ImmutableMap.of(E1, enemy1));
 
-    LevelProgress levelProgress = new LevelProgress(gameData, levelWorld);
+    LevelProgress levelProgress = new LevelProgress(gameSave, levelWorld);
 
     assertThat(levelProgress.getShips()).containsExactly(SPAWN1, player1, E1, enemy1);
     assertThat(levelProgress.getReservedPlayerShips()).containsExactly(player2);

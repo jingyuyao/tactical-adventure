@@ -13,7 +13,7 @@ public class DataModuleTest {
   @Inject
   private DataManager dataManager;
   @Inject
-  private GameDataManager gameDataManager;
+  private GameSaveManager gameSaveManager;
   @Inject
   private LevelDataLoader levelDataLoader;
   @Inject
