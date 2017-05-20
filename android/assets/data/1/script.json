@@ -1,10 +1,14 @@
 {
   "loseConditions": [
     {
-      "type": "AllDied",
+      "type": "OutOfAllegiance",
+      "allegiance": "PLAYER"
+    },
+    {
+      "type": "AnyDied",
       "names": [
-        "andrew",
-        "ben"
+        "jingyu",
+        "andrew"
       ]
     },
     {

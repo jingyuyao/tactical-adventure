@@ -17,10 +17,6 @@ class DataConfig {
     return "data/init.json";
   }
 
-  String getScriptFileName() {
-    return "data/script.json";
-  }
-
   String getMainSaveFileName() {
     return "save/main.save.json";
   }

@@ -1,5 +1,10 @@
 {
-  "loseConditions": [],
+  "loseConditions": [
+    {
+      "type": "OutOfAllegiance",
+      "allegiance": "PLAYER"
+    }
+  ],
   "winConditions": [
     {
       "type": "OutOfAllegiance",

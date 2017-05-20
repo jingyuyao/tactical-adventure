@@ -25,11 +25,7 @@ public class ScriptLoaderTest {
   @Mock
   private LevelDataLoader levelDataLoader;
   @Mock
-  private GameDataManager gameDataManager;
-  @Mock
   private LevelScript levelScript;
-  @Mock
-  private GameScript gameScript;
   @Mock
   private Condition condition1;
   @Mock
@@ -41,7 +37,7 @@ public class ScriptLoaderTest {
 
   @Before
   public void setUp() {
-    scriptLoader = new ScriptLoader(dialogueLoader, levelDataLoader, gameDataManager);
+    scriptLoader = new ScriptLoader(dialogueLoader, levelDataLoader);
   }
 
   @Test
@@ -49,10 +45,8 @@ public class ScriptLoaderTest {
     ListMultimap<Turn, Dialogue> levelDialogues = ArrayListMultimap.create();
     ListMultimap<ResourceKey, Dialogue> deathDialogues = ArrayListMultimap.create();
 
-    when(gameDataManager.loadScript()).thenReturn(gameScript);
-    when(gameScript.getLoseConditions()).thenReturn(ImmutableList.of(condition1));
     when(levelDataLoader.loadScript(2)).thenReturn(levelScript);
-    when(levelScript.getLoseConditions()).thenReturn(ImmutableList.of(condition2));
+    when(levelScript.getLoseConditions()).thenReturn(ImmutableList.of(condition1, condition2));
     when(levelScript.getWinConditions()).thenReturn(ImmutableList.of(condition3));
     when(dialogueLoader.getLevelDialogues(2)).thenReturn(levelDialogues);
     when(dialogueLoader.getDeathDialogues()).thenReturn(deathDialogues);

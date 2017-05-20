@@ -36,11 +36,6 @@ class GameDataManager {
     throw new IllegalStateException("Could not find main init or save file!");
   }
 
-  GameScript loadScript() {
-    FileHandle fileHandle = files.internal(dataConfig.getScriptFileName());
-    return myGson.fromJson(fileHandle.readString(), GameScript.class);
-  }
-
   void saveData(GameData gameData) {
     FileHandle fileHandle = files.local(dataConfig.getMainSaveFileName());
     fileHandle.writeString(myGson.toJson(gameData), false);
