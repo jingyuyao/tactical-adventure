@@ -31,10 +31,16 @@ public class Ship {
     this.items = items;
   }
 
+  /**
+   * The animation for this ship. Based on ship's name.
+   */
   public ResourceKey getAnimation() {
     return ModelBundle.SHIP_ANIMATIONS.get(name);
   }
 
+  /**
+   * The name of this ship. May not be unique.
+   */
   public ResourceKey getName() {
     return ModelBundle.SHIP_NAME.get(name);
   }

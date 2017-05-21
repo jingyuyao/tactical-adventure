@@ -6,7 +6,7 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 /**
  * A {@link Person} that can pilot a ship.
  */
-public class Pilot extends BasePerson {
+public class Pilot extends Person {
 
   @Override
   public ResourceKey getRole() {
