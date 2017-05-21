@@ -30,7 +30,7 @@ public abstract class Condition {
   /**
    * {@inheritDoc}
    *
-   * <p>Class is used as keys. Must provide correct equals implementation.
+   * <p>Must stay the same for the lifetime of this condition.
    */
   @Override
   public abstract boolean equals(Object other);
@@ -38,7 +38,7 @@ public abstract class Condition {
   /**
    * {@inheritDoc}
    *
-   * <p>Class is used as keys. Must provide correct equals implementation.
+   * <p>Must stay the same for the lifetime of this condition.
    */
   @Override
   public abstract int hashCode();

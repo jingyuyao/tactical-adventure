@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OnAnyDeathTest {
+public class OnAllDeathTest {
 
   @Mock
   private Person dead1;
@@ -42,11 +42,11 @@ public class OnAnyDeathTest {
     when(dead3.getName()).thenReturn(name3);
     when(name3.getId()).thenReturn("them");
 
-    OnAnyDeath onAnyDeath = new OnAnyDeath(ImmutableSet.of("me", "you"));
+    OnAllDeath onAllDeath = new OnAllDeath(ImmutableSet.of("me", "you"));
 
-    assertThat(onAnyDeath.onDeath(dead1, world)).isTrue();
-    assertThat(onAnyDeath.onDeath(dead2, world)).isTrue();
-    assertThat(onAnyDeath.onDeath(dead3, world)).isFalse();
-    assertThat(onAnyDeath.onTurn(turn, world)).isFalse();
+    assertThat(onAllDeath.onDeath(dead1, world)).isFalse();
+    assertThat(onAllDeath.onDeath(dead3, world)).isFalse();
+    assertThat(onAllDeath.onDeath(dead2, world)).isTrue();
+    assertThat(onAllDeath.onTurn(turn, world)).isFalse();
   }
 }

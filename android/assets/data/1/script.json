@@ -12,6 +12,13 @@
       ]
     },
     {
+      "type": "OnAllDeath",
+      "names": [
+        "ben",
+        "kevin"
+      ]
+    },
+    {
       "type": "OnTurn",
       "turn": "20-END"
     }

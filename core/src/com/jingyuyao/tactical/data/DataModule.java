@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.script.Condition;
+import com.jingyuyao.tactical.model.script.OnAllDeath;
 import com.jingyuyao.tactical.model.script.OnAnyDeath;
 import com.jingyuyao.tactical.model.script.OnDeath;
 import com.jingyuyao.tactical.model.script.OnNoAllegiance;
@@ -53,6 +54,7 @@ public class DataModule extends AbstractModule {
             .of(Condition.class)
             .registerSubtype(OnDeath.class)
             .registerSubtype(OnAnyDeath.class)
+            .registerSubtype(OnAllDeath.class)
             .registerSubtype(OnTurn.class)
             .registerSubtype(OnNoAllegiance.class));
 
