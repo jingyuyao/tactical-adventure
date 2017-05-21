@@ -24,6 +24,15 @@ public class GameSave {
    */
   private List<Ship> activeShips = new ArrayList<>();
 
+  private GameSave() {
+  }
+
+  GameSave(int currentLevel, List<Ship> inactiveShips, List<Ship> activeShips) {
+    this.currentLevel = currentLevel;
+    this.inactiveShips = inactiveShips;
+    this.activeShips = activeShips;
+  }
+
   public int getCurrentLevel() {
     return currentLevel;
   }

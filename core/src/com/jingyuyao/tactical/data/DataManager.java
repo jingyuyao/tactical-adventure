@@ -7,9 +7,12 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -51,7 +54,11 @@ public class DataManager {
   }
 
   public void saveLevelProgress(World world, WorldState worldState) {
-    LevelSave levelSave = new LevelSave(world, worldState);
+    Map<Coordinate, Ship> ships = new HashMap<>();
+    for (Entry<Cell, Ship> shipEntry : world.getShipSnapshot().entrySet()) {
+      ships.put(shipEntry.getKey().getCoordinate(), shipEntry.getValue());
+    }
+    LevelSave levelSave = new LevelSave(ships, worldState.getTurn(), worldState.getScript());
     saveManager.save(levelSave);
   }
 

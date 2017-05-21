@@ -9,6 +9,9 @@ class LevelScript {
   private List<Condition> loseConditions = new ArrayList<>();
   private List<Condition> winConditions = new ArrayList<>();
 
+  private LevelScript() {
+  }
+
   List<Condition> getLoseConditions() {
     return loseConditions;
   }

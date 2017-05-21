@@ -79,6 +79,13 @@ public class DataManagerTest {
   }
 
   @Test
+  public void load_level_save() {
+    when(saveManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
+
+    assertThat(dataManager.loadLevelSave()).hasValue(levelSave);
+  }
+
+  @Test
   public void has_level() {
     when(levelLoader.hasLevel(2)).thenReturn(true);
 
