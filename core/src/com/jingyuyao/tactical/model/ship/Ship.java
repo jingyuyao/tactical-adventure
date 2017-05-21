@@ -44,8 +44,8 @@ public class Ship {
     return ModelBundle.SHIP_NAME.get(name);
   }
 
-  public Allegiance getAllegiance() {
-    return stats.getAllegiance();
+  public ShipGroup getGroup() {
+    return stats.getGroup();
   }
 
   public PilotResponse getAutoPilotResponse(World world, Cell cell) {

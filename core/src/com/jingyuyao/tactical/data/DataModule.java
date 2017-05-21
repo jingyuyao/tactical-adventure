@@ -20,7 +20,7 @@ import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.OnAllDeath;
 import com.jingyuyao.tactical.model.script.OnAnyDeath;
 import com.jingyuyao.tactical.model.script.OnDeath;
-import com.jingyuyao.tactical.model.script.OnNoAllegiance;
+import com.jingyuyao.tactical.model.script.OnNoGroup;
 import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
@@ -54,7 +54,7 @@ public class DataModule extends AbstractModule {
             .registerSubtype(OnAnyDeath.class)
             .registerSubtype(OnAllDeath.class)
             .registerSubtype(OnTurn.class)
-            .registerSubtype(OnNoAllegiance.class));
+            .registerSubtype(OnNoGroup.class));
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory

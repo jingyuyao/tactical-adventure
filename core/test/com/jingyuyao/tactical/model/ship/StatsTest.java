@@ -22,8 +22,8 @@ public class StatsTest {
   }
 
   @Test
-  public void get_allegiance() {
-    assertThat(stats.getAllegiance()).isSameAs(Allegiance.ENEMY);
+  public void get_group() {
+    assertThat(stats.getGroup()).isSameAs(ShipGroup.ENEMY);
   }
 
   @Test

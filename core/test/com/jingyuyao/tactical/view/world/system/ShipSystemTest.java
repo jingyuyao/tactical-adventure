@@ -17,8 +17,8 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
-import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -106,7 +106,7 @@ public class ShipSystemTest {
 
   @Test
   public void process_entities_enemy() {
-    when(ship.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(ship.getGroup()).thenReturn(ShipGroup.ENEMY);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
     Frame frame = new Frame();
@@ -121,7 +121,7 @@ public class ShipSystemTest {
 
   @Test
   public void process_entities_player_controllable() {
-    when(ship.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship.getGroup()).thenReturn(ShipGroup.PLAYER);
     when(ship.isControllable()).thenReturn(true);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
@@ -137,7 +137,7 @@ public class ShipSystemTest {
 
   @Test
   public void process_entities_player_uncontrollable() {
-    when(ship.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship.getGroup()).thenReturn(ShipGroup.PLAYER);
     when(ship.isControllable()).thenReturn(false);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);

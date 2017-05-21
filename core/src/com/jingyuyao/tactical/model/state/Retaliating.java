@@ -5,9 +5,9 @@ import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Path;
@@ -63,7 +63,7 @@ public class Retaliating extends TurnState {
     Entry<Cell, Ship> entry = shipsIterator.next();
     Cell cell = entry.getKey();
     Ship ship = entry.getValue();
-    if (ship.getAllegiance().equals(Allegiance.ENEMY)) {
+    if (ship.getGroup().equals(ShipGroup.ENEMY)) {
       post(new ActivatedEnemy(ship));
       handleMoving(ship.getAutoPilotResponse(getWorld(), cell), next);
     } else {

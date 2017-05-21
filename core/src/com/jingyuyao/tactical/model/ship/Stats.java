@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.ship;
 
 class Stats {
 
-  private Allegiance allegiance = Allegiance.ENEMY;
+  private ShipGroup group = ShipGroup.ENEMY;
   private boolean controllable;
   private int maxHp;
   private int hp;
@@ -17,8 +17,8 @@ class Stats {
     this.moveDistance = moveDistance;
   }
 
-  Allegiance getAllegiance() {
-    return allegiance;
+  ShipGroup getGroup() {
+    return group;
   }
 
   boolean isControllable() {

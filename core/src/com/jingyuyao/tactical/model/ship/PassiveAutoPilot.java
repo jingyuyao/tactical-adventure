@@ -34,7 +34,7 @@ public class PassiveAutoPilot implements AutoPilot {
 
     for (Cell cell : target.getTargetCells()) {
       for (Ship ship : cell.ship().asSet()) {
-        switch (ship.getAllegiance()) {
+        switch (ship.getGroup()) {
           case PLAYER:
             containsPlayer = true;
             break;

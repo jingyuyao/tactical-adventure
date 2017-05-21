@@ -4,7 +4,7 @@
     {
       "name": "adder",
       "stats": {
-        "allegiance": "PLAYER",
+        "group": "PLAYER",
         "controllable": true,
         "maxHp": 15,
         "hp": 15,
@@ -64,7 +64,7 @@
     {
       "name": "adder",
       "stats": {
-        "allegiance": "PLAYER",
+        "group": "PLAYER",
         "controllable": true,
         "maxHp": 15,
         "hp": 15,
@@ -122,7 +122,7 @@
     {
       "name": "eagle",
       "stats": {
-        "allegiance": "PLAYER",
+        "group": "PLAYER",
         "controllable": true,
         "maxHp": 20,
         "hp": 20,
@@ -167,7 +167,7 @@
     {
       "name": "eagle",
       "stats": {
-        "allegiance": "PLAYER",
+        "group": "PLAYER",
         "controllable": true,
         "maxHp": 20,
         "hp": 20,

@@ -20,9 +20,9 @@ import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
 import com.jingyuyao.tactical.model.script.TurnEvent;
-import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Path;
@@ -118,8 +118,8 @@ public class RetaliatingTest {
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
         .thenReturn(Promise.immediate());
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
-    when(enemy.getAllegiance()).thenReturn(Allegiance.ENEMY);
-    when(enemy2.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(enemy.getGroup()).thenReturn(ShipGroup.ENEMY);
+    when(enemy2.getGroup()).thenReturn(ShipGroup.ENEMY);
     when(enemy.getAutoPilotResponse(world, cell)).thenReturn(pilotResponse);
     when(enemy2.getAutoPilotResponse(world, cell2)).thenReturn(pilotResponse2);
     when(pilotResponse.path()).thenReturn(Optional.of(path));

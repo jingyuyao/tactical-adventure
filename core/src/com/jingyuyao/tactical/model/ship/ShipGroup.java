@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.ship;
 
-public enum Allegiance {
+public enum ShipGroup {
   PLAYER,
   ENEMY
 }

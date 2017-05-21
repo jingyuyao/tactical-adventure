@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.data;
 
-import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class GameSave {
   void replaceActiveShipsFrom(World world) {
     activeShips.clear();
     for (Ship ship : world.getShipSnapshot().values()) {
-      if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+      if (ship.getGroup().equals(ShipGroup.PLAYER)) {
         activeShips.add(ship);
       }
     }

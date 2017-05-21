@@ -71,7 +71,7 @@ public class StartMenu extends AbstractMenu {
       int activePlayers = 0;
       int activeEnemies = 0;
       for (Ship ship : levelSave.getShips().values()) {
-        switch (ship.getAllegiance()) {
+        switch (ship.getGroup()) {
           case PLAYER:
             activePlayers++;
             break;

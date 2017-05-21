@@ -60,7 +60,7 @@ class ShipSystem extends IteratingSystem {
     ShipComponent shipComponent = shipMapper.get(entity);
     Frame frame = frameMapper.get(entity);
     Ship ship = shipComponent.getShip();
-    switch (ship.getAllegiance()) {
+    switch (ship.getGroup()) {
       case PLAYER:
         if (ship.isControllable()) {
           frame.setColor(Colors.BLUE_300);

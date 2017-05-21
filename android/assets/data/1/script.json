@@ -1,8 +1,8 @@
 {
   "loseConditions": [
     {
-      "type": "OnNoAllegiance",
-      "allegiance": "PLAYER"
+      "type": "OnNoGroup",
+      "group": "PLAYER"
     },
     {
       "type": "OnAnyDeath",
@@ -25,8 +25,8 @@
   ],
   "winConditions": [
     {
-      "type": "OnNoAllegiance",
-      "allegiance": "ENEMY"
+      "type": "OnNoGroup",
+      "group": "ENEMY"
     },
     {
       "type": "OnDeath",
