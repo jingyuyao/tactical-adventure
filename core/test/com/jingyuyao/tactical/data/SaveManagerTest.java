@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class SaveManagerTest {
   @Mock
   private DataConfig dataConfig;
   @Mock
-  private MyGson myGson;
+  private DataSerializer dataSerializer;
   @Mock
   private Files files;
   @Mock
@@ -44,23 +43,22 @@ public class SaveManagerTest {
 
   @Before
   public void setUp() {
-    saveManager = new SaveManager(dataConfig, myGson, files);
+    saveManager = new SaveManager(dataConfig, dataSerializer, files);
   }
 
   @Test
-  public void load_main_save() throws IOException {
+  public void load_main_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.reader()).thenReturn(reader);
-    when(myGson.fromJson(reader, GameSave.class)).thenReturn(gameSave);
+    when(dataSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
-    verify(reader).close();
   }
 
   @Test
-  public void load_init_save() throws IOException {
+  public void load_init_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(dataConfig.getInitFileName()).thenReturn(START);
     when(files.local(MAIN)).thenReturn(fileHandle1);
@@ -69,24 +67,21 @@ public class SaveManagerTest {
     when(fileHandle1.writer(false)).thenReturn(writer);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader);
-    when(myGson.fromJson(reader, GameSave.class)).thenReturn(gameSave);
+    when(dataSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
-    verify(reader).close();
-    verify(myGson).toJson(gameSave, writer);
-    verify(writer).close();
+    verify(dataSerializer).serialize(gameSave, writer);
   }
 
   @Test
-  public void load_level_save() throws IOException {
+  public void load_level_save() {
     when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.reader()).thenReturn(reader);
-    when(myGson.fromJson(reader, LevelSave.class)).thenReturn(levelSave);
+    when(dataSerializer.deserialize(reader, LevelSave.class)).thenReturn(levelSave);
 
     assertThat(saveManager.loadLevelSave()).hasValue(levelSave);
-    verify(reader).close();
   }
 
   @Test
@@ -99,27 +94,25 @@ public class SaveManagerTest {
   }
 
   @Test
-  public void save_game() throws IOException {
+  public void save_game() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.writer(false)).thenReturn(writer);
 
     saveManager.save(gameSave);
 
-    verify(myGson).toJson(gameSave, writer);
-    verify(writer).close();
+    verify(dataSerializer).serialize(gameSave, writer);
   }
 
   @Test
-  public void save_level() throws IOException {
+  public void save_level() {
     when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.writer(false)).thenReturn(writer);
 
     saveManager.save(levelSave);
 
-    verify(myGson).toJson(levelSave, writer);
-    verify(writer).close();
+    verify(dataSerializer).serialize(levelSave, writer);
   }
 
   @Test

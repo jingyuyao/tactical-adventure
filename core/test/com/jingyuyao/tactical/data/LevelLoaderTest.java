@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.data;
 import static com.google.common.truth.Truth.assertThat;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_0;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
@@ -15,7 +14,6 @@ import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
-import java.io.IOException;
 import java.io.Reader;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +31,7 @@ public class LevelLoaderTest {
   @Mock
   private DataConfig dataConfig;
   @Mock
-  private MyGson myGson;
+  private DataSerializer dataSerializer;
   @Mock
   private Files files;
   @Mock
@@ -71,7 +69,7 @@ public class LevelLoaderTest {
 
   @Before
   public void setUp() {
-    levelLoader = new LevelLoader(dataConfig, myGson, files, dialogueLoader);
+    levelLoader = new LevelLoader(dataConfig, dataSerializer, files, dialogueLoader);
   }
 
   @Test
@@ -84,7 +82,7 @@ public class LevelLoaderTest {
   }
 
   @Test
-  public void create_new_save() throws IOException {
+  public void create_new_save() {
     when(dataConfig.getLevelDir(2)).thenReturn(LEVEL_DIR);
     when(dataConfig.getLevelWorldFileName(2)).thenReturn(LEVEL_WORLD);
     when(dataConfig.getLevelScriptFileName(2)).thenReturn(LEVEL_SCRIPT);
@@ -94,8 +92,8 @@ public class LevelLoaderTest {
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader1);
     when(fileHandle3.reader()).thenReturn(reader2);
-    when(myGson.fromJson(reader1, LevelWorld.class)).thenReturn(levelWorld);
-    when(myGson.fromJson(reader2, LevelScript.class)).thenReturn(levelScript);
+    when(dataSerializer.deserialize(reader1, LevelWorld.class)).thenReturn(levelWorld);
+    when(dataSerializer.deserialize(reader2, LevelScript.class)).thenReturn(levelScript);
     when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(C0_0));
     when(levelWorld.getShips()).thenReturn(ImmutableMap.of(C0_1, ship1));
     when(gameSave.activateShips(ImmutableList.of(C0_0))).thenReturn(ImmutableMap.of(C0_0, ship2));
@@ -110,7 +108,5 @@ public class LevelLoaderTest {
     assertThat(levelSave.getScript().getWinConditions()).containsExactly(condition1);
     assertThat(levelSave.getScript().getLoseConditions()).containsExactly(condition2);
     assertThat(levelSave.getScript().getDialogues()).containsEntry(condition3, dialogue);
-    verify(reader1).close();
-    verify(reader2).close();
   }
 }

@@ -10,8 +10,6 @@ import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
-import java.io.IOException;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +20,18 @@ import javax.inject.Singleton;
 class LevelLoader {
 
   private final DataConfig dataConfig;
-  private final MyGson myGson;
+  private final DataSerializer dataSerializer;
   private final Files files;
   private final DialogueLoader dialogueLoader;
 
   @Inject
-  LevelLoader(DataConfig dataConfig, MyGson myGson, Files files, DialogueLoader dialogueLoader) {
+  LevelLoader(
+      DataConfig dataConfig,
+      DataSerializer dataSerializer,
+      Files files,
+      DialogueLoader dialogueLoader) {
     this.dataConfig = dataConfig;
-    this.myGson = myGson;
+    this.dataSerializer = dataSerializer;
     this.files = files;
     this.dialogueLoader = dialogueLoader;
   }
@@ -66,13 +68,6 @@ class LevelLoader {
 
   private <T> T load(String fileName, Class<T> clazz) {
     FileHandle fileHandle = files.internal(fileName);
-    Reader reader = fileHandle.reader();
-    T result = myGson.fromJson(reader, clazz);
-    try {
-      reader.close();
-    } catch (IOException e) {
-      throw new RuntimeException("Unable to close a file");
-    }
-    return result;
+    return dataSerializer.deserialize(fileHandle.reader(), clazz);
   }
 }
