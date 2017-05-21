@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.Allegiance;
+import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -16,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OutOfAllegianceTest {
+public class OnNoAllegianceTest {
 
   @Mock
   private Turn turn;
@@ -30,28 +31,32 @@ public class OutOfAllegianceTest {
   private Ship ship1;
   @Mock
   private Ship ship2;
+  @Mock
+  private Person person;
 
-  private OutOfAllegiance outOfAllegiance;
+  private OnNoAllegiance onNoAllegiance;
 
   @Before
   public void setUp() {
-    outOfAllegiance = new OutOfAllegiance(Allegiance.PLAYER);
+    onNoAllegiance = new OnNoAllegiance(Allegiance.PLAYER);
   }
 
   @Test
-  public void is_met() {
+  public void satisfied() {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
     when(ship1.getAllegiance()).thenReturn(Allegiance.ENEMY);
     when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
 
-    assertThat(outOfAllegiance.isMet(turn, world)).isTrue();
+    assertThat(onNoAllegiance.onTurn(turn, world)).isTrue();
+    assertThat(onNoAllegiance.onDeath(person, world)).isTrue();
   }
 
   @Test
-  public void is_not_met() {
+  public void not_satisfied() {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
     when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
 
-    assertThat(outOfAllegiance.isMet(turn, world)).isFalse();
+    assertThat(onNoAllegiance.onTurn(turn, world)).isFalse();
+    assertThat(onNoAllegiance.onDeath(person, world)).isFalse();
   }
 }

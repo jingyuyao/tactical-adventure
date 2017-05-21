@@ -16,12 +16,11 @@ import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.script.AllDied;
-import com.jingyuyao.tactical.model.script.AnyDied;
 import com.jingyuyao.tactical.model.script.Condition;
-import com.jingyuyao.tactical.model.script.Died;
+import com.jingyuyao.tactical.model.script.OnAnyDeath;
+import com.jingyuyao.tactical.model.script.OnDeath;
+import com.jingyuyao.tactical.model.script.OnNoAllegiance;
 import com.jingyuyao.tactical.model.script.OnTurn;
-import com.jingyuyao.tactical.model.script.OutOfAllegiance;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.BasicShip;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
@@ -52,11 +51,10 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Condition.class)
-            .registerSubtype(Died.class)
-            .registerSubtype(AnyDied.class)
-            .registerSubtype(AllDied.class)
+            .registerSubtype(OnDeath.class)
+            .registerSubtype(OnAnyDeath.class)
             .registerSubtype(OnTurn.class)
-            .registerSubtype(OutOfAllegiance.class));
+            .registerSubtype(OnNoAllegiance.class));
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory

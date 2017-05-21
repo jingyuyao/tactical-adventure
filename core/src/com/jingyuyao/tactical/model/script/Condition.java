@@ -1,27 +1,45 @@
 package com.jingyuyao.tactical.model.script;
 
+import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
 /**
- * A condition that can trigger some script actions. A condition should only be triggered once.
- * Implementations must provide correct {@link #equals(Object)} and {@link #hashCode()} since
- * this interface is often used as keys in maps.
+ * A condition that can be satisfied given a {@link ScriptEvent}. Base implementation will fail on
+ * all events. Override methods to provide functionality.
  */
-public interface Condition {
+public abstract class Condition {
+
+  Condition() {
+  }
 
   /**
-   * Return whether this {@link Condition} as been met given the world and world state.
+   * Return whether or not this condition is satisfied when {@code turn} is reached.
    */
-  boolean isMet(Turn turn, World world);
+  boolean onTurn(Turn turn, World world) {
+    return false;
+  }
 
   /**
-   * Return whether this {@link Condition} has been triggered or not.
+   * Return whether or not this condition is satisfied when {@code person} dies.
    */
-  boolean isTriggered();
+  boolean onDeath(Person person, World world) {
+    return false;
+  }
 
   /**
-   * Mark this condition as triggered.
+   * {@inheritDoc}
+   *
+   * <p>Class is used as keys. Must provide correct equals implementation.
    */
-  void triggered();
+  @Override
+  public abstract boolean equals(Object other);
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Class is used as keys. Must provide correct equals implementation.
+   */
+  @Override
+  public abstract int hashCode();
 }

@@ -26,7 +26,7 @@ public class TestHelpers {
   /**
    * {@link ArgumentCaptor} variant of {@link #assertClass(Object, Class)}.
    */
-  public static <T> T assertClass(ArgumentCaptor<Object> captor, int index, Class<T> clazz) {
+  public static <T> T assertClass(ArgumentCaptor<?> captor, int index, Class<T> clazz) {
     assertThat(captor.getAllValues().size()).isGreaterThan(index);
     return assertClass(captor.getAllValues().get(index), clazz);
   }

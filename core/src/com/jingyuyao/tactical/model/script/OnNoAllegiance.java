@@ -2,26 +2,36 @@ package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
 import com.jingyuyao.tactical.model.Allegiance;
+import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
 /**
- * Met when there are no ships of the given {@link Allegiance} in the world.
+ * Satisfied when there are no ships of the given {@link Allegiance} in the {@link World}.
  */
-public class OutOfAllegiance extends BaseCondition {
+public class OnNoAllegiance extends Condition {
 
   private Allegiance allegiance;
 
-  OutOfAllegiance() {
+  OnNoAllegiance() {
   }
 
-  OutOfAllegiance(Allegiance allegiance) {
+  OnNoAllegiance(Allegiance allegiance) {
     this.allegiance = allegiance;
   }
 
   @Override
-  public boolean isMet(Turn turn, World world) {
+  public boolean onTurn(Turn turn, World world) {
+    return onWorld(world);
+  }
+
+  @Override
+  public boolean onDeath(Person person, World world) {
+    return onWorld(world);
+  }
+
+  private boolean onWorld(World world) {
     for (Ship ship : world.getShipSnapshot().values()) {
       if (ship.getAllegiance().equals(allegiance)) {
         return false;
@@ -38,15 +48,12 @@ public class OutOfAllegiance extends BaseCondition {
     if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    if (!super.equals(object)) {
-      return false;
-    }
-    OutOfAllegiance that = (OutOfAllegiance) object;
+    OnNoAllegiance that = (OnNoAllegiance) object;
     return allegiance == that.allegiance;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(super.hashCode(), allegiance);
+    return Objects.hashCode(allegiance);
   }
 }

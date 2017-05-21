@@ -1,13 +1,13 @@
 {
   "loseConditions": [
     {
-      "type": "OutOfAllegiance",
+      "type": "OnNoAllegiance",
       "allegiance": "PLAYER"
     }
   ],
   "winConditions": [
     {
-      "type": "OutOfAllegiance",
+      "type": "OnNoAllegiance",
       "allegiance": "ENEMY"
     },
     {

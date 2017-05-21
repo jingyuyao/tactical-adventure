@@ -10,21 +10,19 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class Waiting extends TurnScriptState {
+public class Waiting extends TurnState {
 
   private final StateFactory stateFactory;
-  private final World world;
 
   @Inject
   Waiting(
       ModelBus modelBus,
       WorldState worldState,
+      World world,
       ScriptRunner scriptRunner,
-      StateFactory stateFactory,
-      World world) {
-    super(modelBus, worldState, scriptRunner);
+      StateFactory stateFactory) {
+    super(modelBus, worldState, world, scriptRunner);
     this.stateFactory = stateFactory;
-    this.world = world;
   }
 
   @Override
@@ -41,7 +39,7 @@ public class Waiting extends TurnScriptState {
   public void select(Cell cell) {
     for (Ship ship : cell.ship().asSet()) {
       if (ship.isControllable()) {
-        goTo(stateFactory.createMoving(cell, world.getShipMovement(cell)));
+        goTo(stateFactory.createMoving(cell, getWorld().getShipMovement(cell)));
       }
     }
   }

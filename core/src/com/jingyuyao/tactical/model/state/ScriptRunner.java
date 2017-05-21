@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.Multimaps;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
@@ -8,9 +9,10 @@ import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.world.World;
+import com.jingyuyao.tactical.model.script.ScriptEvent;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,78 +20,80 @@ import javax.inject.Singleton;
 class ScriptRunner {
 
   private final ModelBus modelBus;
-  private final World world;
-  private final WorldState worldState;
 
   @Inject
-  ScriptRunner(ModelBus modelBus, World world, WorldState worldState) {
+  ScriptRunner(ModelBus modelBus) {
     this.modelBus = modelBus;
-    this.world = world;
-    this.worldState = worldState;
   }
 
   /**
-   * Trigger scripts given the current {@link Turn} and {@link World}.
+   * Trigger any scripts for the given {@link ScriptEvent} and {@link Script}.
+   *
+   * @return a promise that is completed when the scripts finishes executing
    */
-  void triggerScripts(final Runnable keepGoing) {
-    triggerDialogues(new Runnable() {
+  Promise triggerScripts(final ScriptEvent event, final Script script) {
+    final Promise promise = new Promise();
+    triggerDialogues(event, script).done(new Runnable() {
       @Override
       public void run() {
-        triggerWinLose(keepGoing);
+        triggerWinLose(event, script, promise);
       }
     });
+    return promise;
   }
 
-  private void triggerDialogues(Runnable done) {
-    triggerDialogues(worldState.getScript().getDialogues().keySet().iterator(), done);
+  /**
+   * Trigger all dialogue for the given event, if any.
+   *
+   * @return a promise that is resolved when all dialogues finishes diplaying
+   */
+  private Promise triggerDialogues(ScriptEvent event, Script script) {
+    Promise promise = new Promise();
+    triggerDialogues(event, Multimaps.asMap(script.getDialogues()).entrySet().iterator(), promise);
+    return promise;
   }
 
-  private void triggerDialogues(final Iterator<Condition> conditions, final Runnable done) {
-    if (conditions.hasNext()) {
-      Turn turn = worldState.getTurn();
-      final Condition condition = conditions.next();
-      if (!condition.isTriggered() && condition.isMet(turn, world)) {
-        List<Dialogue> dialogues = worldState.getScript().getDialogues().get(condition);
+  private void triggerDialogues(
+      final ScriptEvent event,
+      final Iterator<Entry<Condition, List<Dialogue>>> entryIterator,
+      final Promise promise) {
+    if (entryIterator.hasNext()) {
+      Entry<Condition, List<Dialogue>> entry = entryIterator.next();
+      final Condition condition = entry.getKey();
+      if (event.satisfiedBy(condition)) {
+        List<Dialogue> dialogues = entry.getValue();
         modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
           @Override
           public void run() {
-            // can't consider a dialogue trigger until it finishes showing
-            condition.triggered();
-            triggerDialogues(conditions, done);
+            triggerDialogues(event, entryIterator, promise);
           }
         })));
       } else {
-        triggerDialogues(conditions, done);
+        triggerDialogues(event, entryIterator, promise);
       }
     } else {
-      done.run();
+      promise.complete();
     }
   }
 
-  private void triggerWinLose(Runnable keepGoing) {
-    Script script = worldState.getScript();
-    Turn turn = worldState.getTurn();
+  /**
+   * Fires any win/lose conditions trigger by the event. Resolves the promise if the event does not
+   * trigger any win/lose conditions.
+   */
+  private void triggerWinLose(ScriptEvent event, Script script, Promise promise) {
     // lose condition goes first so YOLOs are not encouraged
     for (Condition condition : script.getLoseConditions()) {
-      if (condition.isMet(turn, world)) {
-        if (condition.isTriggered()) {
-          throw new RuntimeException("Lose condition should not trigger twice!");
-        }
-        condition.triggered();
+      if (event.satisfiedBy(condition)) {
         modelBus.post(new LevelLost());
         return;
       }
     }
     for (Condition condition : script.getWinConditions()) {
-      if (condition.isMet(turn, world)) {
-        if (condition.isTriggered()) {
-          throw new RuntimeException("Win condition should not trigger twice!");
-        }
-        condition.triggered();
+      if (event.satisfiedBy(condition)) {
         modelBus.post(new LevelWon());
         return;
       }
     }
-    keepGoing.run();
+    promise.complete();
   }
 }

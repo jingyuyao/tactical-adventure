@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.Died;
+import com.jingyuyao.tactical.model.script.OnDeath;
 import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -44,7 +44,7 @@ class DialogueLoader {
     }
     ListMultimap<String, Dialogue> deathDialogues = getDeathDialogues();
     for (String nameKey : deathDialogues.keySet()) {
-      dialogues.putAll(new Died(nameKey), deathDialogues.get(nameKey));
+      dialogues.putAll(new OnDeath(nameKey), deathDialogues.get(nameKey));
     }
     return dialogues;
   }

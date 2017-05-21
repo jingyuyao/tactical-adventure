@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
+import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.world.Cell;
 
 class BaseState implements State {
@@ -68,5 +69,9 @@ class BaseState implements State {
 
   Turn getTurn() {
     return worldState.getTurn();
+  }
+
+  Script getScript() {
+    return worldState.getScript();
   }
 }

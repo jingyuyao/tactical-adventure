@@ -10,7 +10,7 @@ import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.Died;
+import com.jingyuyao.tactical.model.script.OnDeath;
 import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -84,16 +84,16 @@ public class DialogueLoaderTest {
 
     assertThat(dialogues.get(new OnTurn(new Turn(9001, TurnStage.START)))).isEmpty();
 
-    List<Dialogue> deadDialogues = dialogues.get(new Died("dead"));
+    List<Dialogue> deadDialogues = dialogues.get(new OnDeath("dead"));
     assertThat(deadDialogues).hasSize(1);
     assertThat(deadDialogues.get(0).getName()).isEqualTo(NAME.get("dead"));
     assertThat(deadDialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead"));
 
-    List<Dialogue> dead2Dialogues = dialogues.get(new Died("dead2"));
+    List<Dialogue> dead2Dialogues = dialogues.get(new OnDeath("dead2"));
     assertThat(dead2Dialogues).hasSize(1);
     assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
     assertThat(dead2Dialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
 
-    assertThat(dialogues.get(new Died("never-gonna-give-you-up"))).isEmpty();
+    assertThat(dialogues.get(new OnDeath("never-gonna-give-you-up"))).isEmpty();
   }
 }
