@@ -10,7 +10,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.ActivatedShip;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
@@ -80,7 +80,7 @@ public class ShipSystemTest {
   @Mock
   private ControllingState controllingState;
   @Mock
-  private ActivatedEnemy activatedEnemy;
+  private ActivatedShip activatedShip;
   @Mock
   private ExitState exitState;
   @Mock
@@ -106,7 +106,7 @@ public class ShipSystemTest {
 
   @Test
   public void process_entities_enemy() {
-    when(ship.getGroup()).thenReturn(ShipGroup.ENEMY);
+    when(ship.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
     Frame frame = new Frame();
@@ -121,7 +121,7 @@ public class ShipSystemTest {
 
   @Test
   public void process_entities_player_controllable() {
-    when(ship.getGroup()).thenReturn(ShipGroup.PLAYER);
+    when(ship.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(ship.isControllable()).thenReturn(true);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
@@ -137,7 +137,7 @@ public class ShipSystemTest {
 
   @Test
   public void process_entities_player_uncontrollable() {
-    when(ship.getGroup()).thenReturn(ShipGroup.PLAYER);
+    when(ship.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(ship.isControllable()).thenReturn(false);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
@@ -257,10 +257,10 @@ public class ShipSystemTest {
   @Test
   public void activated_enemy() {
     spawn_ship();
-    when(activatedEnemy.getObject()).thenReturn(ship);
+    when(activatedShip.getObject()).thenReturn(ship);
     when(markers.getActivated()).thenReturn(texture);
 
-    shipSystem.activatedEnemy(activatedEnemy);
+    shipSystem.activatedEnemy(activatedShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);
@@ -269,7 +269,7 @@ public class ShipSystemTest {
     assertThat(frame).isNotNull();
     assertThat(frame.getOverlays()).containsExactly(texture);
 
-    shipSystem.activatedEnemy(activatedEnemy);
+    shipSystem.activatedEnemy(activatedShip);
 
     assertThat(frame.getOverlays()).containsExactly(texture);
   }
@@ -277,10 +277,10 @@ public class ShipSystemTest {
   @Test
   public void exit_state() {
     spawn_ship();
-    when(activatedEnemy.getObject()).thenReturn(ship);
+    when(activatedShip.getObject()).thenReturn(ship);
     when(markers.getActivated()).thenReturn(texture);
 
-    shipSystem.activatedEnemy(activatedEnemy);
+    shipSystem.activatedEnemy(activatedShip);
 
     ImmutableArray<Entity> entities = engine.getEntities();
     assertThat(entities).hasSize(1);

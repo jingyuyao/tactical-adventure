@@ -44,8 +44,6 @@ public class OnNoGroupTest {
   @Test
   public void satisfied() {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
-    when(ship1.getGroup()).thenReturn(ShipGroup.ENEMY);
-    when(ship2.getGroup()).thenReturn(ShipGroup.ENEMY);
 
     assertThat(onNoGroup.onTurn(turn, world)).isTrue();
     assertThat(onNoGroup.onDeath(person, world)).isTrue();
@@ -54,7 +52,7 @@ public class OnNoGroupTest {
   @Test
   public void not_satisfied() {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
-    when(ship1.getGroup()).thenReturn(ShipGroup.PLAYER);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
     assertThat(onNoGroup.onTurn(turn, world)).isFalse();
     assertThat(onNoGroup.onDeath(person, world)).isFalse();

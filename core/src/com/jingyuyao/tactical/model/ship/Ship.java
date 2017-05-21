@@ -44,8 +44,11 @@ public class Ship {
     return ModelBundle.SHIP_NAME.get(name);
   }
 
-  public ShipGroup getGroup() {
-    return stats.getGroup();
+  /**
+   * Return whether this ship is in {@code group}.
+   */
+  public boolean inGroup(ShipGroup group) {
+    return stats.getGroup().equals(group);
   }
 
   public PilotResponse getAutoPilotResponse(World world, Cell cell) {

@@ -61,7 +61,7 @@ public class GameSave {
   void replaceActiveShipsFrom(World world) {
     activeShips.clear();
     for (Ship ship : world.getShipSnapshot().values()) {
-      if (ship.getGroup().equals(ShipGroup.PLAYER)) {
+      if (ship.inGroup(ShipGroup.PLAYER)) {
         activeShips.add(ship);
       }
     }

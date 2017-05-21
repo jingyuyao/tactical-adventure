@@ -10,13 +10,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
-import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.ActivatedShip;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -60,17 +61,15 @@ class ShipSystem extends IteratingSystem {
     ShipComponent shipComponent = shipMapper.get(entity);
     Frame frame = frameMapper.get(entity);
     Ship ship = shipComponent.getShip();
-    switch (ship.getGroup()) {
-      case PLAYER:
-        if (ship.isControllable()) {
-          frame.setColor(Colors.BLUE_300);
-        } else {
-          frame.setColor(Colors.GREY_500);
-        }
-        break;
-      case ENEMY:
-        frame.setColor(Colors.RED_500);
-        break;
+    if (ship.inGroup(ShipGroup.PLAYER)) {
+      if (ship.isControllable()) {
+        frame.setColor(Colors.BLUE_300);
+      } else {
+        frame.setColor(Colors.GREY_500);
+      }
+    }
+    if (ship.inGroup(ShipGroup.ENEMY)) {
+      frame.setColor(Colors.RED_500);
     }
   }
 
@@ -127,8 +126,8 @@ class ShipSystem extends IteratingSystem {
   }
 
   @Subscribe
-  void activatedEnemy(ActivatedEnemy activatedEnemy) {
-    activate(activatedEnemy.getObject());
+  void activatedEnemy(ActivatedShip activatedShip) {
+    activate(activatedShip.getObject());
   }
 
   @Subscribe

@@ -222,8 +222,7 @@ public class WorldTest {
     cellMap.put(C2_0, cell2);
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
-    when(ship1.getGroup()).thenReturn(ShipGroup.PLAYER);
-    when(ship2.getGroup()).thenReturn(ShipGroup.ENEMY);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
     world.makeAllPlayerShipsControllable();
 

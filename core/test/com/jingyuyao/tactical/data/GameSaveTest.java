@@ -73,8 +73,8 @@ public class GameSaveTest {
 
   @Test
   public void replace_ships_from_world() {
-    when(worldShip1.getGroup()).thenReturn(ShipGroup.PLAYER);
-    when(worldShip2.getGroup()).thenReturn(ShipGroup.ENEMY);
+    when(worldShip1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
+    when(worldShip2.inGroup(ShipGroup.PLAYER)).thenReturn(false);
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, worldShip1, cell2, worldShip2));
 
     gameSave.replaceActiveShipsFrom(world);

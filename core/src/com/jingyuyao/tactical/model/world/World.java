@@ -148,7 +148,7 @@ public class World implements GetNeighbors {
 
   public void makeAllPlayerShipsControllable() {
     for (Ship ship : getShipSnapshot().values()) {
-      if (ship.getGroup().equals(ShipGroup.PLAYER)) {
+      if (ship.inGroup(ShipGroup.PLAYER)) {
         ship.setControllable(true);
       }
     }
