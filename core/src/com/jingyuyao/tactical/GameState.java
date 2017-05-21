@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameData;
+import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelLost;
@@ -54,7 +54,7 @@ public class GameState {
   }
 
   public void reset() {
-    dataManager.removeProgress();
+    dataManager.removeLevelProgress();
   }
 
   void start() {
@@ -63,15 +63,15 @@ public class GameState {
 
   @Subscribe
   void save(Save save) {
-    dataManager.saveProgress(world, worldState);
+    dataManager.saveLevelProgress(world, worldState);
   }
 
   @Subscribe
   void levelWon(LevelWon levelWon) {
-    GameData gameData = dataManager.loadCurrentSave();
-    int nextLevel = gameData.getCurrentLevel() + 1;
+    GameSave gameSave = dataManager.loadGameSave();
+    int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
-      dataManager.changeLevel(nextLevel, world, worldState);
+      dataManager.changeLevel(nextLevel, world);
     } else {
       dataManager.freshStart();
     }
@@ -82,7 +82,7 @@ public class GameState {
 
   @Subscribe
   void levelLost(LevelLost levelLost) {
-    dataManager.removeProgress();
+    dataManager.removeLevelProgress();
     world.reset();
     worldState.reset();
     game.goToPlayMenu();

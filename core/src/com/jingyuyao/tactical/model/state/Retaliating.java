@@ -16,23 +16,21 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 
-public class Retaliating extends TurnScriptState {
+public class Retaliating extends TurnState {
 
   private final StateFactory stateFactory;
-  private final World world;
   private final BattleSequence battleSequence;
 
   @Inject
   Retaliating(
       ModelBus modelBus,
       WorldState worldState,
+      World world,
       ScriptRunner scriptRunner,
       StateFactory stateFactory,
-      World world,
       BattleSequence battleSequence) {
-    super(modelBus, worldState, scriptRunner);
+    super(modelBus, worldState, world, scriptRunner);
     this.stateFactory = stateFactory;
-    this.world = world;
     this.battleSequence = battleSequence;
   }
 
@@ -44,7 +42,7 @@ public class Retaliating extends TurnScriptState {
 
   @Override
   void scriptDone() {
-    retaliate(world.getShipSnapshot().entrySet().iterator());
+    retaliate(getWorld().getShipSnapshot().entrySet().iterator());
   }
 
   private void retaliate(final Iterator<Entry<Cell, Ship>> shipsIterator) {
@@ -67,7 +65,7 @@ public class Retaliating extends TurnScriptState {
     Ship ship = entry.getValue();
     if (ship.getAllegiance().equals(Allegiance.ENEMY)) {
       post(new ActivatedEnemy(ship));
-      handleMoving(ship.getAutoPilotResponse(world, cell), next);
+      handleMoving(ship.getAutoPilotResponse(getWorld(), cell), next);
     } else {
       next.run();
     }

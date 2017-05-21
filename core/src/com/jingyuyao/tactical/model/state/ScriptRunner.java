@@ -1,18 +1,18 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.collect.Multimaps;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.world.World;
+import com.jingyuyao.tactical.model.script.ScriptEvent;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -20,79 +20,80 @@ import javax.inject.Singleton;
 class ScriptRunner {
 
   private final ModelBus modelBus;
-  private final World world;
-  private final WorldState worldState;
 
   @Inject
-  ScriptRunner(ModelBus modelBus, World world, WorldState worldState) {
+  ScriptRunner(ModelBus modelBus) {
     this.modelBus = modelBus;
-    this.world = world;
-    this.worldState = worldState;
   }
 
   /**
-   * Trigger any script action at the current turn. {@code keepGoing} is called if the level is not
-   * terminated at this turn.
+   * Trigger any scripts for the given {@link ScriptEvent} and {@link Script}.
+   *
+   * @return a promise that is completed when the scripts finishes executing
    */
-  void triggerTurn(final Runnable keepGoing) {
-    Script script = worldState.getScript();
-    Turn turn = worldState.getTurn();
-    List<Dialogue> dialogues = script.getTurnDialogues().get(turn);
-    if (dialogues.isEmpty()) {
-      triggerWinLose(keepGoing);
-    } else {
-      modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
-        @Override
-        public void run() {
-          triggerWinLose(keepGoing);
-        }
-      })));
-    }
+  Promise triggerScripts(final ScriptEvent event, final Script script) {
+    final Promise promise = new Promise();
+    triggerDialogues(event, script).done(new Runnable() {
+      @Override
+      public void run() {
+        triggerWinLose(event, script, promise);
+      }
+    });
+    return promise;
   }
 
   /**
-   * Trigger any script action for the persons just died. {@code keepGoing} is called if the level
-   * is not terminated by the deaths.
+   * Trigger all dialogue for the given event, if any.
+   *
+   * @return a promise that is resolved when all dialogues finishes diplaying
    */
-  void triggerDeaths(List<Person> deaths, Runnable keepGoing) {
-    triggerDeaths(deaths.iterator(), keepGoing);
+  private Promise triggerDialogues(ScriptEvent event, Script script) {
+    Promise promise = new Promise();
+    triggerDialogues(event, Multimaps.asMap(script.getDialogues()).entrySet().iterator(), promise);
+    return promise;
   }
 
-  private void triggerDeaths(final Iterator<Person> deathIterator, final Runnable keepGoing) {
-    if (deathIterator.hasNext()) {
-      ResourceKey name = deathIterator.next().getName();
-      List<Dialogue> dialogues = worldState.getScript().getDeathDialogues().get(name);
-      if (dialogues.isEmpty()) {
-        triggerDeaths(deathIterator, keepGoing);
-      } else {
+  private void triggerDialogues(
+      final ScriptEvent event,
+      final Iterator<Entry<Condition, List<Dialogue>>> entryIterator,
+      final Promise promise) {
+    if (entryIterator.hasNext()) {
+      Entry<Condition, List<Dialogue>> entry = entryIterator.next();
+      final Condition condition = entry.getKey();
+      if (event.satisfiedBy(condition)) {
+        List<Dialogue> dialogues = entry.getValue();
         modelBus.post(new ShowDialogues(dialogues, new Promise(new Runnable() {
           @Override
           public void run() {
-            triggerDeaths(deathIterator, keepGoing);
+            triggerDialogues(event, entryIterator, promise);
           }
         })));
+      } else {
+        triggerDialogues(event, entryIterator, promise);
       }
     } else {
-      triggerWinLose(keepGoing);
+      promise.complete();
     }
   }
 
-  private void triggerWinLose(Runnable keepGoing) {
-    Script script = worldState.getScript();
-    Turn turn = worldState.getTurn();
+  /**
+   * Fires any win/lose conditions trigger by the event. Resolves the promise if the event does not
+   * trigger any win/lose conditions.
+   */
+  private void triggerWinLose(ScriptEvent event, Script script, Promise promise) {
     // lose condition goes first so YOLOs are not encouraged
     for (Condition condition : script.getLoseConditions()) {
-      if (condition.isMet(turn, world)) {
+      if (event.satisfiedBy(condition)) {
         modelBus.post(new LevelLost());
         return;
       }
     }
     for (Condition condition : script.getWinConditions()) {
-      if (condition.isMet(turn, world)) {
+      if (event.satisfiedBy(condition)) {
         modelBus.post(new LevelWon());
         return;
       }
     }
-    keepGoing.run();
+    promise.complete();
   }
 }

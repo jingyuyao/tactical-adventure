@@ -13,14 +13,6 @@ public class DataModuleTest {
   @Inject
   private DataManager dataManager;
   @Inject
-  private GameDataManager gameDataManager;
-  @Inject
-  private LevelDataLoader levelDataLoader;
-  @Inject
-  private LevelTerrainsLoader levelTerrainsLoader;
-  @Inject
-  private LevelProgressManager levelProgressManager;
-  @Inject
   private TextLoader textLoader;
 
   @Test

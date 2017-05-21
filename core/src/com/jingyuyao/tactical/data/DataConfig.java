@@ -17,24 +17,20 @@ class DataConfig {
     return "data/init.json";
   }
 
-  String getScriptFileName() {
-    return "data/script.json";
-  }
-
   String getMainSaveFileName() {
     return "save/main.save.json";
   }
 
-  String getMainLevelProgressFileName() {
-    return "save/main.progress.save.json";
+  String getMainLevelSaveFileName() {
+    return "save/main.level.save.json";
   }
 
   String getLevelDir(int level) {
     return "data/" + level + "/";
   }
 
-  String getLevelInitFileName(int level) {
-    return getLevelDir(level) + "init.json";
+  String getLevelWorldFileName(int level) {
+    return getLevelDir(level) + "world.json";
   }
 
   String getLevelScriptFileName(int level) {

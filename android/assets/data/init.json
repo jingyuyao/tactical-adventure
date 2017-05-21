@@ -1,6 +1,6 @@
 {
   "currentLevel": 1,
-  "playerShips": [
+  "inactiveShips": [
     {
       "type": "BasicShip",
       "name": "adder",

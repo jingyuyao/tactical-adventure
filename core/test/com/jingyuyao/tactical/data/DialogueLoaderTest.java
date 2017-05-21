@@ -7,9 +7,11 @@ import com.badlogic.gdx.Files;
 import com.google.common.collect.ListMultimap;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import com.jingyuyao.tactical.model.script.OnDeath;
+import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.util.List;
@@ -51,10 +53,10 @@ public class DialogueLoaderTest {
   }
 
   @Test
-  public void get_level_dialogues() {
-    ListMultimap<Turn, Dialogue> levelDialogues = dialogueLoader.getLevelDialogues(2);
+  public void get_dialogues() {
+    ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(2);
 
-    List<Dialogue> start1Dialogues = levelDialogues.get(new Turn(1, TurnStage.START));
+    List<Dialogue> start1Dialogues = dialogues.get(new OnTurn(new Turn(1, TurnStage.START)));
     assertThat(start1Dialogues).hasSize(2);
     assertThat(start1Dialogues.get(0).getName()).isEqualTo(NAME.get("first"));
     assertThat(start1Dialogues.get(0).getText())
@@ -63,7 +65,7 @@ public class DialogueLoaderTest {
     assertThat(start1Dialogues.get(1).getText())
         .isEqualTo(LEVEL_DIALOGUE.get("1-START-second-1"));
 
-    List<Dialogue> end1Dialogues = levelDialogues.get(new Turn(1, TurnStage.END));
+    List<Dialogue> end1Dialogues = dialogues.get(new OnTurn(new Turn(1, TurnStage.END)));
     assertThat(end1Dialogues).hasSize(2);
     assertThat(end1Dialogues.get(0).getName()).isEqualTo(NAME.get("third"));
     assertThat(end1Dialogues.get(0).getText())
@@ -72,31 +74,26 @@ public class DialogueLoaderTest {
     assertThat(end1Dialogues.get(1).getText())
         .isEqualTo(LEVEL_DIALOGUE.get("1-END-fourth-1"));
 
-    assertThat(levelDialogues.get(new Turn(2, TurnStage.START))).isEmpty();
+    assertThat(dialogues.get(new OnTurn(new Turn(2, TurnStage.START)))).isEmpty();
 
-    List<Dialogue> start3Dialogues = levelDialogues.get(new Turn(3, TurnStage.START));
+    List<Dialogue> start3Dialogues = dialogues.get(new OnTurn(new Turn(3, TurnStage.START)));
     assertThat(start3Dialogues).hasSize(1);
     assertThat(start3Dialogues.get(0).getName()).isEqualTo(NAME.get("fifth"));
     assertThat(start3Dialogues.get(0).getText())
         .isEqualTo(LEVEL_DIALOGUE.get("3-START-fifth-0"));
 
-    assertThat(levelDialogues.get(new Turn(9001, TurnStage.START))).isEmpty();
-  }
+    assertThat(dialogues.get(new OnTurn(new Turn(9001, TurnStage.START)))).isEmpty();
 
-  @Test
-  public void get_death_dialogues() {
-    ListMultimap<ResourceKey, Dialogue> deathDialogues = dialogueLoader.getDeathDialogues();
-
-    List<Dialogue> deadDialogues = deathDialogues.get(NAME.get("dead"));
+    List<Dialogue> deadDialogues = dialogues.get(new OnDeath("dead"));
     assertThat(deadDialogues).hasSize(1);
     assertThat(deadDialogues.get(0).getName()).isEqualTo(NAME.get("dead"));
     assertThat(deadDialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead"));
 
-    List<Dialogue> dead2Dialogues = deathDialogues.get(NAME.get("dead2"));
+    List<Dialogue> dead2Dialogues = dialogues.get(new OnDeath("dead2"));
     assertThat(dead2Dialogues).hasSize(1);
     assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
     assertThat(dead2Dialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
 
-    assertThat(deathDialogues.get(NAME.get("never-gonna-give-you-up"))).isEmpty();
+    assertThat(dialogues.get(new OnDeath("never-gonna-give-you-up"))).isEmpty();
   }
 }

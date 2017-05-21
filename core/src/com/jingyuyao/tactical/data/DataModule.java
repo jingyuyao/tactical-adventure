@@ -2,11 +2,11 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.assets.AssetManager;
+import com.google.common.collect.ListMultimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Bomb;
@@ -16,12 +16,12 @@ import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Heal;
 import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.script.AllDied;
-import com.jingyuyao.tactical.model.script.AnyDied;
 import com.jingyuyao.tactical.model.script.Condition;
-import com.jingyuyao.tactical.model.script.Died;
+import com.jingyuyao.tactical.model.script.OnAllDeath;
+import com.jingyuyao.tactical.model.script.OnAnyDeath;
+import com.jingyuyao.tactical.model.script.OnDeath;
+import com.jingyuyao.tactical.model.script.OnNoAllegiance;
 import com.jingyuyao.tactical.model.script.OnTurn;
-import com.jingyuyao.tactical.model.script.OutOfAllegiance;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.BasicShip;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
@@ -41,21 +41,22 @@ public class DataModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Gson provideGson(Injector injector) {
+  Gson provideGson() {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     builder.enableComplexMapKeySerialization();
+    builder.registerTypeAdapter(ListMultimap.class, new ListMultimapAdapter());
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapter(Turn.class, new TurnAdapter());
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Condition.class)
-            .registerSubtype(Died.class)
-            .registerSubtype(AnyDied.class)
-            .registerSubtype(AllDied.class)
+            .registerSubtype(OnDeath.class)
+            .registerSubtype(OnAnyDeath.class)
+            .registerSubtype(OnAllDeath.class)
             .registerSubtype(OnTurn.class)
-            .registerSubtype(OutOfAllegiance.class));
+            .registerSubtype(OnNoAllegiance.class));
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory

@@ -162,22 +162,22 @@ public class WorldTest {
     cellMap.put(C2_1, cell5); // right
     when(cell1.getCoordinate()).thenReturn(C1_1);
 
-    assertThat(world.neighbor(cell1, Direction.UP)).hasValue(cell2);
-    assertThat(world.neighbor(cell1, Direction.DOWN)).hasValue(cell3);
-    assertThat(world.neighbor(cell1, Direction.LEFT)).hasValue(cell4);
-    assertThat(world.neighbor(cell1, Direction.RIGHT)).hasValue(cell5);
+    assertThat(world.getNeighbors(cell1)).containsExactly(cell2, cell3, cell4, cell5);
   }
 
   @Test
   public void neighbor() {
     cellMap.put(C1_1, cell1);
-    cellMap.put(C1_2, cell2);
+    cellMap.put(C1_2, cell2); // up
+    cellMap.put(C1_0, cell3); // down
+    cellMap.put(C0_1, cell4); // left
+    cellMap.put(C2_1, cell5); // right
     when(cell1.getCoordinate()).thenReturn(C1_1);
 
     assertThat(world.neighbor(cell1, Direction.UP)).hasValue(cell2);
-    assertThat(world.neighbor(cell1, Direction.DOWN)).isAbsent();
-    assertThat(world.neighbor(cell1, Direction.LEFT)).isAbsent();
-    assertThat(world.neighbor(cell1, Direction.RIGHT)).isAbsent();
+    assertThat(world.neighbor(cell1, Direction.DOWN)).hasValue(cell3);
+    assertThat(world.neighbor(cell1, Direction.LEFT)).hasValue(cell4);
+    assertThat(world.neighbor(cell1, Direction.RIGHT)).hasValue(cell5);
   }
 
   @Test

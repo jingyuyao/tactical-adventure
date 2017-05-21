@@ -1,10 +1,21 @@
 {
   "loseConditions": [
     {
-      "type": "AllDied",
+      "type": "OnNoAllegiance",
+      "allegiance": "PLAYER"
+    },
+    {
+      "type": "OnAnyDeath",
       "names": [
-        "andrew",
-        "ben"
+        "jingyu",
+        "andrew"
+      ]
+    },
+    {
+      "type": "OnAllDeath",
+      "names": [
+        "ben",
+        "kevin"
       ]
     },
     {
@@ -14,11 +25,11 @@
   ],
   "winConditions": [
     {
-      "type": "OutOfAllegiance",
+      "type": "OnNoAllegiance",
       "allegiance": "ENEMY"
     },
     {
-      "type": "Died",
+      "type": "OnDeath",
       "name": "ryan"
     }
   ]

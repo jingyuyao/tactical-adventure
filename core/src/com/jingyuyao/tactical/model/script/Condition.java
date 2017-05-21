@@ -1,12 +1,45 @@
 package com.jingyuyao.tactical.model.script;
 
+import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
-public interface Condition {
+/**
+ * A condition that can be satisfied given a {@link ScriptEvent}. Base implementation will fail on
+ * all events. Override methods to provide functionality.
+ */
+public abstract class Condition {
+
+  Condition() {
+  }
 
   /**
-   * Return whether this {@link Condition} as been met given the world and world state.
+   * Return whether or not this condition is satisfied when {@code turn} is reached.
    */
-  boolean isMet(Turn turn, World world);
+  boolean onTurn(Turn turn, World world) {
+    return false;
+  }
+
+  /**
+   * Return whether or not this condition is satisfied when {@code person} dies.
+   */
+  boolean onDeath(Person person, World world) {
+    return false;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Must stay the same for the lifetime of this condition.
+   */
+  @Override
+  public abstract boolean equals(Object other);
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Must stay the same for the lifetime of this condition.
+   */
+  @Override
+  public abstract int hashCode();
 }

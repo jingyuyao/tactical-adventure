@@ -4,9 +4,10 @@ import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
+import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class StartTurn extends TurnScriptState {
+public class StartTurn extends TurnState {
 
   private final StateFactory stateFactory;
 
@@ -14,9 +15,10 @@ public class StartTurn extends TurnScriptState {
   StartTurn(
       ModelBus modelBus,
       WorldState worldState,
+      World world,
       ScriptRunner scriptRunner,
       StateFactory stateFactory) {
-    super(modelBus, worldState, scriptRunner);
+    super(modelBus, worldState, world, scriptRunner);
     this.stateFactory = stateFactory;
   }
 

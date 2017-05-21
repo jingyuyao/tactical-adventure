@@ -9,7 +9,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
-import com.jingyuyao.tactical.data.GameData;
+import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LoadedLevel;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
@@ -53,7 +53,7 @@ public class GameStateTest {
   @Mock
   private Script script;
   @Mock
-  private GameData gameData;
+  private GameSave gameSave;
   @Mock
   private Save save;
   @Mock
@@ -92,7 +92,7 @@ public class GameStateTest {
   public void reset() {
     gameState.reset();
 
-    verify(dataManager).removeProgress();
+    verify(dataManager).removeLevelProgress();
   }
 
   @Test
@@ -106,19 +106,19 @@ public class GameStateTest {
   public void save() {
     gameState.save(save);
 
-    verify(dataManager).saveProgress(world, worldState);
+    verify(dataManager).saveLevelProgress(world, worldState);
   }
 
   @Test
   public void level_complete_has_level() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameData);
-    when(gameData.getCurrentLevel()).thenReturn(2);
+    when(dataManager.loadGameSave()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(dataManager.hasLevel(3)).thenReturn(true);
 
     gameState.levelWon(levelWon);
 
     InOrder inOrder = Mockito.inOrder(world, worldState, dataManager, game);
-    inOrder.verify(dataManager).changeLevel(3, world, worldState);
+    inOrder.verify(dataManager).changeLevel(3, world);
     inOrder.verify(world).reset();
     inOrder.verify(worldState).reset();
     inOrder.verify(game).goToPlayMenu();
@@ -126,8 +126,8 @@ public class GameStateTest {
 
   @Test
   public void level_complete_no_level() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameData);
-    when(gameData.getCurrentLevel()).thenReturn(2);
+    when(dataManager.loadGameSave()).thenReturn(gameSave);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(dataManager.hasLevel(3)).thenReturn(false);
 
     gameState.levelWon(levelWon);
@@ -142,7 +142,7 @@ public class GameStateTest {
   public void level_failed() {
     gameState.levelLost(levelLost);
 
-    verify(dataManager).removeProgress();
+    verify(dataManager).removeLevelProgress();
     verify(world).reset();
     verify(worldState).reset();
     verify(game).goToPlayMenu();

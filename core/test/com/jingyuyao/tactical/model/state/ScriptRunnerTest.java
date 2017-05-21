@@ -7,17 +7,15 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
-import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.world.World;
+import com.jingyuyao.tactical.model.script.ScriptEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,35 +32,29 @@ public class ScriptRunnerTest {
   @Mock
   private ModelBus modelBus;
   @Mock
-  private World world;
-  @Mock
-  private WorldState worldState;
-  @Mock
   private Script script;
   @Mock
-  private Turn turn;
+  private ScriptEvent scriptEvent;
+  @Mock
+  private Condition dialogueCondition1;
+  @Mock
+  private Condition dialogueCondition2;
+  @Mock
+  private Condition dialogueCondition3;
+  @Mock
+  private Condition dialogueCondition4;
   @Mock
   private Condition winCondition;
   @Mock
   private Condition loseCondition;
   @Mock
-  private Person dead1;
-  @Mock
-  private Person dead2;
-  @Mock
-  private Person dead3;
-  @Mock
-  private ResourceKey name1;
-  @Mock
-  private ResourceKey name2;
-  @Mock
-  private ResourceKey name3;
-  @Mock
   private Dialogue dialogue1;
+  @Mock
+  private Dialogue dialogue2;
   @Mock
   private Dialogue dialogue3;
   @Mock
-  private Runnable runnable;
+  private Dialogue dialogue4;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
 
@@ -70,122 +62,72 @@ public class ScriptRunnerTest {
 
   @Before
   public void setUp() {
-    scriptRunner = new ScriptRunner(modelBus, world, worldState);
+    scriptRunner = new ScriptRunner(modelBus);
   }
 
   @Test
-  public void turn_has_dialogue_lost() {
-    when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(turn);
-    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.of(turn, dialogue1));
+  public void has_dialogue_lost() {
+    when(script.getDialogues())
+        .thenReturn(ImmutableListMultimap.of(
+            dialogueCondition1, dialogue1,
+            dialogueCondition2, dialogue2,
+            dialogueCondition3, dialogue3,
+            dialogueCondition4, dialogue4));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
-    when(loseCondition.isMet(turn, world)).thenReturn(true);
+    when(scriptEvent.satisfiedBy(dialogueCondition1)).thenReturn(true); // show
+    when(scriptEvent.satisfiedBy(dialogueCondition2)).thenReturn(false);
+    when(scriptEvent.satisfiedBy(dialogueCondition3)).thenReturn(false);
+    when(scriptEvent.satisfiedBy(dialogueCondition4)).thenReturn(true); // show
+    when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(true);
 
-    scriptRunner.triggerTurn(runnable);
+    Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
 
-    InOrder inOrder = Mockito.inOrder(modelBus);
+    InOrder inOrder =
+        Mockito.inOrder(modelBus, loseCondition, dialogueCondition1, dialogueCondition4);
+    assertThat(promise.isDone()).isFalse();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    ShowDialogues showDialogues =
-        TestHelpers.assertClass(argumentCaptor.getValue(), ShowDialogues.class);
+    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
+    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
     assertThat(showDialogues.getDialogues()).containsExactly(dialogue1);
     showDialogues.complete();
+    assertThat(promise.isDone()).isFalse();
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
+    ShowDialogues showDialogues2 = (ShowDialogues) argumentCaptor.getValue();
+    assertThat(showDialogues2.getDialogues()).containsExactly(dialogue4);
+    showDialogues2.complete();
+    assertThat(promise.isDone()).isFalse();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(LevelLost.class);
-    verifyZeroInteractions(runnable);
+    assertThat(promise.isDone()).isFalse();
   }
 
   @Test
-  public void turn_no_dialogue_won() {
-    when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(turn);
-    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.<Turn, Dialogue>of());
+  public void no_dialogue_won() {
+    when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
-    when(loseCondition.isMet(turn, world)).thenReturn(false);
-    when(winCondition.isMet(turn, world)).thenReturn(true);
+    when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
+    when(scriptEvent.satisfiedBy(winCondition)).thenReturn(true);
 
-    scriptRunner.triggerTurn(runnable);
+    Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
 
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(LevelWon.class);
-    verifyZeroInteractions(runnable);
+    assertThat(promise.isDone()).isFalse();
   }
 
   @Test
-  public void turn_keep_going() {
-    when(worldState.getScript()).thenReturn(script);
-    when(worldState.getTurn()).thenReturn(turn);
-    when(script.getTurnDialogues()).thenReturn(ImmutableListMultimap.<Turn, Dialogue>of());
+  public void no_dialogue_keep_going() {
+    when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
-    when(loseCondition.isMet(turn, world)).thenReturn(false);
-    when(winCondition.isMet(turn, world)).thenReturn(false);
+    when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
+    when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);
 
-    scriptRunner.triggerTurn(runnable);
+    Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
 
     verifyZeroInteractions(modelBus);
-    verify(runnable).run();
-  }
-
-  @Test
-  public void deaths_won() {
-    when(worldState.getScript()).thenReturn(script);
-    when(dead1.getName()).thenReturn(name1);
-    when(dead2.getName()).thenReturn(name2);
-    when(dead3.getName()).thenReturn(name3);
-    when(script.getDeathDialogues())
-        .thenReturn(ImmutableListMultimap.of(name1, dialogue1, name3, dialogue3));
-    when(worldState.getTurn()).thenReturn(turn);
-    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
-    when(loseCondition.isMet(turn, world)).thenReturn(false);
-    when(winCondition.isMet(turn, world)).thenReturn(true);
-
-    scriptRunner.triggerDeaths(ImmutableList.of(dead1, dead2, dead3), runnable);
-
-    InOrder inOrder = Mockito.inOrder(modelBus);
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
-    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
-    assertThat(showDialogues.getDialogues()).containsExactly(dialogue1);
-    showDialogues.complete();
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
-    ShowDialogues showDialogues2 = (ShowDialogues) argumentCaptor.getValue();
-    assertThat(showDialogues2.getDialogues()).containsExactly(dialogue3);
-    showDialogues2.complete();
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(LevelWon.class);
-    verifyZeroInteractions(runnable);
-  }
-
-  @Test
-  public void deaths_keep_going() {
-    when(worldState.getScript()).thenReturn(script);
-    when(dead1.getName()).thenReturn(name1);
-    when(dead2.getName()).thenReturn(name2);
-    when(dead3.getName()).thenReturn(name3);
-    when(script.getDeathDialogues())
-        .thenReturn(ImmutableListMultimap.of(name1, dialogue1, name3, dialogue3));
-    when(worldState.getTurn()).thenReturn(turn);
-    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
-    when(loseCondition.isMet(turn, world)).thenReturn(false);
-    when(winCondition.isMet(turn, world)).thenReturn(false);
-
-    scriptRunner.triggerDeaths(ImmutableList.of(dead1, dead2, dead3), runnable);
-
-    InOrder inOrder = Mockito.inOrder(modelBus, runnable);
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
-    ShowDialogues showDialogues = (ShowDialogues) argumentCaptor.getValue();
-    assertThat(showDialogues.getDialogues()).containsExactly(dialogue1);
-    showDialogues.complete();
-    inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(ShowDialogues.class);
-    ShowDialogues showDialogues2 = (ShowDialogues) argumentCaptor.getValue();
-    assertThat(showDialogues2.getDialogues()).containsExactly(dialogue3);
-    showDialogues2.complete();
-    inOrder.verify(runnable).run();
+    assertThat(promise.isDone()).isTrue();
   }
 }
