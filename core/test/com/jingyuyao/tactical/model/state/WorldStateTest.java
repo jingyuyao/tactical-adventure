@@ -48,6 +48,8 @@ public class WorldStateTest {
   @Mock
   private Turn turn;
   @Mock
+  private Turn nextTurn;
+  @Mock
   private Script script;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -134,6 +136,16 @@ public class WorldStateTest {
     verify(modelBus).post(argumentCaptor.capture());
     TestHelpers.verifyObjectEvent(argumentCaptor, 0, cell, SelectCell.class);
     verify(state1).select(cell);
+  }
+
+  @Test
+  public void advance_turn() {
+    initialize_to_player();
+    when(turn.advance()).thenReturn(nextTurn);
+
+    worldState.advanceTurn();
+
+    assertThat(worldState.getTurn()).isSameAs(nextTurn);
   }
 
   @Test

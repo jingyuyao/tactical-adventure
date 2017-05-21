@@ -6,11 +6,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
 import java.util.ArrayList;
@@ -148,7 +148,7 @@ public class World implements GetNeighbors {
 
   public void makeAllPlayerShipsControllable() {
     for (Ship ship : getShipSnapshot().values()) {
-      if (ship.getAllegiance().equals(Allegiance.PLAYER)) {
+      if (ship.inGroup(ShipGroup.PLAYER)) {
         ship.setControllable(true);
       }
     }

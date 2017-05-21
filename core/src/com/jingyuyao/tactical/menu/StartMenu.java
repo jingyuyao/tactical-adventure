@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.kotcrab.vis.ui.building.StandardTableBuilder;
 import com.kotcrab.vis.ui.building.TableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
@@ -71,13 +72,11 @@ public class StartMenu extends AbstractMenu {
       int activePlayers = 0;
       int activeEnemies = 0;
       for (Ship ship : levelSave.getShips().values()) {
-        switch (ship.getAllegiance()) {
-          case PLAYER:
-            activePlayers++;
-            break;
-          case ENEMY:
-            activeEnemies++;
-            break;
+        if (ship.inGroup(ShipGroup.PLAYER)) {
+          activePlayers++;
+        }
+        if (ship.inGroup(ShipGroup.ENEMY)) {
+          activeEnemies++;
         }
       }
       progress = textLoader.get(MenuBundle.HAS_PROGRESS.format(activePlayers, activeEnemies));

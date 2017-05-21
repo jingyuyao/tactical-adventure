@@ -16,8 +16,8 @@ import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.data.TextLoader;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -76,8 +76,8 @@ public class StartMenuTest {
         .thenReturn(ImmutableMap.of(
             new Coordinate(0, 0), ship1,
             new Coordinate(0, 1), ship2));
-    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
-    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
+    when(ship2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
@@ -107,8 +107,8 @@ public class StartMenuTest {
         .thenReturn(ImmutableMap.of(
             new Coordinate(0, 0), ship1,
             new Coordinate(0, 1), ship2));
-    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
-    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
+    when(ship2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");

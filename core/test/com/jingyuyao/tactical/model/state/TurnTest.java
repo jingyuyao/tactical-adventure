@@ -22,40 +22,40 @@ public class TurnTest {
   public void advance_start() {
     Turn turn = new Turn(2, TurnStage.START);
 
-    turn.advance();
+    Turn next = turn.advance();
 
-    assertThat(turn.getNumber()).isEqualTo(2);
-    assertThat(turn.getStage()).isSameAs(TurnStage.PLAYER);
+    assertThat(next.getNumber()).isEqualTo(2);
+    assertThat(next.getStage()).isSameAs(TurnStage.PLAYER);
   }
 
   @Test
   public void advance_player() {
     Turn turn = new Turn(2, TurnStage.PLAYER);
 
-    turn.advance();
+    Turn next = turn.advance();
 
-    assertThat(turn.getNumber()).isEqualTo(2);
-    assertThat(turn.getStage()).isSameAs(TurnStage.END);
+    assertThat(next.getNumber()).isEqualTo(2);
+    assertThat(next.getStage()).isSameAs(TurnStage.END);
   }
 
   @Test
   public void advance_end() {
     Turn turn = new Turn(2, TurnStage.END);
 
-    turn.advance();
+    Turn next = turn.advance();
 
-    assertThat(turn.getNumber()).isEqualTo(2);
-    assertThat(turn.getStage()).isSameAs(TurnStage.ENEMY);
+    assertThat(next.getNumber()).isEqualTo(2);
+    assertThat(next.getStage()).isSameAs(TurnStage.ENEMY);
   }
 
   @Test
   public void advance_enemy() {
     Turn turn = new Turn(2, TurnStage.ENEMY);
 
-    turn.advance();
+    Turn next = turn.advance();
 
-    assertThat(turn.getNumber()).isEqualTo(3);
-    assertThat(turn.getStage()).isSameAs(TurnStage.START);
+    assertThat(next.getNumber()).isEqualTo(3);
+    assertThat(next.getStage()).isSameAs(TurnStage.START);
   }
 
   @Test

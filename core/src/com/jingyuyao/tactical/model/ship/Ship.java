@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -45,10 +44,6 @@ public class Ship {
     return ModelBundle.SHIP_NAME.get(name);
   }
 
-  public Allegiance getAllegiance() {
-    return stats.getAllegiance();
-  }
-
   public PilotResponse getAutoPilotResponse(World world, Cell cell) {
     Preconditions.checkArgument(cell.ship().isPresent());
     Preconditions.checkArgument(cell.ship().get().equals(this));
@@ -64,6 +59,13 @@ public class Ship {
 
   public void setControllable(boolean controllable) {
     stats.setControllable(controllable);
+  }
+
+  /**
+   * Return whether this ship is in {@code group}.
+   */
+  public boolean inGroup(ShipGroup group) {
+    return stats.inGroup(group);
   }
 
   public int getHp() {

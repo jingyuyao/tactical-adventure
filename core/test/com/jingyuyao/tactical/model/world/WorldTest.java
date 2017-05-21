@@ -17,11 +17,11 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.HashMap;
 import java.util.Map;
@@ -222,8 +222,7 @@ public class WorldTest {
     cellMap.put(C2_0, cell2);
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
-    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
-    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
     world.makeAllPlayerShipsControllable();
 

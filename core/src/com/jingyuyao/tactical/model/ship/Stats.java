@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model.ship;
 
-import com.jingyuyao.tactical.model.Allegiance;
+import java.util.Set;
 
 class Stats {
 
-  private Allegiance allegiance = Allegiance.ENEMY;
   private boolean controllable;
+  private Set<ShipGroup> groups;
   private int maxHp;
   private int hp;
   private int moveDistance;
@@ -13,14 +13,11 @@ class Stats {
   Stats() {
   }
 
-  Stats(int maxHp, int hp, int moveDistance) {
+  Stats(Set<ShipGroup> groups, int maxHp, int hp, int moveDistance) {
+    this.groups = groups;
     this.maxHp = maxHp;
     this.hp = hp;
     this.moveDistance = moveDistance;
-  }
-
-  Allegiance getAllegiance() {
-    return allegiance;
   }
 
   boolean isControllable() {
@@ -29,6 +26,10 @@ class Stats {
 
   void setControllable(boolean controllable) {
     this.controllable = controllable;
+  }
+
+  boolean inGroup(ShipGroup group) {
+    return groups.contains(group);
   }
 
   int getHp() {

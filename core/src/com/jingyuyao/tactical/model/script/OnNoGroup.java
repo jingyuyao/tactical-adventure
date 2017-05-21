@@ -1,24 +1,24 @@
 package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
 /**
- * Satisfied when there are no ships of the given {@link Allegiance} in the {@link World}.
+ * Satisfied when there are no ships of the given {@link ShipGroup} in the {@link World}.
  */
-public class OnNoAllegiance extends Condition {
+public class OnNoGroup extends Condition {
 
-  private Allegiance allegiance;
+  private ShipGroup group;
 
-  OnNoAllegiance() {
+  OnNoGroup() {
   }
 
-  OnNoAllegiance(Allegiance allegiance) {
-    this.allegiance = allegiance;
+  OnNoGroup(ShipGroup group) {
+    this.group = group;
   }
 
   @Override
@@ -33,7 +33,7 @@ public class OnNoAllegiance extends Condition {
 
   private boolean onWorld(World world) {
     for (Ship ship : world.getShipSnapshot().values()) {
-      if (ship.getAllegiance().equals(allegiance)) {
+      if (ship.inGroup(group)) {
         return false;
       }
     }
@@ -48,12 +48,12 @@ public class OnNoAllegiance extends Condition {
     if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    OnNoAllegiance that = (OnNoAllegiance) object;
-    return allegiance == that.allegiance;
+    OnNoGroup that = (OnNoGroup) object;
+    return group == that.group;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(allegiance);
+    return Objects.hashCode(group);
   }
 }

@@ -81,7 +81,7 @@ public class StartTurnTest {
     TurnEvent turnEvent = TestHelpers.assertClass(scriptEventCaptor.getValue(), TurnEvent.class);
     assertThat(turnEvent.getTurn()).isSameAs(turn);
     assertThat(turnEvent.getWorld()).isSameAs(world);
-    inOrder.verify(turn).advance();
+    inOrder.verify(worldState).advanceTurn();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(waiting);

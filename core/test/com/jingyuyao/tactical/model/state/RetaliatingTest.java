@@ -11,10 +11,9 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.TestHelpers;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
-import com.jingyuyao.tactical.model.event.ActivatedEnemy;
+import com.jingyuyao.tactical.model.event.ActivatedShip;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
@@ -23,6 +22,7 @@ import com.jingyuyao.tactical.model.script.ScriptEvent;
 import com.jingyuyao.tactical.model.script.TurnEvent;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Path;
@@ -118,8 +118,8 @@ public class RetaliatingTest {
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
         .thenReturn(Promise.immediate());
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
-    when(enemy.getAllegiance()).thenReturn(Allegiance.ENEMY);
-    when(enemy2.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(enemy.inGroup(ShipGroup.ENEMY)).thenReturn(true);
+    when(enemy2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(enemy.getAutoPilotResponse(world, cell)).thenReturn(pilotResponse);
     when(enemy2.getAutoPilotResponse(world, cell2)).thenReturn(pilotResponse2);
     when(pilotResponse.path()).thenReturn(Optional.of(path));
@@ -141,19 +141,19 @@ public class RetaliatingTest {
     assertThat(turnEvent.getTurn()).isSameAs(turn);
     assertThat(turnEvent.getWorld()).isSameAs(world);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    ActivatedEnemy activatedEnemy1 =
-        TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedEnemy.class);
-    assertThat(activatedEnemy1.getObject()).isSameAs(enemy);
+    ActivatedShip activatedShip1 =
+        TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedShip.class);
+    assertThat(activatedShip1.getObject()).isSameAs(enemy);
     inOrder.verify(enemy).getAutoPilotResponse(world, cell);
     inOrder.verify(origin).moveShip(path);
     inOrder.verify(battleSequence).start(eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    ActivatedEnemy activatedEnemy2 =
-        TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedEnemy.class);
-    assertThat(activatedEnemy2.getObject()).isSameAs(enemy2);
+    ActivatedShip activatedShip2 =
+        TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedShip.class);
+    assertThat(activatedShip2.getObject()).isSameAs(enemy2);
     inOrder.verify(enemy2).getAutoPilotResponse(world, cell2);
-    inOrder.verify(turn).advance();
+    inOrder.verify(worldState).advanceTurn();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(startTurn);

@@ -4,9 +4,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OnNoAllegianceTest {
+public class OnNoGroupTest {
 
   @Mock
   private Turn turn;
@@ -34,29 +34,27 @@ public class OnNoAllegianceTest {
   @Mock
   private Person person;
 
-  private OnNoAllegiance onNoAllegiance;
+  private OnNoGroup onNoGroup;
 
   @Before
   public void setUp() {
-    onNoAllegiance = new OnNoAllegiance(Allegiance.PLAYER);
+    onNoGroup = new OnNoGroup(ShipGroup.PLAYER);
   }
 
   @Test
   public void satisfied() {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
-    when(ship1.getAllegiance()).thenReturn(Allegiance.ENEMY);
-    when(ship2.getAllegiance()).thenReturn(Allegiance.ENEMY);
 
-    assertThat(onNoAllegiance.onTurn(turn, world)).isTrue();
-    assertThat(onNoAllegiance.onDeath(person, world)).isTrue();
+    assertThat(onNoGroup.onTurn(turn, world)).isTrue();
+    assertThat(onNoGroup.onDeath(person, world)).isTrue();
   }
 
   @Test
   public void not_satisfied() {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
-    when(ship1.getAllegiance()).thenReturn(Allegiance.PLAYER);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
-    assertThat(onNoAllegiance.onTurn(turn, world)).isFalse();
-    assertThat(onNoAllegiance.onDeath(person, world)).isFalse();
+    assertThat(onNoGroup.onTurn(turn, world)).isFalse();
+    assertThat(onNoGroup.onDeath(person, world)).isFalse();
   }
 }

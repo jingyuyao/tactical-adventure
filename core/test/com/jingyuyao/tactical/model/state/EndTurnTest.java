@@ -82,7 +82,7 @@ public class EndTurnTest {
     assertThat(turnEvent.getTurn()).isSameAs(turn);
     assertThat(turnEvent.getWorld()).isSameAs(world);
     inOrder.verify(world).makeAllPlayerShipsControllable();
-    inOrder.verify(turn).advance();
+    inOrder.verify(worldState).advanceTurn();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(retaliating);

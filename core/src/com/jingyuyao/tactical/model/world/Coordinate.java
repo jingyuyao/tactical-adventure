@@ -9,13 +9,8 @@ import java.util.Locale;
  */
 public final class Coordinate {
 
-  // Do not expose setters!
-  private int x;
-  private int y;
-
-  // No args constructor for serialization
-  Coordinate() {
-  }
+  private final int x;
+  private final int y;
 
   public Coordinate(int x, int y) {
     this.x = x;
@@ -30,7 +25,7 @@ public final class Coordinate {
     return y;
   }
 
-  public Coordinate offsetBy(Direction direction) {
+  Coordinate offsetBy(Direction direction) {
     return new Coordinate(x + direction.getXOffset(), y + direction.getYOffset());
   }
 

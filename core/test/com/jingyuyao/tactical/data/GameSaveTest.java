@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
@@ -73,8 +73,8 @@ public class GameSaveTest {
 
   @Test
   public void replace_ships_from_world() {
-    when(worldShip1.getAllegiance()).thenReturn(Allegiance.PLAYER);
-    when(worldShip2.getAllegiance()).thenReturn(Allegiance.ENEMY);
+    when(worldShip1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
+    when(worldShip2.inGroup(ShipGroup.PLAYER)).thenReturn(false);
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, worldShip1, cell2, worldShip2));
 
     gameSave.replaceActiveShipsFrom(world);

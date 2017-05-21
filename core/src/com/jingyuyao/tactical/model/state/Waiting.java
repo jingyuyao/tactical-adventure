@@ -50,7 +50,7 @@ public class Waiting extends TurnState {
   }
 
   void endTurn() {
-    getTurn().advance();
+    advanceTurn();
     post(new Save());
     branchTo(stateFactory.createEndTurn());
   }

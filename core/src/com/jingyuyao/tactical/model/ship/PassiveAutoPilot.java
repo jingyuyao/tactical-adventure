@@ -8,6 +8,7 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.World;
 
+// TODO: test me
 public class PassiveAutoPilot implements AutoPilot {
 
   @Override
@@ -34,13 +35,11 @@ public class PassiveAutoPilot implements AutoPilot {
 
     for (Cell cell : target.getTargetCells()) {
       for (Ship ship : cell.ship().asSet()) {
-        switch (ship.getAllegiance()) {
-          case PLAYER:
-            containsPlayer = true;
-            break;
-          case ENEMY:
-            containsEnemy = true;
-            break;
+        if (ship.inGroup(ShipGroup.PLAYER)) {
+          containsPlayer = true;
+        }
+        if (ship.inGroup(ShipGroup.ENEMY)) {
+          containsEnemy = true;
         }
       }
     }
