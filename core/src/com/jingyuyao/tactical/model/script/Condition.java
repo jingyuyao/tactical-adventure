@@ -5,6 +5,8 @@ import com.jingyuyao.tactical.model.world.World;
 
 /**
  * A condition that can trigger some script actions. A condition should only be triggered once.
+ * Implementations must provide correct {@link #equals(Object)} and {@link #hashCode()} since
+ * this interface is often used as keys in maps.
  */
 public interface Condition {
 

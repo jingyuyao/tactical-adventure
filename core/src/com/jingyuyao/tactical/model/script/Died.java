@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.script;
 
+import com.google.common.base.Objects;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -15,7 +16,7 @@ public class Died extends BaseCondition {
   Died() {
   }
 
-  Died(String name) {
+  public Died(String name) {
     this.name = name;
   }
 
@@ -29,5 +30,25 @@ public class Died extends BaseCondition {
       }
     }
     return true;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    if (!super.equals(object)) {
+      return false;
+    }
+    Died died = (Died) object;
+    return Objects.equal(name, died.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(super.hashCode(), name);
   }
 }

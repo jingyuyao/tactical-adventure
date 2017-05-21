@@ -2,9 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
@@ -57,12 +55,9 @@ class LevelLoader {
     LevelScript levelScript = load(dataConfig.getLevelScriptFileName(level), LevelScript.class);
     List<Condition> winConditions = levelScript.getWinConditions();
     List<Condition> loseConditions = levelScript.getLoseConditions();
-    ListMultimap<Turn, Dialogue> levelDialogues = dialogueLoader.getLevelDialogues(level);
-    ListMultimap<ResourceKey, Dialogue> deathDialogues = dialogueLoader.getDeathDialogues();
-    // TODO: temp
-    ListMultimap<Condition, Dialogue> dialogues = ArrayListMultimap.create();
+    ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(level);
 
-    return new Script(winConditions, loseConditions, dialogues, levelDialogues, deathDialogues);
+    return new Script(winConditions, loseConditions, dialogues);
   }
 
   private <T> T load(String fileName, Class<T> clazz) {

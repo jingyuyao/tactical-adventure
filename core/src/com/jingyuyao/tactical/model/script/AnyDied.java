@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.script;
 
+import com.google.common.base.Objects;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -31,5 +32,25 @@ public class AnyDied extends BaseCondition {
       }
     }
     return names.size() != met;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    if (!super.equals(object)) {
+      return false;
+    }
+    AnyDied anyDied = (AnyDied) object;
+    return Objects.equal(names, anyDied.names);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(super.hashCode(), names);
   }
 }
