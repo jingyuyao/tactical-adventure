@@ -72,9 +72,21 @@ public class Turn implements Comparable<Turn> {
    * Order sensitive. A turn must cycle through every single stage before advancing.
    */
   public enum TurnStage {
+    /**
+     * Scripting supported.
+     */
     START,
+    /**
+     * Scripting NOT supported. Use {@link #START} for scripting instead.
+     */
     PLAYER,
+    /**
+     * Scripting supported.
+     */
     END,
+    /**
+     * Scripting NOT supported. Use {@link #END} for scripting instead.
+     */
     ENEMY;
 
     private static TurnStage first() {

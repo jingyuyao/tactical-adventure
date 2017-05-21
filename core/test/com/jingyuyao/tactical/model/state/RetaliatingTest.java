@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
@@ -17,9 +16,6 @@ import com.jingyuyao.tactical.model.event.ActivatedShip;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptEvent;
-import com.jingyuyao.tactical.model.script.TurnEvent;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
@@ -46,15 +42,11 @@ public class RetaliatingTest {
   @Mock
   private World world;
   @Mock
-  private ScriptRunner scriptRunner;
-  @Mock
   private StateFactory stateFactory;
   @Mock
   private BattleSequence battleSequence;
   @Mock
   private Turn turn;
-  @Mock
-  private Script script;
   @Mock
   private Cell cell;
   @Mock
@@ -79,15 +71,12 @@ public class RetaliatingTest {
   private ArgumentCaptor<Object> argumentCaptor;
   @Captor
   private ArgumentCaptor<Runnable> runnableCaptor;
-  @Captor
-  private ArgumentCaptor<ScriptEvent> scriptEventCaptor;
 
   private Retaliating retaliating;
 
   @Before
   public void setUp() {
-    retaliating =
-        new Retaliating(modelBus, worldState, world, scriptRunner, stateFactory, battleSequence);
+    retaliating = new Retaliating(modelBus, worldState, world, stateFactory, battleSequence);
   }
 
   @Test
@@ -113,10 +102,7 @@ public class RetaliatingTest {
   @Test
   public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
-    when(worldState.getScript()).thenReturn(script);
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
-    when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
-        .thenReturn(Promise.immediate());
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
     when(enemy.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(enemy2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
@@ -132,14 +118,9 @@ public class RetaliatingTest {
 
     retaliating.enter();
 
-    InOrder inOrder =
-        inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence, scriptRunner);
+    InOrder inOrder = inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(retaliating);
-    inOrder.verify(scriptRunner).triggerScripts(scriptEventCaptor.capture(), eq(script));
-    TurnEvent turnEvent = TestHelpers.assertClass(scriptEventCaptor.getValue(), TurnEvent.class);
-    assertThat(turnEvent.getTurn()).isSameAs(turn);
-    assertThat(turnEvent.getWorld()).isSameAs(world);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     ActivatedShip activatedShip1 =
         TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedShip.class);
