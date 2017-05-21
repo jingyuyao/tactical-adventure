@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class StartTurn extends TurnState {
+public class StartTurn extends TurnScriptState {
 
   private final StateFactory stateFactory;
 

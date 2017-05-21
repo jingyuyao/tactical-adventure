@@ -16,8 +16,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 
-public class Retaliating extends TurnState {
+/**
+ * Note: this is not a {@link TurnScriptState} is to mirror the fact that {@link Waiting} is not a
+ * {@link TurnScriptState}. All the scripts for {@link TurnStage#ENEMY} should happen on {@link
+ * TurnStage#END} instead.
+ */
+public class Retaliating extends BaseState {
 
+  private final World world;
   private final StateFactory stateFactory;
   private final BattleSequence battleSequence;
 
@@ -26,10 +32,10 @@ public class Retaliating extends TurnState {
       ModelBus modelBus,
       WorldState worldState,
       World world,
-      ScriptRunner scriptRunner,
       StateFactory stateFactory,
       BattleSequence battleSequence) {
-    super(modelBus, worldState, world, scriptRunner);
+    super(modelBus, worldState);
+    this.world = world;
     this.stateFactory = stateFactory;
     this.battleSequence = battleSequence;
   }
@@ -38,11 +44,7 @@ public class Retaliating extends TurnState {
   public void enter() {
     Preconditions.checkState(getTurn().getStage().equals(TurnStage.ENEMY));
     super.enter();
-  }
-
-  @Override
-  void scriptDone() {
-    retaliate(getWorld().getShipSnapshot().entrySet().iterator());
+    retaliate(world.getShipSnapshot().entrySet().iterator());
   }
 
   private void retaliate(final Iterator<Entry<Cell, Ship>> shipsIterator) {
@@ -65,7 +67,7 @@ public class Retaliating extends TurnState {
     Ship ship = entry.getValue();
     if (ship.inGroup(ShipGroup.ENEMY)) {
       post(new ActivatedShip(ship));
-      handleMoving(ship.getAutoPilotResponse(getWorld(), cell), next);
+      handleMoving(ship.getAutoPilotResponse(world, cell), next);
     } else {
       next.run();
     }

@@ -10,8 +10,14 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 
-public class Waiting extends TurnState {
+/**
+ * Note: this is not a {@link TurnScriptState} because it can be entered multiple times when the
+ * player cancels their actions. All the scripts for {@link TurnStage#PLAYER} should happen on
+ * {@link TurnStage#START} instead.
+ */
+public class Waiting extends BaseState {
 
+  private final World world;
   private final StateFactory stateFactory;
 
   @Inject
@@ -19,9 +25,9 @@ public class Waiting extends TurnState {
       ModelBus modelBus,
       WorldState worldState,
       World world,
-      ScriptRunner scriptRunner,
       StateFactory stateFactory) {
-    super(modelBus, worldState, world, scriptRunner);
+    super(modelBus, worldState);
+    this.world = world;
     this.stateFactory = stateFactory;
   }
 
@@ -32,14 +38,10 @@ public class Waiting extends TurnState {
   }
 
   @Override
-  void scriptDone() {
-  }
-
-  @Override
   public void select(Cell cell) {
     for (Ship ship : cell.ship().asSet()) {
       if (ship.isControllable()) {
-        goTo(stateFactory.createMoving(cell, getWorld().getShipMovement(cell)));
+        goTo(stateFactory.createMoving(cell, world.getShipMovement(cell)));
       }
     }
   }

@@ -1,8 +1,6 @@
 package com.jingyuyao.tactical.model.state;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -11,11 +9,7 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
-import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
-import com.jingyuyao.tactical.model.script.Script;
-import com.jingyuyao.tactical.model.script.ScriptEvent;
-import com.jingyuyao.tactical.model.script.TurnEvent;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -40,13 +34,9 @@ public class WaitingTest {
   @Mock
   private World world;
   @Mock
-  private ScriptRunner scriptRunner;
-  @Mock
   private StateFactory stateFactory;
   @Mock
   private Turn turn;
-  @Mock
-  private Script script;
   @Mock
   private Cell cell;
   @Mock
@@ -59,14 +49,12 @@ public class WaitingTest {
   private Movement movement;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
-  @Captor
-  private ArgumentCaptor<ScriptEvent> scriptEventCaptor;
 
   private Waiting waiting;
 
   @Before
   public void setUp() {
-    waiting = new Waiting(modelBus, worldState, world, scriptRunner, stateFactory);
+    waiting = new Waiting(modelBus, worldState, world, stateFactory);
   }
 
   @Test(expected = IllegalStateException.class)
@@ -80,17 +68,9 @@ public class WaitingTest {
   @Test
   public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
-    when(worldState.getScript()).thenReturn(script);
     when(turn.getStage()).thenReturn(TurnStage.PLAYER);
-    when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
-        .thenReturn(Promise.immediate());
 
     waiting.enter();
-
-    verify(scriptRunner).triggerScripts(scriptEventCaptor.capture(), eq(script));
-    TurnEvent turnEvent = TestHelpers.assertClass(scriptEventCaptor.getValue(), TurnEvent.class);
-    assertThat(turnEvent.getTurn()).isSameAs(turn);
-    assertThat(turnEvent.getWorld()).isSameAs(world);
   }
 
   @Test
