@@ -3,6 +3,10 @@ package com.jingyuyao.tactical.data;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gson.Gson;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +14,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MyGsonTest {
+
+  private static final String JSON = "{\"s\":\"hello\",\"i\":2}";
 
   private MyGson myGson;
 
@@ -20,12 +26,12 @@ public class MyGsonTest {
 
   @Test
   public void from_to() {
-    String input = "{\"s\":\"hello\",\"i\":2}";
+    Reader reader = new StringReader(JSON);
+    Writer writer = new StringWriter();
 
-    Dummy dummy = myGson.fromJson(input, Dummy.class);
-    String output = myGson.toJson(dummy);
+    myGson.toJson(myGson.fromJson(reader, Dummy.class), writer);
 
-    assertThat(input).isEqualTo(output);
+    assertThat(JSON).isEqualTo(writer.toString());
   }
 
   private static class Dummy {

@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.data;
 
 import com.google.gson.Gson;
+import java.io.Reader;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -17,11 +18,11 @@ class MyGson {
     this.gson = gson;
   }
 
-  <T> T fromJson(String json, Class<T> clazz) {
-    return gson.fromJson(json, clazz);
+  <T> T fromJson(Reader reader, Class<T> clazz) {
+    return gson.fromJson(reader, clazz);
   }
 
-  String toJson(Object src) {
-    return gson.toJson(src);
+  void toJson(Object src, Appendable writer) {
+    gson.toJson(src, writer);
   }
 }

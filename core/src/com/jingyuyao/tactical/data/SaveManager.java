@@ -3,6 +3,10 @@ package com.jingyuyao.tactical.data;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.common.base.Optional;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -70,20 +74,33 @@ class SaveManager {
   private <T> Optional<T> load(String fileName, Class<T> clazz, boolean internal) {
     FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(myGson.fromJson(fileHandle.readString(), clazz));
+      Reader reader = fileHandle.reader();
+      T result = myGson.fromJson(reader, clazz);
+      close(reader);
+      return Optional.of(result);
     }
     return Optional.absent();
   }
 
   private void save(Object data, String fileName) {
     FileHandle fileHandle = files.local(fileName);
-    fileHandle.writeString(myGson.toJson(data), false);
+    Writer writer = fileHandle.writer(false);
+    myGson.toJson(data, writer);
+    close(writer);
   }
 
   private void remove(String fileName) {
     FileHandle fileHandle = files.local(fileName);
     if (fileHandle.exists()) {
       fileHandle.delete();
+    }
+  }
+
+  private void close(Closeable closeable) {
+    try {
+      closeable.close();
+    } catch (IOException e) {
+      throw new RuntimeException("Unable to close a file");
     }
   }
 }

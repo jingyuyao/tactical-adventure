@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ListMultimap;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
@@ -9,6 +10,8 @@ import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,7 @@ class LevelLoader {
    * Create a new level save from the given {@code gameSave}. {@code gameSave} will be modified.
    */
   LevelSave createNewSave(int level, GameSave gameSave) {
+    Preconditions.checkArgument(hasLevel(level));
     return new LevelSave(loadShips(level, gameSave), new Turn(), loadScript(level));
   }
 
@@ -62,6 +66,13 @@ class LevelLoader {
 
   private <T> T load(String fileName, Class<T> clazz) {
     FileHandle fileHandle = files.internal(fileName);
-    return myGson.fromJson(fileHandle.readString(), clazz);
+    Reader reader = fileHandle.reader();
+    T result = myGson.fromJson(reader, clazz);
+    try {
+      reader.close();
+    } catch (IOException e) {
+      throw new RuntimeException("Unable to close a file");
+    }
+    return result;
   }
 }
