@@ -2,11 +2,11 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.assets.AssetManager;
+import com.google.common.collect.ListMultimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Bomb;
@@ -41,10 +41,11 @@ public class DataModule extends AbstractModule {
 
   @Provides
   @Singleton
-  Gson provideGson(Injector injector) {
+  Gson provideGson() {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     builder.enableComplexMapKeySerialization();
+    builder.registerTypeAdapter(ListMultimap.class, new ListMultimapAdapter());
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapter(Turn.class, new TurnAdapter());
 
