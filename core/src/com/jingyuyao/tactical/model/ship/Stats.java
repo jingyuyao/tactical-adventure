@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.ship;
 
-import com.jingyuyao.tactical.model.Allegiance;
-
 class Stats {
 
   private Allegiance allegiance = Allegiance.ENEMY;

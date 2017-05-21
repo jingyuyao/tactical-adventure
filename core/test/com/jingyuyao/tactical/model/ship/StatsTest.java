@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.ship;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.jingyuyao.tactical.model.Allegiance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

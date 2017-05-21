@@ -1,8 +1,8 @@
 package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;

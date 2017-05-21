@@ -2,10 +2,10 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedEnemy;
 import com.jingyuyao.tactical.model.event.Save;
+import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;

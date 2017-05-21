@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;

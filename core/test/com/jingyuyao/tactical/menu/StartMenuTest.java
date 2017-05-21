@@ -16,7 +16,7 @@ import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.data.TextLoader;
-import com.jingyuyao.tactical.model.Allegiance;
+import com.jingyuyao.tactical.model.ship.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.kotcrab.vis.ui.widget.VisLabel;
