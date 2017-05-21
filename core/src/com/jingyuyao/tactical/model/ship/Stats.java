@@ -46,8 +46,4 @@ class Stats {
   void healBy(int delta) {
     hp = Math.min(hp + delta, maxHp);
   }
-
-  void fullHeal() {
-    hp = maxHp;
-  }
 }

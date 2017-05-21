@@ -23,10 +23,8 @@ import com.jingyuyao.tactical.model.script.OnDeath;
 import com.jingyuyao.tactical.model.script.OnNoAllegiance;
 import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
-import com.jingyuyao.tactical.model.ship.BasicShip;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
 import com.jingyuyao.tactical.model.ship.PassiveAutoPilot;
-import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Singleton;
@@ -57,11 +55,6 @@ public class DataModule extends AbstractModule {
             .registerSubtype(OnAllDeath.class)
             .registerSubtype(OnTurn.class)
             .registerSubtype(OnNoAllegiance.class));
-
-    builder.registerTypeAdapterFactory(
-        RuntimeTypeAdapterFactory
-            .of(Ship.class)
-            .registerSubtype(BasicShip.class));
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory

@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BasicShipTest {
+public class ShipTest {
 
   private static final String NAME = "yo";
 
@@ -54,7 +54,7 @@ public class BasicShipTest {
 
   @Before
   public void setUp() {
-    ship = new BasicShip(NAME, autoPilot, stats, cockpit, items);
+    ship = new Ship(NAME, autoPilot, stats, cockpit, items);
   }
 
   @Test
@@ -105,13 +105,6 @@ public class BasicShipTest {
     ship.healBy(5);
 
     verify(stats).healBy(5);
-  }
-
-  @Test
-  public void full_heal() {
-    ship.fullHeal();
-
-    verify(stats).fullHeal();
   }
 
   @Test

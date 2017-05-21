@@ -1,74 +1,129 @@
 package com.jingyuyao.tactical.model.ship;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 
-public interface Ship {
+public class Ship {
 
-  ResourceKey getAnimation();
+  private String name;
+  private AutoPilot autoPilot = new NoAutoPilot();
+  private Stats stats = new Stats();
+  private Cockpit cockpit = new Cockpit();
+  private Items items = new Items();
 
-  ResourceKey getName();
+  Ship() {
+  }
 
-  Allegiance getAllegiance();
+  Ship(String name, AutoPilot autoPilot, Stats stats, Cockpit cockpit, Items items) {
+    this.name = name;
+    this.autoPilot = autoPilot;
+    this.stats = stats;
+    this.cockpit = cockpit;
+    this.items = items;
+  }
 
-  PilotResponse getAutoPilotResponse(World world, Cell startingCell);
+  public ResourceKey getAnimation() {
+    return ModelBundle.SHIP_ANIMATIONS.get(name);
+  }
+
+  public ResourceKey getName() {
+    return ModelBundle.SHIP_NAME.get(name);
+  }
+
+  public Allegiance getAllegiance() {
+    return stats.getAllegiance();
+  }
+
+  public PilotResponse getAutoPilotResponse(World world, Cell cell) {
+    Preconditions.checkArgument(cell.ship().isPresent());
+    Preconditions.checkArgument(cell.ship().get().equals(this));
+    return autoPilot.getResponse(world, cell);
+  }
 
   /**
    * Return whether or not this ship can currently be controlled by the player.
    */
-  boolean isControllable();
+  public boolean isControllable() {
+    return stats.isControllable();
+  }
 
-  void setControllable(boolean controllable);
+  public void setControllable(boolean controllable) {
+    stats.setControllable(controllable);
+  }
 
-  /**
-   * Always >= 0.
-   */
-  int getHp();
+  public int getHp() {
+    return stats.getHp();
+  }
 
-  int getMoveDistance();
+  public int getMoveDistance() {
+    return stats.getMoveDistance();
+  }
 
-  /**
-   * Sum of all the equipped armors' defense
-   */
-  int getDefense();
+  public int getDefense() {
+    return items.getDefense();
+  }
 
-  void damageBy(int delta);
+  public void damageBy(int delta) {
+    stats.damageBy(delta);
+  }
 
-  void healBy(int delta);
+  public void healBy(int delta) {
+    stats.healBy(delta);
+  }
 
-  void fullHeal();
+  public ImmutableList<Person> getCrew() {
+    return ImmutableList.<Person>copyOf(cockpit.getPilots());
+  }
 
-  ImmutableList<Person> getCrew();
+  public ImmutableList<Consumable> getConsumables() {
+    return items.getConsumables();
+  }
 
-  ImmutableList<Consumable> getConsumables();
+  public ImmutableList<Weapon> getWeapons() {
+    return items.getWeapons();
+  }
 
-  ImmutableList<Weapon> getWeapons();
+  public ImmutableList<Armor> getEquippedArmors() {
+    return items.getEquippedArmors();
+  }
 
-  ImmutableList<Armor> getEquippedArmors();
+  public ImmutableList<Armor> getStashedArmors() {
+    return items.getStashedArmors();
+  }
 
-  ImmutableList<Armor> getStashedArmors();
+  public void useConsumable(Consumable consumable) {
+    items.useConsumable(consumable);
+  }
 
-  void useConsumable(Consumable consumable);
+  public void useWeapon(Weapon weapon) {
+    items.useWeapon(weapon);
+  }
 
-  void useWeapon(Weapon weapon);
-
-  void useEquippedArmors();
+  public void useEquippedArmors() {
+    items.useEquippedArmors();
+  }
 
   /**
    * Equips {@code armor} from the stash. Replaces the previously equipped armor of the same type if
    * its present.
    */
-  void equipArmor(Armor armor);
+  public void equipArmor(Armor armor) {
+    items.equipArmor(armor);
+  }
 
   /**
    * Unequips equipped {@code armor} and move it to the stash.
    */
-  void unequipArmor(Armor armor);
+  public void unequipArmor(Armor armor) {
+    items.unequipArmor(armor);
+  }
 }
