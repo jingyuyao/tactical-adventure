@@ -22,11 +22,6 @@ public class StatsTest {
   }
 
   @Test
-  public void get_group() {
-    assertThat(stats.getGroup()).isSameAs(ShipGroup.ENEMY);
-  }
-
-  @Test
   public void is_controllable() {
     assertThat(stats.isControllable()).isFalse();
   }

@@ -25,6 +25,7 @@ import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.ship.AutoPilot;
 import com.jingyuyao.tactical.model.ship.NoAutoPilot;
 import com.jingyuyao.tactical.model.ship.PassiveAutoPilot;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import javax.inject.Singleton;
@@ -46,6 +47,7 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapter(ListMultimap.class, new ListMultimapAdapter());
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapter(Turn.class, new TurnAdapter());
+    builder.registerTypeAdapter(ShipGroup.class, new ShipGroupAdapter());
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory

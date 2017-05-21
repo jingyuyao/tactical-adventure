@@ -2,13 +2,13 @@
   "loseConditions": [
     {
       "type": "OnNoGroup",
-      "group": "PLAYER"
+      "group": "player"
     }
   ],
   "winConditions": [
     {
       "type": "OnNoGroup",
-      "group": "ENEMY"
+      "group": "enemy"
     },
     {
       "type": "OnTurn",

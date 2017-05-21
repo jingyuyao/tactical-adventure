@@ -17,8 +17,8 @@ class Stats {
     this.moveDistance = moveDistance;
   }
 
-  ShipGroup getGroup() {
-    return group;
+  boolean inGroup(ShipGroup group) {
+    return this.group.equals(group);
   }
 
   boolean isControllable() {

@@ -48,7 +48,7 @@ public class Ship {
    * Return whether this ship is in {@code group}.
    */
   public boolean inGroup(ShipGroup group) {
-    return stats.getGroup().equals(group);
+    return stats.inGroup(group);
   }
 
   public PilotResponse getAutoPilotResponse(World world, Cell cell) {
