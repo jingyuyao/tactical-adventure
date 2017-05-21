@@ -14,7 +14,7 @@ import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
-import com.jingyuyao.tactical.data.LevelProgress;
+import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.Allegiance;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -45,7 +45,7 @@ public class StartMenuTest {
   @Mock
   private GameSave gameSave;
   @Mock
-  private LevelProgress levelProgress;
+  private LevelSave levelSave;
   @Mock
   private Ship ship1;
   @Mock
@@ -70,9 +70,9 @@ public class StartMenuTest {
 
   @Test
   public void on_show() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameSave);
-    when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
-    when(levelProgress.getShips())
+    when(dataManager.loadGameSave()).thenReturn(gameSave);
+    when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
+    when(levelSave.getShips())
         .thenReturn(ImmutableMap.of(
             new Coordinate(0, 0), ship1,
             new Coordinate(0, 1), ship2));
@@ -101,9 +101,9 @@ public class StartMenuTest {
 
   @Test
   public void reset_button() {
-    when(dataManager.loadCurrentSave()).thenReturn(gameSave);
-    when(dataManager.loadCurrentProgress()).thenReturn(Optional.of(levelProgress));
-    when(levelProgress.getShips())
+    when(dataManager.loadGameSave()).thenReturn(gameSave);
+    when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
+    when(levelSave.getShips())
         .thenReturn(ImmutableMap.of(
             new Coordinate(0, 0), ship1,
             new Coordinate(0, 1), ship2));

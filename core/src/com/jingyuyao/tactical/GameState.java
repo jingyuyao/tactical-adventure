@@ -54,7 +54,7 @@ public class GameState {
   }
 
   public void reset() {
-    dataManager.removeProgress();
+    dataManager.removeLevelProgress();
   }
 
   void start() {
@@ -63,15 +63,15 @@ public class GameState {
 
   @Subscribe
   void save(Save save) {
-    dataManager.saveProgress(world, worldState);
+    dataManager.saveLevelProgress(world, worldState);
   }
 
   @Subscribe
   void levelWon(LevelWon levelWon) {
-    GameSave gameSave = dataManager.loadCurrentSave();
+    GameSave gameSave = dataManager.loadGameSave();
     int nextLevel = gameSave.getCurrentLevel() + 1;
     if (dataManager.hasLevel(nextLevel)) {
-      dataManager.changeLevel(nextLevel, world, worldState);
+      dataManager.changeLevel(nextLevel, world);
     } else {
       dataManager.freshStart();
     }
@@ -82,7 +82,7 @@ public class GameState {
 
   @Subscribe
   void levelLost(LevelLost levelLost) {
-    dataManager.removeProgress();
+    dataManager.removeLevelProgress();
     world.reset();
     worldState.reset();
     game.goToPlayMenu();

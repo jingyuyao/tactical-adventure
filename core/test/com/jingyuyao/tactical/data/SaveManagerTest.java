@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GameSaveManagerTest {
+public class SaveManagerTest {
 
   private static final String MAIN = "main.save.json";
   private static final String START = "start.json";
@@ -28,30 +28,32 @@ public class GameSaveManagerTest {
   @Mock
   private GameSave gameSave;
   @Mock
+  private LevelSave levelSave;
+  @Mock
   private FileHandle fileHandle1;
   @Mock
   private FileHandle fileHandle2;
 
-  private GameSaveManager gameSaveManager;
+  private SaveManager saveManager;
 
   @Before
   public void setUp() {
-    gameSaveManager = new GameSaveManager(dataConfig, myGson, files);
+    saveManager = new SaveManager(dataConfig, myGson, files);
   }
 
   @Test
-  public void load_init() {
+  public void load_init_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
 
-    assertThat(gameSaveManager.load()).isSameAs(gameSave);
+    assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
   }
 
   @Test
-  public void load_save() {
+  public void load_main_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(dataConfig.getInitFileName()).thenReturn(START);
     when(files.local(MAIN)).thenReturn(fileHandle1);
@@ -60,27 +62,69 @@ public class GameSaveManagerTest {
     when(fileHandle2.readString()).thenReturn(DATA);
     when(myGson.fromJson(DATA, GameSave.class)).thenReturn(gameSave);
 
-    assertThat(gameSaveManager.load()).isSameAs(gameSave);
+    assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
   }
 
   @Test
-  public void save() {
+  public void load_level_save() {
+    when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
+    when(fileHandle1.exists()).thenReturn(true);
+    when(fileHandle1.readString()).thenReturn(DATA);
+    when(myGson.fromJson(DATA, LevelSave.class)).thenReturn(levelSave);
+
+    assertThat(saveManager.loadLevelSave()).hasValue(levelSave);
+  }
+
+  @Test
+  public void load_level_save_not_found() {
+    when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
+    when(fileHandle1.exists()).thenReturn(false);
+
+    assertThat(saveManager.loadLevelSave()).isAbsent();
+  }
+
+  @Test
+  public void save_game() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(myGson.toJson(gameSave)).thenReturn(DATA);
 
-    gameSaveManager.save(gameSave);
+    saveManager.save(gameSave);
 
     verify(fileHandle1).writeString(DATA, false);
   }
 
   @Test
-  public void remove_save() {
+  public void save_level() {
+    when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
+    when(myGson.toJson(levelSave)).thenReturn(DATA);
+
+    saveManager.save(levelSave);
+
+    verify(fileHandle1).writeString(DATA, false);
+  }
+
+  @Test
+  public void remove_game_save() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
 
-    gameSaveManager.removeSavedData();
+    saveManager.removeGameSave();
+
+    verify(fileHandle1).delete();
+  }
+
+  @Test
+  public void remove_level_save() {
+    when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
+    when(files.local(MAIN)).thenReturn(fileHandle1);
+    when(fileHandle1.exists()).thenReturn(true);
+
+    saveManager.removeLevelSave();
 
     verify(fileHandle1).delete();
   }

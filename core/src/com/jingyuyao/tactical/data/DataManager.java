@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
+import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
@@ -18,96 +19,79 @@ import javax.inject.Singleton;
 @Singleton
 public class DataManager {
 
-  private final GameSaveManager gameSaveManager;
-  private final LevelProgressManager levelProgressManager;
-  private final LevelDataLoader levelDataLoader;
+  private final SaveManager saveManager;
+  private final LevelLoader levelLoader;
   private final LevelTerrainsLoader levelTerrainsLoader;
-  private final ScriptLoader scriptLoader;
 
   @Inject
   DataManager(
-      GameSaveManager gameSaveManager,
-      LevelProgressManager levelProgressManager,
-      LevelDataLoader levelDataLoader,
-      LevelTerrainsLoader levelTerrainsLoader,
-      ScriptLoader scriptLoader) {
-    this.gameSaveManager = gameSaveManager;
-    this.levelProgressManager = levelProgressManager;
-    this.levelDataLoader = levelDataLoader;
+      SaveManager saveManager,
+      LevelLoader levelLoader,
+      LevelTerrainsLoader levelTerrainsLoader) {
+    this.saveManager = saveManager;
+    this.levelLoader = levelLoader;
     this.levelTerrainsLoader = levelTerrainsLoader;
-    this.scriptLoader = scriptLoader;
   }
 
-  public GameSave loadCurrentSave() {
-    return gameSaveManager.load();
+  public GameSave loadGameSave() {
+    return saveManager.loadGameSave();
   }
 
-  public Optional<LevelProgress> loadCurrentProgress() {
-    return levelProgressManager.load();
+  public Optional<LevelSave> loadLevelSave() {
+    return saveManager.loadLevelSave();
   }
 
   public boolean hasLevel(int level) {
-    return levelDataLoader.hasLevel(level);
-  }
-
-  public void changeLevel(int level, World world, WorldState worldState) {
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-    if (!levelProgressOptional.isPresent()) {
-      throw new IllegalStateException(
-          "An existing level progress file is needed for changing levels.");
-    }
-
-    world.makeAllPlayerShipsControllable();
-
-    LevelProgress levelProgress = levelProgressOptional.get();
-    levelProgress.update(world, worldState);
-
-    GameSave gameSave = gameSaveManager.load();
-    gameSave.setCurrentLevel(level);
-    gameSave.update(levelProgress);
-    gameSaveManager.save(gameSave);
-    levelProgressManager.removeSave();
+    return levelLoader.hasLevel(level);
   }
 
   public void freshStart() {
-    levelProgressManager.removeSave();
-    gameSaveManager.removeSavedData();
+    saveManager.removeGameSave();
+    saveManager.removeLevelSave();
+  }
+
+  public void saveLevelProgress(World world, WorldState worldState) {
+    LevelSave levelSave = new LevelSave(world, worldState);
+    saveManager.save(levelSave);
+  }
+
+  public void removeLevelProgress() {
+    GameSave gameSave = saveManager.loadGameSave();
+    gameSave.deactivateShips();
+    saveManager.save(gameSave);
+    saveManager.removeLevelSave();
+  }
+
+  public void changeLevel(int level, World world) {
+    world.makeAllPlayerShipsControllable();
+
+    GameSave gameSave = saveManager.loadGameSave();
+    gameSave.setCurrentLevel(level);
+    gameSave.replaceActiveShipsFrom(world);
+    gameSave.deactivateShips();
+
+    saveManager.save(gameSave);
+    saveManager.removeLevelSave();
   }
 
   public LoadedLevel loadCurrentLevel(OrthogonalTiledMapRenderer tiledMapRenderer) {
-    GameSave gameSave = gameSaveManager.load();
+    GameSave gameSave = saveManager.loadGameSave();
     int level = gameSave.getCurrentLevel();
 
-    LevelProgress levelProgress;
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-
-    if (levelProgressOptional.isPresent()) {
-      levelProgress = levelProgressOptional.get();
+    LevelSave levelSave;
+    Optional<LevelSave> levelSaveOpt = saveManager.loadLevelSave();
+    if (levelSaveOpt.isPresent()) {
+      levelSave = levelSaveOpt.get();
     } else {
-      LevelWorld levelWorld = levelDataLoader.loadWorld(level);
-      levelProgress = new LevelProgress(gameSave, levelWorld);
-      levelProgressManager.save(levelProgress);
+      levelSave = levelLoader.createNewSave(level, gameSave);
+      saveManager.save(gameSave);
+      saveManager.save(levelSave);
     }
 
-    Map<Coordinate, Terrain> terrainMap = levelTerrainsLoader.load(level, tiledMapRenderer);
-    Map<Coordinate, Ship> shipMap = levelProgress.getShips();
-    Turn turn = levelProgress.getTurn();
-    return new LoadedLevel(terrainMap, shipMap, turn, scriptLoader.load(level));
-  }
-
-  public void saveProgress(World world, WorldState worldState) {
-    Optional<LevelProgress> levelProgressOptional = levelProgressManager.load();
-
-    if (!levelProgressOptional.isPresent()) {
-      throw new IllegalStateException("An existing level progress file is needed for saving.");
-    }
-
-    LevelProgress levelProgress = levelProgressOptional.get();
-    levelProgress.update(world, worldState);
-    levelProgressManager.save(levelProgress);
-  }
-
-  public void removeProgress() {
-    levelProgressManager.removeSave();
+    Map<Coordinate, Terrain> terrains = levelTerrainsLoader.load(level, tiledMapRenderer);
+    Map<Coordinate, Ship> ships = levelSave.getShips();
+    Turn turn = levelSave.getTurn();
+    Script script = levelSave.getScript();
+    return new LoadedLevel(terrains, ships, turn, script);
   }
 }

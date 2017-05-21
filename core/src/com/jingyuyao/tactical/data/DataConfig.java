@@ -21,8 +21,8 @@ class DataConfig {
     return "save/main.save.json";
   }
 
-  String getMainLevelProgressFileName() {
-    return "save/main.progress.save.json";
+  String getMainLevelSaveFileName() {
+    return "save/main.level.save.json";
   }
 
   String getLevelDir(int level) {

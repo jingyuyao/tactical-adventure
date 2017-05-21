@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
-import com.jingyuyao.tactical.data.LevelProgress;
+import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.menu.MenuModule.MenuStage;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -65,12 +65,12 @@ public class StartMenu extends AbstractMenu {
 
   private String getInfo() {
     String progress;
-    Optional<LevelProgress> levelProgressOptional = dataManager.loadCurrentProgress();
+    Optional<LevelSave> levelProgressOptional = dataManager.loadLevelSave();
     if (levelProgressOptional.isPresent()) {
-      LevelProgress levelProgress = levelProgressOptional.get();
+      LevelSave levelSave = levelProgressOptional.get();
       int activePlayers = 0;
       int activeEnemies = 0;
-      for (Ship ship : levelProgress.getShips().values()) {
+      for (Ship ship : levelSave.getShips().values()) {
         switch (ship.getAllegiance()) {
           case PLAYER:
             activePlayers++;
@@ -85,7 +85,7 @@ public class StartMenu extends AbstractMenu {
       progress = textLoader.get(MenuBundle.NO_PROGRESS);
     }
 
-    GameSave gameSave = dataManager.loadCurrentSave();
+    GameSave gameSave = dataManager.loadGameSave();
     int level = gameSave.getCurrentLevel();
     return textLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
