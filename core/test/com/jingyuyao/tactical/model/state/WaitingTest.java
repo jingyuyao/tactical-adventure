@@ -127,12 +127,11 @@ public class WaitingTest {
 
   @Test
   public void end_turn() {
-    when(worldState.getTurn()).thenReturn(turn);
     when(stateFactory.createEndTurn()).thenReturn(endTurn);
 
     waiting.endTurn();
 
-    verify(turn).advance();
+    verify(worldState).advanceTurn();
     verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     verify(worldState).branchTo(endTurn);

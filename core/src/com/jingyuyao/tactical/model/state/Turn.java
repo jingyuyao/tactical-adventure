@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class Turn implements Comparable<Turn> {
 
-  private int number;
-  private TurnStage stage;
+  private final int number;
+  private final TurnStage stage;
 
   public Turn() {
     this(1, TurnStage.first());
@@ -32,16 +32,15 @@ public class Turn implements Comparable<Turn> {
   }
 
   /**
-   * Advance the state of this turn:
+   * Returns the next {@link Turn}:
    * - if stage is not the last stage, advance it
    * - if stage is the last stage, advance turn number and set stage to the first stage
    */
-  void advance() {
+  Turn advance() {
     if (stage.equals(TurnStage.last())) {
-      number++;
-      stage = TurnStage.first();
+      return new Turn(number + 1, TurnStage.first());
     } else {
-      stage = TurnStage.next(stage);
+      return new Turn(number, TurnStage.next(stage));
     }
   }
 

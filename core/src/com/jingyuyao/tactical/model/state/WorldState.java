@@ -74,6 +74,10 @@ public class WorldState {
     return script;
   }
 
+  void advanceTurn() {
+    turn = turn.advance();
+  }
+
   /**
    * Go to {@code newState} and add it to the current stack of {@link State}.
    */

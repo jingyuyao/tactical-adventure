@@ -153,7 +153,7 @@ public class RetaliatingTest {
         TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedShip.class);
     assertThat(activatedShip2.getObject()).isSameAs(enemy2);
     inOrder.verify(enemy2).getAutoPilotResponse(world, cell2);
-    inOrder.verify(turn).advance();
+    inOrder.verify(worldState).advanceTurn();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
     inOrder.verify(worldState).branchTo(startTurn);

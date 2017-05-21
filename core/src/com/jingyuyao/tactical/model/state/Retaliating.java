@@ -47,7 +47,7 @@ public class Retaliating extends TurnState {
 
   private void retaliate(final Iterator<Entry<Cell, Ship>> shipsIterator) {
     if (!shipsIterator.hasNext()) {
-      getTurn().advance();
+      advanceTurn();
       post(new Save());
       branchTo(stateFactory.createStartTurn());
       return;

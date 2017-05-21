@@ -31,7 +31,7 @@ public class EndTurn extends TurnState {
   @Override
   void scriptDone() {
     getWorld().makeAllPlayerShipsControllable();
-    getTurn().advance();
+    advanceTurn();
     post(new Save());
     branchTo(stateFactory.createRetaliating());
   }

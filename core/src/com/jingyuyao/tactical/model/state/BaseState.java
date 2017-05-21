@@ -47,6 +47,18 @@ class BaseState implements State {
     modelBus.post(event);
   }
 
+  Turn getTurn() {
+    return worldState.getTurn();
+  }
+
+  void advanceTurn() {
+    worldState.advanceTurn();
+  }
+
+  Script getScript() {
+    return worldState.getScript();
+  }
+
   void goTo(State newState) {
     worldState.goTo(newState);
   }
@@ -65,13 +77,5 @@ class BaseState implements State {
 
   void removeSelf() {
     worldState.remove(this);
-  }
-
-  Turn getTurn() {
-    return worldState.getTurn();
-  }
-
-  Script getScript() {
-    return worldState.getScript();
   }
 }

@@ -30,7 +30,7 @@ public class StartTurn extends TurnState {
 
   @Override
   void scriptDone() {
-    getTurn().advance();
+    advanceTurn();
     post(new Save());
     branchTo(stateFactory.createWaiting());
   }
