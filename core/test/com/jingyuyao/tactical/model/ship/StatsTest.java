@@ -60,11 +60,4 @@ public class StatsTest {
 
     assertThat(stats.getHp()).isEqualTo(MAX_HP);
   }
-
-  @Test
-  public void full_heal() {
-    stats.fullHeal();
-
-    assertThat(stats.getHp()).isEqualTo(MAX_HP);
-  }
 }

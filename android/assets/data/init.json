@@ -2,7 +2,6 @@
   "currentLevel": 1,
   "inactiveShips": [
     {
-      "type": "BasicShip",
       "name": "adder",
       "stats": {
         "allegiance": "PLAYER",
@@ -63,7 +62,6 @@
       }
     },
     {
-      "type": "BasicShip",
       "name": "adder",
       "stats": {
         "allegiance": "PLAYER",
@@ -122,7 +120,6 @@
       }
     },
     {
-      "type": "BasicShip",
       "name": "eagle",
       "stats": {
         "allegiance": "PLAYER",
@@ -168,7 +165,6 @@
       }
     },
     {
-      "type": "BasicShip",
       "name": "eagle",
       "stats": {
         "allegiance": "PLAYER",

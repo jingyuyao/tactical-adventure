@@ -7,7 +7,6 @@
   ],
   "ships": {
     "9,12": {
-      "type": "BasicShip",
       "name": "adder",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -37,7 +36,6 @@
       }
     },
     "8,12": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -60,7 +58,6 @@
       }
     },
     "9,11": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -83,7 +80,6 @@
       }
     },
     "2,12": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -106,7 +102,6 @@
       }
     },
     "4,10": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -129,7 +124,6 @@
       }
     },
     "6,8": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -152,7 +146,6 @@
       }
     },
     "8,6": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
@@ -175,7 +168,6 @@
       }
     },
     "10,4": {
-      "type": "BasicShip",
       "name": "eagle",
       "autoPilot": {
         "type": "PassiveAutoPilot"
