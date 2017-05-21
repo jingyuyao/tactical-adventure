@@ -1,9 +1,11 @@
 package com.jingyuyao.tactical.model.ship;
 
+import java.util.Set;
+
 class Stats {
 
-  private ShipGroup group = ShipGroup.ENEMY;
   private boolean controllable;
+  private Set<ShipGroup> groups;
   private int maxHp;
   private int hp;
   private int moveDistance;
@@ -11,14 +13,11 @@ class Stats {
   Stats() {
   }
 
-  Stats(int maxHp, int hp, int moveDistance) {
+  Stats(Set<ShipGroup> groups, int maxHp, int hp, int moveDistance) {
+    this.groups = groups;
     this.maxHp = maxHp;
     this.hp = hp;
     this.moveDistance = moveDistance;
-  }
-
-  boolean inGroup(ShipGroup group) {
-    return this.group.equals(group);
   }
 
   boolean isControllable() {
@@ -27,6 +26,10 @@ class Stats {
 
   void setControllable(boolean controllable) {
     this.controllable = controllable;
+  }
+
+  boolean inGroup(ShipGroup group) {
+    return groups.contains(group);
   }
 
   int getHp() {

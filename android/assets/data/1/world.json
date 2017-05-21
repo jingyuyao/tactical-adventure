@@ -12,6 +12,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 50,
         "hp": 50,
         "moveDistance": 3
@@ -41,6 +44,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5
@@ -63,6 +69,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5
@@ -85,6 +94,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5
@@ -107,6 +119,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5
@@ -129,6 +144,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5
@@ -151,6 +169,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5
@@ -173,6 +194,9 @@
         "type": "PassiveAutoPilot"
       },
       "stats": {
+        "groups": [
+          "enemy"
+        ],
         "maxHp": 10,
         "hp": 10,
         "moveDistance": 5

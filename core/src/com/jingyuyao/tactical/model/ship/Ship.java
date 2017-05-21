@@ -44,13 +44,6 @@ public class Ship {
     return ModelBundle.SHIP_NAME.get(name);
   }
 
-  /**
-   * Return whether this ship is in {@code group}.
-   */
-  public boolean inGroup(ShipGroup group) {
-    return stats.inGroup(group);
-  }
-
   public PilotResponse getAutoPilotResponse(World world, Cell cell) {
     Preconditions.checkArgument(cell.ship().isPresent());
     Preconditions.checkArgument(cell.ship().get().equals(this));
@@ -66,6 +59,13 @@ public class Ship {
 
   public void setControllable(boolean controllable) {
     stats.setControllable(controllable);
+  }
+
+  /**
+   * Return whether this ship is in {@code group}.
+   */
+  public boolean inGroup(ShipGroup group) {
+    return stats.inGroup(group);
   }
 
   public int getHp() {

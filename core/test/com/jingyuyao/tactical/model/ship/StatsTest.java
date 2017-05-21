@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.ship;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ public class StatsTest {
 
   @Before
   public void setUp() {
-    stats = new Stats(MAX_HP, HP, MOVE_DISTANCE);
+    stats = new Stats(Sets.newHashSet(ShipGroup.ENEMY), MAX_HP, HP, MOVE_DISTANCE);
   }
 
   @Test
@@ -31,6 +32,12 @@ public class StatsTest {
     stats.setControllable(true);
 
     assertThat(stats.isControllable()).isTrue();
+  }
+
+  @Test
+  public void in_group() {
+    assertThat(stats.inGroup(ShipGroup.ENEMY)).isTrue();
+    assertThat(stats.inGroup(ShipGroup.PLAYER)).isFalse();
   }
 
   @Test
