@@ -47,5 +47,16 @@
         ]
       }
     ]
+  ],
+  "groupDeactivations": [
+    [
+      {
+        "type": "OnTurn",
+        "turn": "8-START"
+      },
+      {
+        "group": "7-START"
+      }
+    ]
   ]
 }

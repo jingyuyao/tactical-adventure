@@ -1,5 +1,6 @@
 package com.jingyuyao.tactical.model.script;
 
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ActivateGroup {
     return group;
   }
 
-  public List<Coordinate> getSpawns() {
-    return spawns;
+  public ImmutableList<Coordinate> getSpawns() {
+    return ImmutableList.copyOf(spawns);
   }
 }
