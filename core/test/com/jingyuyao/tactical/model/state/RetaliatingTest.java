@@ -112,13 +112,12 @@ public class RetaliatingTest {
     when(pilotResponse.battle()).thenReturn(Optional.of(battle));
     when(pilotResponse2.path()).thenReturn(Optional.<Path>absent());
     when(pilotResponse2.battle()).thenReturn(Optional.<Battle>absent());
-    when(path.getOrigin()).thenReturn(origin);
-    when(origin.moveShip(path)).thenReturn(Promise.immediate());
+    when(world.moveShip(path)).thenReturn(Promise.immediate());
     when(stateFactory.createStartTurn()).thenReturn(startTurn);
 
     retaliating.enter();
 
-    InOrder inOrder = inOrder(enemy, enemy2, worldState, modelBus, origin, turn, battleSequence);
+    InOrder inOrder = inOrder(enemy, enemy2, worldState, modelBus, world, turn, battleSequence);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isSameAs(retaliating);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
@@ -126,7 +125,7 @@ public class RetaliatingTest {
         TestHelpers.assertClass(argumentCaptor.getValue(), ActivatedShip.class);
     assertThat(activatedShip1.getObject()).isSameAs(enemy);
     inOrder.verify(enemy).getAutoPilotResponse(world, cell);
-    inOrder.verify(origin).moveShip(path);
+    inOrder.verify(world).moveShip(path);
     inOrder.verify(battleSequence).start(eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
