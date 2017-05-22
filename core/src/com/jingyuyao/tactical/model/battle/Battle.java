@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Weapon;
-import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.ArrayList;
@@ -13,13 +12,13 @@ public class Battle {
   private final Cell attackerCell;
   private final Weapon weapon;
   private final Target target;
-  private final List<Person> death;
+  private final List<Cell> deadCells;
 
   public Battle(Cell attackerCell, Weapon weapon, Target target) {
     this.attackerCell = attackerCell;
     this.weapon = weapon;
     this.target = target;
-    this.death = new ArrayList<>();
+    this.deadCells = new ArrayList<>();
   }
 
   public Weapon getWeapon() {
@@ -30,8 +29,11 @@ public class Battle {
     return target;
   }
 
-  public ImmutableList<Person> getDeaths() {
-    return ImmutableList.copyOf(death);
+  /**
+   * Return the cells that has dead ships after this battle.
+   */
+  public ImmutableList<Cell> getDeadCells() {
+    return ImmutableList.copyOf(deadCells);
   }
 
   /**
@@ -45,17 +47,16 @@ public class Battle {
         for (Ship ship : cell.ship().asSet()) {
           ship.useEquippedArmors();
         }
-        checkDeath(cell);
+        addDeadShip(cell);
       }
     }
-    checkDeath(attackerCell);
+    addDeadShip(attackerCell);
   }
 
-  private void checkDeath(Cell cell) {
+  private void addDeadShip(Cell cell) {
     for (Ship ship : cell.ship().asSet()) {
       if (ship.getHp() == 0) {
-        cell.removeShip();
-        death.addAll(ship.getCrew());
+        deadCells.add(cell);
       }
     }
   }
