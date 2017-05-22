@@ -10,6 +10,7 @@ import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,19 +43,22 @@ class LevelLoader {
   }
 
   /**
-   * Create a new level save from the given {@code gameSave}. {@code gameSave} will be modified.
+   * Create a new level save from the given {@code gameSave}.
    */
   LevelSave createNewSave(int level, GameSave gameSave) {
     Preconditions.checkArgument(hasLevel(level));
-    return new LevelSave(loadShips(level, gameSave), new Turn(), loadScript(level));
-  }
-
-  private Map<Coordinate, Ship> loadShips(int level, GameSave gameSave) {
     LevelWorld levelWorld = load(dataConfig.getLevelWorldFileName(level), LevelWorld.class);
-    Map<Coordinate, Ship> ships = new HashMap<>();
-    ships.putAll(gameSave.activateShips(levelWorld.getPlayerSpawns()));
-    ships.putAll(levelWorld.getShips());
-    return ships;
+    Map<Coordinate, Ship> ships = new HashMap<>(levelWorld.getActiveShips());
+    List<Coordinate> spawns = levelWorld.getPlayerSpawns();
+    List<Ship> playerShips = gameSave.getPlayerShips();
+    for (int i = 0; i < spawns.size() && i < playerShips.size(); i++) {
+      ships.put(spawns.get(i), playerShips.get(i));
+    }
+    List<Ship> inactiveShips = new ArrayList<>(levelWorld.getInactiveShips());
+    for (int i = spawns.size(); i < playerShips.size(); i++) {
+      inactiveShips.add(playerShips.get(i));
+    }
+    return new LevelSave(ships, inactiveShips, new Turn(), loadScript(level));
   }
 
   private Script loadScript(int level) {

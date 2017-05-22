@@ -57,6 +57,8 @@ public class LevelLoaderTest {
   @Mock
   private Ship ship2;
   @Mock
+  private Ship ship3;
+  @Mock
   private Condition condition1;
   @Mock
   private Condition condition2;
@@ -95,15 +97,16 @@ public class LevelLoaderTest {
     when(dataSerializer.deserialize(reader1, LevelWorld.class)).thenReturn(levelWorld);
     when(dataSerializer.deserialize(reader2, LevelScript.class)).thenReturn(levelScript);
     when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(C0_0));
-    when(levelWorld.getShips()).thenReturn(ImmutableMap.of(C0_1, ship1));
-    when(gameSave.activateShips(ImmutableList.of(C0_0))).thenReturn(ImmutableMap.of(C0_0, ship2));
+    when(levelWorld.getActiveShips()).thenReturn(ImmutableMap.of(C0_1, ship1));
+    when(gameSave.getPlayerShips()).thenReturn(ImmutableList.of(ship2, ship3));
     when(levelScript.getWinConditions()).thenReturn(ImmutableList.of(condition1));
     when(levelScript.getLoseConditions()).thenReturn(ImmutableList.of(condition2));
     when(dialogueLoader.getDialogues(2)).thenReturn(ImmutableListMultimap.of(condition3, dialogue));
 
     LevelSave levelSave = levelLoader.createNewSave(2, gameSave);
 
-    assertThat(levelSave.getShips()).containsExactly(C0_0, ship2, C0_1, ship1);
+    assertThat(levelSave.getActiveShips()).containsExactly(C0_0, ship2, C0_1, ship1);
+    assertThat(levelSave.getInactiveShips()).containsExactly(ship3);
     assertThat(levelSave.getTurn()).isEqualTo(new Turn());
     assertThat(levelSave.getScript().getWinConditions()).containsExactly(condition1);
     assertThat(levelSave.getScript().getLoseConditions()).containsExactly(condition2);

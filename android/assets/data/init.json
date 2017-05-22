@@ -1,6 +1,6 @@
 {
   "currentLevel": 1,
-  "inactiveShips": [
+  "playerShips": [
     {
       "name": "adder",
       "stats": {

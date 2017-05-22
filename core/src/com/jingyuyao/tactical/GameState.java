@@ -48,7 +48,8 @@ public class GameState {
     // Order is important: world must be populated before we go to the screen since the screen
     // needs the world size, state need to start after we are in the screen so all the UI can
     // receive events properly
-    world.initialize(loadedLevel.getTerrainMap(), loadedLevel.getShipMap());
+    world.initialize(
+        loadedLevel.getTerrainMap(), loadedLevel.getActiveShips(), loadedLevel.getInactiveShips());
     game.goToWorldScreen();
     worldState.initialize(loadedLevel.getTurn(), loadedLevel.getScript());
   }

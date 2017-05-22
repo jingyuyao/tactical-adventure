@@ -21,7 +21,9 @@ import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,8 +76,10 @@ public class GameStateTest {
   public void play() {
     Map<Coordinate, Ship> shipMap = new HashMap<>();
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
+    List<Ship> shipList = new ArrayList<>();
     when(dataManager.loadCurrentLevel(tiledMapRenderer)).thenReturn(loadedLevel);
-    when(loadedLevel.getShipMap()).thenReturn(shipMap);
+    when(loadedLevel.getActiveShips()).thenReturn(shipMap);
+    when(loadedLevel.getInactiveShips()).thenReturn(shipList);
     when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
     when(loadedLevel.getTurn()).thenReturn(turn);
     when(loadedLevel.getScript()).thenReturn(script);
@@ -83,7 +87,7 @@ public class GameStateTest {
     gameState.play();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
-    inOrder.verify(world).initialize(terrainMap, shipMap);
+    inOrder.verify(world).initialize(terrainMap, shipMap, shipList);
     inOrder.verify(game).goToWorldScreen();
     inOrder.verify(worldState).initialize(turn, script);
   }

@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
@@ -13,6 +14,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
+import com.jingyuyao.tactical.model.world.WorldModule.BackingInactiveList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class World implements GetNeighbors {
   private final Dijkstra dijkstra;
   private final CellFactory cellFactory;
   private final Map<Coordinate, Cell> cellMap;
+  private final List<Ship> inactiveShips;
   private int maxHeight;
   private int maxWidth;
 
@@ -35,14 +38,19 @@ public class World implements GetNeighbors {
       ModelBus modelBus,
       Dijkstra dijkstra,
       CellFactory cellFactory,
-      @BackingCellMap Map<Coordinate, Cell> cellMap) {
+      @BackingCellMap Map<Coordinate, Cell> cellMap,
+      @BackingInactiveList List<Ship> inactiveShips) {
     this.modelBus = modelBus;
     this.dijkstra = dijkstra;
     this.cellFactory = cellFactory;
     this.cellMap = cellMap;
+    this.inactiveShips = inactiveShips;
   }
 
-  public void initialize(Map<Coordinate, Terrain> terrainMap, Map<Coordinate, Ship> shipMap) {
+  public void initialize(
+      Map<Coordinate, Terrain> terrainMap,
+      Map<Coordinate, Ship> shipMap,
+      List<Ship> inactiveShips) {
     for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
       Coordinate coordinate = entry.getKey();
       if (cellMap.containsKey(coordinate)) {
@@ -70,11 +78,13 @@ public class World implements GetNeighbors {
         throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
       }
     }
+    this.inactiveShips.addAll(inactiveShips);
     modelBus.post(new WorldLoaded(this));
   }
 
   public void reset() {
     cellMap.clear();
+    inactiveShips.clear();
     maxWidth = 0;
     maxHeight = 0;
     modelBus.post(new WorldReset(this));
@@ -144,6 +154,10 @@ public class World implements GetNeighbors {
             return input.ship().get();  // ignore IDE, always present
           }
         });
+  }
+
+  public ImmutableList<Ship> getInactiveShips() {
+    return ImmutableList.copyOf(inactiveShips);
   }
 
   public void makeAllPlayerShipsControllable() {

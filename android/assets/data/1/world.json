@@ -5,7 +5,7 @@
     "5,2",
     "4,3"
   ],
-  "ships": {
+  "activeShips": {
     "9,12": {
       "name": "adder",
       "autoPilot": {

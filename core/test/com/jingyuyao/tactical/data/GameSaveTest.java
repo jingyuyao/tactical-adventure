@@ -1,9 +1,6 @@
 package com.jingyuyao.tactical.data;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_0;
-import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
-import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_2;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
@@ -12,10 +9,7 @@ import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,64 +24,36 @@ public class GameSaveTest {
   @Mock
   private Ship ship2;
   @Mock
-  private Ship ship3;
-  @Mock
   private World world;
   @Mock
   private Ship worldShip1;
   @Mock
   private Ship worldShip2;
   @Mock
+  private Ship worldShip3;
+  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
 
-  private List<Ship> inactive;
-  private List<Ship> activate;
   private GameSave gameSave;
 
   @Before
   public void setUp() {
-    inactive = Lists.newArrayList(ship1, ship2);
-    activate = Lists.newArrayList(ship3);
-    gameSave = new GameSave(3, inactive, activate);
+    gameSave = new GameSave(3, Lists.newArrayList(ship1, ship2));
+    assertThat(gameSave.getPlayerShips()).containsExactly(ship1, ship2);
   }
 
   @Test
-  public void activate_ships_more_spawns() {
-    Map<Coordinate, Ship> activated = gameSave.activateShips(ImmutableList.of(C0_0, C0_1, C0_2));
-
-    assertThat(activated).containsExactly(C0_0, ship1, C0_1, ship2);
-    assertThat(inactive).isEmpty();
-    assertThat(activate).containsExactly(ship1, ship2, ship3);
-  }
-
-  @Test
-  public void activate_ships_less_spawns() {
-    Map<Coordinate, Ship> activated = gameSave.activateShips(ImmutableList.of(C0_0));
-
-    assertThat(activated).containsExactly(C0_0, ship1);
-    assertThat(inactive).containsExactly(ship2);
-    assertThat(activate).containsExactly(ship1, ship3);
-  }
-
-  @Test
-  public void replace_ships_from_world() {
+  public void replace_player_ships_from() {
     when(worldShip1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(worldShip2.inGroup(ShipGroup.PLAYER)).thenReturn(false);
+    when(worldShip3.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, worldShip1, cell2, worldShip2));
+    when(world.getInactiveShips()).thenReturn(ImmutableList.of(worldShip3));
 
-    gameSave.replaceActiveShipsFrom(world);
+    gameSave.replacePlayerShipsFrom(world);
 
-    assertThat(inactive).containsExactly(ship1, ship2);
-    assertThat(activate).containsExactly(worldShip1);
-  }
-
-  @Test
-  public void deactivate_ships() {
-    gameSave.deactivateShips();
-
-    assertThat(inactive).containsExactly(ship1, ship2, ship3);
-    assertThat(activate).isEmpty();
+    assertThat(gameSave.getPlayerShips()).containsExactly(worldShip1, worldShip3);
   }
 }
