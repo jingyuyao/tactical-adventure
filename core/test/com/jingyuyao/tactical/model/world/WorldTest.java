@@ -12,6 +12,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
@@ -20,6 +21,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.InstantMoveShip;
+import com.jingyuyao.tactical.model.event.MoveShip;
+import com.jingyuyao.tactical.model.event.RemoveShip;
+import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -45,8 +50,6 @@ public class WorldTest {
   @Mock
   private Dijkstra dijkstra;
   @Mock
-  private CellFactory cellFactory;
-  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
@@ -67,6 +70,8 @@ public class WorldTest {
   @Mock
   private Ship ship3;
   @Mock
+  private Path path;
+  @Mock
   private ValueGraph<Cell, Integer> graph;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -81,7 +86,7 @@ public class WorldTest {
   public void setUp() {
     cellMap = new HashMap<>();
     inactiveShips = new ArrayList<>();
-    world = new World(modelBus, dijkstra, cellFactory, cellMap, inactiveShips);
+    world = new World(modelBus, dijkstra, cellMap, inactiveShips);
   }
 
   @Test
@@ -89,28 +94,24 @@ public class WorldTest {
     Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
     Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
     List<Ship> shipList = ImmutableList.of(ship3);
-    when(cell1.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
-    when(cell2.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
-    when(cell1.getTerrain()).thenReturn(terrain1);
-    when(cell2.getTerrain()).thenReturn(terrain2);
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
-    when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap, shipList);
 
-    assertThat(world.cell(C1_1)).hasValue(cell1);
-    assertThat(world.cell(C2_0)).hasValue(cell2);
+    assertThat(world.cell(C1_1)).isPresent();
+    assertThat(world.cell(C1_1).get().ship()).hasValue(ship1);
+    assertThat(world.cell(C2_0)).isPresent();
+    assertThat(world.cell(C2_0).get().ship()).hasValue(ship2);
     assertThat(world.getMaxHeight()).isEqualTo(C1_1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(C2_0.getX() + 1);
     assertThat(world.getInactiveShips()).containsExactly(ship3);
-    verify(cell1).spawnShip(ship1);
-    verify(cell2).spawnShip(ship2);
-    verify(modelBus).post(argumentCaptor.capture());
-    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor.getValue(), WorldLoaded.class);
+    verify(modelBus, times(3)).post(argumentCaptor.capture());
+    SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
+    assertThat(spawnShip.getObject()).isSameAs(world.cell(C1_1).get());
+    SpawnShip spawnShip2 = TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
+    assertThat(spawnShip2.getObject()).isSameAs(world.cell(C2_0).get());
+    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
     assertThat(worldLoaded.getWorld()).isSameAs(world);
   }
 
@@ -119,16 +120,8 @@ public class WorldTest {
     Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
     Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
     List<Ship> shipList = ImmutableList.of(ship3);
-    when(cell1.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
-    when(cell2.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
-    when(cell1.getTerrain()).thenReturn(terrain1);
-    when(cell2.getTerrain()).thenReturn(terrain2);
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
-    when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap, shipList);
     world.reset();
@@ -138,10 +131,11 @@ public class WorldTest {
     assertThat(world.getMaxHeight()).isEqualTo(0);
     assertThat(world.getMaxWidth()).isEqualTo(0);
     assertThat(world.getInactiveShips()).isEmpty();
-    verify(modelBus, times(2)).post(argumentCaptor.capture());
-    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 0, WorldLoaded.class);
-    assertThat(worldLoaded.getWorld()).isSameAs(world);
-    WorldReset worldReset = TestHelpers.assertClass(argumentCaptor, 1, WorldReset.class);
+    verify(modelBus, times(4)).post(argumentCaptor.capture());
+    TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
+    TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
+    TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
+    WorldReset worldReset = TestHelpers.assertClass(argumentCaptor, 3, WorldReset.class);
     assertThat(worldReset.getWorld()).isSameAs(world);
   }
 
@@ -223,22 +217,103 @@ public class WorldTest {
   }
 
   @Test
+  public void spawn_ship() {
+    world.spawnShip(cell1, ship1);
+
+    verify(cell1).addShip(ship1);
+    verify(modelBus).post(argumentCaptor.capture());
+    SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor.getValue(), SpawnShip.class);
+    assertThat(spawnShip.getObject()).isSameAs(cell1);
+  }
+
+  @Test
+  public void remove_ship() {
+    when(cell1.removeShip()).thenReturn(ship1);
+
+    assertThat(world.removeShip(cell1)).isSameAs(ship1);
+
+    verify(cell1).removeShip();
+    verify(modelBus).post(argumentCaptor.capture());
+    RemoveShip removeShip = TestHelpers.assertClass(argumentCaptor.getValue(), RemoveShip.class);
+    assertThat(removeShip.getObject()).isSameAs(ship1);
+  }
+
+  @Test
+  public void move_ship_moved() {
+    when(cell1.moveShip(cell2)).thenReturn(Optional.of(ship1));
+
+    world.moveShip(cell1, cell2);
+
+    verify(cell1).moveShip(cell2);
+    verify(modelBus).post(argumentCaptor.capture());
+    InstantMoveShip instantMoveShip =
+        TestHelpers.assertClass(argumentCaptor.getValue(), InstantMoveShip.class);
+    assertThat(instantMoveShip.getShip()).isSameAs(ship1);
+    assertThat(instantMoveShip.getDestination()).isSameAs(cell2);
+  }
+
+  @Test
+  public void move_ship_not_moved() {
+    when(cell1.moveShip(cell2)).thenReturn(Optional.<Ship>absent());
+
+    world.moveShip(cell1, cell2);
+
+    verify(cell1).moveShip(cell2);
+    verifyZeroInteractions(modelBus);
+  }
+
+  @Test
+  public void move_ship_path_moved() {
+    when(path.getOrigin()).thenReturn(cell1);
+    when(path.getDestination()).thenReturn(cell2);
+    when(cell1.moveShip(cell2)).thenReturn(Optional.of(ship1));
+
+    world.moveShip(path);
+
+    verify(cell1).moveShip(cell2);
+    verify(modelBus).post(argumentCaptor.capture());
+    MoveShip moveShip = TestHelpers.assertClass(argumentCaptor.getValue(), MoveShip.class);
+    assertThat(moveShip.getPath()).isSameAs(path);
+    assertThat(moveShip.getShip()).isSameAs(ship1);
+    assertThat(moveShip.getPromise().isDone()).isFalse();
+  }
+
+  @Test
+  public void move_ship_path_not_moved() {
+    when(path.getOrigin()).thenReturn(cell1);
+    when(path.getDestination()).thenReturn(cell2);
+    when(cell1.moveShip(cell2)).thenReturn(Optional.<Ship>absent());
+
+    world.moveShip(path);
+
+    verify(cell1).moveShip(cell2);
+    verifyZeroInteractions(modelBus);
+  }
+
+  @Test
   public void activate_ship() {
     inactiveShips.add(ship1);
 
     world.activateShip(cell1, ship1);
 
-    verify(cell1).spawnShip(ship1);
+    assertThat(world.getInactiveShips()).isEmpty();
+    verify(cell1).addShip(ship1);
+    verify(modelBus).post(argumentCaptor.capture());
+    SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor.getValue(), SpawnShip.class);
+    assertThat(spawnShip.getObject()).isSameAs(cell1);
   }
 
   @Test
   public void deactivate_ship() {
-    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell1.removeShip()).thenReturn(ship1);
 
     world.deactivateShip(cell1);
 
     assertThat(world.getInactiveShips()).containsExactly(ship1);
     verify(cell1).removeShip();
+    verify(modelBus).post(argumentCaptor.capture());
+    RemoveShip removeShip = TestHelpers.assertClass(argumentCaptor.getValue(), RemoveShip.class);
+    assertThat(removeShip.getObject()).isSameAs(ship1);
   }
 
   @Test

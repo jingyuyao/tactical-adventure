@@ -16,6 +16,8 @@ import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.script.DeathEvent;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
+import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +43,14 @@ public class BattleSequenceTest {
   @Mock
   private Battle battle;
   @Mock
+  private Cell cell;
+  @Mock
+  private Cell cell2;
+  @Mock
+  private Ship ship;
+  @Mock
+  private Ship ship2;
+  @Mock
   private Person dead1;
   @Mock
   private Person dead2;
@@ -63,18 +73,23 @@ public class BattleSequenceTest {
   @Test
   public void start() {
     when(worldState.getScript()).thenReturn(script);
-    when(battle.getDeaths()).thenReturn(ImmutableList.of(dead1, dead2));
+    when(battle.getDeadCells()).thenReturn(ImmutableList.of(cell, cell2));
+    when(world.removeShip(cell)).thenReturn(ship);
+    when(world.removeShip(cell2)).thenReturn(ship2);
+    when(ship.getCrew()).thenReturn(ImmutableList.of(dead1, dead2));
+    when(ship2.getCrew()).thenReturn(ImmutableList.<Person>of());
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
         .thenReturn(Promise.immediate());
 
     battleSequence.start(battle, runnable);
 
-    InOrder inOrder = Mockito.inOrder(modelBus, battle, scriptRunner, runnable);
+    InOrder inOrder = Mockito.inOrder(modelBus, battle, scriptRunner, runnable, world);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
     assertThat(argumentCaptor.getValue()).isInstanceOf(StartBattle.class);
     StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
     startBattle.start();
     inOrder.verify(battle).execute();
+    inOrder.verify(world).removeShip(cell);
     inOrder.verify(scriptRunner, times(2)).triggerScripts(scriptEventCaptor.capture(), eq(script));
     DeathEvent event1 = TestHelpers.assertClass(scriptEventCaptor, 0, DeathEvent.class);
     assertThat(event1.getDeath()).isSameAs(dead1);
@@ -82,6 +97,7 @@ public class BattleSequenceTest {
     DeathEvent event2 = TestHelpers.assertClass(scriptEventCaptor, 1, DeathEvent.class);
     assertThat(event2.getDeath()).isSameAs(dead2);
     assertThat(event2.getWorld()).isSameAs(world);
+    inOrder.verify(world).removeShip(cell2);
     inOrder.verify(runnable).run();
   }
 }

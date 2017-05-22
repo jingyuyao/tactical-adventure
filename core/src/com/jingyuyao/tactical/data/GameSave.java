@@ -1,8 +1,7 @@
 package com.jingyuyao.tactical.data;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.World;
@@ -42,14 +41,10 @@ public class GameSave {
    */
   void replacePlayerShipsFrom(World world) {
     playerShips.clear();
-    FluentIterable
-        .concat(world.getInactiveShips(), world.getShipSnapshot().values())
-        .filter(new Predicate<Ship>() {
-          @Override
-          public boolean apply(Ship ship) {
-            return ship.inGroup(ShipGroup.PLAYER);
-          }
-        })
-        .copyInto(playerShips);
+    for (Ship ship : Iterables.concat(world.getInactiveShips(), world.getShipSnapshot().values())) {
+      if (ship.inGroup(ShipGroup.PLAYER)) {
+        playerShips.add(ship);
+      }
+    }
   }
 }

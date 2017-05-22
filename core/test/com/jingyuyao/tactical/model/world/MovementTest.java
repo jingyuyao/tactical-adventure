@@ -41,7 +41,7 @@ public class MovementTest {
 
   @Test
   public void starting_coordinate() {
-    assertThat(movement.getStartingCell()).isSameAs(origin);
+    assertThat(movement.getOrigin()).isSameAs(origin);
   }
 
   @Test

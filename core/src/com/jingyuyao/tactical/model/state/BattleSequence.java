@@ -6,6 +6,8 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.script.DeathEvent;
+import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.Iterator;
 import javax.inject.Inject;
@@ -31,9 +33,24 @@ class BattleSequence {
     modelBus.post(new StartBattle(battle, new Promise(new Runnable() {
       @Override
       public void run() {
-        triggerDeaths(battle.getDeaths().iterator(), done);
+        removeDeadShips(battle.getDeadCells().iterator(), done);
       }
     })));
+  }
+
+  private void removeDeadShips(final Iterator<Cell> deadCells, final Runnable done) {
+    if (deadCells.hasNext()) {
+      Cell deadCell = deadCells.next();
+      Ship removed = world.removeShip(deadCell);
+      triggerDeaths(removed.getCrew().iterator(), new Runnable() {
+        @Override
+        public void run() {
+          removeDeadShips(deadCells, done);
+        }
+      });
+    } else {
+      done.run();
+    }
   }
 
   private void triggerDeaths(final Iterator<Person> deaths, final Runnable done) {

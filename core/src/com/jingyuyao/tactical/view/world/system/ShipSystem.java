@@ -5,9 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ActivatedShip;
@@ -31,6 +29,7 @@ import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -142,13 +141,13 @@ class ShipSystem extends IteratingSystem {
    * outside of the engine which is a bad practice.
    */
   private Entity get(final Ship ship) {
-    return Iterables.find(getEntities(), new Predicate<Entity>() {
-      @Override
-      public boolean apply(Entity input) {
-        ShipComponent component = shipMapper.get(input);
-        return component != null && component.getShip().equals(ship);
+    for (Entity entity : getEntities()) {
+      ShipComponent component = shipMapper.get(entity);
+      if (component != null && component.getShip().equals(ship)) {
+        return entity;
       }
-    });
+    }
+    throw new NoSuchElementException();
   }
 
   private void activate(Ship ship) {

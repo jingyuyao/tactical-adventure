@@ -77,7 +77,7 @@ public class Retaliating extends BaseState {
     final Optional<Path> pathOpt = pilotResponse.path();
     if (pathOpt.isPresent()) {
       Path path = pathOpt.get();
-      path.getOrigin().moveShip(path).done(new Runnable() {
+      world.moveShip(path).done(new Runnable() {
         @Override
         public void run() {
           handleBattle(pilotResponse, next);

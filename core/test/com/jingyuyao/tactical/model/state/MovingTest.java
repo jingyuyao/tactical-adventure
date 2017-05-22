@@ -98,7 +98,7 @@ public class MovingTest {
 
     moving.canceled();
 
-    verify(cell2).instantMoveShip(cell);
+    verify(world).moveShip(cell2, cell);
   }
 
   @Test
@@ -146,18 +146,18 @@ public class MovingTest {
   @Test
   public void select_can_move() {
     when(cell2.ship()).thenReturn(Optional.<Ship>absent());
-    when(movement.getStartingCell()).thenReturn(cell);
+    when(movement.getOrigin()).thenReturn(cell);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);
     when(stateFactory.createTransition()).thenReturn(transition);
-    when(cell.moveShip(path)).thenReturn(Promise.immediate());
+    when(world.moveShip(path)).thenReturn(Promise.immediate());
 
     moving.select(cell2);
 
-    InOrder inOrder = Mockito.inOrder(ship, cell, worldState);
+    InOrder inOrder = Mockito.inOrder(ship, world, worldState);
     inOrder.verify(worldState).goTo(transition);
-    inOrder.verify(cell).moveShip(path);
+    inOrder.verify(world).moveShip(path);
     inOrder.verify(worldState).goTo(moved);
     verifyNoMoreInteractions(worldState);
   }

@@ -29,7 +29,7 @@ public class Moving extends ControllingActionState {
   @Override
   public void canceled() {
     if (prevMove != null) {
-      prevMove.instantMoveShip(movement.getStartingCell());
+      getWorld().moveShip(prevMove, movement.getOrigin());
     }
   }
 
@@ -48,7 +48,7 @@ public class Moving extends ControllingActionState {
         Path path = movement.pathTo(cell);
         prevMove = cell;
         goTo(getStateFactory().createTransition());
-        movement.getStartingCell().moveShip(path).done(new Runnable() {
+        getWorld().moveShip(path).done(new Runnable() {
           @Override
           public void run() {
             goTo(getStateFactory().createMoved(cell));
