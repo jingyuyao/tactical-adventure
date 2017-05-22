@@ -6,6 +6,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ListMultimap;
 import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
+import com.jingyuyao.tactical.model.script.DeactivateGroup;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -66,10 +67,12 @@ class LevelLoader {
     LevelScript levelScript = load(dataConfig.getLevelScriptFileName(level), LevelScript.class);
     List<Condition> winConditions = levelScript.getWinConditions();
     List<Condition> loseConditions = levelScript.getLoseConditions();
-    Map<Condition, ActivateGroup> groupActivations = levelScript.getGroupActivations();
     ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(level);
+    Map<Condition, ActivateGroup> groupActivations = levelScript.getGroupActivations();
+    Map<Condition, DeactivateGroup> groupDeactivations = levelScript.getGroupDeactivations();
 
-    return new Script(winConditions, loseConditions, dialogues, groupActivations);
+    return new Script(
+        winConditions, loseConditions, dialogues, groupActivations, groupDeactivations);
   }
 
   private <T> T load(String fileName, Class<T> clazz) {
