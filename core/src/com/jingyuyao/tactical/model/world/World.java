@@ -1,10 +1,7 @@
 package com.jingyuyao.tactical.model.world;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -142,18 +139,13 @@ public class World implements GetNeighbors {
    * Return a snapshot of all the ships in the world.
    */
   public ImmutableMap<Cell, Ship> getShipSnapshot() {
-    return FluentIterable.from(cellMap.values())
-        .filter(new Predicate<Cell>() {
-          @Override
-          public boolean apply(Cell input) {
-            return input.ship().isPresent();
-          }
-        }).toMap(new Function<Cell, Ship>() {
-          @Override
-          public Ship apply(Cell input) {
-            return input.ship().get();  // ignore IDE, always present
-          }
-        });
+    ImmutableMap.Builder<Cell, Ship> builder = new ImmutableMap.Builder<>();
+    for (Cell cell : cellMap.values()) {
+      for (Ship ship : cell.ship().asSet()) {
+        builder.put(cell, ship);
+      }
+    }
+    return builder.build();
   }
 
   public ImmutableList<Ship> getInactiveShips() {

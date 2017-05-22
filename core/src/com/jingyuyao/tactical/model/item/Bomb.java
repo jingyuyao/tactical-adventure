@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.battle.Target;
@@ -17,16 +15,12 @@ public class Bomb extends BaseWeapon {
 
   @Override
   public ImmutableList<Target> createTargets(final World world, Cell from) {
-    return FluentIterable
-        .from(world.getUnimpededMovement(from, distance).getCells())
-        .transform(new Function<Cell, Target>() {
-          @Override
-          public Target apply(Cell input) {
-            Set<Cell> targets =
-                ImmutableSet.copyOf(world.getUnimpededMovement(input, size - 1).getCells());
-            return new Target(input, ImmutableSet.of(input), targets);
-          }
-        })
-        .toList();
+    ImmutableList.Builder<Target> builder = new ImmutableList.Builder<>();
+    for (Cell cell : world.getUnimpededMovement(from, distance).getCells()) {
+      Set<Cell> targets =
+          ImmutableSet.copyOf(world.getUnimpededMovement(cell, size - 1).getCells());
+      builder.add(new Target(cell, ImmutableSet.of(cell), targets));
+    }
+    return builder.build();
   }
 }
