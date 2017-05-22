@@ -12,13 +12,13 @@ public class Script {
   private final List<Condition> winConditions;
   private final List<Condition> loseConditions;
   private final ListMultimap<Condition, Dialogue> dialogues;
-  private final Map<Condition, GroupActivation> groupActivations;
+  private final Map<Condition, ActivateGroup> groupActivations;
 
   public Script(
       List<Condition> winConditions,
       List<Condition> loseConditions,
       ListMultimap<Condition, Dialogue> dialogues,
-      Map<Condition, GroupActivation> groupActivations) {
+      Map<Condition, ActivateGroup> groupActivations) {
     this.winConditions = winConditions;
     this.loseConditions = loseConditions;
     this.dialogues = dialogues;
@@ -37,7 +37,7 @@ public class Script {
     return ImmutableListMultimap.copyOf(dialogues);
   }
 
-  public ImmutableMap<Condition, GroupActivation> getGroupActivations() {
+  public ImmutableMap<Condition, ActivateGroup> getGroupActivations() {
     return ImmutableMap.copyOf(groupActivations);
   }
 }

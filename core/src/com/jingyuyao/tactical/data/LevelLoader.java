@@ -4,9 +4,9 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ListMultimap;
+import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.GroupActivation;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -66,7 +66,7 @@ class LevelLoader {
     LevelScript levelScript = load(dataConfig.getLevelScriptFileName(level), LevelScript.class);
     List<Condition> winConditions = levelScript.getWinConditions();
     List<Condition> loseConditions = levelScript.getLoseConditions();
-    Map<Condition, GroupActivation> groupActivations = levelScript.getGroupActivations();
+    Map<Condition, ActivateGroup> groupActivations = levelScript.getGroupActivations();
     ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(level);
 
     return new Script(winConditions, loseConditions, dialogues, groupActivations);

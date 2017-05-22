@@ -15,9 +15,9 @@ import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
+import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.GroupActivation;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -67,7 +67,7 @@ public class ScriptRunnerTest {
   @Mock
   private Dialogue dialogue4;
   @Mock
-  private GroupActivation groupActivation;
+  private ActivateGroup activateGroup;
   @Mock
   private Ship ship1;
   @Captor
@@ -88,7 +88,7 @@ public class ScriptRunnerTest {
             dialogueCondition2, dialogue2,
             dialogueCondition3, dialogue3,
             dialogueCondition4, dialogue4));
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, GroupActivation>of());
+    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(scriptEvent.satisfiedBy(dialogueCondition1)).thenReturn(true); // show
     when(scriptEvent.satisfiedBy(dialogueCondition2)).thenReturn(false);
@@ -121,7 +121,7 @@ public class ScriptRunnerTest {
   @Test
   public void no_dialogue_won() {
     when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, GroupActivation>of());
+    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
@@ -139,12 +139,12 @@ public class ScriptRunnerTest {
     ShipGroup group = new ShipGroup("hello");
     when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
     when(script.getGroupActivations())
-        .thenReturn(ImmutableMap.of(groupActivationCondition, groupActivation));
+        .thenReturn(ImmutableMap.of(groupActivationCondition, activateGroup));
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(world.getInactiveShips()).thenReturn(ImmutableList.of(ship1));
-    when(groupActivation.getGroup()).thenReturn(group);
-    when(groupActivation.getSpawns()).thenReturn(ImmutableList.of(C0_0, C0_1));
+    when(activateGroup.getGroup()).thenReturn(group);
+    when(activateGroup.getSpawns()).thenReturn(ImmutableList.of(C0_0, C0_1));
     when(ship1.inGroup(group)).thenReturn(true);
     when(scriptEvent.satisfiedBy(groupActivationCondition)).thenReturn(true);
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
@@ -160,7 +160,7 @@ public class ScriptRunnerTest {
   @Test
   public void no_dialogue_keep_going() {
     when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, GroupActivation>of());
+    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);

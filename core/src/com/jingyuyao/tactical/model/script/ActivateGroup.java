@@ -4,12 +4,12 @@ import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import java.util.List;
 
-public class GroupActivation {
+public class ActivateGroup {
 
   private ShipGroup group;
   private List<Coordinate> spawns;
 
-  private GroupActivation() {
+  private ActivateGroup() {
   }
 
   public ShipGroup getGroup() {

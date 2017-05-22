@@ -8,9 +8,9 @@ import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
+import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.GroupActivation;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -87,11 +87,11 @@ class ScriptRunner {
   }
 
   private void triggerGroupActivations(ScriptEvent event, Script script) {
-    for (Entry<Condition, GroupActivation> entry : script.getGroupActivations().entrySet()) {
+    for (Entry<Condition, ActivateGroup> entry : script.getGroupActivations().entrySet()) {
       Condition condition = entry.getKey();
       if (event.satisfiedBy(condition)) {
-        GroupActivation groupActivation = entry.getValue();
-        final ShipGroup group = groupActivation.getGroup();
+        ActivateGroup activateGroup = entry.getValue();
+        final ShipGroup group = activateGroup.getGroup();
         List<Ship> ships = FluentIterable
             .from(world.getInactiveShips())
             .filter(new Predicate<Ship>() {
@@ -100,7 +100,7 @@ class ScriptRunner {
                 return ship.inGroup(group);
               }
             }).toList();
-        List<Coordinate> spawns = groupActivation.getSpawns();
+        List<Coordinate> spawns = activateGroup.getSpawns();
         for (int i = 0; i < spawns.size() && i < ships.size(); i++) {
           world.activateShip(spawns.get(i), ships.get(i));
         }
