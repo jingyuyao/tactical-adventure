@@ -50,8 +50,6 @@ public class WorldTest {
   @Mock
   private Dijkstra dijkstra;
   @Mock
-  private CellFactory cellFactory;
-  @Mock
   private Cell cell1;
   @Mock
   private Cell cell2;
@@ -88,7 +86,7 @@ public class WorldTest {
   public void setUp() {
     cellMap = new HashMap<>();
     inactiveShips = new ArrayList<>();
-    world = new World(modelBus, dijkstra, cellFactory, cellMap, inactiveShips);
+    world = new World(modelBus, dijkstra, cellMap, inactiveShips);
   }
 
   @Test
@@ -96,31 +94,23 @@ public class WorldTest {
     Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
     Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
     List<Ship> shipList = ImmutableList.of(ship3);
-    when(cell1.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
-    when(cell2.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
-    when(cell1.getTerrain()).thenReturn(terrain1);
-    when(cell2.getTerrain()).thenReturn(terrain2);
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
-    when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap, shipList);
 
-    assertThat(world.cell(C1_1)).hasValue(cell1);
-    assertThat(world.cell(C2_0)).hasValue(cell2);
+    assertThat(world.cell(C1_1)).isPresent();
+    assertThat(world.cell(C1_1).get().ship()).hasValue(ship1);
+    assertThat(world.cell(C2_0)).isPresent();
+    assertThat(world.cell(C2_0).get().ship()).hasValue(ship2);
     assertThat(world.getMaxHeight()).isEqualTo(C1_1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(C2_0.getX() + 1);
     assertThat(world.getInactiveShips()).containsExactly(ship3);
     verify(modelBus, times(3)).post(argumentCaptor.capture());
-    verify(cell1).addShip(ship1);
-    verify(cell2).addShip(ship2);
     SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
-    assertThat(spawnShip.getObject()).isSameAs(cell1);
+    assertThat(spawnShip.getObject()).isSameAs(world.cell(C1_1).get());
     SpawnShip spawnShip2 = TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
-    assertThat(spawnShip2.getObject()).isSameAs(cell2);
+    assertThat(spawnShip2.getObject()).isSameAs(world.cell(C2_0).get());
     WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
     assertThat(worldLoaded.getWorld()).isSameAs(world);
   }
@@ -130,16 +120,8 @@ public class WorldTest {
     Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
     Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
     List<Ship> shipList = ImmutableList.of(ship3);
-    when(cell1.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
-    when(cell2.ship())
-        .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship2));
-    when(cell1.getTerrain()).thenReturn(terrain1);
-    when(cell2.getTerrain()).thenReturn(terrain2);
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
-    when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
-    when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
     world.initialize(terrainMap, shipMap, shipList);
     world.reset();
@@ -150,14 +132,9 @@ public class WorldTest {
     assertThat(world.getMaxWidth()).isEqualTo(0);
     assertThat(world.getInactiveShips()).isEmpty();
     verify(modelBus, times(4)).post(argumentCaptor.capture());
-    verify(cell1).addShip(ship1);
-    verify(cell2).addShip(ship2);
-    SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
-    assertThat(spawnShip.getObject()).isSameAs(cell1);
-    SpawnShip spawnShip2 = TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
-    assertThat(spawnShip2.getObject()).isSameAs(cell2);
-    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
-    assertThat(worldLoaded.getWorld()).isSameAs(world);
+    TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
+    TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
+    TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
     WorldReset worldReset = TestHelpers.assertClass(argumentCaptor, 3, WorldReset.class);
     assertThat(worldReset.getWorld()).isSameAs(world);
   }

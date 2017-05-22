@@ -2,22 +2,16 @@ package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.inject.assistedinject.Assisted;
-import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
-import javax.inject.Inject;
 
 public class Cell {
 
-  private final ModelBus modelBus;
   private final Coordinate coordinate;
   private final Terrain terrain;
   private Ship ship;
 
-  @Inject
-  Cell(ModelBus modelBus, @Assisted Coordinate coordinate, @Assisted Terrain terrain) {
-    this.modelBus = modelBus;
+  Cell(Coordinate coordinate, Terrain terrain) {
     this.coordinate = coordinate;
     this.terrain = terrain;
   }

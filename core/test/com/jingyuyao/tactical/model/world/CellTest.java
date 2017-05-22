@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.world;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
@@ -18,8 +17,6 @@ public class CellTest {
   private static final Coordinate COORDINATE = new Coordinate(2, 3);
 
   @Mock
-  private ModelBus modelBus;
-  @Mock
   private Terrain terrain;
   @Mock
   private Ship ship;
@@ -28,7 +25,7 @@ public class CellTest {
 
   @Before
   public void setUp() {
-    cell = new Cell(modelBus, COORDINATE, terrain);
+    cell = new Cell(COORDINATE, terrain);
     assertThat(cell.getCoordinate()).isEqualTo(COORDINATE);
     assertThat(cell.getTerrain()).isSameAs(terrain);
     assertThat(cell.ship()).isAbsent();
@@ -89,7 +86,7 @@ public class CellTest {
   @Test
   public void move_ship() {
     when(terrain.canHold(ship)).thenReturn(true);
-    Cell other = new Cell(modelBus, COORDINATE, terrain);
+    Cell other = new Cell(COORDINATE, terrain);
     cell.addShip(ship);
 
     cell.moveShip(other);
@@ -106,7 +103,7 @@ public class CellTest {
   @Test(expected = IllegalStateException.class)
   public void move_ship_other_has_ship() {
     when(terrain.canHold(ship)).thenReturn(true);
-    Cell other = new Cell(modelBus, COORDINATE, terrain);
+    Cell other = new Cell(COORDINATE, terrain);
     cell.addShip(ship);
     other.addShip(ship);
 

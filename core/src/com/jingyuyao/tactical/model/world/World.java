@@ -29,7 +29,6 @@ public class World implements GetNeighbors {
 
   private final ModelBus modelBus;
   private final Dijkstra dijkstra;
-  private final CellFactory cellFactory;
   private final Map<Coordinate, Cell> cellMap;
   private final List<Ship> inactiveShips;
   private int maxHeight;
@@ -39,12 +38,10 @@ public class World implements GetNeighbors {
   World(
       ModelBus modelBus,
       Dijkstra dijkstra,
-      CellFactory cellFactory,
       @BackingCellMap Map<Coordinate, Cell> cellMap,
       @BackingInactiveList List<Ship> inactiveShips) {
     this.modelBus = modelBus;
     this.dijkstra = dijkstra;
-    this.cellFactory = cellFactory;
     this.cellMap = cellMap;
     this.inactiveShips = inactiveShips;
   }
@@ -58,7 +55,7 @@ public class World implements GetNeighbors {
       if (cellMap.containsKey(coordinate)) {
         throw new IllegalArgumentException("Duplicated terrain detected");
       }
-      Cell cell = cellFactory.create(coordinate, entry.getValue());
+      Cell cell = new Cell(coordinate, entry.getValue());
       cellMap.put(coordinate, cell);
       // index is zero based
       maxWidth = Math.max(maxWidth, coordinate.getX() + 1);

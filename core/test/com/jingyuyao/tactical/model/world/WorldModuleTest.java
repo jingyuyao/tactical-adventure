@@ -19,8 +19,6 @@ public class WorldModuleTest {
 
   @Inject
   private World world;
-  @Inject
-  private CellFactory cellFactory;
 
   @Test
   public void can_create_module() {
