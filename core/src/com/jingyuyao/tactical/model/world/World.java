@@ -164,9 +164,13 @@ public class World implements GetNeighbors {
 
   /**
    * Remove the ship at the given cell. Fires {@link RemoveShip}. <p>{@code cell} must have a ship.
+   *
+   * @return the removed ship.
    */
-  public void removeShip(Cell cell) {
-    modelBus.post(new RemoveShip(cell.delShip()));
+  public Ship removeShip(Cell cell) {
+    Ship removed = cell.removeShip();
+    modelBus.post(new RemoveShip(removed));
+    return removed;
   }
 
   /**
@@ -203,17 +207,14 @@ public class World implements GetNeighbors {
    */
   public void activateShip(Cell cell, Ship inactiveShip) {
     Preconditions.checkArgument(inactiveShips.remove(inactiveShip));
-    cell.addShip(inactiveShip);
-    modelBus.post(new SpawnShip(cell));
+    spawnShip(cell, inactiveShip);
   }
 
   /**
    * Moves the ship from the given cell to the inactive list.
    */
   public void deactivateShip(Cell cell) {
-    Ship removed = cell.delShip();
-    inactiveShips.add(removed);
-    modelBus.post(new RemoveShip(removed));
+    inactiveShips.add(removeShip(cell));
   }
 
   /**

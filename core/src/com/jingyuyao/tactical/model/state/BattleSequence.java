@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.script.DeathEvent;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.Iterator;
@@ -33,26 +33,36 @@ class BattleSequence {
     modelBus.post(new StartBattle(battle, new Promise(new Runnable() {
       @Override
       public void run() {
-        triggerDeaths(battle.getDeadCells().iterator(), done);
+        removeDeadShips(battle.getDeadCells().iterator(), done);
       }
     })));
   }
 
-  private void triggerDeaths(final Iterator<Cell> deadCells, final Runnable done) {
+  private void removeDeadShips(final Iterator<Cell> deadCells, final Runnable done) {
     if (deadCells.hasNext()) {
       Cell deadCell = deadCells.next();
-      Preconditions.checkArgument(deadCell.ship().isPresent());
-      world.removeShip(deadCell);
-      for (Person crew : deadCell.ship().get().getCrew()) {
-        DeathEvent deathEvent = new DeathEvent(crew, world);
-        scriptRunner.triggerScripts(deathEvent, worldState.getScript())
-            .done(new Runnable() {
-              @Override
-              public void run() {
-                triggerDeaths(deadCells, done);
-              }
-            });
-      }
+      Ship removed = world.removeShip(deadCell);
+      triggerDeaths(removed.getCrew().iterator(), new Runnable() {
+        @Override
+        public void run() {
+          removeDeadShips(deadCells, done);
+        }
+      });
+    } else {
+      done.run();
+    }
+  }
+
+  private void triggerDeaths(final Iterator<Person> deaths, final Runnable done) {
+    if (deaths.hasNext()) {
+      DeathEvent deathEvent = new DeathEvent(deaths.next(), world);
+      scriptRunner.triggerScripts(deathEvent, worldState.getScript())
+          .done(new Runnable() {
+            @Override
+            public void run() {
+              triggerDeaths(deaths, done);
+            }
+          });
     } else {
       done.run();
     }

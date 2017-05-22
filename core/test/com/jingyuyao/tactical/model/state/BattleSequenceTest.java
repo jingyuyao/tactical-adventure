@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -46,7 +45,11 @@ public class BattleSequenceTest {
   @Mock
   private Cell cell;
   @Mock
+  private Cell cell2;
+  @Mock
   private Ship ship;
+  @Mock
+  private Ship ship2;
   @Mock
   private Person dead1;
   @Mock
@@ -70,9 +73,11 @@ public class BattleSequenceTest {
   @Test
   public void start() {
     when(worldState.getScript()).thenReturn(script);
-    when(battle.getDeadCells()).thenReturn(ImmutableList.of(cell));
-    when(cell.ship()).thenReturn(Optional.of(ship));
+    when(battle.getDeadCells()).thenReturn(ImmutableList.of(cell, cell2));
+    when(world.removeShip(cell)).thenReturn(ship);
+    when(world.removeShip(cell2)).thenReturn(ship2);
     when(ship.getCrew()).thenReturn(ImmutableList.of(dead1, dead2));
+    when(ship2.getCrew()).thenReturn(ImmutableList.<Person>of());
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
         .thenReturn(Promise.immediate());
 
@@ -92,6 +97,7 @@ public class BattleSequenceTest {
     DeathEvent event2 = TestHelpers.assertClass(scriptEventCaptor, 1, DeathEvent.class);
     assertThat(event2.getDeath()).isSameAs(dead2);
     assertThat(event2.getWorld()).isSameAs(world);
+    inOrder.verify(world).removeShip(cell2);
     inOrder.verify(runnable).run();
   }
 }

@@ -228,11 +228,11 @@ public class WorldTest {
 
   @Test
   public void remove_ship() {
-    when(cell1.delShip()).thenReturn(ship1);
+    when(cell1.removeShip()).thenReturn(ship1);
 
-    world.removeShip(cell1);
+    assertThat(world.removeShip(cell1)).isSameAs(ship1);
 
-    verify(cell1).delShip();
+    verify(cell1).removeShip();
     verify(modelBus).post(argumentCaptor.capture());
     RemoveShip removeShip = TestHelpers.assertClass(argumentCaptor.getValue(), RemoveShip.class);
     assertThat(removeShip.getObject()).isSameAs(ship1);
@@ -305,12 +305,12 @@ public class WorldTest {
 
   @Test
   public void deactivate_ship() {
-    when(cell1.delShip()).thenReturn(ship1);
+    when(cell1.removeShip()).thenReturn(ship1);
 
     world.deactivateShip(cell1);
 
     assertThat(world.getInactiveShips()).containsExactly(ship1);
-    verify(cell1).delShip();
+    verify(cell1).removeShip();
     verify(modelBus).post(argumentCaptor.capture());
     RemoveShip removeShip = TestHelpers.assertClass(argumentCaptor.getValue(), RemoveShip.class);
     assertThat(removeShip.getObject()).isSameAs(ship1);

@@ -56,22 +56,22 @@ public class CellTest {
   }
 
   @Test
-  public void del_ship() {
+  public void remove_ship() {
     when(terrain.canHold(ship)).thenReturn(true);
     cell.addShip(ship);
 
-    cell.delShip();
+    cell.removeShip();
 
     assertThat(cell.ship()).isAbsent();
   }
 
   @Test(expected = IllegalStateException.class)
-  public void del_ship_exception() {
+  public void remove_ship_exception() {
     when(terrain.canHold(ship)).thenReturn(true);
     cell.addShip(ship);
 
-    cell.delShip();
-    cell.delShip();
+    cell.removeShip();
+    cell.removeShip();
   }
 
   @Test

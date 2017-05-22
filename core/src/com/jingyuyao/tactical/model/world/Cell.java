@@ -41,8 +41,7 @@ public class Cell {
   /**
    * Remove the ship contained by this cell. This cell must have a ship.
    */
-  // TODO: temp name
-  Ship delShip() {
+  Ship removeShip() {
     Preconditions.checkState(ship != null);
     Ship removed = ship;
     ship = null;
