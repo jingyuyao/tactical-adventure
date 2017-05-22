@@ -223,13 +223,22 @@ public class WorldTest {
   }
 
   @Test
-  public void activate_ships() {
-    cellMap.put(C1_1, cell1);
+  public void activate_ship() {
     inactiveShips.add(ship1);
 
-    world.activateShip(C1_1, ship1);
+    world.activateShip(cell1, ship1);
 
     verify(cell1).spawnShip(ship1);
+  }
+
+  @Test
+  public void deactivate_ship() {
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+
+    world.deactivateShip(cell1);
+
+    assertThat(world.getInactiveShips()).containsExactly(ship1);
+    verify(cell1).removeShip();
   }
 
   @Test

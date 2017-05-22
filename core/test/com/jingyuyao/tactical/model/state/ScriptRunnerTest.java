@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -17,11 +18,13 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
+import com.jingyuyao.tactical.model.script.DeactivateGroup;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +56,7 @@ public class ScriptRunnerTest {
   @Mock
   private Condition dialogueCondition4;
   @Mock
-  private Condition groupActivationCondition;
+  private Condition activationCondition;
   @Mock
   private Condition winCondition;
   @Mock
@@ -68,6 +71,10 @@ public class ScriptRunnerTest {
   private Dialogue dialogue4;
   @Mock
   private ActivateGroup activateGroup;
+  @Mock
+  private DeactivateGroup deactivateGroup;
+  @Mock
+  private Cell cell1;
   @Mock
   private Ship ship1;
   @Captor
@@ -89,6 +96,7 @@ public class ScriptRunnerTest {
             dialogueCondition3, dialogue3,
             dialogueCondition4, dialogue4));
     when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
+    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(scriptEvent.satisfiedBy(dialogueCondition1)).thenReturn(true); // show
     when(scriptEvent.satisfiedBy(dialogueCondition2)).thenReturn(false);
@@ -122,6 +130,7 @@ public class ScriptRunnerTest {
   public void no_dialogue_won() {
     when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
     when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
+    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
@@ -139,21 +148,46 @@ public class ScriptRunnerTest {
     ShipGroup group = new ShipGroup("hello");
     when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
     when(script.getGroupActivations())
-        .thenReturn(ImmutableMap.of(groupActivationCondition, activateGroup));
+        .thenReturn(ImmutableMap.of(activationCondition, activateGroup));
+    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(world.getInactiveShips()).thenReturn(ImmutableList.of(ship1));
+    when(world.cell(C0_0)).thenReturn(Optional.of(cell1));
     when(activateGroup.getGroup()).thenReturn(group);
     when(activateGroup.getSpawns()).thenReturn(ImmutableList.of(C0_0, C0_1));
     when(ship1.inGroup(group)).thenReturn(true);
-    when(scriptEvent.satisfiedBy(groupActivationCondition)).thenReturn(true);
+    when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
     when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);
 
     Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
 
     verifyZeroInteractions(modelBus);
-    verify(world).activateShip(C0_0, ship1);
+    verify(world).activateShip(cell1, ship1);
+    assertThat(promise.isDone()).isTrue();
+  }
+
+  @Test
+  public void has_deactivation() {
+    ShipGroup group = new ShipGroup("hello");
+    when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
+    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
+    when(script.getGroupDeactivations())
+        .thenReturn(ImmutableMap.of(activationCondition, deactivateGroup));
+    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
+    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
+    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1));
+    when(deactivateGroup.getGroup()).thenReturn(group);
+    when(ship1.inGroup(group)).thenReturn(true);
+    when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);
+    when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
+    when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);
+
+    Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
+
+    verifyZeroInteractions(modelBus);
+    verify(world).deactivateShip(cell1);
     assertThat(promise.isDone()).isTrue();
   }
 
@@ -161,6 +195,7 @@ public class ScriptRunnerTest {
   public void no_dialogue_keep_going() {
     when(script.getDialogues()).thenReturn(ImmutableListMultimap.<Condition, Dialogue>of());
     when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
+    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
     when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
     when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);

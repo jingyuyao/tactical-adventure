@@ -40,6 +40,7 @@ public class Cell {
   }
 
   public void spawnShip(Ship ship) {
+    // TODO: handle cases where there is already a ship at the coordinate gracefully
     Preconditions.checkState(this.ship == null);
     Preconditions.checkNotNull(ship);
 
