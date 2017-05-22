@@ -227,7 +227,7 @@ public class WorldTest {
     cellMap.put(C1_1, cell1);
     inactiveShips.add(ship1);
 
-    world.activateShips(ImmutableMap.of(C1_1, ship1));
+    world.activateShip(C1_1, ship1);
 
     verify(cell1).spawnShip(ship1);
   }

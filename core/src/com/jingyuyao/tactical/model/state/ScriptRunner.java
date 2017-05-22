@@ -1,5 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Multimaps;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelLost;
@@ -8,8 +10,13 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import com.jingyuyao.tactical.model.script.GroupActivation;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
+import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
+import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.World;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -20,10 +27,12 @@ import javax.inject.Singleton;
 class ScriptRunner {
 
   private final ModelBus modelBus;
+  private final World world;
 
   @Inject
-  ScriptRunner(ModelBus modelBus) {
+  ScriptRunner(ModelBus modelBus, World world) {
     this.modelBus = modelBus;
+    this.world = world;
   }
 
   /**
@@ -36,6 +45,7 @@ class ScriptRunner {
     triggerDialogues(event, script).done(new Runnable() {
       @Override
       public void run() {
+        triggerGroupActivations(event, script);
         triggerWinLose(event, script, promise);
       }
     });
@@ -73,6 +83,28 @@ class ScriptRunner {
       }
     } else {
       promise.complete();
+    }
+  }
+
+  private void triggerGroupActivations(ScriptEvent event, Script script) {
+    for (Entry<Condition, GroupActivation> entry : script.getGroupActivations().entrySet()) {
+      Condition condition = entry.getKey();
+      if (event.satisfiedBy(condition)) {
+        GroupActivation groupActivation = entry.getValue();
+        final ShipGroup group = groupActivation.getGroup();
+        List<Ship> ships = FluentIterable
+            .from(world.getInactiveShips())
+            .filter(new Predicate<Ship>() {
+              @Override
+              public boolean apply(Ship ship) {
+                return ship.inGroup(group);
+              }
+            }).toList();
+        List<Coordinate> spawns = groupActivation.getSpawns();
+        for (int i = 0; i < spawns.size() && i < ships.size(); i++) {
+          world.activateShip(spawns.get(i), ships.get(i));
+        }
+      }
     }
   }
 

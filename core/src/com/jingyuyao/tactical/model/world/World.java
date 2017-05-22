@@ -161,18 +161,15 @@ public class World implements GetNeighbors {
   }
 
   /**
-   * Move ships from the inactive list to the specified coordinate. Caller is responsible to make
-   * sure the cell exists and has no ship and the new ship belongs in the inactive list.
+   * Move a ship from the inactive list to the specified coordinate.
    */
-  public void activateShips(Map<Coordinate, Ship> activations) {
-    for (Entry<Coordinate, Ship> entry : activations.entrySet()) {
-      Optional<Cell> cellOpt = cell(entry.getKey());
-      Preconditions.checkArgument(cellOpt.isPresent());
-      Cell cell = cellOpt.get();
-      Ship ship = entry.getValue();
-      Preconditions.checkArgument(inactiveShips.remove(ship));
-      cell.spawnShip(ship);
-    }
+  public void activateShip(Coordinate targetCoordinate, Ship inactiveShip) {
+    // TODO: handle cases where there is already a ship at the coordinate gracefully
+    Optional<Cell> cellOpt = cell(targetCoordinate);
+    Preconditions.checkArgument(cellOpt.isPresent());
+    Cell cell = cellOpt.get();
+    Preconditions.checkArgument(inactiveShips.remove(inactiveShip));
+    cell.spawnShip(inactiveShip);
   }
 
   public void makeAllPlayerShipsControllable() {
