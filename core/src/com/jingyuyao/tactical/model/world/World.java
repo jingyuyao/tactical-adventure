@@ -5,6 +5,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.InstantMoveShip;
+import com.jingyuyao.tactical.model.event.MoveShip;
+import com.jingyuyao.tactical.model.event.Promise;
+import com.jingyuyao.tactical.model.event.RemoveShip;
+import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -70,7 +75,7 @@ public class World implements GetNeighbors {
       }
       Ship ship = entry.getValue();
       if (cell.getTerrain().canHold(ship)) {
-        cell.spawnShip(ship);
+        spawnShip(cell, ship);
       } else {
         throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
       }
@@ -153,26 +158,76 @@ public class World implements GetNeighbors {
   }
 
   /**
+   * Spawn a ship at the given cell. Fires {@link SpawnShip}.
+   */
+  public void spawnShip(Cell cell, Ship ship) {
+    cell.addShip(ship);
+    modelBus.post(new SpawnShip(cell));
+  }
+
+  /**
+   * Remove the ship at the given cell. Fires {@link RemoveShip}. <p>{@code cell} must have a ship.
+   */
+  public void removeShip(Cell cell) {
+    modelBus.post(new RemoveShip(cell.delShip()));
+  }
+
+  /**
+   * Instantly moves the ship between cells. Fires {@link InstantMoveShip} if a ship was moved.
+   * <p>{@code orig} must have a ship. {@code dest} must not have a ship unless it is the same as
+   * {@code orig}.
+   */
+  public void moveShip(Cell orig, Cell dest) {
+    for (Ship ship : orig.moveShip(dest).asSet()) {
+      modelBus.post(new InstantMoveShip(ship, dest));
+    }
+  }
+
+  /**
+   * Moves the ship along a path. Fires {@link MoveShip} if a ship was moved. <p>{@link
+   * Path#getOrigin()} must have a ship. {@link Path#getDestination()} must not have a ship unless
+   * it is the same as {@link Path#getOrigin()}.
+   *
+   * @return a promise that is completed when {@link MoveShip} is completed.
+   */
+  public Promise moveShip(Path path) {
+    Optional<Ship> moved = path.getOrigin().moveShip(path.getDestination());
+    if (moved.isPresent()) {
+      Promise promise = new Promise();
+      modelBus.post(new MoveShip(moved.get(), path, promise));
+      return promise;
+    } else {
+      return Promise.immediate();
+    }
+  }
+
+  /**
    * Move a ship from the inactive list to the specified cell.
    */
   public void activateShip(Cell cell, Ship inactiveShip) {
     Preconditions.checkArgument(inactiveShips.remove(inactiveShip));
-    cell.spawnShip(inactiveShip);
+    cell.addShip(inactiveShip);
+    modelBus.post(new SpawnShip(cell));
   }
 
   /**
    * Moves the ship from the given cell to the inactive list.
    */
   public void deactivateShip(Cell cell) {
-    Preconditions.checkArgument(cell.ship().isPresent());
-    inactiveShips.add(cell.ship().get());
-    cell.removeShip();
+    Ship removed = cell.delShip();
+    inactiveShips.add(removed);
+    modelBus.post(new RemoveShip(removed));
   }
 
+  /**
+   * Make all the ships that belongs to {@link ShipGroup#PLAYER} controllable.
+   */
   public void makeAllPlayerShipsControllable() {
-    for (Ship ship : getShipSnapshot().values()) {
-      if (ship.inGroup(ShipGroup.PLAYER)) {
-        ship.setControllable(true);
+    for (Cell cell : cellMap.values()) {
+      for (Ship ship : cell.ship().asSet()) {
+        if (ship.inGroup(ShipGroup.PLAYER)) {
+          ship.setControllable(true);
+        }
       }
     }
   }
