@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
+import com.jingyuyao.tactical.model.script.GroupActivation;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import java.io.Reader;
@@ -65,6 +66,10 @@ public class LevelLoaderTest {
   @Mock
   private Condition condition3;
   @Mock
+  private Condition condition4;
+  @Mock
+  private GroupActivation groupActivation1;
+  @Mock
   private Dialogue dialogue;
 
   private LevelLoader levelLoader;
@@ -101,6 +106,8 @@ public class LevelLoaderTest {
     when(gameSave.getPlayerShips()).thenReturn(ImmutableList.of(ship2, ship3));
     when(levelScript.getWinConditions()).thenReturn(ImmutableList.of(condition1));
     when(levelScript.getLoseConditions()).thenReturn(ImmutableList.of(condition2));
+    when(levelScript.getGroupActivations())
+        .thenReturn(ImmutableMap.of(condition4, groupActivation1));
     when(dialogueLoader.getDialogues(2)).thenReturn(ImmutableListMultimap.of(condition3, dialogue));
 
     LevelSave levelSave = levelLoader.createNewSave(2, gameSave);
@@ -110,6 +117,8 @@ public class LevelLoaderTest {
     assertThat(levelSave.getTurn()).isEqualTo(new Turn());
     assertThat(levelSave.getScript().getWinConditions()).containsExactly(condition1);
     assertThat(levelSave.getScript().getLoseConditions()).containsExactly(condition2);
+    assertThat(levelSave.getScript().getGroupActivations())
+        .containsExactly(condition4, groupActivation1);
     assertThat(levelSave.getScript().getDialogues()).containsEntry(condition3, dialogue);
   }
 }

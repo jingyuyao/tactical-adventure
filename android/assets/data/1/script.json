@@ -32,5 +32,20 @@
       "type": "OnDeath",
       "name": "ryan"
     }
+  ],
+  "groupActivations": [
+    [
+      {
+        "type": "OnTurn",
+        "turn": "7-START"
+      },
+      {
+        "group": "7-START",
+        "spawns": [
+          "5,5",
+          "6,6"
+        ]
+      }
+    ]
   ]
 }
