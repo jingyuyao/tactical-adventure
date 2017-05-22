@@ -5,6 +5,60 @@
     "5,2",
     "4,3"
   ],
+  "inactiveShips": [
+    {
+      "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
+      "stats": {
+        "groups": [
+          "enemy",
+          "7-START"
+        ],
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
+      "items": {
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "shotgun",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "eagle",
+      "autoPilot": {
+        "type": "PassiveAutoPilot"
+      },
+      "stats": {
+        "groups": [
+          "enemy",
+          "7-START"
+        ],
+        "maxHp": 10,
+        "hp": 10,
+        "moveDistance": 5
+      },
+      "items": {
+        "weapons": [
+          {
+            "type": "DirectionalWeapon",
+            "name": "shotgun",
+            "usageLeft": 10,
+            "attackPower": 10,
+            "distance": 1
+          }
+        ]
+      }
+    }
+  ],
   "activeShips": {
     "9,12": {
       "name": "adder",

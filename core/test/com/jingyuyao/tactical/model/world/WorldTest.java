@@ -74,12 +74,14 @@ public class WorldTest {
   private ArgumentCaptor<GetEdgeCost> edgeCostCaptor;
 
   private Map<Coordinate, Cell> cellMap;
+  private List<Ship> inactiveShips;
   private World world;
 
   @Before
   public void setUp() {
     cellMap = new HashMap<>();
-    world = new World(modelBus, dijkstra, cellFactory, cellMap, new ArrayList<Ship>());
+    inactiveShips = new ArrayList<>();
+    world = new World(modelBus, dijkstra, cellFactory, cellMap, inactiveShips);
   }
 
   @Test
@@ -218,6 +220,16 @@ public class WorldTest {
     when(cell2.ship()).thenReturn(Optional.of(ship2));
 
     assertThat(world.getShipSnapshot()).containsExactly(cell1, ship1, cell2, ship2);
+  }
+
+  @Test
+  public void activate_ships() {
+    cellMap.put(C1_1, cell1);
+    inactiveShips.add(ship1);
+
+    world.activateShip(C1_1, ship1);
+
+    verify(cell1).spawnShip(ship1);
   }
 
   @Test
