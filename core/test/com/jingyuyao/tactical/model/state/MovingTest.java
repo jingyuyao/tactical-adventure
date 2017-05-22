@@ -146,7 +146,7 @@ public class MovingTest {
   @Test
   public void select_can_move() {
     when(cell2.ship()).thenReturn(Optional.<Ship>absent());
-    when(movement.getStartingCell()).thenReturn(cell);
+    when(movement.getOrigin()).thenReturn(cell);
     when(movement.canMoveTo(cell2)).thenReturn(true);
     when(movement.pathTo(cell2)).thenReturn(path);
     when(stateFactory.createMoved(cell2)).thenReturn(moved);

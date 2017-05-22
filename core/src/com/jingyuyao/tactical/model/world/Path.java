@@ -4,29 +4,30 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Path to move in the world grid.
+ * A path is a list of one or more cells.
  */
 public class Path {
 
   private final ImmutableList<Cell> track;
 
-  /**
-   * Creates a path where the first cell is the starting point and the last cell is the destination.
-   */
   Path(ImmutableList<Cell> track) {
     Preconditions.checkArgument(!track.isEmpty());
     this.track = track;
   }
 
+  /**
+   * Return the cells of this path in sequence. First cell is the origin and the last cell is the
+   * destination. Origin and destination may be the same.
+   */
   public ImmutableList<Cell> getTrack() {
     return track;
   }
 
-  public Cell getOrigin() {
+  Cell getOrigin() {
     return track.get(0);
   }
 
-  public Cell getDestination() {
+  Cell getDestination() {
     return track.get(track.size() - 1);
   }
 }

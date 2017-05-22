@@ -29,7 +29,7 @@ public class Moving extends ControllingActionState {
   @Override
   public void canceled() {
     if (prevMove != null) {
-      getWorld().moveShip(prevMove, movement.getStartingCell());
+      getWorld().moveShip(prevMove, movement.getOrigin());
     }
   }
 
