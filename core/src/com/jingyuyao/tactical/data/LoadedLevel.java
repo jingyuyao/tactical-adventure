@@ -5,22 +5,26 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import java.util.List;
 import java.util.Map;
 
 public class LoadedLevel {
 
   private final Map<Coordinate, Terrain> terrainMap;
-  private final Map<Coordinate, Ship> shipMap;
+  private final Map<Coordinate, Ship> activeShips;
+  private final List<Ship> inactiveShips;
   private final Turn turn;
   private final Script script;
 
   LoadedLevel(
       Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Ship> shipMap,
+      Map<Coordinate, Ship> activeShips,
+      List<Ship> inactiveShips,
       Turn turn,
       Script script) {
     this.terrainMap = terrainMap;
-    this.shipMap = shipMap;
+    this.activeShips = activeShips;
+    this.inactiveShips = inactiveShips;
     this.turn = turn;
     this.script = script;
   }
@@ -29,8 +33,12 @@ public class LoadedLevel {
     return terrainMap;
   }
 
-  public Map<Coordinate, Ship> getShipMap() {
-    return shipMap;
+  public Map<Coordinate, Ship> getActiveShips() {
+    return activeShips;
+  }
+
+  public List<Ship> getInactiveShips() {
+    return inactiveShips;
   }
 
   public Turn getTurn() {

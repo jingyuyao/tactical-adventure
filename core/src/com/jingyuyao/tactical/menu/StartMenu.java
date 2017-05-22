@@ -71,7 +71,7 @@ public class StartMenu extends AbstractMenu {
       LevelSave levelSave = levelProgressOptional.get();
       int activePlayers = 0;
       int activeEnemies = 0;
-      for (Ship ship : levelSave.getShips().values()) {
+      for (Ship ship : levelSave.getActiveShips().values()) {
         if (ship.inGroup(ShipGroup.PLAYER)) {
           activePlayers++;
         }

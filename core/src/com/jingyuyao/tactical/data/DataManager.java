@@ -11,6 +11,7 @@ import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
@@ -58,14 +59,14 @@ public class DataManager {
     for (Entry<Cell, Ship> shipEntry : world.getShipSnapshot().entrySet()) {
       ships.put(shipEntry.getKey().getCoordinate(), shipEntry.getValue());
     }
-    LevelSave levelSave = new LevelSave(ships, worldState.getTurn(), worldState.getScript());
+    List<Ship> inactiveShips = world.getInactiveShips();
+    Turn turn = worldState.getTurn();
+    Script script = worldState.getScript();
+    LevelSave levelSave = new LevelSave(ships, inactiveShips, turn, script);
     saveManager.save(levelSave);
   }
 
   public void removeLevelProgress() {
-    GameSave gameSave = saveManager.loadGameSave();
-    gameSave.deactivateShips();
-    saveManager.save(gameSave);
     saveManager.removeLevelSave();
   }
 
@@ -74,8 +75,7 @@ public class DataManager {
 
     GameSave gameSave = saveManager.loadGameSave();
     gameSave.setCurrentLevel(level);
-    gameSave.replaceActiveShipsFrom(world);
-    gameSave.deactivateShips();
+    gameSave.replacePlayerShipsFrom(world);
 
     saveManager.save(gameSave);
     saveManager.removeLevelSave();
@@ -91,14 +91,14 @@ public class DataManager {
       levelSave = levelSaveOpt.get();
     } else {
       levelSave = levelLoader.createNewSave(level, gameSave);
-      saveManager.save(gameSave);
       saveManager.save(levelSave);
     }
 
     Map<Coordinate, Terrain> terrains = levelTerrainsLoader.load(level, tiledMapRenderer);
-    Map<Coordinate, Ship> ships = levelSave.getShips();
+    Map<Coordinate, Ship> ships = levelSave.getActiveShips();
+    List<Ship> inactiveShips = levelSave.getInactiveShips();
     Turn turn = levelSave.getTurn();
     Script script = levelSave.getScript();
-    return new LoadedLevel(terrains, ships, turn, script);
+    return new LoadedLevel(terrains, ships, inactiveShips, turn, script);
   }
 }

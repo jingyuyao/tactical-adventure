@@ -1,13 +1,13 @@
 package com.jingyuyao.tactical.data;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The main game save containing meta data and the player's ships.
@@ -15,22 +15,14 @@ import java.util.Map;
 public class GameSave {
 
   private int currentLevel = 1;
-  /**
-   * Ships that are not in the world.
-   */
-  private List<Ship> inactiveShips = new ArrayList<>();
-  /**
-   * Ships that are currently in the world. Saved to we can rollback
-   */
-  private List<Ship> activeShips = new ArrayList<>();
+  private List<Ship> playerShips = new ArrayList<>();
 
   private GameSave() {
   }
 
-  GameSave(int currentLevel, List<Ship> inactiveShips, List<Ship> activeShips) {
+  GameSave(int currentLevel, List<Ship> playerShips) {
     this.currentLevel = currentLevel;
-    this.inactiveShips = inactiveShips;
-    this.activeShips = activeShips;
+    this.playerShips = playerShips;
   }
 
   public int getCurrentLevel() {
@@ -41,37 +33,23 @@ public class GameSave {
     this.currentLevel = currentLevel;
   }
 
-  /**
-   * Actives inactive ship to the given spawn coordinates. Activated ships are moved from the
-   * inactive list to active list. Return a map of the activated ships.
-   */
-  Map<Coordinate, Ship> activateShips(List<Coordinate> spawns) {
-    Map<Coordinate, Ship> activated = new HashMap<>();
-    for (int i = 0; i < spawns.size() && i < inactiveShips.size(); i++) {
-      activated.put(spawns.get(i), inactiveShips.get(i));
-      activeShips.add(inactiveShips.get(i));
-    }
-    inactiveShips.removeAll(activated.values());
-    return activated;
+  ImmutableList<Ship> getPlayerShips() {
+    return ImmutableList.copyOf(playerShips);
   }
 
   /**
-   * Replaces the active ships list with the player ships from the given {@link World}.
+   * Replace the all the player ships with the ones from the world, both active and inactive.
    */
-  void replaceActiveShipsFrom(World world) {
-    activeShips.clear();
-    for (Ship ship : world.getShipSnapshot().values()) {
-      if (ship.inGroup(ShipGroup.PLAYER)) {
-        activeShips.add(ship);
-      }
-    }
-  }
-
-  /**
-   * Move all currently active ships back into being inactive.
-   */
-  void deactivateShips() {
-    inactiveShips.addAll(activeShips);
-    activeShips.clear();
+  void replacePlayerShipsFrom(World world) {
+    playerShips.clear();
+    FluentIterable
+        .concat(world.getInactiveShips(), world.getShipSnapshot().values())
+        .filter(new Predicate<Ship>() {
+          @Override
+          public boolean apply(Ship ship) {
+            return ship.inGroup(ShipGroup.PLAYER);
+          }
+        })
+        .copyInto(playerShips);
   }
 }

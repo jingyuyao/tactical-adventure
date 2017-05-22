@@ -15,6 +15,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -23,7 +25,9 @@ import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.terrain.Terrain;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +65,8 @@ public class WorldTest {
   @Mock
   private Ship ship2;
   @Mock
+  private Ship ship3;
+  @Mock
   private ValueGraph<Cell, Integer> graph;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
@@ -73,17 +79,14 @@ public class WorldTest {
   @Before
   public void setUp() {
     cellMap = new HashMap<>();
-    world = new World(modelBus, dijkstra, cellFactory, cellMap);
+    world = new World(modelBus, dijkstra, cellFactory, cellMap, new ArrayList<Ship>());
   }
 
   @Test
   public void initialize() {
-    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    terrainMap.put(C1_1, terrain1);
-    terrainMap.put(C2_0, terrain2);
-    shipMap.put(C1_1, ship1);
-    shipMap.put(C2_0, ship2);
+    Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
+    Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
+    List<Ship> shipList = ImmutableList.of(ship3);
     when(cell1.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
     when(cell2.ship())
@@ -95,11 +98,13 @@ public class WorldTest {
     when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
     when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
-    world.initialize(terrainMap, shipMap);
+    world.initialize(terrainMap, shipMap, shipList);
 
-    assertThat(cellMap).containsExactly(C1_1, cell1, C2_0, cell2);
+    assertThat(world.cell(C1_1)).hasValue(cell1);
+    assertThat(world.cell(C2_0)).hasValue(cell2);
     assertThat(world.getMaxHeight()).isEqualTo(C1_1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(C2_0.getX() + 1);
+    assertThat(world.getInactiveShips()).containsExactly(ship3);
     verify(cell1).spawnShip(ship1);
     verify(cell2).spawnShip(ship2);
     verify(modelBus).post(argumentCaptor.capture());
@@ -109,12 +114,9 @@ public class WorldTest {
 
   @Test
   public void reset() {
-    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    terrainMap.put(C1_1, terrain1);
-    terrainMap.put(C2_0, terrain2);
-    shipMap.put(C1_1, ship1);
-    shipMap.put(C2_0, ship2);
+    Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
+    Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
+    List<Ship> shipList = ImmutableList.of(ship3);
     when(cell1.ship())
         .thenReturn(Optional.<Ship>absent()).thenReturn(Optional.of(ship1));
     when(cell2.ship())
@@ -126,12 +128,14 @@ public class WorldTest {
     when(cellFactory.create(C1_1, terrain1)).thenReturn(cell1);
     when(cellFactory.create(C2_0, terrain2)).thenReturn(cell2);
 
-    world.initialize(terrainMap, shipMap);
+    world.initialize(terrainMap, shipMap, shipList);
     world.reset();
 
-    assertThat(cellMap).isEmpty();
+    assertThat(world.cell(C1_1)).isAbsent();
+    assertThat(world.cell(C2_0)).isAbsent();
     assertThat(world.getMaxHeight()).isEqualTo(0);
     assertThat(world.getMaxWidth()).isEqualTo(0);
+    assertThat(world.getInactiveShips()).isEmpty();
     verify(modelBus, times(2)).post(argumentCaptor.capture());
     WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 0, WorldLoaded.class);
     assertThat(worldLoaded.getWorld()).isSameAs(world);

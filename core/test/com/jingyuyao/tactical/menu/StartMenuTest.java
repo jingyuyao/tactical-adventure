@@ -72,7 +72,7 @@ public class StartMenuTest {
   public void on_show() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getShips())
+    when(levelSave.getActiveShips())
         .thenReturn(ImmutableMap.of(
             new Coordinate(0, 0), ship1,
             new Coordinate(0, 1), ship2));
@@ -103,7 +103,7 @@ public class StartMenuTest {
   public void reset_button() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getShips())
+    when(levelSave.getActiveShips())
         .thenReturn(ImmutableMap.of(
             new Coordinate(0, 0), ship1,
             new Coordinate(0, 1), ship2));

@@ -9,9 +9,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.ship.Ship;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
@@ -32,10 +35,24 @@ public class WorldModule extends AbstractModule {
     return new HashMap<>();
   }
 
+  @Provides
+  @Singleton
+  @BackingInactiveList
+  List<Ship> provideBackingInactiveList() {
+    return new ArrayList<>();
+  }
+
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
   @interface BackingCellMap {
+
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackingInactiveList {
 
   }
 }
