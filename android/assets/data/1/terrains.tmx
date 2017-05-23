@@ -4,12 +4,14 @@
   <image source="../../tilesets/space.png" width="96" height="96"/>
   <tile id="2">
    <properties>
-    <property name="type" value="blocked"/>
+    <property name="holdShip" type="bool" value="false"/>
+    <property name="name" value="blocked"/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
-    <property name="type" value="obstructed"/>
+    <property name="moveCost" type="int" value="2"/>
+    <property name="name" value="obstructed"/>
    </properties>
   </tile>
  </tileset>

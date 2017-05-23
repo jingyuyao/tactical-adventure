@@ -45,8 +45,16 @@ public class DataConfig {
     return "terrain";
   }
 
-  String getTerrainTypeKey() {
-    return "type";
+  String getTerrainNameKey() {
+    return "name";
+  }
+
+  String getTerrainHoldShipKey() {
+    return "holdShip";
+  }
+
+  String getTerrainMoveCostKey() {
+    return "moveCost";
   }
 
   ResourceKeyBundle getLevelDialogueBundle(int level) {

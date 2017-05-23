@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public class Cell {
 
@@ -34,7 +33,7 @@ public class Cell {
    */
   void addShip(Ship newShip) {
     Preconditions.checkState(ship == null);
-    Preconditions.checkArgument(terrain.canHold(newShip));
+    Preconditions.checkArgument(terrain.canHoldShip());
     ship = newShip;
   }
 

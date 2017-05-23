@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +32,7 @@ public class CellTest {
 
   @Test
   public void add_ship() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
 
     cell.addShip(ship);
 
@@ -42,7 +41,7 @@ public class CellTest {
 
   @Test(expected = IllegalStateException.class)
   public void add_ship_multi() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
 
     cell.addShip(ship);
     cell.addShip(ship);
@@ -50,14 +49,14 @@ public class CellTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void add_ship_cannot_hold() {
-    when(terrain.canHold(ship)).thenReturn(false);
+    when(terrain.canHoldShip()).thenReturn(false);
 
     cell.addShip(ship);
   }
 
   @Test
   public void remove_ship() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
     cell.addShip(ship);
 
     cell.removeShip();
@@ -67,7 +66,7 @@ public class CellTest {
 
   @Test(expected = IllegalStateException.class)
   public void remove_ship_exception() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
     cell.addShip(ship);
 
     cell.removeShip();
@@ -76,7 +75,7 @@ public class CellTest {
 
   @Test
   public void move_ship_same_cell() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
     cell.addShip(ship);
 
     assertThat(cell.moveShip(cell)).isAbsent();
@@ -85,7 +84,7 @@ public class CellTest {
 
   @Test
   public void move_ship() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
     Cell other = new Cell(COORDINATE, terrain);
     cell.addShip(ship);
 
@@ -102,7 +101,7 @@ public class CellTest {
 
   @Test(expected = IllegalStateException.class)
   public void move_ship_other_has_ship() {
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
     Cell other = new Cell(COORDINATE, terrain);
     cell.addShip(ship);
     other.addShip(ship);

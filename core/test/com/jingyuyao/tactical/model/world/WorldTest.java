@@ -29,7 +29,6 @@ import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,8 +93,8 @@ public class WorldTest {
     Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
     Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
     List<Ship> shipList = ImmutableList.of(ship3);
-    when(terrain1.canHold(ship1)).thenReturn(true);
-    when(terrain2.canHold(ship2)).thenReturn(true);
+    when(terrain1.canHoldShip()).thenReturn(true);
+    when(terrain2.canHoldShip()).thenReturn(true);
 
     world.initialize(2, terrainMap, shipMap, shipList);
 
@@ -121,8 +120,8 @@ public class WorldTest {
     Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
     Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
     List<Ship> shipList = ImmutableList.of(ship3);
-    when(terrain1.canHold(ship1)).thenReturn(true);
-    when(terrain2.canHold(ship2)).thenReturn(true);
+    when(terrain1.canHoldShip()).thenReturn(true);
+    when(terrain2.canHoldShip()).thenReturn(true);
 
     world.initialize(2, terrainMap, shipMap, shipList);
     world.reset();
@@ -193,7 +192,7 @@ public class WorldTest {
 
     assertThat(movement.getMoveGraph()).isSameAs(graph);
     verify(dijkstra).minPathSearch(eq(world), edgeCostCaptor.capture(), eq(cell1), eq(5));
-    assertThat(edgeCostCaptor.getValue()).isInstanceOf(ShipCost.class);
+    assertThat(edgeCostCaptor.getValue()).isInstanceOf(TerrainCost.class);
   }
 
   @Test

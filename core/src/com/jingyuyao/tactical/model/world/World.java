@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingInactiveList;
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class World implements GetNeighbors {
         throw new IllegalArgumentException("Ship occupying same space as another");
       }
       Ship ship = entry.getValue();
-      if (cell.getTerrain().canHold(ship)) {
+      if (cell.getTerrain().canHoldShip()) {
         spawnShip(cell, ship);
       } else {
         throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
@@ -134,8 +133,7 @@ public class World implements GetNeighbors {
    */
   public Movement getShipMovement(Cell cell) {
     Preconditions.checkArgument(cell.ship().isPresent());
-    Ship ship = cell.ship().get();
-    return createMovement(new ShipCost(ship), cell, ship.getMoveDistance());
+    return createMovement(new TerrainCost(), cell, cell.ship().get().getMoveDistance());
   }
 
   /**

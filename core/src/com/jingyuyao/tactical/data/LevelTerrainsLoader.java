@@ -5,11 +5,8 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
-import com.jingyuyao.tactical.model.terrain.Blocked;
-import com.jingyuyao.tactical.model.terrain.Obstructed;
-import com.jingyuyao.tactical.model.terrain.Space;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Terrain;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -53,19 +50,12 @@ class LevelTerrainsLoader {
 
   private Terrain createTerrain(TiledMapTileLayer.Cell cell) {
     if (cell != null) {
-      MapProperties tileProperties = cell.getTile().getProperties();
-      String type = tileProperties.get(dataConfig.getTerrainTypeKey(), String.class);
-      if (type != null) {
-        switch (type) {
-          case "obstructed":
-            return new Obstructed();
-          case "blocked":
-            return new Blocked();
-          default:
-            throw new IllegalArgumentException("Unrecognized terrain type: " + type);
-        }
-      }
+      MapProperties properties = cell.getTile().getProperties();
+      String name = properties.get(dataConfig.getTerrainNameKey(), "space", String.class);
+      boolean holdShip = properties.get(dataConfig.getTerrainHoldShipKey(), true, Boolean.class);
+      int moveCost = properties.get(dataConfig.getTerrainMoveCostKey(), 1, Integer.class);
+      return new Terrain(name, holdShip, moveCost);
     }
-    return new Space();
+    return new Terrain("space", true, 1);
   }
 }
