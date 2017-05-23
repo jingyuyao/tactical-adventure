@@ -14,12 +14,11 @@ import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
-import com.jingyuyao.tactical.model.world.WorldModule.BackingInactiveList;
+import com.jingyuyao.tactical.model.world.WorldModule.InactiveShips;
+import com.jingyuyao.tactical.model.world.WorldModule.WorldCells;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -28,7 +27,7 @@ public class World implements GetNeighbors {
 
   private final ModelBus modelBus;
   private final Dijkstra dijkstra;
-  private final Map<Coordinate, Cell> cellMap;
+  private final Map<Coordinate, Cell> worldCells;
   private final List<Ship> inactiveShips;
   private int level;
   private int maxHeight;
@@ -38,53 +37,32 @@ public class World implements GetNeighbors {
   World(
       ModelBus modelBus,
       Dijkstra dijkstra,
-      @BackingCellMap Map<Coordinate, Cell> cellMap,
-      @BackingInactiveList List<Ship> inactiveShips) {
+      @WorldCells Map<Coordinate, Cell> worldCells,
+      @InactiveShips List<Ship> inactiveShips) {
     this.modelBus = modelBus;
     this.dijkstra = dijkstra;
-    this.cellMap = cellMap;
+    this.worldCells = worldCells;
     this.inactiveShips = inactiveShips;
   }
 
-  public void initialize(
-      int level,
-      Map<Coordinate, Terrain> terrainMap,
-      Map<Coordinate, Ship> shipMap,
-      List<Ship> inactiveShips) {
-    for (Entry<Coordinate, Terrain> entry : terrainMap.entrySet()) {
-      Coordinate coordinate = entry.getKey();
-      if (cellMap.containsKey(coordinate)) {
-        throw new IllegalArgumentException("Duplicated terrain detected");
+  public void initialize(int level, List<Cell> cells, List<Ship> inactiveShips) {
+    for (Cell cell : cells) {
+      Coordinate coordinate = cell.getCoordinate();
+      if (worldCells.containsKey(coordinate)) {
+        throw new IllegalArgumentException("Duplicated cell coordinate detected");
       }
-      Cell cell = new Cell(coordinate, entry.getValue());
-      cellMap.put(coordinate, cell);
+      worldCells.put(coordinate, cell);
       // index is zero based
       maxWidth = Math.max(maxWidth, coordinate.getX() + 1);
       maxHeight = Math.max(maxHeight, coordinate.getY() + 1);
     }
-    for (Entry<Coordinate, Ship> entry : shipMap.entrySet()) {
-      Coordinate coordinate = entry.getKey();
-      if (!cellMap.containsKey(coordinate)) {
-        throw new IllegalArgumentException("Ship not on a terrain");
-      }
-      Cell cell = cellMap.get(coordinate);
-      if (cell.ship().isPresent()) {
-        throw new IllegalArgumentException("Ship occupying same space as another");
-      }
-      Ship ship = entry.getValue();
-      if (cell.getTerrain().canHoldShip()) {
-        spawnShip(cell, ship);
-      } else {
-        throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
-      }
-    }
-    this.level = level;
     this.inactiveShips.addAll(inactiveShips);
+    this.level = level;
     modelBus.post(new WorldLoaded(this));
   }
 
   public void reset() {
-    cellMap.clear();
+    worldCells.clear();
     inactiveShips.clear();
     level = 0;
     maxWidth = 0;
@@ -104,12 +82,16 @@ public class World implements GetNeighbors {
     return maxWidth;
   }
 
+  public ImmutableList<Cell> getWorldCells() {
+    return ImmutableList.copyOf(worldCells.values());
+  }
+
   public Optional<Cell> cell(int x, int y) {
     return cell(new Coordinate(x, y));
   }
 
   public Optional<Cell> cell(Coordinate coordinate) {
-    return Optional.fromNullable(cellMap.get(coordinate));
+    return Optional.fromNullable(worldCells.get(coordinate));
   }
 
   @Override
@@ -148,7 +130,7 @@ public class World implements GetNeighbors {
    */
   public ImmutableMap<Cell, Ship> getShipSnapshot() {
     ImmutableMap.Builder<Cell, Ship> builder = new ImmutableMap.Builder<>();
-    for (Cell cell : cellMap.values()) {
+    for (Cell cell : worldCells.values()) {
       for (Ship ship : cell.ship().asSet()) {
         builder.put(cell, ship);
       }
@@ -227,7 +209,7 @@ public class World implements GetNeighbors {
    * Make all the ships that belongs to {@link ShipGroup#PLAYER} controllable.
    */
   public void makeAllPlayerShipsControllable() {
-    for (Cell cell : cellMap.values()) {
+    for (Cell cell : worldCells.values()) {
       for (Ship ship : cell.ship().asSet()) {
         if (ship.inGroup(ShipGroup.PLAYER)) {
           ship.setControllable(true);

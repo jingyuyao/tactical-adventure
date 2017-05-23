@@ -9,7 +9,7 @@ import com.badlogic.gdx.Application;
 import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
-import com.jingyuyao.tactical.data.LoadedLevel;
+import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
@@ -17,13 +17,10 @@ import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
-import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.model.world.Terrain;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +43,7 @@ public class GameStateTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private LoadedLevel loadedLevel;
+  private LevelSave levelSave;
   @Mock
   private Turn turn;
   @Mock
@@ -71,21 +68,19 @@ public class GameStateTest {
 
   @Test
   public void play() {
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
+    List<Cell> worldCells = new ArrayList<>();
     List<Ship> shipList = new ArrayList<>();
-    when(dataManager.loadCurrentLevel()).thenReturn(loadedLevel);
-    when(loadedLevel.getActiveShips()).thenReturn(shipMap);
-    when(loadedLevel.getInactiveShips()).thenReturn(shipList);
-    when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
-    when(loadedLevel.getTurn()).thenReturn(turn);
-    when(loadedLevel.getScript()).thenReturn(script);
-    when(loadedLevel.getLevel()).thenReturn(2);
+    when(dataManager.loadCurrentLevel()).thenReturn(levelSave);
+    when(levelSave.getWorldCells()).thenReturn(worldCells);
+    when(levelSave.getInactiveShips()).thenReturn(shipList);
+    when(levelSave.getTurn()).thenReturn(turn);
+    when(levelSave.getScript()).thenReturn(script);
+    when(levelSave.getLevel()).thenReturn(2);
 
     gameState.play();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
-    inOrder.verify(world).initialize(2, terrainMap, shipMap, shipList);
+    inOrder.verify(world).initialize(2, worldCells, shipList);
     inOrder.verify(game).goToWorldScreen();
     inOrder.verify(worldState).initialize(turn, script);
   }

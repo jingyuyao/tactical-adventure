@@ -10,6 +10,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.event.ActivatedShip;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
@@ -17,12 +18,14 @@ import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.ControllingState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Path;
+import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.Moving;
@@ -70,6 +73,8 @@ public class ShipSystemTest {
   @Mock
   private WorldTexture texture;
   @Mock
+  private WorldLoaded worldLoaded;
+  @Mock
   private SpawnShip spawnShip;
   @Mock
   private RemoveShip removeShip;
@@ -83,6 +88,8 @@ public class ShipSystemTest {
   private ActivatedShip activatedShip;
   @Mock
   private ExitState exitState;
+  @Mock
+  private World world;
   @Mock
   private Path path;
   @Mock
@@ -149,6 +156,33 @@ public class ShipSystemTest {
     shipSystem.processEntity(entity, 0f);
 
     assertThat(frame.getColor()).isEqualTo(Colors.GREY_500);
+  }
+
+  @Test
+  public void world_loaded() {
+    LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
+    when(worldLoaded.getWorld()).thenReturn(world);
+    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, ship));
+    when(cell.getCoordinate()).thenReturn(C1);
+    when(animations.get(ship)).thenReturn(animation);
+
+    shipSystem.worldLoaded(worldLoaded);
+
+    ImmutableArray<Entity> entities = engine.getEntities();
+    assertThat(entities).hasSize(1);
+    Entity entity = entities.first();
+    Position position = entity.getComponent(Position.class);
+    assertThat(position).isNotNull();
+    assertThat(position.getX()).isEqualTo((float) C1.getX());
+    assertThat(position.getY()).isEqualTo((float) C1.getY());
+    assertThat(position.getZ()).isEqualTo(WorldZIndex.SHIP);
+    Frame frame = entity.getComponent(Frame.class);
+    assertThat(frame).isNotNull();
+    LoopAnimation loopAnimation = entity.getComponent(LoopAnimation.class);
+    assertThat(loopAnimation).isEqualTo(animation);
+    ShipComponent shipComponent = entity.getComponent(ShipComponent.class);
+    assertThat(shipComponent).isNotNull();
+    assertThat(shipComponent.getShip()).isEqualTo(ship);
   }
 
   @Test

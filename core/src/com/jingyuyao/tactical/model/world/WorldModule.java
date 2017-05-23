@@ -27,29 +27,29 @@ public class WorldModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @BackingCellMap
-  Map<Coordinate, Cell> provideBackingCellMap() {
+  @WorldCells
+  Map<Coordinate, Cell> provideWorldCells() {
     return new HashMap<>();
   }
 
   @Provides
   @Singleton
-  @BackingInactiveList
-  List<Ship> provideBackingInactiveList() {
+  @InactiveShips
+  List<Ship> provideInactiveShips() {
     return new ArrayList<>();
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingCellMap {
+  @interface WorldCells {
 
   }
 
   @Qualifier
   @Target({FIELD, PARAMETER, METHOD})
   @Retention(RUNTIME)
-  @interface BackingInactiveList {
+  @interface InactiveShips {
 
   }
 }

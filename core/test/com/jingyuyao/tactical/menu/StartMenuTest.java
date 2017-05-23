@@ -8,7 +8,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
@@ -18,7 +18,7 @@ import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Inject;
@@ -47,6 +47,10 @@ public class StartMenuTest {
   @Mock
   private LevelSave levelSave;
   @Mock
+  private Cell cell1;
+  @Mock
+  private Cell cell2;
+  @Mock
   private Ship ship1;
   @Mock
   private Ship ship2;
@@ -72,10 +76,9 @@ public class StartMenuTest {
   public void on_show() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getActiveShips())
-        .thenReturn(ImmutableMap.of(
-            new Coordinate(0, 0), ship1,
-            new Coordinate(0, 1), ship2));
+    when(levelSave.getWorldCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(ship2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(gameSave.getCurrentLevel()).thenReturn(2);
@@ -103,10 +106,9 @@ public class StartMenuTest {
   public void reset_button() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getActiveShips())
-        .thenReturn(ImmutableMap.of(
-            new Coordinate(0, 0), ship1,
-            new Coordinate(0, 1), ship2));
+    when(levelSave.getWorldCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(ship2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(gameSave.getCurrentLevel()).thenReturn(2);

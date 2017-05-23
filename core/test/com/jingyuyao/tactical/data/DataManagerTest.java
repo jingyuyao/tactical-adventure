@@ -1,26 +1,17 @@
 package com.jingyuyao.tactical.data;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_0;
-import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.model.world.Terrain;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,8 +30,6 @@ public class DataManagerTest {
   @Mock
   private LevelLoader levelLoader;
   @Mock
-  private LevelTerrainsLoader levelTerrainsLoader;
-  @Mock
   private GameSave gameSave;
   @Mock
   private LevelSave levelSave;
@@ -55,10 +44,6 @@ public class DataManagerTest {
   @Mock
   private Ship ship1;
   @Mock
-  private Ship ship2;
-  @Mock
-  private Ship ship3;
-  @Mock
   private Turn turn;
   @Mock
   private Script script;
@@ -69,7 +54,7 @@ public class DataManagerTest {
 
   @Before
   public void setUp() {
-    dataManager = new DataManager(saveManager, levelLoader, levelTerrainsLoader);
+    dataManager = new DataManager(saveManager, levelLoader);
   }
 
   @Test
@@ -103,10 +88,9 @@ public class DataManagerTest {
 
   @Test
   public void save_level_progress() {
-    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
-    when(world.getInactiveShips()).thenReturn(ImmutableList.of(ship3));
-    when(cell1.getCoordinate()).thenReturn(C0_0);
-    when(cell2.getCoordinate()).thenReturn(C0_1);
+    when(world.getLevel()).thenReturn(2);
+    when(world.getWorldCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(world.getInactiveShips()).thenReturn(ImmutableList.of(ship1));
     when(worldState.getTurn()).thenReturn(turn);
     when(worldState.getScript()).thenReturn(script);
 
@@ -114,10 +98,11 @@ public class DataManagerTest {
 
     verify(saveManager).save(levelSaveCaptor.capture());
     LevelSave levelSave = levelSaveCaptor.getValue();
+    assertThat(levelSave.getLevel()).isEqualTo(2);
+    assertThat(levelSave.getWorldCells()).containsExactly(cell1, cell2);
+    assertThat(levelSave.getInactiveShips()).containsExactly(ship1);
     assertThat(levelSave.getTurn()).isSameAs(turn);
     assertThat(levelSave.getScript()).isSameAs(script);
-    assertThat(levelSave.getActiveShips()).containsExactly(C0_0, ship1, C0_1, ship2);
-    assertThat(levelSave.getInactiveShips()).containsExactly(ship3);
   }
 
   @Test
@@ -144,51 +129,22 @@ public class DataManagerTest {
 
   @Test
   public void load_level_has_progress() {
-    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    List<Ship> shipList = new ArrayList<>();
-    when(saveManager.loadGameSave()).thenReturn(gameSave);
-    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(saveManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getActiveShips()).thenReturn(shipMap);
-    when(levelSave.getInactiveShips()).thenReturn(shipList);
-    when(levelSave.getTurn()).thenReturn(turn);
-    when(levelSave.getScript()).thenReturn(script);
-    when(levelTerrainsLoader.load(2)).thenReturn(terrainMap);
 
-    LoadedLevel loadedLevel = dataManager.loadCurrentLevel();
-
-    assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
-    assertThat(loadedLevel.getActiveShips()).isSameAs(shipMap);
-    assertThat(loadedLevel.getInactiveShips()).isSameAs(shipList);
-    assertThat(loadedLevel.getTurn()).isSameAs(turn);
-    assertThat(loadedLevel.getScript()).isSameAs(script);
-    assertThat(loadedLevel.getLevel()).isEqualTo(2);
+    assertThat(dataManager.loadLevelSave()).hasValue(levelSave);
   }
 
   @Test
   public void load_level_no_progress() {
-    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    List<Ship> shipList = new ArrayList<>();
+    ImmutableList<Ship> playerShips = ImmutableList.of();
     when(saveManager.loadGameSave()).thenReturn(gameSave);
-    when(gameSave.getCurrentLevel()).thenReturn(2);
     when(saveManager.loadLevelSave()).thenReturn(Optional.<LevelSave>absent());
-    when(levelLoader.createNewSave(2, gameSave)).thenReturn(levelSave);
-    when(levelSave.getActiveShips()).thenReturn(shipMap);
-    when(levelSave.getInactiveShips()).thenReturn(shipList);
-    when(levelSave.getTurn()).thenReturn(turn);
-    when(levelSave.getScript()).thenReturn(script);
-    when(levelTerrainsLoader.load(2)).thenReturn(terrainMap);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
+    when(gameSave.getPlayerShips()).thenReturn(playerShips);
+    when(levelLoader.createNewSave(2, playerShips)).thenReturn(levelSave);
 
-    LoadedLevel loadedLevel = dataManager.loadCurrentLevel();
+    assertThat(dataManager.loadCurrentLevel()).isSameAs(levelSave);
 
     verify(saveManager).save(levelSave);
-    assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
-    assertThat(loadedLevel.getActiveShips()).isSameAs(shipMap);
-    assertThat(loadedLevel.getInactiveShips()).isSameAs(shipList);
-    assertThat(loadedLevel.getTurn()).isSameAs(turn);
-    assertThat(loadedLevel.getScript()).isSameAs(script);
-    assertThat(loadedLevel.getLevel()).isEqualTo(2);
   }
 }

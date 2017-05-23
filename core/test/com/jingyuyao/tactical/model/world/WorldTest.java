@@ -17,7 +17,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -59,15 +58,9 @@ public class WorldTest {
   @Mock
   private Cell cell5;
   @Mock
-  private Terrain terrain1;
-  @Mock
-  private Terrain terrain2;
-  @Mock
   private Ship ship1;
   @Mock
   private Ship ship2;
-  @Mock
-  private Ship ship3;
   @Mock
   private Path path;
   @Mock
@@ -90,40 +83,28 @@ public class WorldTest {
 
   @Test
   public void initialize() {
-    Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
-    Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
-    List<Ship> shipList = ImmutableList.of(ship3);
-    when(terrain1.canHoldShip()).thenReturn(true);
-    when(terrain2.canHoldShip()).thenReturn(true);
+    when(cell1.getCoordinate()).thenReturn(C1_1);
+    when(cell2.getCoordinate()).thenReturn(C2_0);
 
-    world.initialize(2, terrainMap, shipMap, shipList);
+    world.initialize(2, ImmutableList.of(cell1, cell2), ImmutableList.of(ship1));
 
-    assertThat(world.cell(C1_1)).isPresent();
-    assertThat(world.cell(C1_1).get().ship()).hasValue(ship1);
-    assertThat(world.cell(C2_0)).isPresent();
-    assertThat(world.cell(C2_0).get().ship()).hasValue(ship2);
+    assertThat(world.cell(C1_1)).hasValue(cell1);
+    assertThat(world.cell(C2_0)).hasValue(cell2);
     assertThat(world.getLevel()).isEqualTo(2);
     assertThat(world.getMaxHeight()).isEqualTo(C1_1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(C2_0.getX() + 1);
-    assertThat(world.getInactiveShips()).containsExactly(ship3);
-    verify(modelBus, times(3)).post(argumentCaptor.capture());
-    SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
-    assertThat(spawnShip.getObject()).isSameAs(world.cell(C1_1).get());
-    SpawnShip spawnShip2 = TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
-    assertThat(spawnShip2.getObject()).isSameAs(world.cell(C2_0).get());
-    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
+    assertThat(world.getInactiveShips()).containsExactly(ship1);
+    verify(modelBus).post(argumentCaptor.capture());
+    WorldLoaded worldLoaded = TestHelpers.assertClass(argumentCaptor.getValue(), WorldLoaded.class);
     assertThat(worldLoaded.getWorld()).isSameAs(world);
   }
 
   @Test
   public void reset() {
-    Map<Coordinate, Terrain> terrainMap = ImmutableMap.of(C1_1, terrain1, C2_0, terrain2);
-    Map<Coordinate, Ship> shipMap = ImmutableMap.of(C1_1, ship1, C2_0, ship2);
-    List<Ship> shipList = ImmutableList.of(ship3);
-    when(terrain1.canHoldShip()).thenReturn(true);
-    when(terrain2.canHoldShip()).thenReturn(true);
+    when(cell1.getCoordinate()).thenReturn(C1_1);
+    when(cell2.getCoordinate()).thenReturn(C2_0);
 
-    world.initialize(2, terrainMap, shipMap, shipList);
+    world.initialize(2, ImmutableList.of(cell1, cell2), ImmutableList.of(ship1));
     world.reset();
 
     assertThat(world.cell(C1_1)).isAbsent();
@@ -132,12 +113,18 @@ public class WorldTest {
     assertThat(world.getMaxHeight()).isEqualTo(0);
     assertThat(world.getMaxWidth()).isEqualTo(0);
     assertThat(world.getInactiveShips()).isEmpty();
-    verify(modelBus, times(4)).post(argumentCaptor.capture());
-    TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
-    TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
-    TestHelpers.assertClass(argumentCaptor, 2, WorldLoaded.class);
-    WorldReset worldReset = TestHelpers.assertClass(argumentCaptor, 3, WorldReset.class);
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
+    TestHelpers.assertClass(argumentCaptor, 0, WorldLoaded.class);
+    WorldReset worldReset = TestHelpers.assertClass(argumentCaptor, 1, WorldReset.class);
     assertThat(worldReset.getWorld()).isSameAs(world);
+  }
+
+  @Test
+  public void get_world_cells() {
+    cellMap.put(C1_1, cell1);
+    cellMap.put(C1_2, cell2);
+
+    assertThat(world.getWorldCells()).containsExactly(cell1, cell2);
   }
 
   @Test

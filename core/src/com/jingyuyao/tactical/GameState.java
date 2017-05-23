@@ -5,7 +5,7 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
-import com.jingyuyao.tactical.data.LoadedLevel;
+import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
@@ -40,17 +40,13 @@ public class GameState {
   }
 
   public void play() {
-    LoadedLevel loadedLevel = dataManager.loadCurrentLevel();
+    LevelSave levelSave = dataManager.loadCurrentLevel();
     // Order is important: world must be populated before we go to the screen since the screen
     // needs the world size, state need to start after we are in the screen so all the UI can
     // receive events properly
-    world.initialize(
-        loadedLevel.getLevel(),
-        loadedLevel.getTerrainMap(),
-        loadedLevel.getActiveShips(),
-        loadedLevel.getInactiveShips());
+    world.initialize(levelSave.getLevel(), levelSave.getWorldCells(), levelSave.getInactiveShips());
     game.goToWorldScreen();
-    worldState.initialize(loadedLevel.getTurn(), loadedLevel.getScript());
+    worldState.initialize(levelSave.getTurn(), levelSave.getScript());
   }
 
   public void reset() {

@@ -10,9 +10,16 @@ public class Cell {
   private final Terrain terrain;
   private Ship ship;
 
-  Cell(Coordinate coordinate, Terrain terrain) {
+  public Cell(Coordinate coordinate, Terrain terrain) {
     this.coordinate = coordinate;
     this.terrain = terrain;
+  }
+
+  public Cell(Coordinate coordinate, Terrain terrain, Ship ship) {
+    Preconditions.checkArgument(terrain.canHoldShip());
+    this.coordinate = coordinate;
+    this.terrain = terrain;
+    this.ship = ship;
   }
 
   public Coordinate getCoordinate() {
