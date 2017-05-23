@@ -17,13 +17,10 @@ import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
-import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.model.world.Terrain;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,13 +68,9 @@ public class GameStateTest {
 
   @Test
   public void play() {
-    Map<Coordinate, Ship> shipMap = new HashMap<>();
-    Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     List<Ship> shipList = new ArrayList<>();
     when(dataManager.loadCurrentLevel()).thenReturn(loadedLevel);
-    when(loadedLevel.getActiveShips()).thenReturn(shipMap);
     when(loadedLevel.getInactiveShips()).thenReturn(shipList);
-    when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
     when(loadedLevel.getTurn()).thenReturn(turn);
     when(loadedLevel.getScript()).thenReturn(script);
     when(loadedLevel.getLevel()).thenReturn(2);
@@ -85,7 +78,7 @@ public class GameStateTest {
     gameState.play();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
-    inOrder.verify(world).initialize(2, terrainMap, shipMap, shipList);
+    inOrder.verify(world).initialize(eq(2), Mockito.<List<Cell>>any(), eq(shipList));
     inOrder.verify(game).goToWorldScreen();
     inOrder.verify(worldState).initialize(turn, script);
   }

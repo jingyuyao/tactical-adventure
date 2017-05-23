@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Application;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
@@ -11,6 +12,7 @@ import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.WorldState;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -46,8 +48,7 @@ public class GameState {
     // receive events properly
     world.initialize(
         loadedLevel.getLevel(),
-        loadedLevel.getTerrainMap(),
-        loadedLevel.getActiveShips(),
+        ImmutableList.<Cell>of(),
         loadedLevel.getInactiveShips());
     game.goToWorldScreen();
     worldState.initialize(loadedLevel.getTurn(), loadedLevel.getScript());
