@@ -1,7 +1,5 @@
 package com.jingyuyao.tactical.model.world;
 
-import com.jingyuyao.tactical.model.terrain.Terrain;
-
 class TerrainCost implements GetEdgeCost {
 
   @Override

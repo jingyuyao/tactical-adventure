@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

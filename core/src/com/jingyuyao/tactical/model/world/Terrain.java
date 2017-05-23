@@ -1,4 +1,4 @@
-package com.jingyuyao.tactical.model.terrain;
+package com.jingyuyao.tactical.model.world;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;

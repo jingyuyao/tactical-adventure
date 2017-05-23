@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 
 public class Cell {
 

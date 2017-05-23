@@ -29,7 +29,6 @@ import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

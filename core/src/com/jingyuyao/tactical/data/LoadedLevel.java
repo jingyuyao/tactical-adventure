@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.data;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Terrain;
 import java.util.List;
 import java.util.Map;
 

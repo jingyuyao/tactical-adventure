@@ -14,7 +14,6 @@ import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
-import com.jingyuyao.tactical.model.terrain.Terrain;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingCellMap;
 import com.jingyuyao.tactical.model.world.WorldModule.BackingInactiveList;
 import java.util.ArrayList;

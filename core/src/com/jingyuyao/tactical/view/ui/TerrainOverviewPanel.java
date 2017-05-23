@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.terrain.Terrain;
+import com.jingyuyao.tactical.model.world.Terrain;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
