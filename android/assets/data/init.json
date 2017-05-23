@@ -177,9 +177,9 @@
             "usageLeft": 50,
             "defense": 5
           }
-        ]
-      },
-      "stashedArmors": []
+        ],
+        "stashedArmors": []
+      }
     },
     {
       "name": "eagle",
@@ -228,9 +228,9 @@
             "usageLeft": 50,
             "defense": 5
           }
-        ]
-      },
-      "stashedArmors": []
+        ],
+        "stashedArmors": []
+      }
     }
   ]
 }

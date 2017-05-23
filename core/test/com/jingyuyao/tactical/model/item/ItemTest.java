@@ -10,16 +10,16 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseItemTest {
+public class ItemTest {
 
   private static final String name = "item_name";
   private static final int USAGE_LEFT = 1;
 
-  private BaseItem item;
+  private Item item;
 
   @Before
   public void setUp() {
-    item = new BaseItem(name, USAGE_LEFT);
+    item = new Item(name, USAGE_LEFT);
   }
 
   @Test

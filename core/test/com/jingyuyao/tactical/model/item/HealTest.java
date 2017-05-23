@@ -21,7 +21,7 @@ public class HealTest {
 
   @Before
   public void setUp() {
-    heal = new Heal(AMOUNT);
+    heal = new Heal("health pack", 2, AMOUNT);
   }
 
   @Test
