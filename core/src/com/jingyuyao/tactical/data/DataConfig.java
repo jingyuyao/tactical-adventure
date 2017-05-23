@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class DataConfig {
+public class DataConfig {
 
   @Inject
   DataConfig() {
@@ -37,7 +37,7 @@ class DataConfig {
     return getLevelDir(level) + "script.json";
   }
 
-  String getLevelTerrainFileName(int level) {
+  public String getLevelTerrainFileName(int level) {
     return getLevelDir(level) + "terrains.tmx";
   }
 

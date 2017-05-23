@@ -31,6 +31,7 @@ public class World implements GetNeighbors {
   private final Dijkstra dijkstra;
   private final Map<Coordinate, Cell> cellMap;
   private final List<Ship> inactiveShips;
+  private int level;
   private int maxHeight;
   private int maxWidth;
 
@@ -47,6 +48,7 @@ public class World implements GetNeighbors {
   }
 
   public void initialize(
+      int level,
       Map<Coordinate, Terrain> terrainMap,
       Map<Coordinate, Ship> shipMap,
       List<Ship> inactiveShips) {
@@ -77,6 +79,7 @@ public class World implements GetNeighbors {
         throw new IllegalArgumentException(ship + " can't be on " + cell.getTerrain());
       }
     }
+    this.level = level;
     this.inactiveShips.addAll(inactiveShips);
     modelBus.post(new WorldLoaded(this));
   }
@@ -84,9 +87,14 @@ public class World implements GetNeighbors {
   public void reset() {
     cellMap.clear();
     inactiveShips.clear();
+    level = 0;
     maxWidth = 0;
     maxHeight = 0;
     modelBus.post(new WorldReset(this));
+  }
+
+  public int getLevel() {
+    return level;
   }
 
   public int getMaxHeight() {

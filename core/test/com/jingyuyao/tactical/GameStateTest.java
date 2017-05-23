@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
@@ -43,8 +42,6 @@ public class GameStateTest {
   @Mock
   private DataManager dataManager;
   @Mock
-  private OrthogonalTiledMapRenderer tiledMapRenderer;
-  @Mock
   private World world;
   @Mock
   private WorldState worldState;
@@ -69,7 +66,7 @@ public class GameStateTest {
 
   @Before
   public void setUp() {
-    gameState = new GameState(application, game, dataManager, tiledMapRenderer, world, worldState);
+    gameState = new GameState(application, game, dataManager, world, worldState);
   }
 
   @Test
@@ -77,17 +74,18 @@ public class GameStateTest {
     Map<Coordinate, Ship> shipMap = new HashMap<>();
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     List<Ship> shipList = new ArrayList<>();
-    when(dataManager.loadCurrentLevel(tiledMapRenderer)).thenReturn(loadedLevel);
+    when(dataManager.loadCurrentLevel()).thenReturn(loadedLevel);
     when(loadedLevel.getActiveShips()).thenReturn(shipMap);
     when(loadedLevel.getInactiveShips()).thenReturn(shipList);
     when(loadedLevel.getTerrainMap()).thenReturn(terrainMap);
     when(loadedLevel.getTurn()).thenReturn(turn);
     when(loadedLevel.getScript()).thenReturn(script);
+    when(loadedLevel.getLevel()).thenReturn(2);
 
     gameState.play();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
-    inOrder.verify(world).initialize(terrainMap, shipMap, shipList);
+    inOrder.verify(world).initialize(2, terrainMap, shipMap, shipList);
     inOrder.verify(game).goToWorldScreen();
     inOrder.verify(worldState).initialize(turn, script);
   }

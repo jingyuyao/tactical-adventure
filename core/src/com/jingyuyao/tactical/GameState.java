@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
@@ -23,7 +22,6 @@ public class GameState {
   private final Application application;
   private final TacticalAdventure game;
   private final DataManager dataManager;
-  private final OrthogonalTiledMapRenderer tiledMapRenderer;
   private final World world;
   private final WorldState worldState;
 
@@ -32,24 +30,25 @@ public class GameState {
       Application application,
       TacticalAdventure game,
       DataManager dataManager,
-      OrthogonalTiledMapRenderer tiledMapRenderer,
       World world,
       WorldState worldState) {
     this.application = application;
     this.game = game;
     this.dataManager = dataManager;
-    this.tiledMapRenderer = tiledMapRenderer;
     this.world = world;
     this.worldState = worldState;
   }
 
   public void play() {
-    LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
+    LoadedLevel loadedLevel = dataManager.loadCurrentLevel();
     // Order is important: world must be populated before we go to the screen since the screen
     // needs the world size, state need to start after we are in the screen so all the UI can
     // receive events properly
     world.initialize(
-        loadedLevel.getTerrainMap(), loadedLevel.getActiveShips(), loadedLevel.getInactiveShips());
+        loadedLevel.getLevel(),
+        loadedLevel.getTerrainMap(),
+        loadedLevel.getActiveShips(),
+        loadedLevel.getInactiveShips());
     game.goToWorldScreen();
     worldState.initialize(loadedLevel.getTurn(), loadedLevel.getScript());
   }

@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.data;
 
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -81,7 +80,7 @@ public class DataManager {
     saveManager.removeLevelSave();
   }
 
-  public LoadedLevel loadCurrentLevel(OrthogonalTiledMapRenderer tiledMapRenderer) {
+  public LoadedLevel loadCurrentLevel() {
     GameSave gameSave = saveManager.loadGameSave();
     int level = gameSave.getCurrentLevel();
 
@@ -94,11 +93,11 @@ public class DataManager {
       saveManager.save(levelSave);
     }
 
-    Map<Coordinate, Terrain> terrains = levelTerrainsLoader.load(level, tiledMapRenderer);
+    Map<Coordinate, Terrain> terrains = levelTerrainsLoader.load(level);
     Map<Coordinate, Ship> ships = levelSave.getActiveShips();
     List<Ship> inactiveShips = levelSave.getInactiveShips();
     Turn turn = levelSave.getTurn();
     Script script = levelSave.getScript();
-    return new LoadedLevel(terrains, ships, inactiveShips, turn, script);
+    return new LoadedLevel(level, terrains, ships, inactiveShips, turn, script);
   }
 }
