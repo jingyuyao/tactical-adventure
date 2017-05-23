@@ -14,6 +14,7 @@ import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
+import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.ControllingState;
@@ -29,6 +30,7 @@ import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -73,26 +75,17 @@ class ShipSystem extends IteratingSystem {
   }
 
   @Subscribe
+  void worldLoaded(WorldLoaded worldLoaded) {
+    for (Entry<Cell, Ship> entry : worldLoaded.getWorld().getShipSnapshot().entrySet()) {
+      spawn(entry.getKey().getCoordinate(), entry.getValue());
+    }
+  }
+
+  @Subscribe
   void spawnShip(SpawnShip spawnShip) {
     Cell cell = spawnShip.getObject();
     Preconditions.checkArgument(cell.ship().isPresent());
-    Ship ship = cell.ship().get();
-
-    Position position = getEngine().createComponent(Position.class);
-    position.set(cell.getCoordinate(), WorldZIndex.SHIP);
-
-    ShipComponent shipComponent = getEngine().createComponent(ShipComponent.class);
-    shipComponent.setShip(ship);
-
-    Frame frame = getEngine().createComponent(Frame.class);
-
-    Entity entity = getEngine().createEntity();
-    entity.add(position);
-    entity.add(shipComponent);
-    entity.add(frame);
-    entity.add(animations.get(ship));
-
-    getEngine().addEntity(entity);
+    spawn(cell.getCoordinate(), cell.ship().get());
   }
 
   @Subscribe
@@ -148,6 +141,24 @@ class ShipSystem extends IteratingSystem {
       }
     }
     throw new NoSuchElementException();
+  }
+
+  private void spawn(Coordinate coordinate, Ship ship) {
+    Position position = getEngine().createComponent(Position.class);
+    position.set(coordinate, WorldZIndex.SHIP);
+
+    ShipComponent shipComponent = getEngine().createComponent(ShipComponent.class);
+    shipComponent.setShip(ship);
+
+    Frame frame = getEngine().createComponent(Frame.class);
+
+    Entity entity = getEngine().createEntity();
+    entity.add(position);
+    entity.add(shipComponent);
+    entity.add(frame);
+    entity.add(animations.get(ship));
+
+    getEngine().addEntity(entity);
   }
 
   private void activate(Ship ship) {
