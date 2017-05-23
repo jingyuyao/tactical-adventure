@@ -47,7 +47,7 @@ public class TerrainCostTest {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
     when(terrain.canHoldShip()).thenReturn(true);
-    when(terrain.getMovementPenalty()).thenReturn(10);
+    when(terrain.getMoveCost()).thenReturn(10);
 
     GetEdgeCost function = new TerrainCost();
 

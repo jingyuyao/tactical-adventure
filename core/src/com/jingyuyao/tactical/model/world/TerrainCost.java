@@ -10,6 +10,6 @@ class TerrainCost implements GetEdgeCost {
     if (cell.ship().isPresent() || !terrain.canHoldShip()) {
       return GetEdgeCost.NO_EDGE;
     }
-    return terrain.getMovementPenalty();
+    return terrain.getMoveCost();
   }
 }

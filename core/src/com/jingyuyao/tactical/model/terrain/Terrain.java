@@ -1,12 +1,32 @@
 package com.jingyuyao.tactical.model.terrain;
 
+import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 
-public interface Terrain {
+public class Terrain {
 
-  ResourceKey getName();
+  private String name;
+  private boolean holdShip;
+  private int moveCost;
 
-  boolean canHoldShip();
+  private Terrain() {
+  }
 
-  int getMovementPenalty();
+  public Terrain(String name, boolean holdShip, int moveCost) {
+    this.name = name;
+    this.holdShip = holdShip;
+    this.moveCost = moveCost;
+  }
+
+  public ResourceKey getName() {
+    return ModelBundle.TERRAIN_NAME.get(name);
+  }
+
+  public boolean canHoldShip() {
+    return holdShip;
+  }
+
+  public int getMoveCost() {
+    return moveCost;
+  }
 }

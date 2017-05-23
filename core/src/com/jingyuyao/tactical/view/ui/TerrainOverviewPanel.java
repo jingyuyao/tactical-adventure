@@ -22,7 +22,7 @@ class TerrainOverviewPanel extends TextPanel<Terrain> {
   @Override
   Optional<String> createText(Terrain terrain) {
     String name = textLoader.get(terrain.getName());
-    int moveCost = terrain.getMovementPenalty();
+    int moveCost = terrain.getMoveCost();
     ResourceKey resourceKey = UIBundle.TERRAIN_OVERVIEW_PANEL.format(name, moveCost);
     return Optional.of(textLoader.get(resourceKey));
   }
