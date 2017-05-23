@@ -97,12 +97,13 @@ public class WorldTest {
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
 
-    world.initialize(terrainMap, shipMap, shipList);
+    world.initialize(2, terrainMap, shipMap, shipList);
 
     assertThat(world.cell(C1_1)).isPresent();
     assertThat(world.cell(C1_1).get().ship()).hasValue(ship1);
     assertThat(world.cell(C2_0)).isPresent();
     assertThat(world.cell(C2_0).get().ship()).hasValue(ship2);
+    assertThat(world.getLevel()).isEqualTo(2);
     assertThat(world.getMaxHeight()).isEqualTo(C1_1.getY() + 1);
     assertThat(world.getMaxWidth()).isEqualTo(C2_0.getX() + 1);
     assertThat(world.getInactiveShips()).containsExactly(ship3);
@@ -123,11 +124,12 @@ public class WorldTest {
     when(terrain1.canHold(ship1)).thenReturn(true);
     when(terrain2.canHold(ship2)).thenReturn(true);
 
-    world.initialize(terrainMap, shipMap, shipList);
+    world.initialize(2, terrainMap, shipMap, shipList);
     world.reset();
 
     assertThat(world.cell(C1_1)).isAbsent();
     assertThat(world.cell(C2_0)).isAbsent();
+    assertThat(world.getLevel()).isEqualTo(0);
     assertThat(world.getMaxHeight()).isEqualTo(0);
     assertThat(world.getMaxWidth()).isEqualTo(0);
     assertThat(world.getInactiveShips()).isEmpty();

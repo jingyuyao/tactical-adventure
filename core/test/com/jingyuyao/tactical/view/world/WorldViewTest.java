@@ -4,11 +4,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jingyuyao.tactical.data.DataConfig;
 import com.jingyuyao.tactical.view.world.system.Systems;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldViewTest {
 
+  @Mock
+  private AssetManager assetManager;
+  @Mock
+  private DataConfig dataConfig;
   @Mock
   private Batch batch;
   @Mock
@@ -40,7 +46,8 @@ public class WorldViewTest {
 
   @Before
   public void setUp() {
-    worldView = new WorldView(batch, viewport, mapRenderer, engine, systems);
+    worldView =
+        new WorldView(assetManager, dataConfig, batch, viewport, mapRenderer, engine, systems);
     verify(systems).addTo(engine);
   }
 

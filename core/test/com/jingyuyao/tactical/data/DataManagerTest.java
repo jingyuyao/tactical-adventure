@@ -6,7 +6,6 @@ import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -45,8 +44,6 @@ public class DataManagerTest {
   private GameSave gameSave;
   @Mock
   private LevelSave levelSave;
-  @Mock
-  private OrthogonalTiledMapRenderer tiledMapRenderer;
   @Mock
   private World world;
   @Mock
@@ -157,15 +154,16 @@ public class DataManagerTest {
     when(levelSave.getInactiveShips()).thenReturn(shipList);
     when(levelSave.getTurn()).thenReturn(turn);
     when(levelSave.getScript()).thenReturn(script);
-    when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
+    when(levelTerrainsLoader.load(2)).thenReturn(terrainMap);
 
-    LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
+    LoadedLevel loadedLevel = dataManager.loadCurrentLevel();
 
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
     assertThat(loadedLevel.getActiveShips()).isSameAs(shipMap);
     assertThat(loadedLevel.getInactiveShips()).isSameAs(shipList);
     assertThat(loadedLevel.getTurn()).isSameAs(turn);
     assertThat(loadedLevel.getScript()).isSameAs(script);
+    assertThat(loadedLevel.getLevel()).isEqualTo(2);
   }
 
   @Test
@@ -181,9 +179,9 @@ public class DataManagerTest {
     when(levelSave.getInactiveShips()).thenReturn(shipList);
     when(levelSave.getTurn()).thenReturn(turn);
     when(levelSave.getScript()).thenReturn(script);
-    when(levelTerrainsLoader.load(2, tiledMapRenderer)).thenReturn(terrainMap);
+    when(levelTerrainsLoader.load(2)).thenReturn(terrainMap);
 
-    LoadedLevel loadedLevel = dataManager.loadCurrentLevel(tiledMapRenderer);
+    LoadedLevel loadedLevel = dataManager.loadCurrentLevel();
 
     verify(saveManager).save(levelSave);
     assertThat(loadedLevel.getTerrainMap()).isSameAs(terrainMap);
@@ -191,5 +189,6 @@ public class DataManagerTest {
     assertThat(loadedLevel.getInactiveShips()).isSameAs(shipList);
     assertThat(loadedLevel.getTurn()).isSameAs(turn);
     assertThat(loadedLevel.getScript()).isSameAs(script);
+    assertThat(loadedLevel.getLevel()).isEqualTo(2);
   }
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.terrain.Blocked;
 import com.jingyuyao.tactical.model.terrain.Obstructed;
@@ -29,12 +28,11 @@ class LevelTerrainsLoader {
     this.assetManager = assetManager;
   }
 
-  Map<Coordinate, Terrain> load(int level, OrthogonalTiledMapRenderer tiledMapRenderer) {
+  Map<Coordinate, Terrain> load(int level) {
     String levelFileName = dataConfig.getLevelTerrainFileName(level);
     assetManager.load(levelFileName, TiledMap.class);
     assetManager.finishLoadingAsset(levelFileName);
     TiledMap tiledMap = assetManager.get(levelFileName);
-    tiledMapRenderer.setMap(tiledMap);
     return extractTerrains(tiledMap);
   }
 
