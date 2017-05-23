@@ -20,7 +20,11 @@
         "hp": 10,
         "moveDistance": 5
       },
+      "cockPit": {
+        "pilots": []
+      },
       "items": {
+        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -29,7 +33,9 @@
             "attackPower": 10,
             "distance": 1
           }
-        ]
+        ],
+        "equippedArmors": [],
+        "stashedArmors": []
       }
     },
     {
@@ -46,7 +52,11 @@
         "hp": 10,
         "moveDistance": 5
       },
+      "cockPit": {
+        "pilots": []
+      },
       "items": {
+        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -55,7 +65,9 @@
             "attackPower": 10,
             "distance": 1
           }
-        ]
+        ],
+        "equippedArmors": [],
+        "stashedArmors": []
       }
     }
   ],
@@ -81,6 +93,7 @@
         ]
       },
       "items": {
+        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -89,182 +102,9 @@
             "attackPower": 10,
             "distance": 1
           }
-        ]
-      }
-    },
-    "8,12": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
         ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "9,11": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "2,12": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "4,10": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "6,8": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "8,6": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "10,4": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
+        "equippedArmors": [],
+        "stashedArmors": []
       }
     }
   }

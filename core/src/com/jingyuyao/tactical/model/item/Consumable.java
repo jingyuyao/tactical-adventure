@@ -5,10 +5,15 @@ import com.jingyuyao.tactical.model.ship.Ship;
 /**
  * An {@link Item} that can be used be used on a {@link Ship}.
  */
-public interface Consumable extends Item {
+public class Consumable extends Item {
+
+  Consumable(String name, int usageLeft) {
+    super(name, usageLeft);
+  }
 
   /**
    * Apply this {@link Item}'s effects to {@code ship}.
    */
-  void apply(Ship ship);
+  public void apply(Ship ship) {
+  }
 }

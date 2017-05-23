@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BaseWeaponTest {
+public class WeaponTest {
 
   @Mock
   private Target target;
@@ -31,7 +31,7 @@ public class BaseWeaponTest {
   @Mock
   private Ship ship2;
 
-  private BaseWeapon baseWeapon;
+  private Weapon weapon;
 
   @Before
   public void setUp() {
@@ -44,8 +44,8 @@ public class BaseWeaponTest {
 
   @Test
   public void apply_basic() {
-    baseWeapon = new BaseWeapon(10, 0, 0);
-    baseWeapon.apply(attacker, target);
+    weapon = new Weapon("name", 5, 10, 0, 0);
+    weapon.apply(attacker, target);
 
     verify(ship1).damageBy(7);
     verify(ship2).damageBy(0);
@@ -55,8 +55,8 @@ public class BaseWeaponTest {
 
   @Test
   public void apply_life_steal() {
-    baseWeapon = new BaseWeapon(10, 0.5f, 0);
-    baseWeapon.apply(attacker, target);
+    weapon = new Weapon("name", 5, 10, 0.5f, 0);
+    weapon.apply(attacker, target);
 
     verify(ship1).damageBy(7);
     verify(ship2).damageBy(0);
@@ -67,8 +67,8 @@ public class BaseWeaponTest {
 
   @Test
   public void apply_recoil() {
-    baseWeapon = new BaseWeapon(10, 0, 0.5f);
-    baseWeapon.apply(attacker, target);
+    weapon = new Weapon("name", 5, 10, 0, 0.5f);
+    weapon.apply(attacker, target);
 
     verify(ship1).damageBy(7);
     verify(ship2).damageBy(0);

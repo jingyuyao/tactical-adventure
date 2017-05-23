@@ -9,7 +9,6 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,16 +17,13 @@ import java.util.List;
  */
 class Items {
 
-  private List<Consumable> consumables = new ArrayList<>();
-  private List<Weapon> weapons = new ArrayList<>();
+  private final List<Consumable> consumables;
+  private final List<Weapon> weapons;
   /**
-   * Invariant: contains at most one of each type of armor.
+   * Invariant: contains at most one of each class of armor.
    */
-  private List<Armor> equippedArmors = new ArrayList<>();
-  private List<Armor> stashedArmors = new ArrayList<>();
-
-  Items() {
-  }
+  private final List<Armor> equippedArmors;
+  private final List<Armor> stashedArmors;
 
   Items(
       List<Consumable> consumables,

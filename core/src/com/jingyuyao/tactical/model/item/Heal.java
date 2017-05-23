@@ -4,14 +4,12 @@ import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 
-public class Heal extends BaseItem implements Consumable {
+public class Heal extends Consumable {
 
-  private int amount;
+  private final int amount;
 
-  Heal() {
-  }
-
-  Heal(int amount) {
+  Heal(String name, int usageLeft, int amount) {
+    super(name, usageLeft);
     this.amount = amount;
   }
 

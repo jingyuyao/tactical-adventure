@@ -8,10 +8,17 @@ import com.jingyuyao.tactical.model.world.World;
 import java.util.Set;
 
 // TODO: test me
-public class Bomb extends BaseWeapon {
+public class Bomb extends Weapon {
 
-  private int distance;
-  private int size;
+  private final int distance;
+  private final int size;
+
+  Bomb(String name, int usageLeft, int attackPower,
+      float lifeStealRate, float recoilRate, int distance, int size) {
+    super(name, usageLeft, attackPower, lifeStealRate, recoilRate);
+    this.distance = distance;
+    this.size = size;
+  }
 
   @Override
   public ImmutableList<Target> createTargets(final World world, Cell from) {

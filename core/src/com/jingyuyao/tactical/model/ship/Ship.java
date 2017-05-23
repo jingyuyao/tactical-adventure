@@ -13,14 +13,11 @@ import com.jingyuyao.tactical.model.world.World;
 
 public class Ship {
 
-  private String name;
-  private AutoPilot autoPilot = new NoAutoPilot();
-  private Stats stats = new Stats();
-  private Cockpit cockpit = new Cockpit();
-  private Items items = new Items();
-
-  Ship() {
-  }
+  private final String name;
+  private final AutoPilot autoPilot;
+  private final Stats stats;
+  private final Cockpit cockpit;
+  private final Items items;
 
   Ship(String name, AutoPilot autoPilot, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;

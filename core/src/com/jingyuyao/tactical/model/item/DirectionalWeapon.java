@@ -12,9 +12,16 @@ import com.jingyuyao.tactical.model.world.World;
  * A weapon that can be targeted in all directions in {@link Direction#values()}.
  */
 // TODO: test me
-public class DirectionalWeapon extends BaseWeapon {
+public class DirectionalWeapon extends Weapon {
 
-  private int distance;
+  private final int distance;
+
+  DirectionalWeapon(
+      String name, int usageLeft, int attackPower,
+      float lifeStealRate, float recoilRate, int distance) {
+    super(name, usageLeft, attackPower, lifeStealRate, recoilRate);
+    this.distance = distance;
+  }
 
   @Override
   public ImmutableList<Target> createTargets(World world, Cell from) {
