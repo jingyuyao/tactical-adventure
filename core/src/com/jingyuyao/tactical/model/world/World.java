@@ -82,6 +82,10 @@ public class World implements GetNeighbors {
     return maxWidth;
   }
 
+  public ImmutableList<Cell> getWorldCells() {
+    return ImmutableList.copyOf(worldCells.values());
+  }
+
   public Optional<Cell> cell(int x, int y) {
     return cell(new Coordinate(x, y));
   }

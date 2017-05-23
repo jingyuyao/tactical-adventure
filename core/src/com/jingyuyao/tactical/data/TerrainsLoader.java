@@ -14,13 +14,13 @@ import javax.inject.Singleton;
 
 // TODO: test me
 @Singleton
-class LevelTerrainsLoader {
+class TerrainsLoader {
 
   private final DataConfig dataConfig;
   private final AssetManager assetManager;
 
   @Inject
-  LevelTerrainsLoader(DataConfig dataConfig, AssetManager assetManager) {
+  TerrainsLoader(DataConfig dataConfig, AssetManager assetManager) {
     this.dataConfig = dataConfig;
     this.assetManager = assetManager;
   }

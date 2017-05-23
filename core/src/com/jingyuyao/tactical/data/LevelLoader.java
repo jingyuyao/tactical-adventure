@@ -3,19 +3,16 @@ package com.jingyuyao.tactical.data;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ListMultimap;
-import com.jingyuyao.tactical.model.script.ActivateGroup;
-import com.jingyuyao.tactical.model.script.Condition;
-import com.jingyuyao.tactical.model.script.DeactivateGroup;
-import com.jingyuyao.tactical.model.script.Dialogue;
-import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.model.world.Terrain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -25,18 +22,21 @@ class LevelLoader {
   private final DataConfig dataConfig;
   private final DataSerializer dataSerializer;
   private final Files files;
-  private final DialogueLoader dialogueLoader;
+  private final TerrainsLoader terrainsLoader;
+  private final ScriptLoader scriptLoader;
 
   @Inject
   LevelLoader(
       DataConfig dataConfig,
       DataSerializer dataSerializer,
       Files files,
-      DialogueLoader dialogueLoader) {
+      TerrainsLoader terrainsLoader,
+      ScriptLoader scriptLoader) {
     this.dataConfig = dataConfig;
     this.dataSerializer = dataSerializer;
     this.files = files;
-    this.dialogueLoader = dialogueLoader;
+    this.terrainsLoader = terrainsLoader;
+    this.scriptLoader = scriptLoader;
   }
 
   boolean hasLevel(int level) {
@@ -45,38 +45,31 @@ class LevelLoader {
   }
 
   /**
-   * Create a new level save from the given {@code gameSave}.
+   * Create a new level save.
    */
-  LevelSave createNewSave(int level, GameSave gameSave) {
+  LevelSave createNewSave(int level, List<Ship> playerShips) {
     Preconditions.checkArgument(hasLevel(level));
-    LevelWorld levelWorld = load(dataConfig.getLevelWorldFileName(level), LevelWorld.class);
-    Map<Coordinate, Ship> ships = new HashMap<>(levelWorld.getActiveShips());
+    FileHandle fileHandle = files.internal(dataConfig.getLevelWorldFileName(level));
+    LevelWorld levelWorld = dataSerializer.deserialize(fileHandle.reader(), LevelWorld.class);
+    Map<Coordinate, Ship> worldShips = new HashMap<>(levelWorld.getActiveShips());
     List<Coordinate> spawns = levelWorld.getPlayerSpawns();
-    List<Ship> playerShips = gameSave.getPlayerShips();
     for (int i = 0; i < spawns.size() && i < playerShips.size(); i++) {
-      ships.put(spawns.get(i), playerShips.get(i));
+      worldShips.put(spawns.get(i), playerShips.get(i));
+    }
+    List<Cell> worldCells = new ArrayList<>();
+    for (Entry<Coordinate, Terrain> entry : terrainsLoader.load(level).entrySet()) {
+      Coordinate coordinate = entry.getKey();
+      Terrain terrain = entry.getValue();
+      if (terrain.canHoldShip() && worldShips.containsKey(coordinate)) {
+        worldCells.add(new Cell(coordinate, terrain, worldShips.get(coordinate)));
+      } else {
+        worldCells.add(new Cell(coordinate, terrain));
+      }
     }
     List<Ship> inactiveShips = new ArrayList<>(levelWorld.getInactiveShips());
     for (int i = spawns.size(); i < playerShips.size(); i++) {
       inactiveShips.add(playerShips.get(i));
     }
-    return new LevelSave(ships, inactiveShips, new Turn(), loadScript(level));
-  }
-
-  private Script loadScript(int level) {
-    LevelScript levelScript = load(dataConfig.getLevelScriptFileName(level), LevelScript.class);
-    List<Condition> winConditions = levelScript.getWinConditions();
-    List<Condition> loseConditions = levelScript.getLoseConditions();
-    ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(level);
-    Map<Condition, ActivateGroup> groupActivations = levelScript.getGroupActivations();
-    Map<Condition, DeactivateGroup> groupDeactivations = levelScript.getGroupDeactivations();
-
-    return new Script(
-        winConditions, loseConditions, dialogues, groupActivations, groupDeactivations);
-  }
-
-  private <T> T load(String fileName, Class<T> clazz) {
-    FileHandle fileHandle = files.internal(fileName);
-    return dataSerializer.deserialize(fileHandle.reader(), clazz);
+    return new LevelSave(level, worldCells, inactiveShips, new Turn(), scriptLoader.load(level));
   }
 }

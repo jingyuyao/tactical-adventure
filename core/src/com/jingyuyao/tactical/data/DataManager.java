@@ -6,13 +6,8 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
-import com.jingyuyao.tactical.model.world.Coordinate;
-import com.jingyuyao.tactical.model.world.Terrain;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -24,16 +19,11 @@ public class DataManager {
 
   private final SaveManager saveManager;
   private final LevelLoader levelLoader;
-  private final LevelTerrainsLoader levelTerrainsLoader;
 
   @Inject
-  DataManager(
-      SaveManager saveManager,
-      LevelLoader levelLoader,
-      LevelTerrainsLoader levelTerrainsLoader) {
+  DataManager(SaveManager saveManager, LevelLoader levelLoader) {
     this.saveManager = saveManager;
     this.levelLoader = levelLoader;
-    this.levelTerrainsLoader = levelTerrainsLoader;
   }
 
   public GameSave loadGameSave() {
@@ -54,14 +44,12 @@ public class DataManager {
   }
 
   public void saveLevelProgress(World world, WorldState worldState) {
-    Map<Coordinate, Ship> ships = new HashMap<>();
-    for (Entry<Cell, Ship> shipEntry : world.getShipSnapshot().entrySet()) {
-      ships.put(shipEntry.getKey().getCoordinate(), shipEntry.getValue());
-    }
+    int level = world.getLevel();
+    List<Cell> worldCells = world.getWorldCells();
     List<Ship> inactiveShips = world.getInactiveShips();
     Turn turn = worldState.getTurn();
     Script script = worldState.getScript();
-    LevelSave levelSave = new LevelSave(ships, inactiveShips, turn, script);
+    LevelSave levelSave = new LevelSave(level, worldCells, inactiveShips, turn, script);
     saveManager.save(levelSave);
   }
 
@@ -80,24 +68,16 @@ public class DataManager {
     saveManager.removeLevelSave();
   }
 
-  public LoadedLevel loadCurrentLevel() {
-    GameSave gameSave = saveManager.loadGameSave();
-    int level = gameSave.getCurrentLevel();
-
-    LevelSave levelSave;
+  public LevelSave loadCurrentLevel() {
     Optional<LevelSave> levelSaveOpt = saveManager.loadLevelSave();
     if (levelSaveOpt.isPresent()) {
-      levelSave = levelSaveOpt.get();
+      return levelSaveOpt.get();
     } else {
-      levelSave = levelLoader.createNewSave(level, gameSave);
+      GameSave gameSave = saveManager.loadGameSave();
+      int level = gameSave.getCurrentLevel();
+      LevelSave levelSave = levelLoader.createNewSave(level, gameSave.getPlayerShips());
       saveManager.save(levelSave);
+      return levelSave;
     }
-
-    Map<Coordinate, Terrain> terrains = levelTerrainsLoader.load(level);
-    Map<Coordinate, Ship> ships = levelSave.getActiveShips();
-    List<Ship> inactiveShips = levelSave.getInactiveShips();
-    Turn turn = levelSave.getTurn();
-    Script script = levelSave.getScript();
-    return new LoadedLevel(level, terrains, ships, inactiveShips, turn, script);
   }
 }

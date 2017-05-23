@@ -9,7 +9,7 @@ import com.badlogic.gdx.Application;
 import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
-import com.jingyuyao.tactical.data.LoadedLevel;
+import com.jingyuyao.tactical.data.LevelSave;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
@@ -43,7 +43,7 @@ public class GameStateTest {
   @Mock
   private WorldState worldState;
   @Mock
-  private LoadedLevel loadedLevel;
+  private LevelSave levelSave;
   @Mock
   private Turn turn;
   @Mock
@@ -68,17 +68,19 @@ public class GameStateTest {
 
   @Test
   public void play() {
+    List<Cell> worldCells = new ArrayList<>();
     List<Ship> shipList = new ArrayList<>();
-    when(dataManager.loadCurrentLevel()).thenReturn(loadedLevel);
-    when(loadedLevel.getInactiveShips()).thenReturn(shipList);
-    when(loadedLevel.getTurn()).thenReturn(turn);
-    when(loadedLevel.getScript()).thenReturn(script);
-    when(loadedLevel.getLevel()).thenReturn(2);
+    when(dataManager.loadCurrentLevel()).thenReturn(levelSave);
+    when(levelSave.getWorldCells()).thenReturn(worldCells);
+    when(levelSave.getInactiveShips()).thenReturn(shipList);
+    when(levelSave.getTurn()).thenReturn(turn);
+    when(levelSave.getScript()).thenReturn(script);
+    when(levelSave.getLevel()).thenReturn(2);
 
     gameState.play();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
-    inOrder.verify(world).initialize(eq(2), Mockito.<List<Cell>>any(), eq(shipList));
+    inOrder.verify(world).initialize(2, worldCells, shipList);
     inOrder.verify(game).goToWorldScreen();
     inOrder.verify(worldState).initialize(turn, script);
   }

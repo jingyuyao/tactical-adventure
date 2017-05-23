@@ -120,6 +120,14 @@ public class WorldTest {
   }
 
   @Test
+  public void get_world_cells() {
+    cellMap.put(C1_1, cell1);
+    cellMap.put(C1_2, cell2);
+
+    assertThat(world.getWorldCells()).containsExactly(cell1, cell2);
+  }
+
+  @Test
   public void get_cell() {
     cellMap.put(C1_1, cell1);
 
