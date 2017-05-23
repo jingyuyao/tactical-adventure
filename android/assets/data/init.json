@@ -3,6 +3,9 @@
   "playerShips": [
     {
       "name": "adder",
+      "autoPilot": {
+        "type": "NoAutoPilot"
+      },
       "stats": {
         "groups": [
           "player"
@@ -45,14 +48,6 @@
             "size": 2
           }
         ],
-        "stashedArmors": [
-          {
-            "type": "Hull",
-            "name": "diamondHull",
-            "usageLeft": 50,
-            "defense": 100
-          }
-        ],
         "equippedArmors": [
           {
             "type": "Hull",
@@ -60,11 +55,22 @@
             "usageLeft": 50,
             "defense": 5
           }
+        ],
+        "stashedArmors": [
+          {
+            "type": "Hull",
+            "name": "diamondHull",
+            "usageLeft": 50,
+            "defense": 100
+          }
         ]
       }
     },
     {
       "name": "adder",
+      "autoPilot": {
+        "type": "NoAutoPilot"
+      },
       "stats": {
         "groups": [
           "player"
@@ -120,11 +126,15 @@
             "usageLeft": 10,
             "defense": 1
           }
-        ]
+        ],
+        "stashedArmors": []
       }
     },
     {
       "name": "eagle",
+      "autoPilot": {
+        "type": "NoAutoPilot"
+      },
       "stats": {
         "groups": [
           "player"
@@ -168,10 +178,14 @@
             "defense": 5
           }
         ]
-      }
+      },
+      "stashedArmors": []
     },
     {
       "name": "eagle",
+      "autoPilot": {
+        "type": "NoAutoPilot"
+      },
       "stats": {
         "groups": [
           "player"
@@ -215,7 +229,8 @@
             "defense": 5
           }
         ]
-      }
+      },
+      "stashedArmors": []
     }
   ]
 }

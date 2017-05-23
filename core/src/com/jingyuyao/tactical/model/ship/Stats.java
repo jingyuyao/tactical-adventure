@@ -4,14 +4,11 @@ import java.util.Set;
 
 class Stats {
 
+  private final Set<ShipGroup> groups;
   private boolean controllable;
-  private Set<ShipGroup> groups;
   private int maxHp;
   private int hp;
   private int moveDistance;
-
-  Stats() {
-  }
 
   Stats(Set<ShipGroup> groups, int maxHp, int hp, int moveDistance) {
     this.groups = groups;

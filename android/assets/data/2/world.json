@@ -19,7 +19,11 @@
         "hp": 10,
         "moveDistance": 5
       },
+      "cockpit": {
+        "pilots": []
+      },
       "items": {
+        "consumables": [],
         "weapons": [
           {
             "type": "DirectionalWeapon",
@@ -28,107 +32,9 @@
             "attackPower": 10,
             "distance": 1
           }
-        ]
-      }
-    },
-    "3,12": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
         ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "5,14": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "6,5": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
-      }
-    },
-    "14,10": {
-      "name": "eagle",
-      "autoPilot": {
-        "type": "PassiveAutoPilot"
-      },
-      "stats": {
-        "groups": [
-          "enemy"
-        ],
-        "maxHp": 10,
-        "hp": 10,
-        "moveDistance": 5
-      },
-      "items": {
-        "weapons": [
-          {
-            "type": "DirectionalWeapon",
-            "name": "shotgun",
-            "usageLeft": 10,
-            "attackPower": 10,
-            "distance": 1
-          }
-        ]
+        "equippedArmors": [],
+        "stashedArmors": []
       }
     }
   }

@@ -5,12 +5,9 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 public class Terrain {
 
-  private String name;
-  private boolean holdShip;
-  private int moveCost;
-
-  private Terrain() {
-  }
+  private final String name;
+  private final boolean holdShip;
+  private final int moveCost;
 
   public Terrain(String name, boolean holdShip, int moveCost) {
     this.name = name;

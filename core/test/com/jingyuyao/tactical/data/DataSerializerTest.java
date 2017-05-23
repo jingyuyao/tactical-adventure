@@ -37,8 +37,14 @@ public class DataSerializerTest {
 
   private static class Dummy {
 
-    private String s;
-    private int i;
+    // I'll be damned, Gson can handle final fields.
+    private final String s;
+    private final int i;
+
+    private Dummy(String s, int i) {
+      this.s = s;
+      this.i = i;
+    }
   }
 
   private static class InstStringReader extends StringReader {
