@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.model.terrain;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.ship.Ship;
 
 public class Space implements Terrain {
 
@@ -12,7 +11,7 @@ public class Space implements Terrain {
   }
 
   @Override
-  public boolean canHold(Ship ship) {
+  public boolean canHoldShip() {
     return true;
   }
 

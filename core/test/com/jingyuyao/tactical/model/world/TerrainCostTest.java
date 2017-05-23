@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ShipCostTest {
+public class TerrainCostTest {
 
   @Mock
   private Cell cell;
@@ -26,7 +26,7 @@ public class ShipCostTest {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(cell.getTerrain()).thenReturn(terrain);
 
-    GetEdgeCost function = new ShipCost(ship);
+    GetEdgeCost function = new TerrainCost();
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(GetEdgeCost.NO_EDGE);
   }
@@ -35,9 +35,9 @@ public class ShipCostTest {
   public void cannot_hold() {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
-    when(terrain.canHold(ship)).thenReturn(false);
+    when(terrain.canHoldShip()).thenReturn(false);
 
-    GetEdgeCost function = new ShipCost(ship);
+    GetEdgeCost function = new TerrainCost();
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(GetEdgeCost.NO_EDGE);
   }
@@ -46,10 +46,10 @@ public class ShipCostTest {
   public void no_ship_can_hold() {
     when(cell.ship()).thenReturn(Optional.<Ship>absent());
     when(cell.getTerrain()).thenReturn(terrain);
-    when(terrain.canHold(ship)).thenReturn(true);
+    when(terrain.canHoldShip()).thenReturn(true);
     when(terrain.getMovementPenalty()).thenReturn(10);
 
-    GetEdgeCost function = new ShipCost(ship);
+    GetEdgeCost function = new TerrainCost();
 
     assertThat(function.getEdgeCost(cell)).isEqualTo(10);
   }

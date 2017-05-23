@@ -34,7 +34,7 @@ public class Cell {
    */
   void addShip(Ship newShip) {
     Preconditions.checkState(ship == null);
-    Preconditions.checkArgument(terrain.canHold(newShip));
+    Preconditions.checkArgument(terrain.canHoldShip());
     ship = newShip;
   }
 
