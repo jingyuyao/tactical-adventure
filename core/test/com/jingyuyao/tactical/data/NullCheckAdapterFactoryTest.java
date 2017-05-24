@@ -5,7 +5,6 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import javax.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +17,8 @@ public class NullCheckAdapterFactoryTest {
   private static final String VALID2 = "{\"hello\": \"nihao\", \"canNull\": null}";
   private static final String INVALID1 = "{\"canNull\": null}";
   private static final String INVALID2 = "{\"hello\": null}";
+  private static final String CHILD_VALID = "{\"hello\": \"nihao\", \"child\": \"hi\"}";
+  private static final String CHILD_MISSING_PARENT = "{\"child\": \"hi\"}";
 
   private Gson gson;
 
@@ -50,15 +51,38 @@ public class NullCheckAdapterFactoryTest {
     gson.fromJson(INVALID2, Dummy.class);
   }
 
+  @Test
+  public void child_valid() {
+    DummyChild dummyChild = gson.fromJson(CHILD_VALID, DummyChild.class);
+    assertThat(dummyChild.hello).isEqualTo("nihao");
+    assertThat(dummyChild.canNull).isNull();
+    assertThat(dummyChild.child).isEqualTo("hi");
+  }
+
+  @Test(expected = JsonParseException.class)
+  public void child_missing_parent_field() {
+    gson.fromJson(CHILD_MISSING_PARENT, DummyChild.class);
+  }
+
   private static class Dummy {
 
-    private final String hello;
-    @Nullable
-    private final String canNull;
+    final String hello;
+    final transient String ignoreTransient;
+    String canNull;
 
-    private Dummy(String hello, String canNull) {
+    private Dummy(String hello, String ignoreTransient) {
       this.hello = hello;
-      this.canNull = canNull;
+      this.ignoreTransient = ignoreTransient;
+    }
+  }
+
+  private static class DummyChild extends Dummy {
+
+    final String child;
+
+    private DummyChild(String hello, String ignoreTransient, String child) {
+      super(hello, ignoreTransient);
+      this.child = child;
     }
   }
 }

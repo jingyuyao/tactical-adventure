@@ -43,14 +43,10 @@ not use EventBus for things that can be cheaply polled per frame by the view.
 
 
 ### Note for serialization
-We use Gson to serialize/deserialize game objects (except for terrains). We make use of the
-runtime type adapter from gson/extra to add type information to our generic lists of ships
-and items. Each concrete classes of the generic types should be registered to the corresponding
-type adapter. Each concrete class that require Guice injection should also be registered in the
-data module. The gson deserialization reduce the need for factories as we no longer need to create
-instances by hand. All the data fields and injected by gson. Since gson requires an instance before
-injections, all model objects either need a no-args constructor or a Guice injectable constructor
-(with no assisted injections).
+We use Gson to serialize/deserialize game objects. We make use of the runtime type adapter from
+gson/extra to add type information to any generic list of objects. Each concrete classes of the
+generic types should be registered to in a `RuntimeTypeAdapterFactory`. Nulls are checked during
+deserialization of Json objects. See `NullCheckAdapterFactory` for more information.
 
 ### Note for UI
 We currently use a library called VisUI for development. It comes with its own skin files that are

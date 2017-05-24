@@ -9,11 +9,11 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import javax.annotation.Nullable;
+import java.lang.reflect.Modifier;
 
 /**
- * Check all deserialized objects does not contain any null fields except for when it is annotated
- * with {@link Nullable}.
+ * Check deserialized objects does not contain any unexpected null fields. A field is checked for
+ * null if it has {@link Modifier#FINAL} and does not have {@link Modifier#TRANSIENT}.
  */
 class NullCheckAdapterFactory implements TypeAdapterFactory {
 
@@ -31,21 +31,23 @@ class NullCheckAdapterFactory implements TypeAdapterFactory {
         T obj = delegate.read(in);
         // obj can be null when reading a `null` json value
         if (obj != null) {
-          Field[] fields = obj.getClass().getDeclaredFields();
-          for (Field field : fields) {
-            if (field.isAnnotationPresent(Nullable.class)) {
-              continue;
-            }
-            try {
-              field.setAccessible(true);
-              if (field.get(obj) == null) {
-                throw new JsonParseException(
-                    "Field " + field.getName() + " cannot be null for " + delegate.toJson(obj));
+          Class<?> current = obj.getClass();
+          while (current.getSuperclass() != null) {
+            for (Field field : current.getDeclaredFields()) {
+              int modifiers = field.getModifiers();
+              if (Modifier.isFinal(modifiers) && !Modifier.isTransient(modifiers)) {
+                try {
+                  field.setAccessible(true);
+                  if (field.get(obj) == null) {
+                    throw new JsonParseException(
+                        field + " cannot be null for " + delegate.toJson(obj));
+                  }
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                  throw new JsonParseException("Cannot access " + field, e);
+                }
               }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-              throw new JsonParseException(
-                  "Cannot access " + field.getName() + " to check for null", e);
             }
+            current = current.getSuperclass();
           }
         }
         return obj;

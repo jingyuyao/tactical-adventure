@@ -24,7 +24,6 @@ allprojects {
         guavaVersion = '20.0'
         gsonVersion = '2.8.0'
         guiceVersion = '4.1.0'
-        jsr305 = '3.0.2'
         junitVersion = '4.12'
         mockitoVersion = '2.7.22'
         truthVersion = '0.32'
@@ -81,7 +80,6 @@ project(":core") {
             // We can't allow that as it includes AOP which doesn't work on Android.
             exclude module: "guice"
         }
-        compile "com.google.code.findbugs:jsr305:$jsr305"
         // We mock what we can but we need to run some libGdx for real during testing
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         // Need the DLLs from gdx-platform to initialize headless backend
