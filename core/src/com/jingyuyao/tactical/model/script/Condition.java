@@ -1,6 +1,6 @@
 package com.jingyuyao.tactical.model.script;
 
-import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
@@ -21,9 +21,9 @@ public abstract class Condition {
   }
 
   /**
-   * Return whether or not this condition is satisfied when {@code person} dies.
+   * Return whether or not this condition is satisfied when {@code ship} is destroyed.
    */
-  boolean onDeath(Person person, World world) {
+  boolean onShipDestroyed(Ship ship, World world) {
     return false;
   }
 

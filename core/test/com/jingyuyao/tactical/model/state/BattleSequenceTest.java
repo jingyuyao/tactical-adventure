@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
@@ -12,10 +11,9 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.script.DeathEvent;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
+import com.jingyuyao.tactical.model.script.ShipDestroyed;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -51,10 +49,6 @@ public class BattleSequenceTest {
   @Mock
   private Ship ship2;
   @Mock
-  private Person dead1;
-  @Mock
-  private Person dead2;
-  @Mock
   private Script script;
   @Mock
   private Runnable runnable;
@@ -76,8 +70,6 @@ public class BattleSequenceTest {
     when(battle.getDeadCells()).thenReturn(ImmutableList.of(cell, cell2));
     when(world.removeShip(cell)).thenReturn(ship);
     when(world.removeShip(cell2)).thenReturn(ship2);
-    when(ship.getCrew()).thenReturn(ImmutableList.of(dead1, dead2));
-    when(ship2.getCrew()).thenReturn(ImmutableList.<Person>of());
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
         .thenReturn(Promise.immediate());
 
@@ -90,14 +82,17 @@ public class BattleSequenceTest {
     startBattle.start();
     inOrder.verify(battle).execute();
     inOrder.verify(world).removeShip(cell);
-    inOrder.verify(scriptRunner, times(2)).triggerScripts(scriptEventCaptor.capture(), eq(script));
-    DeathEvent event1 = TestHelpers.assertClass(scriptEventCaptor, 0, DeathEvent.class);
-    assertThat(event1.getDeath()).isSameAs(dead1);
+    inOrder.verify(scriptRunner).triggerScripts(scriptEventCaptor.capture(), eq(script));
+    ShipDestroyed event1 =
+        TestHelpers.assertClass(scriptEventCaptor.getValue(), ShipDestroyed.class);
+    assertThat(event1.getDestroyed()).isSameAs(ship);
     assertThat(event1.getWorld()).isSameAs(world);
-    DeathEvent event2 = TestHelpers.assertClass(scriptEventCaptor, 1, DeathEvent.class);
-    assertThat(event2.getDeath()).isSameAs(dead2);
-    assertThat(event2.getWorld()).isSameAs(world);
     inOrder.verify(world).removeShip(cell2);
+    inOrder.verify(scriptRunner).triggerScripts(scriptEventCaptor.capture(), eq(script));
+    ShipDestroyed event2 =
+        TestHelpers.assertClass(scriptEventCaptor.getValue(), ShipDestroyed.class);
+    assertThat(event2.getDestroyed()).isSameAs(ship2);
+    assertThat(event2.getWorld()).isSameAs(world);
     inOrder.verify(runnable).run();
   }
 }

@@ -16,7 +16,8 @@
       "names": [
         "ben",
         "kevin"
-      ]
+      ],
+      "seen": []
     },
     {
       "type": "OnTurn",

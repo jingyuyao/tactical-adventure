@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.script;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class OnTurnTest {
   @Mock
   private Turn turn2;
   @Mock
-  private Person person;
+  private Ship ship;
   @Mock
   private World world;
 
@@ -27,6 +27,6 @@ public class OnTurnTest {
     OnTurn onTurn = new OnTurn(turn1);
     assertThat(onTurn.onTurn(turn1, world)).isTrue();
     assertThat(onTurn.onTurn(turn2, world)).isFalse();
-    assertThat(onTurn.onDeath(person, world)).isFalse();
+    assertThat(onTurn.onShipDestroyed(ship, world)).isFalse();
   }
 }

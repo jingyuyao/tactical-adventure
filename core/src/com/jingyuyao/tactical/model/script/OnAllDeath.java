@@ -2,8 +2,8 @@ package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.World;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,21 +13,21 @@ import java.util.Set;
  */
 public class OnAllDeath extends Condition {
 
-  private Set<String> names;
-  private Set<String> seen = new HashSet<>();
+  private final Set<String> names;
+  private final Set<String> seen;
 
-  OnAllDeath() {
-  }
-
-  OnAllDeath(Set<String> names) {
+  OnAllDeath(Set<String> names, Set<String> seen) {
     this.names = names;
+    this.seen = seen;
   }
 
   @Override
-  boolean onDeath(Person person, World world) {
-    String name = person.getName().getId();
-    if (names.contains(name)) {
-      seen.add(name);
+  boolean onShipDestroyed(Ship ship, World world) {
+    for (Person person : ship.getCrew()) {
+      String name = person.getName().getId();
+      if (names.contains(name)) {
+        seen.add(name);
+      }
     }
     return names.equals(seen);
   }

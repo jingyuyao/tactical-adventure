@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.World;
 
 /**
@@ -9,18 +10,20 @@ import com.jingyuyao.tactical.model.world.World;
  */
 public class OnDeath extends Condition {
 
-  private String name;
-
-  OnDeath() {
-  }
+  private final String name;
 
   public OnDeath(String name) {
     this.name = name;
   }
 
   @Override
-  public boolean onDeath(Person person, World world) {
-    return name.equals(person.getName().getId());
+  public boolean onShipDestroyed(Ship ship, World world) {
+    for (Person person : ship.getCrew()) {
+      if (name.equals(person.getName().getId())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override

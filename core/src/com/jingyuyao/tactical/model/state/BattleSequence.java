@@ -4,8 +4,7 @@ import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
-import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.script.DeathEvent;
+import com.jingyuyao.tactical.model.script.ShipDestroyed;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -41,26 +40,13 @@ class BattleSequence {
   private void removeDeadShips(final Iterator<Cell> deadCells, final Runnable done) {
     if (deadCells.hasNext()) {
       Cell deadCell = deadCells.next();
-      Ship removed = world.removeShip(deadCell);
-      triggerDeaths(removed.getCrew().iterator(), new Runnable() {
-        @Override
-        public void run() {
-          removeDeadShips(deadCells, done);
-        }
-      });
-    } else {
-      done.run();
-    }
-  }
-
-  private void triggerDeaths(final Iterator<Person> deaths, final Runnable done) {
-    if (deaths.hasNext()) {
-      DeathEvent deathEvent = new DeathEvent(deaths.next(), world);
-      scriptRunner.triggerScripts(deathEvent, worldState.getScript())
+      Ship destroyed = world.removeShip(deadCell);
+      ShipDestroyed shipDestroyed = new ShipDestroyed(destroyed, world);
+      scriptRunner.triggerScripts(shipDestroyed, worldState.getScript())
           .done(new Runnable() {
             @Override
             public void run() {
-              triggerDeaths(deaths, done);
+              removeDeadShips(deadCells, done);
             }
           });
     } else {

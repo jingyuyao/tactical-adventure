@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
-import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -27,7 +26,7 @@ public class OnNoGroup extends Condition {
   }
 
   @Override
-  public boolean onDeath(Person person, World world) {
+  public boolean onShipDestroyed(Ship ship, World world) {
     return onWorld(world);
   }
 
