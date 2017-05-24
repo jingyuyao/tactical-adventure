@@ -21,9 +21,9 @@ public abstract class Condition {
   }
 
   /**
-   * Return whether or not this condition is satisfied when {@code person} dies.
+   * Return whether or not this condition is satisfied when {@code ship} is destroyed.
    */
-  boolean onShipDestroyed(Ship destroyed, World world) {
+  boolean onShipDestroyed(Ship ship, World world) {
     return false;
   }
 

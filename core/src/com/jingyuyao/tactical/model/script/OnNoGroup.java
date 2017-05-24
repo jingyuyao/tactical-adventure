@@ -26,7 +26,7 @@ public class OnNoGroup extends Condition {
   }
 
   @Override
-  public boolean onShipDestroyed(Ship destroyed, World world) {
+  public boolean onShipDestroyed(Ship ship, World world) {
     return onWorld(world);
   }
 

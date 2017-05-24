@@ -18,8 +18,8 @@ public class OnAnyDeath extends Condition {
   }
 
   @Override
-  public boolean onShipDestroyed(Ship destroyed, World world) {
-    for (Person person : destroyed.getCrew()) {
+  public boolean onShipDestroyed(Ship ship, World world) {
+    for (Person person : ship.getCrew()) {
       if (names.contains(person.getName().getId())) {
         return true;
       }
