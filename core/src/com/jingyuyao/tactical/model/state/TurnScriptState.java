@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
-import com.jingyuyao.tactical.model.script.TurnEvent;
+import com.jingyuyao.tactical.model.script.NewTurn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.World;
 
@@ -28,8 +28,8 @@ abstract class TurnScriptState extends BaseState {
     TurnStage turnStage = turn.getStage();
     Preconditions.checkState(turnStage.equals(TurnStage.START) || turnStage.equals(TurnStage.END));
     super.enter();
-    TurnEvent turnEvent = new TurnEvent(turn, world);
-    scriptRunner.triggerScripts(turnEvent, getScript())
+    NewTurn newTurn = new NewTurn(turn, world);
+    scriptRunner.triggerScripts(newTurn, getScript())
         .done(new Runnable() {
           @Override
           public void run() {

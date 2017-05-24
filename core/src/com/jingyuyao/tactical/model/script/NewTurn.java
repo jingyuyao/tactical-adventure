@@ -3,12 +3,12 @@ package com.jingyuyao.tactical.model.script;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
 
-public class TurnEvent implements ScriptEvent {
+public class NewTurn implements ScriptEvent {
 
   private final Turn turn;
   private final World world;
 
-  public TurnEvent(Turn turn, World world) {
+  public NewTurn(Turn turn, World world) {
     this.turn = turn;
     this.world = world;
   }

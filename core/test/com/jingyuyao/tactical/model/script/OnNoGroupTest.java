@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableMap;
-import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn;
@@ -31,8 +30,6 @@ public class OnNoGroupTest {
   private Ship ship1;
   @Mock
   private Ship ship2;
-  @Mock
-  private Person person;
 
   private OnNoGroup onNoGroup;
 
@@ -46,7 +43,7 @@ public class OnNoGroupTest {
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1, cell2, ship2));
 
     assertThat(onNoGroup.onTurn(turn, world)).isTrue();
-    assertThat(onNoGroup.onDeath(person, world)).isTrue();
+    assertThat(onNoGroup.onShipDestroyed(ship2, world)).isTrue();
   }
 
   @Test
@@ -55,6 +52,6 @@ public class OnNoGroupTest {
     when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
     assertThat(onNoGroup.onTurn(turn, world)).isFalse();
-    assertThat(onNoGroup.onDeath(person, world)).isFalse();
+    assertThat(onNoGroup.onShipDestroyed(ship2, world)).isFalse();
   }
 }

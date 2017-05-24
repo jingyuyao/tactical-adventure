@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.script;
 
 import com.google.common.base.Objects;
 import com.jingyuyao.tactical.model.person.Person;
+import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.Set;
 
@@ -10,18 +11,20 @@ import java.util.Set;
  */
 public class OnAnyDeath extends Condition {
 
-  private Set<String> names;
-
-  OnAnyDeath() {
-  }
+  private final Set<String> names;
 
   OnAnyDeath(Set<String> names) {
     this.names = names;
   }
 
   @Override
-  public boolean onDeath(Person person, World world) {
-    return names.contains(person.getName().getId());
+  public boolean onShipDestroyed(Ship destroyed, World world) {
+    for (Person person : destroyed.getCrew()) {
+      if (names.contains(person.getName().getId())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
