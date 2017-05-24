@@ -20,7 +20,7 @@
         "hp": 10,
         "moveDistance": 5
       },
-      "cockPit": {
+      "cockpit": {
         "pilots": []
       },
       "items": {
@@ -52,7 +52,7 @@
         "hp": 10,
         "moveDistance": 5
       },
-      "cockPit": {
+      "cockpit": {
         "pilots": []
       },
       "items": {

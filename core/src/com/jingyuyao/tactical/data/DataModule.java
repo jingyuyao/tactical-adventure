@@ -44,10 +44,13 @@ public class DataModule extends AbstractModule {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     builder.enableComplexMapKeySerialization();
+
     builder.registerTypeAdapter(ListMultimap.class, new ListMultimapAdapter());
     builder.registerTypeAdapter(Coordinate.class, new CoordinateAdapter());
     builder.registerTypeAdapter(Turn.class, new TurnAdapter());
     builder.registerTypeAdapter(ShipGroup.class, new ShipGroupAdapter());
+
+    builder.registerTypeAdapterFactory(new NullCheckAdapterFactory());
 
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
@@ -83,6 +86,7 @@ public class DataModule extends AbstractModule {
             .registerSubtype(Hull.class)
             .registerSubtype(Bulkheads.class)
     );
+
     return builder.create();
   }
 }

@@ -181,7 +181,8 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
   }
 
   public <R> TypeAdapter<R> create(Gson gson, TypeToken<R> type) {
-    if (type.getRawType() != baseType) {
+    // Fix included from https://github.com/google/gson/issues/712
+    if (type == null || !baseType.isAssignableFrom(type.getRawType())) {
       return null;
     }
 
