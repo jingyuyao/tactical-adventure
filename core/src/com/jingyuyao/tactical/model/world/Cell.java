@@ -3,13 +3,11 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ship.Ship;
-import javax.annotation.Nullable;
 
 public class Cell {
 
   private final Coordinate coordinate;
   private final Terrain terrain;
-  @Nullable
   private Ship ship;
 
   public Cell(Coordinate coordinate, Terrain terrain) {
