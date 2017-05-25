@@ -13,12 +13,12 @@ import javax.inject.Singleton;
  * An object serializer backed by {@link Gson}.
  */
 @Singleton
-class DataSerializer {
+class JsonSerializer {
 
   private final Gson gson;
 
   @Inject
-  DataSerializer(Gson gson) {
+  JsonSerializer(Gson gson) {
     this.gson = gson;
   }
 

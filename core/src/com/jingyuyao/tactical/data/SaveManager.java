@@ -13,13 +13,13 @@ import javax.inject.Singleton;
 class SaveManager {
 
   private final DataConfig dataConfig;
-  private final DataSerializer dataSerializer;
+  private final JsonSerializer jsonSerializer;
   private final Files files;
 
   @Inject
-  SaveManager(DataConfig dataConfig, DataSerializer dataSerializer, Files files) {
+  SaveManager(DataConfig dataConfig, JsonSerializer jsonSerializer, Files files) {
     this.dataConfig = dataConfig;
-    this.dataSerializer = dataSerializer;
+    this.jsonSerializer = jsonSerializer;
     this.files = files;
   }
 
@@ -70,14 +70,14 @@ class SaveManager {
   private <T> Optional<T> load(String fileName, Class<T> clazz, boolean internal) {
     FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(dataSerializer.deserialize(fileHandle.reader(), clazz));
+      return Optional.of(jsonSerializer.deserialize(fileHandle.reader(), clazz));
     }
     return Optional.absent();
   }
 
   private void save(Object data, String fileName) {
     FileHandle fileHandle = files.local(fileName);
-    dataSerializer.serialize(data, fileHandle.writer(false));
+    jsonSerializer.serialize(data, fileHandle.writer(false));
   }
 
   private void remove(String fileName) {

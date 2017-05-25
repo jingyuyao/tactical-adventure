@@ -12,16 +12,16 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DataSerializerTest {
+public class JsonSerializerTest {
 
   private static final String DUMMY = "{\"s\":\"hello\",\"i\":2}";
   private static final String DUMMY2 = "{\"str\":\"other\",\"num\":3}";
 
-  private DataSerializer dataSerializer;
+  private JsonSerializer jsonSerializer;
 
   @Before
   public void setUp() {
-    dataSerializer = new DataSerializer(new Gson());
+    jsonSerializer = new JsonSerializer(new Gson());
   }
 
   @Test
@@ -29,13 +29,13 @@ public class DataSerializerTest {
     InstStringReader reader = new InstStringReader(DUMMY);
     InstStringWriter writer = new InstStringWriter();
 
-    Dummy dummy = dataSerializer.deserialize(reader, Dummy.class);
+    Dummy dummy = jsonSerializer.deserialize(reader, Dummy.class);
 
     assertThat(dummy.s).isEqualTo("hello");
     assertThat(dummy.i).isEqualTo(2);
     assertThat(dummy.preset).isNull();
 
-    dataSerializer.serialize(dummy, writer);
+    jsonSerializer.serialize(dummy, writer);
 
     assertThat(DUMMY).isEqualTo(writer.toString());
     assertThat(reader.closed).isTrue();
@@ -46,7 +46,7 @@ public class DataSerializerTest {
   public void final_field_initialization() {
     InstStringReader reader = new InstStringReader(DUMMY2);
 
-    Dummy2 dummy2 = dataSerializer.deserialize(reader, Dummy2.class);
+    Dummy2 dummy2 = jsonSerializer.deserialize(reader, Dummy2.class);
 
     assertThat(dummy2.num).isEqualTo(2);
     assertThat(dummy2.str).isEqualTo("not replaced");

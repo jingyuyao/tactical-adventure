@@ -23,7 +23,7 @@ public class SaveManagerTest {
   @Mock
   private DataConfig dataConfig;
   @Mock
-  private DataSerializer dataSerializer;
+  private JsonSerializer jsonSerializer;
   @Mock
   private Files files;
   @Mock
@@ -43,7 +43,7 @@ public class SaveManagerTest {
 
   @Before
   public void setUp() {
-    saveManager = new SaveManager(dataConfig, dataSerializer, files);
+    saveManager = new SaveManager(dataConfig, jsonSerializer, files);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class SaveManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.reader()).thenReturn(reader);
-    when(dataSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
+    when(jsonSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
   }
@@ -67,10 +67,10 @@ public class SaveManagerTest {
     when(fileHandle1.writer(false)).thenReturn(writer);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader);
-    when(dataSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
+    when(jsonSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
-    verify(dataSerializer).serialize(gameSave, writer);
+    verify(jsonSerializer).serialize(gameSave, writer);
   }
 
   @Test
@@ -79,7 +79,7 @@ public class SaveManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
     when(fileHandle1.reader()).thenReturn(reader);
-    when(dataSerializer.deserialize(reader, LevelSave.class)).thenReturn(levelSave);
+    when(jsonSerializer.deserialize(reader, LevelSave.class)).thenReturn(levelSave);
 
     assertThat(saveManager.loadLevelSave()).hasValue(levelSave);
   }
@@ -101,7 +101,7 @@ public class SaveManagerTest {
 
     saveManager.save(gameSave);
 
-    verify(dataSerializer).serialize(gameSave, writer);
+    verify(jsonSerializer).serialize(gameSave, writer);
   }
 
   @Test
@@ -112,7 +112,7 @@ public class SaveManagerTest {
 
     saveManager.save(levelSave);
 
-    verify(dataSerializer).serialize(levelSave, writer);
+    verify(jsonSerializer).serialize(levelSave, writer);
   }
 
   @Test
