@@ -9,21 +9,25 @@ import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Internal representation of all the {@link Item} a {@link Ship} holds.
  */
-class Items {
+class Items implements Serializable {
 
-  private final List<Consumable> consumables;
-  private final List<Weapon> weapons;
+  private List<Consumable> consumables;
+  private List<Weapon> weapons;
   /**
    * Invariant: contains at most one of each class of armor.
    */
-  private final List<Armor> equippedArmors;
-  private final List<Armor> stashedArmors;
+  private List<Armor> equippedArmors;
+  private List<Armor> stashedArmors;
+
+  Items() {
+  }
 
   Items(
       List<Consumable> consumables,

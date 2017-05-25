@@ -1,14 +1,18 @@
 package com.jingyuyao.tactical.model.ship;
 
+import java.io.Serializable;
 import java.util.Set;
 
-class Stats {
+class Stats implements Serializable {
 
-  private final Set<ShipGroup> groups;
+  private Set<ShipGroup> groups;
   private boolean controllable;
   private int maxHp;
   private int hp;
   private int moveDistance;
+
+  Stats() {
+  }
 
   Stats(Set<ShipGroup> groups, int maxHp, int hp, int moveDistance) {
     this.groups = groups;

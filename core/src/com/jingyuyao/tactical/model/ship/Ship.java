@@ -10,14 +10,18 @@ import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.io.Serializable;
 
-public class Ship {
+public class Ship implements Serializable {
 
-  private final String name;
-  private final AutoPilot autoPilot;
-  private final Stats stats;
-  private final Cockpit cockpit;
-  private final Items items;
+  private String name;
+  private AutoPilot autoPilot;
+  private Stats stats;
+  private Cockpit cockpit;
+  private Items items;
+
+  Ship() {
+  }
 
   Ship(String name, AutoPilot autoPilot, Stats stats, Cockpit cockpit, Items items) {
     this.name = name;

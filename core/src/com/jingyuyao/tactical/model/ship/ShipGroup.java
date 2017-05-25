@@ -1,13 +1,17 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.base.Objects;
+import java.io.Serializable;
 
-public class ShipGroup {
+public class ShipGroup implements Serializable {
 
   public static final ShipGroup PLAYER = new ShipGroup("player");
   public static final ShipGroup ENEMY = new ShipGroup("enemy");
 
-  private final String name;
+  private String name;
+
+  ShipGroup() {
+  }
 
   public ShipGroup(String name) {
     this.name = name;
