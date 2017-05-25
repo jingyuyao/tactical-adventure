@@ -31,7 +31,7 @@ public class Movement {
   /**
    * Return the cells that are part of this movement.
    */
-  public Iterable<Cell> getCells() {
+  public Set<Cell> getCells() {
     return moveGraph.nodes();
   }
 

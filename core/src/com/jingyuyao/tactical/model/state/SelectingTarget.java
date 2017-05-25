@@ -7,12 +7,13 @@ import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.List;
 import javax.inject.Inject;
 
 public class SelectingTarget extends ControllingState {
 
   private final Weapon weapon;
-  private final ImmutableList<Target> targets;
+  private final List<Target> targets;
 
   @Inject
   SelectingTarget(
@@ -21,7 +22,7 @@ public class SelectingTarget extends ControllingState {
       StateFactory stateFactory,
       @Assisted Cell cell,
       @Assisted Weapon weapon,
-      @Assisted ImmutableList<Target> targets) {
+      @Assisted List<Target> targets) {
     super(modelBus, worldState, stateFactory, cell);
     this.weapon = weapon;
     this.targets = targets;
@@ -47,7 +48,7 @@ public class SelectingTarget extends ControllingState {
     return weapon;
   }
 
-  public ImmutableList<Target> getTargets() {
+  public List<Target> getTargets() {
     return targets;
   }
 }

@@ -1,12 +1,13 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An {@link Item} that can affect a {@link Ship}'s HP and status. Not a {@link Consumable}
@@ -53,8 +54,8 @@ public class Weapon extends Item {
     }
   }
 
-  public ImmutableList<Target> createTargets(World world, Cell from) {
-    return ImmutableList.of();
+  public List<Target> createTargets(World world, Cell from) {
+    return Collections.emptyList();
   }
 
   /**

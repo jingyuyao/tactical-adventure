@@ -115,7 +115,7 @@ public class MarkerSystemTest {
   public void moving() {
     when(markers.getMove()).thenReturn(texture1);
     when(moving.getMovement()).thenReturn(movement);
-    when(movement.getCells()).thenReturn(ImmutableList.of(cell, cell2));
+    when(movement.getCells()).thenReturn(ImmutableSet.of(cell, cell2));
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell2.getCoordinate()).thenReturn(C2);
 
