@@ -3,12 +3,16 @@ package com.jingyuyao.tactical.model.world;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ship.Ship;
+import java.io.Serializable;
 
-public class Cell {
+public class Cell implements Serializable {
 
-  private final Coordinate coordinate;
-  private final Terrain terrain;
+  private Coordinate coordinate;
+  private Terrain terrain;
   private Ship ship;
+
+  Cell() {
+  }
 
   public Cell(Coordinate coordinate, Terrain terrain) {
     this.coordinate = coordinate;

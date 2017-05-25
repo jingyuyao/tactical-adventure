@@ -1,16 +1,20 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Objects;
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * An object with a (x,y) coordinate. This class is the foundation for many of other classes and
  * algorithms so be careful when making changes.
  */
-public final class Coordinate {
+public final class Coordinate implements Serializable {
 
-  private final int x;
-  private final int y;
+  private int x;
+  private int y;
+
+  Coordinate() {
+  }
 
   public Coordinate(int x, int y) {
     this.x = x;
