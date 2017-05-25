@@ -1,26 +1,31 @@
 package com.jingyuyao.tactical.model.resource;
 
 import com.google.common.base.Objects;
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * An immutable id to resource. The resource is identified by a path and a id. Arguments can be
- * provided at creation or at run time.
+ * An immutable string key that have optional arguments. The key is identified by a bundle and a
+ * string id. Arguments can be provided at creation or at run time to create a new key. This class
+ * enables referencing external assets without having the knowledge on how to load them.
  */
-public class ResourceKey {
+public class StringKey implements Serializable {
 
-  private final ResourceKeyBundle bundle;
-  private final String id;
-  private final Object[] args;
+  private KeyBundle bundle;
+  private String id;
+  private Object[] args;
+
+  StringKey() {
+  }
 
   /**
-   * See {@link ResourceKeyBundle#get(String, Object...)}.
+   * See {@link KeyBundle#get(String, Object...)}.
    *
-   * @param bundle the {@link ResourceKeyBundle} this key belongs to
+   * @param bundle the {@link KeyBundle} this key belongs to
    * @param id the id this key
    * @param args the arguments for the resource, optional
    */
-  ResourceKey(ResourceKeyBundle bundle, String id, Object... args) {
+  StringKey(KeyBundle bundle, String id, Object... args) {
     this.bundle = bundle;
     this.id = id;
     this.args = args;
@@ -29,7 +34,7 @@ public class ResourceKey {
   /**
    * Return the bundle this key belongs to.
    */
-  public ResourceKeyBundle getBundle() {
+  public KeyBundle getBundle() {
     return bundle;
   }
 
@@ -55,10 +60,10 @@ public class ResourceKey {
   }
 
   /**
-   * Create a new {@link ResourceKey} from this key with the {@code newArgs}.
+   * Create a new {@link StringKey} from this key with the {@code newArgs}.
    */
-  public ResourceKey format(Object... newArgs) {
-    return new ResourceKey(bundle, id, newArgs);
+  public StringKey format(Object... newArgs) {
+    return new StringKey(bundle, id, newArgs);
   }
 
   @Override
@@ -69,10 +74,10 @@ public class ResourceKey {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ResourceKey resourceKey = (ResourceKey) o;
-    return Objects.equal(getBundle(), resourceKey.getBundle()) &&
-        Objects.equal(getId(), resourceKey.getId()) &&
-        Arrays.equals(getArgs(), resourceKey.getArgs());
+    StringKey stringKey = (StringKey) o;
+    return Objects.equal(getBundle(), stringKey.getBundle()) &&
+        Objects.equal(getId(), stringKey.getId()) &&
+        Arrays.equals(getArgs(), stringKey.getArgs());
   }
 
   @Override

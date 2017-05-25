@@ -2,9 +2,11 @@ package com.jingyuyao.tactical.model.battle;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Direction;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +28,11 @@ public class TargetTest {
 
   @Before
   public void setUp() {
-    target = new Target(origin, direction, ImmutableSet.of(cell1), ImmutableSet.of(cell1, cell2));
+    target =
+        new Target(
+            origin, direction,
+            Collections.singleton(cell1),
+            new HashSet<>(Arrays.asList(cell1, cell2)));
   }
 
   @Test

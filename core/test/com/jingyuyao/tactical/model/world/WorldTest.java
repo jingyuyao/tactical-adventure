@@ -16,7 +16,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.google.common.graph.ValueGraph;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
@@ -29,6 +28,8 @@ import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,7 @@ public class WorldTest {
     when(cell1.getCoordinate()).thenReturn(C1_1);
     when(cell2.getCoordinate()).thenReturn(C2_0);
 
-    world.initialize(2, ImmutableList.of(cell1, cell2), ImmutableList.of(ship1));
+    world.initialize(2, Arrays.asList(cell1, cell2), Collections.singletonList(ship1));
 
     assertThat(world.cell(C1_1)).hasValue(cell1);
     assertThat(world.cell(C2_0)).hasValue(cell2);
@@ -104,7 +105,7 @@ public class WorldTest {
     when(cell1.getCoordinate()).thenReturn(C1_1);
     when(cell2.getCoordinate()).thenReturn(C2_0);
 
-    world.initialize(2, ImmutableList.of(cell1, cell2), ImmutableList.of(ship1));
+    world.initialize(2, Arrays.asList(cell1, cell2), Collections.singletonList(ship1));
     world.reset();
 
     assertThat(world.cell(C1_1)).isAbsent();

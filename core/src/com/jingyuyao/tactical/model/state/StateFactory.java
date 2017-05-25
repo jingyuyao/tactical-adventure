@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
+import java.util.List;
 
 /**
  * Factory class for all {@link State}. God bless {@link com.google.inject.assistedinject}.
@@ -25,7 +25,7 @@ interface StateFactory {
 
   Moved createMoved(Cell cell);
 
-  SelectingTarget createSelectingTarget(Cell cell, Weapon weapon, ImmutableList<Target> targets);
+  SelectingTarget createSelectingTarget(Cell cell, Weapon weapon, List<Target> targets);
 
   UsingConsumable createUsingConsumable(Cell cell, Consumable consumable);
 

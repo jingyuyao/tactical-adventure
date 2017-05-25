@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,10 +10,10 @@ import java.util.List;
  * A {@link Turn} has a number and several stages. A turn's number and stage can ONLY go forward.
  * Rollbacks are not allowed so every action have a "permanent" consequence.
  */
-public class Turn implements Comparable<Turn> {
+public class Turn implements Serializable, Comparable<Turn> {
 
-  private final int number;
-  private final TurnStage stage;
+  private int number;
+  private TurnStage stage;
 
   public Turn() {
     this(1, TurnStage.first());

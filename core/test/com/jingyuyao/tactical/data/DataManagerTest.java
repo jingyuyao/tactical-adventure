@@ -5,13 +5,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,8 +91,8 @@ public class DataManagerTest {
   @Test
   public void save_level_progress() {
     when(world.getLevel()).thenReturn(2);
-    when(world.getWorldCells()).thenReturn(ImmutableList.of(cell1, cell2));
-    when(world.getInactiveShips()).thenReturn(ImmutableList.of(ship1));
+    when(world.getWorldCells()).thenReturn(Arrays.asList(cell1, cell2));
+    when(world.getInactiveShips()).thenReturn(Collections.singletonList(ship1));
     when(worldState.getTurn()).thenReturn(turn);
     when(worldState.getScript()).thenReturn(script);
 
@@ -136,7 +138,7 @@ public class DataManagerTest {
 
   @Test
   public void load_level_no_progress() {
-    ImmutableList<Ship> playerShips = ImmutableList.of();
+    List<Ship> playerShips = Collections.emptyList();
     when(saveManager.loadGameSave()).thenReturn(gameSave);
     when(saveManager.loadLevelSave()).thenReturn(Optional.<LevelSave>absent());
     when(gameSave.getCurrentLevel()).thenReturn(2);

@@ -5,10 +5,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.OnDeath;
@@ -19,7 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -36,22 +36,22 @@ class DialogueLoader {
     this.files = files;
   }
 
-  ListMultimap<Condition, Dialogue> getDialogues(int level) {
-    ListMultimap<Condition, Dialogue> dialogues = ArrayListMultimap.create();
-    ListMultimap<Turn, Dialogue> turnDialogues = getTurnDialogues(level);
+  Map<Condition, List<Dialogue>> getDialogues(int level) {
+    Map<Condition, List<Dialogue>> dialogues = new HashMap<>();
+    Map<Turn, List<Dialogue>> turnDialogues = getTurnDialogues(level);
     for (Turn turn : turnDialogues.keySet()) {
-      dialogues.putAll(new OnTurn(turn), turnDialogues.get(turn));
+      dialogues.put(new OnTurn(turn), turnDialogues.get(turn));
     }
-    ListMultimap<String, Dialogue> deathDialogues = getDeathDialogues();
+    Map<String, List<Dialogue>> deathDialogues = getDeathDialogues();
     for (String nameKey : deathDialogues.keySet()) {
-      dialogues.putAll(new OnDeath(nameKey), deathDialogues.get(nameKey));
+      dialogues.put(new OnDeath(nameKey), deathDialogues.get(nameKey));
     }
     return dialogues;
   }
 
-  private ListMultimap<Turn, Dialogue> getTurnDialogues(int level) {
-    ListMultimap<Turn, Dialogue> dialogueMap = ArrayListMultimap.create();
-    ResourceKeyBundle bundle = dataConfig.getLevelDialogueBundle(level);
+  private Map<Turn, List<Dialogue>> getTurnDialogues(int level) {
+    Map<Turn, List<Dialogue>> dialogueMap = new HashMap<>();
+    KeyBundle bundle = dataConfig.getLevelDialogueBundle(level);
     for (Properties dialoguesProperties : getProperties(bundle).asSet()) {
       List<DialogueKey> dialogueKeys = new ArrayList<>(dialoguesProperties.size());
       for (String rawKey : dialoguesProperties.stringPropertyNames()) {
@@ -61,20 +61,26 @@ class DialogueLoader {
       Collections.sort(dialogueKeys);
 
       for (DialogueKey key : dialogueKeys) {
-        dialogueMap.put(key.turn, create(key.nameKey, bundle.get(key.rawKey)));
+        Dialogue dialogue = create(key.nameKey, bundle.get(key.rawKey));
+        if (dialogueMap.containsKey(key.turn)) {
+          dialogueMap.get(key.turn).add(dialogue);
+        } else {
+          dialogueMap.put(key.turn, new ArrayList<>(Collections.singletonList(dialogue)));
+        }
       }
     }
     return dialogueMap;
   }
 
-  private ListMultimap<String, Dialogue> getDeathDialogues() {
-    ListMultimap<String, Dialogue> dialogueMap = ArrayListMultimap.create();
-    ResourceKeyBundle bundle = dataConfig.getDeathDialogueBundle();
+  private Map<String, List<Dialogue>> getDeathDialogues() {
+    Map<String, List<Dialogue>> dialogueMap = new HashMap<>();
+    KeyBundle bundle = dataConfig.getDeathDialogueBundle();
     Optional<Properties> dialogueProperties = getProperties(bundle);
     if (dialogueProperties.isPresent()) {
       for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
         // supports only one death dialogue per person
-        dialogueMap.put(nameKey, create(nameKey, bundle.get(nameKey)));
+        Dialogue dialogue = create(nameKey, bundle.get(nameKey));
+        dialogueMap.put(nameKey, Collections.singletonList(dialogue));
       }
     } else {
       throw new RuntimeException("death dialogue properties does not exists");
@@ -83,10 +89,10 @@ class DialogueLoader {
   }
 
   /**
-   * Return the default properties file for a given {@link ResourceKeyBundle}
+   * Return the default properties file for a given {@link KeyBundle}
    */
-  private Optional<Properties> getProperties(ResourceKeyBundle bundle) {
-    FileHandle fileHandle = files.internal(bundle.getPathWithExtensions());
+  private Optional<Properties> getProperties(KeyBundle bundle) {
+    FileHandle fileHandle = files.internal(bundle.getPathWithExtension());
     if (fileHandle.exists()) {
       Properties properties = new Properties();
       try {
@@ -101,11 +107,11 @@ class DialogueLoader {
     return Optional.absent();
   }
 
-  private Dialogue create(String nameKey, ResourceKey resourceKey) {
-    return new Dialogue(getName(nameKey), resourceKey);
+  private Dialogue create(String nameKey, StringKey stringKey) {
+    return new Dialogue(getName(nameKey), stringKey);
   }
 
-  private ResourceKey getName(String nameKey) {
+  private StringKey getName(String nameKey) {
     return dataConfig.getPersonNameBundle().get(nameKey);
   }
 

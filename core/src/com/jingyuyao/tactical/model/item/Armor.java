@@ -1,19 +1,17 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 
 public class Armor extends Item {
 
-  private final int defense;
+  private int defense;
 
-  Armor(String name, int usageLeft, int defense) {
-    super(name, usageLeft);
-    this.defense = defense;
+  Armor() {
   }
 
   @Override
-  public ResourceKey getDescription() {
+  public StringKey getDescription() {
     return ModelBundle.ITEM_DESCRIPTION.get("armor", defense);
   }
 

@@ -6,12 +6,13 @@ import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Save representation for {@link World} and {@link WorldState}.
  */
-public class LevelSave {
+public class LevelSave implements Serializable {
 
   private int level;
   private List<Cell> worldCells;
@@ -19,7 +20,7 @@ public class LevelSave {
   private Turn turn;
   private Script script;
 
-  private LevelSave() {
+  LevelSave() {
   }
 
   LevelSave(int level, List<Cell> worldCells, List<Ship> inactiveShips, Turn turn, Script script) {

@@ -1,10 +1,10 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 
 public interface Action {
 
-  ResourceKey getText();
+  StringKey getText();
 
   /**
    * Perform the action. <br/> Implementation should be simple method references. All complexity

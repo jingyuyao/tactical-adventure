@@ -8,7 +8,7 @@ import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.state.SelectingTarget;
 import com.jingyuyao.tactical.model.state.State;
@@ -33,8 +33,8 @@ class ItemPanel extends TextPanel<Item> {
     String name = textLoader.get(item.getName());
     int usage = item.getUsageLeft();
     String description = textLoader.get(item.getDescription());
-    ResourceKey resourceKey = UIBundle.ITEM_PANEL.format(name, usage, description);
-    return Optional.of(textLoader.get(resourceKey));
+    StringKey stringKey = UIBundle.ITEM_PANEL.format(name, usage, description);
+    return Optional.of(textLoader.get(stringKey));
   }
 
   @Subscribe

@@ -9,7 +9,10 @@ import com.jingyuyao.tactical.model.world.World;
  */
 public class OnTurn extends Condition {
 
-  private final Turn turn;
+  private Turn turn;
+
+  OnTurn() {
+  }
 
   public OnTurn(Turn turn) {
     this.turn = turn;

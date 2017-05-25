@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.battle;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -32,8 +31,8 @@ public class Battle {
   /**
    * Return the cells that has dead ships after this battle.
    */
-  public ImmutableList<Cell> getDeadCells() {
-    return ImmutableList.copyOf(deadCells);
+  public List<Cell> getDeadCells() {
+    return deadCells;
   }
 
   /**

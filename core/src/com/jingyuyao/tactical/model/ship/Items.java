@@ -3,27 +3,30 @@ package com.jingyuyao.tactical.model.ship;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Item;
 import com.jingyuyao.tactical.model.item.Weapon;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Internal representation of all the {@link Item} a {@link Ship} holds.
  */
-class Items {
+class Items implements Serializable {
 
-  private final List<Consumable> consumables;
-  private final List<Weapon> weapons;
+  private List<Consumable> consumables;
+  private List<Weapon> weapons;
   /**
    * Invariant: contains at most one of each class of armor.
    */
-  private final List<Armor> equippedArmors;
-  private final List<Armor> stashedArmors;
+  private List<Armor> equippedArmors;
+  private List<Armor> stashedArmors;
+
+  Items() {
+  }
 
   Items(
       List<Consumable> consumables,
@@ -36,20 +39,20 @@ class Items {
     this.equippedArmors = equippedArmors;
   }
 
-  ImmutableList<Consumable> getConsumables() {
-    return ImmutableList.copyOf(consumables);
+  List<Consumable> getConsumables() {
+    return consumables;
   }
 
-  ImmutableList<Weapon> getWeapons() {
-    return ImmutableList.copyOf(weapons);
+  List<Weapon> getWeapons() {
+    return weapons;
   }
 
-  ImmutableList<Armor> getEquippedArmors() {
-    return ImmutableList.copyOf(equippedArmors);
+  List<Armor> getEquippedArmors() {
+    return equippedArmors;
   }
 
-  ImmutableList<Armor> getStashedArmors() {
-    return ImmutableList.copyOf(stashedArmors);
+  List<Armor> getStashedArmors() {
+    return stashedArmors;
   }
 
   int getDefense() {

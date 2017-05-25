@@ -1,6 +1,5 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.Multimaps;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
@@ -60,7 +59,7 @@ class ScriptRunner {
    */
   private Promise triggerDialogues(ScriptEvent event, Script script) {
     Promise promise = new Promise();
-    triggerDialogues(event, Multimaps.asMap(script.getDialogues()).entrySet().iterator(), promise);
+    triggerDialogues(event, script.getDialogues().entrySet().iterator(), promise);
     return promise;
   }
 

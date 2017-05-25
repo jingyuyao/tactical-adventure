@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
@@ -15,6 +14,8 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +60,7 @@ public class SelectingTargetTest {
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
     selectingTarget = new SelectingTarget(
-        modelBus, worldState, stateFactory, cell, weapon, ImmutableList.of(target1, target2));
+        modelBus, worldState, stateFactory, cell, weapon, Arrays.asList(target1, target2));
   }
 
   @Test
@@ -101,7 +102,7 @@ public class SelectingTargetTest {
 
   @Test
   public void actions() {
-    ImmutableList<Action> actions = selectingTarget.getActions();
+    List<Action> actions = selectingTarget.getActions();
 
     assertThat(actions).hasSize(1);
     assertThat(actions.get(0)).isInstanceOf(BackAction.class);

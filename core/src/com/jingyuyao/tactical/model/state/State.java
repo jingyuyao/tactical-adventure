@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.List;
 
 public interface State {
 
@@ -29,5 +29,5 @@ public interface State {
   /**
    * Return the list of {@link Action} can be taken in this state.
    */
-  ImmutableList<Action> getActions();
+  List<Action> getActions();
 }

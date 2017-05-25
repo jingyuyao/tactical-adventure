@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.battle;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Direction;
 import java.util.Set;
@@ -10,8 +9,8 @@ public class Target {
 
   private final Cell origin;
   private final Direction direction;
-  private final ImmutableSet<Cell> selectCells;
-  private final ImmutableSet<Cell> targetCells;
+  private final Set<Cell> selectCells;
+  private final Set<Cell> targetCells;
 
   public Target(Cell origin, Set<Cell> selectCells, Set<Cell> targetCells) {
     this(origin, null, selectCells, targetCells);
@@ -20,8 +19,8 @@ public class Target {
   public Target(Cell origin, Direction direction, Set<Cell> selectCells, Set<Cell> targetCells) {
     this.origin = origin;
     this.direction = direction;
-    this.selectCells = ImmutableSet.copyOf(selectCells);
-    this.targetCells = ImmutableSet.copyOf(targetCells);
+    this.selectCells = selectCells;
+    this.targetCells = targetCells;
   }
 
   public Cell getOrigin() {
@@ -40,11 +39,11 @@ public class Target {
     return targetCells.contains(cell);
   }
 
-  public ImmutableSet<Cell> getSelectCells() {
+  public Set<Cell> getSelectCells() {
     return selectCells;
   }
 
-  public ImmutableSet<Cell> getTargetCells() {
+  public Set<Cell> getTargetCells() {
     return targetCells;
   }
 }

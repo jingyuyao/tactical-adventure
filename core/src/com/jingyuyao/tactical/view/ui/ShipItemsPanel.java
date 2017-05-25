@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -72,8 +72,8 @@ class ShipItemsPanel extends VisTable {
     addText(item.getDescription());
   }
 
-  private void addText(ResourceKey resourceKey) {
-    add(new VisLabel(textLoader.get(resourceKey)));
+  private void addText(StringKey stringKey) {
+    add(new VisLabel(textLoader.get(stringKey)));
   }
 
   private void addText(int number) {

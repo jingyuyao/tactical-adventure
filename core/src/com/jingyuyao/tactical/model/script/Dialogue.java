@@ -1,22 +1,26 @@
 package com.jingyuyao.tactical.model.script;
 
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
+import java.io.Serializable;
 
-public class Dialogue {
+public class Dialogue implements Serializable {
 
-  private final ResourceKey name;
-  private final ResourceKey text;
+  private StringKey name;
+  private StringKey text;
 
-  public Dialogue(ResourceKey name, ResourceKey text) {
+  Dialogue() {
+  }
+
+  public Dialogue(StringKey name, StringKey text) {
     this.name = name;
     this.text = text;
   }
 
-  public ResourceKey getName() {
+  public StringKey getName() {
     return name;
   }
 
-  public ResourceKey getText() {
+  public StringKey getText() {
     return text;
   }
 }

@@ -1,10 +1,11 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Collections;
+import java.util.List;
 
 class BaseState implements State {
 
@@ -35,8 +36,8 @@ class BaseState implements State {
   }
 
   @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.of();
+  public List<Action> getActions() {
+    return Collections.emptyList();
   }
 
   ModelBus getModelBus() {

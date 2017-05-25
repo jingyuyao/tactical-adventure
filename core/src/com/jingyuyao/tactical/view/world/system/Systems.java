@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view.world.system;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +24,7 @@ public class Systems {
       MovingSystem movingSystem,
       RemoveSystem removeSystem,
       RenderSystem renderSystem) {
-    this.systems = ImmutableList.of(
+    this.systems = Arrays.asList(
         animationSystem,
         shipSystem,
         effectsSystem,

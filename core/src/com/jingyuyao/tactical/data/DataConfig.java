@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.data;
 
+import com.jingyuyao.tactical.model.resource.KeyBundle;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -57,15 +57,15 @@ public class DataConfig {
     return "moveCost";
   }
 
-  ResourceKeyBundle getLevelDialogueBundle(int level) {
+  KeyBundle getLevelDialogueBundle(int level) {
     return ModelBundle.getLevelDialogue(level);
   }
 
-  ResourceKeyBundle getDeathDialogueBundle() {
+  KeyBundle getDeathDialogueBundle() {
     return ModelBundle.DEATH_DIALOGUE;
   }
 
-  ResourceKeyBundle getPersonNameBundle() {
+  KeyBundle getPersonNameBundle() {
     return ModelBundle.PERSON_NAME;
   }
 }

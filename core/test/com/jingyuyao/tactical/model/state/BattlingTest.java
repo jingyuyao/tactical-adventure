@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
@@ -16,6 +15,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -115,7 +115,7 @@ public class BattlingTest {
 
   @Test
   public void actions() {
-    ImmutableList<Action> actions = battling.getActions();
+    List<Action> actions = battling.getActions();
     assertThat(actions).hasSize(2);
     assertThat(actions.get(0)).isInstanceOf(AttackAction.class);
     assertThat(actions.get(1)).isInstanceOf(BackAction.class);

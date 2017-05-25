@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.InstantMoveShip;
 import com.jingyuyao.tactical.model.event.MoveShip;
@@ -17,6 +15,7 @@ import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.WorldModule.InactiveShips;
 import com.jingyuyao.tactical.model.world.WorldModule.WorldCells;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -82,8 +81,8 @@ public class World implements GetNeighbors {
     return maxWidth;
   }
 
-  public ImmutableList<Cell> getWorldCells() {
-    return ImmutableList.copyOf(worldCells.values());
+  public List<Cell> getWorldCells() {
+    return new ArrayList<>(worldCells.values());
   }
 
   public Optional<Cell> cell(int x, int y) {
@@ -128,18 +127,18 @@ public class World implements GetNeighbors {
   /**
    * Return a snapshot of all the ships in the world.
    */
-  public ImmutableMap<Cell, Ship> getShipSnapshot() {
-    ImmutableMap.Builder<Cell, Ship> builder = new ImmutableMap.Builder<>();
+  public Map<Cell, Ship> getShipSnapshot() {
+    Map<Cell, Ship> shipMap = new HashMap<>();
     for (Cell cell : worldCells.values()) {
       for (Ship ship : cell.ship().asSet()) {
-        builder.put(cell, ship);
+        shipMap.put(cell, ship);
       }
     }
-    return builder.build();
+    return shipMap;
   }
 
-  public ImmutableList<Ship> getInactiveShips() {
-    return ImmutableList.copyOf(inactiveShips);
+  public List<Ship> getInactiveShips() {
+    return inactiveShips;
   }
 
   /**

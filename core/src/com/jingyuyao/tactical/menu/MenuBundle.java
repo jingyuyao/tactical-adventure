@@ -1,15 +1,15 @@
 package com.jingyuyao.tactical.menu;
 
-import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
+import com.jingyuyao.tactical.model.resource.StringKey;
 
 class MenuBundle {
 
-  private static final ResourceKeyBundle BUNDLE = new ResourceKeyBundle("i18n/menu/Menu");
-  static final ResourceKey PLAY_BTN = BUNDLE.get("playBtn");
-  static final ResourceKey RESET_BTN = BUNDLE.get("resetBtn");
-  static final ResourceKey LEVEL_INFO = BUNDLE.get("levelInfo");
-  static final ResourceKey HAS_PROGRESS = BUNDLE.get("hasProgress");
-  static final ResourceKey NO_PROGRESS = BUNDLE.get("noProgress");
+  private static final KeyBundle BUNDLE = KeyBundle.i18n("menu/Menu");
+  static final StringKey PLAY_BTN = BUNDLE.get("playBtn");
+  static final StringKey RESET_BTN = BUNDLE.get("resetBtn");
+  static final StringKey LEVEL_INFO = BUNDLE.get("levelInfo");
+  static final StringKey HAS_PROGRESS = BUNDLE.get("hasProgress");
+  static final StringKey NO_PROGRESS = BUNDLE.get("noProgress");
 
 }

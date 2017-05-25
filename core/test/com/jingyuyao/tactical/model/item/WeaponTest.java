@@ -5,10 +5,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Arrays;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +36,7 @@ public class WeaponTest {
 
   @Before
   public void setUp() {
-    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
+    when(target.getTargetCells()).thenReturn(new HashSet<Cell>(Arrays.asList(cell1, cell2)));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.getDefense()).thenReturn(3);

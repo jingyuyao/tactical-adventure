@@ -1,10 +1,11 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 
 public class Battling extends ControllingState {
@@ -35,8 +36,8 @@ public class Battling extends ControllingState {
   }
 
   @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.of(new AttackAction(this), new BackAction(this));
+  public List<Action> getActions() {
+    return Arrays.asList(new AttackAction(this), new BackAction(this));
   }
 
   public Battle getBattle() {

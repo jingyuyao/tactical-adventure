@@ -3,12 +3,13 @@ package com.jingyuyao.tactical.model.script;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
+import java.io.Serializable;
 
 /**
  * A condition that can be satisfied given a {@link ScriptEvent}. Base implementation will fail on
  * all events. Override methods to provide functionality.
  */
-public abstract class Condition {
+public abstract class Condition implements Serializable {
 
   Condition() {
   }

@@ -1,12 +1,13 @@
 package com.jingyuyao.tactical.model.item;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An {@link Item} that can affect a {@link Ship}'s HP and status. Not a {@link Consumable}
@@ -14,9 +15,12 @@ import com.jingyuyao.tactical.model.world.World;
  */
 public class Weapon extends Item {
 
-  private final int attackPower;
-  private final float lifeStealRate;
-  private final float recoilRate;
+  private int attackPower;
+  private float lifeStealRate;
+  private float recoilRate;
+
+  Weapon() {
+  }
 
   Weapon(String name, int usageLeft, int attackPower, float lifeStealRate, float recoilRate) {
     super(name, usageLeft);
@@ -26,7 +30,7 @@ public class Weapon extends Item {
   }
 
   @Override
-  public ResourceKey getDescription() {
+  public StringKey getDescription() {
     if (lifeStealRate > 0) {
       return ModelBundle.ITEM_DESCRIPTION
           .get("lifeStealWeapon", attackPower, lifeStealRate * 100);
@@ -50,8 +54,8 @@ public class Weapon extends Item {
     }
   }
 
-  public ImmutableList<Target> createTargets(World world, Cell from) {
-    return ImmutableList.of();
+  public List<Target> createTargets(World world, Cell from) {
+    return Collections.emptyList();
   }
 
   /**

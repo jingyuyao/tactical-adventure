@@ -5,8 +5,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
@@ -14,6 +12,7 @@ import com.jingyuyao.tactical.model.script.DeactivateGroup;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import java.io.Reader;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,13 +68,14 @@ public class ScriptLoaderTest {
     when(files.internal(LEVEL_SCRIPT)).thenReturn(fileHandle);
     when(fileHandle.reader()).thenReturn(reader);
     when(dataSerializer.deserialize(reader, LevelScript.class)).thenReturn(levelScript);
-    when(levelScript.getWinConditions()).thenReturn(ImmutableList.of(condition1));
-    when(levelScript.getLoseConditions()).thenReturn(ImmutableList.of(condition2));
+    when(levelScript.getWinConditions()).thenReturn(Collections.singletonList(condition1));
+    when(levelScript.getLoseConditions()).thenReturn(Collections.singletonList(condition2));
     when(levelScript.getGroupActivations())
         .thenReturn(ImmutableMap.of(condition4, activateGroup1));
     when(levelScript.getGroupDeactivations())
         .thenReturn(ImmutableMap.of(condition5, deactivateGroup1));
-    when(dialogueLoader.getDialogues(2)).thenReturn(ImmutableListMultimap.of(condition3, dialogue));
+    when(dialogueLoader.getDialogues(2))
+        .thenReturn(ImmutableMap.of(condition3, Collections.singletonList(dialogue)));
 
     Script script = scriptLoader.load(2);
 
@@ -83,6 +83,7 @@ public class ScriptLoaderTest {
     assertThat(script.getLoseConditions()).containsExactly(condition2);
     assertThat(script.getGroupActivations()).containsExactly(condition4, activateGroup1);
     assertThat(script.getGroupDeactivations()).containsExactly(condition5, deactivateGroup1);
-    assertThat(script.getDialogues()).containsEntry(condition3, dialogue);
+    assertThat(script.getDialogues()).containsKey(condition3);
+    assertThat(script.getDialogues().get(condition3)).containsExactly(dialogue);
   }
 }

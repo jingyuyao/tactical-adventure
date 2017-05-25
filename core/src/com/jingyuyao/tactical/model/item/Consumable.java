@@ -7,8 +7,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
  */
 public class Consumable extends Item {
 
-  Consumable(String name, int usageLeft) {
-    super(name, usageLeft);
+  Consumable() {
   }
 
   /**

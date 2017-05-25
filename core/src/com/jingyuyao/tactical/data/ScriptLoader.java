@@ -2,7 +2,6 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.collect.ListMultimap;
 import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.DeactivateGroup;
@@ -38,7 +37,7 @@ class ScriptLoader {
     LevelScript levelScript = dataSerializer.deserialize(fileHandle.reader(), LevelScript.class);
     List<Condition> winConditions = levelScript.getWinConditions();
     List<Condition> loseConditions = levelScript.getLoseConditions();
-    ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(level);
+    Map<Condition, List<Dialogue>> dialogues = dialogueLoader.getDialogues(level);
     Map<Condition, ActivateGroup> groupActivations = levelScript.getGroupActivations();
     Map<Condition, DeactivateGroup> groupDeactivations = levelScript.getGroupDeactivations();
 

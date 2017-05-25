@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
@@ -17,6 +16,7 @@ import com.jingyuyao.tactical.model.script.ShipDestroyed;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,7 +67,7 @@ public class BattleSequenceTest {
   @Test
   public void start() {
     when(worldState.getScript()).thenReturn(script);
-    when(battle.getDeadCells()).thenReturn(ImmutableList.of(cell, cell2));
+    when(battle.getDeadCells()).thenReturn(Arrays.asList(cell, cell2));
     when(world.removeShip(cell)).thenReturn(ship);
     when(world.removeShip(cell2)).thenReturn(ship2);
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))

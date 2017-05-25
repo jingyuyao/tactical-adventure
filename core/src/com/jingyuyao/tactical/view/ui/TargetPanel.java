@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.event.WorldReset;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Battling;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -33,8 +33,8 @@ class TargetPanel extends TextPanel<Battling> {
       for (Ship ship : cell.ship().asSet()) {
         String name = textLoader.get(ship.getName());
         int hp = ship.getHp();
-        ResourceKey resourceKey = UIBundle.TARGET_PANEL_ITEM.format(name, hp);
-        builder.append(textLoader.get(resourceKey));
+        StringKey stringKey = UIBundle.TARGET_PANEL_ITEM.format(name, hp);
+        builder.append(textLoader.get(stringKey));
       }
     }
     return Optional.of(builder.toString());

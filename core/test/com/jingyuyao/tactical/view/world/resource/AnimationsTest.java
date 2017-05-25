@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
@@ -53,7 +53,7 @@ public class AnimationsTest {
   @Mock
   private Item item;
   @Mock
-  private ResourceKey resourceKey;
+  private StringKey stringKey;
   @Captor
   private ArgumentCaptor<LoopAnimation> animationCaptor;
   @Captor
@@ -78,8 +78,8 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(SHIP_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(SHIP_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
-    when(ship.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getPath()).thenReturn(SHIP_ASSET);
+    when(ship.getAnimation()).thenReturn(stringKey);
+    when(stringKey.getPath()).thenReturn(SHIP_ASSET);
 
     LoopAnimation animation = animations.get(ship);
 
@@ -96,8 +96,8 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(SHIP_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(SHIP_ASSET)).thenReturn(cached);
-    when(ship.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getPath()).thenReturn(SHIP_ASSET);
+    when(ship.getAnimation()).thenReturn(stringKey);
+    when(stringKey.getPath()).thenReturn(SHIP_ASSET);
 
     LoopAnimation animation = animations.get(ship);
 
@@ -110,8 +110,8 @@ public class AnimationsTest {
   public void get_ship_not_empty() {
     when(loopAnimationCache.containsKey(SHIP_ASSET)).thenReturn(true);
     when(loopAnimationCache.get(SHIP_ASSET)).thenReturn(mockLoopAnimation);
-    when(ship.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getPath()).thenReturn(SHIP_ASSET);
+    when(ship.getAnimation()).thenReturn(stringKey);
+    when(stringKey.getPath()).thenReturn(SHIP_ASSET);
 
     assertThat(animations.get(ship)).isSameAs(mockLoopAnimation);
     verify(loopAnimationCache).containsKey(SHIP_ASSET);
@@ -126,8 +126,8 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(ITEM_ASSET)).thenReturn(false);
     when(textureAtlas.findRegions(ITEM_ASSET)).thenReturn(atlasRegions);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
-    when(item.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getPath()).thenReturn(ITEM_ASSET);
+    when(item.getAnimation()).thenReturn(stringKey);
+    when(stringKey.getPath()).thenReturn(ITEM_ASSET);
 
     SingleAnimation animation = animations.get(item);
 
@@ -142,8 +142,8 @@ public class AnimationsTest {
     when(worldTextureCache.containsKey(ITEM_ASSET)).thenReturn(true);
     WorldTexture[] cached = new WorldTexture[]{worldTexture};
     when(worldTextureCache.get(ITEM_ASSET)).thenReturn(cached);
-    when(item.getAnimation()).thenReturn(resourceKey);
-    when(resourceKey.getPath()).thenReturn(ITEM_ASSET);
+    when(item.getAnimation()).thenReturn(stringKey);
+    when(stringKey.getPath()).thenReturn(ITEM_ASSET);
 
     SingleAnimation animation = animations.get(item);
 

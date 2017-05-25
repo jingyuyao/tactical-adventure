@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.model.item;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,23 +24,23 @@ public class ItemTest {
 
   @Test
   public void get_resource_key() {
-    ResourceKey resourceKey = item.getAnimation();
-    assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.WEAPON_ANIMATIONS);
-    assertThat(resourceKey.getId()).isEqualTo(name);
+    StringKey stringKey = item.getAnimation();
+    assertThat(stringKey.getBundle()).isSameAs(ModelBundle.WEAPON_ANIMATIONS);
+    assertThat(stringKey.getId()).isEqualTo(name);
   }
 
   @Test
   public void get_name() {
-    ResourceKey resourceKey = item.getName();
-    assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.ITEM_NAME);
-    assertThat(resourceKey.getId()).isEqualTo(name);
+    StringKey stringKey = item.getName();
+    assertThat(stringKey.getBundle()).isSameAs(ModelBundle.ITEM_NAME);
+    assertThat(stringKey.getId()).isEqualTo(name);
   }
 
   @Test
   public void get_description() {
-    ResourceKey resourceKey = item.getDescription();
-    assertThat(resourceKey.getBundle()).isSameAs(ModelBundle.ITEM_DESCRIPTION);
-    assertThat(resourceKey.getId()).isEqualTo(name);
+    StringKey stringKey = item.getDescription();
+    assertThat(stringKey.getBundle()).isSameAs(ModelBundle.ITEM_DESCRIPTION);
+    assertThat(stringKey.getId()).isEqualTo(name);
   }
 
   @Test

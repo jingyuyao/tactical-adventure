@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.state;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -16,6 +15,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class StateModuleTest {
     stateFactory.createWaiting();
     stateFactory.createMoving(cell, movement);
     stateFactory.createMoved(cell);
-    stateFactory.createSelectingTarget(cell, weapon, ImmutableList.<Target>of());
+    stateFactory.createSelectingTarget(cell, weapon, Collections.<Target>emptyList());
     stateFactory.createUsingConsumable(cell, consumable);
     stateFactory.createBattling(cell, battle);
     stateFactory.createRetaliating();

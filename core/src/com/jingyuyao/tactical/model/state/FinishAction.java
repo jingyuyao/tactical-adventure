@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 
 class FinishAction implements Action {
 
@@ -12,7 +12,7 @@ class FinishAction implements Action {
   }
 
   @Override
-  public ResourceKey getText() {
+  public StringKey getText() {
     return ModelBundle.ACTION.get("finish");
   }
 

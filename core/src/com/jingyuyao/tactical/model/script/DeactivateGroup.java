@@ -1,12 +1,13 @@
 package com.jingyuyao.tactical.model.script;
 
 import com.jingyuyao.tactical.model.ship.ShipGroup;
+import java.io.Serializable;
 
-public class DeactivateGroup {
+public class DeactivateGroup implements Serializable {
 
   private ShipGroup group;
 
-  private DeactivateGroup() {
+  DeactivateGroup() {
   }
 
   public ShipGroup getGroup() {

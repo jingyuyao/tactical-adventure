@@ -5,10 +5,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Arrays;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +49,7 @@ public class BattleTest {
   public void execute_attacker_alive() {
     when(attackerCell.ship()).thenReturn(Optional.of(attacker));
     when(attacker.getHp()).thenReturn(10);
-    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
+    when(target.getTargetCells()).thenReturn(new HashSet<>(Arrays.asList(cell1, cell2)));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(ship1.getHp()).thenReturn(0);
     when(cell2.ship()).thenReturn(Optional.of(ship2));
@@ -67,7 +68,7 @@ public class BattleTest {
   public void execute_attacker_dead() {
     when(attackerCell.ship()).thenReturn(Optional.of(attacker));
     when(attacker.getHp()).thenReturn(0);
-    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell1, cell2));
+    when(target.getTargetCells()).thenReturn(new HashSet<>(Arrays.asList(cell1, cell2)));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(ship1.getHp()).thenReturn(0);
     when(cell2.ship()).thenReturn(Optional.of(ship2));

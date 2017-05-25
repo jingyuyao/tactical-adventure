@@ -1,8 +1,10 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.graph.Graph;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,7 +33,7 @@ public class Movement {
   /**
    * Return the cells that are part of this movement.
    */
-  public Iterable<Cell> getCells() {
+  public Set<Cell> getCells() {
     return moveGraph.nodes();
   }
 
@@ -63,19 +65,20 @@ public class Movement {
    * @return A path to {@code dest} from the first node in the graph or an empty list if dest is not
    * in the graph
    */
-  private ImmutableList<Cell> getTrackTo(Graph<Cell> graph, Cell dest) {
-    ImmutableList.Builder<Cell> builder = ImmutableList.builder();
-    builder.add(dest);
+  private List<Cell> getTrackTo(Graph<Cell> graph, Cell dest) {
+    List<Cell> track = new ArrayList<>();
+    track.add(dest);
 
     Set<Cell> predecessors = graph.predecessors(dest);
     while (predecessors.size() != 0) {
       Preconditions.checkState(
           predecessors.size() == 1, "getTrackTo encountered a node with multiple predecessors");
       Cell predecessor = predecessors.iterator().next();
-      builder.add(predecessor);
+      track.add(predecessor);
       predecessors = graph.predecessors(predecessor);
     }
 
-    return builder.build().reverse();
+    Collections.reverse(track);
+    return track;
   }
 }

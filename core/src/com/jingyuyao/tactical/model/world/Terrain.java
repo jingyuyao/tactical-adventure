@@ -1,13 +1,17 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
+import java.io.Serializable;
 
-public class Terrain {
+public class Terrain implements Serializable {
 
-  private final String name;
-  private final boolean holdShip;
-  private final int moveCost;
+  private String name;
+  private boolean holdShip;
+  private int moveCost;
+
+  Terrain() {
+  }
 
   public Terrain(String name, boolean holdShip, int moveCost) {
     this.name = name;
@@ -15,7 +19,7 @@ public class Terrain {
     this.moveCost = moveCost;
   }
 
-  public ResourceKey getName() {
+  public StringKey getName() {
     return ModelBundle.TERRAIN_NAME.get(name);
   }
 

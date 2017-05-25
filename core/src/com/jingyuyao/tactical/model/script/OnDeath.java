@@ -10,7 +10,10 @@ import com.jingyuyao.tactical.model.world.World;
  */
 public class OnDeath extends Condition {
 
-  private final String name;
+  private String name;
+
+  OnDeath() {
+  }
 
   public OnDeath(String name) {
     this.name = name;
