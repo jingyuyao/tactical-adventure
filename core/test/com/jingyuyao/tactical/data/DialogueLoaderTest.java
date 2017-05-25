@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
-import com.google.common.collect.ListMultimap;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.resource.KeyBundle;
@@ -15,6 +14,7 @@ import com.jingyuyao.tactical.model.script.OnTurn;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class DialogueLoaderTest {
 
   @Test
   public void get_dialogues() {
-    ListMultimap<Condition, Dialogue> dialogues = dialogueLoader.getDialogues(2);
+    Map<Condition, List<Dialogue>> dialogues = dialogueLoader.getDialogues(2);
 
     List<Dialogue> start1Dialogues = dialogues.get(new OnTurn(new Turn(1, TurnStage.START)));
     assertThat(start1Dialogues).hasSize(2);
@@ -72,7 +72,7 @@ public class DialogueLoaderTest {
     assertThat(end1Dialogues.get(1).getText())
         .isEqualTo(LEVEL_DIALOGUE.get("1-END-fourth-1"));
 
-    assertThat(dialogues.get(new OnTurn(new Turn(2, TurnStage.START)))).isEmpty();
+    assertThat(dialogues.get(new OnTurn(new Turn(2, TurnStage.START)))).isNull();
 
     List<Dialogue> start3Dialogues = dialogues.get(new OnTurn(new Turn(3, TurnStage.START)));
     assertThat(start3Dialogues).hasSize(1);
@@ -80,7 +80,7 @@ public class DialogueLoaderTest {
     assertThat(start3Dialogues.get(0).getText())
         .isEqualTo(LEVEL_DIALOGUE.get("3-START-fifth-0"));
 
-    assertThat(dialogues.get(new OnTurn(new Turn(9001, TurnStage.START)))).isEmpty();
+    assertThat(dialogues.get(new OnTurn(new Turn(9001, TurnStage.START)))).isNull();
 
     List<Dialogue> deadDialogues = dialogues.get(new OnDeath("dead"));
     assertThat(deadDialogues).hasSize(1);
@@ -92,6 +92,6 @@ public class DialogueLoaderTest {
     assertThat(dead2Dialogues.get(0).getName()).isEqualTo(NAME.get("dead2"));
     assertThat(dead2Dialogues.get(0).getText()).isEqualTo(DEATH_DIALOGUE.get("dead2"));
 
-    assertThat(dialogues.get(new OnDeath("never-gonna-give-you-up"))).isEmpty();
+    assertThat(dialogues.get(new OnDeath("never-gonna-give-you-up"))).isNull();
   }
 }
