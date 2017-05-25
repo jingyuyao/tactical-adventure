@@ -13,8 +13,11 @@ import java.util.Set;
  */
 public class OnAllDeath extends Condition {
 
-  private final Set<String> names;
-  private final Set<String> seen;
+  private Set<String> names;
+  private Set<String> seen;
+
+  OnAllDeath() {
+  }
 
   OnAllDeath(Set<String> names, Set<String> seen) {
     this.names = names;

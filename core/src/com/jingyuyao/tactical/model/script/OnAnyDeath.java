@@ -11,7 +11,10 @@ import java.util.Set;
  */
 public class OnAnyDeath extends Condition {
 
-  private final Set<String> names;
+  private Set<String> names;
+
+  OnAnyDeath() {
+  }
 
   OnAnyDeath(Set<String> names) {
     this.names = names;
