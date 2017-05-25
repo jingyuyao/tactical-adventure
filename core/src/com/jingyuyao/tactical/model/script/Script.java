@@ -1,15 +1,19 @@
 package com.jingyuyao.tactical.model.script;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Script {
+public class Script implements Serializable {
 
-  private final List<Condition> winConditions;
-  private final List<Condition> loseConditions;
-  private final Map<Condition, List<Dialogue>> dialogues;
-  private final Map<Condition, ActivateGroup> groupActivations;
-  private final Map<Condition, DeactivateGroup> groupDeactivations;
+  private List<Condition> winConditions;
+  private List<Condition> loseConditions;
+  private Map<Condition, List<Dialogue>> dialogues;
+  private Map<Condition, ActivateGroup> groupActivations;
+  private Map<Condition, DeactivateGroup> groupDeactivations;
+
+  Script() {
+  }
 
   public Script(
       List<Condition> winConditions,
