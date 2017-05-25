@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -40,8 +40,8 @@ public class SelectingTarget extends ControllingState {
   }
 
   @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(new BackAction(this));
+  public List<Action> getActions() {
+    return Collections.<Action>singletonList(new BackAction(this));
   }
 
   public Weapon getWeapon() {

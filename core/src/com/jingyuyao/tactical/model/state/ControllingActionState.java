@@ -1,12 +1,12 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.ArrayList;
 import java.util.List;
 
 class ControllingActionState extends ControllingState {
@@ -24,17 +24,17 @@ class ControllingActionState extends ControllingState {
   }
 
   @Override
-  public ImmutableList<Action> getActions() {
-    ImmutableList.Builder<Action> builder = ImmutableList.builder();
+  public List<Action> getActions() {
+    List<Action> actions = new ArrayList<>();
     for (Weapon weapon : getShip().getWeapons()) {
-      builder.add(new SelectWeaponAction(this, weapon));
+      actions.add(new SelectWeaponAction(this, weapon));
     }
     for (Consumable consumable : getShip().getConsumables()) {
-      builder.add(new SelectConsumableAction(this, consumable));
+      actions.add(new SelectConsumableAction(this, consumable));
     }
-    builder.add(new FinishAction(this));
-    builder.add(new BackAction(this));
-    return builder.build();
+    actions.add(new FinishAction(this));
+    actions.add(new BackAction(this));
+    return actions;
   }
 
   void selectWeapon(Weapon weapon) {

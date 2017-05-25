@@ -17,6 +17,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,7 +120,7 @@ public class MovedTest {
     when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
     when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
 
-    ImmutableList<Action> actions = moved.getActions();
+    List<Action> actions = moved.getActions();
 
     assertThat(actions).hasSize(4);
     assertThat(actions.get(0)).isInstanceOf(SelectWeaponAction.class);

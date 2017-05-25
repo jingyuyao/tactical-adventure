@@ -1,13 +1,14 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -47,8 +48,8 @@ public class Waiting extends BaseState {
   }
 
   @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.<Action>of(new EndTurnAction(this));
+  public List<Action> getActions() {
+    return Collections.<Action>singletonList(new EndTurnAction(this));
   }
 
   void endTurn() {

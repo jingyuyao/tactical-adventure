@@ -1,10 +1,11 @@
 package com.jingyuyao.tactical.model.state;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.assistedinject.Assisted;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 
 public class UsingConsumable extends ControllingState {
@@ -23,8 +24,8 @@ public class UsingConsumable extends ControllingState {
   }
 
   @Override
-  public ImmutableList<Action> getActions() {
-    return ImmutableList.of(
+  public List<Action> getActions() {
+    return Arrays.asList(
         new UseConsumableAction(this),
         new BackAction(this)
     );

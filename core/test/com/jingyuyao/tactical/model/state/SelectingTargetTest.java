@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.model.event.ExitState;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,7 +102,7 @@ public class SelectingTargetTest {
 
   @Test
   public void actions() {
-    ImmutableList<Action> actions = selectingTarget.getActions();
+    List<Action> actions = selectingTarget.getActions();
 
     assertThat(actions).hasSize(1);
     assertThat(actions.get(0)).isInstanceOf(BackAction.class);

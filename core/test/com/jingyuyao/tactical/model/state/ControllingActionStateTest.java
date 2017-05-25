@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,7 +85,7 @@ public class ControllingActionStateTest {
     when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
     when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
 
-    ImmutableList<Action> actions = state.getActions();
+    List<Action> actions = state.getActions();
 
     assertThat(actions).hasSize(4);
     assertThat(actions.get(0)).isInstanceOf(SelectWeaponAction.class);
