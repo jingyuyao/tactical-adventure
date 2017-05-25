@@ -8,6 +8,9 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
  */
 public class Pilot extends Person {
 
+  Pilot() {
+  }
+
   @Override
   public ResourceKey getRole() {
     return ModelBundle.PERSON_ROLE.get("pilot");
