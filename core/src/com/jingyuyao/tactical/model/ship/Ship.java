@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -11,6 +10,8 @@ import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ship implements Serializable {
 
@@ -89,23 +90,23 @@ public class Ship implements Serializable {
     stats.healBy(delta);
   }
 
-  public ImmutableList<Person> getCrew() {
-    return ImmutableList.<Person>copyOf(cockpit.getPilots());
+  public List<Person> getCrew() {
+    return new ArrayList<Person>(cockpit.getPilots());
   }
 
-  public ImmutableList<Consumable> getConsumables() {
+  public List<Consumable> getConsumables() {
     return items.getConsumables();
   }
 
-  public ImmutableList<Weapon> getWeapons() {
+  public List<Weapon> getWeapons() {
     return items.getWeapons();
   }
 
-  public ImmutableList<Armor> getEquippedArmors() {
+  public List<Armor> getEquippedArmors() {
     return items.getEquippedArmors();
   }
 
-  public ImmutableList<Armor> getStashedArmors() {
+  public List<Armor> getStashedArmors() {
     return items.getStashedArmors();
   }
 

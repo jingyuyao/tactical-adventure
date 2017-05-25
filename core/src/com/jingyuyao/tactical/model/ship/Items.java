@@ -3,7 +3,6 @@ package com.jingyuyao.tactical.model.ship;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -40,20 +39,20 @@ class Items implements Serializable {
     this.equippedArmors = equippedArmors;
   }
 
-  ImmutableList<Consumable> getConsumables() {
-    return ImmutableList.copyOf(consumables);
+  List<Consumable> getConsumables() {
+    return consumables;
   }
 
-  ImmutableList<Weapon> getWeapons() {
-    return ImmutableList.copyOf(weapons);
+  List<Weapon> getWeapons() {
+    return weapons;
   }
 
-  ImmutableList<Armor> getEquippedArmors() {
-    return ImmutableList.copyOf(equippedArmors);
+  List<Armor> getEquippedArmors() {
+    return equippedArmors;
   }
 
-  ImmutableList<Armor> getStashedArmors() {
-    return ImmutableList.copyOf(stashedArmors);
+  List<Armor> getStashedArmors() {
+    return stashedArmors;
   }
 
   int getDefense() {
