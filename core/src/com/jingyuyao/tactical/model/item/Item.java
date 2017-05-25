@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import java.io.Serializable;
 
@@ -22,15 +22,15 @@ public class Item implements Serializable {
     this.usageLeft = usageLeft;
   }
 
-  public ResourceKey getAnimation() {
+  public StringKey getAnimation() {
     return ModelBundle.WEAPON_ANIMATIONS.get(name);
   }
 
-  public ResourceKey getName() {
+  public StringKey getName() {
     return ModelBundle.ITEM_NAME.get(name);
   }
 
-  public ResourceKey getDescription() {
+  public StringKey getDescription() {
     return ModelBundle.ITEM_DESCRIPTION.get(name);
   }
 

@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.person;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import java.io.Serializable;
 
 /**
@@ -17,11 +17,11 @@ public class Person implements Serializable {
   /**
    * The name of this person. May not be unique.
    */
-  public ResourceKey getName() {
+  public StringKey getName() {
     return ModelBundle.PERSON_NAME.get(name);
   }
 
-  public ResourceKey getRole() {
+  public StringKey getRole() {
     return ModelBundle.PERSON_ROLE.get("none");
   }
 }

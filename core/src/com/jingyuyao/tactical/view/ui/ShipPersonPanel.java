@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.view.ui;
 
 import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -32,7 +32,7 @@ class ShipPersonPanel extends VisTable {
     }
   }
 
-  private void addText(ResourceKey resourceKey) {
-    add(new VisLabel(textLoader.get(resourceKey)));
+  private void addText(StringKey stringKey) {
+    add(new VisLabel(textLoader.get(stringKey)));
   }
 }

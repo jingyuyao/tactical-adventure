@@ -7,7 +7,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 
@@ -30,14 +30,14 @@ public class Ship {
   /**
    * The animation for this ship. Based on ship's name.
    */
-  public ResourceKey getAnimation() {
+  public StringKey getAnimation() {
     return ModelBundle.SHIP_ANIMATIONS.get(name);
   }
 
   /**
    * The name of this ship. May not be unique.
    */
-  public ResourceKey getName() {
+  public StringKey getName() {
     return ModelBundle.SHIP_NAME.get(name);
   }
 

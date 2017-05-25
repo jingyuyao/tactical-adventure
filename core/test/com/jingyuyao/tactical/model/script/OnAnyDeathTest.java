@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.person.Person;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
@@ -27,15 +27,15 @@ public class OnAnyDeathTest {
   @Mock
   private Person dead1;
   @Mock
-  private ResourceKey name1;
+  private StringKey name1;
   @Mock
   private Person dead2;
   @Mock
-  private ResourceKey name2;
+  private StringKey name2;
   @Mock
   private Person dead3;
   @Mock
-  private ResourceKey name3;
+  private StringKey name3;
   @Mock
   private Turn turn;
   @Mock

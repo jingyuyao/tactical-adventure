@@ -11,7 +11,7 @@ import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.person.Pilot;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class ShipTest {
 
   @Test
   public void get_name() {
-    ResourceKey name = ship.getName();
+    StringKey name = ship.getName();
     assertThat(name.getBundle()).isSameAs(ModelBundle.SHIP_NAME);
     assertThat(name.getId()).isEqualTo(NAME);
   }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.Files;
 import com.google.common.collect.ListMultimap;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.OnDeath;
@@ -28,11 +28,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DialogueLoaderTest {
 
-  private static final ResourceKeyBundle LEVEL_DIALOGUE = new ResourceKeyBundle(
+  private static final KeyBundle LEVEL_DIALOGUE = new KeyBundle(
       "i18n/TestLevelDialogue");
-  private static final ResourceKeyBundle DEATH_DIALOGUE = new ResourceKeyBundle(
+  private static final KeyBundle DEATH_DIALOGUE = new KeyBundle(
       "i18n/TestDeathDialogue");
-  private static final ResourceKeyBundle NAME = new ResourceKeyBundle("i18n/TestShipName");
+  private static final KeyBundle NAME = new KeyBundle("i18n/TestShipName");
 
   @Mock
   private DataConfig dataConfig;

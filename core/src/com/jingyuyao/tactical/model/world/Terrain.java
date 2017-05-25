@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 
 public class Terrain {
 
@@ -15,7 +15,7 @@ public class Terrain {
     this.moveCost = moveCost;
   }
 
-  public ResourceKey getName() {
+  public StringKey getName() {
     return ModelBundle.TERRAIN_NAME.get(name);
   }
 

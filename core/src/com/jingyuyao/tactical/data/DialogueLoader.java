@@ -7,8 +7,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.OnDeath;
@@ -51,7 +51,7 @@ class DialogueLoader {
 
   private ListMultimap<Turn, Dialogue> getTurnDialogues(int level) {
     ListMultimap<Turn, Dialogue> dialogueMap = ArrayListMultimap.create();
-    ResourceKeyBundle bundle = dataConfig.getLevelDialogueBundle(level);
+    KeyBundle bundle = dataConfig.getLevelDialogueBundle(level);
     for (Properties dialoguesProperties : getProperties(bundle).asSet()) {
       List<DialogueKey> dialogueKeys = new ArrayList<>(dialoguesProperties.size());
       for (String rawKey : dialoguesProperties.stringPropertyNames()) {
@@ -69,7 +69,7 @@ class DialogueLoader {
 
   private ListMultimap<String, Dialogue> getDeathDialogues() {
     ListMultimap<String, Dialogue> dialogueMap = ArrayListMultimap.create();
-    ResourceKeyBundle bundle = dataConfig.getDeathDialogueBundle();
+    KeyBundle bundle = dataConfig.getDeathDialogueBundle();
     Optional<Properties> dialogueProperties = getProperties(bundle);
     if (dialogueProperties.isPresent()) {
       for (String nameKey : dialogueProperties.get().stringPropertyNames()) {
@@ -83,9 +83,9 @@ class DialogueLoader {
   }
 
   /**
-   * Return the default properties file for a given {@link ResourceKeyBundle}
+   * Return the default properties file for a given {@link KeyBundle}
    */
-  private Optional<Properties> getProperties(ResourceKeyBundle bundle) {
+  private Optional<Properties> getProperties(KeyBundle bundle) {
     FileHandle fileHandle = files.internal(bundle.getPathWithExtensions());
     if (fileHandle.exists()) {
       Properties properties = new Properties();
@@ -101,11 +101,11 @@ class DialogueLoader {
     return Optional.absent();
   }
 
-  private Dialogue create(String nameKey, ResourceKey resourceKey) {
-    return new Dialogue(getName(nameKey), resourceKey);
+  private Dialogue create(String nameKey, StringKey stringKey) {
+    return new Dialogue(getName(nameKey), stringKey);
   }
 
-  private ResourceKey getName(String nameKey) {
+  private StringKey getName(String nameKey) {
     return dataConfig.getPersonNameBundle().get(nameKey);
   }
 

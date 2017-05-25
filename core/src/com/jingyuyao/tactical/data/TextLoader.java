@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.data;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -20,17 +20,17 @@ public class TextLoader {
     I18NBundle.setExceptionOnMissingKey(false);
   }
 
-  public String get(ResourceKey resourceKey) {
-    I18NBundle bundle = getBundle(resourceKey.getBundle());
-    if (resourceKey.getArgs().length == 0) {
-      return bundle.get(resourceKey.getId());
+  public String get(StringKey stringKey) {
+    I18NBundle bundle = getBundle(stringKey.getBundle());
+    if (stringKey.getArgs().length == 0) {
+      return bundle.get(stringKey.getId());
     } else {
-      return bundle.format(resourceKey.getId(), resourceKey.getArgs());
+      return bundle.format(stringKey.getId(), stringKey.getArgs());
     }
   }
 
-  private I18NBundle getBundle(ResourceKeyBundle resourceKeyBundle) {
-    String path = resourceKeyBundle.getPath();
+  private I18NBundle getBundle(KeyBundle keyBundle) {
+    String path = keyBundle.getPath();
     // try-catch is used instead of if/else branch to increase performance since this method
     // could potentially be called many times per frame
     try {

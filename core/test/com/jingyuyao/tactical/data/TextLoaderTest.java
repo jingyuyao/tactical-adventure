@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.jingyuyao.tactical.MockGameModule;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
-import com.jingyuyao.tactical.model.resource.ResourceKeyBundle;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class TextLoaderTest {
 
   private static final String TEST_PATH = "i18n/Test";
-  private static final ResourceKeyBundle TEST_BUNDLE = new ResourceKeyBundle(TEST_PATH);
+  private static final KeyBundle TEST_BUNDLE = new KeyBundle(TEST_PATH);
 
   @Mock
   private AssetManager assetManager;
@@ -47,13 +47,13 @@ public class TextLoaderTest {
 
   @Test
   public void get_key_no_bundle_no_args() {
-    ResourceKey resourceKey = TEST_BUNDLE.get("test1");
+    StringKey stringKey = TEST_BUNDLE.get("test1");
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(TEST_PATH));
     when(assetManager.get(TEST_PATH, I18NBundle.class))
         .thenThrow(new GdxRuntimeException("not loaded")).thenReturn(bundle);
 
-    assertThat(textLoader.get(resourceKey)).isEqualTo("Test message");
+    assertThat(textLoader.get(stringKey)).isEqualTo("Test message");
 
     verify(assetManager).load(TEST_PATH, I18NBundle.class);
     verify(assetManager).finishLoadingAsset(TEST_PATH);
@@ -61,13 +61,13 @@ public class TextLoaderTest {
 
   @Test
   public void get_key_no_bundle_with_args() {
-    ResourceKey resourceKey = TEST_BUNDLE.get("test2", 246);
+    StringKey stringKey = TEST_BUNDLE.get("test2", 246);
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(TEST_PATH));
     when(assetManager.get(TEST_PATH, I18NBundle.class))
         .thenThrow(new GdxRuntimeException("not loaded")).thenReturn(bundle);
 
-    assertThat(textLoader.get(resourceKey)).isEqualTo("Test 246");
+    assertThat(textLoader.get(stringKey)).isEqualTo("Test 246");
 
     verify(assetManager).load(TEST_PATH, I18NBundle.class);
     verify(assetManager).finishLoadingAsset(TEST_PATH);
@@ -75,12 +75,12 @@ public class TextLoaderTest {
 
   @Test
   public void get_key_has_bundle() {
-    ResourceKey resourceKey = TEST_BUNDLE.get("test2", 246);
+    StringKey stringKey = TEST_BUNDLE.get("test2", 246);
     // can't mock this since I18NBundle#get() is final...
     I18NBundle bundle = I18NBundle.createBundle(files.internal(TEST_PATH));
     when(assetManager.get(TEST_PATH, I18NBundle.class)).thenReturn(bundle);
 
-    assertThat(textLoader.get(resourceKey)).isEqualTo("Test 246");
+    assertThat(textLoader.get(stringKey)).isEqualTo("Test 246");
 
     verify(assetManager, never()).load(TEST_PATH, I18NBundle.class);
     verify(assetManager, never()).finishLoadingAsset(TEST_PATH);

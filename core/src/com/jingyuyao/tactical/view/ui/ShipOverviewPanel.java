@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.view.ui;
 import com.badlogic.gdx.utils.Align;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.data.TextLoader;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,8 +30,8 @@ class ShipOverviewPanel extends ButtonPanel<Ship> {
     }
     String name = textLoader.get(ship.getName());
     int hp = ship.getHp();
-    ResourceKey resourceKey = UIBundle.OVERVIEW_PANEL.format(name, hp);
-    return Optional.of(textLoader.get(resourceKey));
+    StringKey stringKey = UIBundle.OVERVIEW_PANEL.format(name, hp);
+    return Optional.of(textLoader.get(stringKey));
   }
 
   @Override

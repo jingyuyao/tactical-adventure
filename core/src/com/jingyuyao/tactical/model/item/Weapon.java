@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.model.item;
 
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
@@ -30,7 +30,7 @@ public class Weapon extends Item {
   }
 
   @Override
-  public ResourceKey getDescription() {
+  public StringKey getDescription() {
     if (lifeStealRate > 0) {
       return ModelBundle.ITEM_DESCRIPTION
           .get("lifeStealWeapon", attackPower, lifeStealRate * 100);

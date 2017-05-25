@@ -1,7 +1,7 @@
 package com.jingyuyao.tactical.model.state;
 
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.resource.ResourceKey;
+import com.jingyuyao.tactical.model.resource.StringKey;
 
 class SelectConsumableAction implements Action {
 
@@ -14,7 +14,7 @@ class SelectConsumableAction implements Action {
   }
 
   @Override
-  public ResourceKey getText() {
+  public StringKey getText() {
     return consumable.getName();
   }
 
