@@ -5,7 +5,7 @@ import com.jingyuyao.tactical.model.resource.StringKey;
 
 class MenuBundle {
 
-  private static final KeyBundle BUNDLE = new KeyBundle("i18n/menu/Menu");
+  private static final KeyBundle BUNDLE = KeyBundle.i18n("menu/Menu");
   static final StringKey PLAY_BTN = BUNDLE.get("playBtn");
   static final StringKey RESET_BTN = BUNDLE.get("resetBtn");
   static final StringKey LEVEL_INFO = BUNDLE.get("levelInfo");

@@ -11,8 +11,8 @@ public class StringKeyTest {
 
   @Test
   public void equality() {
-    KeyBundle bundle1 = new KeyBundle("some/path");
-    KeyBundle bundle2 = new KeyBundle("some/other/path");
+    KeyBundle bundle1 = new KeyBundle("some/path", "properties");
+    KeyBundle bundle2 = new KeyBundle("some/other/path", null);
     StringKey stringKey1 = bundle1.get("abc");
     StringKey stringKey2 = bundle1.get("abc");
     StringKey stringKey3 = bundle2.get("abc");
@@ -28,8 +28,8 @@ public class StringKeyTest {
 
   @Test
   public void hash() {
-    KeyBundle bundle1 = new KeyBundle("some/path");
-    KeyBundle bundle2 = new KeyBundle("some/other/path");
+    KeyBundle bundle1 = new KeyBundle("some/path", "properties");
+    KeyBundle bundle2 = new KeyBundle("some/other/path", null);
     StringKey stringKey1 = bundle1.get("abc");
     StringKey stringKey2 = bundle1.get("abc");
     StringKey stringKey3 = bundle2.get("abc");

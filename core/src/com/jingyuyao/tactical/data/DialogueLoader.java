@@ -86,7 +86,7 @@ class DialogueLoader {
    * Return the default properties file for a given {@link KeyBundle}
    */
   private Optional<Properties> getProperties(KeyBundle bundle) {
-    FileHandle fileHandle = files.internal(bundle.getPathWithExtensions());
+    FileHandle fileHandle = files.internal(bundle.getPathWithExtension());
     if (fileHandle.exists()) {
       Properties properties = new Properties();
       try {

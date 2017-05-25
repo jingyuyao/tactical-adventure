@@ -26,8 +26,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TextLoaderTest {
 
+  private static final String TEST_FILE = "Test";
   private static final String TEST_PATH = "i18n/Test";
-  private static final KeyBundle TEST_BUNDLE = new KeyBundle(TEST_PATH);
+  private static final KeyBundle TEST_BUNDLE = KeyBundle.i18n(TEST_FILE);
 
   @Mock
   private AssetManager assetManager;

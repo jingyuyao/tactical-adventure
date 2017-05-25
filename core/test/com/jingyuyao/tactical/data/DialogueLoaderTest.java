@@ -28,11 +28,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DialogueLoaderTest {
 
-  private static final KeyBundle LEVEL_DIALOGUE = new KeyBundle(
-      "i18n/TestLevelDialogue");
-  private static final KeyBundle DEATH_DIALOGUE = new KeyBundle(
-      "i18n/TestDeathDialogue");
-  private static final KeyBundle NAME = new KeyBundle("i18n/TestShipName");
+  private static final KeyBundle LEVEL_DIALOGUE = KeyBundle.i18n("TestLevelDialogue");
+  private static final KeyBundle DEATH_DIALOGUE = KeyBundle.i18n("TestDeathDialogue");
+  private static final KeyBundle NAME = KeyBundle.i18n("TestShipName");
 
   @Mock
   private DataConfig dataConfig;

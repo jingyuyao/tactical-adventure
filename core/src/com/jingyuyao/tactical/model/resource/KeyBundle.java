@@ -4,33 +4,51 @@ import com.google.common.base.Objects;
 import java.io.Serializable;
 
 /**
- * A group of similar keys. Keys can be only be manufactured from an instance of this class.
+ * Groups together similar keys. A group is identified by a path and an optional extension.
+ * Keys can be only be manufactured from an instance of this class.
  */
 public class KeyBundle implements Serializable {
 
   private String path;
+  private String extension;
 
   KeyBundle() {
   }
 
   /**
-   * Create a bundle that points to a group of keys.
-   *
-   * @param path the path that identifies the bundle
+   * Create a bundle that points to a group of keys identified by a path and an optional extension.
    */
-  public KeyBundle(String path) {
+  KeyBundle(String path, String extension) {
     this.path = path;
+    this.extension = extension;
   }
 
   /**
-   * The absolute path to the bundle
+   * Create a bundle where the path is prefixed with "i18n/" and extension is ".properties"
+   */
+  public static KeyBundle i18n(String path) {
+    return new KeyBundle("i18n/" + path, "properties");
+  }
+
+  /**
+   * Create a bundle where the path is prefixed with "animation/" and no extension.
+   */
+  public static KeyBundle animation(String path) {
+    return new KeyBundle("animation/" + path, null);
+  }
+
+  /**
+   * Return the path to the bundle
    */
   public String getPath() {
     return path;
   }
 
-  public String getPathWithExtensions() {
-    return path + ".properties";
+  /**
+   * Return the path plus plus the extension (if any). Path and extension is separated by '.'
+   */
+  public String getPathWithExtension() {
+    return extension == null ? path : path + "." + extension;
   }
 
   /**
@@ -41,19 +59,20 @@ public class KeyBundle implements Serializable {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    KeyBundle that = (KeyBundle) o;
-    return Objects.equal(getPath(), that.getPath());
+    KeyBundle keyBundle = (KeyBundle) object;
+    return Objects.equal(getPath(), keyBundle.getPath()) &&
+        Objects.equal(extension, keyBundle.extension);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getPath());
+    return Objects.hashCode(getPath(), extension);
   }
 }
