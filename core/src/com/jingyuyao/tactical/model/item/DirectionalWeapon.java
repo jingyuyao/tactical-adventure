@@ -14,13 +14,9 @@ import com.jingyuyao.tactical.model.world.World;
 // TODO: test me
 public class DirectionalWeapon extends Weapon {
 
-  private final int distance;
+  private int distance;
 
-  DirectionalWeapon(
-      String name, int usageLeft, int attackPower,
-      float lifeStealRate, float recoilRate, int distance) {
-    super(name, usageLeft, attackPower, lifeStealRate, recoilRate);
-    this.distance = distance;
+  DirectionalWeapon() {
   }
 
   @Override

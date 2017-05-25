@@ -6,11 +6,9 @@ import com.jingyuyao.tactical.model.ship.Ship;
 
 public class Heal extends Consumable {
 
-  private final int amount;
+  private int amount;
 
-  Heal(String name, int usageLeft, int amount) {
-    super(name, usageLeft);
-    this.amount = amount;
+  Heal() {
   }
 
   @Override

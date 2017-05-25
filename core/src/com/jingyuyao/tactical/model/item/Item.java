@@ -4,15 +4,18 @@ import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.ResourceKey;
 import com.jingyuyao.tactical.model.ship.Ship;
+import java.io.Serializable;
 
 /**
  * The most basic thing a {@link Ship} could own, has limited number of usages.
  */
-// TODO: should probably add a constant like INFINITE for items that doesn't expire.
-public class Item {
+public class Item implements Serializable {
 
-  private final String name;
+  private String name;
   private int usageLeft;
+
+  Item() {
+  }
 
   Item(String name, int usageLeft) {
     this.name = name;

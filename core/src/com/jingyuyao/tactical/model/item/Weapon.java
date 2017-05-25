@@ -14,9 +14,12 @@ import com.jingyuyao.tactical.model.world.World;
  */
 public class Weapon extends Item {
 
-  private final int attackPower;
-  private final float lifeStealRate;
-  private final float recoilRate;
+  private int attackPower;
+  private float lifeStealRate;
+  private float recoilRate;
+
+  Weapon() {
+  }
 
   Weapon(String name, int usageLeft, int attackPower, float lifeStealRate, float recoilRate) {
     super(name, usageLeft);

@@ -5,11 +5,9 @@ import com.jingyuyao.tactical.model.resource.ResourceKey;
 
 public class Armor extends Item {
 
-  private final int defense;
+  private int defense;
 
-  Armor(String name, int usageLeft, int defense) {
-    super(name, usageLeft);
-    this.defense = defense;
+  Armor() {
   }
 
   @Override

@@ -10,14 +10,10 @@ import java.util.Set;
 // TODO: test me
 public class Bomb extends Weapon {
 
-  private final int distance;
-  private final int size;
+  private int distance;
+  private int size;
 
-  Bomb(String name, int usageLeft, int attackPower,
-      float lifeStealRate, float recoilRate, int distance, int size) {
-    super(name, usageLeft, attackPower, lifeStealRate, recoilRate);
-    this.distance = distance;
-    this.size = size;
+  Bomb() {
   }
 
   @Override
