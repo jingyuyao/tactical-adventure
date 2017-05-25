@@ -1,22 +1,22 @@
 package com.jingyuyao.tactical.data;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.World;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The main game save containing meta data and the player's ships.
  */
-public class GameSave {
+public class GameSave implements Serializable {
 
   private int currentLevel = 1;
   private List<Ship> playerShips = new ArrayList<>();
 
-  private GameSave() {
+  GameSave() {
   }
 
   GameSave(int currentLevel, List<Ship> playerShips) {
@@ -32,8 +32,8 @@ public class GameSave {
     this.currentLevel = currentLevel;
   }
 
-  ImmutableList<Ship> getPlayerShips() {
-    return ImmutableList.copyOf(playerShips);
+  List<Ship> getPlayerShips() {
+    return playerShips;
   }
 
   /**
