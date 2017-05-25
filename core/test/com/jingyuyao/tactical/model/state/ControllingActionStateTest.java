@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.item.Consumable;
@@ -13,6 +12,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class ControllingActionStateTest {
   @Mock
   private Consumable consumable;
   @Mock
-  private ImmutableList<Target> targets;
+  private List<Target> targets;
   @Mock
   private SelectingTarget selectingTarget;
   @Mock
@@ -82,8 +82,8 @@ public class ControllingActionStateTest {
 
   @Test
   public void actions() {
-    when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
-    when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
+    when(ship.getWeapons()).thenReturn(Collections.singletonList(weapon));
+    when(ship.getConsumables()).thenReturn(Collections.singletonList(consumable));
 
     List<Action> actions = state.getActions();
 

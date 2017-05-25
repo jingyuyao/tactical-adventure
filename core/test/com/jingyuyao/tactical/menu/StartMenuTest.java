@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
@@ -21,6 +20,7 @@ import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import java.util.Arrays;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,7 @@ public class StartMenuTest {
   public void on_show() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getWorldCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(levelSave.getWorldCells()).thenReturn(Arrays.asList(cell1, cell2));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
@@ -106,7 +106,7 @@ public class StartMenuTest {
   public void reset_button() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
-    when(levelSave.getWorldCells()).thenReturn(ImmutableList.of(cell1, cell2));
+    when(levelSave.getWorldCells()).thenReturn(Arrays.asList(cell1, cell2));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);

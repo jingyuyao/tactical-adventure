@@ -3,13 +3,13 @@ package com.jingyuyao.tactical.model.script;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +42,8 @@ public class OnAllDeathTest {
 
   @Test
   public void conditions() {
-    when(ship1.getCrew()).thenReturn(ImmutableList.of(dead1));
-    when(ship2.getCrew()).thenReturn(ImmutableList.of(dead2, dead3));
+    when(ship1.getCrew()).thenReturn(Collections.singletonList(dead1));
+    when(ship2.getCrew()).thenReturn(Arrays.asList(dead2, dead3));
     when(dead1.getName()).thenReturn(name1);
     when(name1.getId()).thenReturn("me");
     when(dead2.getName()).thenReturn(name2);
@@ -51,7 +51,8 @@ public class OnAllDeathTest {
     when(dead3.getName()).thenReturn(name3);
     when(name3.getId()).thenReturn("them");
 
-    OnAllDeath onAllDeath = new OnAllDeath(ImmutableSet.of("me", "you"), new HashSet<String>());
+    OnAllDeath onAllDeath =
+        new OnAllDeath(new HashSet<>(Arrays.asList("me", "you")), new HashSet<String>());
 
     assertThat(onAllDeath.onShipDestroyed(ship1, world)).isFalse();
     assertThat(onAllDeath.onShipDestroyed(ship2, world)).isTrue();

@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ActivatedShip;
@@ -29,6 +28,8 @@ import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -182,13 +183,13 @@ class ShipSystem extends IteratingSystem {
   private List<Coordinate> smoothPath(List<Cell> track) {
     Preconditions.checkArgument(!track.isEmpty());
     if (track.size() == 1) {
-      return ImmutableList.of(track.get(0).getCoordinate());
+      return Collections.singletonList(track.get(0).getCoordinate());
     }
     if (track.size() == 2) {
-      return ImmutableList.of(track.get(1).getCoordinate());
+      return Collections.singletonList(track.get(1).getCoordinate());
     }
 
-    ImmutableList.Builder<Coordinate> builder = ImmutableList.builder();
+    List<Coordinate> smoothedTrack = new ArrayList<>();
     Coordinate origin = track.get(0).getCoordinate();
     Coordinate second = track.get(1).getCoordinate();
     Coordinate last = second;
@@ -199,7 +200,7 @@ class ShipSystem extends IteratingSystem {
       Coordinate current = track.get(i).getCoordinate();
       Direction currentDirection = Direction.fromTo(last, current);
       if (!currentDirection.equals(lastDirection)) {
-        builder.add(last);
+        smoothedTrack.add(last);
         lastDirection = currentDirection;
       }
       last = current;
@@ -208,10 +209,10 @@ class ShipSystem extends IteratingSystem {
     // we always want the target coordinate to be the last on in the path
     Coordinate target = track.get(track.size() - 1).getCoordinate();
     if (!Direction.fromTo(last, target).equals(lastDirection)) {
-      builder.add(last);
+      smoothedTrack.add(last);
     }
-    builder.add(target);
+    smoothedTrack.add(target);
 
-    return builder.build();
+    return smoothedTrack;
   }
 }

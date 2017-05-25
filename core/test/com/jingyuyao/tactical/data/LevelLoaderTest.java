@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -15,6 +14,8 @@ import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Terrain;
 import java.io.Reader;
+import java.util.Arrays;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,14 +84,14 @@ public class LevelLoaderTest {
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader1);
     when(dataSerializer.deserialize(reader1, LevelWorld.class)).thenReturn(levelWorld);
-    when(levelWorld.getPlayerSpawns()).thenReturn(ImmutableList.of(C0_0));
+    when(levelWorld.getPlayerSpawns()).thenReturn(Collections.singletonList(C0_0));
     when(levelWorld.getActiveShips()).thenReturn(ImmutableMap.of(C0_1, ship1));
     when(terrainsLoader.load(2)).thenReturn(ImmutableMap.of(C0_0, terrain1, C0_1, terrain2));
     when(terrain1.canHoldShip()).thenReturn(true);
     when(terrain2.canHoldShip()).thenReturn(true);
     when(scriptLoader.load(2)).thenReturn(script);
 
-    LevelSave levelSave = levelLoader.createNewSave(2, ImmutableList.of(ship2, ship3));
+    LevelSave levelSave = levelLoader.createNewSave(2, Arrays.asList(ship2, ship3));
 
     assertThat(levelSave.getLevel()).isEqualTo(2);
     assertThat(levelSave.getWorldCells()).hasSize(2);

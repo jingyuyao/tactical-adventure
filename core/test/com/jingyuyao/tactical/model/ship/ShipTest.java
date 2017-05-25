@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -14,6 +13,7 @@ import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,35 +109,35 @@ public class ShipTest {
 
   @Test
   public void get_pilots() {
-    when(cockpit.getPilots()).thenReturn(ImmutableList.of(pilot));
+    when(cockpit.getPilots()).thenReturn(Collections.singletonList(pilot));
 
     assertThat(ship.getCrew()).containsExactly(pilot);
   }
 
   @Test
   public void get_consumables() {
-    when(items.getConsumables()).thenReturn(ImmutableList.of(consumable));
+    when(items.getConsumables()).thenReturn(Collections.singletonList(consumable));
 
     assertThat(ship.getConsumables()).containsExactly(consumable);
   }
 
   @Test
   public void get_weapons() {
-    when(items.getWeapons()).thenReturn(ImmutableList.of(weapon));
+    when(items.getWeapons()).thenReturn(Collections.singletonList(weapon));
 
     assertThat(ship.getWeapons()).containsExactly(weapon);
   }
 
   @Test
   public void get_equipped_armors() {
-    when(items.getEquippedArmors()).thenReturn(ImmutableList.of(armor));
+    when(items.getEquippedArmors()).thenReturn(Collections.singletonList(armor));
 
     assertThat(ship.getEquippedArmors()).containsExactly(armor);
   }
 
   @Test
   public void get_stashed_armors() {
-    when(items.getStashedArmors()).thenReturn(ImmutableList.of(armor));
+    when(items.getStashedArmors()).thenReturn(Collections.singletonList(armor));
 
     assertThat(ship.getStashedArmors()).containsExactly(armor);
   }

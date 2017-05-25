@@ -3,12 +3,12 @@ package com.jingyuyao.tactical.model.script;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.model.person.Person;
 import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -36,8 +36,8 @@ public class OnDeathTest {
 
   @Test
   public void conditions() {
-    when(ship1.getCrew()).thenReturn(ImmutableList.of(dead1));
-    when(ship2.getCrew()).thenReturn(ImmutableList.of(dead2));
+    when(ship1.getCrew()).thenReturn(Collections.singletonList(dead1));
+    when(ship2.getCrew()).thenReturn(Collections.singletonList(dead2));
     when(dead1.getName()).thenReturn(name1);
     when(name1.getId()).thenReturn("me");
     when(dead2.getName()).thenReturn(name2);

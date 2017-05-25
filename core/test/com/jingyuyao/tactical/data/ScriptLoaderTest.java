@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.script.ActivateGroup;
 import com.jingyuyao.tactical.model.script.Condition;
@@ -69,8 +68,8 @@ public class ScriptLoaderTest {
     when(files.internal(LEVEL_SCRIPT)).thenReturn(fileHandle);
     when(fileHandle.reader()).thenReturn(reader);
     when(dataSerializer.deserialize(reader, LevelScript.class)).thenReturn(levelScript);
-    when(levelScript.getWinConditions()).thenReturn(ImmutableList.of(condition1));
-    when(levelScript.getLoseConditions()).thenReturn(ImmutableList.of(condition2));
+    when(levelScript.getWinConditions()).thenReturn(Collections.singletonList(condition1));
+    when(levelScript.getLoseConditions()).thenReturn(Collections.singletonList(condition2));
     when(levelScript.getGroupActivations())
         .thenReturn(ImmutableMap.of(condition4, activateGroup1));
     when(levelScript.getGroupDeactivations())

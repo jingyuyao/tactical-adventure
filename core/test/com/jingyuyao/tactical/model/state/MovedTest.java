@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ExitState;
@@ -17,6 +16,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Movement;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,8 +117,8 @@ public class MovedTest {
 
   @Test
   public void actions() {
-    when(ship.getWeapons()).thenReturn(ImmutableList.of(weapon));
-    when(ship.getConsumables()).thenReturn(ImmutableList.of(consumable));
+    when(ship.getWeapons()).thenReturn(Collections.singletonList(weapon));
+    when(ship.getConsumables()).thenReturn(Collections.singletonList(consumable));
 
     List<Action> actions = moved.getActions();
 

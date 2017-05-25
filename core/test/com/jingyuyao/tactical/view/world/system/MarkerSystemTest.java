@@ -7,8 +7,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.jingyuyao.tactical.model.battle.Battle;
 import com.jingyuyao.tactical.model.battle.Target;
@@ -25,6 +23,9 @@ import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -115,7 +116,7 @@ public class MarkerSystemTest {
   public void moving() {
     when(markers.getMove()).thenReturn(texture1);
     when(moving.getMovement()).thenReturn(movement);
-    when(movement.getCells()).thenReturn(ImmutableSet.of(cell, cell2));
+    when(movement.getCells()).thenReturn(new HashSet<>(Arrays.asList(cell, cell2)));
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell2.getCoordinate()).thenReturn(C2);
 
@@ -132,9 +133,9 @@ public class MarkerSystemTest {
 
   @Test
   public void selecting_target() {
-    when(selectingTarget.getTargets()).thenReturn(ImmutableList.of(target));
-    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell));
-    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell2));
+    when(selectingTarget.getTargets()).thenReturn(Collections.singletonList(target));
+    when(target.getSelectCells()).thenReturn(Collections.singleton(cell));
+    when(target.getTargetCells()).thenReturn(Collections.singleton(cell2));
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell2.getCoordinate()).thenReturn(C2);
     when(markers.getTargetSelect()).thenReturn(texture1);
@@ -154,8 +155,8 @@ public class MarkerSystemTest {
   public void battling() {
     when(battling.getBattle()).thenReturn(battle);
     when(battle.getTarget()).thenReturn(target);
-    when(target.getSelectCells()).thenReturn(ImmutableSet.of(cell));
-    when(target.getTargetCells()).thenReturn(ImmutableSet.of(cell2));
+    when(target.getSelectCells()).thenReturn(Collections.singleton(cell));
+    when(target.getTargetCells()).thenReturn(Collections.singleton(cell2));
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell2.getCoordinate()).thenReturn(C2);
     when(markers.getTargetSelect()).thenReturn(texture1);

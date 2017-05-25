@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.LevelLost;
@@ -25,6 +24,7 @@ import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
@@ -96,9 +96,10 @@ public class ScriptRunnerTest {
             dialogueCondition2, Collections.singletonList(dialogue2),
             dialogueCondition3, Collections.singletonList(dialogue3),
             dialogueCondition4, Collections.singletonList(dialogue4)));
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
-    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
+    when(script.getGroupActivations()).thenReturn(Collections.<Condition, ActivateGroup>emptyMap());
+    when(script.getGroupDeactivations())
+        .thenReturn(Collections.<Condition, DeactivateGroup>emptyMap());
+    when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
     when(scriptEvent.satisfiedBy(dialogueCondition1)).thenReturn(true); // show
     when(scriptEvent.satisfiedBy(dialogueCondition2)).thenReturn(false);
     when(scriptEvent.satisfiedBy(dialogueCondition3)).thenReturn(false);
@@ -129,11 +130,12 @@ public class ScriptRunnerTest {
 
   @Test
   public void no_dialogue_won() {
-    when(script.getDialogues()).thenReturn(ImmutableMap.<Condition, List<Dialogue>>of());
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
-    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
-    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
+    when(script.getDialogues()).thenReturn(Collections.<Condition, List<Dialogue>>emptyMap());
+    when(script.getGroupActivations()).thenReturn(Collections.<Condition, ActivateGroup>emptyMap());
+    when(script.getGroupDeactivations())
+        .thenReturn(Collections.<Condition, DeactivateGroup>emptyMap());
+    when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
+    when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
     when(scriptEvent.satisfiedBy(winCondition)).thenReturn(true);
 
@@ -147,16 +149,17 @@ public class ScriptRunnerTest {
   @Test
   public void has_activations() {
     ShipGroup group = new ShipGroup("hello");
-    when(script.getDialogues()).thenReturn(ImmutableMap.<Condition, List<Dialogue>>of());
+    when(script.getDialogues()).thenReturn(Collections.<Condition, List<Dialogue>>emptyMap());
     when(script.getGroupActivations())
         .thenReturn(ImmutableMap.of(activationCondition, activateGroup));
-    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
-    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
-    when(world.getInactiveShips()).thenReturn(ImmutableList.of(ship1));
+    when(script.getGroupDeactivations())
+        .thenReturn(Collections.<Condition, DeactivateGroup>emptyMap());
+    when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
+    when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
+    when(world.getInactiveShips()).thenReturn(Collections.singletonList(ship1));
     when(world.cell(C0_0)).thenReturn(Optional.of(cell1));
     when(activateGroup.getGroup()).thenReturn(group);
-    when(activateGroup.getSpawns()).thenReturn(ImmutableList.of(C0_0, C0_1));
+    when(activateGroup.getSpawns()).thenReturn(Arrays.asList(C0_0, C0_1));
     when(ship1.inGroup(group)).thenReturn(true);
     when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
@@ -172,12 +175,12 @@ public class ScriptRunnerTest {
   @Test
   public void has_deactivation() {
     ShipGroup group = new ShipGroup("hello");
-    when(script.getDialogues()).thenReturn(ImmutableMap.<Condition, List<Dialogue>>of());
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
+    when(script.getDialogues()).thenReturn(Collections.<Condition, List<Dialogue>>emptyMap());
+    when(script.getGroupActivations()).thenReturn(Collections.<Condition, ActivateGroup>emptyMap());
     when(script.getGroupDeactivations())
         .thenReturn(ImmutableMap.of(activationCondition, deactivateGroup));
-    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
+    when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
+    when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1));
     when(deactivateGroup.getGroup()).thenReturn(group);
     when(ship1.inGroup(group)).thenReturn(true);
@@ -194,11 +197,12 @@ public class ScriptRunnerTest {
 
   @Test
   public void no_dialogue_keep_going() {
-    when(script.getDialogues()).thenReturn(ImmutableMap.<Condition, List<Dialogue>>of());
-    when(script.getGroupActivations()).thenReturn(ImmutableMap.<Condition, ActivateGroup>of());
-    when(script.getGroupDeactivations()).thenReturn(ImmutableMap.<Condition, DeactivateGroup>of());
-    when(script.getWinConditions()).thenReturn(ImmutableList.of(winCondition));
-    when(script.getLoseConditions()).thenReturn(ImmutableList.of(loseCondition));
+    when(script.getDialogues()).thenReturn(Collections.<Condition, List<Dialogue>>emptyMap());
+    when(script.getGroupActivations()).thenReturn(Collections.<Condition, ActivateGroup>emptyMap());
+    when(script.getGroupDeactivations())
+        .thenReturn(Collections.<Condition, DeactivateGroup>emptyMap());
+    when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
+    when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
     when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);
 

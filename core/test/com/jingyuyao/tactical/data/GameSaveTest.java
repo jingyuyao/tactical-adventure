@@ -3,13 +3,13 @@ package com.jingyuyao.tactical.data;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +50,7 @@ public class GameSaveTest {
     when(worldShip2.inGroup(ShipGroup.PLAYER)).thenReturn(false);
     when(worldShip3.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, worldShip1, cell2, worldShip2));
-    when(world.getInactiveShips()).thenReturn(ImmutableList.of(worldShip3));
+    when(world.getInactiveShips()).thenReturn(Collections.singletonList(worldShip3));
 
     gameSave.replacePlayerShipsFrom(world);
 
