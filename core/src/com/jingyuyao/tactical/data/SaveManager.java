@@ -14,18 +14,18 @@ class SaveManager {
 
   private final DataConfig dataConfig;
   private final Files files;
-  private final JsonSerializer jsonSerializer;
+  private final JsonLoader jsonLoader;
   private final KryoSerializer kryoSerializer;
 
   @Inject
   SaveManager(
       DataConfig dataConfig,
       Files files,
-      JsonSerializer jsonSerializer,
+      JsonLoader jsonLoader,
       KryoSerializer kryoSerializer) {
     this.dataConfig = dataConfig;
     this.files = files;
-    this.jsonSerializer = jsonSerializer;
+    this.jsonLoader = jsonLoader;
     this.kryoSerializer = kryoSerializer;
   }
 
@@ -76,7 +76,7 @@ class SaveManager {
   private <T> Optional<T> loadJson(String fileName, Class<T> clazz) {
     FileHandle fileHandle = files.internal(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(jsonSerializer.deserialize(fileHandle.reader(), clazz));
+      return Optional.of(jsonLoader.deserialize(fileHandle.reader(), clazz));
     }
     return Optional.absent();
   }

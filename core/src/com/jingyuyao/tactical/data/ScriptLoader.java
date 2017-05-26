@@ -17,24 +17,24 @@ class ScriptLoader {
 
   private final DataConfig dataConfig;
   private final Files files;
-  private final JsonSerializer jsonSerializer;
+  private final JsonLoader jsonLoader;
   private final DialogueLoader dialogueLoader;
 
   @Inject
   ScriptLoader(
       DataConfig dataConfig,
       Files files,
-      JsonSerializer jsonSerializer,
+      JsonLoader jsonLoader,
       DialogueLoader dialogueLoader) {
     this.dataConfig = dataConfig;
     this.files = files;
-    this.jsonSerializer = jsonSerializer;
+    this.jsonLoader = jsonLoader;
     this.dialogueLoader = dialogueLoader;
   }
 
   Script load(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelScriptFileName(level));
-    LevelScript levelScript = jsonSerializer.deserialize(fileHandle.reader(), LevelScript.class);
+    LevelScript levelScript = jsonLoader.deserialize(fileHandle.reader(), LevelScript.class);
     List<Condition> winConditions = levelScript.getWinConditions();
     List<Condition> loseConditions = levelScript.getLoseConditions();
     Map<Condition, List<Dialogue>> dialogues = dialogueLoader.getDialogues(level);

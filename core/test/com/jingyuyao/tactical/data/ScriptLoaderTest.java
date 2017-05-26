@@ -29,7 +29,7 @@ public class ScriptLoaderTest {
   @Mock
   private Files files;
   @Mock
-  private JsonSerializer jsonSerializer;
+  private JsonLoader jsonLoader;
   @Mock
   private DialogueLoader dialogueLoader;
   @Mock
@@ -59,7 +59,7 @@ public class ScriptLoaderTest {
 
   @Before
   public void setUp() {
-    scriptLoader = new ScriptLoader(dataConfig, files, jsonSerializer, dialogueLoader);
+    scriptLoader = new ScriptLoader(dataConfig, files, jsonLoader, dialogueLoader);
   }
 
   @Test
@@ -67,7 +67,7 @@ public class ScriptLoaderTest {
     when(dataConfig.getLevelScriptFileName(2)).thenReturn(LEVEL_SCRIPT);
     when(files.internal(LEVEL_SCRIPT)).thenReturn(fileHandle);
     when(fileHandle.reader()).thenReturn(reader);
-    when(jsonSerializer.deserialize(reader, LevelScript.class)).thenReturn(levelScript);
+    when(jsonLoader.deserialize(reader, LevelScript.class)).thenReturn(levelScript);
     when(levelScript.getWinConditions()).thenReturn(Collections.singletonList(condition1));
     when(levelScript.getLoseConditions()).thenReturn(Collections.singletonList(condition2));
     when(levelScript.getGroupActivations())
