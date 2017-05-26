@@ -77,7 +77,7 @@ class ShipSystem extends IteratingSystem {
 
   @Subscribe
   void worldLoaded(WorldLoaded worldLoaded) {
-    for (Entry<Cell, Ship> entry : worldLoaded.getWorld().getShipSnapshot().entrySet()) {
+    for (Entry<Cell, Ship> entry : worldLoaded.getWorld().getActiveShips().entrySet()) {
       spawn(entry.getKey().getCoordinate(), entry.getValue());
     }
   }

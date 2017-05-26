@@ -113,7 +113,7 @@ class ScriptRunner {
       if (event.satisfiedBy(condition)) {
         DeactivateGroup deactivateGroup = entry.getValue();
         ShipGroup group = deactivateGroup.getGroup();
-        for (Entry<Cell, Ship> shipEntry : world.getShipSnapshot().entrySet()) {
+        for (Entry<Cell, Ship> shipEntry : world.getActiveShips().entrySet()) {
           if (shipEntry.getValue().inGroup(group)) {
             world.deactivateShip(shipEntry.getKey());
           }

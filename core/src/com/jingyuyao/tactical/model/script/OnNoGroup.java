@@ -31,7 +31,7 @@ public class OnNoGroup extends Condition {
   }
 
   private boolean onWorld(World world) {
-    for (Ship ship : world.getShipSnapshot().values()) {
+    for (Ship ship : world.getActiveShips().values()) {
       if (ship.inGroup(group)) {
         return false;
       }

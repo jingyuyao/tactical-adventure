@@ -44,7 +44,7 @@ public class Retaliating extends BaseState {
   public void enter() {
     Preconditions.checkState(getTurn().getStage().equals(TurnStage.ENEMY));
     super.enter();
-    retaliate(world.getShipSnapshot().entrySet().iterator());
+    retaliate(world.getActiveShips().entrySet().iterator());
   }
 
   private void retaliate(final Iterator<Entry<Cell, Ship>> shipsIterator) {
