@@ -1,5 +1,10 @@
 package com.jingyuyao.tactical;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -20,6 +25,11 @@ import com.jingyuyao.tactical.data.DataModule;
 import com.jingyuyao.tactical.menu.MenuModule;
 import com.jingyuyao.tactical.model.ModelModule;
 import com.jingyuyao.tactical.view.ViewModule;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 class GameModule extends AbstractModule {
@@ -61,6 +71,13 @@ class GameModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @BackgroundExecutor
+  ExecutorService provideBackgroundExecutor() {
+    return Executors.newSingleThreadExecutor();
+  }
+
+  @Provides
+  @Singleton
   AssetManager provideAssetManager() {
     AssetManager assetManager = new AssetManager();
     assetManager.setLoader(TiledMap.class, new TmxMapLoader());
@@ -79,5 +96,12 @@ class GameModule extends AbstractModule {
   @Singleton
   Batch provideBatch() {
     return new SpriteBatch();
+  }
+
+  @Qualifier
+  @Target({FIELD, PARAMETER, METHOD})
+  @Retention(RUNTIME)
+  @interface BackgroundExecutor {
+
   }
 }
