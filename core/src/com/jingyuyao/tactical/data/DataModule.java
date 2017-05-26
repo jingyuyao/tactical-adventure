@@ -2,6 +2,8 @@ package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.assets.AssetManager;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.serializers.CompatibleFieldSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
@@ -86,5 +88,13 @@ public class DataModule extends AbstractModule {
     );
 
     return builder.create();
+  }
+
+  @Provides
+  @Singleton
+  Kryo provideKryo() {
+    Kryo kryo = new Kryo();
+    kryo.setDefaultSerializer(CompatibleFieldSerializer.class);
+    return kryo;
   }
 }
