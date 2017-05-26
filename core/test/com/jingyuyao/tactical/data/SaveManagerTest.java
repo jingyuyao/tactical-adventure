@@ -6,8 +6,9 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
-import java.io.Writer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +24,11 @@ public class SaveManagerTest {
   @Mock
   private DataConfig dataConfig;
   @Mock
+  private Files files;
+  @Mock
   private JsonSerializer jsonSerializer;
   @Mock
-  private Files files;
+  private KryoSerializer kryoSerializer;
   @Mock
   private GameSave gameSave;
   @Mock
@@ -37,13 +40,15 @@ public class SaveManagerTest {
   @Mock
   private Reader reader;
   @Mock
-  private Writer writer;
+  private InputStream inputStream;
+  @Mock
+  private OutputStream outputStream;
 
   private SaveManager saveManager;
 
   @Before
   public void setUp() {
-    saveManager = new SaveManager(dataConfig, jsonSerializer, files);
+    saveManager = new SaveManager(dataConfig, files, jsonSerializer, kryoSerializer);
   }
 
   @Test
@@ -51,8 +56,8 @@ public class SaveManagerTest {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
-    when(fileHandle1.reader()).thenReturn(reader);
-    when(jsonSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
+    when(fileHandle1.read()).thenReturn(inputStream);
+    when(kryoSerializer.deserialize(inputStream, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
   }
@@ -64,13 +69,13 @@ public class SaveManagerTest {
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(files.internal(START)).thenReturn(fileHandle2);
     when(fileHandle1.exists()).thenReturn(false);
-    when(fileHandle1.writer(false)).thenReturn(writer);
+    when(fileHandle1.write(false)).thenReturn(outputStream);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader);
     when(jsonSerializer.deserialize(reader, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
-    verify(jsonSerializer).serialize(gameSave, writer);
+    verify(kryoSerializer).serialize(gameSave, outputStream);
   }
 
   @Test
@@ -78,8 +83,8 @@ public class SaveManagerTest {
     when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
     when(fileHandle1.exists()).thenReturn(true);
-    when(fileHandle1.reader()).thenReturn(reader);
-    when(jsonSerializer.deserialize(reader, LevelSave.class)).thenReturn(levelSave);
+    when(fileHandle1.read()).thenReturn(inputStream);
+    when(kryoSerializer.deserialize(inputStream, LevelSave.class)).thenReturn(levelSave);
 
     assertThat(saveManager.loadLevelSave()).hasValue(levelSave);
   }
@@ -97,22 +102,22 @@ public class SaveManagerTest {
   public void save_game() {
     when(dataConfig.getMainSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
-    when(fileHandle1.writer(false)).thenReturn(writer);
+    when(fileHandle1.write(false)).thenReturn(outputStream);
 
     saveManager.save(gameSave);
 
-    verify(jsonSerializer).serialize(gameSave, writer);
+    verify(kryoSerializer).serialize(gameSave, outputStream);
   }
 
   @Test
   public void save_level() {
     when(dataConfig.getMainLevelSaveFileName()).thenReturn(MAIN);
     when(files.local(MAIN)).thenReturn(fileHandle1);
-    when(fileHandle1.writer(false)).thenReturn(writer);
+    when(fileHandle1.write(false)).thenReturn(outputStream);
 
     saveManager.save(levelSave);
 
-    verify(jsonSerializer).serialize(levelSave, writer);
+    verify(kryoSerializer).serialize(levelSave, outputStream);
   }
 
   @Test

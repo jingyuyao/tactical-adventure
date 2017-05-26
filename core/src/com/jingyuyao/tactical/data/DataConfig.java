@@ -18,11 +18,11 @@ public class DataConfig {
   }
 
   String getMainSaveFileName() {
-    return "save/main.save.json";
+    return "save/main.save.bin";
   }
 
   String getMainLevelSaveFileName() {
-    return "save/main.level.save.json";
+    return "save/main.level.save.bin";
   }
 
   String getLevelDir(int level) {
