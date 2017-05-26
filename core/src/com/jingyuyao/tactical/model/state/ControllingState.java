@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -42,7 +43,12 @@ public class ControllingState extends BaseState {
 
   void finish() {
     ship.setControllable(false);
-    post(new Save());
-    branchTo(stateFactory.createWaiting());
+    branchTo(stateFactory.createTransition());
+    post(new Save(new Promise(new Runnable() {
+      @Override
+      public void run() {
+        branchTo(stateFactory.createWaiting());
+      }
+    })));
   }
 }

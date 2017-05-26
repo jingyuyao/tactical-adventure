@@ -123,12 +123,14 @@ public class BattlingTest {
 
   private void verify_attacked() {
     InOrder inOrder = Mockito.inOrder(modelBus, worldState, attackingShip, battleSequence);
-    inOrder.verify(worldState).goTo(transition);
+    inOrder.verify(worldState).branchTo(transition);
     inOrder.verify(battleSequence).start(Mockito.eq(battle), runnableCaptor.capture());
     runnableCaptor.getValue().run();
     inOrder.verify(attackingShip).setControllable(false);
+    inOrder.verify(worldState).branchTo(transition);
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
+    Save save = TestHelpers.assertClass(argumentCaptor.getValue(), Save.class);
+    save.complete();
     inOrder.verify(worldState).branchTo(waiting);
     verifyNoMoreInteractions(worldState);
   }

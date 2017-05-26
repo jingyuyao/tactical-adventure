@@ -21,7 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,6 +43,8 @@ public class WaitingTest {
   private Cell cell;
   @Mock
   private Ship playerShip;
+  @Mock
+  private Transition transition;
   @Mock
   private Moving moving;
   @Mock
@@ -107,14 +111,18 @@ public class WaitingTest {
 
   @Test
   public void end_turn() {
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createEndTurn()).thenReturn(endTurn);
 
     waiting.endTurn();
 
-    verify(worldState).advanceTurn();
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
-    verify(worldState).branchTo(endTurn);
+    InOrder inOrder = Mockito.inOrder(worldState, modelBus);
+    inOrder.verify(worldState).advanceTurn();
+    inOrder.verify(worldState).branchTo(transition);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    Save save = TestHelpers.assertClass(argumentCaptor.getValue(), Save.class);
+    save.complete();
+    inOrder.verify(worldState).branchTo(endTurn);
   }
 
   @Test

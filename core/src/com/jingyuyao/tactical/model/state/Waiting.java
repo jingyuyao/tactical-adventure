@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
@@ -54,7 +55,12 @@ public class Waiting extends BaseState {
 
   void endTurn() {
     advanceTurn();
-    post(new Save());
-    branchTo(stateFactory.createEndTurn());
+    branchTo(stateFactory.createTransition());
+    post(new Save(new Promise(new Runnable() {
+      @Override
+      public void run() {
+        branchTo(stateFactory.createEndTurn());
+      }
+    })));
   }
 }

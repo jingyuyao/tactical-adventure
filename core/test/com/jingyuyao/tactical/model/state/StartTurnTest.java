@@ -83,7 +83,8 @@ public class StartTurnTest {
     assertThat(newTurn.getWorld()).isSameAs(world);
     inOrder.verify(worldState).advanceTurn();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
+    Save save = TestHelpers.assertClass(argumentCaptor.getValue(), Save.class);
+    save.complete();
     inOrder.verify(worldState).branchTo(waiting);
   }
 }

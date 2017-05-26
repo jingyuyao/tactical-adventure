@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.ActivatedShip;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.PilotResponse;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -50,8 +51,12 @@ public class Retaliating extends BaseState {
   private void retaliate(final Iterator<Entry<Cell, Ship>> shipsIterator) {
     if (!shipsIterator.hasNext()) {
       advanceTurn();
-      post(new Save());
-      branchTo(stateFactory.createStartTurn());
+      post(new Save(new Promise(new Runnable() {
+        @Override
+        public void run() {
+          branchTo(stateFactory.createStartTurn());
+        }
+      })));
       return;
     }
 

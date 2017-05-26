@@ -18,7 +18,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,6 +38,8 @@ public class UsingConsumableTest {
   private Ship ship;
   @Mock
   private Consumable consumable;
+  @Mock
+  private Transition transition;
   @Mock
   private Waiting waiting;
   @Captor
@@ -68,16 +72,20 @@ public class UsingConsumableTest {
 
   @Test
   public void use_consumable() {
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
 
     usingConsumable.use();
 
-    verify(consumable).apply(ship);
-    verify(ship).useConsumable(consumable);
-    verify(ship).setControllable(false);
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
-    verify(worldState).branchTo(waiting);
+    InOrder inOrder = Mockito.inOrder(consumable, ship, worldState, modelBus);
+    inOrder.verify(consumable).apply(ship);
+    inOrder.verify(ship).useConsumable(consumable);
+    inOrder.verify(ship).setControllable(false);
+    inOrder.verify(worldState).branchTo(transition);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    Save save = TestHelpers.assertClass(argumentCaptor.getValue(), Save.class);
+    save.complete();
+    inOrder.verify(worldState).branchTo(waiting);
   }
 
   @Test
