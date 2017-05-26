@@ -103,7 +103,7 @@ public class RetaliatingTest {
   public void enter() {
     when(worldState.getTurn()).thenReturn(turn);
     when(turn.getStage()).thenReturn(TurnStage.ENEMY);
-    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
+    when(world.getActiveShips()).thenReturn(ImmutableMap.of(cell, enemy, cell2, enemy2));
     when(enemy.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(enemy2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
     when(enemy.getAutoPilotResponse(world, cell)).thenReturn(pilotResponse);
@@ -135,7 +135,8 @@ public class RetaliatingTest {
     inOrder.verify(enemy2).getAutoPilotResponse(world, cell2);
     inOrder.verify(worldState).advanceTurn();
     inOrder.verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
+    Save save = TestHelpers.assertClass(argumentCaptor.getValue(), Save.class);
+    save.complete();
     inOrder.verify(worldState).branchTo(startTurn);
   }
 

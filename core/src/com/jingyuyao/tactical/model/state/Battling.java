@@ -45,7 +45,7 @@ public class Battling extends ControllingState {
   }
 
   void attack() {
-    goTo(stateFactory.createTransition());
+    branchTo(stateFactory.createTransition());
     battleSequence.start(battle, new Runnable() {
       @Override
       public void run() {

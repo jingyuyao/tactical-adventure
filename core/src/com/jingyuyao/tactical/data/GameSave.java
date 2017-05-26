@@ -41,7 +41,7 @@ public class GameSave implements Serializable {
    */
   void replacePlayerShipsFrom(World world) {
     playerShips.clear();
-    for (Ship ship : Iterables.concat(world.getInactiveShips(), world.getShipSnapshot().values())) {
+    for (Ship ship : Iterables.concat(world.getInactiveShips(), world.getActiveShips().values())) {
       if (ship.inGroup(ShipGroup.PLAYER)) {
         playerShips.add(ship);
       }

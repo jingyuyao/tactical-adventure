@@ -181,7 +181,7 @@ public class ScriptRunnerTest {
         .thenReturn(ImmutableMap.of(activationCondition, deactivateGroup));
     when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
     when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
-    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, ship1));
+    when(world.getActiveShips()).thenReturn(ImmutableMap.of(cell1, ship1));
     when(deactivateGroup.getGroup()).thenReturn(group);
     when(ship1.inGroup(group)).thenReturn(true);
     when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);

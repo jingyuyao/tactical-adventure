@@ -13,9 +13,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class NullCheckAdapterFactoryTest {
 
-  private static final String VALID1 = "{\"hello\": \"nihao\"}";
-  private static final String VALID2 = "{\"hello\": \"nihao\", \"canNull\": null}";
-  private static final String INVALID1 = "{\"canNull\": null}";
+  private static final String VALID = "{\"hello\": \"nihao\"}";
+  private static final String INVALID1 = "{\"noFound\": null}";
   private static final String INVALID2 = "{\"hello\": null}";
   private static final String CHILD_VALID = "{\"hello\": \"nihao\", \"child\": \"hi\"}";
   private static final String CHILD_MISSING_PARENT = "{\"child\": \"hi\"}";
@@ -28,17 +27,9 @@ public class NullCheckAdapterFactoryTest {
   }
 
   @Test
-  public void valid1() {
-    Dummy dummy = gson.fromJson(VALID1, Dummy.class);
+  public void valid() {
+    Dummy dummy = gson.fromJson(VALID, Dummy.class);
     assertThat(dummy.hello).isEqualTo("nihao");
-    assertThat(dummy.canNull).isNull();
-  }
-
-  @Test
-  public void valid2() {
-    Dummy dummy = gson.fromJson(VALID2, Dummy.class);
-    assertThat(dummy.hello).isEqualTo("nihao");
-    assertThat(dummy.canNull).isNull();
   }
 
   @Test(expected = JsonParseException.class)
@@ -55,7 +46,6 @@ public class NullCheckAdapterFactoryTest {
   public void child_valid() {
     DummyChild dummyChild = gson.fromJson(CHILD_VALID, DummyChild.class);
     assertThat(dummyChild.hello).isEqualTo("nihao");
-    assertThat(dummyChild.canNull).isNull();
     assertThat(dummyChild.child).isEqualTo("hi");
   }
 
@@ -66,9 +56,8 @@ public class NullCheckAdapterFactoryTest {
 
   private static class Dummy {
 
-    final String hello;
-    final transient String ignoreTransient;
-    String canNull;
+    String hello;
+    transient String ignoreTransient;
 
     private Dummy(String hello, String ignoreTransient) {
       this.hello = hello;
@@ -78,7 +67,7 @@ public class NullCheckAdapterFactoryTest {
 
   private static class DummyChild extends Dummy {
 
-    final String child;
+    String child;
 
     private DummyChild(String hello, String ignoreTransient, String child) {
       super(hello, ignoreTransient);

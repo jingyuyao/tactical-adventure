@@ -3,50 +3,41 @@ package com.jingyuyao.tactical.data;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gson.Gson;
-import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DataSerializerTest {
+public class JsonLoaderTest {
 
   private static final String DUMMY = "{\"s\":\"hello\",\"i\":2}";
   private static final String DUMMY2 = "{\"str\":\"other\",\"num\":3}";
 
-  private DataSerializer dataSerializer;
+  private JsonLoader jsonLoader;
 
   @Before
   public void setUp() {
-    dataSerializer = new DataSerializer(new Gson());
+    jsonLoader = new JsonLoader(new Gson());
   }
 
   @Test
   public void empty_final_fields() {
     InstStringReader reader = new InstStringReader(DUMMY);
-    InstStringWriter writer = new InstStringWriter();
 
-    Dummy dummy = dataSerializer.deserialize(reader, Dummy.class);
+    Dummy dummy = jsonLoader.deserialize(reader, Dummy.class);
 
     assertThat(dummy.s).isEqualTo("hello");
     assertThat(dummy.i).isEqualTo(2);
     assertThat(dummy.preset).isNull();
-
-    dataSerializer.serialize(dummy, writer);
-
-    assertThat(DUMMY).isEqualTo(writer.toString());
-    assertThat(reader.closed).isTrue();
-    assertThat(writer.closed).isTrue();
   }
 
   @Test
   public void final_field_initialization() {
     InstStringReader reader = new InstStringReader(DUMMY2);
 
-    Dummy2 dummy2 = dataSerializer.deserialize(reader, Dummy2.class);
+    Dummy2 dummy2 = jsonLoader.deserialize(reader, Dummy2.class);
 
     assertThat(dummy2.num).isEqualTo(2);
     assertThat(dummy2.str).isEqualTo("not replaced");
@@ -88,17 +79,6 @@ public class DataSerializerTest {
 
     @Override
     public void close() {
-      super.close();
-      closed = true;
-    }
-  }
-
-  private static class InstStringWriter extends StringWriter {
-
-    private boolean closed;
-
-    @Override
-    public void close() throws IOException {
       super.close();
       closed = true;
     }

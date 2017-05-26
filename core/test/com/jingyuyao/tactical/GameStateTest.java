@@ -3,6 +3,7 @@ package com.jingyuyao.tactical;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Application;
@@ -24,6 +25,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,9 +36,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class GameStateTest {
 
   @Mock
+  private TacticalAdventure game;
+  @Mock
   private Application application;
   @Mock
-  private TacticalAdventure game;
+  private BackgroundService backgroundService;
   @Mock
   private DataManager dataManager;
   @Mock
@@ -58,12 +63,14 @@ public class GameStateTest {
   private LevelLost levelLost;
   @Mock
   private DeadEvent deadEvent;
+  @Captor
+  private ArgumentCaptor<Runnable> runnableCaptor;
 
   private GameState gameState;
 
   @Before
   public void setUp() {
-    gameState = new GameState(application, game, dataManager, world, worldState);
+    gameState = new GameState(game, application, backgroundService, dataManager, world, worldState);
   }
 
   @Test
@@ -103,7 +110,15 @@ public class GameStateTest {
   public void save() {
     gameState.save(save);
 
+    verify(backgroundService).submit(runnableCaptor.capture(), runnableCaptor.capture());
+    verifyZeroInteractions(dataManager);
+    verifyZeroInteractions(save);
+
+    runnableCaptor.getAllValues().get(0).run();
     verify(dataManager).saveLevelProgress(world, worldState);
+
+    runnableCaptor.getAllValues().get(1).run();
+    verify(save).complete();
   }
 
   @Test

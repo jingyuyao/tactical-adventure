@@ -13,23 +13,29 @@ import javax.inject.Singleton;
 class SaveManager {
 
   private final DataConfig dataConfig;
-  private final DataSerializer dataSerializer;
   private final Files files;
+  private final JsonLoader jsonLoader;
+  private final KryoSerializer kryoSerializer;
 
   @Inject
-  SaveManager(DataConfig dataConfig, DataSerializer dataSerializer, Files files) {
+  SaveManager(
+      DataConfig dataConfig,
+      Files files,
+      JsonLoader jsonLoader,
+      KryoSerializer kryoSerializer) {
     this.dataConfig = dataConfig;
-    this.dataSerializer = dataSerializer;
     this.files = files;
+    this.jsonLoader = jsonLoader;
+    this.kryoSerializer = kryoSerializer;
   }
 
   GameSave loadGameSave() {
-    Optional<GameSave> main = loadLocal(dataConfig.getMainSaveFileName(), GameSave.class);
+    Optional<GameSave> main = loadKryo(dataConfig.getMainSaveFileName(), GameSave.class);
     if (main.isPresent()) {
       return main.get();
     }
 
-    Optional<GameSave> start = loadInternal(dataConfig.getInitFileName(), GameSave.class);
+    Optional<GameSave> start = loadJson(dataConfig.getInitFileName(), GameSave.class);
     if (start.isPresent()) {
       GameSave startSave = start.get();
       save(startSave);
@@ -40,7 +46,7 @@ class SaveManager {
   }
 
   Optional<LevelSave> loadLevelSave() {
-    return loadLocal(dataConfig.getMainLevelSaveFileName(), LevelSave.class);
+    return loadKryo(dataConfig.getMainLevelSaveFileName(), LevelSave.class);
   }
 
   void save(GameSave gameSave) {
@@ -59,25 +65,25 @@ class SaveManager {
     remove(dataConfig.getMainLevelSaveFileName());
   }
 
-  private <T> Optional<T> loadLocal(String fileName, Class<T> clazz) {
-    return load(fileName, clazz, false);
-  }
-
-  private <T> Optional<T> loadInternal(String fileName, Class<T> clazz) {
-    return load(fileName, clazz, true);
-  }
-
-  private <T> Optional<T> load(String fileName, Class<T> clazz, boolean internal) {
-    FileHandle fileHandle = internal ? files.internal(fileName) : files.local(fileName);
+  private <T> Optional<T> loadKryo(String fileName, Class<T> clazz) {
+    FileHandle fileHandle = files.local(fileName);
     if (fileHandle.exists()) {
-      return Optional.of(dataSerializer.deserialize(fileHandle.reader(), clazz));
+      return Optional.of(kryoSerializer.deserialize(fileHandle.read(), clazz));
+    }
+    return Optional.absent();
+  }
+
+  private <T> Optional<T> loadJson(String fileName, Class<T> clazz) {
+    FileHandle fileHandle = files.internal(fileName);
+    if (fileHandle.exists()) {
+      return Optional.of(jsonLoader.deserialize(fileHandle.reader(), clazz));
     }
     return Optional.absent();
   }
 
   private void save(Object data, String fileName) {
     FileHandle fileHandle = files.local(fileName);
-    dataSerializer.serialize(data, fileHandle.writer(false));
+    kryoSerializer.serialize(data, fileHandle.write(false));
   }
 
   private void remove(String fileName) {

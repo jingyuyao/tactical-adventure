@@ -162,7 +162,7 @@ public class ShipSystemTest {
   public void world_loaded() {
     LoopAnimation animation = new LoopAnimation(10, new WorldTexture[]{texture});
     when(worldLoaded.getWorld()).thenReturn(world);
-    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell, ship));
+    when(world.getActiveShips()).thenReturn(ImmutableMap.of(cell, ship));
     when(cell.getCoordinate()).thenReturn(C1);
     when(animations.get(ship)).thenReturn(animation);
 

@@ -1,10 +1,9 @@
 package com.jingyuyao.tactical.model.state;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
+import com.jingyuyao.tactical.TestHelpers;
 import com.jingyuyao.tactical.model.ModelBus;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.ship.Ship;
@@ -13,7 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,6 +30,8 @@ public class ControllingStateTest {
   private Cell cell;
   @Mock
   private Ship ship;
+  @Mock
+  private Transition transition;
   @Mock
   private Waiting waiting;
   @Captor
@@ -56,6 +59,7 @@ public class ControllingStateTest {
 
   @Test
   public void finish() {
+    when(stateFactory.createTransition()).thenReturn(transition);
     when(stateFactory.createWaiting()).thenReturn(waiting);
     when(cell.ship()).thenReturn(Optional.of(ship));
     when(ship.isControllable()).thenReturn(true);
@@ -63,9 +67,12 @@ public class ControllingStateTest {
 
     state.finish();
 
-    verify(ship).setControllable(false);
-    verify(modelBus).post(argumentCaptor.capture());
-    assertThat(argumentCaptor.getValue()).isInstanceOf(Save.class);
-    verify(worldState).branchTo(waiting);
+    InOrder inOrder = Mockito.inOrder(ship, modelBus, worldState);
+    inOrder.verify(ship).setControllable(false);
+    inOrder.verify(worldState).branchTo(transition);
+    inOrder.verify(modelBus).post(argumentCaptor.capture());
+    Save save = TestHelpers.assertClass(argumentCaptor.getValue(), Save.class);
+    save.complete();
+    inOrder.verify(worldState).branchTo(waiting);
   }
 }

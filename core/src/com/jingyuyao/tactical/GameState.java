@@ -19,21 +19,24 @@ import javax.inject.Singleton;
 @ModelBusListener
 public class GameState {
 
-  private final Application application;
   private final TacticalAdventure game;
+  private final Application application;
+  private final BackgroundService backgroundService;
   private final DataManager dataManager;
   private final World world;
   private final WorldState worldState;
 
   @Inject
   GameState(
-      Application application,
       TacticalAdventure game,
+      Application application,
+      BackgroundService backgroundService,
       DataManager dataManager,
       World world,
       WorldState worldState) {
-    this.application = application;
     this.game = game;
+    this.application = application;
+    this.backgroundService = backgroundService;
     this.dataManager = dataManager;
     this.world = world;
     this.worldState = worldState;
@@ -58,8 +61,20 @@ public class GameState {
   }
 
   @Subscribe
-  void save(Save save) {
-    dataManager.saveLevelProgress(world, worldState);
+  void save(final Save save) {
+    backgroundService.submit(
+        new Runnable() {
+          @Override
+          public void run() {
+            dataManager.saveLevelProgress(world, worldState);
+          }
+        },
+        new Runnable() {
+          @Override
+          public void run() {
+            save.complete();
+          }
+        });
   }
 
   @Subscribe

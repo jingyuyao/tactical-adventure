@@ -49,7 +49,7 @@ public class GameSaveTest {
     when(worldShip1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(worldShip2.inGroup(ShipGroup.PLAYER)).thenReturn(false);
     when(worldShip3.inGroup(ShipGroup.PLAYER)).thenReturn(true);
-    when(world.getShipSnapshot()).thenReturn(ImmutableMap.of(cell1, worldShip1, cell2, worldShip2));
+    when(world.getActiveShips()).thenReturn(ImmutableMap.of(cell1, worldShip1, cell2, worldShip2));
     when(world.getInactiveShips()).thenReturn(Collections.singletonList(worldShip3));
 
     gameSave.replacePlayerShipsFrom(world);

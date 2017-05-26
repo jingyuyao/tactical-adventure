@@ -196,13 +196,22 @@ public class WorldTest {
   }
 
   @Test
-  public void get_ships() {
+  public void get_active_ships() {
     cellMap.put(C1_1, cell1);
     cellMap.put(C2_0, cell2);
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
 
-    assertThat(world.getShipSnapshot()).containsExactly(cell1, ship1, cell2, ship2);
+    assertThat(world.getActiveShips()).containsExactly(cell1, ship1, cell2, ship2);
+  }
+
+  @Test
+  public void get_inactive_ships() {
+    inactiveShips.add(ship1);
+    inactiveShips.add(ship2);
+
+    assertThat(world.getInactiveShips()).containsExactly(ship1, ship2);
+    assertThat(world.getInactiveShips()).isNotSameAs(inactiveShips); // return a copy
   }
 
   @Test

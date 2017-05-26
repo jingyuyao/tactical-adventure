@@ -34,8 +34,7 @@ class NullCheckAdapterFactory implements TypeAdapterFactory {
           Class<?> current = obj.getClass();
           while (current.getSuperclass() != null) {
             for (Field field : current.getDeclaredFields()) {
-              int modifiers = field.getModifiers();
-              if (Modifier.isFinal(modifiers) && !Modifier.isTransient(modifiers)) {
+              if (!Modifier.isTransient(field.getModifiers())) {
                 try {
                   field.setAccessible(true);
                   if (field.get(obj) == null) {

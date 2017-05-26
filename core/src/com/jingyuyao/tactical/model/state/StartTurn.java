@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.model.state;
 
 import com.google.common.base.Preconditions;
 import com.jingyuyao.tactical.model.ModelBus;
+import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.Save;
 import com.jingyuyao.tactical.model.state.Turn.TurnStage;
 import com.jingyuyao.tactical.model.world.World;
@@ -31,7 +32,11 @@ public class StartTurn extends TurnScriptState {
   @Override
   void scriptDone() {
     advanceTurn();
-    post(new Save());
-    branchTo(stateFactory.createWaiting());
+    post(new Save(new Promise(new Runnable() {
+      @Override
+      public void run() {
+        branchTo(stateFactory.createWaiting());
+      }
+    })));
   }
 }

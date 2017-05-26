@@ -125,9 +125,9 @@ public class World implements GetNeighbors {
   }
 
   /**
-   * Return a snapshot of all the ships in the world.
+   * Return a snapshot of the active ships.
    */
-  public Map<Cell, Ship> getShipSnapshot() {
+  public Map<Cell, Ship> getActiveShips() {
     Map<Cell, Ship> shipMap = new HashMap<>();
     for (Cell cell : worldCells.values()) {
       for (Ship ship : cell.ship().asSet()) {
@@ -137,8 +137,11 @@ public class World implements GetNeighbors {
     return shipMap;
   }
 
+  /**
+   * Return a snapshot of the inactive ships.
+   */
   public List<Ship> getInactiveShips() {
-    return inactiveShips;
+    return new ArrayList<>(inactiveShips);
   }
 
   /**
