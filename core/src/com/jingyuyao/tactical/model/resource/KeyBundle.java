@@ -38,6 +38,13 @@ public class KeyBundle implements Serializable {
   }
 
   /**
+   * Create a bundle where the path is prefixed with "texture/" and no extension.
+   */
+  public static KeyBundle texture(String path) {
+    return new KeyBundle("texture/" + path, null);
+  }
+
+  /**
    * Return the path to the bundle
    */
   public String getPath() {

@@ -46,7 +46,7 @@ public class ResourceModule extends AbstractModule {
   @Provides
   @Singleton
   @MarkerTextureCache
-  Map<String, WorldTexture> provideMarkerTextureCache() {
+  Map<StringKey, WorldTexture> provideMarkerTextureCache() {
     return new HashMap<>();
   }
 
