@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Terrain;
 import java.util.HashMap;
@@ -15,6 +16,9 @@ import javax.inject.Singleton;
 // TODO: test me
 @Singleton
 class TerrainsLoader {
+
+  // TODO: temp
+  private static final KeyBundle SPACE_BUNDLE = KeyBundle.tileset("space");
 
   private final DataConfig dataConfig;
   private final AssetManager assetManager;
@@ -49,13 +53,11 @@ class TerrainsLoader {
   }
 
   private Terrain createTerrain(TiledMapTileLayer.Cell cell) {
-    if (cell != null) {
-      MapProperties properties = cell.getTile().getProperties();
-      String name = properties.get(dataConfig.getTerrainNameKey(), "space", String.class);
-      boolean holdShip = properties.get(dataConfig.getTerrainHoldShipKey(), true, Boolean.class);
-      int moveCost = properties.get(dataConfig.getTerrainMoveCostKey(), 1, Integer.class);
-      return new Terrain(name, holdShip, moveCost);
-    }
-    return new Terrain("space", true, 1);
+    Preconditions.checkNotNull(cell);
+    MapProperties properties = cell.getTile().getProperties();
+    String name = properties.get(dataConfig.getTerrainNameKey(), "space", String.class);
+    boolean holdShip = properties.get(dataConfig.getTerrainHoldShipKey(), true, Boolean.class);
+    int moveCost = properties.get(dataConfig.getTerrainMoveCostKey(), 1, Integer.class);
+    return new Terrain(name, SPACE_BUNDLE.get(cell.getTile().getId()), holdShip, moveCost);
   }
 }

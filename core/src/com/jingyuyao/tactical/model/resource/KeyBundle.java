@@ -45,6 +45,13 @@ public class KeyBundle implements Serializable {
   }
 
   /**
+   * Create a bundle where the path is prefixed with "tilesets/" and "png" extension.
+   */
+  public static KeyBundle tileset(String path) {
+    return new KeyBundle("tilesets/" + path, "png");
+  }
+
+  /**
    * Return the path to the bundle
    */
   public String getPath() {
