@@ -61,8 +61,12 @@ public class KeyBundle implements Serializable {
   /**
    * Create a {@link StringKey}.
    */
-  public StringKey get(String key, Object... args) {
-    return new StringKey(this, key, args);
+  public StringKey get(String id, Object... args) {
+    return new StringKey(this, id, args);
+  }
+
+  public IntKey get(int id) {
+    return new IntKey(this, id);
   }
 
   @Override
