@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.model.battle.Target;
 import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.StartBattle;
 import com.jingyuyao.tactical.model.item.Weapon;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Direction;
@@ -41,6 +42,8 @@ public class EffectsSystemTest {
   @Mock
   private Weapon weapon;
   @Mock
+  private StringKey stringKey;
+  @Mock
   private Cell cell;
   @Mock
   private WorldTexture worldTexture;
@@ -63,9 +66,10 @@ public class EffectsSystemTest {
     when(target.getOrigin()).thenReturn(cell);
     when(target.direction()).thenReturn(Optional.<Direction>absent());
     when(cell.getCoordinate()).thenReturn(C1);
-    when(animations.get(weapon)).thenReturn(animation);
     when(battle.getWeapon()).thenReturn(weapon);
+    when(weapon.getAnimation()).thenReturn(stringKey);
     when(battle.getTarget()).thenReturn(target);
+    when(animations.getSingle(stringKey)).thenReturn(animation);
 
     effectsSystem.startBattle(new StartBattle(battle, new Promise()));
 
@@ -94,9 +98,10 @@ public class EffectsSystemTest {
     when(target.getOrigin()).thenReturn(cell);
     when(target.direction()).thenReturn(Optional.of(Direction.DOWN));
     when(cell.getCoordinate()).thenReturn(C1);
-    when(animations.get(weapon)).thenReturn(animation);
     when(battle.getWeapon()).thenReturn(weapon);
+    when(weapon.getAnimation()).thenReturn(stringKey);
     when(battle.getTarget()).thenReturn(target);
+    when(animations.getSingle(stringKey)).thenReturn(animation);
 
     effectsSystem.startBattle(new StartBattle(battle, new Promise()));
 

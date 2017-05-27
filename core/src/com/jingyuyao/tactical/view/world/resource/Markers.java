@@ -1,6 +1,8 @@
 package com.jingyuyao.tactical.view.world.resource;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule.MarkerTextureCache;
 import java.util.Map;
 import javax.inject.Inject;
@@ -9,15 +11,17 @@ import javax.inject.Singleton;
 @Singleton
 public class Markers {
 
+  static final KeyBundle MARKER_BUNDLE = KeyBundle.texture("ui/marking");
+
   private final TextureAtlas textureAtlas;
   private final TextureFactory textureFactory;
-  private final Map<String, WorldTexture> markerTextureCache;
+  private final Map<StringKey, WorldTexture> markerTextureCache;
 
   @Inject
   Markers(
       TextureAtlas textureAtlas,
       TextureFactory textureFactory,
-      @MarkerTextureCache Map<String, WorldTexture> markerTextureCache) {
+      @MarkerTextureCache Map<StringKey, WorldTexture> markerTextureCache) {
     this.textureAtlas = textureAtlas;
     this.textureFactory = textureFactory;
     this.markerTextureCache = markerTextureCache;
@@ -44,12 +48,12 @@ public class Markers {
   }
 
   private WorldTexture get(String markerName) {
-    String resourceName = "texture/ui/marking/" + markerName;
-    if (markerTextureCache.containsKey(resourceName)) {
-      return markerTextureCache.get(resourceName);
+    StringKey key = MARKER_BUNDLE.get(markerName);
+    if (markerTextureCache.containsKey(key)) {
+      return markerTextureCache.get(key);
     } else {
-      WorldTexture texture = textureFactory.create(textureAtlas.findRegion(resourceName));
-      markerTextureCache.put(resourceName, texture);
+      WorldTexture texture = textureFactory.create(textureAtlas.findRegion(key.getPath()));
+      markerTextureCache.put(key, texture);
       return texture;
     }
   }

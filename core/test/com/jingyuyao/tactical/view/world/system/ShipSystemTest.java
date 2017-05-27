@@ -18,6 +18,7 @@ import com.jingyuyao.tactical.model.event.Promise;
 import com.jingyuyao.tactical.model.event.RemoveShip;
 import com.jingyuyao.tactical.model.event.SpawnShip;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.ControllingState;
@@ -70,6 +71,8 @@ public class ShipSystemTest {
   private Cell cell6;
   @Mock
   private Ship ship;
+  @Mock
+  private StringKey stringKey;
   @Mock
   private WorldTexture texture;
   @Mock
@@ -164,7 +167,8 @@ public class ShipSystemTest {
     when(worldLoaded.getWorld()).thenReturn(world);
     when(world.getActiveShips()).thenReturn(ImmutableMap.of(cell, ship));
     when(cell.getCoordinate()).thenReturn(C1);
-    when(animations.get(ship)).thenReturn(animation);
+    when(ship.getAnimation()).thenReturn(stringKey);
+    when(animations.getLoop(stringKey)).thenReturn(animation);
 
     shipSystem.worldLoaded(worldLoaded);
 
@@ -191,7 +195,8 @@ public class ShipSystemTest {
     when(spawnShip.getObject()).thenReturn(cell);
     when(cell.getCoordinate()).thenReturn(C1);
     when(cell.ship()).thenReturn(Optional.of(ship));
-    when(animations.get(ship)).thenReturn(animation);
+    when(ship.getAnimation()).thenReturn(stringKey);
+    when(animations.getLoop(stringKey)).thenReturn(animation);
 
     shipSystem.spawnShip(spawnShip);
 

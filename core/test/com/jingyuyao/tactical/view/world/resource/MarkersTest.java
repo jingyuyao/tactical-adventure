@@ -1,10 +1,12 @@
 package com.jingyuyao.tactical.view.world.resource;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.jingyuyao.tactical.view.world.resource.Markers.MARKER_BUNDLE;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
@@ -25,7 +27,7 @@ public class MarkersTest {
   @Mock
   private WorldTexture worldTexture;
 
-  private Map<String, WorldTexture> textureCache;
+  private Map<StringKey, WorldTexture> textureCache;
   private Markers markers;
 
   @Before
@@ -42,7 +44,7 @@ public class MarkersTest {
     WorldTexture texture = markers.getHighlight();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("texture/ui/marking/highlight", worldTexture);
+    assertThat(textureCache).containsExactly(MARKER_BUNDLE.get("highlight"), worldTexture);
   }
 
   @Test
@@ -53,7 +55,7 @@ public class MarkersTest {
     WorldTexture texture = markers.getActivated();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("texture/ui/marking/activated", worldTexture);
+    assertThat(textureCache).containsExactly(MARKER_BUNDLE.get("activated"), worldTexture);
   }
 
   @Test
@@ -64,7 +66,7 @@ public class MarkersTest {
     WorldTexture texture = markers.getMove();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("texture/ui/marking/move", worldTexture);
+    assertThat(textureCache).containsExactly(MARKER_BUNDLE.get("move"), worldTexture);
   }
 
   @Test
@@ -75,7 +77,7 @@ public class MarkersTest {
     WorldTexture texture = markers.getTargetSelect();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("texture/ui/marking/target_select", worldTexture);
+    assertThat(textureCache).containsExactly(MARKER_BUNDLE.get("target_select"), worldTexture);
   }
 
   @Test
@@ -86,6 +88,6 @@ public class MarkersTest {
     WorldTexture texture = markers.getAttack();
 
     assertThat(texture).isSameAs(worldTexture);
-    assertThat(textureCache).containsExactly("texture/ui/marking/attack", worldTexture);
+    assertThat(textureCache).containsExactly(MARKER_BUNDLE.get("attack"), worldTexture);
   }
 }

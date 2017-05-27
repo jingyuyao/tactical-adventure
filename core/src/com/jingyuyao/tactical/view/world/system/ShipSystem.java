@@ -157,7 +157,7 @@ class ShipSystem extends IteratingSystem {
     entity.add(position);
     entity.add(shipComponent);
     entity.add(frame);
-    entity.add(animations.get(ship));
+    entity.add(animations.getLoop(ship.getAnimation()));
 
     getEngine().addEntity(entity);
   }

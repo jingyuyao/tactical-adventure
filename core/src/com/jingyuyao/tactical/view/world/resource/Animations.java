@@ -3,8 +3,7 @@ package com.jingyuyao.tactical.view.world.resource;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
-import com.jingyuyao.tactical.model.item.Item;
-import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.ResourceModule.AtlasRegionsCache;
@@ -19,16 +18,16 @@ public class Animations {
   private final ResourceConfig resourceConfig;
   private final TextureAtlas textureAtlas;
   private final TextureFactory textureFactory;
-  private final Map<String, LoopAnimation> loopAnimationCache;
-  private final Map<String, WorldTexture[]> atlasRegionsCache;
+  private final Map<StringKey, LoopAnimation> loopAnimationCache;
+  private final Map<StringKey, WorldTexture[]> atlasRegionsCache;
 
   @Inject
   Animations(
       ResourceConfig resourceConfig,
       TextureAtlas textureAtlas,
       TextureFactory textureFactory,
-      @LoopAnimationCache Map<String, LoopAnimation> loopAnimationCache,
-      @AtlasRegionsCache Map<String, WorldTexture[]> atlasRegionsCache) {
+      @LoopAnimationCache Map<StringKey, LoopAnimation> loopAnimationCache,
+      @AtlasRegionsCache Map<StringKey, WorldTexture[]> atlasRegionsCache) {
     this.resourceConfig = resourceConfig;
     this.textureFactory = textureFactory;
     this.loopAnimationCache = loopAnimationCache;
@@ -36,44 +35,33 @@ public class Animations {
     this.atlasRegionsCache = atlasRegionsCache;
   }
 
-  public LoopAnimation get(Ship ship) {
-    return getLoop(resourceConfig.getShipIdleFPS(), ship.getAnimation().getPath());
-  }
-
-  public SingleAnimation get(Item item) {
-    return getSingle(resourceConfig.getItemFPS(), item.getAnimation().getPath());
-  }
-
-  private SingleAnimation getSingle(int fps, String assetPath) {
-    return new SingleAnimation(fps, getAtlasRegions(assetPath));
-  }
-
-  private LoopAnimation getLoop(int fps, String assetPath) {
-    if (loopAnimationCache.containsKey(assetPath)) {
-      return loopAnimationCache.get(assetPath);
+  public LoopAnimation getLoop(StringKey key) {
+    if (loopAnimationCache.containsKey(key)) {
+      return loopAnimationCache.get(key);
     } else {
-      LoopAnimation animation = createLoop(fps, assetPath);
-      loopAnimationCache.put(assetPath, animation);
+      LoopAnimation animation =
+          new LoopAnimation(resourceConfig.getLoopFps(), getAtlasRegions(key));
+      loopAnimationCache.put(key, animation);
       return animation;
     }
   }
 
-  private LoopAnimation createLoop(int fps, String assetPath) {
-    return new LoopAnimation(fps, getAtlasRegions(assetPath));
+  public SingleAnimation getSingle(StringKey key) {
+    return new SingleAnimation(resourceConfig.getSingleFps(), getAtlasRegions(key));
   }
 
-  private WorldTexture[] getAtlasRegions(String assetPath) {
-    if (atlasRegionsCache.containsKey(assetPath)) {
-      return atlasRegionsCache.get(assetPath);
+  private WorldTexture[] getAtlasRegions(StringKey key) {
+    if (atlasRegionsCache.containsKey(key)) {
+      return atlasRegionsCache.get(key);
     } else {
-      WorldTexture[] worldTextures = createAtlasRegions(assetPath);
-      atlasRegionsCache.put(assetPath, worldTextures);
+      WorldTexture[] worldTextures = createAtlasRegions(key);
+      atlasRegionsCache.put(key, worldTextures);
       return worldTextures;
     }
   }
 
-  private WorldTexture[] createAtlasRegions(String assetPath) {
-    Array<AtlasRegion> regions = textureAtlas.findRegions(assetPath);
+  private WorldTexture[] createAtlasRegions(StringKey key) {
+    Array<AtlasRegion> regions = textureAtlas.findRegions(key.getPath());
     WorldTexture[] worldTextures = new WorldTexture[regions.size];
     for (int i = 0; i < regions.size; i++) {
       worldTextures[i] = textureFactory.create(regions.get(i));

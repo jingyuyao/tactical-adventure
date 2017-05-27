@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
 import java.lang.annotation.Retention;
@@ -31,21 +32,21 @@ public class ResourceModule extends AbstractModule {
   @Provides
   @Singleton
   @LoopAnimationCache
-  Map<String, LoopAnimation> provideLoopAnimationCache() {
+  Map<StringKey, LoopAnimation> provideLoopAnimationCache() {
     return new HashMap<>();
   }
 
   @Provides
   @Singleton
   @AtlasRegionsCache
-  Map<String, WorldTexture[]> provideAtlasRegionsCache() {
+  Map<StringKey, WorldTexture[]> provideAtlasRegionsCache() {
     return new HashMap<>();
   }
 
   @Provides
   @Singleton
   @MarkerTextureCache
-  Map<String, WorldTexture> provideMarkerTextureCache() {
+  Map<StringKey, WorldTexture> provideMarkerTextureCache() {
     return new HashMap<>();
   }
 

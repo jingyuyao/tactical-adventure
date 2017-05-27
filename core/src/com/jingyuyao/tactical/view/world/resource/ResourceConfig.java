@@ -11,19 +11,11 @@ class ResourceConfig {
 
   }
 
-  int getShipIdleFPS() {
+  int getLoopFps() {
     return 5;
   }
 
-  String getShipAssetPrefix() {
-    return "ship/";
-  }
-
-  int getItemFPS() {
+  int getSingleFps() {
     return 10;
-  }
-
-  String getWeaponAssetPrefix() {
-    return "weapon/";
   }
 }
