@@ -53,6 +53,7 @@ public class ResourceModule extends AbstractModule {
     return new HashMap<>();
   }
 
+  @Provides
   @Singleton
   @TileTextureCache
   Map<IntKey, WorldTexture> provideTileTextureCache() {
