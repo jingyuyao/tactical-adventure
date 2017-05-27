@@ -289,23 +289,32 @@ public class WorldTest {
   }
 
   @Test
-  public void activate_ship() {
+  public void activate_group() {
     inactiveShips.add(ship1);
+    inactiveShips.add(ship2);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
+    when(ship2.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
-    world.activateShip(cell1, ship1);
+    world.activateGroup(ShipGroup.PLAYER, Arrays.asList(cell1, cell2));
 
     assertThat(world.getInactiveShips()).isEmpty();
     verify(cell1).addShip(ship1);
-    verify(modelBus).post(argumentCaptor.capture());
-    SpawnShip spawnShip = TestHelpers.assertClass(argumentCaptor.getValue(), SpawnShip.class);
-    assertThat(spawnShip.getObject()).isSameAs(cell1);
+    verify(cell2).addShip(ship2);
+    verify(modelBus, times(2)).post(argumentCaptor.capture());
+    SpawnShip spawnShip1 = TestHelpers.assertClass(argumentCaptor, 0, SpawnShip.class);
+    assertThat(spawnShip1.getObject()).isSameAs(cell1);
+    SpawnShip spawnShip2 = TestHelpers.assertClass(argumentCaptor, 1, SpawnShip.class);
+    assertThat(spawnShip2.getObject()).isSameAs(cell2);
   }
 
   @Test
-  public void deactivate_ship() {
+  public void deactivate_group() {
+    cellMap.put(C0_1, cell1);
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell1.removeShip()).thenReturn(ship1);
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
 
-    world.deactivateShip(cell1);
+    world.deactivateGroup(ShipGroup.PLAYER);
 
     assertThat(world.getInactiveShips()).containsExactly(ship1);
     verify(cell1).removeShip();

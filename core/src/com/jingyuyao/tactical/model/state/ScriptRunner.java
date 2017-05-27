@@ -11,11 +11,10 @@ import com.jingyuyao.tactical.model.script.DeactivateGroup;
 import com.jingyuyao.tactical.model.script.Dialogue;
 import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
-import com.jingyuyao.tactical.model.ship.Ship;
-import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.World;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -91,18 +90,11 @@ class ScriptRunner {
       Condition condition = entry.getKey();
       if (event.satisfiedBy(condition)) {
         ActivateGroup activateGroup = entry.getValue();
-        final ShipGroup group = activateGroup.getGroup();
-        List<Ship> ships = world.getInactiveShips();
-        List<Coordinate> spawns = activateGroup.getSpawns();
-        for (int i = 0, j = 0; i < spawns.size() && j < ships.size(); j++) {
-          Ship ship = ships.get(j);
-          if (ship.inGroup(group)) {
-            for (Cell cell : world.cell(spawns.get(i)).asSet()) {
-              world.activateShip(cell, ship);
-              i++;
-            }
-          }
+        List<Cell> spawns = new ArrayList<>();
+        for (Coordinate coordinate : activateGroup.getSpawns()) {
+          spawns.addAll(world.cell(coordinate).asSet());
         }
+        world.activateGroup(activateGroup.getGroup(), spawns);
       }
     }
   }
@@ -112,12 +104,7 @@ class ScriptRunner {
       Condition condition = entry.getKey();
       if (event.satisfiedBy(condition)) {
         DeactivateGroup deactivateGroup = entry.getValue();
-        ShipGroup group = deactivateGroup.getGroup();
-        for (Entry<Cell, Ship> shipEntry : world.getActiveShips().entrySet()) {
-          if (shipEntry.getValue().inGroup(group)) {
-            world.deactivateShip(shipEntry.getKey());
-          }
-        }
+        world.deactivateGroup(deactivateGroup.getGroup());
       }
     }
   }

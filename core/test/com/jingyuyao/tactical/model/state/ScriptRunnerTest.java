@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_0;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -80,6 +81,8 @@ public class ScriptRunnerTest {
   private Ship ship1;
   @Captor
   private ArgumentCaptor<Object> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<List<Cell>> cellsCaptor;
 
   private ScriptRunner scriptRunner;
 
@@ -156,11 +159,10 @@ public class ScriptRunnerTest {
         .thenReturn(Collections.<Condition, DeactivateGroup>emptyMap());
     when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
     when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
-    when(world.getInactiveShips()).thenReturn(Collections.singletonList(ship1));
     when(world.cell(C0_0)).thenReturn(Optional.of(cell1));
+    when(world.cell(C0_1)).thenReturn(Optional.<Cell>absent());
     when(activateGroup.getGroup()).thenReturn(group);
     when(activateGroup.getSpawns()).thenReturn(Arrays.asList(C0_0, C0_1));
-    when(ship1.inGroup(group)).thenReturn(true);
     when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
     when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);
@@ -168,7 +170,8 @@ public class ScriptRunnerTest {
     Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
 
     verifyZeroInteractions(modelBus);
-    verify(world).activateShip(cell1, ship1);
+    verify(world).activateGroup(eq(group), cellsCaptor.capture());
+    assertThat(cellsCaptor.getValue()).containsExactly(cell1);
     assertThat(promise.isDone()).isTrue();
   }
 
@@ -181,9 +184,7 @@ public class ScriptRunnerTest {
         .thenReturn(ImmutableMap.of(activationCondition, deactivateGroup));
     when(script.getWinConditions()).thenReturn(Collections.singletonList(winCondition));
     when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
-    when(world.getActiveShips()).thenReturn(ImmutableMap.of(cell1, ship1));
     when(deactivateGroup.getGroup()).thenReturn(group);
-    when(ship1.inGroup(group)).thenReturn(true);
     when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
     when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);
@@ -191,7 +192,7 @@ public class ScriptRunnerTest {
     Promise promise = scriptRunner.triggerScripts(scriptEvent, script);
 
     verifyZeroInteractions(modelBus);
-    verify(world).deactivateShip(cell1);
+    verify(world).deactivateGroup(group);
     assertThat(promise.isDone()).isTrue();
   }
 

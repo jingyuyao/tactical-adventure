@@ -16,6 +16,7 @@ import com.jingyuyao.tactical.model.world.WorldModule.InactiveShips;
 import com.jingyuyao.tactical.model.world.WorldModule.WorldCells;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -193,18 +194,32 @@ public class World implements GetNeighbors {
   }
 
   /**
-   * Move a ship from the inactive list to the specified cell.
+   * Activates the ships from given group.
    */
-  public void activateShip(Cell cell, Ship inactiveShip) {
-    Preconditions.checkArgument(inactiveShips.remove(inactiveShip));
-    spawnShip(cell, inactiveShip);
+  public void activateGroup(ShipGroup group, List<Cell> spawns) {
+    int spawnIndex = 0;
+    for (Iterator<Ship> shipIterator = inactiveShips.iterator();
+        shipIterator.hasNext() && spawnIndex < spawns.size(); ) {
+      Ship ship = shipIterator.next();
+      if (ship.inGroup(group)) {
+        spawnShip(spawns.get(spawnIndex), ship);
+        spawnIndex++;
+        shipIterator.remove();
+      }
+    }
   }
 
   /**
-   * Moves the ship from the given cell to the inactive list.
+   * Deactivates the ships from the given group.
    */
-  public void deactivateShip(Cell cell) {
-    inactiveShips.add(removeShip(cell));
+  public void deactivateGroup(ShipGroup group) {
+    for (Cell cell : worldCells.values()) {
+      for (Ship ship : cell.ship().asSet()) {
+        if (ship.inGroup(group)) {
+          inactiveShips.add(removeShip(cell));
+        }
+      }
+    }
   }
 
   /**
