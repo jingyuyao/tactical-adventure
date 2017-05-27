@@ -1,13 +1,14 @@
 package com.jingyuyao.tactical.data;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.files.FileHandle;
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.resource.IntKey;
+import com.jingyuyao.tactical.model.resource.KeyBundle;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Terrain;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,45 +18,71 @@ import javax.inject.Singleton;
 class TerrainsLoader {
 
   private final DataConfig dataConfig;
-  private final AssetManager assetManager;
+  private final Files files;
+  private final JsonLoader jsonLoader;
 
   @Inject
-  TerrainsLoader(DataConfig dataConfig, AssetManager assetManager) {
+  TerrainsLoader(DataConfig dataConfig, Files files, JsonLoader jsonLoader) {
     this.dataConfig = dataConfig;
-    this.assetManager = assetManager;
+    this.files = files;
+    this.jsonLoader = jsonLoader;
   }
 
   Map<Coordinate, Terrain> load(int level) {
-    String levelFileName = dataConfig.getLevelTerrainFileName(level);
-    assetManager.load(levelFileName, TiledMap.class);
-    assetManager.finishLoadingAsset(levelFileName);
-    TiledMap tiledMap = assetManager.get(levelFileName);
-    return extractTerrains(tiledMap);
-  }
-
-  private Map<Coordinate, Terrain> extractTerrains(TiledMap tiledMap) {
-    TiledMapTileLayer terrainLayer =
-        (TiledMapTileLayer) tiledMap.getLayers().get(dataConfig.getTerrainLayerKey());
-    Preconditions.checkNotNull(terrainLayer);
+    FileHandle fileHandle = files.internal(dataConfig.getLevelTerrainFileName(level));
+    Terrains terrains = jsonLoader.deserialize(fileHandle.reader(), Terrains.class);
+    Preconditions.checkArgument(terrains.layers.size() == 1);
+    Preconditions.checkArgument(terrains.tilesets.size() == 1);
+    Layer layer = terrains.layers.get(0);
+    TileSet tileSet = terrains.tilesets.get(0);
+    KeyBundle bundle = KeyBundle.tileset(tileSet.name);
 
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
-    for (int y = 0; y < terrainLayer.getHeight(); y++) {
-      for (int x = 0; x < terrainLayer.getWidth(); x++) {
-        TiledMapTileLayer.Cell cell = terrainLayer.getCell(x, y);
-        terrainMap.put(new Coordinate(x, y), createTerrain(cell));
-      }
+    for (int i = 0; i < layer.data.size(); i++) {
+      int x = i % layer.width;
+      int y = i / layer.width;
+      int tileId = layer.data.get(i);
+      // Our world points top-right, terrain data points down-right
+      Coordinate coordinate = new Coordinate(x, layer.height - y - 1);
+      IntKey key = bundle.get(tileId);
+      // tile property is zero indexed but tile id is one indexed... wtf
+      terrainMap.put(coordinate, createTerrain(key, tileSet.tileproperties.get(tileId - 1)));
     }
     return terrainMap;
   }
 
-  private Terrain createTerrain(TiledMapTileLayer.Cell cell) {
-    if (cell != null) {
-      MapProperties properties = cell.getTile().getProperties();
-      String name = properties.get(dataConfig.getTerrainNameKey(), "space", String.class);
-      boolean holdShip = properties.get(dataConfig.getTerrainHoldShipKey(), true, Boolean.class);
-      int moveCost = properties.get(dataConfig.getTerrainMoveCostKey(), 1, Integer.class);
-      return new Terrain(name, holdShip, moveCost);
+  private Terrain createTerrain(IntKey key, TileProperty tileProperty) {
+    if (tileProperty == null) {
+      return new Terrain("space", key, true, 1);
     }
-    return new Terrain("space", true, 1);
+    return new Terrain(tileProperty.name, key, tileProperty.holdShip, tileProperty.moveCost);
+  }
+
+  // Minimum usable representation of the TMX json format. Assumes all tilesets are in the
+  // "tilesets/" directory, there is only one tile layer and one tileset.
+  private static class Terrains {
+
+    private List<Layer> layers;
+    private List<TileSet> tilesets;
+  }
+
+  private static class Layer {
+
+    private List<Integer> data;
+    private int width;
+    private int height;
+  }
+
+  private static class TileSet {
+
+    private String name;
+    private Map<Integer, TileProperty> tileproperties = new HashMap<>();
+  }
+
+  private static class TileProperty {
+
+    private String name = "space";
+    private boolean holdShip = true;
+    private int moveCost = 1;
   }
 }

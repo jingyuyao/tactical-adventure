@@ -1,15 +1,10 @@
 package com.jingyuyao.tactical.view.world;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.eventbus.Subscribe;
-import com.jingyuyao.tactical.data.DataConfig;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.world.World;
@@ -23,27 +18,18 @@ import javax.inject.Singleton;
 @ModelBusListener
 public class WorldView {
 
-  private final AssetManager assetManager;
-  private final DataConfig dataConfig;
   private final Batch batch;
   private final Viewport viewport;
-  private final OrthogonalTiledMapRenderer mapRenderer;
   private final PooledEngine engine;
 
   @Inject
   WorldView(
-      AssetManager assetManager,
-      DataConfig dataConfig,
       Batch batch,
       @WorldViewport Viewport viewport,
-      OrthogonalTiledMapRenderer mapRenderer,
       @WorldEngine PooledEngine engine,
       Systems systems) {
-    this.assetManager = assetManager;
-    this.dataConfig = dataConfig;
     this.batch = batch;
     this.viewport = viewport;
-    this.mapRenderer = mapRenderer;
     this.engine = engine;
     systems.addTo(engine);
   }
@@ -51,9 +37,6 @@ public class WorldView {
   public void update(float delta) {
     // tell openGL to use this viewport and calls camera.update()
     viewport.apply();
-    // Render terrains
-    mapRenderer.setView((OrthographicCamera) viewport.getCamera());
-    mapRenderer.render();
     // Render and update everything else
     batch.begin();
     batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -109,11 +92,5 @@ public class WorldView {
   void worldLoaded(WorldLoaded worldLoaded) {
     World world = worldLoaded.getWorld();
     setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
-    // TODO: HACK HACK HACK!
-    String levelFileName = dataConfig.getLevelTerrainFileName(world.getLevel());
-    assetManager.load(levelFileName, TiledMap.class);
-    assetManager.finishLoadingAsset(levelFileName);
-    TiledMap tiledMap = assetManager.get(levelFileName);
-    mapRenderer.setMap(tiledMap);
   }
 }

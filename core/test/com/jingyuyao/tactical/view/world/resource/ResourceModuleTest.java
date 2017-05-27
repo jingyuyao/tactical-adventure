@@ -19,9 +19,11 @@ public class ResourceModuleTest {
   private WorldConfig worldConfig;
 
   @Inject
+  private Animations animations;
+  @Inject
   private Markers markers;
   @Inject
-  private Animations animations;
+  private TileSets tileSets;
   @Inject
   private TextureFactory textureFactory;
 

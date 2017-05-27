@@ -15,6 +15,7 @@ import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Markers;
+import com.jingyuyao.tactical.view.world.resource.TileSets;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -36,6 +37,9 @@ public class SystemModuleTest {
   @Mock
   private Markers markers;
   @Bind
+  @Mock
+  private TileSets tileSets;
+  @Bind
   private ComponentMapper<Position> positionMapper = ComponentMapper.getFor(Position.class);
   @Bind
   private ComponentMapper<Frame> frameMapper = ComponentMapper.getFor(Frame.class);
@@ -55,6 +59,8 @@ public class SystemModuleTest {
   private AnimationSystem animationSystem;
   @Inject
   private ShipSystem shipSystem;
+  @Inject
+  private TerrainSystem terrainSystem;
   @Inject
   private EffectsSystem effectsSystem;
   @Inject

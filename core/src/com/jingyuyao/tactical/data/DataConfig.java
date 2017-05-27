@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class DataConfig {
+class DataConfig {
 
   @Inject
   DataConfig() {
@@ -37,24 +37,8 @@ public class DataConfig {
     return getLevelDir(level) + "script.json";
   }
 
-  public String getLevelTerrainFileName(int level) {
-    return getLevelDir(level) + "terrains.tmx";
-  }
-
-  String getTerrainLayerKey() {
-    return "terrain";
-  }
-
-  String getTerrainNameKey() {
-    return "name";
-  }
-
-  String getTerrainHoldShipKey() {
-    return "holdShip";
-  }
-
-  String getTerrainMoveCostKey() {
-    return "moveCost";
+  String getLevelTerrainFileName(int level) {
+    return getLevelDir(level) + "terrains.json";
   }
 
   KeyBundle getLevelDialogueBundle(int level) {

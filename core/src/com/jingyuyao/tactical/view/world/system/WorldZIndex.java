@@ -2,6 +2,7 @@ package com.jingyuyao.tactical.view.world.system;
 
 class WorldZIndex {
 
+  static final int TERRAIN = 10;
   static final int MOVE_MARKER = 30;
   static final int ATTACK_MARKER = 30;
   static final int SHIP = 50;

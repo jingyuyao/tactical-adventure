@@ -13,6 +13,7 @@ import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.component.SingleAnimation;
 import com.jingyuyao.tactical.view.world.resource.Animations;
 import com.jingyuyao.tactical.view.world.resource.Markers;
+import com.jingyuyao.tactical.view.world.resource.TileSets;
 
 public class SystemModule extends AbstractModule {
 
@@ -22,6 +23,7 @@ public class SystemModule extends AbstractModule {
     requireBinding(WorldConfig.class);
     requireBinding(Animations.class);
     requireBinding(Markers.class);
+    requireBinding(TileSets.class);
     requireBinding(new Key<ComponentMapper<Position>>() {
     });
     requireBinding(new Key<ComponentMapper<Frame>>() {
