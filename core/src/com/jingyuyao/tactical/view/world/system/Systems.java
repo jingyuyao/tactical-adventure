@@ -23,7 +23,8 @@ public class Systems {
       MarkerSystem markerSystem,
       MovingSystem movingSystem,
       RemoveSystem removeSystem,
-      RenderSystem renderSystem) {
+      RenderSystem renderSystem,
+      TerrainSystem terrainSystem) {
     this.systems = Arrays.asList(
         animationSystem,
         shipSystem,
@@ -31,7 +32,8 @@ public class Systems {
         markerSystem,
         movingSystem,
         removeSystem,
-        renderSystem
+        renderSystem,
+        terrainSystem
     );
   }
 

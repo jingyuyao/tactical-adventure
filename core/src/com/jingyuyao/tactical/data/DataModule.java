@@ -1,7 +1,6 @@
 package com.jingyuyao.tactical.data;
 
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.assets.AssetManager;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.serializers.CompatibleFieldSerializer;
 import com.google.gson.Gson;
@@ -35,7 +34,6 @@ public class DataModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    requireBinding(AssetManager.class);
     requireBinding(Files.class);
   }
 

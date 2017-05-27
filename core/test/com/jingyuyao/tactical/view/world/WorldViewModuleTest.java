@@ -7,7 +7,6 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
-import com.jingyuyao.tactical.data.DataConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -16,9 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class WorldViewModuleTest {
 
-  @Bind
-  @Mock
-  private DataConfig dataConfig;
   @Bind
   @Mock
   private CameraController cameraController;

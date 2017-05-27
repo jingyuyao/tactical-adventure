@@ -39,7 +39,7 @@ public class TileSets {
   }
 
   private void loadTiles(KeyBundle bundle) {
-    String assetPath = bundle.getPath();
+    String assetPath = bundle.getPathWithExtension();
     if (assetManager.isLoaded(assetPath)) {
       throw new RuntimeException(assetPath + " already loaded");
     }
@@ -51,10 +51,11 @@ public class TileSets {
     TextureRegion[][] textureRegions = TextureRegion.split(tileSet, tileSize, tileSize);
 
     for (int i = 0; i < textureRegions.length; i++) {
-      for (int j = 0; j < textureRegions[i].length; j++) {
+      int rowLength = textureRegions[i].length;
+      for (int j = 0; j < rowLength; j++) {
         WorldTexture texture = textureFactory.create(textureRegions[i][j]);
-        // TODO: tile id for tmx starts with 1, remove when we use our own format
-        IntKey key = bundle.get(i + j + 1);
+        // tile id for tmx starts with 1
+        IntKey key = bundle.get(i * rowLength + j + 1);
         tileTextureCache.put(key, texture);
       }
     }

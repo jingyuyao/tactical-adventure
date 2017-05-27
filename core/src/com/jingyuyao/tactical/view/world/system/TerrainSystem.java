@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view.world.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
+@ModelBusListener
 class TerrainSystem extends EntitySystem {
 
   private final TileSets tileSets;
