@@ -25,7 +25,7 @@ allprojects {
         gsonVersion = '2.8.0'
         guiceVersion = '4.1.0'
         kryoVersion = '4.0.0'
-        configVersion = '1.2.1'
+        configVersion = '1.2.1' // newest version requires java 8 which Android doesn't have
         junitVersion = '4.12'
         mockitoVersion = '2.7.22'
         truthVersion = '0.32'
