@@ -14,7 +14,7 @@ class DataConfig {
   }
 
   String getInitFileName() {
-    return "data/init.json";
+    return "data/init.conf";
   }
 
   String getMainSaveFileName() {
