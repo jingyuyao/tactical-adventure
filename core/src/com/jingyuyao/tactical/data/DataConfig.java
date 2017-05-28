@@ -30,7 +30,7 @@ class DataConfig {
   }
 
   String getLevelWorldFileName(int level) {
-    return getLevelDir(level) + "world.json";
+    return getLevelDir(level) + "world.conf";
   }
 
   String getLevelScriptFileName(int level) {

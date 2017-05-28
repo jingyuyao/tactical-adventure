@@ -83,7 +83,7 @@ public class LevelLoaderTest {
     when(files.internal(LEVEL_WORLD)).thenReturn(fileHandle2);
     when(fileHandle.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader1);
-    when(initLoader.fromJson(reader1, LevelWorld.class)).thenReturn(levelWorld);
+    when(initLoader.fromHocon(reader1, LevelWorld.class)).thenReturn(levelWorld);
     when(levelWorld.getPlayerSpawns()).thenReturn(Collections.singletonList(C0_0));
     when(levelWorld.getActiveShips()).thenReturn(ImmutableMap.of(C0_1, ship1));
     when(terrainsLoader.load(2)).thenReturn(ImmutableMap.of(C0_0, terrain1, C0_1, terrain2));
