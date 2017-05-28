@@ -34,7 +34,7 @@ class DataConfig {
   }
 
   String getLevelScriptFileName(int level) {
-    return getLevelDir(level) + "script.json";
+    return getLevelDir(level) + "script.conf";
   }
 
   String getLevelTerrainFileName(int level) {

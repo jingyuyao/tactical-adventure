@@ -34,7 +34,7 @@ class ScriptLoader {
 
   Script load(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelScriptFileName(level));
-    LevelScript levelScript = initLoader.fromJson(fileHandle.reader(), LevelScript.class);
+    LevelScript levelScript = initLoader.fromHocon(fileHandle.reader(), LevelScript.class);
     List<Condition> winConditions = levelScript.getWinConditions();
     List<Condition> loseConditions = levelScript.getLoseConditions();
     Map<Condition, List<Dialogue>> dialogues = dialogueLoader.getDialogues(level);

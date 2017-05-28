@@ -67,7 +67,7 @@ public class ScriptLoaderTest {
     when(dataConfig.getLevelScriptFileName(2)).thenReturn(LEVEL_SCRIPT);
     when(files.internal(LEVEL_SCRIPT)).thenReturn(fileHandle);
     when(fileHandle.reader()).thenReturn(reader);
-    when(initLoader.fromJson(reader, LevelScript.class)).thenReturn(levelScript);
+    when(initLoader.fromHocon(reader, LevelScript.class)).thenReturn(levelScript);
     when(levelScript.getWinConditions()).thenReturn(Collections.singletonList(condition1));
     when(levelScript.getLoseConditions()).thenReturn(Collections.singletonList(condition2));
     when(levelScript.getGroupActivations())
