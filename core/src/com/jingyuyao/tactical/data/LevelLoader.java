@@ -20,7 +20,7 @@ import javax.inject.Singleton;
 class LevelLoader {
 
   private final DataConfig dataConfig;
-  private final JsonLoader jsonLoader;
+  private final InitLoader initLoader;
   private final Files files;
   private final TerrainsLoader terrainsLoader;
   private final ScriptLoader scriptLoader;
@@ -28,12 +28,12 @@ class LevelLoader {
   @Inject
   LevelLoader(
       DataConfig dataConfig,
-      JsonLoader jsonLoader,
+      InitLoader initLoader,
       Files files,
       TerrainsLoader terrainsLoader,
       ScriptLoader scriptLoader) {
     this.dataConfig = dataConfig;
-    this.jsonLoader = jsonLoader;
+    this.initLoader = initLoader;
     this.files = files;
     this.terrainsLoader = terrainsLoader;
     this.scriptLoader = scriptLoader;
@@ -50,7 +50,7 @@ class LevelLoader {
   LevelSave createNewSave(int level, List<Ship> playerShips) {
     Preconditions.checkArgument(hasLevel(level));
     FileHandle fileHandle = files.internal(dataConfig.getLevelWorldFileName(level));
-    LevelWorld levelWorld = jsonLoader.deserialize(fileHandle.reader(), LevelWorld.class);
+    LevelWorld levelWorld = initLoader.fromHocon(fileHandle.reader(), LevelWorld.class);
     Map<Coordinate, Ship> worldShips = new HashMap<>(levelWorld.getActiveShips());
     List<Coordinate> spawns = levelWorld.getPlayerSpawns();
     for (int i = 0; i < spawns.size() && i < playerShips.size(); i++) {

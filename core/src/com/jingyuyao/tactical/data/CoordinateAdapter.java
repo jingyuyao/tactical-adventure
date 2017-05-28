@@ -12,8 +12,9 @@ import java.util.List;
 
 class CoordinateAdapter extends TypeAdapter<Coordinate> {
 
-  private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
-  private static final Joiner JOINER = Joiner.on(',');
+  private static final char DELIMITER = '-';
+  private static final Splitter SPLITTER = Splitter.on(DELIMITER).omitEmptyStrings().trimResults();
+  private static final Joiner JOINER = Joiner.on(DELIMITER);
 
   @Override
   public Coordinate read(JsonReader in) throws IOException {

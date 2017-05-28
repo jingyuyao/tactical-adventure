@@ -19,7 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CoordinateAdapterTest {
 
   private static final Coordinate COORDINATE = new Coordinate(2, 2);
-  private static final String JSON = "2,2";
+  private static final String JSON = "2-2";
 
   @Mock
   private JsonReader reader;

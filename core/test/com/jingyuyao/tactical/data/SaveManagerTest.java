@@ -26,7 +26,7 @@ public class SaveManagerTest {
   @Mock
   private Files files;
   @Mock
-  private JsonLoader jsonLoader;
+  private InitLoader initLoader;
   @Mock
   private KryoSerializer kryoSerializer;
   @Mock
@@ -48,7 +48,7 @@ public class SaveManagerTest {
 
   @Before
   public void setUp() {
-    saveManager = new SaveManager(dataConfig, files, jsonLoader, kryoSerializer);
+    saveManager = new SaveManager(dataConfig, files, initLoader, kryoSerializer);
   }
 
   @Test
@@ -72,7 +72,7 @@ public class SaveManagerTest {
     when(fileHandle1.write(false)).thenReturn(outputStream);
     when(fileHandle2.exists()).thenReturn(true);
     when(fileHandle2.reader()).thenReturn(reader);
-    when(jsonLoader.deserialize(reader, GameSave.class)).thenReturn(gameSave);
+    when(initLoader.fromHocon(reader, GameSave.class)).thenReturn(gameSave);
 
     assertThat(saveManager.loadGameSave()).isSameAs(gameSave);
     verify(kryoSerializer).serialize(gameSave, outputStream);

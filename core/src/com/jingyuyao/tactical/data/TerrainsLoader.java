@@ -19,18 +19,18 @@ class TerrainsLoader {
 
   private final DataConfig dataConfig;
   private final Files files;
-  private final JsonLoader jsonLoader;
+  private final InitLoader initLoader;
 
   @Inject
-  TerrainsLoader(DataConfig dataConfig, Files files, JsonLoader jsonLoader) {
+  TerrainsLoader(DataConfig dataConfig, Files files, InitLoader initLoader) {
     this.dataConfig = dataConfig;
     this.files = files;
-    this.jsonLoader = jsonLoader;
+    this.initLoader = initLoader;
   }
 
   Map<Coordinate, Terrain> load(int level) {
     FileHandle fileHandle = files.internal(dataConfig.getLevelTerrainFileName(level));
-    Terrains terrains = jsonLoader.deserialize(fileHandle.reader(), Terrains.class);
+    Terrains terrains = initLoader.fromJson(fileHandle.reader(), Terrains.class);
     Preconditions.checkArgument(terrains.layers.size() == 1);
     Preconditions.checkArgument(terrains.tilesets.size() == 1);
     Layer layer = terrains.layers.get(0);

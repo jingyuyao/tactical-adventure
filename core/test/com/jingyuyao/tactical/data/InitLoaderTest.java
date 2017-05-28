@@ -10,23 +10,36 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JsonLoaderTest {
+public class InitLoaderTest {
 
+  private static final String NORMAL = "{\"str\":\"wut\"}";
   private static final String DUMMY = "{\"s\":\"hello\",\"i\":2}";
   private static final String DUMMY2 = "{\"str\":\"other\",\"num\":3}";
+  private static final String NORMAL_CONF = "str=awesome";
 
-  private JsonLoader jsonLoader;
+  private InitLoader initLoader;
 
   @Before
   public void setUp() {
-    jsonLoader = new JsonLoader(new Gson());
+    initLoader = new InitLoader(new Gson());
+  }
+
+  @Test
+  public void non_final_fields() {
+    InstStringReader reader = new InstStringReader(NORMAL);
+
+    Normal normal = initLoader.fromJson(reader, Normal.class);
+
+    assertThat(normal.str).isEqualTo("wut");
+    assertThat(normal.populated).isEqualTo("hello");
+    assertThat(reader.closed).isTrue();
   }
 
   @Test
   public void empty_final_fields() {
     InstStringReader reader = new InstStringReader(DUMMY);
 
-    Dummy dummy = jsonLoader.deserialize(reader, Dummy.class);
+    Dummy dummy = initLoader.fromJson(reader, Dummy.class);
 
     assertThat(dummy.s).isEqualTo("hello");
     assertThat(dummy.i).isEqualTo(2);
@@ -37,12 +50,28 @@ public class JsonLoaderTest {
   public void final_field_initialization() {
     InstStringReader reader = new InstStringReader(DUMMY2);
 
-    Dummy2 dummy2 = jsonLoader.deserialize(reader, Dummy2.class);
+    Dummy2 dummy2 = initLoader.fromJson(reader, Dummy2.class);
 
     assertThat(dummy2.num).isEqualTo(2);
     assertThat(dummy2.str).isEqualTo("not replaced");
     assertThat(dummy2.preset).isEqualTo("default");
     assertThat(reader.closed).isTrue();
+  }
+
+  @Test
+  public void conf_format() {
+    InstStringReader reader = new InstStringReader(NORMAL_CONF);
+
+    Normal normal = initLoader.fromHocon(reader, Normal.class);
+
+    assertThat(normal.str).isEqualTo("awesome");
+    assertThat(normal.populated).isEqualTo("hello");
+  }
+
+  private static class Normal {
+
+    private String str;
+    private String populated = "hello";
   }
 
   private static class Dummy {

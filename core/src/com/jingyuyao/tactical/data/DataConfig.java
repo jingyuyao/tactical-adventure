@@ -14,7 +14,7 @@ class DataConfig {
   }
 
   String getInitFileName() {
-    return "data/init.json";
+    return "data/init.conf";
   }
 
   String getMainSaveFileName() {
@@ -30,11 +30,11 @@ class DataConfig {
   }
 
   String getLevelWorldFileName(int level) {
-    return getLevelDir(level) + "world.json";
+    return getLevelDir(level) + "world.conf";
   }
 
   String getLevelScriptFileName(int level) {
-    return getLevelDir(level) + "script.json";
+    return getLevelDir(level) + "script.conf";
   }
 
   String getLevelTerrainFileName(int level) {
