@@ -27,7 +27,16 @@ The game follows MVC and uses Guice to share objects between components.
 We follow Google's Java style guide for all Java files. Install the style guide for Intellij
 then enable format code and optimize import on commit.
 
+### Packages
+- `android/`: Android launcher + packed and unpacked assets
+- `desktop/`: Desktop launcher
+- `core/`: Game code
+
 ### Note for Guava
+#### Collections
+Avoid using Guava's collection classes since they cannot be serialized by Kryo (without additional
+work).
+
 #### Optional
 Poor man `ifPresent` lambda:
 ```
@@ -43,17 +52,16 @@ not use EventBus for things that can be cheaply polled per frame by the view.
 
 
 ### Note for serialization
-We use Gson to serialize/deserialize game objects. We make use of the runtime type adapter from
+We use Gson to deserialize initial game objects. We make use of the runtime type adapter from
 gson/extra to add type information to any generic list of objects. Each concrete classes of the
 generic types should be registered to in a `RuntimeTypeAdapterFactory`. Nulls are checked during
-deserialization of Json objects. See `NullCheckAdapterFactory` for more information.
+deserialization of Json objects. See `NullCheckAdapterFactory` for more information. Kryo is used
+to serialize game state after initial data is loaded.
 
 ### Note for UI
 We currently use a library called VisUI for development. It comes with its own skin files that are
 loaded from classpath by invoking a static method. This means we need to enable headless environment
-to be able to call that method. Instead of enabling headless environment for module tests, we should
-move UI widget creation to runtime. Then we can enable headless environment only during unit tests
-which should be less error prone.
+to be able to call that method.
 
 ## Models
 - Model classes should self-contained, it should not reference libgdx, controller or views
@@ -74,6 +82,3 @@ which should be less error prone.
 ## Controllers
 - Listen to user input
 - Dispatches input to models
-
-## Data
-- The game objects are dynamically saved and loaded with the class information intact
