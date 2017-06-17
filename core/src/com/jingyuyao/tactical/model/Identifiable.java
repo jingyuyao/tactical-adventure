@@ -1,13 +1,15 @@
 package com.jingyuyao.tactical.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Parent of all identifiable objects that exists in the world. The objects are identified by an
  * {@link UUID} which is also used in {@link #equals(Object)} and {@link #hashCode()}. Examples of
- * identifiable objects includes ships, weapons, and persons.
+ * identifiable objects includes ships, weapons, and persons. An identifiable object must also be
+ * serializable and its ID must be persistence across serialization.
  */
-public class Identifiable {
+public class Identifiable implements Serializable {
 
   /**
    * A new random {@link UUID} is generated upon initial object creation. The serialization
