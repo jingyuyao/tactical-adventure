@@ -28,6 +28,7 @@ import com.jingyuyao.tactical.model.ship.PassiveAutoPilot;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.state.Turn;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import java.util.UUID;
 import javax.inject.Singleton;
 
 public class DataModule extends AbstractModule {
@@ -93,6 +94,7 @@ public class DataModule extends AbstractModule {
   Kryo provideKryo() {
     Kryo kryo = new Kryo();
     kryo.setDefaultSerializer(CompatibleFieldSerializer.class);
+    kryo.addDefaultSerializer(UUID.class, new UUIDSerializer());
     return kryo;
   }
 }
