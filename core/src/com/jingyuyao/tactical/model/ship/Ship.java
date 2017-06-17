@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.ship;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.Identifiable;
 import com.jingyuyao.tactical.model.item.Armor;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.Weapon;
@@ -9,11 +10,10 @@ import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ship implements Serializable {
+public class Ship extends Identifiable {
 
   private String name;
   private AutoPilot autoPilot;
