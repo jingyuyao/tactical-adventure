@@ -1,11 +1,11 @@
 package com.jingyuyao.tactical.model.world;
 
+import com.jingyuyao.tactical.model.Identifiable;
 import com.jingyuyao.tactical.model.resource.IntKey;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.StringKey;
-import java.io.Serializable;
 
-public class Terrain implements Serializable {
+public class Terrain extends Identifiable {
 
   private String name;
   private IntKey texture;

@@ -1,15 +1,15 @@
 package com.jingyuyao.tactical.model.item;
 
 import com.google.common.base.Preconditions;
+import com.jingyuyao.tactical.model.Identifiable;
 import com.jingyuyao.tactical.model.resource.ModelBundle;
 import com.jingyuyao.tactical.model.resource.StringKey;
 import com.jingyuyao.tactical.model.ship.Ship;
-import java.io.Serializable;
 
 /**
  * The most basic thing a {@link Ship} could own, has limited number of usages.
  */
-public class Item implements Serializable {
+public class Item extends Identifiable {
 
   private String name;
   private int usageLeft;
