@@ -6,8 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // TODO: update to latest after idea 2017.2 is released
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 
