@@ -11,9 +11,14 @@ Required dev tools:
     `export ANDROID_HOME=$HOME/Documents/android` (need to re-login for it to take effect)
 4. Use $ANDROID_HOME/tools/android to download the latest platform, platform-tools and build-tools
 
-## Import & run
-Follow this guide for Intellij Idea to import and run the project:
-https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
+## Run and Test
+Intellij is unreliable as shit breaks consistently between versions. We will rely purely on Gradle
+commands to build, run and test our code. Shortcuts to these Gradle commands can be added to
+Intellij but we should not rely on built in Intellij build tools at all.
+https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#running-the-android-project
+- Running desktop: ./gradlew desktop:run
+- Running android: ./gradlew android:installDebug android:run
+- Testing core: ./gradlew core:tests
 
 ## Additional quirks:
 - Make sure "Android Support" plugin is enabled for Intellij Idea
