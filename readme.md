@@ -5,6 +5,7 @@ This is a turn based strategy game set in the vastness of space.
 Required dev tools:
 - JDK 7+
 - Android SDK
+- Tiled (latest version)
 
 ## Android set up:
 1. Download commandline tools from https://developer.android.com/studio/index.html#downloads
@@ -29,6 +30,14 @@ https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#running-the-andr
 - For your sanity don't use the Android emulator and run it on a real phone instead
 - Make sure USB mode is set to file transfer when running on your android phone
 - Make sure Java language level is 7 in project settings since 8 isn't fully supported by Android
+
+# Game scripting & map editing
+Levels are composed of three data files: script, terrains, dialogue and world. Script contains the
+win/lose conditions and various ship spawn/removal events. Terrains contains the grid map of the
+level. Dialogue contains a turn by turn dialogue trigger. World contains all the initial ships
+in the level and player's spawning points. Script and world data are saved in Hocon format, terrains
+are saved as a tilemap using the Tiled map editor, dialogues are saved in native Java properties
+format.
 
 # Project structure & guidelines
 The game follows MVC and uses Guice to share objects between components. We follow Google's Java
