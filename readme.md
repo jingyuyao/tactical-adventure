@@ -6,6 +6,7 @@ Required dev tools:
 - JDK 7+
 - Android SDK
 - Tiled (latest version)
+- Piskel
 
 ## Android set up:
 1. Download commandline tools from https://developer.android.com/studio/index.html#downloads
@@ -38,6 +39,14 @@ level. Dialogue contains a turn by turn dialogue trigger. World contains all the
 in the level and player's spawning points. Script and world data are saved in Hocon format, terrains
 are saved as a tilemap using the Tiled map editor, dialogues are saved in native Java properties
 format.
+
+# Assets
+The game contains two primary graphic assets: tilesets and textures. Tilesets are used to render
+terrains and textures are used to render everything else (e.g. animations and overlays). Textures
+are created from numerically labelled image files in the `assets_raw` folder. These texture/animation
+files can be generated from a tool such as Piskel. After these "raw" assets are generated and placed
+in the `assets_raw` folder they need to be packed using the `TexturePackerRunner` class into a
+format used by libGdx.
 
 # Project structure & guidelines
 The game follows MVC and uses Guice to share objects between components. We follow Google's Java
