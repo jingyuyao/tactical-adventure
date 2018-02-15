@@ -84,7 +84,7 @@ public class Weapon extends Item {
     if (target.ship().isPresent()) {
       attacker.healBy((int) (lifeStealRate * damage));
     }
-    attacker.damageBy((int) (recoilRate * damage));
+    attacker.damageBy((int) (recoilRate * attackPower));
   }
 
   /**
