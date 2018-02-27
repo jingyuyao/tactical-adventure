@@ -194,7 +194,7 @@ public class World implements GetNeighbors {
   }
 
   /**
-   * Activates the ships from given group.
+   * Activates the ships from given group. The spawn cells should not contain any ships.
    */
   public void activateGroup(ShipGroup group, List<Cell> spawns) {
     int spawnIndex = 0;

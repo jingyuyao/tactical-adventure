@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_0;
 import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_1;
+import static com.jingyuyao.tactical.model.world.CoordinateTest.C0_2;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -77,6 +78,8 @@ public class ScriptRunnerTest {
   private DeactivateGroup deactivateGroup;
   @Mock
   private Cell cell1;
+  @Mock
+  private Cell cell2;
   @Mock
   private Ship ship1;
   @Captor
@@ -161,8 +164,11 @@ public class ScriptRunnerTest {
     when(script.getLoseConditions()).thenReturn(Collections.singletonList(loseCondition));
     when(world.cell(C0_0)).thenReturn(Optional.of(cell1));
     when(world.cell(C0_1)).thenReturn(Optional.<Cell>absent());
+    when(world.cell(C0_2)).thenReturn(Optional.of(cell2));
     when(activateGroup.getGroup()).thenReturn(group);
-    when(activateGroup.getSpawns()).thenReturn(Arrays.asList(C0_0, C0_1));
+    when(activateGroup.getSpawns()).thenReturn(Arrays.asList(C0_0, C0_1, C0_2));
+    when(cell1.ship()).thenReturn(Optional.<Ship>absent());
+    when(cell2.ship()).thenReturn(Optional.of(ship1));
     when(scriptEvent.satisfiedBy(activationCondition)).thenReturn(true);
     when(scriptEvent.satisfiedBy(loseCondition)).thenReturn(false);
     when(scriptEvent.satisfiedBy(winCondition)).thenReturn(false);

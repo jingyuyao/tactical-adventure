@@ -90,13 +90,26 @@ class ScriptRunner {
       Condition condition = entry.getKey();
       if (event.satisfiedBy(condition)) {
         ActivateGroup activateGroup = entry.getValue();
-        List<Cell> spawns = new ArrayList<>();
-        for (Coordinate coordinate : activateGroup.getSpawns()) {
-          spawns.addAll(world.cell(coordinate).asSet());
-        }
-        world.activateGroup(activateGroup.getGroup(), spawns);
+        world.activateGroup(activateGroup.getGroup(),
+            getNonOccupiedCells(activateGroup.getSpawns()));
       }
     }
+  }
+
+  private List<Cell> getNonOccupiedCells(List<Coordinate> spawns) {
+    List<Cell> nonOccupiedCells = new ArrayList<>();
+    for (Coordinate coordinate : spawns) {
+      for (Cell cell : world.cell(coordinate).asSet()) {
+        // Yes, this does make it easy to cheese the game by allowing players to block
+        // reinforcements if they know where they will spawn. However, players can always find a
+        // way to cheese if they try hard enough even if we use a "smarter" method like spawning
+        // next to the cells.
+        if (!cell.ship().isPresent()) {
+          nonOccupiedCells.add(cell);
+        }
+      }
+    }
+    return nonOccupiedCells;
   }
 
   private void triggerGroupDeactivations(ScriptEvent event, Script script) {
