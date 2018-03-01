@@ -184,6 +184,20 @@ public class WorldTest {
   }
 
   @Test
+  public void get_ship_movement_with_multiplier() {
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(ship1.getMoveDistance()).thenReturn(5);
+    when(dijkstra.minPathSearch(eq(world), any(GetEdgeCost.class), eq(cell1), eq(7)))
+        .thenReturn(graph);
+
+    Movement movement = world.getShipMovement(cell1, 1.5f);
+
+    assertThat(movement.getMoveGraph()).isSameAs(graph);
+    verify(dijkstra).minPathSearch(eq(world), edgeCostCaptor.capture(), eq(cell1), eq(7));
+    assertThat(edgeCostCaptor.getValue()).isInstanceOf(TerrainCost.class);
+  }
+
+  @Test
   public void get_unimpeded_movement() {
     when(dijkstra.minPathSearch(eq(world), any(GetEdgeCost.class), eq(cell1), eq(5)))
         .thenReturn(graph);

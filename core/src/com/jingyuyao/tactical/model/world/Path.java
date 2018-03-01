@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.model.world;
 
 import com.google.common.base.Preconditions;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,20 @@ public class Path {
    */
   public List<Cell> getTrack() {
     return track;
+  }
+
+  /**
+   * Returns a new path by truncating this path so the given cell is the destination.
+   */
+  public Path truncate(Cell newDestination) {
+    List<Cell> truncated = new ArrayList<>();
+    for (Cell cell : track) {
+      truncated.add(cell);
+      if (cell.equals(newDestination)) {
+        return new Path(truncated);
+      }
+    }
+    throw new IllegalArgumentException("newDestination is not part of this tract");
   }
 
   Cell getOrigin() {

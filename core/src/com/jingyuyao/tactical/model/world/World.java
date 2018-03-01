@@ -114,8 +114,17 @@ public class World implements GetNeighbors {
    * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell}
    */
   public Movement getShipMovement(Cell cell) {
+    return getShipMovement(cell, 1);
+  }
+
+  /**
+   * Create a {@link Movement} for the {@link Ship} contained in the given {@link Cell} with
+   * the given {@code distanceMultiplier} applied to the ship's travel distance.
+   */
+  public Movement getShipMovement(Cell cell, float distanceMultiplier) {
     Preconditions.checkArgument(cell.ship().isPresent());
-    return createMovement(new TerrainCost(), cell, cell.ship().get().getMoveDistance());
+    return createMovement(
+        new TerrainCost(), cell, (int) (cell.ship().get().getMoveDistance() * distanceMultiplier));
   }
 
   /**
