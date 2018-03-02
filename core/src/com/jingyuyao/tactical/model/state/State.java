@@ -30,4 +30,9 @@ public interface State {
    * Return the list of {@link Action} can be taken in this state.
    */
   List<Action> getActions();
+
+  /**
+   * Return the current {@link Turn}.
+   */
+  Turn getTurn();
 }

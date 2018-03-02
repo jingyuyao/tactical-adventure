@@ -40,16 +40,17 @@ class BaseState implements State {
     return Collections.emptyList();
   }
 
+  @Override
+  public Turn getTurn() {
+    return worldState.getTurn();
+  }
+
   ModelBus getModelBus() {
     return modelBus;
   }
 
   void post(Object event) {
     modelBus.post(event);
-  }
-
-  Turn getTurn() {
-    return worldState.getTurn();
   }
 
   void advanceTurn() {

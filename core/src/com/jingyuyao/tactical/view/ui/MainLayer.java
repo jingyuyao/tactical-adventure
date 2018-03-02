@@ -3,8 +3,8 @@ package com.jingyuyao.tactical.view.ui;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
-import com.kotcrab.vis.ui.building.StandardTableBuilder;
-import com.kotcrab.vis.ui.building.TableBuilder;
+import com.kotcrab.vis.ui.building.OneColumnTableBuilder;
+import com.kotcrab.vis.ui.building.OneRowTableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 @ModelBusListener
 class MainLayer extends VisTable {
 
+  private static final int PAD = 20;
   private final DialogueLayer dialogueLayer;
 
   @Inject
@@ -24,21 +25,58 @@ class MainLayer extends VisTable {
       SelectCellGroup selectCellGroup,
       ItemPanel itemPanel,
       TargetPanel targetPanel,
+      TurnPanel turnPanel,
       DialogueLayer dialogueLayer) {
     super(true);
     this.dialogueLayer = dialogueLayer;
     setFillParent(true);
 
-    TableBuilder builder = new StandardTableBuilder(new Padding(20));
-    builder.append(CellWidget.of(itemPanel).align(Alignment.TOP_LEFT).wrap());
-    builder.append(CellWidget.of(selectCellGroup).align(Alignment.TOP_RIGHT).expandX().wrap());
-    builder.row();
+    OneColumnTableBuilder leftColumn = new OneColumnTableBuilder();
+    leftColumn.append(
+        CellWidget.of(itemPanel)
+            .align(Alignment.LEFT)
+            .padding(Padding.of(PAD, PAD, PAD, 0))
+            .wrap());
+    leftColumn.append(
+        CellWidget.of(targetPanel)
+            .align(Alignment.TOP_LEFT)
+            .padding(Padding.of(0, PAD, PAD, 0))
+            .expandY()
+            .wrap());
 
-    builder.append(CellWidget.of(targetPanel).align(Alignment.TOP_LEFT).wrap());
-    builder.append(
-        CellWidget.of(actionGroup).align(Alignment.BOTTOM_RIGHT).expandY().expandX().wrap());
+    OneColumnTableBuilder rightColumn = new OneColumnTableBuilder();
+    rightColumn.append(
+        CellWidget.of(turnPanel)
+            .align(Alignment.RIGHT)
+            .padding(Padding.of(PAD, 0, PAD, PAD))
+            .wrap());
+    rightColumn.append(
+        CellWidget.of(selectCellGroup)
+            .align(Alignment.RIGHT)
+            .padding(Padding.of(0, 0, 0, PAD))
+            .wrap());
+    rightColumn.append(
+        CellWidget.of(actionGroup)
+            .align(Alignment.BOTTOM_RIGHT)
+            .padding(Padding.of(0, 0, PAD, PAD))
+            .expandY()
+            .expandX()
+            .wrap());
 
-    builder.build(this);
+    OneRowTableBuilder mainBuilder = new OneRowTableBuilder();
+    mainBuilder.append(
+        CellWidget.of(leftColumn.build())
+            .expandY()
+            .fillY()
+            .wrap());
+    mainBuilder.append(
+        CellWidget.of(rightColumn.build())
+            .expandX()
+            .expandY()
+            .fillX()
+            .fillY()
+            .wrap());
+    mainBuilder.build(this);
   }
 
   @Subscribe

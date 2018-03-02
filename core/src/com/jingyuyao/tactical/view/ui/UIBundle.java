@@ -24,5 +24,6 @@ class UIBundle {
   static final StringKey TARGET_PANEL_HEADER = BUNDLE.get("targetPanelHeader");
   static final StringKey TARGET_PANEL_ITEM = BUNDLE.get("targetPanelItem");
   static final StringKey TERRAIN_OVERVIEW_PANEL = BUNDLE.get("terrainOverviewPanel");
+  static final StringKey TURN = BUNDLE.get("turn");
 
 }
