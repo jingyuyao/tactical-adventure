@@ -17,7 +17,7 @@ abstract class ButtonPanel<T> extends Container<VisTextButton> {
   private T object;
 
   ButtonPanel(int alignment) {
-    this.button = new VisTextButton(null, new ChangeListener() {
+    this.button = new VisTextButton(null, "blue", new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
         if (object != null) {

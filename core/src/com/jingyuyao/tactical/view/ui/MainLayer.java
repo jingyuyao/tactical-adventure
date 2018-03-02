@@ -39,21 +39,21 @@ class MainLayer extends VisTable {
             .wrap());
     leftColumn.append(
         CellWidget.of(targetPanel)
-            .align(Alignment.TOP_LEFT)
+            .align(Alignment.LEFT)
+            .padding(Padding.of(0, PAD, PAD, 0))
+            .wrap());
+    leftColumn.append(
+        CellWidget.of(turnPanel)
+            .align(Alignment.BOTTOM_LEFT)
             .padding(Padding.of(0, PAD, PAD, 0))
             .expandY()
             .wrap());
 
     OneColumnTableBuilder rightColumn = new OneColumnTableBuilder();
     rightColumn.append(
-        CellWidget.of(turnPanel)
-            .align(Alignment.RIGHT)
-            .padding(Padding.of(PAD, 0, PAD, PAD))
-            .wrap());
-    rightColumn.append(
         CellWidget.of(selectCellGroup)
             .align(Alignment.RIGHT)
-            .padding(Padding.of(0, 0, 0, PAD))
+            .padding(Padding.of(PAD, 0, PAD, PAD))
             .wrap());
     rightColumn.append(
         CellWidget.of(actionGroup)

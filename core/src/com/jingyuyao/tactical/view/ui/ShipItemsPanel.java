@@ -83,7 +83,7 @@ class ShipItemsPanel extends VisTable {
   private class EquipArmor extends VisTextButton {
 
     private EquipArmor(final Ship ship, final Armor armor) {
-      super(textLoader.get(UIBundle.EQUIP_BTN), new ChangeListener() {
+      super(textLoader.get(UIBundle.EQUIP_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           ship.equipArmor(armor);
@@ -98,7 +98,7 @@ class ShipItemsPanel extends VisTable {
   private class UnequipArmor extends VisTextButton {
 
     private UnequipArmor(final Ship ship, final Armor armor) {
-      super(textLoader.get(UIBundle.UNEQUIP_BTN), new ChangeListener() {
+      super(textLoader.get(UIBundle.UNEQUIP_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           ship.unequipArmor(armor);

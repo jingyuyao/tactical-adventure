@@ -32,7 +32,7 @@ class ActionGroup extends VerticalGroup {
   void state(State state) {
     for (final Action action : state.getActions()) {
       String text = textLoader.get(action.getText());
-      VisTextButton button = new VisTextButton(text, new ChangeListener() {
+      VisTextButton button = new VisTextButton(text, "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           action.run();

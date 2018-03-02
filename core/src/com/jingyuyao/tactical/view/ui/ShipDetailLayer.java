@@ -61,7 +61,7 @@ class ShipDetailLayer extends VisTable {
   private class CloseButton extends VisTextButton {
 
     private CloseButton() {
-      super(textLoader.get(UIBundle.CLOSE_BTN), new ChangeListener() {
+      super(textLoader.get(UIBundle.CLOSE_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           layerManager.close(ShipDetailLayer.this);
