@@ -222,7 +222,7 @@ animation/model/ship/eagle
   index: 4
 
 texture3.png
-size: 256,64
+size: 512,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -240,14 +240,14 @@ texture/ui/marking/attack
   orig: 32, 32
   offset: 0, 0
   index: -1
-texture/ui/marking/highlight
+texture/ui/marking/enemy
   rotate: false
   xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-texture/ui/marking/hit
+texture/ui/marking/highlight
   rotate: false
   xy: 104, 2
   size: 32, 32
@@ -261,9 +261,23 @@ texture/ui/marking/move
   orig: 32, 32
   offset: 0, 0
   index: -1
-texture/ui/marking/target_select
+texture/ui/marking/player_controllable
   rotate: false
   xy: 172, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+texture/ui/marking/player_uncontrollable
+  rotate: false
+  xy: 206, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+texture/ui/marking/target_select
+  rotate: false
+  xy: 240, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
