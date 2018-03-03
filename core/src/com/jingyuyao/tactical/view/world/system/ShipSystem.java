@@ -26,7 +26,6 @@ import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.resource.Animations;
-import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +39,8 @@ import javax.inject.Singleton;
 @ModelBusListener
 class ShipSystem extends IteratingSystem {
 
+  private static final int SHIP_GROUP_OVERLAY_KEY = 0;
+  private static final int ACTIVATION_OVERLAY_KEY = 1;
   private final Markers markers;
   private final Animations animations;
   private final ComponentMapper<ShipComponent> shipMapper;
@@ -65,13 +66,14 @@ class ShipSystem extends IteratingSystem {
     Ship ship = shipComponent.getShip();
     if (ship.inGroup(ShipGroup.PLAYER)) {
       if (ship.isControllable()) {
-        frame.setColor(Colors.BLUE_300);
+        frame.setOverlay(SHIP_GROUP_OVERLAY_KEY, markers.getPlayerControllable());
       } else {
-        frame.setColor(Colors.GREY_500);
+        frame.setOverlay(SHIP_GROUP_OVERLAY_KEY, markers.getPlayerUncontrollable());
       }
-    }
-    if (ship.inGroup(ShipGroup.ENEMY)) {
-      frame.setColor(Colors.RED_500);
+    } else if (ship.inGroup(ShipGroup.ENEMY)) {
+      frame.setOverlay(SHIP_GROUP_OVERLAY_KEY, markers.getEnemy());
+    } else {
+      frame.removeOverlay(SHIP_GROUP_OVERLAY_KEY);
     }
   }
 
@@ -166,13 +168,13 @@ class ShipSystem extends IteratingSystem {
     deactivate();
     Entity entity = get(ship);
     Frame frame = frameMapper.get(entity);
-    frame.addOverlay(markers.getActivated());
+    frame.setOverlay(ACTIVATION_OVERLAY_KEY, markers.getActivated());
   }
 
   private void deactivate() {
     for (Entity entity : getEntities()) {
       Frame frame = frameMapper.get(entity);
-      frame.removeOverlay(markers.getActivated());
+      frame.removeOverlay(ACTIVATION_OVERLAY_KEY);
     }
   }
 

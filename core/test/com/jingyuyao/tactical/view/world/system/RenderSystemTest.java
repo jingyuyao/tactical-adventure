@@ -5,12 +5,10 @@ import static com.google.common.truth.Truth.assertThat;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
-import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,9 +53,8 @@ public class RenderSystemTest {
     Position position1 = engine.createComponent(Position.class);
     frame1.setTexture(worldTexture);
     frame1.setDirection(Direction.LEFT);
-    frame1.addOverlay(overlay1);
-    frame1.addOverlay(overlay2);
-    frame1.setColor(Colors.RED_500);
+    frame1.setOverlay(0, overlay1);
+    frame1.setOverlay(1, overlay2);
     position1.setX(10f);
     position1.setY(11f);
     position1.setZ(1);
@@ -79,13 +76,9 @@ public class RenderSystemTest {
 
     InOrder inOrder = Mockito.inOrder(batch, worldTexture, worldTexture2, overlay1, overlay2);
     // draw entity 2
-    inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(worldTexture2).draw(batch, 20f, 21f);
-    inOrder.verify(batch).setColor(Color.WHITE);
     // draw entity 1
-    inOrder.verify(batch).setColor(Colors.RED_500);
     inOrder.verify(worldTexture).draw(batch, 10f, 11f, Direction.LEFT);
-    inOrder.verify(batch).setColor(Color.WHITE);
     inOrder.verify(overlay1).draw(batch, 10f, 11f, Direction.LEFT);
     inOrder.verify(overlay2).draw(batch, 10f, 11f, Direction.LEFT);
   }

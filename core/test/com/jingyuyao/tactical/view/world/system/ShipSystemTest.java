@@ -33,7 +33,6 @@ import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.component.Remove;
 import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import com.jingyuyao.tactical.view.world.resource.Animations;
-import com.jingyuyao.tactical.view.world.resource.Colors;
 import com.jingyuyao.tactical.view.world.resource.Markers;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import java.util.Arrays;
@@ -117,6 +116,7 @@ public class ShipSystemTest {
   @Test
   public void process_entities_enemy() {
     when(ship.inGroup(ShipGroup.ENEMY)).thenReturn(true);
+    when(markers.getEnemy()).thenReturn(texture);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
     Frame frame = new Frame();
@@ -126,13 +126,14 @@ public class ShipSystemTest {
 
     shipSystem.processEntity(entity, 0f);
 
-    assertThat(frame.getColor()).isEqualTo(Colors.RED_500);
+    assertThat(frame.getOverlays()).containsExactly(texture);
   }
 
   @Test
   public void process_entities_player_controllable() {
     when(ship.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(ship.isControllable()).thenReturn(true);
+    when(markers.getPlayerControllable()).thenReturn(texture);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
     Frame frame = new Frame();
@@ -142,13 +143,14 @@ public class ShipSystemTest {
 
     shipSystem.processEntity(entity, 0f);
 
-    assertThat(frame.getColor()).isEqualTo(Colors.BLUE_300);
+    assertThat(frame.getOverlays()).containsExactly(texture);
   }
 
   @Test
   public void process_entities_player_uncontrollable() {
     when(ship.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(ship.isControllable()).thenReturn(false);
+    when(markers.getPlayerUncontrollable()).thenReturn(texture);
     ShipComponent shipComponent = new ShipComponent();
     shipComponent.setShip(ship);
     Frame frame = new Frame();
@@ -158,7 +160,7 @@ public class ShipSystemTest {
 
     shipSystem.processEntity(entity, 0f);
 
-    assertThat(frame.getColor()).isEqualTo(Colors.GREY_500);
+    assertThat(frame.getOverlays()).containsExactly(texture);
   }
 
   @Test

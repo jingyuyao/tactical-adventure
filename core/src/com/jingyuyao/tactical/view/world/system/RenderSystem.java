@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.world.Direction;
@@ -45,13 +44,11 @@ class RenderSystem extends SortedIteratingSystem {
     float y = position.getY();
     Optional<WorldTexture> textureOptional = frame.texture();
     if (textureOptional.isPresent()) {
-      batch.setColor(frame.getColor());
       if (direction.isPresent()) {
         textureOptional.get().draw(batch, x, y, direction.get());
       } else {
         textureOptional.get().draw(batch, x, y);
       }
-      batch.setColor(Color.WHITE);
     }
     for (WorldTexture texture : frame.getOverlays()) {
       if (direction.isPresent()) {

@@ -1,22 +1,20 @@
 package com.jingyuyao.tactical.view.world.component;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.world.Direction;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A frame has a main texture and a list of overlaying textures on top of it.
  */
 public class Frame implements Component, Poolable {
 
-  private final List<WorldTexture> overlays = new ArrayList<>(4);
+  private final Map<Integer, WorldTexture> overlays = new TreeMap<>();
   private WorldTexture texture = null;
-  private Color color = Color.WHITE;
   private Direction direction = null;
 
   public Optional<WorldTexture> texture() {
@@ -27,24 +25,20 @@ public class Frame implements Component, Poolable {
     this.texture = texture;
   }
 
-  public List<WorldTexture> getOverlays() {
-    return overlays;
+  public Iterable<WorldTexture> getOverlays() {
+    return overlays.values();
   }
 
-  public void addOverlay(WorldTexture texture) {
-    overlays.add(texture);
+  /**
+   * Sets an overlay for this frame. The render order of the overlays is determined by the natural
+   * ordering of the key.
+   */
+  public void setOverlay(int key, WorldTexture texture) {
+    overlays.put(key, texture);
   }
 
-  public void removeOverlay(WorldTexture texture) {
-    overlays.remove(texture);
-  }
-
-  public Color getColor() {
-    return color;
-  }
-
-  public void setColor(Color color) {
-    this.color = color;
+  public void removeOverlay(int key) {
+    overlays.remove(key);
   }
 
   public Optional<Direction> direction() {
@@ -59,7 +53,6 @@ public class Frame implements Component, Poolable {
   public void reset() {
     overlays.clear();
     texture = null;
-    color = Color.WHITE;
     direction = null;
   }
 }
