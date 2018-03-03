@@ -37,6 +37,42 @@ public class MarkersTest {
   }
 
   @Test
+  public void get_player_controllable() {
+    when(textureAtlas.findRegion("texture/ui/marking/player_controllable")).thenReturn(atlasRegion);
+    when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
+
+    WorldTexture texture = markers.getPlayerControllable();
+
+    assertThat(texture).isSameAs(worldTexture);
+    assertThat(textureCache)
+        .containsExactly(MARKER_BUNDLE.get("player_controllable"), worldTexture);
+  }
+
+  @Test
+  public void get_player_uncontrollable() {
+    when(textureAtlas.findRegion("texture/ui/marking/player_uncontrollable"))
+        .thenReturn(atlasRegion);
+    when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
+
+    WorldTexture texture = markers.getPlayerUncontrollable();
+
+    assertThat(texture).isSameAs(worldTexture);
+    assertThat(textureCache)
+        .containsExactly(MARKER_BUNDLE.get("player_uncontrollable"), worldTexture);
+  }
+
+  @Test
+  public void get_enemy() {
+    when(textureAtlas.findRegion("texture/ui/marking/enemy")).thenReturn(atlasRegion);
+    when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);
+
+    WorldTexture texture = markers.getEnemy();
+
+    assertThat(texture).isSameAs(worldTexture);
+    assertThat(textureCache).containsExactly(MARKER_BUNDLE.get("enemy"), worldTexture);
+  }
+
+  @Test
   public void get_highlight() {
     when(textureAtlas.findRegion("texture/ui/marking/highlight")).thenReturn(atlasRegion);
     when(textureFactory.create(atlasRegion)).thenReturn(worldTexture);

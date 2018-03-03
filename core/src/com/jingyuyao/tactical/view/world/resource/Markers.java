@@ -27,6 +27,18 @@ public class Markers {
     this.markerTextureCache = markerTextureCache;
   }
 
+  public WorldTexture getPlayerControllable() {
+    return get("player_controllable");
+  }
+
+  public WorldTexture getPlayerUncontrollable() {
+    return get("player_uncontrollable");
+  }
+
+  public WorldTexture getEnemy() {
+    return get("enemy");
+  }
+
   public WorldTexture getHighlight() {
     return get("highlight");
   }
