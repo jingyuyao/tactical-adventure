@@ -3,14 +3,20 @@ package com.jingyuyao.tactical.view.world;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
+import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
+import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.WorldViewModule.WorldEngine;
 import com.jingyuyao.tactical.view.world.WorldViewModule.WorldViewport;
 import com.jingyuyao.tactical.view.world.system.Systems;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -19,13 +25,14 @@ import javax.inject.Singleton;
 public class WorldView {
 
   private final Batch batch;
-  private final Viewport viewport;
+  private final ExtendViewport viewport;
   private final PooledEngine engine;
+  private final Random random = new Random();
 
   @Inject
   WorldView(
       Batch batch,
-      @WorldViewport Viewport viewport,
+      @WorldViewport ExtendViewport viewport,
       @WorldEngine PooledEngine engine,
       Systems systems) {
     this.batch = batch;
@@ -49,11 +56,11 @@ public class WorldView {
   }
 
   public float getViewportWorldWidth() {
-    return viewport.getWorldWidth();
+    return viewport.getMinWorldWidth();
   }
 
   public float getViewportWorldHeight() {
-    return viewport.getWorldHeight();
+    return viewport.getMinWorldHeight();
   }
 
   public int getViewportScreenWidth() {
@@ -91,6 +98,35 @@ public class WorldView {
   @Subscribe
   void worldLoaded(WorldLoaded worldLoaded) {
     World world = worldLoaded.getWorld();
-    setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
+    List<Cell> playerCells = new ArrayList<>();
+    for (Cell cell : world.getWorldCells()) {
+      for (Ship ship : cell.ship().asSet()) {
+        if (ship.inGroup(ShipGroup.PLAYER)) {
+          playerCells.add(cell);
+        }
+      }
+    }
+
+    // Hum...
+    if (playerCells.isEmpty()) {
+      setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
+    } else {
+      Cell cell = playerCells.get(random.nextInt(playerCells.size()));
+
+      float unboundedPlayerX = cell.getCoordinate().getX();
+      float unboundedPlayerY = cell.getCoordinate().getY();
+      float lowerXBound = getViewportWorldWidth() / 2f;
+      float upperXBound = world.getMaxWidth() - lowerXBound;
+      float lowerYBound = getViewportWorldHeight() / 2f;
+      float upperYBound = world.getMaxHeight() - lowerYBound;
+
+      float boundedPlayerX = bound(lowerXBound, unboundedPlayerX, upperXBound);
+      float boundedPlayerY = bound(lowerYBound, unboundedPlayerY, upperYBound);
+      setCameraPosition(boundedPlayerX, boundedPlayerY);
+    }
+  }
+
+  private float bound(float min, float value, float max) {
+    return Math.max(min, Math.min(value, max));
   }
 }

@@ -9,7 +9,6 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.controller.CameraController;
@@ -46,7 +45,7 @@ public class WorldViewModule extends AbstractModule {
   @Provides
   @Singleton
   @WorldViewport
-  Viewport provideWorldViewport(WorldConfig worldConfig) {
+  ExtendViewport provideWorldViewport(WorldConfig worldConfig) {
     return new ExtendViewport(
         worldConfig.getWorldViewportWidth(), worldConfig.getWorldViewportHeight());
   }

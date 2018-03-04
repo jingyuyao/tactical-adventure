@@ -7,7 +7,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.jingyuyao.tactical.view.world.system.Systems;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class WorldViewTest {
   @Mock
   private Batch batch;
   @Mock
-  private Viewport viewport;
+  private ExtendViewport viewport;
   @Mock
   private PooledEngine engine;
   @Mock
