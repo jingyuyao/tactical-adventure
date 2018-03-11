@@ -1,0 +1,5 @@
+language: java
+
+script:
+  - ./gradlew core:cleanTest core:test
+  - ./gradlew desktop:dist

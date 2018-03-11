@@ -23,7 +23,9 @@ https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#running-the-andr
 
 - Running desktop: ./gradlew desktop:run
 - Running android: ./gradlew android:installDebug android:run
-- Testing core: ./gradlew core:tests
+- Testing core: ./gradlew core:cleanTest core:test
+- Packaging desktop: ./gradlew desktop:dist
+- Packaging android: ./gradlew android:assembleRelease
 
 ## Intellij quirks 
 - Make sure "Android Support" plugin is enabled for Intellij Idea
