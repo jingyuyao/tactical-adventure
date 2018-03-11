@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jingyuyao/tactical-adventure.svg?branch=master)](https://travis-ci.org/jingyuyao/tactical-adventure)
+
 # About
 This is a turn based strategy game set in the vastness of space.
 
