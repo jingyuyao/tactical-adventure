@@ -76,7 +76,7 @@ class TerrainsLoader {
 
   private Terrain createTerrain(List<IntKey> textures, TileProperty tileProperty) {
     if (tileProperty == null) {
-      return new Terrain("space", textures, true, 1);
+      return new Terrain("ground", textures, true, 1);
     }
     return new Terrain(tileProperty.name, textures, tileProperty.holdShip, tileProperty.moveCost);
   }
@@ -123,7 +123,7 @@ class TerrainsLoader {
 
   private static class TileProperty {
 
-    private String name = "space";
+    private String name = "ground";
     private boolean holdShip = true;
     private int moveCost = 1;
   }
