@@ -324,6 +324,10 @@
          "moveCost":"2",
          "name":"water"
         },
+     "240":
+        {
+         "name":"grass"
+        },
      "241":
         {
          "holdShip":false,
@@ -643,6 +647,10 @@
         {
          "moveCost":"2",
          "name":"water"
+        },
+     "390":
+        {
+         "name":"dirt"
         },
      "391":
         {
@@ -1860,6 +1868,10 @@
          "moveCost":"string",
          "name":"string"
         },
+     "240":
+        {
+         "name":"string"
+        },
      "241":
         {
          "holdShip":"bool",
@@ -2178,6 +2190,10 @@
      "39":
         {
          "moveCost":"string",
+         "name":"string"
+        },
+     "390":
+        {
          "name":"string"
         },
      "391":

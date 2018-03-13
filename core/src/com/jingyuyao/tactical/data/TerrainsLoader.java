@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,6 +21,7 @@ import javax.inject.Singleton;
 @Singleton
 class TerrainsLoader {
 
+  private static final String DEFAULT_TERRAIN_NAME = "ground";
   private final DataConfig dataConfig;
   private final Files files;
   private final InitLoader initLoader;
@@ -30,19 +34,37 @@ class TerrainsLoader {
   }
 
   /**
+   * Copied from com.badlogic.gdx.maps.tiled.BaseTmxMapLoader
+   */
+  private static FileHandle getRelativeFileHandle(FileHandle file, String path) {
+    StringTokenizer tokenizer = new StringTokenizer(path, "\\/");
+    FileHandle result = file.parent();
+    while (tokenizer.hasMoreElements()) {
+      String token = tokenizer.nextToken();
+      if (token.equals("..")) {
+        result = result.parent();
+      } else {
+        result = result.child(token);
+      }
+    }
+    return result;
+  }
+
+  /**
    * Loads the given level as a map of coordinates to terrains. Makes several assumptions such as
-   * all layers are the same size with no offset, tilesets are embedded, only tile properties in
-   * foreground layer is used for terrain type and embedded tilesets must have the same name as the
-   * image file.
+   * all layers are the same size with no offset, tilesets are externally sourced and only tile
+   * properties in the most foreground layer (that has some properties) is used for terrain data.
    */
   Map<Coordinate, Terrain> load(int level) {
-    FileHandle fileHandle = files.internal(dataConfig.getLevelTerrainFileName(level));
-    Terrains terrains = initLoader.fromJson(fileHandle.reader(), Terrains.class);
+    FileHandle terrainsHandle = files.internal(dataConfig.getLevelTerrainFileName(level));
+    Terrains terrains = initLoader.fromJson(terrainsHandle.reader(), Terrains.class);
     int layerDataSize = terrains.layers.get(0).data.size();
     int layerHeight = terrains.layers.get(0).height;
     int layerWidth = terrains.layers.get(0).width;
 
-    Map<TileSet, KeyBundle> cachedBundles = new HashMap<>();
+    Map<Integer, TilesetSource> tilesetSourceMap =
+        createTileSetSources(terrainsHandle, terrains.tilesets);
+    Map<TilesetSource, KeyBundle> cachedBundles = new HashMap<>();
     Map<Coordinate, Terrain> terrainMap = new HashMap<>();
     for (int i = 0; i < layerDataSize; i++) {
       int x = i % layerWidth;
@@ -54,18 +76,20 @@ class TerrainsLoader {
       TileProperty tileProperty = null;
       for (Layer layer : terrains.layers) {
         int globalTileId = layer.data.get(i);
-        for (TileSet tileSet : terrains.getTileset(globalTileId).asSet()) {
-          int localTileId = tileSet.getLocalTileId(globalTileId);
+        for (Integer firstGlobalId : getFirstGlobalId(tilesetSourceMap, globalTileId).asSet()) {
+          TilesetSource tilesetSource = tilesetSourceMap.get(firstGlobalId);
+          int localTileId = globalTileId - firstGlobalId;
           KeyBundle keyBundle;
-          if (cachedBundles.containsKey(tileSet)) {
-            keyBundle = cachedBundles.get(tileSet);
+          if (cachedBundles.containsKey(tilesetSource)) {
+            keyBundle = cachedBundles.get(tilesetSource);
           } else {
-            keyBundle = KeyBundle.tileset(tileSet.name);
-            cachedBundles.put(tileSet, keyBundle);
+            keyBundle = KeyBundle.raw(
+                tilesetSource.gdxImagePath, tilesetSource.gdxImageExtension);
+            cachedBundles.put(tilesetSource, keyBundle);
           }
           textures.add(keyBundle.get(localTileId));
-          if (tileSet.tileproperties.containsKey(localTileId)) {
-            tileProperty = tileSet.tileproperties.get(localTileId);
+          if (tilesetSource.tileproperties.containsKey(localTileId)) {
+            tileProperty = tilesetSource.tileproperties.get(localTileId);
           }
         }
       }
@@ -74,28 +98,50 @@ class TerrainsLoader {
     return terrainMap;
   }
 
+  /**
+   * Returns a map of the first global ID along with its tileset.
+   */
+  private Map<Integer, TilesetSource> createTileSetSources(
+      FileHandle terrainsFileHandle, List<TilesetRef> tilesetRefs) {
+    Map<Integer, TilesetSource> tilesetSourceMap = new TreeMap<>();
+    for (TilesetRef tilesetRef : tilesetRefs) {
+      FileHandle sourceHandle = getRelativeFileHandle(terrainsFileHandle, tilesetRef.source);
+      TilesetSource source = initLoader.fromJson(sourceHandle.reader(), TilesetSource.class);
+      FileHandle sourceImageHandle = getRelativeFileHandle(sourceHandle, source.image);
+      source.gdxImagePath = sourceImageHandle.pathWithoutExtension();
+      source.gdxImageExtension = sourceImageHandle.extension();
+      tilesetSourceMap.put(tilesetRef.firstgid, source);
+    }
+    return tilesetSourceMap;
+  }
+
+  private Optional<Integer> getFirstGlobalId(
+      Map<Integer, TilesetSource> tilesetSources, int globalTileId) {
+    for (Entry<Integer, TilesetSource> entry : tilesetSources.entrySet()) {
+      int firstGlobalId = entry.getKey();
+      int tileCount = entry.getValue().tilecount;
+      if (globalTileId >= firstGlobalId && globalTileId < firstGlobalId + tileCount) {
+        return Optional.of(entry.getKey());
+      }
+    }
+    return Optional.absent();
+  }
+
   private Terrain createTerrain(List<IntKey> textures, TileProperty tileProperty) {
     if (tileProperty == null) {
-      return new Terrain("ground", textures, true, 1);
+      return new Terrain(DEFAULT_TERRAIN_NAME, textures, true, 1);
     }
     return new Terrain(tileProperty.name, textures, tileProperty.holdShip, tileProperty.moveCost);
   }
 
-  // Minimum usable representation of the TMX json format. Assumes all tilesets are in the
-  // "tilesets/" directory, there is only one tile layer and one tileset.
+  // Minimum usable representation of the TMX json format.
   private static class Terrains {
 
     private List<Layer> layers;
-    private List<TileSet> tilesets;
-
-    private Optional<TileSet> getTileset(int globalTileId) {
-      for (TileSet tileSet : tilesets) {
-        if (tileSet.hasGlobalTileId(globalTileId)) {
-          return Optional.of(tileSet);
-        }
-      }
-      return Optional.absent();
-    }
+    /**
+     * Only allows referencing external tilesets.
+     */
+    private List<TilesetRef> tilesets;
   }
 
   private static class Layer {
@@ -105,25 +151,30 @@ class TerrainsLoader {
     private int height;
   }
 
-  private static class TileSet {
+  private static class TilesetRef {
 
     private int firstgid;
+    private String source;
+  }
+
+  private static class TilesetSource {
+
+    private String image;
     private int tilecount;
-    private String name;
     private Map<Integer, TileProperty> tileproperties = new HashMap<>();
-
-    private boolean hasGlobalTileId(int globalTileId) {
-      return globalTileId >= firstgid && globalTileId < firstgid + tilecount;
-    }
-
-    private int getLocalTileId(int globalTileId) {
-      return globalTileId - firstgid;
-    }
+    /**
+     * Not part of Tmx spec, should be calculated manually.
+     */
+    private String gdxImagePath = "placeholder value";
+    /**
+     * Not part of Tmx spec, should be calculated manually.
+     */
+    private String gdxImageExtension = "placeholder value";
   }
 
   private static class TileProperty {
 
-    private String name = "ground";
+    private String name = DEFAULT_TERRAIN_NAME;
     private boolean holdShip = true;
     private int moveCost = 1;
   }

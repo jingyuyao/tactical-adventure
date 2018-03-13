@@ -24,6 +24,13 @@ public class KeyBundle implements Serializable {
   }
 
   /**
+   * Create a bundle with the specified path and extension.
+   */
+  public static KeyBundle raw(String path, String extension) {
+    return new KeyBundle(path, extension);
+  }
+
+  /**
    * Create a bundle where the path is prefixed with "i18n/" and extension is ".properties"
    */
   public static KeyBundle i18n(String path) {
