@@ -22,8 +22,12 @@ class TerrainOverviewPanel extends TextPanel<Terrain> {
   @Override
   Optional<String> createText(Terrain terrain) {
     String name = textLoader.get(terrain.getName());
-    int moveCost = terrain.getMoveCost();
-    StringKey stringKey = UIBundle.TERRAIN_OVERVIEW_PANEL.format(name, moveCost);
+    StringKey stringKey;
+    if (terrain.canHoldShip()) {
+      stringKey = UIBundle.TERRAIN_OVERVIEW_PANEL.format(name, terrain.getMoveCost());
+    } else {
+      stringKey = UIBundle.TERRAIN_OVERVIEW_PANEL.format(name, "impassable");
+    }
     return Optional.of(textLoader.get(stringKey));
   }
 }
