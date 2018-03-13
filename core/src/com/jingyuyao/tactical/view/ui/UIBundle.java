@@ -17,6 +17,7 @@ class UIBundle {
   static final StringKey EQUIP_BTN = BUNDLE.get("equipBtn");
   static final StringKey UNEQUIP_BTN = BUNDLE.get("unequipBtn");
   static final StringKey OVERVIEW_PANEL = BUNDLE.get("shipOverviewPanel");
+  static final StringKey OVERVIEW_PANEL_PILOT = BUNDLE.get("shipOverviewPilot");
   static final StringKey SHIP_NAME_HEADER = BUNDLE.get("shipNameHeader");
   static final StringKey SHIP_HP_HEADER = BUNDLE.get("shipHPHeader");
   static final StringKey SHIP_MOVE_HEADER = BUNDLE.get("shipMoveHeader");
