@@ -15,8 +15,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.google.common.base.Preconditions;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -79,9 +77,7 @@ class GameModule extends AbstractModule {
   @Provides
   @Singleton
   AssetManager provideAssetManager() {
-    AssetManager assetManager = new AssetManager();
-    assetManager.setLoader(TiledMap.class, new TmxMapLoader());
-    return assetManager;
+    return new AssetManager();
   }
 
   @Provides
