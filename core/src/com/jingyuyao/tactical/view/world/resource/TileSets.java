@@ -54,8 +54,7 @@ public class TileSets {
       int rowLength = textureRegions[i].length;
       for (int j = 0; j < rowLength; j++) {
         WorldTexture texture = textureFactory.create(textureRegions[i][j]);
-        // tile id for tmx starts with 1
-        IntKey key = bundle.get(i * rowLength + j + 1);
+        IntKey key = bundle.get(i * rowLength + j);
         tileTextureCache.put(key, texture);
       }
     }

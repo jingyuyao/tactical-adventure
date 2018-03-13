@@ -73,12 +73,11 @@ public class TileSetsTest {
     when(textureFactory.create(any(TextureRegion.class)))
         .thenReturn(worldTexture1, worldTexture2, worldTexture3, worldTexture4);
 
-    assertThat(tileSets.get(BUNDLE.get(1))).isSameAs(worldTexture1);
-    assertThat(tileSets.get(BUNDLE.get(2))).isSameAs(worldTexture2);
-    assertThat(tileSets.get(BUNDLE.get(3))).isSameAs(worldTexture3);
-    assertThat(tileSets.get(BUNDLE.get(4))).isSameAs(worldTexture4);
-    assertThat(tileTextureCache).doesNotContainKey(BUNDLE.get(0));
-    assertThat(tileTextureCache).doesNotContainKey(BUNDLE.get(5));
+    assertThat(tileSets.get(BUNDLE.get(0))).isSameAs(worldTexture1);
+    assertThat(tileSets.get(BUNDLE.get(1))).isSameAs(worldTexture2);
+    assertThat(tileSets.get(BUNDLE.get(2))).isSameAs(worldTexture3);
+    assertThat(tileSets.get(BUNDLE.get(3))).isSameAs(worldTexture4);
+    assertThat(tileTextureCache).doesNotContainKey(BUNDLE.get(4));
     verify(textureFactory, times(4)).create(regionCaptor.capture());
     assertThat(regionCaptor.getAllValues()).hasSize(4);
     TextureRegion region1 = regionCaptor.getAllValues().get(0);
