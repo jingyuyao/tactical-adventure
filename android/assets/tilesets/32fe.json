@@ -46,6 +46,9 @@
         {
          "name":"grass"
         },
+      "113": {
+        "name": "grass"
+      },
      "114":
         {
          "moveCost":"2",
@@ -79,6 +82,9 @@
         {
          "name":"grass"
         },
+      "128": {
+        "name": "grass"
+      },
      "129":
         {
          "moveCost":"2",
@@ -125,6 +131,12 @@
          "moveCost":"2",
          "name":"water"
         },
+      "141": {
+        "name": "grass"
+      },
+      "142": {
+        "name": "grass"
+      },
      "144":
         {
          "moveCost":"2",
@@ -165,6 +177,12 @@
         {
          "name":"grass"
         },
+      "156": {
+        "name": "grass"
+      },
+      "157": {
+        "name": "grass"
+      },
      "159":
         {
          "moveCost":"2",
@@ -219,6 +237,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "184": {
+        "name": "grass"
+      },
      "185":
         {
          "holdShip":false,
@@ -249,6 +270,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "199": {
+        "name": "grass"
+      },
      "200":
         {
          "holdShip":false,
@@ -264,6 +288,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "21": {
+        "name": "grass"
+      },
      "210":
         {
          "holdShip":false,
@@ -274,6 +301,15 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "212": {
+        "name": "grass"
+      },
+      "213": {
+        "name": "grass"
+      },
+      "214": {
+        "name": "grass"
+      },
      "215":
         {
          "holdShip":false,
@@ -304,6 +340,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "229": {
+        "name": "grass"
+      },
      "230":
         {
          "holdShip":false,
@@ -368,6 +407,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "259": {
+        "name": "grass"
+      },
      "26":
         {
          "moveCost":"2",
@@ -408,6 +450,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "274": {
+        "name": "grass"
+      },
      "275":
         {
          "holdShip":false,
@@ -438,6 +483,15 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "287": {
+        "name": "grass"
+      },
+      "288": {
+        "name": "grass"
+      },
+      "289": {
+        "name": "grass"
+      },
      "29":
         {
          "moveCost":"2",
@@ -481,6 +535,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "304": {
+        "name": "grass"
+      },
      "305":
         {
          "holdShip":false,
@@ -496,6 +553,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "315": {
+        "name": "grass"
+      },
      "316":
         {
          "holdShip":false,
@@ -588,6 +648,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "36": {
+        "name": "grass"
+      },
      "360":
         {
          "holdShip":false,
@@ -628,6 +691,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "38": {
+        "name": "grass"
+      },
      "380":
         {
          "holdShip":false,
@@ -692,6 +758,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "409": {
+        "name": "sand"
+      },
      "41":
         {
          "moveCost":"2",
@@ -732,6 +801,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "424": {
+        "name": "sand"
+      },
      "425":
         {
          "holdShip":false,
@@ -762,6 +834,15 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "437": {
+        "name": "sand"
+      },
+      "438": {
+        "name": "sand"
+      },
+      "439": {
+        "name": "sand"
+      },
      "44":
         {
          "moveCost":"2",
@@ -797,6 +878,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "454": {
+        "name": "sand"
+      },
      "455":
         {
          "holdShip":false,
@@ -812,6 +896,9 @@
          "holdShip":false,
          "name":"ridge"
         },
+      "465": {
+        "name": "sand"
+      },
      "466":
         {
          "holdShip":false,
@@ -1252,6 +1339,9 @@
          "moveCost":2,
          "name":"tree"
         },
+      "6": {
+        "name": "grass"
+      },
      "60":
         {
          "name":"dirt"
@@ -1468,6 +1558,12 @@
          "holdShip":false,
          "name":"mountain"
         },
+      "66": {
+        "name": "grass"
+      },
+      "68": {
+        "name": "grass"
+      },
      "69":
         {
          "moveCost":"2",
@@ -1510,6 +1606,15 @@
         },
      "80":
         {
+          "name": "grass"
+        },
+      "81": {
+        "name": "grass"
+      },
+      "82": {
+        "name": "grass"
+      },
+      "83": {
          "name":"grass"
         },
      "84":
@@ -1543,6 +1648,9 @@
         },
      "93":
         {
+          "name": "grass"
+        },
+      "96": {
          "name":"grass"
         },
      "99":
@@ -1588,6 +1696,9 @@
         },
      "110":
         {
+          "name": "string"
+        },
+      "113": {
          "name":"string"
         },
      "114":
@@ -1621,6 +1732,9 @@
         },
      "125":
         {
+          "name": "string"
+        },
+      "128": {
          "name":"string"
         },
      "129":
@@ -1669,6 +1783,12 @@
          "moveCost":"string",
          "name":"string"
         },
+      "141": {
+        "name": "string"
+      },
+      "142": {
+        "name": "string"
+      },
      "144":
         {
          "moveCost":"string",
@@ -1709,6 +1829,12 @@
         {
          "name":"string"
         },
+      "156": {
+        "name": "string"
+      },
+      "157": {
+        "name": "string"
+      },
      "159":
         {
          "moveCost":"string",
@@ -1763,6 +1889,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "184": {
+        "name": "string"
+        },
      "185":
         {
          "holdShip":"bool",
@@ -1793,6 +1922,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "199": {
+        "name": "string"
+        },
      "200":
         {
          "holdShip":"bool",
@@ -1808,6 +1940,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "21": {
+        "name": "string"
+        },
      "210":
         {
          "holdShip":"bool",
@@ -1817,6 +1952,15 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "212": {
+        "name": "string"
+      },
+      "213": {
+        "name": "string"
+      },
+      "214": {
+        "name": "string"
         },
      "215":
         {
@@ -1847,6 +1991,9 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "229": {
+        "name": "string"
         },
      "230":
         {
@@ -1912,6 +2059,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "259": {
+        "name": "string"
+        },
      "26":
         {
          "moveCost":"string",
@@ -1952,6 +2102,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "274": {
+        "name": "string"
+        },
      "275":
         {
          "holdShip":"bool",
@@ -1981,6 +2134,15 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "287": {
+        "name": "string"
+      },
+      "288": {
+        "name": "string"
+      },
+      "289": {
+        "name": "string"
         },
      "29":
         {
@@ -2025,6 +2187,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "304": {
+        "name": "string"
+        },
      "305":
         {
          "holdShip":"bool",
@@ -2039,6 +2204,9 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "315": {
+        "name": "string"
         },
      "316":
         {
@@ -2132,6 +2300,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "36": {
+        "name": "string"
+        },
      "360":
         {
          "holdShip":"bool",
@@ -2171,6 +2342,9 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "38": {
+        "name": "string"
         },
      "380":
         {
@@ -2236,6 +2410,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "409": {
+        "name": "string"
+        },
      "41":
         {
          "moveCost":"string",
@@ -2276,6 +2453,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "424": {
+        "name": "string"
+        },
      "425":
         {
          "holdShip":"bool",
@@ -2305,6 +2485,15 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "437": {
+        "name": "string"
+      },
+      "438": {
+        "name": "string"
+      },
+      "439": {
+        "name": "string"
         },
      "44":
         {
@@ -2341,6 +2530,9 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "454": {
+        "name": "string"
+        },
      "455":
         {
          "holdShip":"bool",
@@ -2355,6 +2547,9 @@
         {
          "holdShip":"bool",
          "name":"string"
+        },
+      "465": {
+        "name": "string"
         },
      "466":
         {
@@ -2796,6 +2991,9 @@
          "moveCost":"int",
          "name":"string"
         },
+      "6": {
+        "name": "string"
+        },
      "60":
         {
          "name":"string"
@@ -3012,6 +3210,12 @@
          "holdShip":"bool",
          "name":"string"
         },
+      "66": {
+        "name": "string"
+      },
+      "68": {
+        "name": "string"
+        },
      "69":
         {
          "moveCost":"string",
@@ -3054,6 +3258,15 @@
         },
      "80":
         {
+          "name": "string"
+        },
+      "81": {
+        "name": "string"
+      },
+      "82": {
+        "name": "string"
+      },
+      "83": {
          "name":"string"
         },
      "84":
@@ -3087,6 +3300,9 @@
         },
      "93":
         {
+          "name": "string"
+        },
+      "96": {
          "name":"string"
         },
      "99":
