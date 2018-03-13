@@ -27,10 +27,6 @@ public class Terrain extends Identifiable {
     return ModelBundle.TERRAIN_NAME.get(name);
   }
 
-  public IntKey getTexture() {
-    return textures.get(0);
-  }
-
   public List<IntKey> getTextures() {
     return textures;
   }

@@ -19,6 +19,7 @@ import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.resource.TileSets;
 import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import java.util.Arrays;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,9 +48,13 @@ public class TerrainSystemTest {
   @Mock
   private IntKey intKey2;
   @Mock
+  private IntKey intKey3;
+  @Mock
   private WorldTexture texture1;
   @Mock
   private WorldTexture texture2;
+  @Mock
+  private WorldTexture texture3;
 
   private Engine engine;
   private TerrainSystem terrainSystem;
@@ -70,10 +75,11 @@ public class TerrainSystemTest {
     when(cell2.getCoordinate()).thenReturn(C0_1);
     when(cell1.getTerrain()).thenReturn(terrain1);
     when(cell2.getTerrain()).thenReturn(terrain2);
-    when(terrain1.getTexture()).thenReturn(intKey1);
-    when(terrain2.getTexture()).thenReturn(intKey2);
+    when(terrain1.getTextures()).thenReturn(Collections.singletonList(intKey1));
+    when(terrain2.getTextures()).thenReturn(Arrays.asList(intKey2, intKey3));
     when(tileSets.get(intKey1)).thenReturn(texture1);
     when(tileSets.get(intKey2)).thenReturn(texture2);
+    when(tileSets.get(intKey3)).thenReturn(texture3);
 
     terrainSystem.worldLoaded(worldLoaded);
 
@@ -87,7 +93,7 @@ public class TerrainSystemTest {
     assertThat(position1.getZ()).isEqualTo(WorldZIndex.TERRAIN);
     Frame frame1 = entity1.getComponent(Frame.class);
     assertThat(frame1).isNotNull();
-    assertThat(frame1.texture()).hasValue(texture1);
+    assertThat(frame1.getOverlays()).containsExactly(texture1);
     Entity entity2 = entities.get(1);
     Position position2 = entity2.getComponent(Position.class);
     assertThat(position2).isNotNull();
@@ -96,6 +102,6 @@ public class TerrainSystemTest {
     assertThat(position2.getZ()).isEqualTo(WorldZIndex.TERRAIN);
     Frame frame2 = entity2.getComponent(Frame.class);
     assertThat(frame2).isNotNull();
-    assertThat(frame2.texture()).hasValue(texture2);
+    assertThat(frame2.getOverlays()).containsExactly(texture2, texture3);
   }
 }

@@ -5,12 +5,14 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
+import com.jingyuyao.tactical.model.resource.IntKey;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.Coordinate;
 import com.jingyuyao.tactical.model.world.Terrain;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.Position;
 import com.jingyuyao.tactical.view.world.resource.TileSets;
+import com.jingyuyao.tactical.view.world.resource.WorldTexture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -36,7 +38,10 @@ class TerrainSystem extends EntitySystem {
       position.set(coordinate, WorldZIndex.TERRAIN);
 
       Frame frame = getEngine().createComponent(Frame.class);
-      frame.setTexture(tileSets.get(terrain.getTexture()));
+      for (int i = 0; i < terrain.getTextures().size(); i++) {
+        WorldTexture texture = tileSets.get(terrain.getTextures().get(i));
+        frame.setOverlay(i, texture);
+      }
 
       Entity entity = getEngine().createEntity();
       entity.add(position);

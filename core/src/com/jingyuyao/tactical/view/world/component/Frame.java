@@ -17,6 +17,9 @@ public class Frame implements Component, Poolable {
   private WorldTexture texture = null;
   private Direction direction = null;
 
+  /**
+   * @return The "base" or "main" {@link WorldTexture} for this frame.
+   */
   public Optional<WorldTexture> texture() {
     return Optional.fromNullable(texture);
   }
@@ -25,6 +28,9 @@ public class Frame implements Component, Poolable {
     this.texture = texture;
   }
 
+  /**
+   * @return A list of {@link WorldTexture} that is rendered on top of the "base" texture.
+   */
   public Iterable<WorldTexture> getOverlays() {
     return overlays.values();
   }
