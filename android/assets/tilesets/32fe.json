@@ -1,11 +1,11 @@
 { "columns":15,
  "image":"32fe.png",
- "imageheight":1408,
+  "imageheight": 1632,
  "imagewidth":480,
  "margin":0,
  "name":"32fe",
  "spacing":0,
- "tilecount":660,
+  "tilecount": 765,
  "tileheight":32,
  "tileproperties":
     {
@@ -16,22 +16,22 @@
      "10":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "100":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "101":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "102":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "107":
         {
@@ -40,7 +40,7 @@
      "11":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "110":
         {
@@ -52,27 +52,27 @@
      "114":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "115":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "116":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "117":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "12":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "122":
         {
@@ -88,27 +88,27 @@
      "129":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "13":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "130":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "131":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "132":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "135":
         {
@@ -129,7 +129,7 @@
      "14":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
       "141": {
         "name": "grass"
@@ -140,22 +140,22 @@
      "144":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "145":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "146":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "147":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "15":
         {
@@ -186,42 +186,42 @@
      "159":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "160":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "161":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "162":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "174":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "175":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "176":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "177":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "18":
         {
@@ -361,7 +361,7 @@
      "24":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "240":
         {
@@ -395,7 +395,7 @@
      "25":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "255":
         {
@@ -413,7 +413,7 @@
      "26":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "260":
         {
@@ -438,7 +438,7 @@
      "27":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "270":
         {
@@ -471,7 +471,7 @@
      "28":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "285":
         {
@@ -495,7 +495,7 @@
      "29":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "290":
         {
@@ -712,7 +712,7 @@
      "39":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "390":
         {
@@ -746,7 +746,7 @@
      "40":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "405":
         {
@@ -764,7 +764,7 @@
      "41":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "410":
         {
@@ -789,7 +789,7 @@
      "42":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "420":
         {
@@ -822,7 +822,7 @@
      "43":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "435":
         {
@@ -846,7 +846,7 @@
      "44":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "440":
         {
@@ -1127,7 +1127,7 @@
      "54":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "540":
         {
@@ -1182,7 +1182,7 @@
      "55":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "555":
         {
@@ -1212,7 +1212,7 @@
      "56":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "560":
         {
@@ -1242,7 +1242,7 @@
      "57":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "570":
         {
@@ -1292,7 +1292,7 @@
      "58":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "585":
         {
@@ -1322,7 +1322,7 @@
      "59":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "590":
         {
@@ -1561,33 +1561,289 @@
       "66": {
         "name": "grass"
       },
+      "660": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "661": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "662": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "663": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "664": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "665": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "666": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "667": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "668": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "669": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "675": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "676": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "677": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "678": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "679": {
+        "holdShip": false,
+        "name": "mountain"
+      },
       "68": {
         "name": "grass"
+      },
+      "680": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "681": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "682": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "683": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "684": {
+        "holdShip": false,
+        "name": "mountain"
       },
      "69":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
+        },
+      "690": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "691": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "692": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "693": {
+        "holdShip": false,
+        "name": "mountain"
+      },
+      "694": {
+        "holdShip": false,
+        "name": "mountain"
         },
      "70":
         {
          "moveCost":"2",
+          "name": "river"
+        },
+      "705": {
+        "name": "water"
+      },
+      "706": {
+        "name": "water"
+      },
+      "707": {
+        "name": "water"
+      },
+      "708": {
+        "name": "water"
+      },
+      "709": {
          "name":"water"
         },
      "71":
         {
          "moveCost":"2",
+          "name": "river"
+        },
+      "710": {
+        "name": "water"
+      },
+      "711": {
          "name":"water"
         },
+      "712": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "713": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "714": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "715": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "716": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "717": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "718": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "719": {
+        "holdShip": false,
+        "name": "ridge"
+      },
      "72":
         {
          "moveCost":"2",
+          "name": "river"
+        },
+      "720": {
+        "name": "water"
+      },
+      "721": {
+        "name": "water"
+      },
+      "722": {
+        "name": "water"
+      },
+      "723": {
+        "name": "water"
+      },
+      "724": {
+        "name": "water"
+      },
+      "725": {
+        "name": "water"
+      },
+      "726": {
+        "name": "water"
+      },
+      "727": {
+        "name": "water"
+      },
+      "728": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "729": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "730": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "731": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "732": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "733": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "734": {
+        "holdShip": false,
+        "name": "ridge"
+      },
+      "735": {
          "name":"water"
         },
+      "736": {
+        "name": "water"
+      },
+      "737": {
+        "name": "water"
+      },
+      "738": {
+        "name": "sand"
+      },
+      "739": {
+        "name": "sand"
+      },
+      "740": {
+        "name": "sand"
+      },
+      "741": {
+        "name": "sand"
+      },
+      "742": {
+        "name": "sand"
+      },
+      "743": {
+        "name": "sand"
+      },
      "75":
         {
          "name":"dirt"
         },
+      "750": {
+        "name": "water"
+      },
+      "751": {
+        "name": "water"
+      },
+      "753": {
+        "name": "sand"
+      },
+      "754": {
+        "name": "sand"
+      },
+      "755": {
+        "name": "sand"
+      },
+      "756": {
+        "name": "sand"
+      },
+      "757": {
+        "name": "sand"
+      },
+      "758": {
+        "name": "sand"
+      },
      "76":
         {
          "name":"dirt"
@@ -1620,27 +1876,27 @@
      "84":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "85":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "86":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "87":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "9":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         },
      "90":
         {
@@ -1656,7 +1912,7 @@
      "99":
         {
          "moveCost":"2",
-         "name":"water"
+          "name": "river"
         }
     },
  "tilepropertytypes":
@@ -3213,33 +3469,289 @@
       "66": {
         "name": "string"
       },
-      "68": {
+      "660": {
+        "holdShip": "bool",
         "name": "string"
         },
+      "661": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "662": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "663": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "664": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "665": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "666": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "667": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "668": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "669": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "675": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "676": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "677": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "678": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "679": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "68": {
+        "name": "string"
+      },
+      "680": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "681": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "682": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "683": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "684": {
+        "holdShip": "bool",
+        "name": "string"
+      },
      "69":
         {
          "moveCost":"string",
          "name":"string"
         },
+      "690": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "691": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "692": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "693": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "694": {
+        "holdShip": "bool",
+        "name": "string"
+      },
      "70":
         {
          "moveCost":"string",
          "name":"string"
         },
+      "705": {
+        "name": "string"
+      },
+      "706": {
+        "name": "string"
+      },
+      "707": {
+        "name": "string"
+      },
+      "708": {
+        "name": "string"
+      },
+      "709": {
+        "name": "string"
+      },
      "71":
         {
          "moveCost":"string",
          "name":"string"
         },
+      "710": {
+        "name": "string"
+      },
+      "711": {
+        "name": "string"
+      },
+      "712": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "713": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "714": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "715": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "716": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "717": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "718": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "719": {
+        "holdShip": "bool",
+        "name": "string"
+      },
      "72":
         {
          "moveCost":"string",
          "name":"string"
         },
+      "720": {
+        "name": "string"
+      },
+      "721": {
+        "name": "string"
+      },
+      "722": {
+        "name": "string"
+      },
+      "723": {
+        "name": "string"
+      },
+      "724": {
+        "name": "string"
+      },
+      "725": {
+        "name": "string"
+      },
+      "726": {
+        "name": "string"
+      },
+      "727": {
+        "name": "string"
+      },
+      "728": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "729": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "730": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "731": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "732": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "733": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "734": {
+        "holdShip": "bool",
+        "name": "string"
+      },
+      "735": {
+        "name": "string"
+      },
+      "736": {
+        "name": "string"
+      },
+      "737": {
+        "name": "string"
+      },
+      "738": {
+        "name": "string"
+      },
+      "739": {
+        "name": "string"
+      },
+      "740": {
+        "name": "string"
+      },
+      "741": {
+        "name": "string"
+      },
+      "742": {
+        "name": "string"
+      },
+      "743": {
+        "name": "string"
+      },
      "75":
         {
          "name":"string"
         },
+      "750": {
+        "name": "string"
+      },
+      "751": {
+        "name": "string"
+      },
+      "753": {
+        "name": "string"
+      },
+      "754": {
+        "name": "string"
+      },
+      "755": {
+        "name": "string"
+      },
+      "756": {
+        "name": "string"
+      },
+      "757": {
+        "name": "string"
+      },
+      "758": {
+        "name": "string"
+      },
      "76":
         {
          "name":"string"
