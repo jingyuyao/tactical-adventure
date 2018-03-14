@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.model.state;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import com.jingyuyao.tactical.TestHelpers;
@@ -14,6 +15,7 @@ import com.jingyuyao.tactical.model.script.Script;
 import com.jingyuyao.tactical.model.script.ScriptEvent;
 import com.jingyuyao.tactical.model.script.ShipDestroyed;
 import com.jingyuyao.tactical.model.ship.Ship;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
 import java.util.Arrays;
@@ -70,6 +72,8 @@ public class BattleSequenceTest {
     when(battle.getDeadCells()).thenReturn(Arrays.asList(cell, cell2));
     when(world.removeShip(cell)).thenReturn(ship);
     when(world.removeShip(cell2)).thenReturn(ship2);
+    when(ship.inGroup(ShipGroup.PLAYER)).thenReturn(false);
+    when(ship2.inGroup(ShipGroup.PLAYER)).thenReturn(true);
     when(scriptRunner.triggerScripts(any(ScriptEvent.class), eq(script)))
         .thenReturn(Promise.immediate());
 
@@ -80,18 +84,18 @@ public class BattleSequenceTest {
     assertThat(argumentCaptor.getValue()).isInstanceOf(StartBattle.class);
     StartBattle startBattle = (StartBattle) argumentCaptor.getValue();
     startBattle.start();
+    // Battle should always be executed before any dead ship logic is kicked in.
     inOrder.verify(battle).execute();
     inOrder.verify(world).removeShip(cell);
-    inOrder.verify(scriptRunner).triggerScripts(scriptEventCaptor.capture(), eq(script));
-    ShipDestroyed event1 =
-        TestHelpers.assertClass(scriptEventCaptor.getValue(), ShipDestroyed.class);
-    assertThat(event1.getDestroyed()).isSameAs(ship);
-    assertThat(event1.getWorld()).isSameAs(world);
     inOrder.verify(world).removeShip(cell2);
-    inOrder.verify(scriptRunner).triggerScripts(scriptEventCaptor.capture(), eq(script));
+    inOrder.verify(scriptRunner, times(2)).triggerScripts(scriptEventCaptor.capture(), eq(script));
+    ShipDestroyed event1 =
+        TestHelpers.assertClass(scriptEventCaptor.getAllValues().get(0), ShipDestroyed.class);
+    assertThat(event1.getDestroyed()).isSameAs(ship2);
+    assertThat(event1.getWorld()).isSameAs(world);
     ShipDestroyed event2 =
-        TestHelpers.assertClass(scriptEventCaptor.getValue(), ShipDestroyed.class);
-    assertThat(event2.getDestroyed()).isSameAs(ship2);
+        TestHelpers.assertClass(scriptEventCaptor.getAllValues().get(1), ShipDestroyed.class);
+    assertThat(event2.getDestroyed()).isSameAs(ship);
     assertThat(event2.getWorld()).isSameAs(world);
     inOrder.verify(runnable).run();
   }

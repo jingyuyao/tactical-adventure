@@ -27,9 +27,6 @@ class ShipOverviewPanel extends ButtonPanel<Ship> {
 
   @Override
   Optional<String> createText(Ship ship) {
-    if (ship.getHp() <= 0) {
-      return Optional.absent();
-    }
     StringBuilder builder = new StringBuilder();
 
     String name = textLoader.get(ship.getName());
