@@ -55,7 +55,9 @@ public class Battle {
   private void addDeadShip(Cell cell) {
     for (Ship ship : cell.ship().asSet()) {
       if (ship.getHp() == 0) {
-        deadCells.add(cell);
+        if (!deadCells.contains(cell)) {
+          deadCells.add(cell);
+        }
       }
     }
   }

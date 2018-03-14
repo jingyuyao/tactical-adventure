@@ -9,6 +9,7 @@ import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.world.Cell;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,5 +82,20 @@ public class BattleTest {
     verify(ship1).useEquippedArmors();
     verify(ship2).useEquippedArmors();
     assertThat(battle.getDeadCells()).containsExactly(cell1, attackerCell);
+  }
+
+  @Test
+  public void execute_attacker_part_of_target_dead() {
+    when(attackerCell.ship()).thenReturn(Optional.of(attacker));
+    when(attacker.getHp()).thenReturn(0);
+    when(target.getTargetCells())
+        .thenReturn(new HashSet<>(Collections.singletonList(attackerCell)));
+
+    battle.execute();
+
+    verify(weapon).apply(attacker, target);
+    verify(attacker).useWeapon(weapon);
+    verify(attacker).useEquippedArmors();
+    assertThat(battle.getDeadCells()).containsExactly(attackerCell);
   }
 }
