@@ -73,7 +73,8 @@ public class WeaponTest {
 
     verify(ship1).damageBy(7);
     verify(ship2).damageBy(0);
-    verify(attacker, times(2)).damageBy(5);
+    verify(attacker).damageBy(3);
+    verify(attacker).damageBy(0);
     verify(attacker, times(2)).healBy(0);
   }
 }
