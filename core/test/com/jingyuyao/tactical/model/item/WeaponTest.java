@@ -1,7 +1,8 @@
 package com.jingyuyao.tactical.model.item;
 
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Optional;
@@ -48,10 +49,12 @@ public class WeaponTest {
     weapon = new Weapon("name", 5, 10, 0, 0);
     weapon.apply(attacker, target);
 
+    verify(ship1).getDefense();
+    verify(ship2).getDefense();
     verify(ship1).damageBy(7);
-    verify(ship2).damageBy(0);
-    verify(attacker, times(2)).damageBy(0);
-    verify(attacker, times(2)).healBy(0);
+    verifyNoMoreInteractions(ship1);
+    verifyNoMoreInteractions(ship2);
+    verifyZeroInteractions(attacker);
   }
 
   @Test
@@ -59,11 +62,13 @@ public class WeaponTest {
     weapon = new Weapon("name", 5, 10, 0.5f, 0);
     weapon.apply(attacker, target);
 
+    verify(ship1).getDefense();
+    verify(ship2).getDefense();
     verify(ship1).damageBy(7);
-    verify(ship2).damageBy(0);
-    verify(attacker, times(2)).damageBy(0);
     verify(attacker).healBy(3);
-    verify(attacker).healBy(0);
+    verifyNoMoreInteractions(ship1);
+    verifyNoMoreInteractions(ship2);
+    verifyNoMoreInteractions(attacker);
   }
 
   @Test
@@ -71,10 +76,12 @@ public class WeaponTest {
     weapon = new Weapon("name", 5, 10, 0, 0.5f);
     weapon.apply(attacker, target);
 
+    verify(ship1).getDefense();
+    verify(ship2).getDefense();
     verify(ship1).damageBy(7);
-    verify(ship2).damageBy(0);
-    verify(attacker).damageBy(3);
-    verify(attacker).damageBy(0);
-    verify(attacker, times(2)).healBy(0);
+    verify(attacker).damageBy(5);
+    verifyNoMoreInteractions(ship1);
+    verifyNoMoreInteractions(ship2);
+    verifyNoMoreInteractions(attacker);
   }
 }

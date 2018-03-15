@@ -47,10 +47,11 @@ public class Weapon extends Item {
    */
   public void apply(Ship attacker, Target target) {
     for (Cell cell : target.getTargetCells()) {
-      int damage = getDamage(cell);
-      damageCell(cell, damage);
-      postDamage(attacker, cell, damage);
+      int cellDamage = getDamage(cell);
+      damageCell(cell, cellDamage);
+      postCellDamageEffects(attacker, cellDamage);
     }
+    postTargetDamageEffects(attacker);
   }
 
   /**
@@ -60,24 +61,30 @@ public class Weapon extends Item {
     return Collections.emptyList();
   }
 
-  private void damageCell(Cell target, int damage) {
-    for (Ship defender : target.ship().asSet()) {
-      defender.damageBy(damage);
-    }
-  }
-
-  private void postDamage(Ship attacker, Cell target, int damage) {
-    // can't life steal if there is nobody to steal it from
-    if (target.ship().isPresent()) {
-      attacker.healBy((int) (lifeStealRate * damage));
-    }
-    attacker.damageBy((int) (recoilRate * damage));
-  }
-
   private int getDamage(Cell target) {
     if (target.ship().isPresent()) {
       return Math.max(attackPower - target.ship().get().getDefense(), 0);
     }
     return 0;
+  }
+
+  private void damageCell(Cell target, int cellDamage) {
+    for (Ship defender : target.ship().asSet()) {
+      if (cellDamage > 0) {
+        defender.damageBy(cellDamage);
+      }
+    }
+  }
+
+  private void postCellDamageEffects(Ship attacker, int cellDamage) {
+    if (lifeStealRate > 0 && cellDamage > 0) {
+      attacker.healBy((int) (lifeStealRate * cellDamage));
+    }
+  }
+
+  private void postTargetDamageEffects(Ship attacker) {
+    if (recoilRate > 0) {
+      attacker.damageBy((int) (recoilRate * attackPower));
+    }
   }
 }
