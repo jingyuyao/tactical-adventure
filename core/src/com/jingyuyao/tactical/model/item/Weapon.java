@@ -47,15 +47,8 @@ public class Weapon extends Item {
 
   @Override
   public StringKey getDescription() {
-    if (leechRate > 0) {
-      return ModelBundle.ITEM_DESCRIPTION
-          .get("lifeStealWeapon", attackPower, leechRate * 100);
-    }
-    if (recoilRate > 0) {
-      return ModelBundle.ITEM_DESCRIPTION
-          .get("recoilWeapon", attackPower, recoilRate * 100);
-    }
-    return ModelBundle.ITEM_DESCRIPTION.get("normalWeapon", attackPower);
+    return ModelBundle.ITEM_DESCRIPTION
+        .get("weapon", attackPower, leechRate, recoilRate, piercingRate);
   }
 
   /**
