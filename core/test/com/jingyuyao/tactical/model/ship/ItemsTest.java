@@ -6,9 +6,8 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
 import com.jingyuyao.tactical.model.item.Armor;
-import com.jingyuyao.tactical.model.item.Bulkheads;
 import com.jingyuyao.tactical.model.item.Consumable;
-import com.jingyuyao.tactical.model.item.Hull;
+import com.jingyuyao.tactical.model.item.BlastArmor;
 import com.jingyuyao.tactical.model.item.Weapon;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +23,11 @@ public class ItemsTest {
   @Mock
   private Weapon weapon1;
   @Mock
-  private Hull hull1;
+  private Armor armor;
   @Mock
-  private Hull hull2;
+  private BlastArmor blastArmor1;
   @Mock
-  private Bulkheads bulkheads;
+  private BlastArmor blastArmor2;
 
   private Items items;
 
@@ -37,11 +36,11 @@ public class ItemsTest {
     items = new Items(
         Lists.newArrayList(consumable1),
         Lists.newArrayList(weapon1),
-        Lists.<Armor>newArrayList(hull1),
-        Lists.<Armor>newArrayList(bulkheads, hull2)
+        Lists.<Armor>newArrayList(blastArmor1),
+        Lists.<Armor>newArrayList(armor, blastArmor2)
     );
-    assertThat(hull1.getClass()).isAssignableTo(hull2.getClass());
-    assertThat(hull2.getClass()).isAssignableTo(hull1.getClass());
+    assertThat(blastArmor1.getClass()).isAssignableTo(blastArmor2.getClass());
+    assertThat(blastArmor2.getClass()).isAssignableTo(blastArmor1.getClass());
   }
 
   @Test
@@ -56,17 +55,17 @@ public class ItemsTest {
 
   @Test
   public void equipped_armors() {
-    assertThat(items.getEquippedArmors()).containsExactly(hull1);
+    assertThat(items.getEquippedArmors()).containsExactly(blastArmor1);
   }
 
   @Test
   public void stashed_armors() {
-    assertThat(items.getStashedArmors()).containsExactly(bulkheads, hull2);
+    assertThat(items.getStashedArmors()).containsExactly(armor, blastArmor2);
   }
 
   @Test
   public void get_defense() {
-    when(hull1.getDefense()).thenReturn(123);
+    when(blastArmor1.getDefense()).thenReturn(123);
 
     assertThat(items.getDefense()).isEqualTo(123);
   }
@@ -113,45 +112,46 @@ public class ItemsTest {
 
   @Test
   public void use_armors() {
-    when(hull1.getUsageLeft()).thenReturn(1);
+    when(blastArmor1.getUsageLeft()).thenReturn(1);
 
     items.useEquippedArmors();
 
-    verify(hull1).useOnce();
-    assertThat(items.getEquippedArmors()).containsExactly(hull1);
+    verify(blastArmor1).useOnce();
+    assertThat(items.getEquippedArmors()).containsExactly(blastArmor1);
   }
 
   @Test
   public void use_armors_broken() {
-    when(hull1.getUsageLeft()).thenReturn(0);
+    when(blastArmor1.getUsageLeft()).thenReturn(0);
 
     items.useEquippedArmors();
 
-    verify(hull1).useOnce();
+    verify(blastArmor1).useOnce();
     assertThat(items.getEquippedArmors()).isEmpty();
   }
 
   @Test
   public void equip_armor_already_equipped_class() {
-    items.equipArmor(hull2);
+    items.equipArmor(blastArmor2);
 
-    assertThat(items.getEquippedArmors()).containsExactly(hull2);
-    assertThat(items.getStashedArmors()).containsExactly(bulkheads, hull1);
+    assertThat(items.getEquippedArmors()).containsExactly(blastArmor2);
+    assertThat(items.getStashedArmors()).containsExactly(armor, blastArmor1);
   }
 
   @Test
   public void equip_armor_no_already_equipped_class() {
-    items.equipArmor(bulkheads);
+    items.equipArmor(armor);
 
-    assertThat(items.getEquippedArmors()).containsExactly(hull1, bulkheads);
-    assertThat(items.getStashedArmors()).containsExactly(hull2);
+    assertThat(items.getEquippedArmors()).containsExactly(blastArmor1, armor);
+    assertThat(items.getStashedArmors()).containsExactly(blastArmor2);
   }
 
   @Test
   public void unequip_armor() {
-    items.unequipArmor(hull1);
+    items.unequipArmor(blastArmor1);
 
     assertThat(items.getEquippedArmors()).isEmpty();
-    assertThat(items.getStashedArmors()).containsExactly(hull1, hull2, bulkheads);
+    assertThat(items.getStashedArmors()).containsExactly(blastArmor1, blastArmor2,
+        armor);
   }
 }

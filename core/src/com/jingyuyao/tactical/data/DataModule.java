@@ -9,12 +9,11 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.jingyuyao.tactical.model.item.Armor;
+import com.jingyuyao.tactical.model.item.BlastArmor;
 import com.jingyuyao.tactical.model.item.Bomb;
-import com.jingyuyao.tactical.model.item.Bulkheads;
 import com.jingyuyao.tactical.model.item.Consumable;
 import com.jingyuyao.tactical.model.item.DirectionalWeapon;
 import com.jingyuyao.tactical.model.item.Heal;
-import com.jingyuyao.tactical.model.item.Hull;
 import com.jingyuyao.tactical.model.item.Weapon;
 import com.jingyuyao.tactical.model.script.Condition;
 import com.jingyuyao.tactical.model.script.OnAllDeath;
@@ -84,8 +83,8 @@ public class DataModule extends AbstractModule {
     builder.registerTypeAdapterFactory(
         RuntimeTypeAdapterFactory
             .of(Armor.class)
-            .registerSubtype(Hull.class)
-            .registerSubtype(Bulkheads.class)
+            .registerSubtype(Armor.class)
+            .registerSubtype(BlastArmor.class)
     );
 
     return builder.create();
