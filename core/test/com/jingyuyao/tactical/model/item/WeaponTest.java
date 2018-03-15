@@ -36,7 +36,7 @@ public class WeaponTest {
 
   @Before
   public void setUp() {
-    when(target.getTargetCells()).thenReturn(new HashSet<Cell>(Arrays.asList(cell1, cell2)));
+    when(target.getTargetCells()).thenReturn(new HashSet<>(Arrays.asList(cell1, cell2)));
     when(cell1.ship()).thenReturn(Optional.of(ship1));
     when(cell2.ship()).thenReturn(Optional.of(ship2));
     when(ship1.getDefense()).thenReturn(3);

@@ -43,43 +43,30 @@ public class Weapon extends Item {
   }
 
   /**
-   * Apply pre-damage, damage, and post-damage effects to each targeted cell.
+   * Apply this weapon's effects to the attacker and the target.
    */
   public void apply(Ship attacker, Target target) {
     for (Cell cell : target.getTargetCells()) {
-      int damage = getDamage(attacker, cell);
-      preDamage(attacker, cell, damage);
-      damage(attacker, cell, damage);
+      int damage = getDamage(cell);
+      damageCell(cell, damage);
       postDamage(attacker, cell, damage);
     }
   }
 
+  /**
+   * Override me.
+   */
   public List<Target> createTargets(World world, Cell from) {
     return Collections.emptyList();
   }
 
-  /**
-   * Default implementation damage the ship in the target cell if there any.
-   * Override me to change damage application.
-   */
-  void damage(Ship attacker, Cell target, int damage) {
+  private void damageCell(Cell target, int damage) {
     for (Ship defender : target.ship().asSet()) {
       defender.damageBy(damage);
     }
   }
 
-  /**
-   * Default implementation does nothing.
-   * Override me to add pre-damage effects.
-   */
-  void preDamage(Ship attacker, Cell target, int damage) {
-  }
-
-  /**
-   * Default implementation does nothing.
-   * Override me to add post-damage effects.
-   */
-  void postDamage(Ship attacker, Cell target, int damage) {
+  private void postDamage(Ship attacker, Cell target, int damage) {
     // can't life steal if there is nobody to steal it from
     if (target.ship().isPresent()) {
       attacker.healBy((int) (lifeStealRate * damage));
@@ -87,12 +74,7 @@ public class Weapon extends Item {
     attacker.damageBy((int) (recoilRate * damage));
   }
 
-  /**
-   * Get the damage attack to inflict upon target cell for this weapon.
-   * Default implementation reduces attack power by the ship's defense if there are any.
-   * Override me to change damage calculation.
-   */
-  int getDamage(Ship attacker, Cell target) {
+  private int getDamage(Cell target) {
     if (target.ship().isPresent()) {
       return Math.max(attackPower - target.ship().get().getDefense(), 0);
     }
