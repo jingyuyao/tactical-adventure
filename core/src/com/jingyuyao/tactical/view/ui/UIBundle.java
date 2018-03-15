@@ -16,15 +16,15 @@ class UIBundle {
   static final StringKey ITEM_ACTION_HEADER = BUNDLE.get("itemActionHeader");
   static final StringKey EQUIP_BTN = BUNDLE.get("equipBtn");
   static final StringKey UNEQUIP_BTN = BUNDLE.get("unequipBtn");
-  static final StringKey OVERVIEW_PANEL = BUNDLE.get("shipOverviewPanel");
-  static final StringKey OVERVIEW_PANEL_PILOT = BUNDLE.get("shipOverviewPilot");
+  static final StringKey SHIP_OVERVIEW = BUNDLE.get("shipOverview");
+  static final StringKey SHIP_PILOT = BUNDLE.get("shipPilot");
   static final StringKey SHIP_NAME_HEADER = BUNDLE.get("shipNameHeader");
   static final StringKey SHIP_HP_HEADER = BUNDLE.get("shipHPHeader");
   static final StringKey SHIP_MOVE_HEADER = BUNDLE.get("shipMoveHeader");
-  static final StringKey ITEM_PANEL = BUNDLE.get("itemPanel");
-  static final StringKey TARGET_PANEL_HEADER = BUNDLE.get("targetPanelHeader");
-  static final StringKey TARGET_PANEL_ITEM = BUNDLE.get("targetPanelItem");
-  static final StringKey TERRAIN_OVERVIEW_PANEL = BUNDLE.get("terrainOverviewPanel");
+  static final StringKey ITEM_OVERVIEW = BUNDLE.get("itemOverview");
+  static final StringKey TARGETS = BUNDLE.get("targets");
+  static final StringKey TERRAIN_OVERVIEW = BUNDLE.get("terrainOverview");
+  static final StringKey IMPASSABLE = BUNDLE.get("impassable");
   static final StringKey TURN = BUNDLE.get("turn");
 
 }

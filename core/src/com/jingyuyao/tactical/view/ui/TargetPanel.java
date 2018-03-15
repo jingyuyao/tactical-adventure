@@ -28,12 +28,13 @@ class TargetPanel extends TextPanel<Battling> {
 
   @Override
   Optional<String> createText(Battling battling) {
-    StringBuilder builder = new StringBuilder(textLoader.get(UIBundle.TARGET_PANEL_HEADER));
+    StringBuilder builder = new StringBuilder(textLoader.get(UIBundle.TARGETS));
     for (Cell cell : battling.getBattle().getTarget().getTargetCells()) {
       for (Ship ship : cell.ship().asSet()) {
         String name = textLoader.get(ship.getName());
         int hp = ship.getHp();
-        StringKey stringKey = UIBundle.TARGET_PANEL_ITEM.format(name, hp);
+        StringKey stringKey = UIBundle.SHIP_OVERVIEW.format(name, hp);
+        builder.append("\n");
         builder.append(textLoader.get(stringKey));
       }
     }

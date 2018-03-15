@@ -31,12 +31,13 @@ class ShipOverviewPanel extends ButtonPanel<Ship> {
 
     String name = textLoader.get(ship.getName());
     int hp = ship.getHp();
-    StringKey panelKey = UIBundle.OVERVIEW_PANEL.format(name, hp);
+    StringKey panelKey = UIBundle.SHIP_OVERVIEW.format(name, hp);
     builder.append(textLoader.get(panelKey));
 
     for (Person person : ship.getCrew()) {
       if (Pilot.class.isInstance(person)) {
-        StringKey pilotKey = UIBundle.OVERVIEW_PANEL_PILOT.format(textLoader.get(person.getName()));
+        StringKey pilotKey = UIBundle.SHIP_PILOT.format(textLoader.get(person.getName()));
+        builder.append("\n");
         builder.append(textLoader.get(pilotKey));
       }
     }

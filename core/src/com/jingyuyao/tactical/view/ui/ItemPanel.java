@@ -33,7 +33,7 @@ class ItemPanel extends TextPanel<Item> {
     String name = textLoader.get(item.getName());
     int usage = item.getUsageLeft();
     String description = textLoader.get(item.getDescription());
-    StringKey stringKey = UIBundle.ITEM_PANEL.format(name, usage, description);
+    StringKey stringKey = UIBundle.ITEM_OVERVIEW.format(name, usage, description);
     return Optional.of(textLoader.get(stringKey));
   }
 
