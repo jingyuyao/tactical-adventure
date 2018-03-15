@@ -6,126 +6,112 @@ filter: Nearest,Nearest
 repeat: none
 animation/model/weapon/bomb
   rotate: false
-  xy: 2, 6
+  xy: 2, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 animation/model/weapon/bomb
   rotate: false
-  xy: 100, 6
+  xy: 100, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 animation/model/weapon/bomb
   rotate: false
-  xy: 198, 6
+  xy: 198, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
 animation/model/weapon/bomb
   rotate: false
-  xy: 296, 6
+  xy: 296, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 animation/model/weapon/bomb
   rotate: false
-  xy: 394, 6
+  xy: 394, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 4
 animation/model/weapon/bomb
   rotate: false
-  xy: 492, 6
+  xy: 492, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 5
 animation/model/weapon/lightning
   rotate: false
-  xy: 590, 70
+  xy: 590, 66
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 0
 animation/model/weapon/lightning
   rotate: false
-  xy: 590, 36
+  xy: 590, 66
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 1
 animation/model/weapon/lightning
   rotate: false
-  xy: 688, 70
+  xy: 590, 32
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 2
 animation/model/weapon/lightning
   rotate: false
-  xy: 688, 36
+  xy: 688, 66
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 3
 animation/model/weapon/lightning
   rotate: false
-  xy: 786, 70
+  xy: 688, 32
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: 4
-animation/model/weapon/lightning
-  rotate: false
-  xy: 786, 36
-  size: 96, 32
-  orig: 96, 32
-  offset: 0, 0
-  index: 5
-animation/model/weapon/lightning
-  rotate: false
-  xy: 884, 70
-  size: 96, 32
-  orig: 96, 32
-  offset: 0, 0
-  index: 6
 animation/model/weapon/shotgun
   rotate: false
-  xy: 884, 36
+  xy: 786, 66
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 animation/model/weapon/shotgun
   rotate: false
-  xy: 982, 70
+  xy: 786, 32
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 animation/model/weapon/shotgun
   rotate: false
-  xy: 918, 36
+  xy: 820, 66
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 animation/model/weapon/shotgun
   rotate: false
-  xy: 952, 36
+  xy: 820, 32
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 animation/model/weapon/shotgun
   rotate: false
-  xy: 590, 2
+  xy: 854, 66
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
