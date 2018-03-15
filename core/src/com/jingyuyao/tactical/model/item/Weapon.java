@@ -15,25 +15,41 @@ import java.util.List;
  */
 public class Weapon extends Item {
 
+  /**
+   * Base damage of the weapon.
+   */
   private int attackPower;
-  private float lifeStealRate;
+  /**
+   * How much the weapon heals the user based on damage dealt.
+   */
+  private float leechRate;
+  /**
+   * How much the weapon hurts the user based on attack power.
+   */
   private float recoilRate;
+  /**
+   * How much of the target ship's armor to ignore.
+   */
+  private float piercingRate;
 
   Weapon() {
   }
 
-  Weapon(String name, int usageLeft, int attackPower, float lifeStealRate, float recoilRate) {
+  Weapon(
+      String name, int usageLeft, int attackPower, float leechRate, float recoilRate,
+      float piercingRate) {
     super(name, usageLeft);
     this.attackPower = attackPower;
-    this.lifeStealRate = lifeStealRate;
+    this.leechRate = leechRate;
     this.recoilRate = recoilRate;
+    this.piercingRate = piercingRate;
   }
 
   @Override
   public StringKey getDescription() {
-    if (lifeStealRate > 0) {
+    if (leechRate > 0) {
       return ModelBundle.ITEM_DESCRIPTION
-          .get("lifeStealWeapon", attackPower, lifeStealRate * 100);
+          .get("lifeStealWeapon", attackPower, leechRate * 100);
     }
     if (recoilRate > 0) {
       return ModelBundle.ITEM_DESCRIPTION
@@ -63,7 +79,9 @@ public class Weapon extends Item {
 
   private int getDamage(Cell target) {
     if (target.ship().isPresent()) {
-      return Math.max(attackPower - target.ship().get().getDefense(), 0);
+      int targetDefense = target.ship().get().getDefense();
+      int piercedDefense = (int) (targetDefense * (1.0f - piercingRate));
+      return Math.max(attackPower - piercedDefense, 0);
     }
     return 0;
   }
@@ -77,8 +95,8 @@ public class Weapon extends Item {
   }
 
   private void postCellDamageEffects(Ship attacker, int cellDamage) {
-    if (lifeStealRate > 0 && cellDamage > 0) {
-      attacker.healBy((int) (lifeStealRate * cellDamage));
+    if (leechRate > 0 && cellDamage > 0) {
+      attacker.healBy((int) (leechRate * cellDamage));
     }
   }
 

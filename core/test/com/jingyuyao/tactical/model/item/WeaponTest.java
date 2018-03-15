@@ -46,7 +46,7 @@ public class WeaponTest {
 
   @Test
   public void apply_basic() {
-    weapon = new Weapon("name", 5, 10, 0, 0);
+    weapon = new Weapon("name", 5, 10, 0, 0, 0);
     weapon.apply(attacker, target);
 
     verify(ship1).getDefense();
@@ -58,8 +58,8 @@ public class WeaponTest {
   }
 
   @Test
-  public void apply_life_steal() {
-    weapon = new Weapon("name", 5, 10, 0.5f, 0);
+  public void apply_leech() {
+    weapon = new Weapon("name", 5, 10, 0.5f, 0, 0);
     weapon.apply(attacker, target);
 
     verify(ship1).getDefense();
@@ -73,13 +73,26 @@ public class WeaponTest {
 
   @Test
   public void apply_recoil() {
-    weapon = new Weapon("name", 5, 10, 0, 0.5f);
+    weapon = new Weapon("name", 5, 10, 0, 0.5f, 0);
     weapon.apply(attacker, target);
 
     verify(ship1).getDefense();
     verify(ship2).getDefense();
     verify(ship1).damageBy(7);
     verify(attacker).damageBy(5);
+    verifyNoMoreInteractions(ship1);
+    verifyNoMoreInteractions(ship2);
+    verifyNoMoreInteractions(attacker);
+  }
+
+  @Test
+  public void apply_piercing() {
+    weapon = new Weapon("name", 5, 10, 0, 0, 0.5f);
+    weapon.apply(attacker, target);
+
+    verify(ship1).getDefense();
+    verify(ship2).getDefense();
+    verify(ship1).damageBy(9);
     verifyNoMoreInteractions(ship1);
     verifyNoMoreInteractions(ship2);
     verifyNoMoreInteractions(attacker);
