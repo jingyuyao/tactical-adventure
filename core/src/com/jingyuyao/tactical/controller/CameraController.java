@@ -2,7 +2,7 @@ package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -10,16 +10,16 @@ import javax.inject.Singleton;
 public class CameraController extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
-  private final WorldView worldView;
+  private final WorldCamera worldCamera;
   private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
   private int lastPointer = -1;
   private boolean dragged = false;
 
   @Inject
-  CameraController(ControllerConfig controllerConfig, WorldView worldView) {
+  CameraController(ControllerConfig controllerConfig, WorldCamera worldCamera) {
     this.controllerConfig = controllerConfig;
-    this.worldView = worldView;
+    this.worldCamera = worldCamera;
   }
 
   @Override
@@ -34,15 +34,15 @@ public class CameraController extends InputAdapter {
   @Override
   public boolean touchDragged(int screenX, int screenY, int pointer) {
     if (lastPointer == pointer) {
-      float viewportWorldWidth = worldView.getViewportWorldWidth();
-      float viewportWorldHeight = worldView.getViewportWorldHeight();
-      float horizontalScale = viewportWorldWidth / worldView.getViewportScreenWidth();
-      float verticalScale = viewportWorldHeight / worldView.getViewportScreenHeight();
+      float viewportWorldWidth = worldCamera.getViewportWorldWidth();
+      float viewportWorldHeight = worldCamera.getViewportWorldHeight();
+      float horizontalScale = viewportWorldWidth / worldCamera.getViewportScreenWidth();
+      float verticalScale = viewportWorldHeight / worldCamera.getViewportScreenHeight();
       float deltaWorldX = (screenX - lastTouch.x) * horizontalScale;
       float deltaWorldY = (screenY - lastTouch.y) * verticalScale;
 
       // world is y-up, screen is y-down
-      worldView.moveCameraBy(-deltaWorldX, deltaWorldY);
+      worldCamera.moveCameraBy(-deltaWorldX, deltaWorldY);
       lastTouch.set(screenX, screenY);
       calcDragged();
     }

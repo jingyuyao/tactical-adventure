@@ -6,7 +6,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ public class ControllerModuleTest {
   private WorldState worldState;
   @Bind
   @Mock
-  private WorldView worldView;
+  private WorldCamera worldCamera;
 
   @Inject
   private WorldController worldController;

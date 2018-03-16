@@ -3,7 +3,7 @@ package com.jingyuyao.tactical.controller;
 import com.google.inject.AbstractModule;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 
 public class ControllerModule extends AbstractModule {
 
@@ -11,6 +11,6 @@ public class ControllerModule extends AbstractModule {
   protected void configure() {
     requireBinding(World.class);
     requireBinding(WorldState.class);
-    requireBinding(WorldView.class);
+    requireBinding(WorldCamera.class);
   }
 }

@@ -6,7 +6,7 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 public class WorldController extends InputAdapter {
 
   private final CameraController cameraController;
-  private final WorldView worldView;
+  private final WorldCamera worldCamera;
   private final World world;
   private final WorldState worldState;
   private final Vector3 vector3 = new Vector3();
@@ -22,10 +22,10 @@ public class WorldController extends InputAdapter {
   @Inject
   WorldController(
       CameraController cameraController,
-      WorldView worldView,
+      WorldCamera worldCamera,
       World world,
       WorldState worldState) {
-    this.worldView = worldView;
+    this.worldCamera = worldCamera;
     this.cameraController = cameraController;
     this.world = world;
     this.worldState = worldState;
@@ -40,7 +40,7 @@ public class WorldController extends InputAdapter {
   public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     if (!cameraController.isDragged()) {
       vector3.set(screenX, screenY, 0);
-      worldView.unproject(vector3);
+      worldCamera.unproject(vector3);
 
       Optional<Cell> cellOptional = world.cell((int) vector3.x, (int) vector3.y);
       if (cellOptional.isPresent()) {

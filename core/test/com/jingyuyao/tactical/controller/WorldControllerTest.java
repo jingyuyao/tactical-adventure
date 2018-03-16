@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 import com.jingyuyao.tactical.model.state.WorldState;
 import com.jingyuyao.tactical.model.world.Cell;
 import com.jingyuyao.tactical.model.world.World;
-import com.jingyuyao.tactical.view.world.WorldView;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class WorldControllerTest {
   @Mock
   private CameraController cameraController;
   @Mock
-  private WorldView worldView;
+  private WorldCamera worldCamera;
   @Mock
   private World world;
   @Mock
@@ -39,7 +39,7 @@ public class WorldControllerTest {
 
   @Before
   public void setUp() {
-    worldController = new WorldController(cameraController, worldView, world, worldState);
+    worldController = new WorldController(cameraController, worldCamera, world, worldState);
   }
 
   @Test
@@ -64,7 +64,7 @@ public class WorldControllerTest {
 
     worldController.touchUp(1, 2, 0, 0);
 
-    verify(worldView).unproject(vector3Captor.capture());
+    verify(worldCamera).unproject(vector3Captor.capture());
     Vector3 vector3 = vector3Captor.getValue();
     assertThat(vector3.x).isEqualTo(1.0f);
     assertThat(vector3.y).isEqualTo(2.0f);
