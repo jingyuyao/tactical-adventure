@@ -4,10 +4,13 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Coordinate;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Moving;
 import com.jingyuyao.tactical.view.world.component.Position;
+import com.jingyuyao.tactical.view.world.component.ShipComponent;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,16 +19,22 @@ import javax.inject.Singleton;
 class MovingSystem extends IteratingSystem {
 
   private final WorldConfig worldConfig;
+  private final WorldCamera worldCamera;
+  private final ComponentMapper<ShipComponent> shipComponentMapper;
   private final ComponentMapper<Position> positionMapper;
   private final ComponentMapper<Moving> movingMapper;
 
   @Inject
   MovingSystem(
       WorldConfig worldConfig,
+      WorldCamera worldCamera,
+      ComponentMapper<ShipComponent> shipComponentMapper,
       ComponentMapper<Position> positionMapper,
       ComponentMapper<Moving> movingMapper) {
     super(Family.all(Position.class, Moving.class).get(), SystemPriority.MOVING);
     this.worldConfig = worldConfig;
+    this.worldCamera = worldCamera;
+    this.shipComponentMapper = shipComponentMapper;
     this.positionMapper = positionMapper;
     this.movingMapper = movingMapper;
   }
@@ -39,6 +48,14 @@ class MovingSystem extends IteratingSystem {
     Coordinate currentTarget = path.get(currentIndex);
 
     moveTowards(position, currentTarget, deltaTime);
+
+    // Move camera along if the entity contains a non-player ship.
+    if (shipComponentMapper.has(entity)) {
+      ShipComponent shipComponent = shipComponentMapper.get(entity);
+      if (!shipComponent.getShip().inGroup(ShipGroup.PLAYER)) {
+        worldCamera.setCameraPosition(position.getX(), position.getY());
+      }
+    }
 
     if (samePosition(position, currentTarget)) {
       int nextIndex = currentIndex + 1;

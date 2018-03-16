@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
@@ -21,6 +22,7 @@ public class SystemModule extends AbstractModule {
   protected void configure() {
     requireBinding(Batch.class);
     requireBinding(WorldConfig.class);
+    requireBinding(WorldCamera.class);
     requireBinding(Animations.class);
     requireBinding(Markers.class);
     requireBinding(TileSets.class);

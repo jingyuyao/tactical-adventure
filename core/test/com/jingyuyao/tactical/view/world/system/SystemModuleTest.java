@@ -6,6 +6,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.view.world.WorldCamera;
 import com.jingyuyao.tactical.view.world.WorldConfig;
 import com.jingyuyao.tactical.view.world.component.Frame;
 import com.jingyuyao.tactical.view.world.component.LoopAnimation;
@@ -30,6 +31,9 @@ public class SystemModuleTest {
   @Bind
   @Mock
   private WorldConfig worldConfig;
+  @Bind
+  @Mock
+  private WorldCamera worldCamera;
   @Bind
   @Mock
   private Animations animations;
