@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.WorldLoaded;
+import com.jingyuyao.tactical.model.event.WorldReset;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
@@ -28,6 +29,8 @@ public class WorldView {
   private final ExtendViewport viewport;
   private final PooledEngine engine;
   private final Random random = new Random();
+  private int worldWidth = 0;
+  private int worldHeight = 0;
 
   @Inject
   WorldView(
@@ -79,25 +82,33 @@ public class WorldView {
   }
 
   /**
-   * Returns the world position for the camera. Do not modify the return value.
-   * Use {@link #setCameraPosition(float, float)} to change camera position.
+   * Set the camera world position to (x,y) or the closest point within camera's bounds.
    */
-  public Vector3 getCameraPosition() {
-    return viewport.getCamera().position;
+  public void setCameraPosition(float x, float y) {
+    float lowerXBound = getViewportWorldWidth() / 2f;
+    float upperXBound = worldWidth - lowerXBound;
+    float lowerYBound = getViewportWorldHeight() / 2f;
+    float upperYBound = worldHeight - lowerYBound;
+
+    Vector3 position = viewport.getCamera().position;
+    position.x = bound(lowerXBound, x, upperXBound);
+    position.y = bound(lowerYBound, y, upperYBound);
   }
 
   /**
-   * Set the camera world position to (x,y).
+   * Move the camera world position by (deltaX,deltaY). Camera will stay in bounds.
    */
-  public void setCameraPosition(float x, float y) {
+  public void moveCameraBy(float deltaX, float deltaY) {
     Vector3 position = viewport.getCamera().position;
-    position.x = x;
-    position.y = y;
+    setCameraPosition(position.x + deltaX, position.y + deltaY);
   }
 
   @Subscribe
   void worldLoaded(WorldLoaded worldLoaded) {
     World world = worldLoaded.getWorld();
+    worldWidth = world.getMaxWidth();
+    worldHeight = world.getMaxHeight();
+
     List<Cell> playerCells = new ArrayList<>();
     for (Cell cell : world.getWorldCells()) {
       for (Ship ship : cell.ship().asSet()) {
@@ -112,18 +123,16 @@ public class WorldView {
       setCameraPosition(world.getMaxWidth() / 2f, world.getMaxHeight() / 2f);
     } else {
       Cell cell = playerCells.get(random.nextInt(playerCells.size()));
-
       float unboundedPlayerX = cell.getCoordinate().getX();
       float unboundedPlayerY = cell.getCoordinate().getY();
-      float lowerXBound = getViewportWorldWidth() / 2f;
-      float upperXBound = world.getMaxWidth() - lowerXBound;
-      float lowerYBound = getViewportWorldHeight() / 2f;
-      float upperYBound = world.getMaxHeight() - lowerYBound;
-
-      float boundedPlayerX = bound(lowerXBound, unboundedPlayerX, upperXBound);
-      float boundedPlayerY = bound(lowerYBound, unboundedPlayerY, upperYBound);
-      setCameraPosition(boundedPlayerX, boundedPlayerY);
+      setCameraPosition(unboundedPlayerX, unboundedPlayerY);
     }
+  }
+
+  @Subscribe
+  void worldReset(WorldReset worldReset) {
+    worldWidth = 0;
+    worldHeight = 0;
   }
 
   private float bound(float min, float value, float max) {

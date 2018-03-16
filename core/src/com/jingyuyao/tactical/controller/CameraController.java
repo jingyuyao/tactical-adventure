@@ -2,8 +2,6 @@ package com.jingyuyao.tactical.controller;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.jingyuyao.tactical.model.world.World;
 import com.jingyuyao.tactical.view.world.WorldView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,7 +10,6 @@ import javax.inject.Singleton;
 public class CameraController extends InputAdapter {
 
   private final ControllerConfig controllerConfig;
-  private final World world;
   private final WorldView worldView;
   private final Vector2 initialTouch = new Vector2();
   private final Vector2 lastTouch = new Vector2();
@@ -20,9 +17,8 @@ public class CameraController extends InputAdapter {
   private boolean dragged = false;
 
   @Inject
-  CameraController(ControllerConfig controllerConfig, World world, WorldView worldView) {
+  CameraController(ControllerConfig controllerConfig, WorldView worldView) {
     this.controllerConfig = controllerConfig;
-    this.world = world;
     this.worldView = worldView;
   }
 
@@ -42,25 +38,11 @@ public class CameraController extends InputAdapter {
       float viewportWorldHeight = worldView.getViewportWorldHeight();
       float horizontalScale = viewportWorldWidth / worldView.getViewportScreenWidth();
       float verticalScale = viewportWorldHeight / worldView.getViewportScreenHeight();
-
       float deltaWorldX = (screenX - lastTouch.x) * horizontalScale;
       float deltaWorldY = (screenY - lastTouch.y) * verticalScale;
 
-      Vector3 cameraPosition = worldView.getCameraPosition();
-
       // world is y-up, screen is y-down
-      float unboundedNewWorldX = cameraPosition.x - deltaWorldX;
-      float unboundedNewWorldY = cameraPosition.y + deltaWorldY;
-
-      float lowerXBound = viewportWorldWidth / 2f;
-      float upperXBound = world.getMaxWidth() - lowerXBound;
-      float lowerYBound = viewportWorldHeight / 2f;
-      float upperYBound = world.getMaxHeight() - lowerYBound;
-
-      float boundedNewWorldX = bound(lowerXBound, unboundedNewWorldX, upperXBound);
-      float boundedNewWorldY = bound(lowerYBound, unboundedNewWorldY, upperYBound);
-
-      worldView.setCameraPosition(boundedNewWorldX, boundedNewWorldY);
+      worldView.moveCameraBy(-deltaWorldX, deltaWorldY);
       lastTouch.set(screenX, screenY);
       calcDragged();
     }
@@ -79,9 +61,5 @@ public class CameraController extends InputAdapter {
     if (!dragged) {
       dragged = initialTouch.dst(lastTouch) > controllerConfig.getDragScreenCutoff();
     }
-  }
-
-  private float bound(float min, float value, float max) {
-    return Math.max(min, Math.min(value, max));
   }
 }
