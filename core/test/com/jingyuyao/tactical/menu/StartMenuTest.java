@@ -32,7 +32,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class StartMenuTest {
 
   private static final String PLAY_BTN = "play button";
-  private static final String RESET_BTN = "reset button";
+  private static final String RESET_LEVEL_BTN = "reset button";
+  private static final String CLEAR_SAVE_BTN = "clear save";
 
   @Mock
   private Stage stage;
@@ -65,7 +66,8 @@ public class StartMenuTest {
   public void setUp() {
     Guice.createInjector(new MockGameModule()).injectMembers(this);
     when(textLoader.get(MenuBundle.PLAY_BTN)).thenReturn(PLAY_BTN);
-    when(textLoader.get(MenuBundle.RESET_BTN)).thenReturn(RESET_BTN);
+    when(textLoader.get(MenuBundle.RESET_LEVEL_BTN)).thenReturn(RESET_LEVEL_BTN);
+    when(textLoader.get(MenuBundle.CLEAR_SAVE_BTN)).thenReturn(CLEAR_SAVE_BTN);
 
     startMenu = new StartMenu(gl20, input, stage, gameState, dataManager, textLoader);
 
@@ -103,7 +105,7 @@ public class StartMenuTest {
   }
 
   @Test
-  public void reset_button() {
+  public void reset_level_button() {
     when(dataManager.loadGameSave()).thenReturn(gameSave);
     when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
     when(levelSave.getWorldCells()).thenReturn(Arrays.asList(cell1, cell2));
@@ -114,12 +116,34 @@ public class StartMenuTest {
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
-    VisTextButton button = startMenu.getRoot().findActor("resetButton");
-    assertThat(button.getText().toString()).isEqualTo(RESET_BTN);
+    VisTextButton button = startMenu.getRoot().findActor("resetLevelButton");
+    assertThat(button.getText().toString()).isEqualTo(RESET_LEVEL_BTN);
 
     button.toggle();
 
-    verify(gameState).reset();
+    verify(dataManager).removeLevelProgress();
+    VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
+    assertThat(infoLabel.getText().toString()).isEqualTo("success");
+  }
+
+  @Test
+  public void clear_save_button() {
+    when(dataManager.loadGameSave()).thenReturn(gameSave);
+    when(dataManager.loadLevelSave()).thenReturn(Optional.of(levelSave));
+    when(levelSave.getWorldCells()).thenReturn(Arrays.asList(cell1, cell2));
+    when(cell1.ship()).thenReturn(Optional.of(ship1));
+    when(cell2.ship()).thenReturn(Optional.of(ship2));
+    when(ship1.inGroup(ShipGroup.PLAYER)).thenReturn(true);
+    when(ship2.inGroup(ShipGroup.ENEMY)).thenReturn(true);
+    when(gameSave.getCurrentLevel()).thenReturn(2);
+    when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
+    when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
+    VisTextButton button = startMenu.getRoot().findActor("clearSaveButton");
+    assertThat(button.getText().toString()).isEqualTo(CLEAR_SAVE_BTN);
+
+    button.toggle();
+
+    verify(dataManager).freshStart();
     VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
     assertThat(infoLabel.getText().toString()).isEqualTo("success");
   }

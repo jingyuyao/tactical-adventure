@@ -52,10 +52,6 @@ public class GameState {
     worldState.initialize(levelSave.getTurn(), levelSave.getScript());
   }
 
-  public void reset() {
-    dataManager.removeLevelProgress();
-  }
-
   void start() {
     game.goToPlayMenu();
   }

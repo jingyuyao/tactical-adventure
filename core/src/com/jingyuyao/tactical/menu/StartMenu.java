@@ -53,7 +53,9 @@ public class StartMenu extends AbstractMenu {
     builder.append(CellWidget.of(infoLabel).expandY().wrap());
     builder.row();
 
-    builder.append(CellWidget.of(this.new ResetButton()).align(Alignment.LEFT).expandX().wrap());
+    builder.append(this.new ResetLevelButton());
+    builder
+        .append(CellWidget.of(this.new ClearSaveButton()).align(Alignment.LEFT).expandX().wrap());
     builder.append(this.new PlayButton());
 
     builder.build(getRoot());
@@ -106,17 +108,32 @@ public class StartMenu extends AbstractMenu {
     }
   }
 
-  class ResetButton extends VisTextButton {
+  class ResetLevelButton extends VisTextButton {
 
-    ResetButton() {
-      super(textLoader.get(MenuBundle.RESET_BTN), new ChangeListener() {
+    ResetLevelButton() {
+      super(textLoader.get(MenuBundle.RESET_LEVEL_BTN), new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-          gameState.reset();
+          dataManager.removeLevelProgress();
           infoLabel.setText(getInfo());
         }
       });
-      setName("resetButton");
+      setName("resetLevelButton");
+      getLabelCell().pad(30);
+    }
+  }
+
+  class ClearSaveButton extends VisTextButton {
+
+    ClearSaveButton() {
+      super(textLoader.get(MenuBundle.CLEAR_SAVE_BTN), new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          dataManager.freshStart();
+          infoLabel.setText(getInfo());
+        }
+      });
+      setName("clearSaveButton");
       getLabelCell().pad(30);
     }
   }

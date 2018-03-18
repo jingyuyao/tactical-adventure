@@ -93,13 +93,6 @@ public class GameStateTest {
   }
 
   @Test
-  public void reset() {
-    gameState.reset();
-
-    verify(dataManager).removeLevelProgress();
-  }
-
-  @Test
   public void start() {
     gameState.start();
 
