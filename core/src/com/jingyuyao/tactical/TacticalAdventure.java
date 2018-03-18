@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.google.inject.Stage;
+import com.jingyuyao.tactical.menu.LevelResultMenu;
+import com.jingyuyao.tactical.menu.LevelResultMenu.LevelResult;
 import com.jingyuyao.tactical.menu.StartMenu;
 import com.jingyuyao.tactical.view.GameScreen;
 import javax.inject.Inject;
@@ -18,13 +20,15 @@ public class TacticalAdventure extends Game {
   @Inject
   private StartMenu startMenu;
   @Inject
+  private LevelResultMenu levelResultMenu;
+  @Inject
   private AssetManager assetManager;
 
   @Override
   public void create() {
     Guice.createInjector(Stage.PRODUCTION, new GameModule(this)).injectMembers(this);
 
-    gameState.start();
+    gameState.goToStartMenu();
   }
 
   @Override
@@ -37,6 +41,11 @@ public class TacticalAdventure extends Game {
 
   void goToPlayMenu() {
     setScreen(startMenu);
+  }
+
+  void goToLevelResultMenu(LevelResult levelResult) {
+    levelResultMenu.setLevelResult(levelResult);
+    setScreen(levelResultMenu);
   }
 
   void goToWorldScreen() {

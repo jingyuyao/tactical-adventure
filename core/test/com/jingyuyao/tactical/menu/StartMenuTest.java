@@ -101,7 +101,7 @@ public class StartMenuTest {
 
     button.toggle();
 
-    verify(gameState).play();
+    verify(gameState).playCurrentLevel();
   }
 
   @Test

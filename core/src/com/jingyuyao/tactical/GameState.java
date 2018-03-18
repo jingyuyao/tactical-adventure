@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelSave;
+import com.jingyuyao.tactical.menu.LevelResultMenu.LevelResult;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
@@ -42,7 +43,11 @@ public class GameState {
     this.worldState = worldState;
   }
 
-  public void play() {
+  public void goToStartMenu() {
+    game.goToPlayMenu();
+  }
+
+  public void playCurrentLevel() {
     LevelSave levelSave = dataManager.loadCurrentLevel();
     // Order is important: world must be populated before we go to the screen since the screen
     // needs the world size, state need to start after we are in the screen so all the UI can
@@ -50,10 +55,6 @@ public class GameState {
     world.initialize(levelSave.getLevel(), levelSave.getWorldCells(), levelSave.getInactiveShips());
     game.goToWorldScreen();
     worldState.initialize(levelSave.getTurn(), levelSave.getScript());
-  }
-
-  void start() {
-    game.goToPlayMenu();
   }
 
   @Subscribe
@@ -84,7 +85,7 @@ public class GameState {
     }
     world.reset();
     worldState.reset();
-    game.goToPlayMenu();
+    game.goToLevelResultMenu(LevelResult.WON);
   }
 
   @Subscribe
@@ -92,7 +93,7 @@ public class GameState {
     dataManager.removeLevelProgress();
     world.reset();
     worldState.reset();
-    game.goToPlayMenu();
+    game.goToLevelResultMenu(LevelResult.LOST);
   }
 
   @Subscribe

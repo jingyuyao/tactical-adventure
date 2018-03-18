@@ -11,6 +11,7 @@ import com.google.common.eventbus.DeadEvent;
 import com.jingyuyao.tactical.data.DataManager;
 import com.jingyuyao.tactical.data.GameSave;
 import com.jingyuyao.tactical.data.LevelSave;
+import com.jingyuyao.tactical.menu.LevelResultMenu.LevelResult;
 import com.jingyuyao.tactical.model.event.LevelLost;
 import com.jingyuyao.tactical.model.event.LevelWon;
 import com.jingyuyao.tactical.model.event.Save;
@@ -84,7 +85,7 @@ public class GameStateTest {
     when(levelSave.getScript()).thenReturn(script);
     when(levelSave.getLevel()).thenReturn(2);
 
-    gameState.play();
+    gameState.playCurrentLevel();
 
     InOrder inOrder = Mockito.inOrder(world, worldState, game);
     inOrder.verify(world).initialize(2, worldCells, shipList);
@@ -94,7 +95,7 @@ public class GameStateTest {
 
   @Test
   public void start() {
-    gameState.start();
+    gameState.goToStartMenu();
 
     verify(game).goToPlayMenu();
   }
@@ -126,7 +127,7 @@ public class GameStateTest {
     inOrder.verify(dataManager).changeLevel(3, world);
     inOrder.verify(world).reset();
     inOrder.verify(worldState).reset();
-    inOrder.verify(game).goToPlayMenu();
+    verify(game).goToLevelResultMenu(LevelResult.WON);
   }
 
   @Test
@@ -140,7 +141,7 @@ public class GameStateTest {
     verify(dataManager).freshStart();
     verify(world).reset();
     verify(worldState).reset();
-    verify(game).goToPlayMenu();
+    verify(game).goToLevelResultMenu(LevelResult.WON);
   }
 
   @Test
@@ -150,7 +151,7 @@ public class GameStateTest {
     verify(dataManager).removeLevelProgress();
     verify(world).reset();
     verify(worldState).reset();
-    verify(game).goToPlayMenu();
+    verify(game).goToLevelResultMenu(LevelResult.LOST);
   }
 
   @Test

@@ -28,6 +28,8 @@ public class MenuModuleTest {
 
   @Inject
   private StartMenu startMenu;
+  @Inject
+  private LevelResultMenu levelResultMenu;
 
   @Test
   public void can_create_module() {

@@ -100,7 +100,7 @@ public class StartMenu extends AbstractMenu {
       super(textLoader.get(MenuBundle.PLAY_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-          gameState.play();
+          gameState.playCurrentLevel();
         }
       });
       setName("playButton");
