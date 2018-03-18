@@ -6,6 +6,7 @@ import com.jingyuyao.tactical.model.resource.StringKey;
 class UIBundle {
 
   private static final KeyBundle BUNDLE = KeyBundle.i18n("view/ui/UI");
+  static final StringKey MENU_BTN = BUNDLE.get("menuBtn");
   static final StringKey CLOSE_BTN = BUNDLE.get("closeBtn");
   static final StringKey NEXT_BTN = BUNDLE.get("nextBtn");
   static final StringKey PERSON_NAME_HEADER = BUNDLE.get("personNameHeader");

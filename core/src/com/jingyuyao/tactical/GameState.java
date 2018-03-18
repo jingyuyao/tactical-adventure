@@ -44,7 +44,9 @@ public class GameState {
   }
 
   public void goToStartMenu() {
-    game.goToPlayMenu();
+    world.reset();
+    worldState.reset();
+    game.goToStartMenu();
   }
 
   public void playCurrentLevel() {

@@ -3,6 +3,7 @@ package com.jingyuyao.tactical.view;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.MockGameModule;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
@@ -19,6 +20,9 @@ public class ViewModuleTest {
   @Bind
   @Mock
   private TextLoader textLoader;
+  @Bind
+  @Mock
+  private GameState gameState;
   @Bind
   @Mock
   private WorldController worldController;

@@ -128,6 +128,15 @@ public class WorldStateTest {
   }
 
   @Test
+  public void reset_not_initialized() {
+    worldState.reset();
+
+    assertThat(stateStack).isEmpty();
+    assertThat(worldState.getTurn()).isNull();
+    assertThat(worldState.getScript()).isNull();
+  }
+
+  @Test
   public void select_cell() {
     stateStack.push(state1);
 

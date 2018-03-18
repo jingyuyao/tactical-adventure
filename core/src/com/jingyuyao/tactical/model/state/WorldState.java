@@ -55,7 +55,9 @@ public class WorldState {
   }
 
   public void reset() {
-    stateStack.peek().exit();
+    if (stateStack.peek() != null) {
+      stateStack.peek().exit();
+    }
     stateStack.clear();
     turn = null;
     script = null;

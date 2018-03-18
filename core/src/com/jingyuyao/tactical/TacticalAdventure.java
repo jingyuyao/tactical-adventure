@@ -39,7 +39,7 @@ public class TacticalAdventure extends Game {
     assetManager.dispose();
   }
 
-  void goToPlayMenu() {
+  void goToStartMenu() {
     setScreen(startMenu);
   }
 

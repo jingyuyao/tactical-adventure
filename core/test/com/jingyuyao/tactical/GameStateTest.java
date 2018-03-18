@@ -94,10 +94,13 @@ public class GameStateTest {
   }
 
   @Test
-  public void start() {
+  public void go_to_start_menu() {
     gameState.goToStartMenu();
 
-    verify(game).goToPlayMenu();
+    InOrder inOrder = Mockito.inOrder(world, worldState, game);
+    inOrder.verify(world).reset();
+    inOrder.verify(worldState).reset();
+    inOrder.verify(game).goToStartMenu();
   }
 
   @Test

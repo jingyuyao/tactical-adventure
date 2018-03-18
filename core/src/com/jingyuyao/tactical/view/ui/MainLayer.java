@@ -1,6 +1,10 @@
 package com.jingyuyao.tactical.view.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.common.eventbus.Subscribe;
+import com.jingyuyao.tactical.GameState;
+import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ModelBusListener;
 import com.jingyuyao.tactical.model.event.ShowDialogues;
 import com.kotcrab.vis.ui.building.OneColumnTableBuilder;
@@ -9,6 +13,7 @@ import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -17,6 +22,8 @@ import javax.inject.Singleton;
 class MainLayer extends VisTable {
 
   private static final int PAD = 20;
+  private final GameState gameState;
+  private final TextLoader textLoader;
   private final DialogueLayer dialogueLayer;
 
   @Inject
@@ -26,8 +33,12 @@ class MainLayer extends VisTable {
       ItemPanel itemPanel,
       TargetPanel targetPanel,
       TurnPanel turnPanel,
+      GameState gameState,
+      TextLoader textLoader,
       DialogueLayer dialogueLayer) {
     super(true);
+    this.gameState = gameState;
+    this.textLoader = textLoader;
     this.dialogueLayer = dialogueLayer;
     setFillParent(true);
 
@@ -47,6 +58,11 @@ class MainLayer extends VisTable {
             .align(Alignment.BOTTOM_LEFT)
             .padding(Padding.of(0, PAD, PAD, 0))
             .expandY()
+            .wrap());
+    leftColumn.append(
+        CellWidget.of(this.new MenuButton())
+            .align(Alignment.LEFT)
+            .padding(Padding.of(0, PAD, PAD, 0))
             .wrap());
 
     OneColumnTableBuilder rightColumn = new OneColumnTableBuilder();
@@ -82,5 +98,19 @@ class MainLayer extends VisTable {
   @Subscribe
   void showDialogues(ShowDialogues showDialogues) {
     dialogueLayer.display(showDialogues);
+  }
+
+  class MenuButton extends VisTextButton {
+
+    MenuButton() {
+      super(textLoader.get(UIBundle.MENU_BTN), "blue", new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          gameState.goToStartMenu();
+        }
+      });
+      setName("menuButton");
+      getLabelCell().pad(15);
+    }
   }
 }
