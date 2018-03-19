@@ -59,6 +59,10 @@ abstract class AbstractMenu extends ScreenAdapter {
     return root;
   }
 
+  Stage getStage() {
+    return stage;
+  }
+
   class BackKeyProcessor extends InputAdapter {
 
     @Override

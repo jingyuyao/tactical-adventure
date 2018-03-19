@@ -21,7 +21,10 @@ import com.kotcrab.vis.ui.building.TableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
+import com.kotcrab.vis.ui.widget.ButtonBar.ButtonType;
+import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -53,10 +56,10 @@ public class StartMenu extends AbstractMenu {
     builder.append(CellWidget.of(infoLabel).expandY().wrap());
     builder.row();
 
+    builder.append(this.new ShowInstructionsButton());
     builder.append(this.new ResetLevelButton());
-    builder
-        .append(CellWidget.of(this.new ClearSaveButton()).align(Alignment.LEFT).expandX().wrap());
-    builder.append(this.new PlayButton());
+    builder.append(this.new ClearSaveButton());
+    builder.append(CellWidget.of(this.new PlayButton()).align(Alignment.RIGHT).expandX().wrap());
 
     builder.build(getRoot());
   }
@@ -92,6 +95,23 @@ public class StartMenu extends AbstractMenu {
     GameSave gameSave = dataManager.loadGameSave();
     int level = gameSave.getCurrentLevel();
     return textLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
+  }
+
+  /**
+   * Copied and modified from {@link com.kotcrab.vis.ui.util.dialog.Dialogs#showOKDialog(Stage, String, String)}.
+   */
+  private void showInstructions() {
+    VisLabel label = new VisLabel(textLoader.get(MenuBundle.INSTRUCTIONS), Align.topLeft);
+    label.setWrap(true);
+    VisScrollPane scrollPane = new VisScrollPane(label);
+    scrollPane.setFadeScrollBars(false);
+    VisDialog dialog = new VisDialog(textLoader.get(MenuBundle.INSTRUCTIONS_TITLE));
+    dialog.closeOnEscape();
+    dialog.getContentTable().add(scrollPane).grow().top();
+    dialog.button(ButtonType.OK.getText()).padBottom(3);
+    dialog.pack();
+    dialog.setFillParent(true);
+    getStage().addActor(dialog.fadeIn());
   }
 
   class PlayButton extends VisTextButton {
@@ -134,6 +154,20 @@ public class StartMenu extends AbstractMenu {
         }
       });
       setName("clearSaveButton");
+      getLabelCell().pad(30);
+    }
+  }
+
+  class ShowInstructionsButton extends VisTextButton {
+
+    ShowInstructionsButton() {
+      super(textLoader.get(MenuBundle.SHOW_INSTRUCTIONS_BTN), new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          StartMenu.this.showInstructions();
+        }
+      });
+      setName("showInstructionsButton");
       getLabelCell().pad(30);
     }
   }
