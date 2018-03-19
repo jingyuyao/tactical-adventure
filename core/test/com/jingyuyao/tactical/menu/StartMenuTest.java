@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical.menu;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -8,7 +9,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.base.Optional;
 import com.google.inject.Guice;
 import com.jingyuyao.tactical.GameState;
@@ -20,6 +24,7 @@ import com.jingyuyao.tactical.data.TextLoader;
 import com.jingyuyao.tactical.model.ship.Ship;
 import com.jingyuyao.tactical.model.ship.ShipGroup;
 import com.jingyuyao.tactical.model.world.Cell;
+import com.kotcrab.vis.ui.util.dialog.Dialogs.OptionDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import java.util.Arrays;
@@ -61,6 +66,8 @@ public class StartMenuTest {
   private Ship ship2;
   @Captor
   private ArgumentCaptor<InputProcessor> argumentCaptor;
+  @Captor
+  private ArgumentCaptor<Actor> actorCaptor;
   @Inject
   private GL20 gl20;
   @Inject
@@ -125,10 +132,20 @@ public class StartMenuTest {
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
-    VisTextButton button = startMenu.getRoot().findActor("resetLevelButton");
-    assertThat(button.getText().toString()).isEqualTo(RESET_LEVEL_BTN);
+    when(textLoader.get(MenuBundle.WARNING)).thenReturn("title");
+    when(textLoader.get(MenuBundle.RESET_LEVEL_WARNING)).thenReturn("dont do it");
+    VisTextButton resetButton = startMenu.getRoot().findActor("resetLevelButton");
+    assertThat(resetButton.getText().toString()).isEqualTo(RESET_LEVEL_BTN);
 
-    button.toggle();
+    resetButton.toggle();
+
+    // first time is table root, second time is dialog
+    verify(stage, times(2)).addActor(actorCaptor.capture());
+    OptionDialog dialog = (OptionDialog) actorCaptor.getValue();
+    // ¯\_(ツ)_/¯
+    Table buttons = (Table) dialog.getCells().get(1).getActor();
+    Button yesButton = (Button) buttons.getCells().get(0).getActor();
+    yesButton.toggle();
 
     verify(dataManager).removeLevelProgress();
     VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
@@ -147,10 +164,20 @@ public class StartMenuTest {
     when(gameSave.getCurrentLevel()).thenReturn(2);
     when(textLoader.get(MenuBundle.HAS_PROGRESS.format(1, 1))).thenReturn("1 p 1 e");
     when(textLoader.get(MenuBundle.LEVEL_INFO.format(2, "1 p 1 e"))).thenReturn("success");
-    VisTextButton button = startMenu.getRoot().findActor("clearSaveButton");
-    assertThat(button.getText().toString()).isEqualTo(CLEAR_SAVE_BTN);
+    when(textLoader.get(MenuBundle.WARNING)).thenReturn("title");
+    when(textLoader.get(MenuBundle.CLEAR_SAVE_WARNING)).thenReturn("dont do it");
+    VisTextButton clearSaveButton = startMenu.getRoot().findActor("clearSaveButton");
+    assertThat(clearSaveButton.getText().toString()).isEqualTo(CLEAR_SAVE_BTN);
 
-    button.toggle();
+    clearSaveButton.toggle();
+
+    // first time is table root, second time is dialog
+    verify(stage, times(2)).addActor(actorCaptor.capture());
+    OptionDialog dialog = (OptionDialog) actorCaptor.getValue();
+    // ¯\_(ツ)_/¯
+    Table buttons = (Table) dialog.getCells().get(1).getActor();
+    Button yesButton = (Button) buttons.getCells().get(0).getActor();
+    yesButton.toggle();
 
     verify(dataManager).freshStart();
     VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
