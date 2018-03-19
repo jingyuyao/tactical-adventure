@@ -42,6 +42,8 @@ public class TacticalAdventure extends Game {
     super.dispose();
     gameScreen.dispose();
     startMenu.dispose();
+    instructionsMenu.dispose();
+    levelResultMenu.dispose();
     assetManager.dispose();
   }
 
