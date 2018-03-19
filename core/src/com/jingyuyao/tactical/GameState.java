@@ -44,9 +44,13 @@ public class GameState {
   }
 
   public void goToStartMenu() {
-    world.reset();
-    worldState.reset();
+    clearWorld();
     game.goToStartMenu();
+  }
+
+  public void goToInstructionsMenu() {
+    clearWorld();
+    game.goToInstructionsMenu();
   }
 
   public void playCurrentLevel() {
@@ -85,21 +89,27 @@ public class GameState {
     } else {
       dataManager.freshStart();
     }
-    world.reset();
-    worldState.reset();
-    game.goToLevelResultMenu(LevelResult.WON);
+    goToLevelResultMenu(LevelResult.WON);
   }
 
   @Subscribe
   void levelLost(LevelLost levelLost) {
     dataManager.removeLevelProgress();
-    world.reset();
-    worldState.reset();
-    game.goToLevelResultMenu(LevelResult.LOST);
+    goToLevelResultMenu(LevelResult.LOST);
   }
 
   @Subscribe
   void deadEvent(DeadEvent deadEvent) {
     application.log("GameStateSubscriber", deadEvent.getEvent().toString());
+  }
+
+  private void goToLevelResultMenu(LevelResult result) {
+    clearWorld();
+    game.goToLevelResultMenu(result);
+  }
+
+  private void clearWorld() {
+    world.reset();
+    worldState.reset();
   }
 }

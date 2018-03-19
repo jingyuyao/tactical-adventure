@@ -16,7 +16,6 @@ class MenuBundle {
   static final StringKey NO_PROGRESS = BUNDLE.get("noProgress");
   static final StringKey LEVEL_WON = BUNDLE.get("levelWon");
   static final StringKey LEVEL_LOST = BUNDLE.get("levelLost");
-  static final StringKey INSTRUCTIONS_TITLE = BUNDLE.get("instructionsTitle");
   static final StringKey INSTRUCTIONS = BUNDLE.get("instructions");
 
 }

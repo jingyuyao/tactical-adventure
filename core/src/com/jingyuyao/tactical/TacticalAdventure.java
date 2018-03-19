@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.google.inject.Stage;
+import com.jingyuyao.tactical.menu.InstructionsMenu;
 import com.jingyuyao.tactical.menu.LevelResultMenu;
 import com.jingyuyao.tactical.menu.LevelResultMenu.LevelResult;
 import com.jingyuyao.tactical.menu.StartMenu;
@@ -20,6 +21,8 @@ public class TacticalAdventure extends Game {
   private GameScreen gameScreen;
   @Inject
   private StartMenu startMenu;
+  @Inject
+  private InstructionsMenu instructionsMenu;
   @Inject
   private LevelResultMenu levelResultMenu;
   @Inject
@@ -44,6 +47,10 @@ public class TacticalAdventure extends Game {
 
   void goToStartMenu() {
     setScreen(startMenu);
+  }
+
+  void goToInstructionsMenu() {
+    setScreen(instructionsMenu);
   }
 
   void goToLevelResultMenu(LevelResult levelResult) {
