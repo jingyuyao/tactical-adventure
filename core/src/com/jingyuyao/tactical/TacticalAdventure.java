@@ -1,6 +1,7 @@
 package com.jingyuyao.tactical;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.inject.Guice;
 import com.google.inject.Stage;
@@ -26,6 +27,8 @@ public class TacticalAdventure extends Game {
 
   @Override
   public void create() {
+    Gdx.input.setCatchBackKey(true);
+
     Guice.createInjector(Stage.PRODUCTION, new GameModule(this)).injectMembers(this);
 
     gameState.goToStartMenu();

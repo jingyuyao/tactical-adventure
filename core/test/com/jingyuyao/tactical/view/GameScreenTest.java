@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.jingyuyao.tactical.GameState;
 import com.jingyuyao.tactical.controller.CameraController;
 import com.jingyuyao.tactical.controller.WorldController;
 import com.jingyuyao.tactical.view.ui.GameUI;
@@ -32,6 +33,8 @@ public class GameScreenTest {
   @Mock
   private WorldView worldView;
   @Mock
+  private GameState gameState;
+  @Mock
   private GameUI gameUI;
   @Mock
   private CameraController cameraController;
@@ -47,7 +50,8 @@ public class GameScreenTest {
   @Before
   public void setUp() {
     when(gameUI.getInputProcessor()).thenReturn(worldUIProcessor);
-    gameScreen = new GameScreen(gl, input, worldView, gameUI, cameraController, worldController);
+    gameScreen =
+        new GameScreen(gl, input, gameState, worldView, gameUI, cameraController, worldController);
   }
 
   @Test
@@ -58,7 +62,7 @@ public class GameScreenTest {
     assertThat(argumentCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
     InputMultiplexer multiplexer = (InputMultiplexer) argumentCaptor.getValue();
     assertThat(multiplexer.getProcessors())
-        .containsExactly(worldUIProcessor, cameraController, worldController).inOrder();
+        .containsAllOf(worldUIProcessor, cameraController, worldController).inOrder();
   }
 
   @Test

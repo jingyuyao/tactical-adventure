@@ -5,6 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.common.base.Optional;
@@ -25,6 +27,8 @@ import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -55,6 +59,8 @@ public class StartMenuTest {
   private Ship ship1;
   @Mock
   private Ship ship2;
+  @Captor
+  private ArgumentCaptor<InputProcessor> argumentCaptor;
   @Inject
   private GL20 gl20;
   @Inject
@@ -89,7 +95,10 @@ public class StartMenuTest {
 
     startMenu.show();
 
-    verify(input).setInputProcessor(stage);
+    verify(input).setInputProcessor(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue()).isInstanceOf(InputMultiplexer.class);
+    InputMultiplexer multiplexer = (InputMultiplexer) argumentCaptor.getValue();
+    assertThat(multiplexer.getProcessors()).contains(stage);
     VisLabel infoLabel = startMenu.getRoot().findActor("infoLabel");
     assertThat(infoLabel.getText().toString()).isEqualTo("success");
   }

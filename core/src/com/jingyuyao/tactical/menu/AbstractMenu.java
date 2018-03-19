@@ -1,6 +1,9 @@
 package com.jingyuyao.tactical.menu;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,7 +31,7 @@ abstract class AbstractMenu extends ScreenAdapter {
 
   @Override
   public void show() {
-    input.setInputProcessor(stage);
+    input.setInputProcessor(new InputMultiplexer(this.new BackKeyProcessor(), stage));
   }
 
   @Override
@@ -54,5 +57,16 @@ abstract class AbstractMenu extends ScreenAdapter {
    */
   Table getRoot() {
     return root;
+  }
+
+  class BackKeyProcessor extends InputAdapter {
+
+    @Override
+    public boolean keyDown(int keycode) {
+      // Ok, hijacking the back key to never exit the game is bad. But, for some reason the app
+      // goes into a unresponsive state if you allow the native back action to occur and then you
+      // try to go back into the game again using the application switcher on Android.
+      return keycode == Keys.BACK;
+    }
   }
 }
