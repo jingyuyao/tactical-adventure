@@ -21,6 +21,9 @@ import com.kotcrab.vis.ui.building.TableBuilder;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import com.kotcrab.vis.ui.building.utilities.CellWidget;
 import com.kotcrab.vis.ui.building.utilities.Padding;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.util.dialog.Dialogs.OptionDialogType;
+import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import javax.inject.Inject;
@@ -94,7 +97,7 @@ public class StartMenu extends AbstractMenu {
     return textLoader.get(MenuBundle.LEVEL_INFO.format(level, progress));
   }
 
-  class PlayButton extends VisTextButton {
+  private class PlayButton extends VisTextButton {
 
     PlayButton() {
       super(textLoader.get(MenuBundle.PLAY_BTN), "blue", new ChangeListener() {
@@ -108,40 +111,10 @@ public class StartMenu extends AbstractMenu {
     }
   }
 
-  class ResetLevelButton extends VisTextButton {
-
-    ResetLevelButton() {
-      super(textLoader.get(MenuBundle.RESET_LEVEL_BTN), new ChangeListener() {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-          dataManager.removeLevelProgress();
-          infoLabel.setText(getInfo());
-        }
-      });
-      setName("resetLevelButton");
-      getLabelCell().pad(30);
-    }
-  }
-
-  class ClearSaveButton extends VisTextButton {
-
-    ClearSaveButton() {
-      super(textLoader.get(MenuBundle.CLEAR_SAVE_BTN), new ChangeListener() {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-          dataManager.freshStart();
-          infoLabel.setText(getInfo());
-        }
-      });
-      setName("clearSaveButton");
-      getLabelCell().pad(30);
-    }
-  }
-
-  class ShowInstructionsButton extends VisTextButton {
+  private class ShowInstructionsButton extends VisTextButton {
 
     ShowInstructionsButton() {
-      super(textLoader.get(MenuBundle.SHOW_INSTRUCTIONS_BTN), new ChangeListener() {
+      super(textLoader.get(MenuBundle.SHOW_INSTRUCTIONS_BTN), "blue", new ChangeListener() {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
           gameState.goToInstructionsMenu();
@@ -149,6 +122,62 @@ public class StartMenu extends AbstractMenu {
       });
       setName("showInstructionsButton");
       getLabelCell().pad(30);
+    }
+  }
+
+  private class ResetLevelButton extends VisTextButton {
+
+    ResetLevelButton() {
+      super(textLoader.get(MenuBundle.RESET_LEVEL_BTN), "blue", new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          Dialogs.showOptionDialog(
+              StartMenu.this.getStage(),
+              textLoader.get(MenuBundle.WARNING),
+              textLoader.get(MenuBundle.RESET_LEVEL_WARNING),
+              OptionDialogType.YES_CANCEL,
+              StartMenu.this.new ResetLevelConfirmationDialog());
+        }
+      });
+      setName("resetLevelButton");
+      getLabelCell().pad(30);
+    }
+  }
+
+  private class ResetLevelConfirmationDialog extends OptionDialogAdapter {
+
+    @Override
+    public void yes() {
+      dataManager.removeLevelProgress();
+      infoLabel.setText(getInfo());
+    }
+  }
+
+  private class ClearSaveButton extends VisTextButton {
+
+    ClearSaveButton() {
+      super(textLoader.get(MenuBundle.CLEAR_SAVE_BTN), "blue", new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          Dialogs.showOptionDialog(
+              StartMenu.this.getStage(),
+              textLoader.get(MenuBundle.WARNING),
+              textLoader.get(MenuBundle.CLEAR_SAVE_WARNING),
+              OptionDialogType.YES_CANCEL,
+              StartMenu.this.new ClearSaveConfirmationDialog());
+        }
+      });
+      setName("clearSaveButton");
+      getLabelCell().pad(30);
+    }
+  }
+
+  private class ClearSaveConfirmationDialog extends OptionDialogAdapter {
+
+    @Override
+    public void yes() {
+      dataManager.freshStart();
+      infoLabel.setText(getInfo());
     }
   }
 }

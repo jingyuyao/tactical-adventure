@@ -11,6 +11,9 @@ class MenuBundle {
   static final StringKey RESET_LEVEL_BTN = BUNDLE.get("resetLevelBtn");
   static final StringKey CLEAR_SAVE_BTN = BUNDLE.get("clearSaveBtn");
   static final StringKey CONTINUE_BTN = BUNDLE.get("continueBtn");
+  static final StringKey WARNING = BUNDLE.get("warning");
+  static final StringKey RESET_LEVEL_WARNING = BUNDLE.get("resetLevelWarning");
+  static final StringKey CLEAR_SAVE_WARNING = BUNDLE.get("clearSaveWarning");
   static final StringKey LEVEL_INFO = BUNDLE.get("levelInfo");
   static final StringKey HAS_PROGRESS = BUNDLE.get("hasProgress");
   static final StringKey NO_PROGRESS = BUNDLE.get("noProgress");

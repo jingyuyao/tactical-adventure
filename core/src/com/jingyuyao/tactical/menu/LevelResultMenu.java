@@ -63,7 +63,7 @@ public class LevelResultMenu extends AbstractMenu {
     WON, LOST,
   }
 
-  class ContinueButton extends VisTextButton {
+  private class ContinueButton extends VisTextButton {
 
     ContinueButton() {
       super(textLoader.get(MenuBundle.CONTINUE_BTN), "blue", new ChangeListener() {
