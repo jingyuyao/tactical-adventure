@@ -9,10 +9,16 @@ Required dev tools:
 
 ## Android set up:
 1. Download commandline tools from https://developer.android.com/studio/index.html#downloads
-2. Unpack it to somewhere like $HOME/Documents/android
-3. Create an environment variable that points to the previous location by adding this line to .profile
-    `export ANDROID_HOME=$HOME/Documents/android` (need to re-login for it to take effect)
-4. Use $ANDROID_HOME/tools/android to download the latest platform, platform-tools and build-tools
+2. Unpack it to somewhere like /opt/android
+3. Create an environment variable that points to the previous location by adding this line to `/etc/environment`
+    `ANDROID_HOME="/opt/android"` (need to re-login for it to take effect)
+4. Use /opt/android/tools/bin/sdkmanager to download the following tools
+
+```
+sudo ./sdkmanager "platforms;android-27"
+sudo ./sdkmanager "platforms-tools"
+sudo ./sdkmanager "build-tools;27.0.3"
+```
 
 ## Run and Test
 IDEs are unreliable as shit breaks consistently between versions. We will rely purely on Gradle
